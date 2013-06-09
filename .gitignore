@@ -2,7 +2,3 @@
 *.swp
 *.log
 *~
-
-Bazaarboy/templates/*
-Bazaarboy/static/js/*
-Bazaarboy/static/css/*
