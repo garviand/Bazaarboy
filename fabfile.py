@@ -1,33 +1,42 @@
-"""
-Installation
--- LAMP (sudo apt-get install tasksel, then tasksel)
--- phpmyadmin (sudo apt-get install phpmyadmin) (Include /etc/phpmyadmin/apache.conf in /etc/apache2/apache2.conf)
--- pip (sudo apt-get install python-pip)
--- virtualenvwrapper (sudo pip install virtualenvwrapper)
-  -- Edit ~/.bashrc
-      Append following lines:
-        export WORKON_HOME=$HOME/.virtualenvs
-        export PROJECT_HOME=$HOME/directory-you-do-development-in
-        source /usr/local/bin/virtualenvwrapper.sh
-      Reactivate bash profile
-        source ~/.bashrc
-  -- mkvirtualenv bazaarboy
--- python-dev
--- mysql-python
--- django 1.4.5 (pip install Django==1.4.5)
--- django-admin.py startproject Bazaarboy
--- git (sudo apt-get install git)
--- git init
--- Edit .gitignore
-  *.pyc *.swp *.log *~ 
--- south (pip install south==0.8.1)
--- fabric (pip install fabric==1.6.1)
-"""
+import os
+from fabric.api import settings, hide, lcd, local
 
-from fabric.api import settings, lcd, local
+def install():
+    """
+    Install all the required packages
+    """
+    local('pip install -r packages.list')
 
-def run():
-  with settings(warn_only=True):
+def compile():
+    """
+    Compile files of sugar into normal format
+    """
+    with lcd('./Bazaarboy/views/'):
+        # Jade
+        local('jade templates --out ../templates/')
+        # CoffeeScript
+        local('coffee --compile --output ../static/js/ js/')
+        # Less
+        lessPath = os.path.realpath(os.path.dirname(__file__))
+        lessPath += '/Bazaarboy/views/css/'
+        with lcd('./css/'):
+            for root, dirs, lessFiles in os.walk(lessPath):
+                for less in lessFiles:
+                    lessName = os.path.splitext(less)[0]
+                    local('lessc %s > ../../static/css/%s.css' % (less, 
+                                                                  lessName))
+
+def dev(port=8080):
+    """
+    Start a development environment
+    """
+    compile()
     with lcd('./Bazaarboy/'):
-      local('python manage.py schemamigration kernel --auto')
-      local('python manage.py runserver 0.0.0.0:8080')
+        with settings(
+            hide('warnings'),
+            warn_only=True
+        ):
+            # Check to see if models have changed, if so then migrate
+            local('python manage.py schemamigration kernel --auto')
+        # Run the django development server on specified port
+        local('python manage.py runserver 0.0.0.0:%s' % port)
