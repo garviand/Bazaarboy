@@ -10,7 +10,7 @@ echo -e "3. Do not run this script using sudo\n"
 echo "Are these prerequisites satisfied? (If so, type yes):"
 read prompt
 if [[ $prompt != [Yy][Ee][Ss] ]] ; then
-    exit
+    exit 0
 fi
 
 echo -e "\nSome installations require your super user credentials"

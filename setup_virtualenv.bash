@@ -6,7 +6,7 @@ echo -e "\nDo not run this script using sudo\n"
 echo "Are you in the virtual environment? (If so, type yes):"
 read prompt
 if [[ $prompt != [Yy][Ee][Ss] ]] ; then
-    exit
+    exit 0
 fi
 
 # Other python packages
@@ -16,3 +16,5 @@ pip install -r packages.list
 
 echo -e "\nDevelopment environment is now finished!"
 echo -e "Run 'fab dev' to kickstart your development process!\n"
+
+exit 0

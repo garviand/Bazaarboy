@@ -26,5 +26,5 @@ Installation
 -- nodejs (0.10.10) (./configure make make install)
 -- coffeescript (sudo npm install -g coffee-script)
 -- less (sudo npm install -g less)
--- jade ()
+-- jade (sudo npm install -g jade)
 """
