@@ -1,12 +1,6 @@
 import os
 from fabric.api import settings, hide, lcd, local
 
-def install():
-    """
-    Install all the required packages
-    """
-    local('pip install -r packages.list')
-
 def compile():
     """
     Compile files of sugar into normal format
