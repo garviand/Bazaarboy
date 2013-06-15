@@ -1,6 +1,13 @@
 import os
 from fabric.api import settings, hide, lcd, local
 
+def console():
+    """
+    Open up the interactive python console with django context
+    """
+    with lcd('./Bazaarboy/'):
+        local('python manage.py shell')
+
 def compile():
     """
     Compile files of sugar into normal format
@@ -31,6 +38,7 @@ def dev(port=8080):
             warn_only=True
         ):
             # Check to see if models have changed, if so then migrate
-            local('python manage.py schemamigration kernel --auto')
+            #local('python manage.py schemamigration kernel --auto')
+            pass
         # Run the django development server on specified port
         local('python manage.py runserver 0.0.0.0:%s' % port)
