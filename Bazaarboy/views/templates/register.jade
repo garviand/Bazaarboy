@@ -1,0 +1,26 @@
+extends layout
+
+block title
+    | Bazaarboy | Register
+
+append head
+    script(type="text/javascript").
+        var next = '{% if params.next %}{{ params.next }}{% endif %}';
+
+block body
+    div#register
+        h2 Register
+        br
+        form(name="register")
+            label Email
+            input(type="text", name="email")
+            br
+            label Password
+            input(type="password", name="password")
+            br
+            label Confirm
+            input(type="password", name="confirm")
+            br
+            //- Set the city to 1 by default
+            input(type="hidden", name="city", value="1")
+            input(type="submit", name="submit", value="Login")

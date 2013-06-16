@@ -2,7 +2,7 @@
 Controller for community. Dev use only.
 """
 
-from kernel.models import City, Community
+from kernel.models import *
 from src.serializer import serialize_one
 from request import json_response, validate
 
@@ -34,4 +34,4 @@ def create_community(request, params):
                           latitude = params['latitude'], 
                           longitude = params['longitude'])
     community.save()
-    return json_response({})
+    return json_response(serialize_one(community))

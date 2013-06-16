@@ -22,7 +22,7 @@ def serialize_one(obj, selectedFields=None):
             if field.rel is None:
                 # Normal field
                 if (selectedFields is None or 
-                    field.attname in self.selectedFields):
+                    field.attname in selectedFields):
                     value = field._get_val_from_obj(obj)
                     if is_protected_type(value):
                         if isinstance(value, datetime):

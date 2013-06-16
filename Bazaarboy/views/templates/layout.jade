@@ -1,6 +1,17 @@
 doctype 5
 html(lang="en")
     head
-        title Bazaarboy
+        block head
+            title
+                block title
+                    | Bazaarboy
+            script(type="text/javascript", 
+                   src="{{ STATIC_URL }}js/jquery-1.10.1.min.js")
     body
-        h1 Welcome
+        block body
+            div#wrapper_top
+                block top
+            div#wrapper_main
+                block main
+            div#wrapper_foot
+                block foot

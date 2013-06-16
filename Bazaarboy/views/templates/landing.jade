@@ -1,37 +1,8 @@
-doctype 5
-html(lang="en")
-    head
-        title Bazaarboy
-        script(type="text/javascript", src="{{ STATIC_URL }}js/jquery-1.10.1.min.js")
-        script(type="text/javascript", src="{{ STATIC_URL }}js/landing.js")
-    body
-        h1 Welcome!
-        br
-        div#login
-            h2 Login
-            br
-            form(name="login")
-                label Email
-                input(type="text", name="email")
-                br
-                label Password
-                input(type="password", name="password")
-                br
-                input(type="submit", name="submit", value="Login")
-        br
-        div#register
-            h2 Register
-            br
-            form(name="register")
-                label Email
-                input(type="text", name="email")
-                br
-                label Password
-                input(type="password", name="password")
-                br
-                label Confirm
-                input(type="password", name="confirm")
-                br
-                //- Set the city to 1 for now
-                input(type="hidden", name="city", value="1")
-                input(type="submit", name="submit", value="Login")
+extends layout
+
+block body
+    h1 Welcome to Bazaarboy
+    br
+    a(href="{% url user-login %}") Login
+    br
+    a(href="{% url user-register %}") Register

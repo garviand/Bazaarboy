@@ -1,0 +1,21 @@
+extends layout
+
+block title
+    | Bazaarboy | Login
+
+append head
+    script(type="text/javascript").
+        var next = '{% if params.next %}{{ params.next }}{% endif %}';
+
+block body
+    div#login
+        h2 Login
+        br
+        form(name="login")
+            label Email
+            input(type="text", name="email")
+            br
+            label Password
+            input(type="password", name="password")
+            br
+            input(type="submit", name="submit", value="Login")

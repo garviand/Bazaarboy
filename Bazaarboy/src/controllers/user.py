@@ -3,16 +3,32 @@ Controller for all user related actions
 """
 
 import hashlib
-import re
-from kernel.models import User
-from request import json_response, validate
+from kernel.models import *
+from django.shortcuts import render, redirect
+from django.http import HttpResponseForbidden
 from src.regex import REGEX_EMAIL
+from src.serializer import serialize_one
+from request import json_response, validate
+
+@validate('GET', [], ['next'])
+def register(request, params):
+    """
+    Register page
+    An optional parameter 'next' is taken to denote a redirect after action.
+    """
+    if request.session.has_key('user'):
+        # Session already exists, redirect to index
+        return redirect('index')
+    return render(request, 'register.html', locals())
 
 @validate('POST', ['email', 'password', 'confirm', 'city'])
 def create(request, params):
     """
     Create a new user
     """
+    # Check if session exists
+    if request.session.has_key('user'):
+        return HttpResponseForbidden('Access forbidden.')
     # Check if the email exists
     if User.objects.filter(email = params['email']).exists():
         response = {
@@ -22,7 +38,7 @@ def create(request, params):
         }
         return json_response(response)
     # Check email format
-    if not re.search(REGEX_EMAIL, params['email']):
+    if not REGEX_EMAIL.match(params['email']):
         response = {
             'status':'FAIL',
             'error':'INVALID_EMAIL',
@@ -38,7 +54,7 @@ def create(request, params):
         }
         return json_response(response)
     # Check confirm password
-    if params['confirm'] != password['password']:
+    if params['confirm'] != params['password']:
         response = {
             'status':'FAIL',
             'error':'PASSWORDS_MISMATCH',
@@ -60,21 +76,42 @@ def create(request, params):
                 city = city)
     user.save()
     # Creation done, start session
+    sessionUser = serialize_one(user, ('id', 'email', 'fb_id', 'city', 
+                                       'created_time'))
+    request.session['user'] = sessionUser
     response = {
         'status':'OK'
     }
     return json_response(response)
 
-@validate('GET', ['email', 'password'])
+@validate('GET', [], ['next'])
 def login(request, params):
     """
-    Login verification
+    Login page
+    An optional parameter 'next' is taken to denote a redirect after action.
     """
+    if request.session.has_key('user'):
+        # Session already exists, redirect to index
+        return redirect('index')
+    return render(request, 'login.html', locals())
+
+@validate('POST', ['email', 'password'])
+def auth(request, params):
+    """
+    Authenticate a user
+    """
+    # Check if session exists
+    if request.session.has_key('user'):
+        return HttpResponseForbidden('Access forbidden.')
+    # Authenticate email and password combination
     if User.objects.filter(email = params['email']).exists():
         user = User.objects.get(email = params['email'])
         saltedPassword = user.salt + params['password']
         if user.password == hashlib.sha512(saltedPassword).hexdigest():
             # Email and password match, start session
+            sessionUser = serialize_one(user, ('id', 'email', 'fb_id', 
+                                               'city', 'created_time'))
+            request.session['user'] = sessionUser
             response = {
                 'status':'OK'
             }
@@ -83,5 +120,12 @@ def login(request, params):
     response = {
         'status':'FAIL',
         'message':'Invalid email or password.'
+    }
+    return json_response(response)
+
+def logout(request):
+    request.session.flush()
+    response = {
+        'status':'OK'
     }
     return json_response(response)

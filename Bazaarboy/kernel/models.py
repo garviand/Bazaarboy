@@ -38,10 +38,11 @@ class User(models.Model):
             # User can either be Facebook based or email based
             return False
         if (self.password is not None and 
-            self.password != self.__original_password):
+            (self.pk is None or self.password != self.__original_password)):
             # Password is changed, rehash it
-            self.salt = os.urandom()
+            self.salt = os.urandom(128).encode('base_64')[:128]
             saltedPassword = self.salt + self.password
+            # Hash the password with salt
             self.password = hashlib.sha512(saltedPassword).hexdigest()
         super(User, self).save(*args, **kwargs)
         self.__original_password = self.password
