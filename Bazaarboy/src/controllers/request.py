@@ -21,7 +21,7 @@ def params_from_request(req, required=[], optional=[]):
     params = {}
     for name in required:
         param = req.get(name, None)
-        if param is not None:
+        if param is not None and len(params) > 0:
             params[name] = param
     if len(params.keys()) < len(required):
         return False
@@ -69,7 +69,7 @@ def login_required(redirectUrl=None, appendNext=True):
         def login_required_controller(req, *args, **kwargs):
             # Check if session exists
             if not req.session.has_key('user'):
-                if redirectUrl:
+                if redirectUrl is not None:
                     return redirect(redirectUrl)
                 else:
                     return HttpResponseForbidden('Access forbidden.')

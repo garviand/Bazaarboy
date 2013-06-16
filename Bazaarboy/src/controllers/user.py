@@ -66,7 +66,7 @@ def create(request, params):
         response = {
             'status':'FAIL',
             'error':'CITY_NOT_FOUND',
-            'message':'The city does not exist.'
+            'message':'The city doesn\'t exist.'
         }
         return json_response(response)
     # Create the user

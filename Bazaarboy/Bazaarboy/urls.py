@@ -29,6 +29,11 @@ urlpatterns = patterns('',
     url(r'^community/create/$', 'src.controllers.community.create_community', 
         name = 'community-create'),
 
+    # Profile
+
+    url(r'^profile/create/$', 'src.controllers.profile.create', 
+        name = 'Profile-create'),
+
     # Events
 
     url(r'^event/(?P<id>\d+)/$', 'src.controllers.event.index', name = 'event'),
