@@ -5,9 +5,10 @@ Controller for Profile
 from django.shortcuts import render
 from kernel.models import *
 from src.serializer import serialize_one
-from request import json_response, validate, login_required
+from request import json_response, validate, login_required, login_check
 
-def index(request, id):
+@login_check()
+def index(request, id, loggedIn):
     """
     Profile page
     """

@@ -77,3 +77,13 @@ def login_required(redirectUrl=None, appendNext=True):
             return controller(*args, **kwargs)
         return wraps(controller)(login_required_controller)
     return login_required_decorator
+
+def login_check(controller):
+    """
+    A decorator to check whether user has logged in or not
+    """
+    def checked_controller(req, *args, **kwargs):
+        # Check if session exists
+        kwargs['loggedIn'] = req.session.has_key('user')
+        return controller(*args, **kwargs)
+    return wraps(controller)(checked_controller)
