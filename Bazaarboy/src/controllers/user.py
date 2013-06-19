@@ -10,24 +10,26 @@ from src.regex import REGEX_EMAIL
 from src.serializer import serialize_one
 from request import json_response, validate
 
+@login_check()
 @validate('GET', [], ['next'])
-def register(request, params):
+def register(request, params, loggedIn):
     """
     Register page
     An optional parameter 'next' is taken to denote a redirect after action.
     """
-    if request.session.has_key('user'):
+    if loggedIn:
         # Session already exists, redirect to index
         return redirect('index')
     return render(request, 'register.html', locals())
 
+@login_check()
 @validate('POST', ['email', 'password', 'confirm', 'city'])
-def create(request, params):
+def create(request, params, loggedIn):
     """
     Create a new user
     """
     # Check if session exists
-    if request.session.has_key('user'):
+    if loggedIn:
         return HttpResponseForbidden('Access forbidden.')
     # Check if the email exists
     if User.objects.filter(email = params['email']).exists():
@@ -84,24 +86,26 @@ def create(request, params):
     }
     return json_response(response)
 
-@validate('GET', [], ['next'])
-def login(request, params):
+@login_check()
+@validate('GET')
+def login(request, params, loggedIn):
     """
     Login page
     An optional parameter 'next' is taken to denote a redirect after action.
     """
-    if request.session.has_key('user'):
+    if loggedIn:
         # Session already exists, redirect to index
         return redirect('index')
     return render(request, 'login.html', locals())
 
+@login_check()
 @validate('POST', ['email', 'password'])
-def auth(request, params):
+def auth(request, params, loggedIn):
     """
     Authenticate a user
     """
     # Check if session exists
-    if request.session.has_key('user'):
+    if loggedIn:
         return HttpResponseForbidden('Access forbidden.')
     # Authenticate email and password combination
     if User.objects.filter(email = params['email']).exists():
@@ -124,7 +128,15 @@ def auth(request, params):
     return json_response(response)
 
 def logout(request):
+    # Preserve the admin session if exists
+    adminSession = None
+    if request.session.has_key('admin'):
+        adminSession = request.session['admin']
+    # Clear the current session
     request.session.flush()
+    # Restore the admin session if exists
+    if adminSession is not None:
+        request.session['admin'] = adminSession
     response = {
         'status':'OK'
     }

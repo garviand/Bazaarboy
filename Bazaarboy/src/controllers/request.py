@@ -61,9 +61,9 @@ def validate(method='GET', required=[], optional=[]):
         return wraps(controller)(validated_controller)
     return validate_decorator
 
-def login_required(redirectUrl=None, appendNext=True):
+def login_required(redirectUrl=None):
     """
-    A decorator for controllers that require user to have logged in first
+    A decorator to force login
     """
     def login_required_decorator(controller):
         def login_required_controller(req, *args, **kwargs):
@@ -80,10 +80,28 @@ def login_required(redirectUrl=None, appendNext=True):
 
 def login_check(controller):
     """
-    A decorator to check whether user has logged in or not
+    A decorator to check the login status
     """
     def checked_controller(req, *args, **kwargs):
         # Check if session exists
         kwargs['loggedIn'] = req.session.has_key('user')
         return controller(*args, **kwargs)
     return wraps(controller)(checked_controller)
+
+def admin_required(roleRequirement=None):
+    """
+    A decorator to force admin login
+    """
+    def admin_required_decorator(controller):
+        def admin_required_controller(reg, *args, **kwargs):
+            # Check if admin session exists
+            if not req.session.has_key('admin'):
+                return HttpResponseForbidden('Access forbidden.')
+            # Check if the admin level reaches requirement
+            if (roleRequirement == 'Super' and 
+                req.session['admin']['role'] != 'S'):
+                return HttpResponseForbidden('Permission denied.')
+            kwargs['request'] = req
+            return controller(*args, **kwargs)
+        return admin_required_controller
+    return admin_required_decorator

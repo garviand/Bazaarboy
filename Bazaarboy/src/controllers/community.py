@@ -1,37 +1,51 @@
 """
-Controller for community. Dev use only.
+Controller for community
 """
 
 from kernel.models import *
 from src.serializer import serialize_one
-from request import json_response, validate
-
-@validate('GET', ['id'])
-def city(request, params):
-    city = City.objects.get(id = params['id'])
-    return json_response(serialize_one(city))
-
-@validate('GET', ['name', 'state', 'latitude', 'longitude'])
-def create_city(request, params):
-    city = City(name = params['name'], 
-                state = params['state'],
-                latitude = float(params['latitude']), 
-                longitude = float(params['longitude']))
-    city.save()
-    return json_response(serialize_one(city))
+from request import json_response, validate, admin_required
 
 @validate('GET', ['id'])
 def community(request, params):
+    """
+    Returns the serialized data about a community
+    """
+    if not Community.objects.filter(id = params['id']).exists():
+        response = {
+            'status':'FAIL',
+            'error':'COMMUNITY_NOT_FOUND',
+            'message':'The community doesn\'t exist.'
+        }
+        return json_response(response)
     community = Community.objects.get(id = params['id'])
-    return json_response(serialize_one(community))
+    response = {
+        'status':'OK',
+        'community':serialize_one(community)
+    }
+    return json_response(response)
 
-@validate('GET', ['name', 'description', 'city', 'latitude', 'longitude'])
-def create_community(request, params):
+@admin_required()
+@validate('POST', ['name', 'description', 'city', 'latitude', 'longitude'])
+def create(request, params):
+    """
+    Create a new community
+    """
+    if not City.objects.filter(id = params['city']).exists():
+        response = {
+            'status':'FAIL',
+            'error':'CITY_NOT_FOUND',
+            'message':'The city doesn\'t exist.'
+        }
     city = City.objects.get(id = params['city'])
     community = Community(name = params['name'], 
                           description = params['description'], 
-                          city = params['city'], 
+                          city = city, 
                           latitude = params['latitude'], 
                           longitude = params['longitude'])
     community.save()
-    return json_response(serialize_one(community))
+    response = {
+        'status':'OK',
+        'community':serialize_one(community)
+    }
+    return json_response(response)
