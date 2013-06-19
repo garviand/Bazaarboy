@@ -18,15 +18,15 @@ urlpatterns = patterns('',
 
     # City
 
-    url(r'^city/$', 'src.controllers.community.city', name = 'city'),
-    url(r'^city/create/$', 'src.controllers.community.create_city', 
+    url(r'^city/$', 'src.controllers.city.city', name = 'city'),
+    url(r'^city/create/$', 'src.controllers.city.create', 
         name = 'city-create'),
 
     # Community
 
     url(r'^community/$', 'src.controllers.community.community', 
         name = 'community'),
-    url(r'^community/create/$', 'src.controllers.community.create_community', 
+    url(r'^community/create/$', 'src.controllers.community.create', 
         name = 'community-create'),
 
     # Profile

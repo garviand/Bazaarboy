@@ -103,5 +103,5 @@ def admin_required(roleRequirement=None):
                 return HttpResponseForbidden('Permission denied.')
             kwargs['request'] = req
             return controller(*args, **kwargs)
-        return admin_required_controller
+        return wraps(controller)(admin_required_controller)
     return admin_required_decorator
