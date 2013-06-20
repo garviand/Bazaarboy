@@ -4,7 +4,7 @@ urlpatterns = patterns('',
 
     # Index
 
-    url(r'^$', 'src.controllers.landing.index', name = 'index'),
+    url(r'^$', 'src.controllers.index.index', name = 'index'),
 
     # User
 

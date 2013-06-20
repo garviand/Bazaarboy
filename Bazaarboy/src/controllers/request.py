@@ -2,10 +2,10 @@
 Some useful methods for handling requests
 """
 
+import json
 from functools import wraps
 from django.http import *
 from django.shortcuts import redirect
-import json
 
 def json_response(response):
     """
@@ -13,20 +13,20 @@ def json_response(response):
     """
     return HttpResponse(json.dumps(response))
 
-def params_from_request(req, required=[], optional=[]):
+def params_from_request(requestArray, required=[], optional=[]):
     """
     Strip all the specified parameters from the request object and verify if 
     the required ones are present
     """
     params = {}
     for name in required:
-        param = req.get(name, None)
-        if param is not None and len(params) > 0:
+        param = requestArray.get(name, None)
+        if param is not None and len(param) > 0:
             params[name] = param
     if len(params.keys()) < len(required):
         return False
     for name in optional:
-        param = req.get(name, None)
+        param = requestArray.get(name, None)
         params[name] = param
     return params
 
@@ -36,28 +36,29 @@ def validate(method='GET', required=[], optional=[]):
     decorated controller must take in two arguments, request and params
     """
     def validate_decorator(controller):
-        def validated_controller(req, *args, **kwargs):
+        def validated_controller(request=None, *args, **kwargs):
+            if request is None:
+                request = kwargs['request']
             # Check if the request method matches the specified one
-            if req.method != method:
+            if request.method != method:
                 # Method not allowed, return 405 (Method Not Allowed)
                 return HttpResponseNotAllowed([method])
             # Find the correct argument array
-            reqArray = None
+            requestArray = None
             if method == 'GET':
-                reqArray = req.GET
+                requestArray = request.GET
             elif method == 'POST':
-                reqArray = req.POST
+                requestArray = request.POST
             else:
                 # Other http methods, do nothing
-                return controller(*args, **kwargs)
-            params = params_from_request(reqArray, required, optional)
-            if not params:
+                return controller(request, *args, **kwargs)
+            params = params_from_request(requestArray, required, optional)
+            if params is False:
                 # Param validation failed, return 400 (Bad Request)
                 return HttpResponseBadRequest('Bad request.')
-            # Pass the request and stripped params to the controller
-            kwargs['request'] = req
+            # Pass the stripped params to the controller
             kwargs['params'] = params
-            return controller(*args, **kwargs)
+            return controller(request, *args, **kwargs)
         return wraps(controller)(validated_controller)
     return validate_decorator
 
@@ -66,42 +67,48 @@ def login_required(redirectUrl=None):
     A decorator to force login
     """
     def login_required_decorator(controller):
-        def login_required_controller(req, *args, **kwargs):
+        def login_required_controller(request=None, *args, **kwargs):
+            if request is None:
+                request = kwargs['request']
             # Check if session exists
-            if not req.session.has_key('user'):
+            if not request.session.has_key('user'):
                 if redirectUrl is not None:
                     return redirect(redirectUrl)
                 else:
                     return HttpResponseForbidden('Access forbidden.')
-            kwargs['request'] = req
-            return controller(*args, **kwargs)
+            return controller(request, *args, **kwargs)
         return wraps(controller)(login_required_controller)
     return login_required_decorator
 
-def login_check(controller):
+def login_check():
     """
     A decorator to check the login status
     """
-    def checked_controller(req, *args, **kwargs):
-        # Check if session exists
-        kwargs['loggedIn'] = req.session.has_key('user')
-        return controller(*args, **kwargs)
-    return wraps(controller)(checked_controller)
+    def login_check_decorator(controller):
+        def login_checked_controller(request=None, *args, **kwargs):
+            if request is None:
+                request = kwargs['request']
+            # Check if session exists
+            kwargs['loggedIn'] = request.session.has_key('user')
+            return controller(request, *args, **kwargs)
+        return wraps(controller)(login_checked_controller)
+    return login_check_decorator
 
 def admin_required(roleRequirement=None):
     """
     A decorator to force admin login
     """
     def admin_required_decorator(controller):
-        def admin_required_controller(reg, *args, **kwargs):
+        def admin_required_controller(request=None, *args, **kwargs):
+            if request is None:
+                request = kwargs['request']
             # Check if admin session exists
-            if not req.session.has_key('admin'):
+            if not request.session.has_key('admin'):
                 return HttpResponseForbidden('Access forbidden.')
             # Check if the admin level reaches requirement
             if (roleRequirement == 'Super' and 
-                req.session['admin']['role'] != 'S'):
+                request.session['admin']['role'] != 'S'):
                 return HttpResponseForbidden('Permission denied.')
-            kwargs['request'] = req
-            return controller(*args, **kwargs)
+            return controller(request, *args, **kwargs)
         return wraps(controller)(admin_required_controller)
     return admin_required_decorator

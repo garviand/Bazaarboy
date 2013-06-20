@@ -8,7 +8,7 @@ from django.shortcuts import render, redirect
 from django.http import HttpResponseForbidden
 from src.regex import REGEX_EMAIL
 from src.serializer import serialize_one
-from src.controllers.request import json_response, validate, login_check
+from request import json_response, validate, login_check
 
 @login_check()
 @validate('GET', [], ['next'])
@@ -99,7 +99,7 @@ def login(request, params, loggedIn):
     return render(request, 'login.html', locals())
 
 @login_check()
-@validate('POST', ['email', 'password'])
+@validate('GET', ['email', 'password'])
 def auth(request, params, loggedIn):
     """
     Authenticate a user
