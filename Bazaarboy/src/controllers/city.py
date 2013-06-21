@@ -3,8 +3,8 @@ Controller for city
 """
 
 from kernel.models import *
+from src.controllers.request import json_response, validate, admin_required
 from src.serializer import serialize_one
-from request import json_response, validate, admin_required
 
 @validate('GET', ['id'])
 def city(request, params):

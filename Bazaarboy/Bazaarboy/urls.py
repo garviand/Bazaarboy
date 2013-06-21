@@ -36,6 +36,10 @@ urlpatterns = patterns('',
 
     # Events
 
-    url(r'^event/(?P<id>\d+)/$', 'src.controllers.event.index', name = 'event'),
+    url(r'^event/n/(?P<id>\d+)/$', 'src.controllers.event.index', 
+        name = 'event-normal'),
+
+    url(r'^event/i/(?P<id>\d+)/$', 'src.controllers.initiative.index', 
+        name = 'event-initiative')
 
 )

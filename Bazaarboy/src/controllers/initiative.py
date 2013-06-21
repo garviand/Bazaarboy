@@ -1,50 +1,43 @@
 """
-Controller for normal events
+Controller for initiative events
 """
 
 from datetime import datetime, timedelta
 from django.http import Http404
-from django.shortcuts import render
 from django.utils import timezone
-from kernel.models import *
 from src.controllers.request import validate, login_check, login_required
-from src.serializer import serialize_one
+
+FORMAT_DATETIME = '%Y-%m-%d %X'
 
 @login_check()
 def index(request, id, loggedIn):
-    """
-    Normal event page
-    """
-    if not Event.objects.filter(id = id).exists():
-        return Http404
-    return render(request, 'event.html', locals())
+    return render(request, 'initiative.html', locals())
 
 @login_required()
 @validate('GET', ['id'])
-def event(request, params):
+def initiative(request, params):
     """
-    Return serialized data for the normal event
+    Return serialized data for the initiative event
     """
-    if not Event.objects.filter(id = params['id']).exists():
+    if not initiative.objects.filter(id = params['id']).exists():
         response = {
             'status':'FAIL',
-            'error':'EVENT_NOT_FOUND',
-            'message':'The event doesn\'t exist.'   
+            'error':'INITIATIVE_NOT_FOUND',
+            'message':'The initiative doesn\'t exist.'   
         }
         return json_response(response)
-    event = Event.objects.get(id = params['id'])
+    initiative = Initiative.objects.get(id = params['id'])
     response = {
         'status':'OK',
-        'event':serialize_one(event)
+        'event':serialize_one(initiative)
     }
     return json_response(response)
 
 @login_required()
 @validate('POST', 
           ['profile', 'name', 'description', 'start_time', 'location', 
-           'category'], 
-          ['end_time', 'latitude', 'longitude', 'is_private', 'is_launched', 
-           'is_repeated'])
+           'category', 'goal', 'deadline'], 
+          ['end_time', 'latitude', 'longitude', 'is_private', 'is_launched'])
 def create(request, params):
     """
     Create a new normal event
@@ -77,14 +70,33 @@ def create(request, params):
             'error':'INVALID_TIME',
             'message':'The timing is invalid.'
         }
+    # Check the goal
+    params['goal'] = float(params['goal'])
+    if params['goal'] < 20.0:
+        response = {
+            'status':'FAIL',
+            'error':'INVALID_GOAL',
+            'message':'The initiative goal is invalid.'
+        }
+    # Check the deadline
+    params['deadline'] = datetime.strptime(params['deadline'], FORMAT_DATETIME)
+    if (params['deadline'] < timezone.now() + timedelta(hours = 6) or 
+        params['deadline'] >= params['start_time']):
+        response = {
+            'status':'FAIL',
+            'error':'INVALID_DEADLINE',
+            'message':'The deadline is invalid.'
+        }
     # Validated, create the model
-    event = Event(name = params['name'], 
+    initiative = Initiative(name = params['name'], 
                   description = params['description'], 
                   start_time = params['start_time'], 
                   end_time = params['end_time'], 
                   location = params['location'], 
                   category = params['category'], 
-                  owner = profile)
+                  owner = profile, 
+                  goal = params['goal'], 
+                  deadline = params['deadline'])
     # Check if coordinates are specified, and if so, if they are legal
     if (params['latitude'] is not None and 
         params['longitude'] is not None and 
@@ -98,19 +110,17 @@ def create(request, params):
         return json_response(response)
     else:
         # Valid coordinates, set to profile
-        event.latitude = float(params['latitude'])
-        event.longitude = float(params['longitude'])
+        initiative.latitude = float(params['latitude'])
+        initiative.longitude = float(params['longitude'])
     # Boolean parameters
     if params['is_private'] is not None:
-        event.is_private = params['is_private']
+        initiative.is_private = params['is_private']
     if params['is_launched'] is not None:
-        event.is_launched = params['is_launched']
-    if params['is_repeated'] is not None:
-        event.is_repeated = params['is_repeated']
+        initiative.is_launched = params['is_launched']
     # Save to database
-    event.save()
+    initiative.save()
     response = {
         'status':'OK',
-        'event':serialize_one(event)
+        'event':serialize_one(initiative)
     }
     return json_response(response)

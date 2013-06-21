@@ -3,7 +3,7 @@ Controller for index
 """
 
 from django.shortcuts import render
-from request import validate, login_check
+from src.controllers.request import validate, login_check
 
 @login_check()
 @validate('GET', [], ['next'])

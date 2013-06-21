@@ -54,7 +54,7 @@ def create(request, params):
         response = {
             'status':'FAIL',
             'error':'INVALID_COORDINATES',
-            'message':'Latitude/longitude combination is invalid'
+            'message':'Latitude/longitude combination is invalid.'
         }
         return json_response(response)
     else:

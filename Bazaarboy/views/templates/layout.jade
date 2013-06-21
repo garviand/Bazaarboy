@@ -7,6 +7,10 @@ html(lang="en")
                     | Bazaarboy
             script(type="text/javascript", 
                    src="{{ STATIC_URL }}js/jquery-1.10.1.min.js")
+            script(type="text/javascript").
+                var rootUrl = '{% url index %}';
+            script(type="text/javascript", 
+                   src="{{ STATIC_URL }}js/layout.js")
     body
         block body
             div#wrapper_top

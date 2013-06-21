@@ -155,15 +155,17 @@ class Profile_manager(models.Model):
     is_creator = models.BooleanField(default = False)
     created_time = models.DateTimeField(auto_now_add = True)
 
-class Event_info(models.Model):
+class Event_base(models.Model):
     """
-    An abstract model for information shared by the two types of events
+    A base model for information shared by the two types of events
     """
     name = models.CharField(max_length = 100)
     description = models.TextField()
     start_time = models.DateTimeField()
     end_time = models.DateTimeField(null = True, default = None)
     location = models.CharField(max_length = 100)
+    latitude = models.FloatField(null = True, default = None)
+    longitude = models.FloatField(null = True, default = None)
     is_private = models.BooleanField(default = False)
     is_launched = models.BooleanField(default = False)
     is_closed = models.BooleanField(default = False)
@@ -172,9 +174,6 @@ class Event_info(models.Model):
     community = models.ForeignKey('Community', 
                                   related_name = '%(class)s_community')
     city = models.ForeignKey('City', related_name = '%(class)s_city')
-
-    class Meta:
-        abstract = True
 
     def save(self, *args, **kwargs):
         """
@@ -186,15 +185,16 @@ class Event_info(models.Model):
             self.city = self.owner.city
         super(self.__class__, self).save(*args, **kwargs)
 
-class Event(Event_info):
+class Event(Event_base):
     """
     Event model for normal events
     """
     is_repeated = models.BooleanField(default = False)
 
-class Initiative(Event_info):
+class Initiative(Event_base):
     """
     Event model for initiative-based events
     """
     goal = models.FloatField()
     deadline = models.DateTimeField()
+    is_reached = models.BooleanField(default = False)

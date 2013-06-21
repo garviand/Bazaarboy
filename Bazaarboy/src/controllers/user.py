@@ -3,12 +3,12 @@ Controller for all user related actions
 """
 
 import hashlib
-from kernel.models import *
-from django.shortcuts import render, redirect
 from django.http import HttpResponseForbidden
+from django.shortcuts import render, redirect
+from kernel.models import *
+from src.controllers.request import json_response, validate, login_check
 from src.regex import REGEX_EMAIL
 from src.serializer import serialize_one
-from request import json_response, validate, login_check
 
 @login_check()
 @validate('GET', [], ['next'])
@@ -78,9 +78,7 @@ def create(request, params, loggedIn):
                 city = city)
     user.save()
     # Creation done, start session
-    sessionUser = serialize_one(user, ('id', 'email', 'fb_id', 'city', 
-                                       'created_time'))
-    request.session['user'] = sessionUser
+    request.session['user'] = user.id
     response = {
         'status':'OK'
     }
@@ -113,9 +111,7 @@ def auth(request, params, loggedIn):
         saltedPassword = user.salt + params['password']
         if user.password == hashlib.sha512(saltedPassword).hexdigest():
             # Email and password match, start session
-            sessionUser = serialize_one(user, ('id', 'email', 'fb_id', 
-                                               'city', 'created_time'))
-            request.session['user'] = sessionUser
+            request.session['user'] = user.id
             response = {
                 'status':'OK'
             }
@@ -137,7 +133,4 @@ def logout(request):
     # Restore the admin session if exists
     if adminSession is not None:
         request.session['admin'] = adminSession
-    response = {
-        'status':'OK'
-    }
-    return json_response(response)
+    return redirect('index')

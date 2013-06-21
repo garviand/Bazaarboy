@@ -3,9 +3,12 @@ Some useful methods for handling requests
 """
 
 import json
+from datetime import datetime
 from functools import wraps
 from django.http import *
 from django.shortcuts import redirect
+
+FORMAT_DATETIME = '%Y-%m-%d %X'
 
 def json_response(response):
     """
@@ -13,20 +16,34 @@ def json_response(response):
     """
     return HttpResponse(json.dumps(response))
 
-def params_from_request(requestArray, required=[], optional=[]):
+def params_from_request(requestArray, required=[], optional=[], 
+                        parseIfFlagged=True):
     """
     Strip all the specified parameters from the request object and verify if 
     the required ones are present
     """
+    # A shortcut function to parse the param by its flag
+    def parseByFlag(name, param):
+        if param is not None:
+            if name[:3] == 'is_':
+                param = param == '1'
+            elif name[-5:] == '_time':
+                param = datetime.strptime(param, FORMAT_DATETIME)
+        return param
+    # Strip the params
     params = {}
     for name in required:
         param = requestArray.get(name, None)
         if param is not None and len(param) > 0:
+            if parseIfFlagged:
+                param = parseByFlag(name, param)
             params[name] = param
     if len(params.keys()) < len(required):
         return False
     for name in optional:
         param = requestArray.get(name, None)
+        if parseIfFlagged:
+            param = parseByFlag(name, param)
         params[name] = param
     return params
 
