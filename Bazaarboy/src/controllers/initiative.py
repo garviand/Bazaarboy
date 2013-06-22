@@ -11,6 +11,11 @@ FORMAT_DATETIME = '%Y-%m-%d %X'
 
 @login_check()
 def index(request, id, loggedIn):
+    """
+    Initiative event page
+    """
+    if not Initiative.objects.filter(id = id).exists():
+        return Http404
     return render(request, 'initiative.html', locals())
 
 @login_required()
@@ -89,14 +94,14 @@ def create(request, params):
         }
     # Validated, create the model
     initiative = Initiative(name = params['name'], 
-                  description = params['description'], 
-                  start_time = params['start_time'], 
-                  end_time = params['end_time'], 
-                  location = params['location'], 
-                  category = params['category'], 
-                  owner = profile, 
-                  goal = params['goal'], 
-                  deadline = params['deadline'])
+                            description = params['description'], 
+                            start_time = params['start_time'], 
+                            end_time = params['end_time'], 
+                            location = params['location'], 
+                            category = params['category'], 
+                            owner = profile, 
+                            goal = params['goal'], 
+                            deadline = params['deadline'])
     # Check if coordinates are specified, and if so, if they are legal
     if (params['latitude'] is not None and 
         params['longitude'] is not None and 
