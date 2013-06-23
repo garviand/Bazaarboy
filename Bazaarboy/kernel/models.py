@@ -1,6 +1,11 @@
+"""
+All the core models for Bazaarboy
+"""
+
 import os
 import hashlib
 from django.db import models
+from django.db.models import F
 from django.utils import timezone
 
 class User(models.Model):
@@ -11,11 +16,12 @@ class User(models.Model):
     as well as create profiles to in turn organize events.
     """
     email = models.CharField(max_length = 50, unique = True)
-    password = models.CharField(max_length = 128, null = True, default = None)
-    salt = models.CharField(max_length = 128, null = True, default = None)
+    password = models.CharField(max_length = 128)
+    salt = models.CharField(max_length = 128)
     city = models.ForeignKey('City')
     following = models.ManyToManyField('Community', 
                                        through = 'User_following')
+    points = models.IntegerField()
     created_time = models.DateTimeField(auto_now_add = True)
 
     # A copy of the user's original password
@@ -33,11 +39,9 @@ class User(models.Model):
         """
         Overrides save method to validate the model and rehash password
         """
-        if self.fb_id is None and self.email is None:
-            # User can either be Facebook based or email based
-            return False
-        if (self.password is not None and 
-            (self.pk is None or self.password != self.__original_password)):
+        if self.pk is None:
+            self.points = 0
+        if self.pk is None or self.password != self.__original_password:
             # Password is changed, rehash it
             self.salt = os.urandom(128).encode('base_64')[:128]
             saltedPassword = self.salt + self.password
@@ -133,7 +137,7 @@ class Profile(models.Model):
     """
     name = models.CharField(max_length = 100)
     description = models.TextField()
-    community = models.ForeignKey('Community', related_name = 'profile')
+    community = models.ForeignKey('Community')
     city = models.ForeignKey('City')
     category = models.CharField(max_length = 30)
     latitude = models.FloatField(null = True, default = None)
@@ -147,7 +151,7 @@ class Profile(models.Model):
         """
         Overrides save to auto-set city
         """
-        if self.pk is None and self.community is not None:
+        if self.pk is None:
             # Auto-set city for the new profile
             self.city = self.community.city
         super(Profile, self).save(*args, **kwargs)
@@ -188,11 +192,17 @@ class Event_base(models.Model):
         """
         Overrides save to auto-set community and city
         """
-        if self.pk is None and self.owner is not None:
+        if self.pk is None:
             # Auto-set the community and city for the new event
             self.community = self.owner.community
             self.city = self.owner.city
         super(self.__class__, self).save(*args, **kwargs)
+
+class InsufficientQuantity(Exception):
+    """
+    An exception when the remaining quantity is not enough
+    """
+    pass
 
 class Event(Event_base):
     """
@@ -206,7 +216,7 @@ class Ticket(models.Model):
     """
     event = models.ForeignKey('Event')
     name = models.CharField(max_length = 15)
-    description = models.CharField(max_length = 100)
+    description = models.CharField(max_length = 150)
     price = models.FloatField()
     quantity = models.IntegerField(null = True, default = None)
     start_time = models.DateTimeField()
@@ -229,3 +239,95 @@ class Initiative(Event_base):
     goal = models.FloatField()
     deadline = models.DateTimeField()
     is_reached = models.BooleanField(default = False)
+
+class Reward(models.Model):
+    """
+    Reward model for initiative events
+    """
+    initiative = models.ForeignKey('Initiative')
+    name = models.CharField(max_length = 15)
+    description = models.CharField(max_length = 150)
+    price = models.FloatField()
+    quantity = models.IntegerField(null = True, default = None)
+
+class Redeemable(models.Model):
+    """
+    Redeemable rewards for points
+    """
+    owner = models.ForeignKey('Profile')
+    name = models.CharField(max_length = 50)
+    description = models.CharField(max_length = 500)
+    quantity = models.IntegerField(null = True)
+    value = models.IntegerField() # Monetary value
+    points = models.IntegerField()
+    is_expired = models.BooleanField(default = False)
+    expiration_time = models.DateTimeField(null = True, default = None)
+    community = models.ForeignKey('Community')
+    city = models.ForeignKey('City')
+    created_time = models.DateTimeField(auto_now_add = True)
+
+    def save(self, *args, **kwargs):
+        """
+        Overrides save to auto-set community and city
+        """
+        if self.pk is None:
+            # Auto-set the community and city for the redeemable
+            self.community = self.owner.community
+            self.city = self.owner.city
+        super(Redeemable, self).save(*args, **kwargs)
+
+class InsufficientPoints(Exception):
+    """
+    An exception for when points are not sufficient to claim a redeemable
+    """
+    def __init__(self, pointsNeeded):
+        self.pointsNeeded = pointsNeeded
+
+class ExpiredRedeemable(Exception):
+    """
+    An exception for claiming an expired redeemable
+    """
+    def __init__(self, redeemable):
+        self.redeemable = redeemable
+
+class Claim(models.Model):
+    """
+    A claim for a redeemable
+    """
+    redeemable = models.ForeignKey('Redeemable')
+    owner = models.ForeignKey('User')
+    code = models.CharField(max_length = 100)
+    is_redeemed = models.BooleanField(default = False)
+    redeemed_time = models.DateTimeField(null = True, default = None)
+    created_time = models.DateTimeField(auto_now_add = True)
+
+    def save(self, *args, **kwargs):
+        """
+        Overrides save to conduct proper claiming behavior
+        """
+        shouldFireSubtractEvent = False
+        if self.pk is None:
+            # Check if the redeemable is expired
+            if (self.redeemable.is_expired or 
+                self.redeemable.expiration_time <= timezone.now()):
+                raise ExpiredRedeemable(self.redeemable)
+            # Check if the redeemable has sufficient quantity
+            if (self.redeemable.quantity is not None and 
+                self.redeemable.quantity < 1):
+                raise InsufficientQuantity()
+            # Check if user has sufficient points
+            remainingPoints = self.owner.points - self.redeemable.points
+            if remainingPoints < 0:
+                raise InsufficientPoints(abs(remainingPoints))
+            # All checks passed, perform transactions
+            self.redeemable.quantity = F('quantity') - 1
+            self.redeemable.save()
+            self.user.points = F('points') - self.redeemable.points
+            self.user.save()
+            shouldFireSubtractEvent = True
+        super(Claim, self).save(*args, **kwargs)
+        if shouldFireSubtractEvent:
+            # Fire a subtract points event
+            Subtract_points_event(user = self.owner, 
+                                  redeemable = self.redeemable, 
+                                  points = self.redeemable.points).save()

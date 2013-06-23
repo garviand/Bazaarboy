@@ -8,6 +8,13 @@ def console():
     with lcd('./Bazaarboy/'):
         local('python manage.py shell')
 
+def syncdb():
+    """
+    Sync the models to database
+    """
+    with lcd('./Bazaarboy/'):
+        local('python manage.py syncdb')
+
 def compile():
     """
     Compile files of sugar into normal format
