@@ -232,6 +232,15 @@ class Ticket(models.Model):
             self.end_time = self.event.start_time
         super(Ticket, self).save(*args, **kwargs)
 
+class Purchase(models.Model):
+    """
+    Purchase model for a ticket
+    """
+    owner = models.ForeignKey('User')
+    ticket = models.ForeignKey('Ticket')
+    price = models.FloatField()
+    created_time = models.DateTimeField(auto_now_add = True)
+
 class Initiative(Event_base):
     """
     Event model for initiative-based events
