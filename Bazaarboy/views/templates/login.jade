@@ -7,7 +7,7 @@ append head
     script(type="text/javascript").
         var next = '{% if params.next %}{{ params.next }}{% endif %}';
     script(type="text/javascript", src="{{ STATIC_URL }}js/login.js")
-    script(type="text/javascript")>
+    script(type="text/javascript").
         Bazaarboy.user.login.init()
 
 block body

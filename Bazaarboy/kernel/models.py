@@ -208,7 +208,7 @@ class Event(Event_base):
     """
     Event model for normal events
     """
-    is_repeated = models.BooleanField(default = False)
+    pass
 
 class Ticket(models.Model):
     """

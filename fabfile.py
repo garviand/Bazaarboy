@@ -6,7 +6,20 @@ def console():
     Open up the interactive python console with django context
     """
     with lcd('./Bazaarboy/'):
-        local('python manage.py shell')
+        local('python manage.py shell_plus')
+
+def docs():
+    """
+    Generate the project documentation under static/docs/
+    """
+    with settings(
+        hide('warnings'),
+        warn_only=True
+    ):
+        # Delete the old docs if exist
+        local('rm -r ./docs/')
+    # Use epydoc to generate new docs
+    local('epydoc --config docs.config')
 
 def syncdb():
     """
