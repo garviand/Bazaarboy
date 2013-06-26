@@ -2,3 +2,8 @@ extends layout
 
 block title
     | Event
+
+append head
+    {% if event.is_private %}
+    meta(name="robots", content="noindex,nofollow")
+    {% endif %}

@@ -17,6 +17,7 @@ def index(request, id, loggedIn):
     """
     if not Event.objects.filter(id = id).exists():
         return Http404
+    event = Event.objects.get(id = id)
     return render(request, 'event.html', locals())
 
 @login_required()
@@ -208,7 +209,48 @@ def delete(request, params):
     """
     Delete an event
     """
-    pass
+    # Check if the event is valid
+    if not Event.objects.filter(id = params['id']).exists():
+        response = {
+            'status':'FAIL',
+            'error':'EVENT_NOT_FOUND',
+            'message':'The event doesn\'t exist.'
+        }
+        return json_response(response)
+    event = Event.objects.get(id = params['event'])
+    # Check if user has permission for the event
+    user = User.objects.get(id = request.session['user'])
+    if not Profile_manager.objects.filter(user = user, profile = event.owner) \
+                                  .exists():
+        response = {
+            'status':'FAIL',
+            'error':'NOT_A_MANAGER',
+            'message':'You don\'t have permission for the event.'
+        }
+        return json_response(response)
+    # Check if the event has started
+    if event.start_time <= timezone.now():
+        response = {
+            'status':'FAIL',
+            'error':'STARTED_EVENT',
+            'message':'You cannot delete a started event.'
+        }
+        return json_response(response)
+    # Check if the event is launched
+    if event.is_launched:
+        response = {
+            'status':'FAIL',
+            'error':'LAUNCHED_EVENT',
+            'message':'The event is launched, please take it offline first.'
+        }
+        return json_response(response)
+    # Delete the event and all its tickets
+    Ticket.objects.filter(event = event).delete()
+    event.delete()
+    response = {
+        'status':'OK'
+    }
+    return json_response(response)
 
 @login_required()
 @validate('POST', ['id'])
@@ -217,6 +259,51 @@ def launch(request, params):
     Launch an event
     """
     pass
+
+@login_required()
+@validate('POST', ['id'])
+def delaunch(request, params):
+    """
+    Take an event offline and refund all tickets
+    """
+    # Check if the event is valid
+    if not Event.objects.filter(id = params['id']).exists():
+        response = {
+            'status':'FAIL',
+            'error':'EVENT_NOT_FOUND',
+            'message':'The event doesn\'t exist.'
+        }
+        return json_response(response)
+    event = Event.objects.get(id = params['event'])
+    # Check if user has permission for the event
+    user = User.objects.get(id = request.session['user'])
+    if not Profile_manager.objects.filter(user = user, profile = event.owner) \
+                                  .exists():
+        response = {
+            'status':'FAIL',
+            'error':'NOT_A_MANAGER',
+            'message':'You don\'t have permission for the event.'
+        }
+        return json_response(response)
+    # Check if the event has started
+    if event.start_time <= timezone.now():
+        response = {
+            'status':'FAIL',
+            'error':'STARTED_EVENT',
+            'message':'You cannot take a started event offline.'
+        }
+        return json_response(response)
+    # Refund all tickets
+    tickets = Ticket.objects.filter(event = event)
+    for ticket in tickets:
+        pass
+    # Mark the event as offline
+    event.is_launched = False
+    response = {
+        'status':'OK',
+        'event':serialize_one(event)
+    }
+    return json_response(response)
 
 @login_required()
 @validate('POST', 

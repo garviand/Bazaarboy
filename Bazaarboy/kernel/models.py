@@ -4,7 +4,7 @@ All the core models for Bazaarboy
 
 import os
 import hashlib
-from django.db import models
+from django.db import models, IntegrityError
 from django.db.models import F
 from django.utils import timezone
 
@@ -258,6 +258,38 @@ class Reward(models.Model):
     description = models.CharField(max_length = 150)
     price = models.FloatField()
     quantity = models.IntegerField(null = True, default = None)
+
+class Pledge(models.Model):
+    """
+    Pledge model for a reward
+    """
+    owner = models.ForeignKey('User')
+    reward = models.ForeignKey('Reward')
+    amount = models.FloatField()
+    created_time = models.DateTimeField(auto_now_add = True)
+
+class Fundraiser(Event_base):
+    """
+    Event model for fundraising events
+    """
+    pass
+
+    def save(self, *args, **kwargs):
+        """
+        Overrides save to force an end time for the fundraiser
+        """
+        if self.end_time is None:
+            raise IntegrityError()
+        super(Fundraiser, self).save(*args, **kwargs)
+
+class Donation(models.Model):
+    """
+    Donation model for a fundraiser
+    """
+    owner = models.ForeignKey('User')
+    fundraiser = models.ForeignKey('Fundraiser')
+    amount = models.FloatField()
+    created_time = models.DateTimeField(auto_now_add = True)
 
 class Redeemable(models.Model):
     """
