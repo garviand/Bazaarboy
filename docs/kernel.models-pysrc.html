@@ -66,7 +66,7 @@
 <a name="L6"></a><tt class="py-lineno">  6</tt>  <tt class="py-line"><tt class="py-keyword">import</tt> <tt class="py-name">hashlib</tt> </tt>
 <a name="L7"></a><tt class="py-lineno">  7</tt>  <tt class="py-line"><tt class="py-keyword">from</tt> <tt class="py-name">django</tt><tt class="py-op">.</tt><tt class="py-name">db</tt> <tt class="py-keyword">import</tt> <tt id="link-0" class="py-name" targets="Module admin.models=admin.models-module.html,Module analytics.models=analytics.models-module.html,Module kernel.models=kernel.models-module.html"><a title="admin.models
 analytics.models
-kernel.models" class="py-name" href="#" onclick="return doclink('link-0', 'models', 'link-0');">models</a></tt> </tt>
+kernel.models" class="py-name" href="#" onclick="return doclink('link-0', 'models', 'link-0');">models</a></tt><tt class="py-op">,</tt> <tt class="py-name">IntegrityError</tt> </tt>
 <a name="L8"></a><tt class="py-lineno">  8</tt>  <tt class="py-line"><tt class="py-keyword">from</tt> <tt class="py-name">django</tt><tt class="py-op">.</tt><tt class="py-name">db</tt><tt class="py-op">.</tt><tt id="link-1" class="py-name"><a title="admin.models
 analytics.models
 kernel.models" class="py-name" href="#" onclick="return doclink('link-1', 'models', 'link-0');">models</a></tt> <tt class="py-keyword">import</tt> <tt class="py-name">F</tt> </tt>
@@ -109,12 +109,15 @@ kernel.models.Redeemable.points
 kernel.models.User.points" class="py-name" href="#" onclick="return doclink('link-12', 'points', 'link-12');">points</a></tt> <tt class="py-op">=</tt> <tt id="link-13" class="py-name"><a title="admin.models
 analytics.models
 kernel.models" class="py-name" href="#" onclick="return doclink('link-13', 'models', 'link-0');">models</a></tt><tt class="py-op">.</tt><tt class="py-name">IntegerField</tt><tt class="py-op">(</tt><tt class="py-op">)</tt> </tt>
-<a name="L25"></a><tt class="py-lineno"> 25</tt>  <tt class="py-line">    <tt id="link-14" class="py-name" targets="Variable analytics.models.Add_points_event.created_time=analytics.models.Add_points_event-class.html#created_time,Variable analytics.models.Subtract_points_event.created_time=analytics.models.Subtract_points_event-class.html#created_time,Variable kernel.models.Claim.created_time=kernel.models.Claim-class.html#created_time,Variable kernel.models.Event_base.created_time=kernel.models.Event_base-class.html#created_time,Variable kernel.models.Profile.created_time=kernel.models.Profile-class.html#created_time,Variable kernel.models.Profile_manager.created_time=kernel.models.Profile_manager-class.html#created_time,Variable kernel.models.Redeemable.created_time=kernel.models.Redeemable-class.html#created_time,Variable kernel.models.User.created_time=kernel.models.User-class.html#created_time,Variable kernel.models.Wepay_account.created_time=kernel.models.Wepay_account-class.html#created_time"><a title="analytics.models.Add_points_event.created_time
+<a name="L25"></a><tt class="py-lineno"> 25</tt>  <tt class="py-line">    <tt id="link-14" class="py-name" targets="Variable analytics.models.Add_points_event.created_time=analytics.models.Add_points_event-class.html#created_time,Variable analytics.models.Subtract_points_event.created_time=analytics.models.Subtract_points_event-class.html#created_time,Variable kernel.models.Claim.created_time=kernel.models.Claim-class.html#created_time,Variable kernel.models.Donation.created_time=kernel.models.Donation-class.html#created_time,Variable kernel.models.Event_base.created_time=kernel.models.Event_base-class.html#created_time,Variable kernel.models.Pledge.created_time=kernel.models.Pledge-class.html#created_time,Variable kernel.models.Profile.created_time=kernel.models.Profile-class.html#created_time,Variable kernel.models.Profile_manager.created_time=kernel.models.Profile_manager-class.html#created_time,Variable kernel.models.Purchase.created_time=kernel.models.Purchase-class.html#created_time,Variable kernel.models.Redeemable.created_time=kernel.models.Redeemable-class.html#created_time,Variable kernel.models.User.created_time=kernel.models.User-class.html#created_time,Variable kernel.models.Wepay_account.created_time=kernel.models.Wepay_account-class.html#created_time"><a title="analytics.models.Add_points_event.created_time
 analytics.models.Subtract_points_event.created_time
 kernel.models.Claim.created_time
+kernel.models.Donation.created_time
 kernel.models.Event_base.created_time
+kernel.models.Pledge.created_time
 kernel.models.Profile.created_time
 kernel.models.Profile_manager.created_time
+kernel.models.Purchase.created_time
 kernel.models.Redeemable.created_time
 kernel.models.User.created_time
 kernel.models.Wepay_account.created_time" class="py-name" href="#" onclick="return doclink('link-14', 'created_time', 'link-14');">created_time</a></tt> <tt class="py-op">=</tt> <tt id="link-15" class="py-name"><a title="admin.models
@@ -159,10 +162,11 @@ kernel.models.User.password" class="py-name" href="#" onclick="return doclink('l
 <a name="L48"></a><tt class="py-lineno"> 48</tt>  <tt class="py-line">            <tt class="py-comment"># Hash the password with salt</tt> </tt>
 <a name="L49"></a><tt class="py-lineno"> 49</tt>  <tt class="py-line">            <tt class="py-name">self</tt><tt class="py-op">.</tt><tt id="link-27" class="py-name"><a title="admin.models.Admin.password
 kernel.models.User.password" class="py-name" href="#" onclick="return doclink('link-27', 'password', 'link-4');">password</a></tt> <tt class="py-op">=</tt> <tt class="py-name">hashlib</tt><tt class="py-op">.</tt><tt class="py-name">sha512</tt><tt class="py-op">(</tt><tt class="py-name">saltedPassword</tt><tt class="py-op">)</tt><tt class="py-op">.</tt><tt class="py-name">hexdigest</tt><tt class="py-op">(</tt><tt class="py-op">)</tt> </tt>
-<a name="L50"></a><tt class="py-lineno"> 50</tt>  <tt class="py-line">        <tt class="py-name">super</tt><tt class="py-op">(</tt><tt id="link-28" class="py-name"><a title="kernel.models.User" class="py-name" href="#" onclick="return doclink('link-28', 'User', 'link-17');">User</a></tt><tt class="py-op">,</tt> <tt class="py-name">self</tt><tt class="py-op">)</tt><tt class="py-op">.</tt><tt id="link-29" class="py-name" targets="Method admin.models.Admin.save()=admin.models.Admin-class.html#save,Method kernel.models.City.save()=kernel.models.City-class.html#save,Method kernel.models.Claim.save()=kernel.models.Claim-class.html#save,Method kernel.models.Event_base.save()=kernel.models.Event_base-class.html#save,Method kernel.models.Profile.save()=kernel.models.Profile-class.html#save,Method kernel.models.Redeemable.save()=kernel.models.Redeemable-class.html#save,Method kernel.models.Ticket.save()=kernel.models.Ticket-class.html#save,Method kernel.models.User.save()=kernel.models.User-class.html#save"><a title="admin.models.Admin.save
+<a name="L50"></a><tt class="py-lineno"> 50</tt>  <tt class="py-line">        <tt class="py-name">super</tt><tt class="py-op">(</tt><tt id="link-28" class="py-name"><a title="kernel.models.User" class="py-name" href="#" onclick="return doclink('link-28', 'User', 'link-17');">User</a></tt><tt class="py-op">,</tt> <tt class="py-name">self</tt><tt class="py-op">)</tt><tt class="py-op">.</tt><tt id="link-29" class="py-name" targets="Method admin.models.Admin.save()=admin.models.Admin-class.html#save,Method kernel.models.City.save()=kernel.models.City-class.html#save,Method kernel.models.Claim.save()=kernel.models.Claim-class.html#save,Method kernel.models.Event_base.save()=kernel.models.Event_base-class.html#save,Method kernel.models.Fundraiser.save()=kernel.models.Fundraiser-class.html#save,Method kernel.models.Profile.save()=kernel.models.Profile-class.html#save,Method kernel.models.Redeemable.save()=kernel.models.Redeemable-class.html#save,Method kernel.models.Ticket.save()=kernel.models.Ticket-class.html#save,Method kernel.models.User.save()=kernel.models.User-class.html#save"><a title="admin.models.Admin.save
 kernel.models.City.save
 kernel.models.Claim.save
 kernel.models.Event_base.save
+kernel.models.Fundraiser.save
 kernel.models.Profile.save
 kernel.models.Redeemable.save
 kernel.models.Ticket.save
@@ -175,8 +179,11 @@ kernel.models.User.password" class="py-name" href="#" onclick="return doclink('l
 </div><div id="Wepay_account-collapsed" style="display:none;" pad="+++" indent="++++"></div><div id="Wepay_account-expanded"><a name="L54"></a><tt class="py-lineno"> 54</tt>  <tt class="py-line">    <tt class="py-docstring">"""</tt> </tt>
 <a name="L55"></a><tt class="py-lineno"> 55</tt>  <tt class="py-line"><tt class="py-docstring">    A model to hold information for a wepay account</tt> </tt>
 <a name="L56"></a><tt class="py-lineno"> 56</tt>  <tt class="py-line"><tt class="py-docstring">    """</tt> </tt>
-<a name="L57"></a><tt class="py-lineno"> 57</tt>  <tt class="py-line">    <tt id="link-32" class="py-name" targets="Variable kernel.models.Claim.owner=kernel.models.Claim-class.html#owner,Variable kernel.models.Event_base.owner=kernel.models.Event_base-class.html#owner,Variable kernel.models.Redeemable.owner=kernel.models.Redeemable-class.html#owner,Variable kernel.models.Wepay_account.owner=kernel.models.Wepay_account-class.html#owner"><a title="kernel.models.Claim.owner
+<a name="L57"></a><tt class="py-lineno"> 57</tt>  <tt class="py-line">    <tt id="link-32" class="py-name" targets="Variable kernel.models.Claim.owner=kernel.models.Claim-class.html#owner,Variable kernel.models.Donation.owner=kernel.models.Donation-class.html#owner,Variable kernel.models.Event_base.owner=kernel.models.Event_base-class.html#owner,Variable kernel.models.Pledge.owner=kernel.models.Pledge-class.html#owner,Variable kernel.models.Purchase.owner=kernel.models.Purchase-class.html#owner,Variable kernel.models.Redeemable.owner=kernel.models.Redeemable-class.html#owner,Variable kernel.models.Wepay_account.owner=kernel.models.Wepay_account-class.html#owner"><a title="kernel.models.Claim.owner
+kernel.models.Donation.owner
 kernel.models.Event_base.owner
+kernel.models.Pledge.owner
+kernel.models.Purchase.owner
 kernel.models.Redeemable.owner
 kernel.models.Wepay_account.owner" class="py-name" href="#" onclick="return doclink('link-32', 'owner', 'link-32');">owner</a></tt> <tt class="py-op">=</tt> <tt id="link-33" class="py-name"><a title="admin.models
 analytics.models
@@ -208,9 +215,12 @@ kernel.models" class="py-name" href="#" onclick="return doclink('link-43', 'mode
 <a name="L63"></a><tt class="py-lineno"> 63</tt>  <tt class="py-line">    <tt id="link-44" class="py-name"><a title="analytics.models.Add_points_event.created_time
 analytics.models.Subtract_points_event.created_time
 kernel.models.Claim.created_time
+kernel.models.Donation.created_time
 kernel.models.Event_base.created_time
+kernel.models.Pledge.created_time
 kernel.models.Profile.created_time
 kernel.models.Profile_manager.created_time
+kernel.models.Purchase.created_time
 kernel.models.Redeemable.created_time
 kernel.models.User.created_time
 kernel.models.Wepay_account.created_time" class="py-name" href="#" onclick="return doclink('link-44', 'created_time', 'link-14');">created_time</a></tt> <tt class="py-op">=</tt> <tt id="link-45" class="py-name"><a title="admin.models
@@ -268,6 +278,7 @@ kernel.models" class="py-name" href="#" onclick="return doclink('link-55', 'mode
 kernel.models.City.save
 kernel.models.Claim.save
 kernel.models.Event_base.save
+kernel.models.Fundraiser.save
 kernel.models.Profile.save
 kernel.models.Redeemable.save
 kernel.models.Ticket.save
@@ -313,6 +324,7 @@ kernel.models.Profile.longitude" class="py-name" href="#" onclick="return doclin
 kernel.models.City.save
 kernel.models.Claim.save
 kernel.models.Event_base.save
+kernel.models.Fundraiser.save
 kernel.models.Profile.save
 kernel.models.Redeemable.save
 kernel.models.Ticket.save
@@ -322,6 +334,7 @@ kernel.models.User.save" class="py-name" href="#" onclick="return doclink('link-
 kernel.models.City.save
 kernel.models.Claim.save
 kernel.models.Event_base.save
+kernel.models.Fundraiser.save
 kernel.models.Profile.save
 kernel.models.Redeemable.save
 kernel.models.Ticket.save
@@ -481,9 +494,12 @@ kernel.models" class="py-name" href="#" onclick="return doclink('link-103', 'mod
 <a name="L148"></a><tt class="py-lineno">148</tt>  <tt class="py-line">    <tt id="link-104" class="py-name"><a title="analytics.models.Add_points_event.created_time
 analytics.models.Subtract_points_event.created_time
 kernel.models.Claim.created_time
+kernel.models.Donation.created_time
 kernel.models.Event_base.created_time
+kernel.models.Pledge.created_time
 kernel.models.Profile.created_time
 kernel.models.Profile_manager.created_time
+kernel.models.Purchase.created_time
 kernel.models.Redeemable.created_time
 kernel.models.User.created_time
 kernel.models.Wepay_account.created_time" class="py-name" href="#" onclick="return doclink('link-104', 'created_time', 'link-14');">created_time</a></tt> <tt class="py-op">=</tt> <tt id="link-105" class="py-name"><a title="admin.models
@@ -518,6 +534,7 @@ src.controllers.city.city" class="py-name" href="#" onclick="return doclink('lin
 kernel.models.City.save
 kernel.models.Claim.save
 kernel.models.Event_base.save
+kernel.models.Fundraiser.save
 kernel.models.Profile.save
 kernel.models.Redeemable.save
 kernel.models.Ticket.save
@@ -546,9 +563,12 @@ kernel.models" class="py-name" href="#" onclick="return doclink('link-116', 'mod
 <a name="L168"></a><tt class="py-lineno">168</tt>  <tt class="py-line">    <tt id="link-117" class="py-name"><a title="analytics.models.Add_points_event.created_time
 analytics.models.Subtract_points_event.created_time
 kernel.models.Claim.created_time
+kernel.models.Donation.created_time
 kernel.models.Event_base.created_time
+kernel.models.Pledge.created_time
 kernel.models.Profile.created_time
 kernel.models.Profile_manager.created_time
+kernel.models.Purchase.created_time
 kernel.models.Redeemable.created_time
 kernel.models.User.created_time
 kernel.models.Wepay_account.created_time" class="py-name" href="#" onclick="return doclink('link-117', 'created_time', 'link-14');">created_time</a></tt> <tt class="py-op">=</tt> <tt id="link-118" class="py-name"><a title="admin.models
@@ -615,7 +635,10 @@ kernel.models.Profile.category" class="py-name" href="#" onclick="return doclink
 analytics.models
 kernel.models" class="py-name" href="#" onclick="return doclink('link-140', 'models', 'link-0');">models</a></tt><tt class="py-op">.</tt><tt class="py-name">CharField</tt><tt class="py-op">(</tt><tt class="py-name">max_length</tt> <tt class="py-op">=</tt> <tt class="py-number">30</tt><tt class="py-op">)</tt> </tt>
 <a name="L185"></a><tt class="py-lineno">185</tt>  <tt class="py-line">    <tt id="link-141" class="py-name"><a title="kernel.models.Claim.owner
+kernel.models.Donation.owner
 kernel.models.Event_base.owner
+kernel.models.Pledge.owner
+kernel.models.Purchase.owner
 kernel.models.Redeemable.owner
 kernel.models.Wepay_account.owner" class="py-name" href="#" onclick="return doclink('link-141', 'owner', 'link-32');">owner</a></tt> <tt class="py-op">=</tt> <tt id="link-142" class="py-name"><a title="admin.models
 analytics.models
@@ -641,9 +664,12 @@ kernel.models" class="py-name" href="#" onclick="return doclink('link-146', 'mod
 <a name="L189"></a><tt class="py-lineno">189</tt>  <tt class="py-line">    <tt id="link-147" class="py-name"><a title="analytics.models.Add_points_event.created_time
 analytics.models.Subtract_points_event.created_time
 kernel.models.Claim.created_time
+kernel.models.Donation.created_time
 kernel.models.Event_base.created_time
+kernel.models.Pledge.created_time
 kernel.models.Profile.created_time
 kernel.models.Profile_manager.created_time
+kernel.models.Purchase.created_time
 kernel.models.Redeemable.created_time
 kernel.models.User.created_time
 kernel.models.Wepay_account.created_time" class="py-name" href="#" onclick="return doclink('link-147', 'created_time', 'link-14');">created_time</a></tt> <tt class="py-op">=</tt> <tt id="link-148" class="py-name"><a title="admin.models
@@ -662,7 +688,10 @@ kernel.models.Redeemable.community
 kernel.models.User_following.community
 src.controllers.community
 src.controllers.community.community" class="py-name" href="#" onclick="return doclink('link-149', 'community', 'link-82');">community</a></tt> <tt class="py-op">=</tt> <tt class="py-name">self</tt><tt class="py-op">.</tt><tt id="link-150" class="py-name"><a title="kernel.models.Claim.owner
+kernel.models.Donation.owner
 kernel.models.Event_base.owner
+kernel.models.Pledge.owner
+kernel.models.Purchase.owner
 kernel.models.Redeemable.owner
 kernel.models.Wepay_account.owner" class="py-name" href="#" onclick="return doclink('link-150', 'owner', 'link-32');">owner</a></tt><tt class="py-op">.</tt><tt id="link-151" class="py-name"><a title="kernel.models.Event_base.community
 kernel.models.Profile.community
@@ -677,7 +706,10 @@ kernel.models.Redeemable.city
 kernel.models.User.city
 src.controllers.city
 src.controllers.city.city" class="py-name" href="#" onclick="return doclink('link-152', 'city', 'link-8');">city</a></tt> <tt class="py-op">=</tt> <tt class="py-name">self</tt><tt class="py-op">.</tt><tt id="link-153" class="py-name"><a title="kernel.models.Claim.owner
+kernel.models.Donation.owner
 kernel.models.Event_base.owner
+kernel.models.Pledge.owner
+kernel.models.Purchase.owner
 kernel.models.Redeemable.owner
 kernel.models.Wepay_account.owner" class="py-name" href="#" onclick="return doclink('link-153', 'owner', 'link-32');">owner</a></tt><tt class="py-op">.</tt><tt id="link-154" class="py-name"><a title="kernel.models.Community.city
 kernel.models.Event_base.city
@@ -690,6 +722,7 @@ src.controllers.city.city" class="py-name" href="#" onclick="return doclink('lin
 kernel.models.City.save
 kernel.models.Claim.save
 kernel.models.Event_base.save
+kernel.models.Fundraiser.save
 kernel.models.Profile.save
 kernel.models.Redeemable.save
 kernel.models.Ticket.save
@@ -737,7 +770,8 @@ kernel.models.Reward.description
 kernel.models.Ticket.description" class="py-name" href="#" onclick="return doclink('link-160', 'description', 'link-72');">description</a></tt> <tt class="py-op">=</tt> <tt id="link-161" class="py-name"><a title="admin.models
 analytics.models
 kernel.models" class="py-name" href="#" onclick="return doclink('link-161', 'models', 'link-0');">models</a></tt><tt class="py-op">.</tt><tt class="py-name">CharField</tt><tt class="py-op">(</tt><tt class="py-name">max_length</tt> <tt class="py-op">=</tt> <tt class="py-number">150</tt><tt class="py-op">)</tt> </tt>
-<a name="L220"></a><tt class="py-lineno">220</tt>  <tt class="py-line">    <tt id="link-162" class="py-name" targets="Variable kernel.models.Reward.price=kernel.models.Reward-class.html#price,Variable kernel.models.Ticket.price=kernel.models.Ticket-class.html#price"><a title="kernel.models.Reward.price
+<a name="L220"></a><tt class="py-lineno">220</tt>  <tt class="py-line">    <tt id="link-162" class="py-name" targets="Variable kernel.models.Purchase.price=kernel.models.Purchase-class.html#price,Variable kernel.models.Reward.price=kernel.models.Reward-class.html#price,Variable kernel.models.Ticket.price=kernel.models.Ticket-class.html#price"><a title="kernel.models.Purchase.price
+kernel.models.Reward.price
 kernel.models.Ticket.price" class="py-name" href="#" onclick="return doclink('link-162', 'price', 'link-162');">price</a></tt> <tt class="py-op">=</tt> <tt id="link-163" class="py-name"><a title="admin.models
 analytics.models
 kernel.models" class="py-name" href="#" onclick="return doclink('link-163', 'models', 'link-0');">models</a></tt><tt class="py-op">.</tt><tt class="py-name">FloatField</tt><tt class="py-op">(</tt><tt class="py-op">)</tt> </tt>
@@ -776,36 +810,73 @@ kernel.models.Ticket.start_time" class="py-name" href="#" onclick="return doclin
 kernel.models.City.save
 kernel.models.Claim.save
 kernel.models.Event_base.save
+kernel.models.Fundraiser.save
 kernel.models.Profile.save
 kernel.models.Redeemable.save
 kernel.models.Ticket.save
 kernel.models.User.save" class="py-name" href="#" onclick="return doclink('link-177', 'save', 'link-29');">save</a></tt><tt class="py-op">(</tt><tt class="py-op">*</tt><tt class="py-name">args</tt><tt class="py-op">,</tt> <tt class="py-op">**</tt><tt class="py-name">kwargs</tt><tt class="py-op">)</tt> </tt>
 </div></div><a name="L234"></a><tt class="py-lineno">234</tt>  <tt class="py-line"> </tt>
-<a name="Initiative"></a><div id="Initiative-def"><a name="L235"></a><tt class="py-lineno">235</tt> <a class="py-toggle" href="#" id="Initiative-toggle" onclick="return toggle('Initiative');">-</a><tt class="py-line"><tt class="py-keyword">class</tt> <a class="py-def-name" href="kernel.models.Initiative-class.html">Initiative</a><tt class="py-op">(</tt><tt class="py-base-class">Event_base</tt><tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
-</div><div id="Initiative-collapsed" style="display:none;" pad="+++" indent="++++"></div><div id="Initiative-expanded"><a name="L236"></a><tt class="py-lineno">236</tt>  <tt class="py-line">    <tt class="py-docstring">"""</tt> </tt>
-<a name="L237"></a><tt class="py-lineno">237</tt>  <tt class="py-line"><tt class="py-docstring">    Event model for initiative-based events</tt> </tt>
+<a name="Purchase"></a><div id="Purchase-def"><a name="L235"></a><tt class="py-lineno">235</tt> <a class="py-toggle" href="#" id="Purchase-toggle" onclick="return toggle('Purchase');">-</a><tt class="py-line"><tt class="py-keyword">class</tt> <a class="py-def-name" href="kernel.models.Purchase-class.html">Purchase</a><tt class="py-op">(</tt><tt class="py-base-class">models</tt><tt class="py-op">.</tt><tt class="py-base-class">Model</tt><tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
+</div><div id="Purchase-collapsed" style="display:none;" pad="+++" indent="++++"></div><div id="Purchase-expanded"><a name="L236"></a><tt class="py-lineno">236</tt>  <tt class="py-line">    <tt class="py-docstring">"""</tt> </tt>
+<a name="L237"></a><tt class="py-lineno">237</tt>  <tt class="py-line"><tt class="py-docstring">    Purchase model for a ticket</tt> </tt>
 <a name="L238"></a><tt class="py-lineno">238</tt>  <tt class="py-line"><tt class="py-docstring">    """</tt> </tt>
-<a name="L239"></a><tt class="py-lineno">239</tt>  <tt class="py-line">    <tt id="link-178" class="py-name" targets="Variable kernel.models.Initiative.goal=kernel.models.Initiative-class.html#goal"><a title="kernel.models.Initiative.goal" class="py-name" href="#" onclick="return doclink('link-178', 'goal', 'link-178');">goal</a></tt> <tt class="py-op">=</tt> <tt id="link-179" class="py-name"><a title="admin.models
+<a name="L239"></a><tt class="py-lineno">239</tt>  <tt class="py-line">    <tt id="link-178" class="py-name"><a title="kernel.models.Claim.owner
+kernel.models.Donation.owner
+kernel.models.Event_base.owner
+kernel.models.Pledge.owner
+kernel.models.Purchase.owner
+kernel.models.Redeemable.owner
+kernel.models.Wepay_account.owner" class="py-name" href="#" onclick="return doclink('link-178', 'owner', 'link-32');">owner</a></tt> <tt class="py-op">=</tt> <tt id="link-179" class="py-name"><a title="admin.models
 analytics.models
-kernel.models" class="py-name" href="#" onclick="return doclink('link-179', 'models', 'link-0');">models</a></tt><tt class="py-op">.</tt><tt class="py-name">FloatField</tt><tt class="py-op">(</tt><tt class="py-op">)</tt> </tt>
-<a name="L240"></a><tt class="py-lineno">240</tt>  <tt class="py-line">    <tt id="link-180" class="py-name" targets="Variable kernel.models.Initiative.deadline=kernel.models.Initiative-class.html#deadline"><a title="kernel.models.Initiative.deadline" class="py-name" href="#" onclick="return doclink('link-180', 'deadline', 'link-180');">deadline</a></tt> <tt class="py-op">=</tt> <tt id="link-181" class="py-name"><a title="admin.models
+kernel.models" class="py-name" href="#" onclick="return doclink('link-179', 'models', 'link-0');">models</a></tt><tt class="py-op">.</tt><tt class="py-name">ForeignKey</tt><tt class="py-op">(</tt><tt class="py-string">'User'</tt><tt class="py-op">)</tt> </tt>
+<a name="L240"></a><tt class="py-lineno">240</tt>  <tt class="py-line">    <tt id="link-180" class="py-name" targets="Variable kernel.models.Purchase.ticket=kernel.models.Purchase-class.html#ticket"><a title="kernel.models.Purchase.ticket" class="py-name" href="#" onclick="return doclink('link-180', 'ticket', 'link-180');">ticket</a></tt> <tt class="py-op">=</tt> <tt id="link-181" class="py-name"><a title="admin.models
 analytics.models
-kernel.models" class="py-name" href="#" onclick="return doclink('link-181', 'models', 'link-0');">models</a></tt><tt class="py-op">.</tt><tt class="py-name">DateTimeField</tt><tt class="py-op">(</tt><tt class="py-op">)</tt> </tt>
-<a name="L241"></a><tt class="py-lineno">241</tt>  <tt class="py-line">    <tt id="link-182" class="py-name" targets="Variable kernel.models.Initiative.is_reached=kernel.models.Initiative-class.html#is_reached"><a title="kernel.models.Initiative.is_reached" class="py-name" href="#" onclick="return doclink('link-182', 'is_reached', 'link-182');">is_reached</a></tt> <tt class="py-op">=</tt> <tt id="link-183" class="py-name"><a title="admin.models
+kernel.models" class="py-name" href="#" onclick="return doclink('link-181', 'models', 'link-0');">models</a></tt><tt class="py-op">.</tt><tt class="py-name">ForeignKey</tt><tt class="py-op">(</tt><tt class="py-string">'Ticket'</tt><tt class="py-op">)</tt> </tt>
+<a name="L241"></a><tt class="py-lineno">241</tt>  <tt class="py-line">    <tt id="link-182" class="py-name"><a title="kernel.models.Purchase.price
+kernel.models.Reward.price
+kernel.models.Ticket.price" class="py-name" href="#" onclick="return doclink('link-182', 'price', 'link-162');">price</a></tt> <tt class="py-op">=</tt> <tt id="link-183" class="py-name"><a title="admin.models
 analytics.models
-kernel.models" class="py-name" href="#" onclick="return doclink('link-183', 'models', 'link-0');">models</a></tt><tt class="py-op">.</tt><tt class="py-name">BooleanField</tt><tt class="py-op">(</tt><tt class="py-name">default</tt> <tt class="py-op">=</tt> <tt class="py-name">False</tt><tt class="py-op">)</tt> </tt>
-</div><a name="L242"></a><tt class="py-lineno">242</tt>  <tt class="py-line"> </tt>
-<a name="Reward"></a><div id="Reward-def"><a name="L243"></a><tt class="py-lineno">243</tt> <a class="py-toggle" href="#" id="Reward-toggle" onclick="return toggle('Reward');">-</a><tt class="py-line"><tt class="py-keyword">class</tt> <a class="py-def-name" href="kernel.models.Reward-class.html">Reward</a><tt class="py-op">(</tt><tt class="py-base-class">models</tt><tt class="py-op">.</tt><tt class="py-base-class">Model</tt><tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
-</div><div id="Reward-collapsed" style="display:none;" pad="+++" indent="++++"></div><div id="Reward-expanded"><a name="L244"></a><tt class="py-lineno">244</tt>  <tt class="py-line">    <tt class="py-docstring">"""</tt> </tt>
-<a name="L245"></a><tt class="py-lineno">245</tt>  <tt class="py-line"><tt class="py-docstring">    Reward model for initiative events</tt> </tt>
-<a name="L246"></a><tt class="py-lineno">246</tt>  <tt class="py-line"><tt class="py-docstring">    """</tt> </tt>
-<a name="L247"></a><tt class="py-lineno">247</tt>  <tt class="py-line">    <tt id="link-184" class="py-name" targets="Variable kernel.models.Event_base.initiative=kernel.models.Event_base-class.html#initiative,Variable kernel.models.Reward.initiative=kernel.models.Reward-class.html#initiative,Module src.controllers.initiative=src.controllers.initiative-module.html,Function src.controllers.initiative.initiative()=src.controllers.initiative-module.html#initiative"><a title="kernel.models.Event_base.initiative
+kernel.models" class="py-name" href="#" onclick="return doclink('link-183', 'models', 'link-0');">models</a></tt><tt class="py-op">.</tt><tt class="py-name">FloatField</tt><tt class="py-op">(</tt><tt class="py-op">)</tt> </tt>
+<a name="L242"></a><tt class="py-lineno">242</tt>  <tt class="py-line">    <tt id="link-184" class="py-name"><a title="analytics.models.Add_points_event.created_time
+analytics.models.Subtract_points_event.created_time
+kernel.models.Claim.created_time
+kernel.models.Donation.created_time
+kernel.models.Event_base.created_time
+kernel.models.Pledge.created_time
+kernel.models.Profile.created_time
+kernel.models.Profile_manager.created_time
+kernel.models.Purchase.created_time
+kernel.models.Redeemable.created_time
+kernel.models.User.created_time
+kernel.models.Wepay_account.created_time" class="py-name" href="#" onclick="return doclink('link-184', 'created_time', 'link-14');">created_time</a></tt> <tt class="py-op">=</tt> <tt id="link-185" class="py-name"><a title="admin.models
+analytics.models
+kernel.models" class="py-name" href="#" onclick="return doclink('link-185', 'models', 'link-0');">models</a></tt><tt class="py-op">.</tt><tt class="py-name">DateTimeField</tt><tt class="py-op">(</tt><tt class="py-name">auto_now_add</tt> <tt class="py-op">=</tt> <tt class="py-name">True</tt><tt class="py-op">)</tt> </tt>
+</div><a name="L243"></a><tt class="py-lineno">243</tt>  <tt class="py-line"> </tt>
+<a name="Initiative"></a><div id="Initiative-def"><a name="L244"></a><tt class="py-lineno">244</tt> <a class="py-toggle" href="#" id="Initiative-toggle" onclick="return toggle('Initiative');">-</a><tt class="py-line"><tt class="py-keyword">class</tt> <a class="py-def-name" href="kernel.models.Initiative-class.html">Initiative</a><tt class="py-op">(</tt><tt class="py-base-class">Event_base</tt><tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
+</div><div id="Initiative-collapsed" style="display:none;" pad="+++" indent="++++"></div><div id="Initiative-expanded"><a name="L245"></a><tt class="py-lineno">245</tt>  <tt class="py-line">    <tt class="py-docstring">"""</tt> </tt>
+<a name="L246"></a><tt class="py-lineno">246</tt>  <tt class="py-line"><tt class="py-docstring">    Event model for initiative-based events</tt> </tt>
+<a name="L247"></a><tt class="py-lineno">247</tt>  <tt class="py-line"><tt class="py-docstring">    """</tt> </tt>
+<a name="L248"></a><tt class="py-lineno">248</tt>  <tt class="py-line">    <tt id="link-186" class="py-name" targets="Variable kernel.models.Initiative.goal=kernel.models.Initiative-class.html#goal"><a title="kernel.models.Initiative.goal" class="py-name" href="#" onclick="return doclink('link-186', 'goal', 'link-186');">goal</a></tt> <tt class="py-op">=</tt> <tt id="link-187" class="py-name"><a title="admin.models
+analytics.models
+kernel.models" class="py-name" href="#" onclick="return doclink('link-187', 'models', 'link-0');">models</a></tt><tt class="py-op">.</tt><tt class="py-name">FloatField</tt><tt class="py-op">(</tt><tt class="py-op">)</tt> </tt>
+<a name="L249"></a><tt class="py-lineno">249</tt>  <tt class="py-line">    <tt id="link-188" class="py-name" targets="Variable kernel.models.Initiative.deadline=kernel.models.Initiative-class.html#deadline"><a title="kernel.models.Initiative.deadline" class="py-name" href="#" onclick="return doclink('link-188', 'deadline', 'link-188');">deadline</a></tt> <tt class="py-op">=</tt> <tt id="link-189" class="py-name"><a title="admin.models
+analytics.models
+kernel.models" class="py-name" href="#" onclick="return doclink('link-189', 'models', 'link-0');">models</a></tt><tt class="py-op">.</tt><tt class="py-name">DateTimeField</tt><tt class="py-op">(</tt><tt class="py-op">)</tt> </tt>
+<a name="L250"></a><tt class="py-lineno">250</tt>  <tt class="py-line">    <tt id="link-190" class="py-name" targets="Variable kernel.models.Initiative.is_reached=kernel.models.Initiative-class.html#is_reached"><a title="kernel.models.Initiative.is_reached" class="py-name" href="#" onclick="return doclink('link-190', 'is_reached', 'link-190');">is_reached</a></tt> <tt class="py-op">=</tt> <tt id="link-191" class="py-name"><a title="admin.models
+analytics.models
+kernel.models" class="py-name" href="#" onclick="return doclink('link-191', 'models', 'link-0');">models</a></tt><tt class="py-op">.</tt><tt class="py-name">BooleanField</tt><tt class="py-op">(</tt><tt class="py-name">default</tt> <tt class="py-op">=</tt> <tt class="py-name">False</tt><tt class="py-op">)</tt> </tt>
+</div><a name="L251"></a><tt class="py-lineno">251</tt>  <tt class="py-line"> </tt>
+<a name="Reward"></a><div id="Reward-def"><a name="L252"></a><tt class="py-lineno">252</tt> <a class="py-toggle" href="#" id="Reward-toggle" onclick="return toggle('Reward');">-</a><tt class="py-line"><tt class="py-keyword">class</tt> <a class="py-def-name" href="kernel.models.Reward-class.html">Reward</a><tt class="py-op">(</tt><tt class="py-base-class">models</tt><tt class="py-op">.</tt><tt class="py-base-class">Model</tt><tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
+</div><div id="Reward-collapsed" style="display:none;" pad="+++" indent="++++"></div><div id="Reward-expanded"><a name="L253"></a><tt class="py-lineno">253</tt>  <tt class="py-line">    <tt class="py-docstring">"""</tt> </tt>
+<a name="L254"></a><tt class="py-lineno">254</tt>  <tt class="py-line"><tt class="py-docstring">    Reward model for initiative events</tt> </tt>
+<a name="L255"></a><tt class="py-lineno">255</tt>  <tt class="py-line"><tt class="py-docstring">    """</tt> </tt>
+<a name="L256"></a><tt class="py-lineno">256</tt>  <tt class="py-line">    <tt id="link-192" class="py-name" targets="Variable kernel.models.Event_base.initiative=kernel.models.Event_base-class.html#initiative,Variable kernel.models.Reward.initiative=kernel.models.Reward-class.html#initiative,Module src.controllers.initiative=src.controllers.initiative-module.html,Function src.controllers.initiative.initiative()=src.controllers.initiative-module.html#initiative"><a title="kernel.models.Event_base.initiative
 kernel.models.Reward.initiative
 src.controllers.initiative
-src.controllers.initiative.initiative" class="py-name" href="#" onclick="return doclink('link-184', 'initiative', 'link-184');">initiative</a></tt> <tt class="py-op">=</tt> <tt id="link-185" class="py-name"><a title="admin.models
+src.controllers.initiative.initiative" class="py-name" href="#" onclick="return doclink('link-192', 'initiative', 'link-192');">initiative</a></tt> <tt class="py-op">=</tt> <tt id="link-193" class="py-name"><a title="admin.models
 analytics.models
-kernel.models" class="py-name" href="#" onclick="return doclink('link-185', 'models', 'link-0');">models</a></tt><tt class="py-op">.</tt><tt class="py-name">ForeignKey</tt><tt class="py-op">(</tt><tt class="py-string">'Initiative'</tt><tt class="py-op">)</tt> </tt>
-<a name="L248"></a><tt class="py-lineno">248</tt>  <tt class="py-line">    <tt id="link-186" class="py-name"><a title="admin.models.Admin.name
+kernel.models" class="py-name" href="#" onclick="return doclink('link-193', 'models', 'link-0');">models</a></tt><tt class="py-op">.</tt><tt class="py-name">ForeignKey</tt><tt class="py-op">(</tt><tt class="py-string">'Initiative'</tt><tt class="py-op">)</tt> </tt>
+<a name="L257"></a><tt class="py-lineno">257</tt>  <tt class="py-line">    <tt id="link-194" class="py-name"><a title="admin.models.Admin.name
 kernel.models.City.name
 kernel.models.Community.name
 kernel.models.Event_base.name
@@ -813,331 +884,455 @@ kernel.models.Profile.name
 kernel.models.Redeemable.name
 kernel.models.Reward.name
 kernel.models.Ticket.name
-kernel.models.Wepay_account.name" class="py-name" href="#" onclick="return doclink('link-186', 'name', 'link-40');">name</a></tt> <tt class="py-op">=</tt> <tt id="link-187" class="py-name"><a title="admin.models
+kernel.models.Wepay_account.name" class="py-name" href="#" onclick="return doclink('link-194', 'name', 'link-40');">name</a></tt> <tt class="py-op">=</tt> <tt id="link-195" class="py-name"><a title="admin.models
 analytics.models
-kernel.models" class="py-name" href="#" onclick="return doclink('link-187', 'models', 'link-0');">models</a></tt><tt class="py-op">.</tt><tt class="py-name">CharField</tt><tt class="py-op">(</tt><tt class="py-name">max_length</tt> <tt class="py-op">=</tt> <tt class="py-number">15</tt><tt class="py-op">)</tt> </tt>
-<a name="L249"></a><tt class="py-lineno">249</tt>  <tt class="py-line">    <tt id="link-188" class="py-name"><a title="kernel.models.Community.description
+kernel.models" class="py-name" href="#" onclick="return doclink('link-195', 'models', 'link-0');">models</a></tt><tt class="py-op">.</tt><tt class="py-name">CharField</tt><tt class="py-op">(</tt><tt class="py-name">max_length</tt> <tt class="py-op">=</tt> <tt class="py-number">15</tt><tt class="py-op">)</tt> </tt>
+<a name="L258"></a><tt class="py-lineno">258</tt>  <tt class="py-line">    <tt id="link-196" class="py-name"><a title="kernel.models.Community.description
 kernel.models.Event_base.description
 kernel.models.Profile.description
 kernel.models.Redeemable.description
 kernel.models.Reward.description
-kernel.models.Ticket.description" class="py-name" href="#" onclick="return doclink('link-188', 'description', 'link-72');">description</a></tt> <tt class="py-op">=</tt> <tt id="link-189" class="py-name"><a title="admin.models
+kernel.models.Ticket.description" class="py-name" href="#" onclick="return doclink('link-196', 'description', 'link-72');">description</a></tt> <tt class="py-op">=</tt> <tt id="link-197" class="py-name"><a title="admin.models
 analytics.models
-kernel.models" class="py-name" href="#" onclick="return doclink('link-189', 'models', 'link-0');">models</a></tt><tt class="py-op">.</tt><tt class="py-name">CharField</tt><tt class="py-op">(</tt><tt class="py-name">max_length</tt> <tt class="py-op">=</tt> <tt class="py-number">150</tt><tt class="py-op">)</tt> </tt>
-<a name="L250"></a><tt class="py-lineno">250</tt>  <tt class="py-line">    <tt id="link-190" class="py-name"><a title="kernel.models.Reward.price
-kernel.models.Ticket.price" class="py-name" href="#" onclick="return doclink('link-190', 'price', 'link-162');">price</a></tt> <tt class="py-op">=</tt> <tt id="link-191" class="py-name"><a title="admin.models
+kernel.models" class="py-name" href="#" onclick="return doclink('link-197', 'models', 'link-0');">models</a></tt><tt class="py-op">.</tt><tt class="py-name">CharField</tt><tt class="py-op">(</tt><tt class="py-name">max_length</tt> <tt class="py-op">=</tt> <tt class="py-number">150</tt><tt class="py-op">)</tt> </tt>
+<a name="L259"></a><tt class="py-lineno">259</tt>  <tt class="py-line">    <tt id="link-198" class="py-name"><a title="kernel.models.Purchase.price
+kernel.models.Reward.price
+kernel.models.Ticket.price" class="py-name" href="#" onclick="return doclink('link-198', 'price', 'link-162');">price</a></tt> <tt class="py-op">=</tt> <tt id="link-199" class="py-name"><a title="admin.models
 analytics.models
-kernel.models" class="py-name" href="#" onclick="return doclink('link-191', 'models', 'link-0');">models</a></tt><tt class="py-op">.</tt><tt class="py-name">FloatField</tt><tt class="py-op">(</tt><tt class="py-op">)</tt> </tt>
-<a name="L251"></a><tt class="py-lineno">251</tt>  <tt class="py-line">    <tt id="link-192" class="py-name"><a title="kernel.models.Redeemable.quantity
-kernel.models.Reward.quantity
-kernel.models.Ticket.quantity" class="py-name" href="#" onclick="return doclink('link-192', 'quantity', 'link-164');">quantity</a></tt> <tt class="py-op">=</tt> <tt id="link-193" class="py-name"><a title="admin.models
-analytics.models
-kernel.models" class="py-name" href="#" onclick="return doclink('link-193', 'models', 'link-0');">models</a></tt><tt class="py-op">.</tt><tt class="py-name">IntegerField</tt><tt class="py-op">(</tt><tt class="py-name">null</tt> <tt class="py-op">=</tt> <tt class="py-name">True</tt><tt class="py-op">,</tt> <tt class="py-name">default</tt> <tt class="py-op">=</tt> <tt class="py-name">None</tt><tt class="py-op">)</tt> </tt>
-</div><a name="L252"></a><tt class="py-lineno">252</tt>  <tt class="py-line"> </tt>
-<a name="Redeemable"></a><div id="Redeemable-def"><a name="L253"></a><tt class="py-lineno">253</tt> <a class="py-toggle" href="#" id="Redeemable-toggle" onclick="return toggle('Redeemable');">-</a><tt class="py-line"><tt class="py-keyword">class</tt> <a class="py-def-name" href="kernel.models.Redeemable-class.html">Redeemable</a><tt class="py-op">(</tt><tt class="py-base-class">models</tt><tt class="py-op">.</tt><tt class="py-base-class">Model</tt><tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
-</div><div id="Redeemable-collapsed" style="display:none;" pad="+++" indent="++++"></div><div id="Redeemable-expanded"><a name="L254"></a><tt class="py-lineno">254</tt>  <tt class="py-line">    <tt class="py-docstring">"""</tt> </tt>
-<a name="L255"></a><tt class="py-lineno">255</tt>  <tt class="py-line"><tt class="py-docstring">    Redeemable rewards for points</tt> </tt>
-<a name="L256"></a><tt class="py-lineno">256</tt>  <tt class="py-line"><tt class="py-docstring">    """</tt> </tt>
-<a name="L257"></a><tt class="py-lineno">257</tt>  <tt class="py-line">    <tt id="link-194" class="py-name"><a title="kernel.models.Claim.owner
-kernel.models.Event_base.owner
-kernel.models.Redeemable.owner
-kernel.models.Wepay_account.owner" class="py-name" href="#" onclick="return doclink('link-194', 'owner', 'link-32');">owner</a></tt> <tt class="py-op">=</tt> <tt id="link-195" class="py-name"><a title="admin.models
-analytics.models
-kernel.models" class="py-name" href="#" onclick="return doclink('link-195', 'models', 'link-0');">models</a></tt><tt class="py-op">.</tt><tt class="py-name">ForeignKey</tt><tt class="py-op">(</tt><tt class="py-string">'Profile'</tt><tt class="py-op">)</tt> </tt>
-<a name="L258"></a><tt class="py-lineno">258</tt>  <tt class="py-line">    <tt id="link-196" class="py-name"><a title="admin.models.Admin.name
-kernel.models.City.name
-kernel.models.Community.name
-kernel.models.Event_base.name
-kernel.models.Profile.name
-kernel.models.Redeemable.name
-kernel.models.Reward.name
-kernel.models.Ticket.name
-kernel.models.Wepay_account.name" class="py-name" href="#" onclick="return doclink('link-196', 'name', 'link-40');">name</a></tt> <tt class="py-op">=</tt> <tt id="link-197" class="py-name"><a title="admin.models
-analytics.models
-kernel.models" class="py-name" href="#" onclick="return doclink('link-197', 'models', 'link-0');">models</a></tt><tt class="py-op">.</tt><tt class="py-name">CharField</tt><tt class="py-op">(</tt><tt class="py-name">max_length</tt> <tt class="py-op">=</tt> <tt class="py-number">50</tt><tt class="py-op">)</tt> </tt>
-<a name="L259"></a><tt class="py-lineno">259</tt>  <tt class="py-line">    <tt id="link-198" class="py-name"><a title="kernel.models.Community.description
-kernel.models.Event_base.description
-kernel.models.Profile.description
-kernel.models.Redeemable.description
-kernel.models.Reward.description
-kernel.models.Ticket.description" class="py-name" href="#" onclick="return doclink('link-198', 'description', 'link-72');">description</a></tt> <tt class="py-op">=</tt> <tt id="link-199" class="py-name"><a title="admin.models
-analytics.models
-kernel.models" class="py-name" href="#" onclick="return doclink('link-199', 'models', 'link-0');">models</a></tt><tt class="py-op">.</tt><tt class="py-name">CharField</tt><tt class="py-op">(</tt><tt class="py-name">max_length</tt> <tt class="py-op">=</tt> <tt class="py-number">500</tt><tt class="py-op">)</tt> </tt>
+kernel.models" class="py-name" href="#" onclick="return doclink('link-199', 'models', 'link-0');">models</a></tt><tt class="py-op">.</tt><tt class="py-name">FloatField</tt><tt class="py-op">(</tt><tt class="py-op">)</tt> </tt>
 <a name="L260"></a><tt class="py-lineno">260</tt>  <tt class="py-line">    <tt id="link-200" class="py-name"><a title="kernel.models.Redeemable.quantity
 kernel.models.Reward.quantity
 kernel.models.Ticket.quantity" class="py-name" href="#" onclick="return doclink('link-200', 'quantity', 'link-164');">quantity</a></tt> <tt class="py-op">=</tt> <tt id="link-201" class="py-name"><a title="admin.models
 analytics.models
-kernel.models" class="py-name" href="#" onclick="return doclink('link-201', 'models', 'link-0');">models</a></tt><tt class="py-op">.</tt><tt class="py-name">IntegerField</tt><tt class="py-op">(</tt><tt class="py-name">null</tt> <tt class="py-op">=</tt> <tt class="py-name">True</tt><tt class="py-op">)</tt> </tt>
-<a name="L261"></a><tt class="py-lineno">261</tt>  <tt class="py-line">    <tt id="link-202" class="py-name" targets="Variable kernel.models.Redeemable.value=kernel.models.Redeemable-class.html#value"><a title="kernel.models.Redeemable.value" class="py-name" href="#" onclick="return doclink('link-202', 'value', 'link-202');">value</a></tt> <tt class="py-op">=</tt> <tt id="link-203" class="py-name"><a title="admin.models
+kernel.models" class="py-name" href="#" onclick="return doclink('link-201', 'models', 'link-0');">models</a></tt><tt class="py-op">.</tt><tt class="py-name">IntegerField</tt><tt class="py-op">(</tt><tt class="py-name">null</tt> <tt class="py-op">=</tt> <tt class="py-name">True</tt><tt class="py-op">,</tt> <tt class="py-name">default</tt> <tt class="py-op">=</tt> <tt class="py-name">None</tt><tt class="py-op">)</tt> </tt>
+</div><a name="L261"></a><tt class="py-lineno">261</tt>  <tt class="py-line"> </tt>
+<a name="Pledge"></a><div id="Pledge-def"><a name="L262"></a><tt class="py-lineno">262</tt> <a class="py-toggle" href="#" id="Pledge-toggle" onclick="return toggle('Pledge');">-</a><tt class="py-line"><tt class="py-keyword">class</tt> <a class="py-def-name" href="kernel.models.Pledge-class.html">Pledge</a><tt class="py-op">(</tt><tt class="py-base-class">models</tt><tt class="py-op">.</tt><tt class="py-base-class">Model</tt><tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
+</div><div id="Pledge-collapsed" style="display:none;" pad="+++" indent="++++"></div><div id="Pledge-expanded"><a name="L263"></a><tt class="py-lineno">263</tt>  <tt class="py-line">    <tt class="py-docstring">"""</tt> </tt>
+<a name="L264"></a><tt class="py-lineno">264</tt>  <tt class="py-line"><tt class="py-docstring">    Pledge model for a reward</tt> </tt>
+<a name="L265"></a><tt class="py-lineno">265</tt>  <tt class="py-line"><tt class="py-docstring">    """</tt> </tt>
+<a name="L266"></a><tt class="py-lineno">266</tt>  <tt class="py-line">    <tt id="link-202" class="py-name"><a title="kernel.models.Claim.owner
+kernel.models.Donation.owner
+kernel.models.Event_base.owner
+kernel.models.Pledge.owner
+kernel.models.Purchase.owner
+kernel.models.Redeemable.owner
+kernel.models.Wepay_account.owner" class="py-name" href="#" onclick="return doclink('link-202', 'owner', 'link-32');">owner</a></tt> <tt class="py-op">=</tt> <tt id="link-203" class="py-name"><a title="admin.models
 analytics.models
-kernel.models" class="py-name" href="#" onclick="return doclink('link-203', 'models', 'link-0');">models</a></tt><tt class="py-op">.</tt><tt class="py-name">IntegerField</tt><tt class="py-op">(</tt><tt class="py-op">)</tt> <tt class="py-comment"># Monetary value</tt> </tt>
-<a name="L262"></a><tt class="py-lineno">262</tt>  <tt class="py-line">    <tt id="link-204" class="py-name"><a title="analytics.models.Add_points_event.points
-analytics.models.Subtract_points_event.points
-kernel.models.Redeemable.points
-kernel.models.User.points" class="py-name" href="#" onclick="return doclink('link-204', 'points', 'link-12');">points</a></tt> <tt class="py-op">=</tt> <tt id="link-205" class="py-name"><a title="admin.models
+kernel.models" class="py-name" href="#" onclick="return doclink('link-203', 'models', 'link-0');">models</a></tt><tt class="py-op">.</tt><tt class="py-name">ForeignKey</tt><tt class="py-op">(</tt><tt class="py-string">'User'</tt><tt class="py-op">)</tt> </tt>
+<a name="L267"></a><tt class="py-lineno">267</tt>  <tt class="py-line">    <tt id="link-204" class="py-name" targets="Variable kernel.models.Pledge.reward=kernel.models.Pledge-class.html#reward"><a title="kernel.models.Pledge.reward" class="py-name" href="#" onclick="return doclink('link-204', 'reward', 'link-204');">reward</a></tt> <tt class="py-op">=</tt> <tt id="link-205" class="py-name"><a title="admin.models
 analytics.models
-kernel.models" class="py-name" href="#" onclick="return doclink('link-205', 'models', 'link-0');">models</a></tt><tt class="py-op">.</tt><tt class="py-name">IntegerField</tt><tt class="py-op">(</tt><tt class="py-op">)</tt> </tt>
-<a name="L263"></a><tt class="py-lineno">263</tt>  <tt class="py-line">    <tt id="link-206" class="py-name"><a title="kernel.models.Redeemable.is_expired
-kernel.models.Wepay_account.is_expired" class="py-name" href="#" onclick="return doclink('link-206', 'is_expired', 'link-42');">is_expired</a></tt> <tt class="py-op">=</tt> <tt id="link-207" class="py-name"><a title="admin.models
+kernel.models" class="py-name" href="#" onclick="return doclink('link-205', 'models', 'link-0');">models</a></tt><tt class="py-op">.</tt><tt class="py-name">ForeignKey</tt><tt class="py-op">(</tt><tt class="py-string">'Reward'</tt><tt class="py-op">)</tt> </tt>
+<a name="L268"></a><tt class="py-lineno">268</tt>  <tt class="py-line">    <tt id="link-206" class="py-name" targets="Variable kernel.models.Donation.amount=kernel.models.Donation-class.html#amount,Variable kernel.models.Pledge.amount=kernel.models.Pledge-class.html#amount"><a title="kernel.models.Donation.amount
+kernel.models.Pledge.amount" class="py-name" href="#" onclick="return doclink('link-206', 'amount', 'link-206');">amount</a></tt> <tt class="py-op">=</tt> <tt id="link-207" class="py-name"><a title="admin.models
 analytics.models
-kernel.models" class="py-name" href="#" onclick="return doclink('link-207', 'models', 'link-0');">models</a></tt><tt class="py-op">.</tt><tt class="py-name">BooleanField</tt><tt class="py-op">(</tt><tt class="py-name">default</tt> <tt class="py-op">=</tt> <tt class="py-name">False</tt><tt class="py-op">)</tt> </tt>
-<a name="L264"></a><tt class="py-lineno">264</tt>  <tt class="py-line">    <tt id="link-208" class="py-name" targets="Variable kernel.models.Redeemable.expiration_time=kernel.models.Redeemable-class.html#expiration_time"><a title="kernel.models.Redeemable.expiration_time" class="py-name" href="#" onclick="return doclink('link-208', 'expiration_time', 'link-208');">expiration_time</a></tt> <tt class="py-op">=</tt> <tt id="link-209" class="py-name"><a title="admin.models
-analytics.models
-kernel.models" class="py-name" href="#" onclick="return doclink('link-209', 'models', 'link-0');">models</a></tt><tt class="py-op">.</tt><tt class="py-name">DateTimeField</tt><tt class="py-op">(</tt><tt class="py-name">null</tt> <tt class="py-op">=</tt> <tt class="py-name">True</tt><tt class="py-op">,</tt> <tt class="py-name">default</tt> <tt class="py-op">=</tt> <tt class="py-name">None</tt><tt class="py-op">)</tt> </tt>
-<a name="L265"></a><tt class="py-lineno">265</tt>  <tt class="py-line">    <tt id="link-210" class="py-name"><a title="kernel.models.Event_base.community
-kernel.models.Profile.community
-kernel.models.Redeemable.community
-kernel.models.User_following.community
-src.controllers.community
-src.controllers.community.community" class="py-name" href="#" onclick="return doclink('link-210', 'community', 'link-82');">community</a></tt> <tt class="py-op">=</tt> <tt id="link-211" class="py-name"><a title="admin.models
-analytics.models
-kernel.models" class="py-name" href="#" onclick="return doclink('link-211', 'models', 'link-0');">models</a></tt><tt class="py-op">.</tt><tt class="py-name">ForeignKey</tt><tt class="py-op">(</tt><tt class="py-string">'Community'</tt><tt class="py-op">)</tt> </tt>
-<a name="L266"></a><tt class="py-lineno">266</tt>  <tt class="py-line">    <tt id="link-212" class="py-name"><a title="kernel.models.Community.city
-kernel.models.Event_base.city
-kernel.models.Profile.city
-kernel.models.Redeemable.city
-kernel.models.User.city
-src.controllers.city
-src.controllers.city.city" class="py-name" href="#" onclick="return doclink('link-212', 'city', 'link-8');">city</a></tt> <tt class="py-op">=</tt> <tt id="link-213" class="py-name"><a title="admin.models
-analytics.models
-kernel.models" class="py-name" href="#" onclick="return doclink('link-213', 'models', 'link-0');">models</a></tt><tt class="py-op">.</tt><tt class="py-name">ForeignKey</tt><tt class="py-op">(</tt><tt class="py-string">'City'</tt><tt class="py-op">)</tt> </tt>
-<a name="L267"></a><tt class="py-lineno">267</tt>  <tt class="py-line">    <tt id="link-214" class="py-name"><a title="analytics.models.Add_points_event.created_time
+kernel.models" class="py-name" href="#" onclick="return doclink('link-207', 'models', 'link-0');">models</a></tt><tt class="py-op">.</tt><tt class="py-name">FloatField</tt><tt class="py-op">(</tt><tt class="py-op">)</tt> </tt>
+<a name="L269"></a><tt class="py-lineno">269</tt>  <tt class="py-line">    <tt id="link-208" class="py-name"><a title="analytics.models.Add_points_event.created_time
 analytics.models.Subtract_points_event.created_time
 kernel.models.Claim.created_time
+kernel.models.Donation.created_time
 kernel.models.Event_base.created_time
+kernel.models.Pledge.created_time
 kernel.models.Profile.created_time
 kernel.models.Profile_manager.created_time
+kernel.models.Purchase.created_time
 kernel.models.Redeemable.created_time
 kernel.models.User.created_time
-kernel.models.Wepay_account.created_time" class="py-name" href="#" onclick="return doclink('link-214', 'created_time', 'link-14');">created_time</a></tt> <tt class="py-op">=</tt> <tt id="link-215" class="py-name"><a title="admin.models
+kernel.models.Wepay_account.created_time" class="py-name" href="#" onclick="return doclink('link-208', 'created_time', 'link-14');">created_time</a></tt> <tt class="py-op">=</tt> <tt id="link-209" class="py-name"><a title="admin.models
 analytics.models
-kernel.models" class="py-name" href="#" onclick="return doclink('link-215', 'models', 'link-0');">models</a></tt><tt class="py-op">.</tt><tt class="py-name">DateTimeField</tt><tt class="py-op">(</tt><tt class="py-name">auto_now_add</tt> <tt class="py-op">=</tt> <tt class="py-name">True</tt><tt class="py-op">)</tt> </tt>
-<a name="L268"></a><tt class="py-lineno">268</tt>  <tt class="py-line"> </tt>
-<a name="Redeemable.save"></a><div id="Redeemable.save-def"><a name="L269"></a><tt class="py-lineno">269</tt> <a class="py-toggle" href="#" id="Redeemable.save-toggle" onclick="return toggle('Redeemable.save');">-</a><tt class="py-line">    <tt class="py-keyword">def</tt> <a class="py-def-name" href="kernel.models.Redeemable-class.html#save">save</a><tt class="py-op">(</tt><tt class="py-param">self</tt><tt class="py-op">,</tt> <tt class="py-op">*</tt><tt class="py-param">args</tt><tt class="py-op">,</tt> <tt class="py-op">**</tt><tt class="py-param">kwargs</tt><tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
-</div><div id="Redeemable.save-collapsed" style="display:none;" pad="+++" indent="++++++++"></div><div id="Redeemable.save-expanded"><a name="L270"></a><tt class="py-lineno">270</tt>  <tt class="py-line">        <tt class="py-docstring">"""</tt> </tt>
-<a name="L271"></a><tt class="py-lineno">271</tt>  <tt class="py-line"><tt class="py-docstring">        Overrides save to auto-set community and city</tt> </tt>
-<a name="L272"></a><tt class="py-lineno">272</tt>  <tt class="py-line"><tt class="py-docstring">        """</tt> </tt>
-<a name="L273"></a><tt class="py-lineno">273</tt>  <tt class="py-line">        <tt class="py-keyword">if</tt> <tt class="py-name">self</tt><tt class="py-op">.</tt><tt class="py-name">pk</tt> <tt class="py-keyword">is</tt> <tt class="py-name">None</tt><tt class="py-op">:</tt> </tt>
-<a name="L274"></a><tt class="py-lineno">274</tt>  <tt class="py-line">            <tt class="py-comment"># Auto-set the community and city for the redeemable</tt> </tt>
-<a name="L275"></a><tt class="py-lineno">275</tt>  <tt class="py-line">            <tt class="py-name">self</tt><tt class="py-op">.</tt><tt id="link-216" class="py-name"><a title="kernel.models.Event_base.community
-kernel.models.Profile.community
-kernel.models.Redeemable.community
-kernel.models.User_following.community
-src.controllers.community
-src.controllers.community.community" class="py-name" href="#" onclick="return doclink('link-216', 'community', 'link-82');">community</a></tt> <tt class="py-op">=</tt> <tt class="py-name">self</tt><tt class="py-op">.</tt><tt id="link-217" class="py-name"><a title="kernel.models.Claim.owner
-kernel.models.Event_base.owner
-kernel.models.Redeemable.owner
-kernel.models.Wepay_account.owner" class="py-name" href="#" onclick="return doclink('link-217', 'owner', 'link-32');">owner</a></tt><tt class="py-op">.</tt><tt id="link-218" class="py-name"><a title="kernel.models.Event_base.community
-kernel.models.Profile.community
-kernel.models.Redeemable.community
-kernel.models.User_following.community
-src.controllers.community
-src.controllers.community.community" class="py-name" href="#" onclick="return doclink('link-218', 'community', 'link-82');">community</a></tt> </tt>
-<a name="L276"></a><tt class="py-lineno">276</tt>  <tt class="py-line">            <tt class="py-name">self</tt><tt class="py-op">.</tt><tt id="link-219" class="py-name"><a title="kernel.models.Community.city
-kernel.models.Event_base.city
-kernel.models.Profile.city
-kernel.models.Redeemable.city
-kernel.models.User.city
-src.controllers.city
-src.controllers.city.city" class="py-name" href="#" onclick="return doclink('link-219', 'city', 'link-8');">city</a></tt> <tt class="py-op">=</tt> <tt class="py-name">self</tt><tt class="py-op">.</tt><tt id="link-220" class="py-name"><a title="kernel.models.Claim.owner
-kernel.models.Event_base.owner
-kernel.models.Redeemable.owner
-kernel.models.Wepay_account.owner" class="py-name" href="#" onclick="return doclink('link-220', 'owner', 'link-32');">owner</a></tt><tt class="py-op">.</tt><tt id="link-221" class="py-name"><a title="kernel.models.Community.city
-kernel.models.Event_base.city
-kernel.models.Profile.city
-kernel.models.Redeemable.city
-kernel.models.User.city
-src.controllers.city
-src.controllers.city.city" class="py-name" href="#" onclick="return doclink('link-221', 'city', 'link-8');">city</a></tt> </tt>
-<a name="L277"></a><tt class="py-lineno">277</tt>  <tt class="py-line">        <tt class="py-name">super</tt><tt class="py-op">(</tt><tt id="link-222" class="py-name" targets="Class kernel.models.Redeemable=kernel.models.Redeemable-class.html"><a title="kernel.models.Redeemable" class="py-name" href="#" onclick="return doclink('link-222', 'Redeemable', 'link-222');">Redeemable</a></tt><tt class="py-op">,</tt> <tt class="py-name">self</tt><tt class="py-op">)</tt><tt class="py-op">.</tt><tt id="link-223" class="py-name"><a title="admin.models.Admin.save
+kernel.models" class="py-name" href="#" onclick="return doclink('link-209', 'models', 'link-0');">models</a></tt><tt class="py-op">.</tt><tt class="py-name">DateTimeField</tt><tt class="py-op">(</tt><tt class="py-name">auto_now_add</tt> <tt class="py-op">=</tt> <tt class="py-name">True</tt><tt class="py-op">)</tt> </tt>
+</div><a name="L270"></a><tt class="py-lineno">270</tt>  <tt class="py-line"> </tt>
+<a name="Fundraiser"></a><div id="Fundraiser-def"><a name="L271"></a><tt class="py-lineno">271</tt> <a class="py-toggle" href="#" id="Fundraiser-toggle" onclick="return toggle('Fundraiser');">-</a><tt class="py-line"><tt class="py-keyword">class</tt> <a class="py-def-name" href="kernel.models.Fundraiser-class.html">Fundraiser</a><tt class="py-op">(</tt><tt class="py-base-class">Event_base</tt><tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
+</div><div id="Fundraiser-collapsed" style="display:none;" pad="+++" indent="++++"></div><div id="Fundraiser-expanded"><a name="L272"></a><tt class="py-lineno">272</tt>  <tt class="py-line">    <tt class="py-docstring">"""</tt> </tt>
+<a name="L273"></a><tt class="py-lineno">273</tt>  <tt class="py-line"><tt class="py-docstring">    Event model for fundraising events</tt> </tt>
+<a name="L274"></a><tt class="py-lineno">274</tt>  <tt class="py-line"><tt class="py-docstring">    """</tt> </tt>
+<a name="L275"></a><tt class="py-lineno">275</tt>  <tt class="py-line">    <tt class="py-keyword">pass</tt> </tt>
+<a name="L276"></a><tt class="py-lineno">276</tt>  <tt class="py-line"> </tt>
+<a name="Fundraiser.save"></a><div id="Fundraiser.save-def"><a name="L277"></a><tt class="py-lineno">277</tt> <a class="py-toggle" href="#" id="Fundraiser.save-toggle" onclick="return toggle('Fundraiser.save');">-</a><tt class="py-line">    <tt class="py-keyword">def</tt> <a class="py-def-name" href="kernel.models.Fundraiser-class.html#save">save</a><tt class="py-op">(</tt><tt class="py-param">self</tt><tt class="py-op">,</tt> <tt class="py-op">*</tt><tt class="py-param">args</tt><tt class="py-op">,</tt> <tt class="py-op">**</tt><tt class="py-param">kwargs</tt><tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
+</div><div id="Fundraiser.save-collapsed" style="display:none;" pad="+++" indent="++++++++"></div><div id="Fundraiser.save-expanded"><a name="L278"></a><tt class="py-lineno">278</tt>  <tt class="py-line">        <tt class="py-docstring">"""</tt> </tt>
+<a name="L279"></a><tt class="py-lineno">279</tt>  <tt class="py-line"><tt class="py-docstring">        Overrides save to force an end time for the fundraiser</tt> </tt>
+<a name="L280"></a><tt class="py-lineno">280</tt>  <tt class="py-line"><tt class="py-docstring">        """</tt> </tt>
+<a name="L281"></a><tt class="py-lineno">281</tt>  <tt class="py-line">        <tt class="py-keyword">if</tt> <tt class="py-name">self</tt><tt class="py-op">.</tt><tt id="link-210" class="py-name"><a title="kernel.models.Event_base.end_time
+kernel.models.Ticket.end_time" class="py-name" href="#" onclick="return doclink('link-210', 'end_time', 'link-125');">end_time</a></tt> <tt class="py-keyword">is</tt> <tt class="py-name">None</tt><tt class="py-op">:</tt> </tt>
+<a name="L282"></a><tt class="py-lineno">282</tt>  <tt class="py-line">            <tt class="py-keyword">raise</tt> <tt class="py-name">IntegrityError</tt><tt class="py-op">(</tt><tt class="py-op">)</tt> </tt>
+<a name="L283"></a><tt class="py-lineno">283</tt>  <tt class="py-line">        <tt class="py-name">super</tt><tt class="py-op">(</tt><tt id="link-211" class="py-name" targets="Class kernel.models.Fundraiser=kernel.models.Fundraiser-class.html"><a title="kernel.models.Fundraiser" class="py-name" href="#" onclick="return doclink('link-211', 'Fundraiser', 'link-211');">Fundraiser</a></tt><tt class="py-op">,</tt> <tt class="py-name">self</tt><tt class="py-op">)</tt><tt class="py-op">.</tt><tt id="link-212" class="py-name"><a title="admin.models.Admin.save
 kernel.models.City.save
 kernel.models.Claim.save
 kernel.models.Event_base.save
+kernel.models.Fundraiser.save
 kernel.models.Profile.save
 kernel.models.Redeemable.save
 kernel.models.Ticket.save
-kernel.models.User.save" class="py-name" href="#" onclick="return doclink('link-223', 'save', 'link-29');">save</a></tt><tt class="py-op">(</tt><tt class="py-op">*</tt><tt class="py-name">args</tt><tt class="py-op">,</tt> <tt class="py-op">**</tt><tt class="py-name">kwargs</tt><tt class="py-op">)</tt> </tt>
-</div></div><a name="L278"></a><tt class="py-lineno">278</tt>  <tt class="py-line"> </tt>
-<a name="InsufficientPoints"></a><div id="InsufficientPoints-def"><a name="L279"></a><tt class="py-lineno">279</tt> <a class="py-toggle" href="#" id="InsufficientPoints-toggle" onclick="return toggle('InsufficientPoints');">-</a><tt class="py-line"><tt class="py-keyword">class</tt> <a class="py-def-name" href="kernel.models.InsufficientPoints-class.html">InsufficientPoints</a><tt class="py-op">(</tt><tt class="py-base-class">Exception</tt><tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
-</div><div id="InsufficientPoints-collapsed" style="display:none;" pad="+++" indent="++++"></div><div id="InsufficientPoints-expanded"><a name="L280"></a><tt class="py-lineno">280</tt>  <tt class="py-line">    <tt class="py-docstring">"""</tt> </tt>
-<a name="L281"></a><tt class="py-lineno">281</tt>  <tt class="py-line"><tt class="py-docstring">    An exception for when points are not sufficient to claim a redeemable</tt> </tt>
-<a name="L282"></a><tt class="py-lineno">282</tt>  <tt class="py-line"><tt class="py-docstring">    """</tt> </tt>
-<a name="InsufficientPoints.__init__"></a><div id="InsufficientPoints.__init__-def"><a name="L283"></a><tt class="py-lineno">283</tt> <a class="py-toggle" href="#" id="InsufficientPoints.__init__-toggle" onclick="return toggle('InsufficientPoints.__init__');">-</a><tt class="py-line">    <tt class="py-keyword">def</tt> <a class="py-def-name" href="kernel.models.InsufficientPoints-class.html#__init__">__init__</a><tt class="py-op">(</tt><tt class="py-param">self</tt><tt class="py-op">,</tt> <tt class="py-param">pointsNeeded</tt><tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
-</div><div id="InsufficientPoints.__init__-collapsed" style="display:none;" pad="+++" indent="++++++++"></div><div id="InsufficientPoints.__init__-expanded"><a name="L284"></a><tt class="py-lineno">284</tt>  <tt class="py-line">        <tt class="py-name">self</tt><tt class="py-op">.</tt><tt class="py-name">pointsNeeded</tt> <tt class="py-op">=</tt> <tt class="py-name">pointsNeeded</tt> </tt>
-</div></div><a name="L285"></a><tt class="py-lineno">285</tt>  <tt class="py-line"> </tt>
-<a name="ExpiredRedeemable"></a><div id="ExpiredRedeemable-def"><a name="L286"></a><tt class="py-lineno">286</tt> <a class="py-toggle" href="#" id="ExpiredRedeemable-toggle" onclick="return toggle('ExpiredRedeemable');">-</a><tt class="py-line"><tt class="py-keyword">class</tt> <a class="py-def-name" href="kernel.models.ExpiredRedeemable-class.html">ExpiredRedeemable</a><tt class="py-op">(</tt><tt class="py-base-class">Exception</tt><tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
-</div><div id="ExpiredRedeemable-collapsed" style="display:none;" pad="+++" indent="++++"></div><div id="ExpiredRedeemable-expanded"><a name="L287"></a><tt class="py-lineno">287</tt>  <tt class="py-line">    <tt class="py-docstring">"""</tt> </tt>
-<a name="L288"></a><tt class="py-lineno">288</tt>  <tt class="py-line"><tt class="py-docstring">    An exception for claiming an expired redeemable</tt> </tt>
-<a name="L289"></a><tt class="py-lineno">289</tt>  <tt class="py-line"><tt class="py-docstring">    """</tt> </tt>
-<a name="ExpiredRedeemable.__init__"></a><div id="ExpiredRedeemable.__init__-def"><a name="L290"></a><tt class="py-lineno">290</tt> <a class="py-toggle" href="#" id="ExpiredRedeemable.__init__-toggle" onclick="return toggle('ExpiredRedeemable.__init__');">-</a><tt class="py-line">    <tt class="py-keyword">def</tt> <a class="py-def-name" href="kernel.models.ExpiredRedeemable-class.html#__init__">__init__</a><tt class="py-op">(</tt><tt class="py-param">self</tt><tt class="py-op">,</tt> <tt class="py-param">redeemable</tt><tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
-</div><div id="ExpiredRedeemable.__init__-collapsed" style="display:none;" pad="+++" indent="++++++++"></div><div id="ExpiredRedeemable.__init__-expanded"><a name="L291"></a><tt class="py-lineno">291</tt>  <tt class="py-line">        <tt class="py-name">self</tt><tt class="py-op">.</tt><tt id="link-224" class="py-name" targets="Variable analytics.models.Subtract_points_event.redeemable=analytics.models.Subtract_points_event-class.html#redeemable,Variable kernel.models.Claim.redeemable=kernel.models.Claim-class.html#redeemable,Module src.controllers.redeemable=src.controllers.redeemable-module.html"><a title="analytics.models.Subtract_points_event.redeemable
-kernel.models.Claim.redeemable
-src.controllers.redeemable" class="py-name" href="#" onclick="return doclink('link-224', 'redeemable', 'link-224');">redeemable</a></tt> <tt class="py-op">=</tt> <tt id="link-225" class="py-name"><a title="analytics.models.Subtract_points_event.redeemable
-kernel.models.Claim.redeemable
-src.controllers.redeemable" class="py-name" href="#" onclick="return doclink('link-225', 'redeemable', 'link-224');">redeemable</a></tt> </tt>
-</div></div><a name="L292"></a><tt class="py-lineno">292</tt>  <tt class="py-line"> </tt>
-<a name="Claim"></a><div id="Claim-def"><a name="L293"></a><tt class="py-lineno">293</tt> <a class="py-toggle" href="#" id="Claim-toggle" onclick="return toggle('Claim');">-</a><tt class="py-line"><tt class="py-keyword">class</tt> <a class="py-def-name" href="kernel.models.Claim-class.html">Claim</a><tt class="py-op">(</tt><tt class="py-base-class">models</tt><tt class="py-op">.</tt><tt class="py-base-class">Model</tt><tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
-</div><div id="Claim-collapsed" style="display:none;" pad="+++" indent="++++"></div><div id="Claim-expanded"><a name="L294"></a><tt class="py-lineno">294</tt>  <tt class="py-line">    <tt class="py-docstring">"""</tt> </tt>
-<a name="L295"></a><tt class="py-lineno">295</tt>  <tt class="py-line"><tt class="py-docstring">    A claim for a redeemable</tt> </tt>
-<a name="L296"></a><tt class="py-lineno">296</tt>  <tt class="py-line"><tt class="py-docstring">    """</tt> </tt>
-<a name="L297"></a><tt class="py-lineno">297</tt>  <tt class="py-line">    <tt id="link-226" class="py-name"><a title="analytics.models.Subtract_points_event.redeemable
-kernel.models.Claim.redeemable
-src.controllers.redeemable" class="py-name" href="#" onclick="return doclink('link-226', 'redeemable', 'link-224');">redeemable</a></tt> <tt class="py-op">=</tt> <tt id="link-227" class="py-name"><a title="admin.models
-analytics.models
-kernel.models" class="py-name" href="#" onclick="return doclink('link-227', 'models', 'link-0');">models</a></tt><tt class="py-op">.</tt><tt class="py-name">ForeignKey</tt><tt class="py-op">(</tt><tt class="py-string">'Redeemable'</tt><tt class="py-op">)</tt> </tt>
-<a name="L298"></a><tt class="py-lineno">298</tt>  <tt class="py-line">    <tt id="link-228" class="py-name"><a title="kernel.models.Claim.owner
+kernel.models.User.save" class="py-name" href="#" onclick="return doclink('link-212', 'save', 'link-29');">save</a></tt><tt class="py-op">(</tt><tt class="py-op">*</tt><tt class="py-name">args</tt><tt class="py-op">,</tt> <tt class="py-op">**</tt><tt class="py-name">kwargs</tt><tt class="py-op">)</tt> </tt>
+</div></div><a name="L284"></a><tt class="py-lineno">284</tt>  <tt class="py-line"> </tt>
+<a name="Donation"></a><div id="Donation-def"><a name="L285"></a><tt class="py-lineno">285</tt> <a class="py-toggle" href="#" id="Donation-toggle" onclick="return toggle('Donation');">-</a><tt class="py-line"><tt class="py-keyword">class</tt> <a class="py-def-name" href="kernel.models.Donation-class.html">Donation</a><tt class="py-op">(</tt><tt class="py-base-class">models</tt><tt class="py-op">.</tt><tt class="py-base-class">Model</tt><tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
+</div><div id="Donation-collapsed" style="display:none;" pad="+++" indent="++++"></div><div id="Donation-expanded"><a name="L286"></a><tt class="py-lineno">286</tt>  <tt class="py-line">    <tt class="py-docstring">"""</tt> </tt>
+<a name="L287"></a><tt class="py-lineno">287</tt>  <tt class="py-line"><tt class="py-docstring">    Donation model for a fundraiser</tt> </tt>
+<a name="L288"></a><tt class="py-lineno">288</tt>  <tt class="py-line"><tt class="py-docstring">    """</tt> </tt>
+<a name="L289"></a><tt class="py-lineno">289</tt>  <tt class="py-line">    <tt id="link-213" class="py-name"><a title="kernel.models.Claim.owner
+kernel.models.Donation.owner
 kernel.models.Event_base.owner
+kernel.models.Pledge.owner
+kernel.models.Purchase.owner
 kernel.models.Redeemable.owner
-kernel.models.Wepay_account.owner" class="py-name" href="#" onclick="return doclink('link-228', 'owner', 'link-32');">owner</a></tt> <tt class="py-op">=</tt> <tt id="link-229" class="py-name"><a title="admin.models
+kernel.models.Wepay_account.owner" class="py-name" href="#" onclick="return doclink('link-213', 'owner', 'link-32');">owner</a></tt> <tt class="py-op">=</tt> <tt id="link-214" class="py-name"><a title="admin.models
 analytics.models
-kernel.models" class="py-name" href="#" onclick="return doclink('link-229', 'models', 'link-0');">models</a></tt><tt class="py-op">.</tt><tt class="py-name">ForeignKey</tt><tt class="py-op">(</tt><tt class="py-string">'User'</tt><tt class="py-op">)</tt> </tt>
-<a name="L299"></a><tt class="py-lineno">299</tt>  <tt class="py-line">    <tt id="link-230" class="py-name" targets="Variable kernel.models.Claim.code=kernel.models.Claim-class.html#code"><a title="kernel.models.Claim.code" class="py-name" href="#" onclick="return doclink('link-230', 'code', 'link-230');">code</a></tt> <tt class="py-op">=</tt> <tt id="link-231" class="py-name"><a title="admin.models
+kernel.models" class="py-name" href="#" onclick="return doclink('link-214', 'models', 'link-0');">models</a></tt><tt class="py-op">.</tt><tt class="py-name">ForeignKey</tt><tt class="py-op">(</tt><tt class="py-string">'User'</tt><tt class="py-op">)</tt> </tt>
+<a name="L290"></a><tt class="py-lineno">290</tt>  <tt class="py-line">    <tt id="link-215" class="py-name" targets="Variable kernel.models.Donation.fundraiser=kernel.models.Donation-class.html#fundraiser,Variable kernel.models.Event_base.fundraiser=kernel.models.Event_base-class.html#fundraiser"><a title="kernel.models.Donation.fundraiser
+kernel.models.Event_base.fundraiser" class="py-name" href="#" onclick="return doclink('link-215', 'fundraiser', 'link-215');">fundraiser</a></tt> <tt class="py-op">=</tt> <tt id="link-216" class="py-name"><a title="admin.models
 analytics.models
-kernel.models" class="py-name" href="#" onclick="return doclink('link-231', 'models', 'link-0');">models</a></tt><tt class="py-op">.</tt><tt class="py-name">CharField</tt><tt class="py-op">(</tt><tt class="py-name">max_length</tt> <tt class="py-op">=</tt> <tt class="py-number">100</tt><tt class="py-op">)</tt> </tt>
-<a name="L300"></a><tt class="py-lineno">300</tt>  <tt class="py-line">    <tt id="link-232" class="py-name" targets="Variable kernel.models.Claim.is_redeemed=kernel.models.Claim-class.html#is_redeemed"><a title="kernel.models.Claim.is_redeemed" class="py-name" href="#" onclick="return doclink('link-232', 'is_redeemed', 'link-232');">is_redeemed</a></tt> <tt class="py-op">=</tt> <tt id="link-233" class="py-name"><a title="admin.models
+kernel.models" class="py-name" href="#" onclick="return doclink('link-216', 'models', 'link-0');">models</a></tt><tt class="py-op">.</tt><tt class="py-name">ForeignKey</tt><tt class="py-op">(</tt><tt class="py-string">'Fundraiser'</tt><tt class="py-op">)</tt> </tt>
+<a name="L291"></a><tt class="py-lineno">291</tt>  <tt class="py-line">    <tt id="link-217" class="py-name"><a title="kernel.models.Donation.amount
+kernel.models.Pledge.amount" class="py-name" href="#" onclick="return doclink('link-217', 'amount', 'link-206');">amount</a></tt> <tt class="py-op">=</tt> <tt id="link-218" class="py-name"><a title="admin.models
 analytics.models
-kernel.models" class="py-name" href="#" onclick="return doclink('link-233', 'models', 'link-0');">models</a></tt><tt class="py-op">.</tt><tt class="py-name">BooleanField</tt><tt class="py-op">(</tt><tt class="py-name">default</tt> <tt class="py-op">=</tt> <tt class="py-name">False</tt><tt class="py-op">)</tt> </tt>
-<a name="L301"></a><tt class="py-lineno">301</tt>  <tt class="py-line">    <tt id="link-234" class="py-name" targets="Variable kernel.models.Claim.redeemed_time=kernel.models.Claim-class.html#redeemed_time"><a title="kernel.models.Claim.redeemed_time" class="py-name" href="#" onclick="return doclink('link-234', 'redeemed_time', 'link-234');">redeemed_time</a></tt> <tt class="py-op">=</tt> <tt id="link-235" class="py-name"><a title="admin.models
-analytics.models
-kernel.models" class="py-name" href="#" onclick="return doclink('link-235', 'models', 'link-0');">models</a></tt><tt class="py-op">.</tt><tt class="py-name">DateTimeField</tt><tt class="py-op">(</tt><tt class="py-name">null</tt> <tt class="py-op">=</tt> <tt class="py-name">True</tt><tt class="py-op">,</tt> <tt class="py-name">default</tt> <tt class="py-op">=</tt> <tt class="py-name">None</tt><tt class="py-op">)</tt> </tt>
-<a name="L302"></a><tt class="py-lineno">302</tt>  <tt class="py-line">    <tt id="link-236" class="py-name"><a title="analytics.models.Add_points_event.created_time
+kernel.models" class="py-name" href="#" onclick="return doclink('link-218', 'models', 'link-0');">models</a></tt><tt class="py-op">.</tt><tt class="py-name">FloatField</tt><tt class="py-op">(</tt><tt class="py-op">)</tt> </tt>
+<a name="L292"></a><tt class="py-lineno">292</tt>  <tt class="py-line">    <tt id="link-219" class="py-name"><a title="analytics.models.Add_points_event.created_time
 analytics.models.Subtract_points_event.created_time
 kernel.models.Claim.created_time
+kernel.models.Donation.created_time
 kernel.models.Event_base.created_time
+kernel.models.Pledge.created_time
 kernel.models.Profile.created_time
 kernel.models.Profile_manager.created_time
+kernel.models.Purchase.created_time
 kernel.models.Redeemable.created_time
 kernel.models.User.created_time
-kernel.models.Wepay_account.created_time" class="py-name" href="#" onclick="return doclink('link-236', 'created_time', 'link-14');">created_time</a></tt> <tt class="py-op">=</tt> <tt id="link-237" class="py-name"><a title="admin.models
+kernel.models.Wepay_account.created_time" class="py-name" href="#" onclick="return doclink('link-219', 'created_time', 'link-14');">created_time</a></tt> <tt class="py-op">=</tt> <tt id="link-220" class="py-name"><a title="admin.models
 analytics.models
-kernel.models" class="py-name" href="#" onclick="return doclink('link-237', 'models', 'link-0');">models</a></tt><tt class="py-op">.</tt><tt class="py-name">DateTimeField</tt><tt class="py-op">(</tt><tt class="py-name">auto_now_add</tt> <tt class="py-op">=</tt> <tt class="py-name">True</tt><tt class="py-op">)</tt> </tt>
-<a name="L303"></a><tt class="py-lineno">303</tt>  <tt class="py-line"> </tt>
-<a name="Claim.save"></a><div id="Claim.save-def"><a name="L304"></a><tt class="py-lineno">304</tt> <a class="py-toggle" href="#" id="Claim.save-toggle" onclick="return toggle('Claim.save');">-</a><tt class="py-line">    <tt class="py-keyword">def</tt> <a class="py-def-name" href="kernel.models.Claim-class.html#save">save</a><tt class="py-op">(</tt><tt class="py-param">self</tt><tt class="py-op">,</tt> <tt class="py-op">*</tt><tt class="py-param">args</tt><tt class="py-op">,</tt> <tt class="py-op">**</tt><tt class="py-param">kwargs</tt><tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
-</div><div id="Claim.save-collapsed" style="display:none;" pad="+++" indent="++++++++"></div><div id="Claim.save-expanded"><a name="L305"></a><tt class="py-lineno">305</tt>  <tt class="py-line">        <tt class="py-docstring">"""</tt> </tt>
-<a name="L306"></a><tt class="py-lineno">306</tt>  <tt class="py-line"><tt class="py-docstring">        Overrides save to conduct proper claiming behavior</tt> </tt>
-<a name="L307"></a><tt class="py-lineno">307</tt>  <tt class="py-line"><tt class="py-docstring">        """</tt> </tt>
-<a name="L308"></a><tt class="py-lineno">308</tt>  <tt class="py-line">        <tt class="py-name">shouldFireSubtractEvent</tt> <tt class="py-op">=</tt> <tt class="py-name">False</tt> </tt>
-<a name="L309"></a><tt class="py-lineno">309</tt>  <tt class="py-line">        <tt class="py-keyword">if</tt> <tt class="py-name">self</tt><tt class="py-op">.</tt><tt class="py-name">pk</tt> <tt class="py-keyword">is</tt> <tt class="py-name">None</tt><tt class="py-op">:</tt> </tt>
-<a name="L310"></a><tt class="py-lineno">310</tt>  <tt class="py-line">            <tt class="py-comment"># Check if the redeemable is expired</tt> </tt>
-<a name="L311"></a><tt class="py-lineno">311</tt>  <tt class="py-line">            <tt class="py-keyword">if</tt> <tt class="py-op">(</tt><tt class="py-name">self</tt><tt class="py-op">.</tt><tt id="link-238" class="py-name"><a title="analytics.models.Subtract_points_event.redeemable
-kernel.models.Claim.redeemable
-src.controllers.redeemable" class="py-name" href="#" onclick="return doclink('link-238', 'redeemable', 'link-224');">redeemable</a></tt><tt class="py-op">.</tt><tt id="link-239" class="py-name"><a title="kernel.models.Redeemable.is_expired
-kernel.models.Wepay_account.is_expired" class="py-name" href="#" onclick="return doclink('link-239', 'is_expired', 'link-42');">is_expired</a></tt> <tt class="py-keyword">or</tt>  </tt>
-<a name="L312"></a><tt class="py-lineno">312</tt>  <tt class="py-line">                <tt class="py-name">self</tt><tt class="py-op">.</tt><tt id="link-240" class="py-name"><a title="analytics.models.Subtract_points_event.redeemable
-kernel.models.Claim.redeemable
-src.controllers.redeemable" class="py-name" href="#" onclick="return doclink('link-240', 'redeemable', 'link-224');">redeemable</a></tt><tt class="py-op">.</tt><tt id="link-241" class="py-name"><a title="kernel.models.Redeemable.expiration_time" class="py-name" href="#" onclick="return doclink('link-241', 'expiration_time', 'link-208');">expiration_time</a></tt> <tt class="py-op">&lt;=</tt> <tt class="py-name">timezone</tt><tt class="py-op">.</tt><tt class="py-name">now</tt><tt class="py-op">(</tt><tt class="py-op">)</tt><tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
-<a name="L313"></a><tt class="py-lineno">313</tt>  <tt class="py-line">                <tt class="py-keyword">raise</tt> <tt id="link-242" class="py-name" targets="Class kernel.models.ExpiredRedeemable=kernel.models.ExpiredRedeemable-class.html"><a title="kernel.models.ExpiredRedeemable" class="py-name" href="#" onclick="return doclink('link-242', 'ExpiredRedeemable', 'link-242');">ExpiredRedeemable</a></tt><tt class="py-op">(</tt><tt class="py-name">self</tt><tt class="py-op">.</tt><tt id="link-243" class="py-name"><a title="analytics.models.Subtract_points_event.redeemable
-kernel.models.Claim.redeemable
-src.controllers.redeemable" class="py-name" href="#" onclick="return doclink('link-243', 'redeemable', 'link-224');">redeemable</a></tt><tt class="py-op">)</tt> </tt>
-<a name="L314"></a><tt class="py-lineno">314</tt>  <tt class="py-line">            <tt class="py-comment"># Check if the redeemable has sufficient quantity</tt> </tt>
-<a name="L315"></a><tt class="py-lineno">315</tt>  <tt class="py-line">            <tt class="py-keyword">if</tt> <tt class="py-op">(</tt><tt class="py-name">self</tt><tt class="py-op">.</tt><tt id="link-244" class="py-name"><a title="analytics.models.Subtract_points_event.redeemable
-kernel.models.Claim.redeemable
-src.controllers.redeemable" class="py-name" href="#" onclick="return doclink('link-244', 'redeemable', 'link-224');">redeemable</a></tt><tt class="py-op">.</tt><tt id="link-245" class="py-name"><a title="kernel.models.Redeemable.quantity
-kernel.models.Reward.quantity
-kernel.models.Ticket.quantity" class="py-name" href="#" onclick="return doclink('link-245', 'quantity', 'link-164');">quantity</a></tt> <tt class="py-keyword">is</tt> <tt class="py-keyword">not</tt> <tt class="py-name">None</tt> <tt class="py-keyword">and</tt>  </tt>
-<a name="L316"></a><tt class="py-lineno">316</tt>  <tt class="py-line">                <tt class="py-name">self</tt><tt class="py-op">.</tt><tt id="link-246" class="py-name"><a title="analytics.models.Subtract_points_event.redeemable
-kernel.models.Claim.redeemable
-src.controllers.redeemable" class="py-name" href="#" onclick="return doclink('link-246', 'redeemable', 'link-224');">redeemable</a></tt><tt class="py-op">.</tt><tt id="link-247" class="py-name"><a title="kernel.models.Redeemable.quantity
-kernel.models.Reward.quantity
-kernel.models.Ticket.quantity" class="py-name" href="#" onclick="return doclink('link-247', 'quantity', 'link-164');">quantity</a></tt> <tt class="py-op">&lt;</tt> <tt class="py-number">1</tt><tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
-<a name="L317"></a><tt class="py-lineno">317</tt>  <tt class="py-line">                <tt class="py-keyword">raise</tt> <tt id="link-248" class="py-name" targets="Class kernel.models.InsufficientQuantity=kernel.models.InsufficientQuantity-class.html"><a title="kernel.models.InsufficientQuantity" class="py-name" href="#" onclick="return doclink('link-248', 'InsufficientQuantity', 'link-248');">InsufficientQuantity</a></tt><tt class="py-op">(</tt><tt class="py-op">)</tt> </tt>
-<a name="L318"></a><tt class="py-lineno">318</tt>  <tt class="py-line">            <tt class="py-comment"># Check if user has sufficient points</tt> </tt>
-<a name="L319"></a><tt class="py-lineno">319</tt>  <tt class="py-line">            <tt class="py-name">remainingPoints</tt> <tt class="py-op">=</tt> <tt class="py-name">self</tt><tt class="py-op">.</tt><tt id="link-249" class="py-name"><a title="kernel.models.Claim.owner
+kernel.models" class="py-name" href="#" onclick="return doclink('link-220', 'models', 'link-0');">models</a></tt><tt class="py-op">.</tt><tt class="py-name">DateTimeField</tt><tt class="py-op">(</tt><tt class="py-name">auto_now_add</tt> <tt class="py-op">=</tt> <tt class="py-name">True</tt><tt class="py-op">)</tt> </tt>
+</div><a name="L293"></a><tt class="py-lineno">293</tt>  <tt class="py-line"> </tt>
+<a name="Redeemable"></a><div id="Redeemable-def"><a name="L294"></a><tt class="py-lineno">294</tt> <a class="py-toggle" href="#" id="Redeemable-toggle" onclick="return toggle('Redeemable');">-</a><tt class="py-line"><tt class="py-keyword">class</tt> <a class="py-def-name" href="kernel.models.Redeemable-class.html">Redeemable</a><tt class="py-op">(</tt><tt class="py-base-class">models</tt><tt class="py-op">.</tt><tt class="py-base-class">Model</tt><tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
+</div><div id="Redeemable-collapsed" style="display:none;" pad="+++" indent="++++"></div><div id="Redeemable-expanded"><a name="L295"></a><tt class="py-lineno">295</tt>  <tt class="py-line">    <tt class="py-docstring">"""</tt> </tt>
+<a name="L296"></a><tt class="py-lineno">296</tt>  <tt class="py-line"><tt class="py-docstring">    Redeemable rewards for points</tt> </tt>
+<a name="L297"></a><tt class="py-lineno">297</tt>  <tt class="py-line"><tt class="py-docstring">    """</tt> </tt>
+<a name="L298"></a><tt class="py-lineno">298</tt>  <tt class="py-line">    <tt id="link-221" class="py-name"><a title="kernel.models.Claim.owner
+kernel.models.Donation.owner
 kernel.models.Event_base.owner
+kernel.models.Pledge.owner
+kernel.models.Purchase.owner
 kernel.models.Redeemable.owner
-kernel.models.Wepay_account.owner" class="py-name" href="#" onclick="return doclink('link-249', 'owner', 'link-32');">owner</a></tt><tt class="py-op">.</tt><tt id="link-250" class="py-name"><a title="analytics.models.Add_points_event.points
-analytics.models.Subtract_points_event.points
-kernel.models.Redeemable.points
-kernel.models.User.points" class="py-name" href="#" onclick="return doclink('link-250', 'points', 'link-12');">points</a></tt> <tt class="py-op">-</tt> <tt class="py-name">self</tt><tt class="py-op">.</tt><tt id="link-251" class="py-name"><a title="analytics.models.Subtract_points_event.redeemable
-kernel.models.Claim.redeemable
-src.controllers.redeemable" class="py-name" href="#" onclick="return doclink('link-251', 'redeemable', 'link-224');">redeemable</a></tt><tt class="py-op">.</tt><tt id="link-252" class="py-name"><a title="analytics.models.Add_points_event.points
-analytics.models.Subtract_points_event.points
-kernel.models.Redeemable.points
-kernel.models.User.points" class="py-name" href="#" onclick="return doclink('link-252', 'points', 'link-12');">points</a></tt> </tt>
-<a name="L320"></a><tt class="py-lineno">320</tt>  <tt class="py-line">            <tt class="py-keyword">if</tt> <tt class="py-name">remainingPoints</tt> <tt class="py-op">&lt;</tt> <tt class="py-number">0</tt><tt class="py-op">:</tt> </tt>
-<a name="L321"></a><tt class="py-lineno">321</tt>  <tt class="py-line">                <tt class="py-keyword">raise</tt> <tt id="link-253" class="py-name" targets="Class kernel.models.InsufficientPoints=kernel.models.InsufficientPoints-class.html"><a title="kernel.models.InsufficientPoints" class="py-name" href="#" onclick="return doclink('link-253', 'InsufficientPoints', 'link-253');">InsufficientPoints</a></tt><tt class="py-op">(</tt><tt class="py-name">abs</tt><tt class="py-op">(</tt><tt class="py-name">remainingPoints</tt><tt class="py-op">)</tt><tt class="py-op">)</tt> </tt>
-<a name="L322"></a><tt class="py-lineno">322</tt>  <tt class="py-line">            <tt class="py-comment"># All checks passed, perform transactions</tt> </tt>
-<a name="L323"></a><tt class="py-lineno">323</tt>  <tt class="py-line">            <tt class="py-name">self</tt><tt class="py-op">.</tt><tt id="link-254" class="py-name"><a title="analytics.models.Subtract_points_event.redeemable
-kernel.models.Claim.redeemable
-src.controllers.redeemable" class="py-name" href="#" onclick="return doclink('link-254', 'redeemable', 'link-224');">redeemable</a></tt><tt class="py-op">.</tt><tt id="link-255" class="py-name"><a title="kernel.models.Redeemable.quantity
+kernel.models.Wepay_account.owner" class="py-name" href="#" onclick="return doclink('link-221', 'owner', 'link-32');">owner</a></tt> <tt class="py-op">=</tt> <tt id="link-222" class="py-name"><a title="admin.models
+analytics.models
+kernel.models" class="py-name" href="#" onclick="return doclink('link-222', 'models', 'link-0');">models</a></tt><tt class="py-op">.</tt><tt class="py-name">ForeignKey</tt><tt class="py-op">(</tt><tt class="py-string">'Profile'</tt><tt class="py-op">)</tt> </tt>
+<a name="L299"></a><tt class="py-lineno">299</tt>  <tt class="py-line">    <tt id="link-223" class="py-name"><a title="admin.models.Admin.name
+kernel.models.City.name
+kernel.models.Community.name
+kernel.models.Event_base.name
+kernel.models.Profile.name
+kernel.models.Redeemable.name
+kernel.models.Reward.name
+kernel.models.Ticket.name
+kernel.models.Wepay_account.name" class="py-name" href="#" onclick="return doclink('link-223', 'name', 'link-40');">name</a></tt> <tt class="py-op">=</tt> <tt id="link-224" class="py-name"><a title="admin.models
+analytics.models
+kernel.models" class="py-name" href="#" onclick="return doclink('link-224', 'models', 'link-0');">models</a></tt><tt class="py-op">.</tt><tt class="py-name">CharField</tt><tt class="py-op">(</tt><tt class="py-name">max_length</tt> <tt class="py-op">=</tt> <tt class="py-number">50</tt><tt class="py-op">)</tt> </tt>
+<a name="L300"></a><tt class="py-lineno">300</tt>  <tt class="py-line">    <tt id="link-225" class="py-name"><a title="kernel.models.Community.description
+kernel.models.Event_base.description
+kernel.models.Profile.description
+kernel.models.Redeemable.description
+kernel.models.Reward.description
+kernel.models.Ticket.description" class="py-name" href="#" onclick="return doclink('link-225', 'description', 'link-72');">description</a></tt> <tt class="py-op">=</tt> <tt id="link-226" class="py-name"><a title="admin.models
+analytics.models
+kernel.models" class="py-name" href="#" onclick="return doclink('link-226', 'models', 'link-0');">models</a></tt><tt class="py-op">.</tt><tt class="py-name">CharField</tt><tt class="py-op">(</tt><tt class="py-name">max_length</tt> <tt class="py-op">=</tt> <tt class="py-number">500</tt><tt class="py-op">)</tt> </tt>
+<a name="L301"></a><tt class="py-lineno">301</tt>  <tt class="py-line">    <tt id="link-227" class="py-name"><a title="kernel.models.Redeemable.quantity
 kernel.models.Reward.quantity
-kernel.models.Ticket.quantity" class="py-name" href="#" onclick="return doclink('link-255', 'quantity', 'link-164');">quantity</a></tt> <tt class="py-op">=</tt> <tt class="py-name">F</tt><tt class="py-op">(</tt><tt class="py-string">'quantity'</tt><tt class="py-op">)</tt> <tt class="py-op">-</tt> <tt class="py-number">1</tt> </tt>
-<a name="L324"></a><tt class="py-lineno">324</tt>  <tt class="py-line">            <tt class="py-name">self</tt><tt class="py-op">.</tt><tt id="link-256" class="py-name"><a title="analytics.models.Subtract_points_event.redeemable
-kernel.models.Claim.redeemable
-src.controllers.redeemable" class="py-name" href="#" onclick="return doclink('link-256', 'redeemable', 'link-224');">redeemable</a></tt><tt class="py-op">.</tt><tt id="link-257" class="py-name"><a title="admin.models.Admin.save
-kernel.models.City.save
-kernel.models.Claim.save
-kernel.models.Event_base.save
-kernel.models.Profile.save
-kernel.models.Redeemable.save
-kernel.models.Ticket.save
-kernel.models.User.save" class="py-name" href="#" onclick="return doclink('link-257', 'save', 'link-29');">save</a></tt><tt class="py-op">(</tt><tt class="py-op">)</tt> </tt>
-<a name="L325"></a><tt class="py-lineno">325</tt>  <tt class="py-line">            <tt class="py-name">self</tt><tt class="py-op">.</tt><tt id="link-258" class="py-name"><a title="analytics.models.Add_points_event.user
-analytics.models.Subtract_points_event.user
-kernel.models.Profile_manager.user
-kernel.models.User_following.user
-src.controllers.user" class="py-name" href="#" onclick="return doclink('link-258', 'user', 'link-80');">user</a></tt><tt class="py-op">.</tt><tt id="link-259" class="py-name"><a title="analytics.models.Add_points_event.points
+kernel.models.Ticket.quantity" class="py-name" href="#" onclick="return doclink('link-227', 'quantity', 'link-164');">quantity</a></tt> <tt class="py-op">=</tt> <tt id="link-228" class="py-name"><a title="admin.models
+analytics.models
+kernel.models" class="py-name" href="#" onclick="return doclink('link-228', 'models', 'link-0');">models</a></tt><tt class="py-op">.</tt><tt class="py-name">IntegerField</tt><tt class="py-op">(</tt><tt class="py-name">null</tt> <tt class="py-op">=</tt> <tt class="py-name">True</tt><tt class="py-op">)</tt> </tt>
+<a name="L302"></a><tt class="py-lineno">302</tt>  <tt class="py-line">    <tt id="link-229" class="py-name" targets="Variable kernel.models.Redeemable.value=kernel.models.Redeemable-class.html#value"><a title="kernel.models.Redeemable.value" class="py-name" href="#" onclick="return doclink('link-229', 'value', 'link-229');">value</a></tt> <tt class="py-op">=</tt> <tt id="link-230" class="py-name"><a title="admin.models
+analytics.models
+kernel.models" class="py-name" href="#" onclick="return doclink('link-230', 'models', 'link-0');">models</a></tt><tt class="py-op">.</tt><tt class="py-name">IntegerField</tt><tt class="py-op">(</tt><tt class="py-op">)</tt> <tt class="py-comment"># Monetary value</tt> </tt>
+<a name="L303"></a><tt class="py-lineno">303</tt>  <tt class="py-line">    <tt id="link-231" class="py-name"><a title="analytics.models.Add_points_event.points
 analytics.models.Subtract_points_event.points
 kernel.models.Redeemable.points
-kernel.models.User.points" class="py-name" href="#" onclick="return doclink('link-259', 'points', 'link-12');">points</a></tt> <tt class="py-op">=</tt> <tt class="py-name">F</tt><tt class="py-op">(</tt><tt class="py-string">'points'</tt><tt class="py-op">)</tt> <tt class="py-op">-</tt> <tt class="py-name">self</tt><tt class="py-op">.</tt><tt id="link-260" class="py-name"><a title="analytics.models.Subtract_points_event.redeemable
-kernel.models.Claim.redeemable
-src.controllers.redeemable" class="py-name" href="#" onclick="return doclink('link-260', 'redeemable', 'link-224');">redeemable</a></tt><tt class="py-op">.</tt><tt id="link-261" class="py-name"><a title="analytics.models.Add_points_event.points
-analytics.models.Subtract_points_event.points
-kernel.models.Redeemable.points
-kernel.models.User.points" class="py-name" href="#" onclick="return doclink('link-261', 'points', 'link-12');">points</a></tt> </tt>
-<a name="L326"></a><tt class="py-lineno">326</tt>  <tt class="py-line">            <tt class="py-name">self</tt><tt class="py-op">.</tt><tt id="link-262" class="py-name"><a title="analytics.models.Add_points_event.user
-analytics.models.Subtract_points_event.user
-kernel.models.Profile_manager.user
-kernel.models.User_following.user
-src.controllers.user" class="py-name" href="#" onclick="return doclink('link-262', 'user', 'link-80');">user</a></tt><tt class="py-op">.</tt><tt id="link-263" class="py-name"><a title="admin.models.Admin.save
-kernel.models.City.save
-kernel.models.Claim.save
-kernel.models.Event_base.save
-kernel.models.Profile.save
-kernel.models.Redeemable.save
-kernel.models.Ticket.save
-kernel.models.User.save" class="py-name" href="#" onclick="return doclink('link-263', 'save', 'link-29');">save</a></tt><tt class="py-op">(</tt><tt class="py-op">)</tt> </tt>
-<a name="L327"></a><tt class="py-lineno">327</tt>  <tt class="py-line">            <tt class="py-name">shouldFireSubtractEvent</tt> <tt class="py-op">=</tt> <tt class="py-name">True</tt> </tt>
-<a name="L328"></a><tt class="py-lineno">328</tt>  <tt class="py-line">        <tt class="py-name">super</tt><tt class="py-op">(</tt><tt id="link-264" class="py-name" targets="Class kernel.models.Claim=kernel.models.Claim-class.html"><a title="kernel.models.Claim" class="py-name" href="#" onclick="return doclink('link-264', 'Claim', 'link-264');">Claim</a></tt><tt class="py-op">,</tt> <tt class="py-name">self</tt><tt class="py-op">)</tt><tt class="py-op">.</tt><tt id="link-265" class="py-name"><a title="admin.models.Admin.save
-kernel.models.City.save
-kernel.models.Claim.save
-kernel.models.Event_base.save
-kernel.models.Profile.save
-kernel.models.Redeemable.save
-kernel.models.Ticket.save
-kernel.models.User.save" class="py-name" href="#" onclick="return doclink('link-265', 'save', 'link-29');">save</a></tt><tt class="py-op">(</tt><tt class="py-op">*</tt><tt class="py-name">args</tt><tt class="py-op">,</tt> <tt class="py-op">**</tt><tt class="py-name">kwargs</tt><tt class="py-op">)</tt> </tt>
-<a name="L329"></a><tt class="py-lineno">329</tt>  <tt class="py-line">        <tt class="py-keyword">if</tt> <tt class="py-name">shouldFireSubtractEvent</tt><tt class="py-op">:</tt> </tt>
-<a name="L330"></a><tt class="py-lineno">330</tt>  <tt class="py-line">            <tt class="py-comment"># Fire a subtract points event</tt> </tt>
-<a name="L331"></a><tt class="py-lineno">331</tt>  <tt class="py-line">            <tt id="link-266" class="py-name" targets="Class analytics.models.Subtract_points_event=analytics.models.Subtract_points_event-class.html"><a title="analytics.models.Subtract_points_event" class="py-name" href="#" onclick="return doclink('link-266', 'Subtract_points_event', 'link-266');">Subtract_points_event</a></tt><tt class="py-op">(</tt><tt id="link-267" class="py-name"><a title="analytics.models.Add_points_event.user
-analytics.models.Subtract_points_event.user
-kernel.models.Profile_manager.user
-kernel.models.User_following.user
-src.controllers.user" class="py-name" href="#" onclick="return doclink('link-267', 'user', 'link-80');">user</a></tt> <tt class="py-op">=</tt> <tt class="py-name">self</tt><tt class="py-op">.</tt><tt id="link-268" class="py-name"><a title="kernel.models.Claim.owner
+kernel.models.User.points" class="py-name" href="#" onclick="return doclink('link-231', 'points', 'link-12');">points</a></tt> <tt class="py-op">=</tt> <tt id="link-232" class="py-name"><a title="admin.models
+analytics.models
+kernel.models" class="py-name" href="#" onclick="return doclink('link-232', 'models', 'link-0');">models</a></tt><tt class="py-op">.</tt><tt class="py-name">IntegerField</tt><tt class="py-op">(</tt><tt class="py-op">)</tt> </tt>
+<a name="L304"></a><tt class="py-lineno">304</tt>  <tt class="py-line">    <tt id="link-233" class="py-name"><a title="kernel.models.Redeemable.is_expired
+kernel.models.Wepay_account.is_expired" class="py-name" href="#" onclick="return doclink('link-233', 'is_expired', 'link-42');">is_expired</a></tt> <tt class="py-op">=</tt> <tt id="link-234" class="py-name"><a title="admin.models
+analytics.models
+kernel.models" class="py-name" href="#" onclick="return doclink('link-234', 'models', 'link-0');">models</a></tt><tt class="py-op">.</tt><tt class="py-name">BooleanField</tt><tt class="py-op">(</tt><tt class="py-name">default</tt> <tt class="py-op">=</tt> <tt class="py-name">False</tt><tt class="py-op">)</tt> </tt>
+<a name="L305"></a><tt class="py-lineno">305</tt>  <tt class="py-line">    <tt id="link-235" class="py-name" targets="Variable kernel.models.Redeemable.expiration_time=kernel.models.Redeemable-class.html#expiration_time"><a title="kernel.models.Redeemable.expiration_time" class="py-name" href="#" onclick="return doclink('link-235', 'expiration_time', 'link-235');">expiration_time</a></tt> <tt class="py-op">=</tt> <tt id="link-236" class="py-name"><a title="admin.models
+analytics.models
+kernel.models" class="py-name" href="#" onclick="return doclink('link-236', 'models', 'link-0');">models</a></tt><tt class="py-op">.</tt><tt class="py-name">DateTimeField</tt><tt class="py-op">(</tt><tt class="py-name">null</tt> <tt class="py-op">=</tt> <tt class="py-name">True</tt><tt class="py-op">,</tt> <tt class="py-name">default</tt> <tt class="py-op">=</tt> <tt class="py-name">None</tt><tt class="py-op">)</tt> </tt>
+<a name="L306"></a><tt class="py-lineno">306</tt>  <tt class="py-line">    <tt id="link-237" class="py-name"><a title="kernel.models.Event_base.community
+kernel.models.Profile.community
+kernel.models.Redeemable.community
+kernel.models.User_following.community
+src.controllers.community
+src.controllers.community.community" class="py-name" href="#" onclick="return doclink('link-237', 'community', 'link-82');">community</a></tt> <tt class="py-op">=</tt> <tt id="link-238" class="py-name"><a title="admin.models
+analytics.models
+kernel.models" class="py-name" href="#" onclick="return doclink('link-238', 'models', 'link-0');">models</a></tt><tt class="py-op">.</tt><tt class="py-name">ForeignKey</tt><tt class="py-op">(</tt><tt class="py-string">'Community'</tt><tt class="py-op">)</tt> </tt>
+<a name="L307"></a><tt class="py-lineno">307</tt>  <tt class="py-line">    <tt id="link-239" class="py-name"><a title="kernel.models.Community.city
+kernel.models.Event_base.city
+kernel.models.Profile.city
+kernel.models.Redeemable.city
+kernel.models.User.city
+src.controllers.city
+src.controllers.city.city" class="py-name" href="#" onclick="return doclink('link-239', 'city', 'link-8');">city</a></tt> <tt class="py-op">=</tt> <tt id="link-240" class="py-name"><a title="admin.models
+analytics.models
+kernel.models" class="py-name" href="#" onclick="return doclink('link-240', 'models', 'link-0');">models</a></tt><tt class="py-op">.</tt><tt class="py-name">ForeignKey</tt><tt class="py-op">(</tt><tt class="py-string">'City'</tt><tt class="py-op">)</tt> </tt>
+<a name="L308"></a><tt class="py-lineno">308</tt>  <tt class="py-line">    <tt id="link-241" class="py-name"><a title="analytics.models.Add_points_event.created_time
+analytics.models.Subtract_points_event.created_time
+kernel.models.Claim.created_time
+kernel.models.Donation.created_time
+kernel.models.Event_base.created_time
+kernel.models.Pledge.created_time
+kernel.models.Profile.created_time
+kernel.models.Profile_manager.created_time
+kernel.models.Purchase.created_time
+kernel.models.Redeemable.created_time
+kernel.models.User.created_time
+kernel.models.Wepay_account.created_time" class="py-name" href="#" onclick="return doclink('link-241', 'created_time', 'link-14');">created_time</a></tt> <tt class="py-op">=</tt> <tt id="link-242" class="py-name"><a title="admin.models
+analytics.models
+kernel.models" class="py-name" href="#" onclick="return doclink('link-242', 'models', 'link-0');">models</a></tt><tt class="py-op">.</tt><tt class="py-name">DateTimeField</tt><tt class="py-op">(</tt><tt class="py-name">auto_now_add</tt> <tt class="py-op">=</tt> <tt class="py-name">True</tt><tt class="py-op">)</tt> </tt>
+<a name="L309"></a><tt class="py-lineno">309</tt>  <tt class="py-line"> </tt>
+<a name="Redeemable.save"></a><div id="Redeemable.save-def"><a name="L310"></a><tt class="py-lineno">310</tt> <a class="py-toggle" href="#" id="Redeemable.save-toggle" onclick="return toggle('Redeemable.save');">-</a><tt class="py-line">    <tt class="py-keyword">def</tt> <a class="py-def-name" href="kernel.models.Redeemable-class.html#save">save</a><tt class="py-op">(</tt><tt class="py-param">self</tt><tt class="py-op">,</tt> <tt class="py-op">*</tt><tt class="py-param">args</tt><tt class="py-op">,</tt> <tt class="py-op">**</tt><tt class="py-param">kwargs</tt><tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
+</div><div id="Redeemable.save-collapsed" style="display:none;" pad="+++" indent="++++++++"></div><div id="Redeemable.save-expanded"><a name="L311"></a><tt class="py-lineno">311</tt>  <tt class="py-line">        <tt class="py-docstring">"""</tt> </tt>
+<a name="L312"></a><tt class="py-lineno">312</tt>  <tt class="py-line"><tt class="py-docstring">        Overrides save to auto-set community and city</tt> </tt>
+<a name="L313"></a><tt class="py-lineno">313</tt>  <tt class="py-line"><tt class="py-docstring">        """</tt> </tt>
+<a name="L314"></a><tt class="py-lineno">314</tt>  <tt class="py-line">        <tt class="py-keyword">if</tt> <tt class="py-name">self</tt><tt class="py-op">.</tt><tt class="py-name">pk</tt> <tt class="py-keyword">is</tt> <tt class="py-name">None</tt><tt class="py-op">:</tt> </tt>
+<a name="L315"></a><tt class="py-lineno">315</tt>  <tt class="py-line">            <tt class="py-comment"># Auto-set the community and city for the redeemable</tt> </tt>
+<a name="L316"></a><tt class="py-lineno">316</tt>  <tt class="py-line">            <tt class="py-name">self</tt><tt class="py-op">.</tt><tt id="link-243" class="py-name"><a title="kernel.models.Event_base.community
+kernel.models.Profile.community
+kernel.models.Redeemable.community
+kernel.models.User_following.community
+src.controllers.community
+src.controllers.community.community" class="py-name" href="#" onclick="return doclink('link-243', 'community', 'link-82');">community</a></tt> <tt class="py-op">=</tt> <tt class="py-name">self</tt><tt class="py-op">.</tt><tt id="link-244" class="py-name"><a title="kernel.models.Claim.owner
+kernel.models.Donation.owner
 kernel.models.Event_base.owner
+kernel.models.Pledge.owner
+kernel.models.Purchase.owner
 kernel.models.Redeemable.owner
-kernel.models.Wepay_account.owner" class="py-name" href="#" onclick="return doclink('link-268', 'owner', 'link-32');">owner</a></tt><tt class="py-op">,</tt>  </tt>
-<a name="L332"></a><tt class="py-lineno">332</tt>  <tt class="py-line">                                  <tt id="link-269" class="py-name"><a title="analytics.models.Subtract_points_event.redeemable
-kernel.models.Claim.redeemable
-src.controllers.redeemable" class="py-name" href="#" onclick="return doclink('link-269', 'redeemable', 'link-224');">redeemable</a></tt> <tt class="py-op">=</tt> <tt class="py-name">self</tt><tt class="py-op">.</tt><tt id="link-270" class="py-name"><a title="analytics.models.Subtract_points_event.redeemable
-kernel.models.Claim.redeemable
-src.controllers.redeemable" class="py-name" href="#" onclick="return doclink('link-270', 'redeemable', 'link-224');">redeemable</a></tt><tt class="py-op">,</tt>  </tt>
-<a name="L333"></a><tt class="py-lineno">333</tt>  <tt class="py-line">                                  <tt id="link-271" class="py-name"><a title="analytics.models.Add_points_event.points
-analytics.models.Subtract_points_event.points
-kernel.models.Redeemable.points
-kernel.models.User.points" class="py-name" href="#" onclick="return doclink('link-271', 'points', 'link-12');">points</a></tt> <tt class="py-op">=</tt> <tt class="py-name">self</tt><tt class="py-op">.</tt><tt id="link-272" class="py-name"><a title="analytics.models.Subtract_points_event.redeemable
-kernel.models.Claim.redeemable
-src.controllers.redeemable" class="py-name" href="#" onclick="return doclink('link-272', 'redeemable', 'link-224');">redeemable</a></tt><tt class="py-op">.</tt><tt id="link-273" class="py-name"><a title="analytics.models.Add_points_event.points
-analytics.models.Subtract_points_event.points
-kernel.models.Redeemable.points
-kernel.models.User.points" class="py-name" href="#" onclick="return doclink('link-273', 'points', 'link-12');">points</a></tt><tt class="py-op">)</tt><tt class="py-op">.</tt><tt id="link-274" class="py-name"><a title="admin.models.Admin.save
+kernel.models.Wepay_account.owner" class="py-name" href="#" onclick="return doclink('link-244', 'owner', 'link-32');">owner</a></tt><tt class="py-op">.</tt><tt id="link-245" class="py-name"><a title="kernel.models.Event_base.community
+kernel.models.Profile.community
+kernel.models.Redeemable.community
+kernel.models.User_following.community
+src.controllers.community
+src.controllers.community.community" class="py-name" href="#" onclick="return doclink('link-245', 'community', 'link-82');">community</a></tt> </tt>
+<a name="L317"></a><tt class="py-lineno">317</tt>  <tt class="py-line">            <tt class="py-name">self</tt><tt class="py-op">.</tt><tt id="link-246" class="py-name"><a title="kernel.models.Community.city
+kernel.models.Event_base.city
+kernel.models.Profile.city
+kernel.models.Redeemable.city
+kernel.models.User.city
+src.controllers.city
+src.controllers.city.city" class="py-name" href="#" onclick="return doclink('link-246', 'city', 'link-8');">city</a></tt> <tt class="py-op">=</tt> <tt class="py-name">self</tt><tt class="py-op">.</tt><tt id="link-247" class="py-name"><a title="kernel.models.Claim.owner
+kernel.models.Donation.owner
+kernel.models.Event_base.owner
+kernel.models.Pledge.owner
+kernel.models.Purchase.owner
+kernel.models.Redeemable.owner
+kernel.models.Wepay_account.owner" class="py-name" href="#" onclick="return doclink('link-247', 'owner', 'link-32');">owner</a></tt><tt class="py-op">.</tt><tt id="link-248" class="py-name"><a title="kernel.models.Community.city
+kernel.models.Event_base.city
+kernel.models.Profile.city
+kernel.models.Redeemable.city
+kernel.models.User.city
+src.controllers.city
+src.controllers.city.city" class="py-name" href="#" onclick="return doclink('link-248', 'city', 'link-8');">city</a></tt> </tt>
+<a name="L318"></a><tt class="py-lineno">318</tt>  <tt class="py-line">        <tt class="py-name">super</tt><tt class="py-op">(</tt><tt id="link-249" class="py-name" targets="Class kernel.models.Redeemable=kernel.models.Redeemable-class.html"><a title="kernel.models.Redeemable" class="py-name" href="#" onclick="return doclink('link-249', 'Redeemable', 'link-249');">Redeemable</a></tt><tt class="py-op">,</tt> <tt class="py-name">self</tt><tt class="py-op">)</tt><tt class="py-op">.</tt><tt id="link-250" class="py-name"><a title="admin.models.Admin.save
 kernel.models.City.save
 kernel.models.Claim.save
 kernel.models.Event_base.save
+kernel.models.Fundraiser.save
 kernel.models.Profile.save
 kernel.models.Redeemable.save
 kernel.models.Ticket.save
-kernel.models.User.save" class="py-name" href="#" onclick="return doclink('link-274', 'save', 'link-29');">save</a></tt><tt class="py-op">(</tt><tt class="py-op">)</tt> </tt>
-</div></div><a name="L334"></a><tt class="py-lineno">334</tt>  <tt class="py-line"> </tt><script type="text/javascript">
+kernel.models.User.save" class="py-name" href="#" onclick="return doclink('link-250', 'save', 'link-29');">save</a></tt><tt class="py-op">(</tt><tt class="py-op">*</tt><tt class="py-name">args</tt><tt class="py-op">,</tt> <tt class="py-op">**</tt><tt class="py-name">kwargs</tt><tt class="py-op">)</tt> </tt>
+</div></div><a name="L319"></a><tt class="py-lineno">319</tt>  <tt class="py-line"> </tt>
+<a name="InsufficientPoints"></a><div id="InsufficientPoints-def"><a name="L320"></a><tt class="py-lineno">320</tt> <a class="py-toggle" href="#" id="InsufficientPoints-toggle" onclick="return toggle('InsufficientPoints');">-</a><tt class="py-line"><tt class="py-keyword">class</tt> <a class="py-def-name" href="kernel.models.InsufficientPoints-class.html">InsufficientPoints</a><tt class="py-op">(</tt><tt class="py-base-class">Exception</tt><tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
+</div><div id="InsufficientPoints-collapsed" style="display:none;" pad="+++" indent="++++"></div><div id="InsufficientPoints-expanded"><a name="L321"></a><tt class="py-lineno">321</tt>  <tt class="py-line">    <tt class="py-docstring">"""</tt> </tt>
+<a name="L322"></a><tt class="py-lineno">322</tt>  <tt class="py-line"><tt class="py-docstring">    An exception for when points are not sufficient to claim a redeemable</tt> </tt>
+<a name="L323"></a><tt class="py-lineno">323</tt>  <tt class="py-line"><tt class="py-docstring">    """</tt> </tt>
+<a name="InsufficientPoints.__init__"></a><div id="InsufficientPoints.__init__-def"><a name="L324"></a><tt class="py-lineno">324</tt> <a class="py-toggle" href="#" id="InsufficientPoints.__init__-toggle" onclick="return toggle('InsufficientPoints.__init__');">-</a><tt class="py-line">    <tt class="py-keyword">def</tt> <a class="py-def-name" href="kernel.models.InsufficientPoints-class.html#__init__">__init__</a><tt class="py-op">(</tt><tt class="py-param">self</tt><tt class="py-op">,</tt> <tt class="py-param">pointsNeeded</tt><tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
+</div><div id="InsufficientPoints.__init__-collapsed" style="display:none;" pad="+++" indent="++++++++"></div><div id="InsufficientPoints.__init__-expanded"><a name="L325"></a><tt class="py-lineno">325</tt>  <tt class="py-line">        <tt class="py-name">self</tt><tt class="py-op">.</tt><tt class="py-name">pointsNeeded</tt> <tt class="py-op">=</tt> <tt class="py-name">pointsNeeded</tt> </tt>
+</div></div><a name="L326"></a><tt class="py-lineno">326</tt>  <tt class="py-line"> </tt>
+<a name="ExpiredRedeemable"></a><div id="ExpiredRedeemable-def"><a name="L327"></a><tt class="py-lineno">327</tt> <a class="py-toggle" href="#" id="ExpiredRedeemable-toggle" onclick="return toggle('ExpiredRedeemable');">-</a><tt class="py-line"><tt class="py-keyword">class</tt> <a class="py-def-name" href="kernel.models.ExpiredRedeemable-class.html">ExpiredRedeemable</a><tt class="py-op">(</tt><tt class="py-base-class">Exception</tt><tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
+</div><div id="ExpiredRedeemable-collapsed" style="display:none;" pad="+++" indent="++++"></div><div id="ExpiredRedeemable-expanded"><a name="L328"></a><tt class="py-lineno">328</tt>  <tt class="py-line">    <tt class="py-docstring">"""</tt> </tt>
+<a name="L329"></a><tt class="py-lineno">329</tt>  <tt class="py-line"><tt class="py-docstring">    An exception for claiming an expired redeemable</tt> </tt>
+<a name="L330"></a><tt class="py-lineno">330</tt>  <tt class="py-line"><tt class="py-docstring">    """</tt> </tt>
+<a name="ExpiredRedeemable.__init__"></a><div id="ExpiredRedeemable.__init__-def"><a name="L331"></a><tt class="py-lineno">331</tt> <a class="py-toggle" href="#" id="ExpiredRedeemable.__init__-toggle" onclick="return toggle('ExpiredRedeemable.__init__');">-</a><tt class="py-line">    <tt class="py-keyword">def</tt> <a class="py-def-name" href="kernel.models.ExpiredRedeemable-class.html#__init__">__init__</a><tt class="py-op">(</tt><tt class="py-param">self</tt><tt class="py-op">,</tt> <tt class="py-param">redeemable</tt><tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
+</div><div id="ExpiredRedeemable.__init__-collapsed" style="display:none;" pad="+++" indent="++++++++"></div><div id="ExpiredRedeemable.__init__-expanded"><a name="L332"></a><tt class="py-lineno">332</tt>  <tt class="py-line">        <tt class="py-name">self</tt><tt class="py-op">.</tt><tt id="link-251" class="py-name" targets="Variable analytics.models.Subtract_points_event.redeemable=analytics.models.Subtract_points_event-class.html#redeemable,Variable kernel.models.Claim.redeemable=kernel.models.Claim-class.html#redeemable,Module src.controllers.redeemable=src.controllers.redeemable-module.html"><a title="analytics.models.Subtract_points_event.redeemable
+kernel.models.Claim.redeemable
+src.controllers.redeemable" class="py-name" href="#" onclick="return doclink('link-251', 'redeemable', 'link-251');">redeemable</a></tt> <tt class="py-op">=</tt> <tt id="link-252" class="py-name"><a title="analytics.models.Subtract_points_event.redeemable
+kernel.models.Claim.redeemable
+src.controllers.redeemable" class="py-name" href="#" onclick="return doclink('link-252', 'redeemable', 'link-251');">redeemable</a></tt> </tt>
+</div></div><a name="L333"></a><tt class="py-lineno">333</tt>  <tt class="py-line"> </tt>
+<a name="Claim"></a><div id="Claim-def"><a name="L334"></a><tt class="py-lineno">334</tt> <a class="py-toggle" href="#" id="Claim-toggle" onclick="return toggle('Claim');">-</a><tt class="py-line"><tt class="py-keyword">class</tt> <a class="py-def-name" href="kernel.models.Claim-class.html">Claim</a><tt class="py-op">(</tt><tt class="py-base-class">models</tt><tt class="py-op">.</tt><tt class="py-base-class">Model</tt><tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
+</div><div id="Claim-collapsed" style="display:none;" pad="+++" indent="++++"></div><div id="Claim-expanded"><a name="L335"></a><tt class="py-lineno">335</tt>  <tt class="py-line">    <tt class="py-docstring">"""</tt> </tt>
+<a name="L336"></a><tt class="py-lineno">336</tt>  <tt class="py-line"><tt class="py-docstring">    A claim for a redeemable</tt> </tt>
+<a name="L337"></a><tt class="py-lineno">337</tt>  <tt class="py-line"><tt class="py-docstring">    """</tt> </tt>
+<a name="L338"></a><tt class="py-lineno">338</tt>  <tt class="py-line">    <tt id="link-253" class="py-name"><a title="analytics.models.Subtract_points_event.redeemable
+kernel.models.Claim.redeemable
+src.controllers.redeemable" class="py-name" href="#" onclick="return doclink('link-253', 'redeemable', 'link-251');">redeemable</a></tt> <tt class="py-op">=</tt> <tt id="link-254" class="py-name"><a title="admin.models
+analytics.models
+kernel.models" class="py-name" href="#" onclick="return doclink('link-254', 'models', 'link-0');">models</a></tt><tt class="py-op">.</tt><tt class="py-name">ForeignKey</tt><tt class="py-op">(</tt><tt class="py-string">'Redeemable'</tt><tt class="py-op">)</tt> </tt>
+<a name="L339"></a><tt class="py-lineno">339</tt>  <tt class="py-line">    <tt id="link-255" class="py-name"><a title="kernel.models.Claim.owner
+kernel.models.Donation.owner
+kernel.models.Event_base.owner
+kernel.models.Pledge.owner
+kernel.models.Purchase.owner
+kernel.models.Redeemable.owner
+kernel.models.Wepay_account.owner" class="py-name" href="#" onclick="return doclink('link-255', 'owner', 'link-32');">owner</a></tt> <tt class="py-op">=</tt> <tt id="link-256" class="py-name"><a title="admin.models
+analytics.models
+kernel.models" class="py-name" href="#" onclick="return doclink('link-256', 'models', 'link-0');">models</a></tt><tt class="py-op">.</tt><tt class="py-name">ForeignKey</tt><tt class="py-op">(</tt><tt class="py-string">'User'</tt><tt class="py-op">)</tt> </tt>
+<a name="L340"></a><tt class="py-lineno">340</tt>  <tt class="py-line">    <tt id="link-257" class="py-name" targets="Variable kernel.models.Claim.code=kernel.models.Claim-class.html#code"><a title="kernel.models.Claim.code" class="py-name" href="#" onclick="return doclink('link-257', 'code', 'link-257');">code</a></tt> <tt class="py-op">=</tt> <tt id="link-258" class="py-name"><a title="admin.models
+analytics.models
+kernel.models" class="py-name" href="#" onclick="return doclink('link-258', 'models', 'link-0');">models</a></tt><tt class="py-op">.</tt><tt class="py-name">CharField</tt><tt class="py-op">(</tt><tt class="py-name">max_length</tt> <tt class="py-op">=</tt> <tt class="py-number">100</tt><tt class="py-op">)</tt> </tt>
+<a name="L341"></a><tt class="py-lineno">341</tt>  <tt class="py-line">    <tt id="link-259" class="py-name" targets="Variable kernel.models.Claim.is_redeemed=kernel.models.Claim-class.html#is_redeemed"><a title="kernel.models.Claim.is_redeemed" class="py-name" href="#" onclick="return doclink('link-259', 'is_redeemed', 'link-259');">is_redeemed</a></tt> <tt class="py-op">=</tt> <tt id="link-260" class="py-name"><a title="admin.models
+analytics.models
+kernel.models" class="py-name" href="#" onclick="return doclink('link-260', 'models', 'link-0');">models</a></tt><tt class="py-op">.</tt><tt class="py-name">BooleanField</tt><tt class="py-op">(</tt><tt class="py-name">default</tt> <tt class="py-op">=</tt> <tt class="py-name">False</tt><tt class="py-op">)</tt> </tt>
+<a name="L342"></a><tt class="py-lineno">342</tt>  <tt class="py-line">    <tt id="link-261" class="py-name" targets="Variable kernel.models.Claim.redeemed_time=kernel.models.Claim-class.html#redeemed_time"><a title="kernel.models.Claim.redeemed_time" class="py-name" href="#" onclick="return doclink('link-261', 'redeemed_time', 'link-261');">redeemed_time</a></tt> <tt class="py-op">=</tt> <tt id="link-262" class="py-name"><a title="admin.models
+analytics.models
+kernel.models" class="py-name" href="#" onclick="return doclink('link-262', 'models', 'link-0');">models</a></tt><tt class="py-op">.</tt><tt class="py-name">DateTimeField</tt><tt class="py-op">(</tt><tt class="py-name">null</tt> <tt class="py-op">=</tt> <tt class="py-name">True</tt><tt class="py-op">,</tt> <tt class="py-name">default</tt> <tt class="py-op">=</tt> <tt class="py-name">None</tt><tt class="py-op">)</tt> </tt>
+<a name="L343"></a><tt class="py-lineno">343</tt>  <tt class="py-line">    <tt id="link-263" class="py-name"><a title="analytics.models.Add_points_event.created_time
+analytics.models.Subtract_points_event.created_time
+kernel.models.Claim.created_time
+kernel.models.Donation.created_time
+kernel.models.Event_base.created_time
+kernel.models.Pledge.created_time
+kernel.models.Profile.created_time
+kernel.models.Profile_manager.created_time
+kernel.models.Purchase.created_time
+kernel.models.Redeemable.created_time
+kernel.models.User.created_time
+kernel.models.Wepay_account.created_time" class="py-name" href="#" onclick="return doclink('link-263', 'created_time', 'link-14');">created_time</a></tt> <tt class="py-op">=</tt> <tt id="link-264" class="py-name"><a title="admin.models
+analytics.models
+kernel.models" class="py-name" href="#" onclick="return doclink('link-264', 'models', 'link-0');">models</a></tt><tt class="py-op">.</tt><tt class="py-name">DateTimeField</tt><tt class="py-op">(</tt><tt class="py-name">auto_now_add</tt> <tt class="py-op">=</tt> <tt class="py-name">True</tt><tt class="py-op">)</tt> </tt>
+<a name="L344"></a><tt class="py-lineno">344</tt>  <tt class="py-line"> </tt>
+<a name="Claim.save"></a><div id="Claim.save-def"><a name="L345"></a><tt class="py-lineno">345</tt> <a class="py-toggle" href="#" id="Claim.save-toggle" onclick="return toggle('Claim.save');">-</a><tt class="py-line">    <tt class="py-keyword">def</tt> <a class="py-def-name" href="kernel.models.Claim-class.html#save">save</a><tt class="py-op">(</tt><tt class="py-param">self</tt><tt class="py-op">,</tt> <tt class="py-op">*</tt><tt class="py-param">args</tt><tt class="py-op">,</tt> <tt class="py-op">**</tt><tt class="py-param">kwargs</tt><tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
+</div><div id="Claim.save-collapsed" style="display:none;" pad="+++" indent="++++++++"></div><div id="Claim.save-expanded"><a name="L346"></a><tt class="py-lineno">346</tt>  <tt class="py-line">        <tt class="py-docstring">"""</tt> </tt>
+<a name="L347"></a><tt class="py-lineno">347</tt>  <tt class="py-line"><tt class="py-docstring">        Overrides save to conduct proper claiming behavior</tt> </tt>
+<a name="L348"></a><tt class="py-lineno">348</tt>  <tt class="py-line"><tt class="py-docstring">        """</tt> </tt>
+<a name="L349"></a><tt class="py-lineno">349</tt>  <tt class="py-line">        <tt class="py-name">shouldFireSubtractEvent</tt> <tt class="py-op">=</tt> <tt class="py-name">False</tt> </tt>
+<a name="L350"></a><tt class="py-lineno">350</tt>  <tt class="py-line">        <tt class="py-keyword">if</tt> <tt class="py-name">self</tt><tt class="py-op">.</tt><tt class="py-name">pk</tt> <tt class="py-keyword">is</tt> <tt class="py-name">None</tt><tt class="py-op">:</tt> </tt>
+<a name="L351"></a><tt class="py-lineno">351</tt>  <tt class="py-line">            <tt class="py-comment"># Check if the redeemable is expired</tt> </tt>
+<a name="L352"></a><tt class="py-lineno">352</tt>  <tt class="py-line">            <tt class="py-keyword">if</tt> <tt class="py-op">(</tt><tt class="py-name">self</tt><tt class="py-op">.</tt><tt id="link-265" class="py-name"><a title="analytics.models.Subtract_points_event.redeemable
+kernel.models.Claim.redeemable
+src.controllers.redeemable" class="py-name" href="#" onclick="return doclink('link-265', 'redeemable', 'link-251');">redeemable</a></tt><tt class="py-op">.</tt><tt id="link-266" class="py-name"><a title="kernel.models.Redeemable.is_expired
+kernel.models.Wepay_account.is_expired" class="py-name" href="#" onclick="return doclink('link-266', 'is_expired', 'link-42');">is_expired</a></tt> <tt class="py-keyword">or</tt>  </tt>
+<a name="L353"></a><tt class="py-lineno">353</tt>  <tt class="py-line">                <tt class="py-name">self</tt><tt class="py-op">.</tt><tt id="link-267" class="py-name"><a title="analytics.models.Subtract_points_event.redeemable
+kernel.models.Claim.redeemable
+src.controllers.redeemable" class="py-name" href="#" onclick="return doclink('link-267', 'redeemable', 'link-251');">redeemable</a></tt><tt class="py-op">.</tt><tt id="link-268" class="py-name"><a title="kernel.models.Redeemable.expiration_time" class="py-name" href="#" onclick="return doclink('link-268', 'expiration_time', 'link-235');">expiration_time</a></tt> <tt class="py-op">&lt;=</tt> <tt class="py-name">timezone</tt><tt class="py-op">.</tt><tt class="py-name">now</tt><tt class="py-op">(</tt><tt class="py-op">)</tt><tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
+<a name="L354"></a><tt class="py-lineno">354</tt>  <tt class="py-line">                <tt class="py-keyword">raise</tt> <tt id="link-269" class="py-name" targets="Class kernel.models.ExpiredRedeemable=kernel.models.ExpiredRedeemable-class.html"><a title="kernel.models.ExpiredRedeemable" class="py-name" href="#" onclick="return doclink('link-269', 'ExpiredRedeemable', 'link-269');">ExpiredRedeemable</a></tt><tt class="py-op">(</tt><tt class="py-name">self</tt><tt class="py-op">.</tt><tt id="link-270" class="py-name"><a title="analytics.models.Subtract_points_event.redeemable
+kernel.models.Claim.redeemable
+src.controllers.redeemable" class="py-name" href="#" onclick="return doclink('link-270', 'redeemable', 'link-251');">redeemable</a></tt><tt class="py-op">)</tt> </tt>
+<a name="L355"></a><tt class="py-lineno">355</tt>  <tt class="py-line">            <tt class="py-comment"># Check if the redeemable has sufficient quantity</tt> </tt>
+<a name="L356"></a><tt class="py-lineno">356</tt>  <tt class="py-line">            <tt class="py-keyword">if</tt> <tt class="py-op">(</tt><tt class="py-name">self</tt><tt class="py-op">.</tt><tt id="link-271" class="py-name"><a title="analytics.models.Subtract_points_event.redeemable
+kernel.models.Claim.redeemable
+src.controllers.redeemable" class="py-name" href="#" onclick="return doclink('link-271', 'redeemable', 'link-251');">redeemable</a></tt><tt class="py-op">.</tt><tt id="link-272" class="py-name"><a title="kernel.models.Redeemable.quantity
+kernel.models.Reward.quantity
+kernel.models.Ticket.quantity" class="py-name" href="#" onclick="return doclink('link-272', 'quantity', 'link-164');">quantity</a></tt> <tt class="py-keyword">is</tt> <tt class="py-keyword">not</tt> <tt class="py-name">None</tt> <tt class="py-keyword">and</tt>  </tt>
+<a name="L357"></a><tt class="py-lineno">357</tt>  <tt class="py-line">                <tt class="py-name">self</tt><tt class="py-op">.</tt><tt id="link-273" class="py-name"><a title="analytics.models.Subtract_points_event.redeemable
+kernel.models.Claim.redeemable
+src.controllers.redeemable" class="py-name" href="#" onclick="return doclink('link-273', 'redeemable', 'link-251');">redeemable</a></tt><tt class="py-op">.</tt><tt id="link-274" class="py-name"><a title="kernel.models.Redeemable.quantity
+kernel.models.Reward.quantity
+kernel.models.Ticket.quantity" class="py-name" href="#" onclick="return doclink('link-274', 'quantity', 'link-164');">quantity</a></tt> <tt class="py-op">&lt;</tt> <tt class="py-number">1</tt><tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
+<a name="L358"></a><tt class="py-lineno">358</tt>  <tt class="py-line">                <tt class="py-keyword">raise</tt> <tt id="link-275" class="py-name" targets="Class kernel.models.InsufficientQuantity=kernel.models.InsufficientQuantity-class.html"><a title="kernel.models.InsufficientQuantity" class="py-name" href="#" onclick="return doclink('link-275', 'InsufficientQuantity', 'link-275');">InsufficientQuantity</a></tt><tt class="py-op">(</tt><tt class="py-op">)</tt> </tt>
+<a name="L359"></a><tt class="py-lineno">359</tt>  <tt class="py-line">            <tt class="py-comment"># Check if user has sufficient points</tt> </tt>
+<a name="L360"></a><tt class="py-lineno">360</tt>  <tt class="py-line">            <tt class="py-name">remainingPoints</tt> <tt class="py-op">=</tt> <tt class="py-name">self</tt><tt class="py-op">.</tt><tt id="link-276" class="py-name"><a title="kernel.models.Claim.owner
+kernel.models.Donation.owner
+kernel.models.Event_base.owner
+kernel.models.Pledge.owner
+kernel.models.Purchase.owner
+kernel.models.Redeemable.owner
+kernel.models.Wepay_account.owner" class="py-name" href="#" onclick="return doclink('link-276', 'owner', 'link-32');">owner</a></tt><tt class="py-op">.</tt><tt id="link-277" class="py-name"><a title="analytics.models.Add_points_event.points
+analytics.models.Subtract_points_event.points
+kernel.models.Redeemable.points
+kernel.models.User.points" class="py-name" href="#" onclick="return doclink('link-277', 'points', 'link-12');">points</a></tt> <tt class="py-op">-</tt> <tt class="py-name">self</tt><tt class="py-op">.</tt><tt id="link-278" class="py-name"><a title="analytics.models.Subtract_points_event.redeemable
+kernel.models.Claim.redeemable
+src.controllers.redeemable" class="py-name" href="#" onclick="return doclink('link-278', 'redeemable', 'link-251');">redeemable</a></tt><tt class="py-op">.</tt><tt id="link-279" class="py-name"><a title="analytics.models.Add_points_event.points
+analytics.models.Subtract_points_event.points
+kernel.models.Redeemable.points
+kernel.models.User.points" class="py-name" href="#" onclick="return doclink('link-279', 'points', 'link-12');">points</a></tt> </tt>
+<a name="L361"></a><tt class="py-lineno">361</tt>  <tt class="py-line">            <tt class="py-keyword">if</tt> <tt class="py-name">remainingPoints</tt> <tt class="py-op">&lt;</tt> <tt class="py-number">0</tt><tt class="py-op">:</tt> </tt>
+<a name="L362"></a><tt class="py-lineno">362</tt>  <tt class="py-line">                <tt class="py-keyword">raise</tt> <tt id="link-280" class="py-name" targets="Class kernel.models.InsufficientPoints=kernel.models.InsufficientPoints-class.html"><a title="kernel.models.InsufficientPoints" class="py-name" href="#" onclick="return doclink('link-280', 'InsufficientPoints', 'link-280');">InsufficientPoints</a></tt><tt class="py-op">(</tt><tt class="py-name">abs</tt><tt class="py-op">(</tt><tt class="py-name">remainingPoints</tt><tt class="py-op">)</tt><tt class="py-op">)</tt> </tt>
+<a name="L363"></a><tt class="py-lineno">363</tt>  <tt class="py-line">            <tt class="py-comment"># All checks passed, perform transactions</tt> </tt>
+<a name="L364"></a><tt class="py-lineno">364</tt>  <tt class="py-line">            <tt class="py-name">self</tt><tt class="py-op">.</tt><tt id="link-281" class="py-name"><a title="analytics.models.Subtract_points_event.redeemable
+kernel.models.Claim.redeemable
+src.controllers.redeemable" class="py-name" href="#" onclick="return doclink('link-281', 'redeemable', 'link-251');">redeemable</a></tt><tt class="py-op">.</tt><tt id="link-282" class="py-name"><a title="kernel.models.Redeemable.quantity
+kernel.models.Reward.quantity
+kernel.models.Ticket.quantity" class="py-name" href="#" onclick="return doclink('link-282', 'quantity', 'link-164');">quantity</a></tt> <tt class="py-op">=</tt> <tt class="py-name">F</tt><tt class="py-op">(</tt><tt class="py-string">'quantity'</tt><tt class="py-op">)</tt> <tt class="py-op">-</tt> <tt class="py-number">1</tt> </tt>
+<a name="L365"></a><tt class="py-lineno">365</tt>  <tt class="py-line">            <tt class="py-name">self</tt><tt class="py-op">.</tt><tt id="link-283" class="py-name"><a title="analytics.models.Subtract_points_event.redeemable
+kernel.models.Claim.redeemable
+src.controllers.redeemable" class="py-name" href="#" onclick="return doclink('link-283', 'redeemable', 'link-251');">redeemable</a></tt><tt class="py-op">.</tt><tt id="link-284" class="py-name"><a title="admin.models.Admin.save
+kernel.models.City.save
+kernel.models.Claim.save
+kernel.models.Event_base.save
+kernel.models.Fundraiser.save
+kernel.models.Profile.save
+kernel.models.Redeemable.save
+kernel.models.Ticket.save
+kernel.models.User.save" class="py-name" href="#" onclick="return doclink('link-284', 'save', 'link-29');">save</a></tt><tt class="py-op">(</tt><tt class="py-op">)</tt> </tt>
+<a name="L366"></a><tt class="py-lineno">366</tt>  <tt class="py-line">            <tt class="py-name">self</tt><tt class="py-op">.</tt><tt id="link-285" class="py-name"><a title="analytics.models.Add_points_event.user
+analytics.models.Subtract_points_event.user
+kernel.models.Profile_manager.user
+kernel.models.User_following.user
+src.controllers.user" class="py-name" href="#" onclick="return doclink('link-285', 'user', 'link-80');">user</a></tt><tt class="py-op">.</tt><tt id="link-286" class="py-name"><a title="analytics.models.Add_points_event.points
+analytics.models.Subtract_points_event.points
+kernel.models.Redeemable.points
+kernel.models.User.points" class="py-name" href="#" onclick="return doclink('link-286', 'points', 'link-12');">points</a></tt> <tt class="py-op">=</tt> <tt class="py-name">F</tt><tt class="py-op">(</tt><tt class="py-string">'points'</tt><tt class="py-op">)</tt> <tt class="py-op">-</tt> <tt class="py-name">self</tt><tt class="py-op">.</tt><tt id="link-287" class="py-name"><a title="analytics.models.Subtract_points_event.redeemable
+kernel.models.Claim.redeemable
+src.controllers.redeemable" class="py-name" href="#" onclick="return doclink('link-287', 'redeemable', 'link-251');">redeemable</a></tt><tt class="py-op">.</tt><tt id="link-288" class="py-name"><a title="analytics.models.Add_points_event.points
+analytics.models.Subtract_points_event.points
+kernel.models.Redeemable.points
+kernel.models.User.points" class="py-name" href="#" onclick="return doclink('link-288', 'points', 'link-12');">points</a></tt> </tt>
+<a name="L367"></a><tt class="py-lineno">367</tt>  <tt class="py-line">            <tt class="py-name">self</tt><tt class="py-op">.</tt><tt id="link-289" class="py-name"><a title="analytics.models.Add_points_event.user
+analytics.models.Subtract_points_event.user
+kernel.models.Profile_manager.user
+kernel.models.User_following.user
+src.controllers.user" class="py-name" href="#" onclick="return doclink('link-289', 'user', 'link-80');">user</a></tt><tt class="py-op">.</tt><tt id="link-290" class="py-name"><a title="admin.models.Admin.save
+kernel.models.City.save
+kernel.models.Claim.save
+kernel.models.Event_base.save
+kernel.models.Fundraiser.save
+kernel.models.Profile.save
+kernel.models.Redeemable.save
+kernel.models.Ticket.save
+kernel.models.User.save" class="py-name" href="#" onclick="return doclink('link-290', 'save', 'link-29');">save</a></tt><tt class="py-op">(</tt><tt class="py-op">)</tt> </tt>
+<a name="L368"></a><tt class="py-lineno">368</tt>  <tt class="py-line">            <tt class="py-name">shouldFireSubtractEvent</tt> <tt class="py-op">=</tt> <tt class="py-name">True</tt> </tt>
+<a name="L369"></a><tt class="py-lineno">369</tt>  <tt class="py-line">        <tt class="py-name">super</tt><tt class="py-op">(</tt><tt id="link-291" class="py-name" targets="Class kernel.models.Claim=kernel.models.Claim-class.html"><a title="kernel.models.Claim" class="py-name" href="#" onclick="return doclink('link-291', 'Claim', 'link-291');">Claim</a></tt><tt class="py-op">,</tt> <tt class="py-name">self</tt><tt class="py-op">)</tt><tt class="py-op">.</tt><tt id="link-292" class="py-name"><a title="admin.models.Admin.save
+kernel.models.City.save
+kernel.models.Claim.save
+kernel.models.Event_base.save
+kernel.models.Fundraiser.save
+kernel.models.Profile.save
+kernel.models.Redeemable.save
+kernel.models.Ticket.save
+kernel.models.User.save" class="py-name" href="#" onclick="return doclink('link-292', 'save', 'link-29');">save</a></tt><tt class="py-op">(</tt><tt class="py-op">*</tt><tt class="py-name">args</tt><tt class="py-op">,</tt> <tt class="py-op">**</tt><tt class="py-name">kwargs</tt><tt class="py-op">)</tt> </tt>
+<a name="L370"></a><tt class="py-lineno">370</tt>  <tt class="py-line">        <tt class="py-keyword">if</tt> <tt class="py-name">shouldFireSubtractEvent</tt><tt class="py-op">:</tt> </tt>
+<a name="L371"></a><tt class="py-lineno">371</tt>  <tt class="py-line">            <tt class="py-comment"># Fire a subtract points event</tt> </tt>
+<a name="L372"></a><tt class="py-lineno">372</tt>  <tt class="py-line">            <tt id="link-293" class="py-name" targets="Class analytics.models.Subtract_points_event=analytics.models.Subtract_points_event-class.html"><a title="analytics.models.Subtract_points_event" class="py-name" href="#" onclick="return doclink('link-293', 'Subtract_points_event', 'link-293');">Subtract_points_event</a></tt><tt class="py-op">(</tt><tt id="link-294" class="py-name"><a title="analytics.models.Add_points_event.user
+analytics.models.Subtract_points_event.user
+kernel.models.Profile_manager.user
+kernel.models.User_following.user
+src.controllers.user" class="py-name" href="#" onclick="return doclink('link-294', 'user', 'link-80');">user</a></tt> <tt class="py-op">=</tt> <tt class="py-name">self</tt><tt class="py-op">.</tt><tt id="link-295" class="py-name"><a title="kernel.models.Claim.owner
+kernel.models.Donation.owner
+kernel.models.Event_base.owner
+kernel.models.Pledge.owner
+kernel.models.Purchase.owner
+kernel.models.Redeemable.owner
+kernel.models.Wepay_account.owner" class="py-name" href="#" onclick="return doclink('link-295', 'owner', 'link-32');">owner</a></tt><tt class="py-op">,</tt>  </tt>
+<a name="L373"></a><tt class="py-lineno">373</tt>  <tt class="py-line">                                  <tt id="link-296" class="py-name"><a title="analytics.models.Subtract_points_event.redeemable
+kernel.models.Claim.redeemable
+src.controllers.redeemable" class="py-name" href="#" onclick="return doclink('link-296', 'redeemable', 'link-251');">redeemable</a></tt> <tt class="py-op">=</tt> <tt class="py-name">self</tt><tt class="py-op">.</tt><tt id="link-297" class="py-name"><a title="analytics.models.Subtract_points_event.redeemable
+kernel.models.Claim.redeemable
+src.controllers.redeemable" class="py-name" href="#" onclick="return doclink('link-297', 'redeemable', 'link-251');">redeemable</a></tt><tt class="py-op">,</tt>  </tt>
+<a name="L374"></a><tt class="py-lineno">374</tt>  <tt class="py-line">                                  <tt id="link-298" class="py-name"><a title="analytics.models.Add_points_event.points
+analytics.models.Subtract_points_event.points
+kernel.models.Redeemable.points
+kernel.models.User.points" class="py-name" href="#" onclick="return doclink('link-298', 'points', 'link-12');">points</a></tt> <tt class="py-op">=</tt> <tt class="py-name">self</tt><tt class="py-op">.</tt><tt id="link-299" class="py-name"><a title="analytics.models.Subtract_points_event.redeemable
+kernel.models.Claim.redeemable
+src.controllers.redeemable" class="py-name" href="#" onclick="return doclink('link-299', 'redeemable', 'link-251');">redeemable</a></tt><tt class="py-op">.</tt><tt id="link-300" class="py-name"><a title="analytics.models.Add_points_event.points
+analytics.models.Subtract_points_event.points
+kernel.models.Redeemable.points
+kernel.models.User.points" class="py-name" href="#" onclick="return doclink('link-300', 'points', 'link-12');">points</a></tt><tt class="py-op">)</tt><tt class="py-op">.</tt><tt id="link-301" class="py-name"><a title="admin.models.Admin.save
+kernel.models.City.save
+kernel.models.Claim.save
+kernel.models.Event_base.save
+kernel.models.Fundraiser.save
+kernel.models.Profile.save
+kernel.models.Redeemable.save
+kernel.models.Ticket.save
+kernel.models.User.save" class="py-name" href="#" onclick="return doclink('link-301', 'save', 'link-29');">save</a></tt><tt class="py-op">(</tt><tt class="py-op">)</tt> </tt>
+</div></div><a name="L375"></a><tt class="py-lineno">375</tt>  <tt class="py-line"> </tt><script type="text/javascript">
 <!--
 expandto(location.href);
 // -->
@@ -1172,7 +1367,7 @@ expandto(location.href);
 <table border="0" cellpadding="0" cellspacing="0" width="100%%">
   <tr>
     <td align="left" class="footer">
-    Generated by Epydoc 3.0.1 on Tue Jun 25 06:18:58 2013
+    Generated by Epydoc 3.0.1 on Wed Jun 26 07:39:22 2013
     </td>
     <td align="right" class="footer">
       <a target="mainFrame" href="http://epydoc.sourceforge.net"

@@ -93,17 +93,21 @@ src.controllers" class="py-name" href="#" onclick="return doclink('link-3', 'con
 <a name="L29"></a><tt class="py-lineno">29</tt>  <tt class="py-line">    <tt class="py-keyword">if</tt> <tt id="link-9" class="py-name"><a title="src.controllers.request" class="py-name" href="#" onclick="return doclink('link-9', 'request', 'link-4');">request</a></tt><tt class="py-op">.</tt><tt class="py-name">session</tt><tt class="py-op">.</tt><tt class="py-name">has_key</tt><tt class="py-op">(</tt><tt class="py-string">'admin'</tt><tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
 <a name="L30"></a><tt class="py-lineno">30</tt>  <tt class="py-line">        <tt class="py-keyword">return</tt> <tt class="py-name">HttpResponseForbidden</tt><tt class="py-op">(</tt><tt class="py-string">'Access forbidden.'</tt><tt class="py-op">)</tt> </tt>
 <a name="L31"></a><tt class="py-lineno">31</tt>  <tt class="py-line">    <tt class="py-comment"># Authenticate name/password combination</tt> </tt>
-<a name="L32"></a><tt class="py-lineno">32</tt>  <tt class="py-line">    <tt class="py-keyword">if</tt> <tt id="link-10" class="py-name" targets="Class admin.models.Admin=admin.models.Admin-class.html"><a title="admin.models.Admin" class="py-name" href="#" onclick="return doclink('link-10', 'Admin', 'link-10');">Admin</a></tt><tt class="py-op">.</tt><tt id="link-11" class="py-name" targets="Method admin.models.Admin.objects()=admin.models.Admin-class.html#objects,Method analytics.models.Add_points_event.objects()=analytics.models.Add_points_event-class.html#objects,Method analytics.models.Subtract_points_event.objects()=analytics.models.Subtract_points_event-class.html#objects,Method kernel.models.City.objects()=kernel.models.City-class.html#objects,Method kernel.models.Claim.objects()=kernel.models.Claim-class.html#objects,Method kernel.models.Community.objects()=kernel.models.Community-class.html#objects,Method kernel.models.Event.objects()=kernel.models.Event-class.html#objects,Method kernel.models.Event_base.objects()=kernel.models.Event_base-class.html#objects,Method kernel.models.Initiative.objects()=kernel.models.Initiative-class.html#objects,Method kernel.models.Profile.objects()=kernel.models.Profile-class.html#objects,Method kernel.models.Profile_manager.objects()=kernel.models.Profile_manager-class.html#objects,Method kernel.models.Redeemable.objects()=kernel.models.Redeemable-class.html#objects,Method kernel.models.Reward.objects()=kernel.models.Reward-class.html#objects,Method kernel.models.Ticket.objects()=kernel.models.Ticket-class.html#objects,Method kernel.models.User.objects()=kernel.models.User-class.html#objects,Method kernel.models.User_following.objects()=kernel.models.User_following-class.html#objects,Method kernel.models.Wepay_account.objects()=kernel.models.Wepay_account-class.html#objects"><a title="admin.models.Admin.objects
+<a name="L32"></a><tt class="py-lineno">32</tt>  <tt class="py-line">    <tt class="py-keyword">if</tt> <tt id="link-10" class="py-name" targets="Class admin.models.Admin=admin.models.Admin-class.html"><a title="admin.models.Admin" class="py-name" href="#" onclick="return doclink('link-10', 'Admin', 'link-10');">Admin</a></tt><tt class="py-op">.</tt><tt id="link-11" class="py-name" targets="Method admin.models.Admin.objects()=admin.models.Admin-class.html#objects,Method analytics.models.Add_points_event.objects()=analytics.models.Add_points_event-class.html#objects,Method analytics.models.Subtract_points_event.objects()=analytics.models.Subtract_points_event-class.html#objects,Method kernel.models.City.objects()=kernel.models.City-class.html#objects,Method kernel.models.Claim.objects()=kernel.models.Claim-class.html#objects,Method kernel.models.Community.objects()=kernel.models.Community-class.html#objects,Method kernel.models.Donation.objects()=kernel.models.Donation-class.html#objects,Method kernel.models.Event.objects()=kernel.models.Event-class.html#objects,Method kernel.models.Event_base.objects()=kernel.models.Event_base-class.html#objects,Method kernel.models.Fundraiser.objects()=kernel.models.Fundraiser-class.html#objects,Method kernel.models.Initiative.objects()=kernel.models.Initiative-class.html#objects,Method kernel.models.Pledge.objects()=kernel.models.Pledge-class.html#objects,Method kernel.models.Profile.objects()=kernel.models.Profile-class.html#objects,Method kernel.models.Profile_manager.objects()=kernel.models.Profile_manager-class.html#objects,Method kernel.models.Purchase.objects()=kernel.models.Purchase-class.html#objects,Method kernel.models.Redeemable.objects()=kernel.models.Redeemable-class.html#objects,Method kernel.models.Reward.objects()=kernel.models.Reward-class.html#objects,Method kernel.models.Ticket.objects()=kernel.models.Ticket-class.html#objects,Method kernel.models.User.objects()=kernel.models.User-class.html#objects,Method kernel.models.User_following.objects()=kernel.models.User_following-class.html#objects,Method kernel.models.Wepay_account.objects()=kernel.models.Wepay_account-class.html#objects"><a title="admin.models.Admin.objects
 analytics.models.Add_points_event.objects
 analytics.models.Subtract_points_event.objects
 kernel.models.City.objects
 kernel.models.Claim.objects
 kernel.models.Community.objects
+kernel.models.Donation.objects
 kernel.models.Event.objects
 kernel.models.Event_base.objects
+kernel.models.Fundraiser.objects
 kernel.models.Initiative.objects
+kernel.models.Pledge.objects
 kernel.models.Profile.objects
 kernel.models.Profile_manager.objects
+kernel.models.Purchase.objects
 kernel.models.Redeemable.objects
 kernel.models.Reward.objects
 kernel.models.Ticket.objects
@@ -124,11 +128,15 @@ analytics.models.Subtract_points_event.objects
 kernel.models.City.objects
 kernel.models.Claim.objects
 kernel.models.Community.objects
+kernel.models.Donation.objects
 kernel.models.Event.objects
 kernel.models.Event_base.objects
+kernel.models.Fundraiser.objects
 kernel.models.Initiative.objects
+kernel.models.Pledge.objects
 kernel.models.Profile.objects
 kernel.models.Profile_manager.objects
+kernel.models.Purchase.objects
 kernel.models.Redeemable.objects
 kernel.models.Reward.objects
 kernel.models.Ticket.objects
@@ -199,7 +207,7 @@ expandto(location.href);
 <table border="0" cellpadding="0" cellspacing="0" width="100%%">
   <tr>
     <td align="left" class="footer">
-    Generated by Epydoc 3.0.1 on Tue Jun 25 06:18:59 2013
+    Generated by Epydoc 3.0.1 on Wed Jun 26 07:39:22 2013
     </td>
     <td align="right" class="footer">
       <a target="mainFrame" href="http://epydoc.sourceforge.net"

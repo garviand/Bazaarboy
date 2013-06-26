@@ -81,17 +81,21 @@ src.serializer.serializer.FORMAT_DATETIME" class="py-name" href="#" onclick="ret
 <a name="L16"></a><tt class="py-lineno">16</tt>  <tt class="py-line"><tt class="py-docstring">    If selectedFields are specified, only the selected fields will be returned.</tt> </tt>
 <a name="L17"></a><tt class="py-lineno">17</tt>  <tt class="py-line"><tt class="py-docstring">    """</tt> </tt>
 <a name="L18"></a><tt class="py-lineno">18</tt>  <tt class="py-line">    <tt class="py-name">outputObj</tt> <tt class="py-op">=</tt> <tt class="py-op">{</tt><tt class="py-op">}</tt> </tt>
-<a name="L19"></a><tt class="py-lineno">19</tt>  <tt class="py-line">    <tt class="py-name">concreteModel</tt> <tt class="py-op">=</tt> <tt class="py-name">obj</tt><tt class="py-op">.</tt><tt id="link-3" class="py-name" targets="Variable admin.models.Admin._meta=admin.models.Admin-class.html#_meta,Variable analytics.models.Add_points_event._meta=analytics.models.Add_points_event-class.html#_meta,Variable analytics.models.Subtract_points_event._meta=analytics.models.Subtract_points_event-class.html#_meta,Variable kernel.models.City._meta=kernel.models.City-class.html#_meta,Variable kernel.models.Claim._meta=kernel.models.Claim-class.html#_meta,Variable kernel.models.Community._meta=kernel.models.Community-class.html#_meta,Variable kernel.models.Event._meta=kernel.models.Event-class.html#_meta,Variable kernel.models.Event_base._meta=kernel.models.Event_base-class.html#_meta,Variable kernel.models.Initiative._meta=kernel.models.Initiative-class.html#_meta,Variable kernel.models.Profile._meta=kernel.models.Profile-class.html#_meta,Variable kernel.models.Profile_manager._meta=kernel.models.Profile_manager-class.html#_meta,Variable kernel.models.Redeemable._meta=kernel.models.Redeemable-class.html#_meta,Variable kernel.models.Reward._meta=kernel.models.Reward-class.html#_meta,Variable kernel.models.Ticket._meta=kernel.models.Ticket-class.html#_meta,Variable kernel.models.User._meta=kernel.models.User-class.html#_meta,Variable kernel.models.User_following._meta=kernel.models.User_following-class.html#_meta,Variable kernel.models.Wepay_account._meta=kernel.models.Wepay_account-class.html#_meta"><a title="admin.models.Admin._meta
+<a name="L19"></a><tt class="py-lineno">19</tt>  <tt class="py-line">    <tt class="py-name">concreteModel</tt> <tt class="py-op">=</tt> <tt class="py-name">obj</tt><tt class="py-op">.</tt><tt id="link-3" class="py-name" targets="Variable admin.models.Admin._meta=admin.models.Admin-class.html#_meta,Variable analytics.models.Add_points_event._meta=analytics.models.Add_points_event-class.html#_meta,Variable analytics.models.Subtract_points_event._meta=analytics.models.Subtract_points_event-class.html#_meta,Variable kernel.models.City._meta=kernel.models.City-class.html#_meta,Variable kernel.models.Claim._meta=kernel.models.Claim-class.html#_meta,Variable kernel.models.Community._meta=kernel.models.Community-class.html#_meta,Variable kernel.models.Donation._meta=kernel.models.Donation-class.html#_meta,Variable kernel.models.Event._meta=kernel.models.Event-class.html#_meta,Variable kernel.models.Event_base._meta=kernel.models.Event_base-class.html#_meta,Variable kernel.models.Fundraiser._meta=kernel.models.Fundraiser-class.html#_meta,Variable kernel.models.Initiative._meta=kernel.models.Initiative-class.html#_meta,Variable kernel.models.Pledge._meta=kernel.models.Pledge-class.html#_meta,Variable kernel.models.Profile._meta=kernel.models.Profile-class.html#_meta,Variable kernel.models.Profile_manager._meta=kernel.models.Profile_manager-class.html#_meta,Variable kernel.models.Purchase._meta=kernel.models.Purchase-class.html#_meta,Variable kernel.models.Redeemable._meta=kernel.models.Redeemable-class.html#_meta,Variable kernel.models.Reward._meta=kernel.models.Reward-class.html#_meta,Variable kernel.models.Ticket._meta=kernel.models.Ticket-class.html#_meta,Variable kernel.models.User._meta=kernel.models.User-class.html#_meta,Variable kernel.models.User_following._meta=kernel.models.User_following-class.html#_meta,Variable kernel.models.Wepay_account._meta=kernel.models.Wepay_account-class.html#_meta"><a title="admin.models.Admin._meta
 analytics.models.Add_points_event._meta
 analytics.models.Subtract_points_event._meta
 kernel.models.City._meta
 kernel.models.Claim._meta
 kernel.models.Community._meta
+kernel.models.Donation._meta
 kernel.models.Event._meta
 kernel.models.Event_base._meta
+kernel.models.Fundraiser._meta
 kernel.models.Initiative._meta
+kernel.models.Pledge._meta
 kernel.models.Profile._meta
 kernel.models.Profile_manager._meta
+kernel.models.Purchase._meta
 kernel.models.Redeemable._meta
 kernel.models.Reward._meta
 kernel.models.Ticket._meta
@@ -104,11 +108,15 @@ analytics.models.Subtract_points_event._meta
 kernel.models.City._meta
 kernel.models.Claim._meta
 kernel.models.Community._meta
+kernel.models.Donation._meta
 kernel.models.Event._meta
 kernel.models.Event_base._meta
+kernel.models.Fundraiser._meta
 kernel.models.Initiative._meta
+kernel.models.Pledge._meta
 kernel.models.Profile._meta
 kernel.models.Profile_manager._meta
+kernel.models.Purchase._meta
 kernel.models.Redeemable._meta
 kernel.models.Reward._meta
 kernel.models.Ticket._meta
@@ -235,7 +243,7 @@ expandto(location.href);
 <table border="0" cellpadding="0" cellspacing="0" width="100%%">
   <tr>
     <td align="left" class="footer">
-    Generated by Epydoc 3.0.1 on Tue Jun 25 06:18:59 2013
+    Generated by Epydoc 3.0.1 on Wed Jun 26 07:39:22 2013
     </td>
     <td align="right" class="footer">
       <a target="mainFrame" href="http://epydoc.sourceforge.net"
