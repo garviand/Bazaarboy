@@ -337,7 +337,7 @@ def create_ticket(request, params):
         response = {
             'status':'FAIL',
             'error':'STARTED_EVENT',
-            'message':'You cannot add ticket to a started event.'
+            'message':'You cannot add a ticket to a started event.'
         }
         return json_response(response)
     ticket = Ticket(event = event, name = params['name'], 
@@ -512,4 +512,41 @@ def delete_ticket(request, params):
     """
     Delete a ticket
     """
-    pass
+    # Check if the ticket is valid
+    if not Ticket.objects.filter(id = params['id']).exists():
+        response = {
+            'status':'FAIL',
+            'error':'TICKET_NOT_FOUND',
+            'message':'The ticket doesn\'t exist.'
+        }
+        return json_response(response)
+    ticket = Ticket.objects.get(id = params['id'])
+    # Check if the user has permission for the event
+    user = User.objects.get(id = request.session['user'])
+    event = ticket.event
+    if not Profile_manager.objects.filter(user = user, profile = event.owner) \
+                                  .exists():
+        response = {
+            'status':'FAIL',
+            'error':'NOT_A_MANAGER',
+            'message':'You don\'t have permission for the event.'
+        }
+        return json_response(response)
+    # Check if the event has started
+    if event.start_time <= timezone.now():
+        response = {
+            'status':'FAIL',
+            'error':'STARTED_EVENT',
+            'message':'You cannot make changes to a started event.'
+        }
+        return json_response(response)
+    # Refund all purchases for the ticket
+    purchases = Purchase.objects.filter(ticket = ticket)
+    for purchase in purchases:
+        pass
+    # Delete the ticket
+    ticket.delete()
+    response = {
+        'status':'OK'
+    }
+    return json_response(response)

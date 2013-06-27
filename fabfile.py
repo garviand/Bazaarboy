@@ -6,7 +6,7 @@ def console():
     Open up the interactive python console with django context
     """
     with lcd('./Bazaarboy/'):
-        local('python manage.py shell_plus')
+        local('python manage.py shell')
 
 def docs():
     """
@@ -27,6 +27,13 @@ def syncdb():
     """
     with lcd('./Bazaarboy/'):
         local('python manage.py syncdb')
+
+def test(app=''):
+    """
+    Run unit tests
+    """
+    with lcd('./Bazaarboy/'):
+        local('python manage.py test %s' % app)
 
 def compile():
     """

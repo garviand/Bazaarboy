@@ -129,3 +129,70 @@ def create(request, params):
         'event':serialize_one(initiative)
     }
     return json_response(response)
+
+@login_required()
+@validate('POST', ['initiative', 'name', 'description', 'price'], ['quantity'])
+def create_reward(request, params):
+    """
+    Create a reward for the initiative
+    """
+    # Check if initiative is valid
+    if not Initiative.objects.filter(id = params['initiative']):
+        response = {
+            'status':'FAIL',
+            'error':'INVALID_INITIATIVE',
+            'message':'The initiative doesn\'t exist.'
+        }
+        return json_response(response)
+    initiative = Initiative.objects.get(id = params['initiative'])
+    # Check if user has permission for the initiative
+    user = User.objects.get(id = request.session['user'])
+    if not Profile_manager.objects.filter(user = user, 
+                                          profile = initiative.owner) \
+                                  .exists():
+        response = {
+            'status':'FAIL',
+            'error':'NOT_A_MANAGER',
+            'message':'You don\'t have permission for the initiative.'
+        }
+        return json_response(response)
+    # Check if the initiative has passed its deadline
+    if initiative.deadline <= timezone.now():
+        response = {
+            'status':'FAIL',
+            'error':'PAST_INITIATIVE',
+            'message':'You cannot add a reward to a past initiative.'
+        }
+        return json_response(response)
+    # Check the price
+    params['price'] = float(params['price'])
+    if params['price'] <= 0:
+        response = {
+            'status':'FAIL',
+            'error':'INVALID_PRICE',
+            'message':'The price is invalid.'
+        }
+        return json_response(response)
+    reward = Reward(initiative = initiative, 
+                    name = params['name'], 
+                    description = params['description'], 
+                    price = params['price'])
+    # Check the quantity
+    if params['quantity'] is not None:
+        params['quantity'] = int(params['quantity'])
+        if params['quantity'] <= 0:
+            response = {
+                'status':'FAIL',
+                'error':'INVALID_QUANTITY',
+                'message':'The quantity is invalid.'
+            }
+            return json_response(response)
+        else:
+            reward.quantity = params['quantity']
+    # All checks passed, write to database
+    reward.save()
+    response = {
+        'status':'OK',
+        'reward':serialize_one(reward)
+    }
+    return json_response(response)
