@@ -2,12 +2,13 @@
 Controller for WePay
 """
 
+from __future__ import absolute_import
 from django.core.urlresolvers import reverse
 from django.shortcuts import render, redirect
 from kernel.models import *
 from wepay import WePay
 from src.config import *
-from src.controllers.request import validate
+from src.controllers.request import validate, login_required
 
 @login_required()
 def authorize(request):
@@ -49,7 +50,7 @@ def create(request, params):
     user = User.objects.get(id = request.session['user'])
     wepayAccount = Wepay_account(owner = user, 
                                  user_id = tokenInfo['user_id'], 
-                                 accound_id = accountInfo['account_id'], 
+                                 account_id = accountInfo['account_id'], 
                                  access_token = tokenInfo['access_token'], 
                                  name = params['name'])
     wepayAccount.save()

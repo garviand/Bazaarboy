@@ -81,7 +81,7 @@ src.serializer.serializer" class="py-name" href="#" onclick="return doclink('lin
 <a name="L17"></a><tt class="py-lineno">17</tt>  <tt class="py-line"><tt class="py-decorator">@</tt><tt class="py-decorator">login_required</tt><tt class="py-op">(</tt><tt class="py-op">)</tt> </tt>
 <a name="L18"></a><tt class="py-lineno">18</tt>  <tt class="py-line"><tt class="py-decorator">@</tt><tt class="py-decorator">validate</tt><tt class="py-op">(</tt><tt class="py-string">'POST'</tt><tt class="py-op">,</tt>  </tt>
 <a name="L19"></a><tt class="py-lineno">19</tt>  <tt class="py-line">          <tt class="py-op">[</tt><tt class="py-string">'name'</tt><tt class="py-op">,</tt> <tt class="py-string">'description'</tt><tt class="py-op">,</tt> <tt class="py-string">'community'</tt><tt class="py-op">,</tt> <tt class="py-string">'category'</tt><tt class="py-op">]</tt><tt class="py-op">,</tt>  </tt>
-<a name="L20"></a><tt class="py-lineno">20</tt>  <tt class="py-line">          <tt class="py-op">[</tt><tt class="py-string">'latitude'</tt><tt class="py-op">,</tt> <tt class="py-string">'longitude'</tt><tt class="py-op">]</tt><tt class="py-op">)</tt> </tt>
+<a name="L20"></a><tt class="py-lineno">20</tt>  <tt class="py-line">          <tt class="py-op">[</tt><tt class="py-string">'latitude'</tt><tt class="py-op">,</tt> <tt class="py-string">'longitude'</tt><tt class="py-op">,</tt> <tt class="py-string">'wepay'</tt><tt class="py-op">]</tt><tt class="py-op">)</tt> </tt>
 <a name="create"></a><div id="create-def"><a name="L21"></a><tt class="py-lineno">21</tt> <a class="py-toggle" href="#" id="create-toggle" onclick="return toggle('create');">-</a><tt class="py-line"><tt class="py-keyword">def</tt> <a class="py-def-name" href="src.controllers.profile-module.html#create">create</a><tt class="py-op">(</tt><tt class="py-param">request</tt><tt class="py-op">,</tt> <tt class="py-param">params</tt><tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
 </div><div id="create-collapsed" style="display:none;" pad="++" indent="++++"></div><div id="create-expanded"><a name="L22"></a><tt class="py-lineno">22</tt>  <tt class="py-line">    <tt class="py-docstring">"""</tt> </tt>
 <a name="L23"></a><tt class="py-lineno">23</tt>  <tt class="py-line"><tt class="py-docstring">    Create a profile and set the creating user as the creator</tt> </tt>
@@ -97,7 +97,7 @@ src.serializer.serializer" class="py-name" href="#" onclick="return doclink('lin
 <a name="L33"></a><tt class="py-lineno">33</tt>  <tt class="py-line">        <tt class="py-op">}</tt> </tt>
 <a name="L34"></a><tt class="py-lineno">34</tt>  <tt class="py-line">        <tt class="py-keyword">return</tt> <tt id="link-11" class="py-name"><a title="src.controllers.request.json_response" class="py-name" href="#" onclick="return doclink('link-11', 'json_response', 'link-6');">json_response</a></tt><tt class="py-op">(</tt><tt class="py-name">response</tt><tt class="py-op">)</tt> </tt>
 <a name="L35"></a><tt class="py-lineno">35</tt>  <tt class="py-line">    <tt class="py-comment"># Check if community exists</tt> </tt>
-<a name="L36"></a><tt class="py-lineno">36</tt>  <tt class="py-line">    <tt class="py-keyword">if</tt> <tt class="py-keyword">not</tt> <tt id="link-12" class="py-name" targets="Class kernel.models.Community=kernel.models.Community-class.html"><a title="kernel.models.Community" class="py-name" href="#" onclick="return doclink('link-12', 'Community', 'link-12');">Community</a></tt><tt class="py-op">.</tt><tt id="link-13" class="py-name" targets="Method admin.models.Admin.objects()=admin.models.Admin-class.html#objects,Method analytics.models.Add_points_event.objects()=analytics.models.Add_points_event-class.html#objects,Method analytics.models.Subtract_points_event.objects()=analytics.models.Subtract_points_event-class.html#objects,Method kernel.models.City.objects()=kernel.models.City-class.html#objects,Method kernel.models.Claim.objects()=kernel.models.Claim-class.html#objects,Method kernel.models.Community.objects()=kernel.models.Community-class.html#objects,Method kernel.models.Donation.objects()=kernel.models.Donation-class.html#objects,Method kernel.models.Event.objects()=kernel.models.Event-class.html#objects,Method kernel.models.Event_base.objects()=kernel.models.Event_base-class.html#objects,Method kernel.models.Fundraiser.objects()=kernel.models.Fundraiser-class.html#objects,Method kernel.models.Initiative.objects()=kernel.models.Initiative-class.html#objects,Method kernel.models.Pledge.objects()=kernel.models.Pledge-class.html#objects,Method kernel.models.Profile.objects()=kernel.models.Profile-class.html#objects,Method kernel.models.Profile_manager.objects()=kernel.models.Profile_manager-class.html#objects,Method kernel.models.Purchase.objects()=kernel.models.Purchase-class.html#objects,Method kernel.models.Redeemable.objects()=kernel.models.Redeemable-class.html#objects,Method kernel.models.Reward.objects()=kernel.models.Reward-class.html#objects,Method kernel.models.Ticket.objects()=kernel.models.Ticket-class.html#objects,Method kernel.models.User.objects()=kernel.models.User-class.html#objects,Method kernel.models.User_following.objects()=kernel.models.User_following-class.html#objects,Method kernel.models.Wepay_account.objects()=kernel.models.Wepay_account-class.html#objects"><a title="admin.models.Admin.objects
+<a name="L36"></a><tt class="py-lineno">36</tt>  <tt class="py-line">    <tt class="py-keyword">if</tt> <tt class="py-keyword">not</tt> <tt id="link-12" class="py-name" targets="Class kernel.models.Community=kernel.models.Community-class.html"><a title="kernel.models.Community" class="py-name" href="#" onclick="return doclink('link-12', 'Community', 'link-12');">Community</a></tt><tt class="py-op">.</tt><tt id="link-13" class="py-name" targets="Method admin.models.Admin.objects()=admin.models.Admin-class.html#objects,Method analytics.models.Add_points_event.objects()=analytics.models.Add_points_event-class.html#objects,Method analytics.models.Subtract_points_event.objects()=analytics.models.Subtract_points_event-class.html#objects,Method kernel.models.City.objects()=kernel.models.City-class.html#objects,Method kernel.models.Claim.objects()=kernel.models.Claim-class.html#objects,Method kernel.models.Community.objects()=kernel.models.Community-class.html#objects,Method kernel.models.Donation.objects()=kernel.models.Donation-class.html#objects,Method kernel.models.Event.objects()=kernel.models.Event-class.html#objects,Method kernel.models.Fundraiser.objects()=kernel.models.Fundraiser-class.html#objects,Method kernel.models.Initiative.objects()=kernel.models.Initiative-class.html#objects,Method kernel.models.Pledge.objects()=kernel.models.Pledge-class.html#objects,Method kernel.models.Profile.objects()=kernel.models.Profile-class.html#objects,Method kernel.models.Profile_manager.objects()=kernel.models.Profile_manager-class.html#objects,Method kernel.models.Purchase.objects()=kernel.models.Purchase-class.html#objects,Method kernel.models.Redeemable.objects()=kernel.models.Redeemable-class.html#objects,Method kernel.models.Reward.objects()=kernel.models.Reward-class.html#objects,Method kernel.models.Ticket.objects()=kernel.models.Ticket-class.html#objects,Method kernel.models.User.objects()=kernel.models.User-class.html#objects,Method kernel.models.User_following.objects()=kernel.models.User_following-class.html#objects,Method kernel.models.Wepay_account.objects()=kernel.models.Wepay_account-class.html#objects"><a title="admin.models.Admin.objects
 analytics.models.Add_points_event.objects
 analytics.models.Subtract_points_event.objects
 kernel.models.City.objects
@@ -105,7 +105,6 @@ kernel.models.Claim.objects
 kernel.models.Community.objects
 kernel.models.Donation.objects
 kernel.models.Event.objects
-kernel.models.Event_base.objects
 kernel.models.Fundraiser.objects
 kernel.models.Initiative.objects
 kernel.models.Pledge.objects
@@ -125,7 +124,10 @@ kernel.models.Wepay_account.objects" class="py-name" href="#" onclick="return do
 <a name="L41"></a><tt class="py-lineno">41</tt>  <tt class="py-line">        <tt class="py-op">}</tt> </tt>
 <a name="L42"></a><tt class="py-lineno">42</tt>  <tt class="py-line">        <tt class="py-keyword">return</tt> <tt id="link-14" class="py-name"><a title="src.controllers.request.json_response" class="py-name" href="#" onclick="return doclink('link-14', 'json_response', 'link-6');">json_response</a></tt><tt class="py-op">(</tt><tt class="py-name">response</tt><tt class="py-op">)</tt> </tt>
 <a name="L43"></a><tt class="py-lineno">43</tt>  <tt class="py-line">    <tt class="py-comment"># Create profile object</tt> </tt>
-<a name="L44"></a><tt class="py-lineno">44</tt>  <tt class="py-line">    <tt id="link-15" class="py-name" targets="Variable kernel.models.Event_base.community=kernel.models.Event_base-class.html#community,Variable kernel.models.Profile.community=kernel.models.Profile-class.html#community,Variable kernel.models.Redeemable.community=kernel.models.Redeemable-class.html#community,Variable kernel.models.User_following.community=kernel.models.User_following-class.html#community,Module src.controllers.community=src.controllers.community-module.html,Function src.controllers.community.community()=src.controllers.community-module.html#community"><a title="kernel.models.Event_base.community
+<a name="L44"></a><tt class="py-lineno">44</tt>  <tt class="py-line">    <tt id="link-15" class="py-name" targets="Variable kernel.models.Event.community=kernel.models.Event-class.html#community,Variable kernel.models.Event_base.community=kernel.models.Event_base-class.html#community,Variable kernel.models.Fundraiser.community=kernel.models.Fundraiser-class.html#community,Variable kernel.models.Initiative.community=kernel.models.Initiative-class.html#community,Variable kernel.models.Profile.community=kernel.models.Profile-class.html#community,Variable kernel.models.Redeemable.community=kernel.models.Redeemable-class.html#community,Variable kernel.models.User_following.community=kernel.models.User_following-class.html#community,Module src.controllers.community=src.controllers.community-module.html,Function src.controllers.community.community()=src.controllers.community-module.html#community"><a title="kernel.models.Event.community
+kernel.models.Event_base.community
+kernel.models.Fundraiser.community
+kernel.models.Initiative.community
 kernel.models.Profile.community
 kernel.models.Redeemable.community
 kernel.models.User_following.community
@@ -138,7 +140,6 @@ kernel.models.Claim.objects
 kernel.models.Community.objects
 kernel.models.Donation.objects
 kernel.models.Event.objects
-kernel.models.Event_base.objects
 kernel.models.Fundraiser.objects
 kernel.models.Initiative.objects
 kernel.models.Pledge.objects
@@ -167,20 +168,25 @@ kernel.models.Profile.description
 kernel.models.Redeemable.description
 kernel.models.Reward.description
 kernel.models.Ticket.description" class="py-name" href="#" onclick="return doclink('link-21', 'description', 'link-21');">description</a></tt> <tt class="py-op">=</tt> <tt class="py-name">params</tt><tt class="py-op">[</tt><tt class="py-string">'description'</tt><tt class="py-op">]</tt><tt class="py-op">,</tt>  </tt>
-<a name="L47"></a><tt class="py-lineno">47</tt>  <tt class="py-line">                      <tt id="link-22" class="py-name"><a title="kernel.models.Event_base.community
+<a name="L47"></a><tt class="py-lineno">47</tt>  <tt class="py-line">                      <tt id="link-22" class="py-name"><a title="kernel.models.Event.community
+kernel.models.Event_base.community
+kernel.models.Fundraiser.community
+kernel.models.Initiative.community
 kernel.models.Profile.community
 kernel.models.Redeemable.community
 kernel.models.User_following.community
 src.controllers.community
-src.controllers.community.community" class="py-name" href="#" onclick="return doclink('link-22', 'community', 'link-15');">community</a></tt> <tt class="py-op">=</tt> <tt id="link-23" class="py-name"><a title="kernel.models.Event_base.community
+src.controllers.community.community" class="py-name" href="#" onclick="return doclink('link-22', 'community', 'link-15');">community</a></tt> <tt class="py-op">=</tt> <tt id="link-23" class="py-name"><a title="kernel.models.Event.community
+kernel.models.Event_base.community
+kernel.models.Fundraiser.community
+kernel.models.Initiative.community
 kernel.models.Profile.community
 kernel.models.Redeemable.community
 kernel.models.User_following.community
 src.controllers.community
 src.controllers.community.community" class="py-name" href="#" onclick="return doclink('link-23', 'community', 'link-15');">community</a></tt><tt class="py-op">,</tt>  </tt>
 <a name="L48"></a><tt class="py-lineno">48</tt>  <tt class="py-line">                      <tt id="link-24" class="py-name" targets="Variable kernel.models.Event_base.category=kernel.models.Event_base-class.html#category,Variable kernel.models.Profile.category=kernel.models.Profile-class.html#category"><a title="kernel.models.Event_base.category
-kernel.models.Profile.category" class="py-name" href="#" onclick="return doclink('link-24', 'category', 'link-24');">category</a></tt> <tt class="py-op">=</tt> <tt id="link-25" class="py-name"><a title="kernel.models.Event_base.category
-kernel.models.Profile.category" class="py-name" href="#" onclick="return doclink('link-25', 'category', 'link-24');">category</a></tt><tt class="py-op">)</tt> </tt>
+kernel.models.Profile.category" class="py-name" href="#" onclick="return doclink('link-24', 'category', 'link-24');">category</a></tt> <tt class="py-op">=</tt> <tt class="py-name">params</tt><tt class="py-op">[</tt><tt class="py-string">'category'</tt><tt class="py-op">]</tt><tt class="py-op">)</tt> </tt>
 <a name="L49"></a><tt class="py-lineno">49</tt>  <tt class="py-line">    <tt class="py-comment"># Check if coordinates are specified, and if so, if they are legal</tt> </tt>
 <a name="L50"></a><tt class="py-lineno">50</tt>  <tt class="py-line">    <tt class="py-keyword">if</tt> <tt class="py-op">(</tt><tt class="py-name">params</tt><tt class="py-op">[</tt><tt class="py-string">'latitude'</tt><tt class="py-op">]</tt> <tt class="py-keyword">is</tt> <tt class="py-keyword">not</tt> <tt class="py-name">None</tt> <tt class="py-keyword">and</tt>  </tt>
 <a name="L51"></a><tt class="py-lineno">51</tt>  <tt class="py-line">        <tt class="py-name">params</tt><tt class="py-op">[</tt><tt class="py-string">'longitude'</tt><tt class="py-op">]</tt> <tt class="py-keyword">is</tt> <tt class="py-keyword">not</tt> <tt class="py-name">None</tt> <tt class="py-keyword">and</tt>  </tt>
@@ -191,35 +197,25 @@ kernel.models.Profile.category" class="py-name" href="#" onclick="return doclink
 <a name="L56"></a><tt class="py-lineno">56</tt>  <tt class="py-line">            <tt class="py-string">'error'</tt><tt class="py-op">:</tt><tt class="py-string">'INVALID_COORDINATES'</tt><tt class="py-op">,</tt> </tt>
 <a name="L57"></a><tt class="py-lineno">57</tt>  <tt class="py-line">            <tt class="py-string">'message'</tt><tt class="py-op">:</tt><tt class="py-string">'Latitude/longitude combination is invalid.'</tt> </tt>
 <a name="L58"></a><tt class="py-lineno">58</tt>  <tt class="py-line">        <tt class="py-op">}</tt> </tt>
-<a name="L59"></a><tt class="py-lineno">59</tt>  <tt class="py-line">        <tt class="py-keyword">return</tt> <tt id="link-26" class="py-name"><a title="src.controllers.request.json_response" class="py-name" href="#" onclick="return doclink('link-26', 'json_response', 'link-6');">json_response</a></tt><tt class="py-op">(</tt><tt class="py-name">response</tt><tt class="py-op">)</tt> </tt>
+<a name="L59"></a><tt class="py-lineno">59</tt>  <tt class="py-line">        <tt class="py-keyword">return</tt> <tt id="link-25" class="py-name"><a title="src.controllers.request.json_response" class="py-name" href="#" onclick="return doclink('link-25', 'json_response', 'link-6');">json_response</a></tt><tt class="py-op">(</tt><tt class="py-name">response</tt><tt class="py-op">)</tt> </tt>
 <a name="L60"></a><tt class="py-lineno">60</tt>  <tt class="py-line">    <tt class="py-keyword">else</tt><tt class="py-op">:</tt> </tt>
 <a name="L61"></a><tt class="py-lineno">61</tt>  <tt class="py-line">        <tt class="py-comment"># Valid coordinates, set to profile</tt> </tt>
-<a name="L62"></a><tt class="py-lineno">62</tt>  <tt class="py-line">        <tt id="link-27" class="py-name"><a title="kernel.models.Profile_manager.profile
-src.controllers.profile" class="py-name" href="#" onclick="return doclink('link-27', 'profile', 'link-18');">profile</a></tt><tt class="py-op">.</tt><tt id="link-28" class="py-name" targets="Variable kernel.models.City.latitude=kernel.models.City-class.html#latitude,Variable kernel.models.Community.latitude=kernel.models.Community-class.html#latitude,Variable kernel.models.Event_base.latitude=kernel.models.Event_base-class.html#latitude,Variable kernel.models.Profile.latitude=kernel.models.Profile-class.html#latitude"><a title="kernel.models.City.latitude
+<a name="L62"></a><tt class="py-lineno">62</tt>  <tt class="py-line">        <tt id="link-26" class="py-name"><a title="kernel.models.Profile_manager.profile
+src.controllers.profile" class="py-name" href="#" onclick="return doclink('link-26', 'profile', 'link-18');">profile</a></tt><tt class="py-op">.</tt><tt id="link-27" class="py-name" targets="Variable kernel.models.City.latitude=kernel.models.City-class.html#latitude,Variable kernel.models.Community.latitude=kernel.models.Community-class.html#latitude,Variable kernel.models.Event_base.latitude=kernel.models.Event_base-class.html#latitude,Variable kernel.models.Profile.latitude=kernel.models.Profile-class.html#latitude"><a title="kernel.models.City.latitude
 kernel.models.Community.latitude
 kernel.models.Event_base.latitude
-kernel.models.Profile.latitude" class="py-name" href="#" onclick="return doclink('link-28', 'latitude', 'link-28');">latitude</a></tt> <tt class="py-op">=</tt> <tt class="py-name">float</tt><tt class="py-op">(</tt><tt class="py-name">params</tt><tt class="py-op">[</tt><tt class="py-string">'latitude'</tt><tt class="py-op">]</tt><tt class="py-op">)</tt> </tt>
-<a name="L63"></a><tt class="py-lineno">63</tt>  <tt class="py-line">        <tt id="link-29" class="py-name"><a title="kernel.models.Profile_manager.profile
-src.controllers.profile" class="py-name" href="#" onclick="return doclink('link-29', 'profile', 'link-18');">profile</a></tt><tt class="py-op">.</tt><tt id="link-30" class="py-name" targets="Variable kernel.models.City.longitude=kernel.models.City-class.html#longitude,Variable kernel.models.Community.longitude=kernel.models.Community-class.html#longitude,Variable kernel.models.Event_base.longitude=kernel.models.Event_base-class.html#longitude,Variable kernel.models.Profile.longitude=kernel.models.Profile-class.html#longitude"><a title="kernel.models.City.longitude
+kernel.models.Profile.latitude" class="py-name" href="#" onclick="return doclink('link-27', 'latitude', 'link-27');">latitude</a></tt> <tt class="py-op">=</tt> <tt class="py-name">float</tt><tt class="py-op">(</tt><tt class="py-name">params</tt><tt class="py-op">[</tt><tt class="py-string">'latitude'</tt><tt class="py-op">]</tt><tt class="py-op">)</tt> </tt>
+<a name="L63"></a><tt class="py-lineno">63</tt>  <tt class="py-line">        <tt id="link-28" class="py-name"><a title="kernel.models.Profile_manager.profile
+src.controllers.profile" class="py-name" href="#" onclick="return doclink('link-28', 'profile', 'link-18');">profile</a></tt><tt class="py-op">.</tt><tt id="link-29" class="py-name" targets="Variable kernel.models.City.longitude=kernel.models.City-class.html#longitude,Variable kernel.models.Community.longitude=kernel.models.Community-class.html#longitude,Variable kernel.models.Event_base.longitude=kernel.models.Event_base-class.html#longitude,Variable kernel.models.Profile.longitude=kernel.models.Profile-class.html#longitude"><a title="kernel.models.City.longitude
 kernel.models.Community.longitude
 kernel.models.Event_base.longitude
-kernel.models.Profile.longitude" class="py-name" href="#" onclick="return doclink('link-30', 'longitude', 'link-30');">longitude</a></tt> <tt class="py-op">=</tt> <tt class="py-name">float</tt><tt class="py-op">(</tt><tt class="py-name">params</tt><tt class="py-op">[</tt><tt class="py-string">'longitude'</tt><tt class="py-op">]</tt><tt class="py-op">)</tt> </tt>
-<a name="L64"></a><tt class="py-lineno">64</tt>  <tt class="py-line">    <tt class="py-comment"># Save profile and establish manager role</tt> </tt>
-<a name="L65"></a><tt class="py-lineno">65</tt>  <tt class="py-line">    <tt id="link-31" class="py-name"><a title="kernel.models.Profile_manager.profile
-src.controllers.profile" class="py-name" href="#" onclick="return doclink('link-31', 'profile', 'link-18');">profile</a></tt><tt class="py-op">.</tt><tt id="link-32" class="py-name" targets="Method admin.models.Admin.save()=admin.models.Admin-class.html#save,Method kernel.models.City.save()=kernel.models.City-class.html#save,Method kernel.models.Claim.save()=kernel.models.Claim-class.html#save,Method kernel.models.Event_base.save()=kernel.models.Event_base-class.html#save,Method kernel.models.Fundraiser.save()=kernel.models.Fundraiser-class.html#save,Method kernel.models.Profile.save()=kernel.models.Profile-class.html#save,Method kernel.models.Redeemable.save()=kernel.models.Redeemable-class.html#save,Method kernel.models.Ticket.save()=kernel.models.Ticket-class.html#save,Method kernel.models.User.save()=kernel.models.User-class.html#save"><a title="admin.models.Admin.save
-kernel.models.City.save
-kernel.models.Claim.save
-kernel.models.Event_base.save
-kernel.models.Fundraiser.save
-kernel.models.Profile.save
-kernel.models.Redeemable.save
-kernel.models.Ticket.save
-kernel.models.User.save" class="py-name" href="#" onclick="return doclink('link-32', 'save', 'link-32');">save</a></tt><tt class="py-op">(</tt><tt class="py-op">)</tt> </tt>
-<a name="L66"></a><tt class="py-lineno">66</tt>  <tt class="py-line">    <tt id="link-33" class="py-name" targets="Variable analytics.models.Add_points_event.user=analytics.models.Add_points_event-class.html#user,Variable analytics.models.Subtract_points_event.user=analytics.models.Subtract_points_event-class.html#user,Variable kernel.models.Profile_manager.user=kernel.models.Profile_manager-class.html#user,Variable kernel.models.User_following.user=kernel.models.User_following-class.html#user,Module src.controllers.user=src.controllers.user-module.html"><a title="analytics.models.Add_points_event.user
+kernel.models.Profile.longitude" class="py-name" href="#" onclick="return doclink('link-29', 'longitude', 'link-29');">longitude</a></tt> <tt class="py-op">=</tt> <tt class="py-name">float</tt><tt class="py-op">(</tt><tt class="py-name">params</tt><tt class="py-op">[</tt><tt class="py-string">'longitude'</tt><tt class="py-op">]</tt><tt class="py-op">)</tt> </tt>
+<a name="L64"></a><tt class="py-lineno">64</tt>  <tt class="py-line">    <tt class="py-comment"># Check WePay account</tt> </tt>
+<a name="L65"></a><tt class="py-lineno">65</tt>  <tt class="py-line">    <tt id="link-30" class="py-name" targets="Variable analytics.models.Add_points_event.user=analytics.models.Add_points_event-class.html#user,Variable analytics.models.Subtract_points_event.user=analytics.models.Subtract_points_event-class.html#user,Variable kernel.models.Profile_manager.user=kernel.models.Profile_manager-class.html#user,Variable kernel.models.User_following.user=kernel.models.User_following-class.html#user,Module src.controllers.user=src.controllers.user-module.html"><a title="analytics.models.Add_points_event.user
 analytics.models.Subtract_points_event.user
 kernel.models.Profile_manager.user
 kernel.models.User_following.user
-src.controllers.user" class="py-name" href="#" onclick="return doclink('link-33', 'user', 'link-33');">user</a></tt> <tt class="py-op">=</tt> <tt id="link-34" class="py-name" targets="Class kernel.models.User=kernel.models.User-class.html"><a title="kernel.models.User" class="py-name" href="#" onclick="return doclink('link-34', 'User', 'link-34');">User</a></tt><tt class="py-op">.</tt><tt id="link-35" class="py-name"><a title="admin.models.Admin.objects
+src.controllers.user" class="py-name" href="#" onclick="return doclink('link-30', 'user', 'link-30');">user</a></tt> <tt class="py-op">=</tt> <tt id="link-31" class="py-name" targets="Class kernel.models.User=kernel.models.User-class.html"><a title="kernel.models.User" class="py-name" href="#" onclick="return doclink('link-31', 'User', 'link-31');">User</a></tt><tt class="py-op">.</tt><tt id="link-32" class="py-name"><a title="admin.models.Admin.objects
 analytics.models.Add_points_event.objects
 analytics.models.Subtract_points_event.objects
 kernel.models.City.objects
@@ -227,7 +223,6 @@ kernel.models.Claim.objects
 kernel.models.Community.objects
 kernel.models.Donation.objects
 kernel.models.Event.objects
-kernel.models.Event_base.objects
 kernel.models.Fundraiser.objects
 kernel.models.Initiative.objects
 kernel.models.Pledge.objects
@@ -239,21 +234,79 @@ kernel.models.Reward.objects
 kernel.models.Ticket.objects
 kernel.models.User.objects
 kernel.models.User_following.objects
-kernel.models.Wepay_account.objects" class="py-name" href="#" onclick="return doclink('link-35', 'objects', 'link-13');">objects</a></tt><tt class="py-op">.</tt><tt class="py-name">get</tt><tt class="py-op">(</tt><tt class="py-name">id</tt> <tt class="py-op">=</tt> <tt id="link-36" class="py-name"><a title="src.controllers.request" class="py-name" href="#" onclick="return doclink('link-36', 'request', 'link-5');">request</a></tt><tt class="py-op">.</tt><tt class="py-name">session</tt><tt class="py-op">[</tt><tt class="py-string">'user'</tt><tt class="py-op">]</tt><tt class="py-op">[</tt><tt class="py-string">'id'</tt><tt class="py-op">]</tt><tt class="py-op">)</tt> </tt>
-<a name="L67"></a><tt class="py-lineno">67</tt>  <tt class="py-line">    <tt class="py-name">profileManager</tt> <tt class="py-op">=</tt> <tt id="link-37" class="py-name" targets="Class kernel.models.Profile_manager=kernel.models.Profile_manager-class.html"><a title="kernel.models.Profile_manager" class="py-name" href="#" onclick="return doclink('link-37', 'Profile_manager', 'link-37');">Profile_manager</a></tt><tt class="py-op">(</tt><tt id="link-38" class="py-name"><a title="analytics.models.Add_points_event.user
+kernel.models.Wepay_account.objects" class="py-name" href="#" onclick="return doclink('link-32', 'objects', 'link-13');">objects</a></tt><tt class="py-op">.</tt><tt class="py-name">get</tt><tt class="py-op">(</tt><tt class="py-name">id</tt> <tt class="py-op">=</tt> <tt id="link-33" class="py-name"><a title="src.controllers.request" class="py-name" href="#" onclick="return doclink('link-33', 'request', 'link-5');">request</a></tt><tt class="py-op">.</tt><tt class="py-name">session</tt><tt class="py-op">[</tt><tt class="py-string">'user'</tt><tt class="py-op">]</tt><tt class="py-op">)</tt> </tt>
+<a name="L66"></a><tt class="py-lineno">66</tt>  <tt class="py-line">    <tt class="py-keyword">if</tt> <tt class="py-name">params</tt><tt class="py-op">[</tt><tt class="py-string">'wepay'</tt><tt class="py-op">]</tt> <tt class="py-keyword">is</tt> <tt class="py-keyword">not</tt> <tt class="py-name">None</tt><tt class="py-op">:</tt> </tt>
+<a name="L67"></a><tt class="py-lineno">67</tt>  <tt class="py-line">        <tt class="py-keyword">if</tt> <tt class="py-keyword">not</tt> <tt id="link-34" class="py-name" targets="Class kernel.models.Wepay_account=kernel.models.Wepay_account-class.html"><a title="kernel.models.Wepay_account" class="py-name" href="#" onclick="return doclink('link-34', 'Wepay_account', 'link-34');">Wepay_account</a></tt><tt class="py-op">.</tt><tt id="link-35" class="py-name"><a title="admin.models.Admin.objects
+analytics.models.Add_points_event.objects
+analytics.models.Subtract_points_event.objects
+kernel.models.City.objects
+kernel.models.Claim.objects
+kernel.models.Community.objects
+kernel.models.Donation.objects
+kernel.models.Event.objects
+kernel.models.Fundraiser.objects
+kernel.models.Initiative.objects
+kernel.models.Pledge.objects
+kernel.models.Profile.objects
+kernel.models.Profile_manager.objects
+kernel.models.Purchase.objects
+kernel.models.Redeemable.objects
+kernel.models.Reward.objects
+kernel.models.Ticket.objects
+kernel.models.User.objects
+kernel.models.User_following.objects
+kernel.models.Wepay_account.objects" class="py-name" href="#" onclick="return doclink('link-35', 'objects', 'link-13');">objects</a></tt><tt class="py-op">.</tt><tt class="py-name">filter</tt><tt class="py-op">(</tt><tt class="py-name">id</tt> <tt class="py-op">=</tt> <tt class="py-name">params</tt><tt class="py-op">[</tt><tt class="py-string">'wepay'</tt><tt class="py-op">]</tt><tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
+<a name="L68"></a><tt class="py-lineno">68</tt>  <tt class="py-line">            <tt class="py-name">response</tt> <tt class="py-op">=</tt> <tt class="py-op">{</tt> </tt>
+<a name="L69"></a><tt class="py-lineno">69</tt>  <tt class="py-line">                <tt class="py-string">'status'</tt><tt class="py-op">:</tt><tt class="py-string">'FAIL'</tt><tt class="py-op">,</tt> </tt>
+<a name="L70"></a><tt class="py-lineno">70</tt>  <tt class="py-line">                <tt class="py-string">'error'</tt><tt class="py-op">:</tt><tt class="py-string">'INVALID_WEPAY'</tt><tt class="py-op">,</tt> </tt>
+<a name="L71"></a><tt class="py-lineno">71</tt>  <tt class="py-line">                <tt class="py-string">'message'</tt><tt class="py-op">:</tt><tt class="py-string">'The wepay account is invalid.'</tt> </tt>
+<a name="L72"></a><tt class="py-lineno">72</tt>  <tt class="py-line">            <tt class="py-op">}</tt> </tt>
+<a name="L73"></a><tt class="py-lineno">73</tt>  <tt class="py-line">            <tt class="py-keyword">return</tt> <tt id="link-36" class="py-name"><a title="src.controllers.request.json_response" class="py-name" href="#" onclick="return doclink('link-36', 'json_response', 'link-6');">json_response</a></tt><tt class="py-op">(</tt><tt class="py-name">response</tt><tt class="py-op">)</tt> </tt>
+<a name="L74"></a><tt class="py-lineno">74</tt>  <tt class="py-line">        <tt class="py-name">wepayAccount</tt> <tt class="py-op">=</tt> <tt id="link-37" class="py-name"><a title="kernel.models.Wepay_account" class="py-name" href="#" onclick="return doclink('link-37', 'Wepay_account', 'link-34');">Wepay_account</a></tt><tt class="py-op">.</tt><tt id="link-38" class="py-name"><a title="admin.models.Admin.objects
+analytics.models.Add_points_event.objects
+analytics.models.Subtract_points_event.objects
+kernel.models.City.objects
+kernel.models.Claim.objects
+kernel.models.Community.objects
+kernel.models.Donation.objects
+kernel.models.Event.objects
+kernel.models.Fundraiser.objects
+kernel.models.Initiative.objects
+kernel.models.Pledge.objects
+kernel.models.Profile.objects
+kernel.models.Profile_manager.objects
+kernel.models.Purchase.objects
+kernel.models.Redeemable.objects
+kernel.models.Reward.objects
+kernel.models.Ticket.objects
+kernel.models.User.objects
+kernel.models.User_following.objects
+kernel.models.Wepay_account.objects" class="py-name" href="#" onclick="return doclink('link-38', 'objects', 'link-13');">objects</a></tt><tt class="py-op">.</tt><tt class="py-name">get</tt><tt class="py-op">(</tt><tt class="py-name">id</tt> <tt class="py-op">=</tt> <tt class="py-name">params</tt><tt class="py-op">[</tt><tt class="py-string">'wepay'</tt><tt class="py-op">]</tt><tt class="py-op">)</tt> </tt>
+<a name="L75"></a><tt class="py-lineno">75</tt>  <tt class="py-line">        <tt class="py-keyword">if</tt> <tt id="link-39" class="py-name"><a title="analytics.models.Add_points_event.user
 analytics.models.Subtract_points_event.user
 kernel.models.Profile_manager.user
 kernel.models.User_following.user
-src.controllers.user" class="py-name" href="#" onclick="return doclink('link-38', 'user', 'link-33');">user</a></tt> <tt class="py-op">=</tt> <tt id="link-39" class="py-name"><a title="analytics.models.Add_points_event.user
-analytics.models.Subtract_points_event.user
-kernel.models.Profile_manager.user
-kernel.models.User_following.user
-src.controllers.user" class="py-name" href="#" onclick="return doclink('link-39', 'user', 'link-33');">user</a></tt><tt class="py-op">,</tt> </tt>
-<a name="L68"></a><tt class="py-lineno">68</tt>  <tt class="py-line">                                     <tt id="link-40" class="py-name"><a title="kernel.models.Profile_manager.profile
-src.controllers.profile" class="py-name" href="#" onclick="return doclink('link-40', 'profile', 'link-18');">profile</a></tt> <tt class="py-op">=</tt> <tt id="link-41" class="py-name"><a title="kernel.models.Profile_manager.profile
-src.controllers.profile" class="py-name" href="#" onclick="return doclink('link-41', 'profile', 'link-18');">profile</a></tt><tt class="py-op">,</tt> </tt>
-<a name="L69"></a><tt class="py-lineno">69</tt>  <tt class="py-line">                                     <tt id="link-42" class="py-name" targets="Variable kernel.models.Profile_manager.is_creator=kernel.models.Profile_manager-class.html#is_creator"><a title="kernel.models.Profile_manager.is_creator" class="py-name" href="#" onclick="return doclink('link-42', 'is_creator', 'link-42');">is_creator</a></tt> <tt class="py-op">=</tt> <tt class="py-name">True</tt><tt class="py-op">)</tt> </tt>
-<a name="L70"></a><tt class="py-lineno">70</tt>  <tt class="py-line">    <tt class="py-name">profileManager</tt><tt class="py-op">.</tt><tt id="link-43" class="py-name"><a title="admin.models.Admin.save
+src.controllers.user" class="py-name" href="#" onclick="return doclink('link-39', 'user', 'link-30');">user</a></tt> <tt class="py-op">!=</tt> <tt class="py-name">wepayAccount</tt><tt class="py-op">.</tt><tt id="link-40" class="py-name" targets="Variable kernel.models.Claim.owner=kernel.models.Claim-class.html#owner,Variable kernel.models.Donation.owner=kernel.models.Donation-class.html#owner,Variable kernel.models.Event.owner=kernel.models.Event-class.html#owner,Variable kernel.models.Event_base.owner=kernel.models.Event_base-class.html#owner,Variable kernel.models.Fundraiser.owner=kernel.models.Fundraiser-class.html#owner,Variable kernel.models.Initiative.owner=kernel.models.Initiative-class.html#owner,Variable kernel.models.Pledge.owner=kernel.models.Pledge-class.html#owner,Variable kernel.models.Purchase.owner=kernel.models.Purchase-class.html#owner,Variable kernel.models.Redeemable.owner=kernel.models.Redeemable-class.html#owner,Variable kernel.models.Wepay_account.owner=kernel.models.Wepay_account-class.html#owner"><a title="kernel.models.Claim.owner
+kernel.models.Donation.owner
+kernel.models.Event.owner
+kernel.models.Event_base.owner
+kernel.models.Fundraiser.owner
+kernel.models.Initiative.owner
+kernel.models.Pledge.owner
+kernel.models.Purchase.owner
+kernel.models.Redeemable.owner
+kernel.models.Wepay_account.owner" class="py-name" href="#" onclick="return doclink('link-40', 'owner', 'link-40');">owner</a></tt><tt class="py-op">:</tt> </tt>
+<a name="L76"></a><tt class="py-lineno">76</tt>  <tt class="py-line">            <tt class="py-name">response</tt> <tt class="py-op">=</tt> <tt class="py-op">{</tt> </tt>
+<a name="L77"></a><tt class="py-lineno">77</tt>  <tt class="py-line">                <tt class="py-string">'status'</tt><tt class="py-op">:</tt><tt class="py-string">'FAIL'</tt><tt class="py-op">,</tt> </tt>
+<a name="L78"></a><tt class="py-lineno">78</tt>  <tt class="py-line">                <tt class="py-string">'error'</tt><tt class="py-op">:</tt><tt class="py-string">'NOT_WEPAY_OWNER'</tt><tt class="py-op">,</tt> </tt>
+<a name="L79"></a><tt class="py-lineno">79</tt>  <tt class="py-line">                <tt class="py-string">'message'</tt><tt class="py-op">:</tt><tt class="py-string">'You don\'t have permission for this WePay account.'</tt> </tt>
+<a name="L80"></a><tt class="py-lineno">80</tt>  <tt class="py-line">            <tt class="py-op">}</tt> </tt>
+<a name="L81"></a><tt class="py-lineno">81</tt>  <tt class="py-line">            <tt class="py-keyword">return</tt> <tt id="link-41" class="py-name"><a title="src.controllers.request.json_response" class="py-name" href="#" onclick="return doclink('link-41', 'json_response', 'link-6');">json_response</a></tt><tt class="py-op">(</tt><tt class="py-name">response</tt><tt class="py-op">)</tt> </tt>
+<a name="L82"></a><tt class="py-lineno">82</tt>  <tt class="py-line">        <tt id="link-42" class="py-name"><a title="kernel.models.Profile_manager.profile
+src.controllers.profile" class="py-name" href="#" onclick="return doclink('link-42', 'profile', 'link-18');">profile</a></tt><tt class="py-op">.</tt><tt id="link-43" class="py-name" targets="Variable kernel.models.Profile.wepay_account=kernel.models.Profile-class.html#wepay_account"><a title="kernel.models.Profile.wepay_account" class="py-name" href="#" onclick="return doclink('link-43', 'wepay_account', 'link-43');">wepay_account</a></tt> <tt class="py-op">=</tt> <tt class="py-name">wepayAccount</tt> </tt>
+<a name="L83"></a><tt class="py-lineno">83</tt>  <tt class="py-line">    <tt class="py-comment"># Save profile and establish manager role</tt> </tt>
+<a name="L84"></a><tt class="py-lineno">84</tt>  <tt class="py-line">    <tt id="link-44" class="py-name"><a title="kernel.models.Profile_manager.profile
+src.controllers.profile" class="py-name" href="#" onclick="return doclink('link-44', 'profile', 'link-18');">profile</a></tt><tt class="py-op">.</tt><tt id="link-45" class="py-name" targets="Method admin.models.Admin.save()=admin.models.Admin-class.html#save,Method kernel.models.City.save()=kernel.models.City-class.html#save,Method kernel.models.Claim.save()=kernel.models.Claim-class.html#save,Method kernel.models.Event_base.save()=kernel.models.Event_base-class.html#save,Method kernel.models.Fundraiser.save()=kernel.models.Fundraiser-class.html#save,Method kernel.models.Profile.save()=kernel.models.Profile-class.html#save,Method kernel.models.Redeemable.save()=kernel.models.Redeemable-class.html#save,Method kernel.models.Ticket.save()=kernel.models.Ticket-class.html#save,Method kernel.models.User.save()=kernel.models.User-class.html#save"><a title="admin.models.Admin.save
 kernel.models.City.save
 kernel.models.Claim.save
 kernel.models.Event_base.save
@@ -261,14 +314,36 @@ kernel.models.Fundraiser.save
 kernel.models.Profile.save
 kernel.models.Redeemable.save
 kernel.models.Ticket.save
-kernel.models.User.save" class="py-name" href="#" onclick="return doclink('link-43', 'save', 'link-32');">save</a></tt><tt class="py-op">(</tt><tt class="py-op">)</tt> </tt>
-<a name="L71"></a><tt class="py-lineno">71</tt>  <tt class="py-line">    <tt class="py-name">response</tt> <tt class="py-op">=</tt> <tt class="py-op">{</tt> </tt>
-<a name="L72"></a><tt class="py-lineno">72</tt>  <tt class="py-line">        <tt class="py-string">'status'</tt><tt class="py-op">:</tt><tt class="py-string">'OK'</tt><tt class="py-op">,</tt> </tt>
-<a name="L73"></a><tt class="py-lineno">73</tt>  <tt class="py-line">        <tt class="py-string">'profile'</tt><tt class="py-op">:</tt><tt id="link-44" class="py-name"><a title="src.serializer.serializer.serialize_one" class="py-name" href="#" onclick="return doclink('link-44', 'serialize_one', 'link-4');">serialize_one</a></tt><tt class="py-op">(</tt><tt id="link-45" class="py-name"><a title="kernel.models.Profile_manager.profile
-src.controllers.profile" class="py-name" href="#" onclick="return doclink('link-45', 'profile', 'link-18');">profile</a></tt><tt class="py-op">)</tt> </tt>
-<a name="L74"></a><tt class="py-lineno">74</tt>  <tt class="py-line">    <tt class="py-op">}</tt> </tt>
-<a name="L75"></a><tt class="py-lineno">75</tt>  <tt class="py-line">    <tt class="py-keyword">return</tt> <tt id="link-46" class="py-name"><a title="src.controllers.request.json_response" class="py-name" href="#" onclick="return doclink('link-46', 'json_response', 'link-6');">json_response</a></tt><tt class="py-op">(</tt><tt class="py-name">response</tt><tt class="py-op">)</tt> </tt>
-</div><a name="L76"></a><tt class="py-lineno">76</tt>  <tt class="py-line"> </tt><script type="text/javascript">
+kernel.models.User.save" class="py-name" href="#" onclick="return doclink('link-45', 'save', 'link-45');">save</a></tt><tt class="py-op">(</tt><tt class="py-op">)</tt> </tt>
+<a name="L85"></a><tt class="py-lineno">85</tt>  <tt class="py-line">    <tt class="py-name">profileManager</tt> <tt class="py-op">=</tt> <tt id="link-46" class="py-name" targets="Class kernel.models.Profile_manager=kernel.models.Profile_manager-class.html"><a title="kernel.models.Profile_manager" class="py-name" href="#" onclick="return doclink('link-46', 'Profile_manager', 'link-46');">Profile_manager</a></tt><tt class="py-op">(</tt><tt id="link-47" class="py-name"><a title="analytics.models.Add_points_event.user
+analytics.models.Subtract_points_event.user
+kernel.models.Profile_manager.user
+kernel.models.User_following.user
+src.controllers.user" class="py-name" href="#" onclick="return doclink('link-47', 'user', 'link-30');">user</a></tt> <tt class="py-op">=</tt> <tt id="link-48" class="py-name"><a title="analytics.models.Add_points_event.user
+analytics.models.Subtract_points_event.user
+kernel.models.Profile_manager.user
+kernel.models.User_following.user
+src.controllers.user" class="py-name" href="#" onclick="return doclink('link-48', 'user', 'link-30');">user</a></tt><tt class="py-op">,</tt> </tt>
+<a name="L86"></a><tt class="py-lineno">86</tt>  <tt class="py-line">                                     <tt id="link-49" class="py-name"><a title="kernel.models.Profile_manager.profile
+src.controllers.profile" class="py-name" href="#" onclick="return doclink('link-49', 'profile', 'link-18');">profile</a></tt> <tt class="py-op">=</tt> <tt id="link-50" class="py-name"><a title="kernel.models.Profile_manager.profile
+src.controllers.profile" class="py-name" href="#" onclick="return doclink('link-50', 'profile', 'link-18');">profile</a></tt><tt class="py-op">,</tt> </tt>
+<a name="L87"></a><tt class="py-lineno">87</tt>  <tt class="py-line">                                     <tt id="link-51" class="py-name" targets="Variable kernel.models.Profile_manager.is_creator=kernel.models.Profile_manager-class.html#is_creator"><a title="kernel.models.Profile_manager.is_creator" class="py-name" href="#" onclick="return doclink('link-51', 'is_creator', 'link-51');">is_creator</a></tt> <tt class="py-op">=</tt> <tt class="py-name">True</tt><tt class="py-op">)</tt> </tt>
+<a name="L88"></a><tt class="py-lineno">88</tt>  <tt class="py-line">    <tt class="py-name">profileManager</tt><tt class="py-op">.</tt><tt id="link-52" class="py-name"><a title="admin.models.Admin.save
+kernel.models.City.save
+kernel.models.Claim.save
+kernel.models.Event_base.save
+kernel.models.Fundraiser.save
+kernel.models.Profile.save
+kernel.models.Redeemable.save
+kernel.models.Ticket.save
+kernel.models.User.save" class="py-name" href="#" onclick="return doclink('link-52', 'save', 'link-45');">save</a></tt><tt class="py-op">(</tt><tt class="py-op">)</tt> </tt>
+<a name="L89"></a><tt class="py-lineno">89</tt>  <tt class="py-line">    <tt class="py-name">response</tt> <tt class="py-op">=</tt> <tt class="py-op">{</tt> </tt>
+<a name="L90"></a><tt class="py-lineno">90</tt>  <tt class="py-line">        <tt class="py-string">'status'</tt><tt class="py-op">:</tt><tt class="py-string">'OK'</tt><tt class="py-op">,</tt> </tt>
+<a name="L91"></a><tt class="py-lineno">91</tt>  <tt class="py-line">        <tt class="py-string">'profile'</tt><tt class="py-op">:</tt><tt id="link-53" class="py-name"><a title="src.serializer.serializer.serialize_one" class="py-name" href="#" onclick="return doclink('link-53', 'serialize_one', 'link-4');">serialize_one</a></tt><tt class="py-op">(</tt><tt id="link-54" class="py-name"><a title="kernel.models.Profile_manager.profile
+src.controllers.profile" class="py-name" href="#" onclick="return doclink('link-54', 'profile', 'link-18');">profile</a></tt><tt class="py-op">)</tt> </tt>
+<a name="L92"></a><tt class="py-lineno">92</tt>  <tt class="py-line">    <tt class="py-op">}</tt> </tt>
+<a name="L93"></a><tt class="py-lineno">93</tt>  <tt class="py-line">    <tt class="py-keyword">return</tt> <tt id="link-55" class="py-name"><a title="src.controllers.request.json_response" class="py-name" href="#" onclick="return doclink('link-55', 'json_response', 'link-6');">json_response</a></tt><tt class="py-op">(</tt><tt class="py-name">response</tt><tt class="py-op">)</tt> </tt>
+</div><a name="L94"></a><tt class="py-lineno">94</tt>  <tt class="py-line"> </tt><script type="text/javascript">
 <!--
 expandto(location.href);
 // -->
@@ -303,7 +378,7 @@ expandto(location.href);
 <table border="0" cellpadding="0" cellspacing="0" width="100%%">
   <tr>
     <td align="left" class="footer">
-    Generated by Epydoc 3.0.1 on Wed Jun 26 07:39:22 2013
+    Generated by Epydoc 3.0.1 on Sat Jun 29 05:50:25 2013
     </td>
     <td align="right" class="footer">
       <a target="mainFrame" href="http://epydoc.sourceforge.net"

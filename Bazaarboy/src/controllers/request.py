@@ -3,10 +3,11 @@ Some useful methods for handling requests
 """
 
 import json
-from datetime import datetime
 from functools import wraps
 from django.http import *
 from django.shortcuts import redirect
+
+import pdb
 
 FORMAT_DATETIME = '%Y-%m-%d %X'
 
@@ -28,7 +29,9 @@ def params_from_request(requestArray, required=[], optional=[],
             if name[:3] == 'is_':
                 param = param == '1'
             elif name[-5:] == '_time':
-                param = datetime.strptime(param, FORMAT_DATETIME)
+                from datetime import datetime
+                param = datetime.strptime(param, FORMAT_DATETIME) \
+                                .replace(tzinfo = timezone.utc)
         return param
     # Strip the params
     params = {}

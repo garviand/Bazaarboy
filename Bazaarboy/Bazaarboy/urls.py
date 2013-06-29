@@ -16,6 +16,13 @@ urlpatterns = patterns('',
     url(r'^user/auth/$', 'src.controllers.user.auth', name = 'user-auth'),
     url(r'^user/logout/$', 'src.controllers.user.logout', name = 'user-logout'),
 
+    # WePay
+
+    url(r'^wepay/authorize/$', 'src.controllers.wepay.authorize', 
+        name = 'wepay-authorize'),
+    url(r'^wepay/create/$', 'src.controllers.wepay.create', 
+        name = 'wepay-create'),
+
     # City
 
     url(r'^city/$', 'src.controllers.city.city', name = 'city'),
@@ -36,14 +43,18 @@ urlpatterns = patterns('',
 
     # Events
 
-    url(r'^event/n/(?P<id>\d+)/$', 'src.controllers.event.index', 
+    url(r'^event/(?P<id>\d+)/$', 'src.controllers.event.index', 
         name = 'event-normal'),
-    url(r'^event/n/create/$', 'src.controllers.event.create', 
+    url(r'^event/create/$', 'src.controllers.event.create', 
         name = 'event-normal-create'),
-    url(r'^event/n/ticket/create/$', 'src.controllers.event.create_ticket', 
+    url(r'^event/ticket/create/$', 'src.controllers.event.create_ticket', 
         name = 'event-normal-ticket-create'),
+    url(r'^event/ticket/delete/$', 'src.controllers.event.delete_ticket', 
+        name = 'event-normal-ticket-delete'),
 
-    url(r'^event/i/(?P<id>\d+)/$', 'src.controllers.initiative.index', 
-        name = 'event-initiative')
+    url(r'^initiative/(?P<id>\d+)/$', 'src.controllers.initiative.index', 
+        name = 'event-initiative'),
+    url(r'^initiative/create/$', 'src.controllers.initiative.create', 
+        name = 'event-initiative-create'),
 
 )

@@ -2,6 +2,7 @@
 Controller for admin
 """
 
+from __future__ import absolute_import
 import hashlib
 from django.shortcuts import render
 from django.http import HttpResponseForbidden

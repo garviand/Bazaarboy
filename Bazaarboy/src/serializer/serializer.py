@@ -15,7 +15,9 @@ def serialize_one(obj, selectedFields=None):
     the DateTimeField output format.
     If selectedFields are specified, only the selected fields will be returned.
     """
-    outputObj = {}
+    outputObj = {
+        'pk':obj.pk
+    }
     concreteModel = obj._meta.concrete_model
     for field in concreteModel._meta.local_fields:
         if field.serialize:
@@ -41,8 +43,10 @@ def serialize_one(obj, selectedFields=None):
                             'name':value.name
                         }
                         outputObj[field.name] = valueObj
-                    else:
+                    elif value is not None:
                         outputObj[field.name] = value.id
+                    else:
+                        outputObj[field.name] = value
     return outputObj
 
 def serialize(qs):

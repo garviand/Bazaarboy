@@ -6,6 +6,8 @@ import json
 from django.test import TestCase
 from django.test.client import Client
 
+import pdb
+
 class UserTest(TestCase):
     """
     Tests for the user controller
@@ -27,14 +29,12 @@ class UserTest(TestCase):
             'confirm':'123456',
             'city':1
         }
-        response = client.post('/user/create/', params)
-        jsonRes = json.loads(response.content)
-        self.assertEqual(jsonRes['status'], 'FAIL')
+        response = json.loads(client.post('/user/create/', params).content)
+        self.assertEqual(response['status'], 'FAIL')
         # Should be able to register normally
         params['email'] = 'nothandy@andy.com'
-        response = client.post('/user/create/', params)
-        jsonRes = json.loads(response.content)
-        self.assertEqual(jsonRes['status'], 'OK')
+        response = json.loads(client.post('/user/create/', params).content)
+        self.assertEqual(response['status'], 'OK')
         # Should not allow register if a session exists
         response = client.post('/user/create/', params)
         self.assertEqual(response.status_code, 403)
@@ -52,14 +52,152 @@ class UserTest(TestCase):
             'email':'handy@andy.com',
             'password':'abcdefg' # Correct password is 123456
         }
-        response = client.get('/user/auth/', params)
-        jsonRes = json.loads(response.content)
-        self.assertEqual(jsonRes['status'], 'FAIL')
+        response = json.loads(client.get('/user/auth/', params).content)
+        self.assertEqual(response['status'], 'FAIL')
         # Should be able to login normally
         params['password'] = 123456
-        response = client.get('/user/auth/', params)
-        jsonRes = json.loads(response.content)
-        self.assertEqual(jsonRes['status'], 'OK')
+        response = json.loads(client.get('/user/auth/', params).content)
+        self.assertEqual(response['status'], 'OK')
         # Should not allow login if a session exists
         response = client.get('/user/auth/', params)
         self.assertEqual(response.status_code, 403)
+
+def loggedInClient():
+    client = Client()
+    loginParams = {
+        'email':'handy@andy.com',
+        'password':'123456'
+    }
+    client.get('/user/auth/', loginParams)
+    return client
+
+class ProfileTest(TestCase):
+    """
+    Tests for the profile controller
+    """
+    fixtures = ['tests.json']
+
+    def test_create(self):
+        client = Client()
+        # Should not be able to create unless logged in
+        params = {
+            'name':'Washington University',
+            'description':'World class private research university',
+            'community':1,
+            'category':'School',
+            'latitude':38.648,
+            'longitude':-90.305,
+            'wepay':1
+        }
+        response = client.post('/profile/create/', params)
+        self.assertEqual(response.status_code, 403)
+        # Should be able to create if logged in
+        client = loggedInClient()
+        response = json.loads(client.post('/profile/create/', params).content)
+        self.assertEqual(response['status'], 'OK')
+
+class EventTests(TestCase):
+    """
+    Tests for normal events
+    """
+    fixtures = ['tests.json']
+
+    def test_create(self):
+        client = loggedInClient()
+        # Should check the profile existence
+        params = {
+            'profile':3,
+            'name':'Thursday Happy Hour at BlueHill',
+            'description':'An open bar celebration at BlueHill',
+            'start_time':'2013-12-31 23:00:00',
+            'end_time':'2014-01-01 01:00:00',
+            'location':'Blueberry Hill',
+            'latitude':38.655833,
+            'longitude':-90.305,
+            'category':'Social'
+        }
+        response = json.loads(client.post('/event/create/', params).content)
+        self.assertEqual(response['status'], 'FAIL')
+        # Should check the profile ownership
+        params['profile'] = 1
+        response = json.loads(client.post('/event/create/', params).content)
+        self.assertEqual(response['status'], 'FAIL')
+        # Should be able to create normal event
+        params['profile'] = 2
+        response = json.loads(client.post('/event/create/', params).content)
+        self.assertEqual(response['status'], 'OK')
+        event = response['event']['pk']
+        # Should be able to create a ticket
+        params = {
+            'event':event,
+            'name':'Regular',
+            'description':'Regular admission ticket',
+            'price':20.00,
+        }
+        response = client.post('/event/ticket/create/', params).content
+        response = json.loads(response)
+        self.assertEqual(response['status'], 'OK')
+        # Should be able to create a ticket with start time
+        params = {
+            'event':event,
+            'name':'Late',
+            'description':'Late admission ticket',
+            'price':35.00,
+            'start_time':'2013-12-28 00:00:00'
+        }
+        response = client.post('/event/ticket/create/', params).content
+        response = json.loads(response)
+        self.assertEqual(response['status'], 'OK')
+        self.assertEqual(response['ticket']['start_time'], 
+                         params['start_time'])
+        # Should be able to create a ticket with end time
+        params = {
+            'event':event,
+            'name':'Early bird',
+            'description':'Early bird admission ticket',
+            'price':15.00,
+            'end_time':'2013-12-28 00:00:00'
+        }
+        response = client.post('/event/ticket/create/', params).content
+        response = json.loads(response)
+        self.assertEqual(response['status'], 'OK')
+        self.assertEqual(response['ticket']['end_time'], 
+                         params['end_time'])
+        # Should be able to edit an event
+        # Should be able to launch an event
+        # Should be able to delaunch an event
+        # Should be able to delete a ticket
+        params = {
+            'id':response['ticket']['pk']
+        }
+        response = client.post('/event/ticket/delete/', params).content
+        response = json.loads(response)
+        self.assertEqual(response['status'], 'OK')
+        # Should be able to delete an event
+
+    def test_transact(self):
+        pass
+
+class InitiativeTests(TestCase):
+    """
+    Tests for initiatives
+    """
+    fixtures = ['tests.json']
+
+    def test_create(self):
+        pass
+
+    def test_transact(self):
+        pass
+
+class FundraiserTests(TestCase):
+    """
+    Tests for fundraisers
+    """
+    fixtures = ['tests.json']
+
+    def test_create(self):
+        pass
+
+    def test_transact(self):
+        pass

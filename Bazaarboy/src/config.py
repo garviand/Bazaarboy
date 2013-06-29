@@ -2,7 +2,7 @@
 Bazaarboy configurations
 """
 
-BBOY_URL_ROOT = 'localhost:8080'
+BBOY_URL_ROOT = 'http://localhost:8080'
 
 # WePay
 

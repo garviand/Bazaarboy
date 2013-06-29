@@ -7,8 +7,10 @@ from django.http import Http404
 from django.shortcuts import render
 from django.utils import timezone
 from kernel.models import *
-from src.controllers.request import validate, login_check, login_required
+from src.controllers.request import *
 from src.serializer import serialize_one
+
+import pdb
 
 @login_check()
 def index(request, id, loggedIn):

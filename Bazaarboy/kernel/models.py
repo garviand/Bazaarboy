@@ -8,6 +8,8 @@ from django.db import models, IntegrityError
 from django.db.models import F
 from django.utils import timezone
 
+import pdb
+
 class User(models.Model):
     """
     User model
@@ -188,6 +190,9 @@ class Event_base(models.Model):
     city = models.ForeignKey('City', related_name = '%(class)s_city')
     created_time = models.DateTimeField(auto_now_add = True)
 
+    class Meta:
+        abstract = True
+
     def save(self, *args, **kwargs):
         """
         Overrides save to auto-set community and city
@@ -196,7 +201,7 @@ class Event_base(models.Model):
             # Auto-set the community and city for the new event
             self.community = self.owner.community
             self.city = self.owner.city
-        super(self.__class__, self).save(*args, **kwargs)
+        super(Event_base, self).save(*args, **kwargs)
 
 class InsufficientQuantity(Exception):
     """

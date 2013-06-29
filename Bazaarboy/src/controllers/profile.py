@@ -17,7 +17,7 @@ def index(request, id, loggedIn):
 @login_required()
 @validate('POST', 
           ['name', 'description', 'community', 'category'], 
-          ['latitude', 'longitude'])
+          ['latitude', 'longitude', 'wepay'])
 def create(request, params):
     """
     Create a profile and set the creating user as the creator
@@ -45,7 +45,7 @@ def create(request, params):
     profile = Profile(name = params['name'], 
                       description = params['description'], 
                       community = community, 
-                      category = category)
+                      category = params['category'])
     # Check if coordinates are specified, and if so, if they are legal
     if (params['latitude'] is not None and 
         params['longitude'] is not None and 
@@ -61,9 +61,27 @@ def create(request, params):
         # Valid coordinates, set to profile
         profile.latitude = float(params['latitude'])
         profile.longitude = float(params['longitude'])
+    # Check WePay account
+    user = User.objects.get(id = request.session['user'])
+    if params['wepay'] is not None:
+        if not Wepay_account.objects.filter(id = params['wepay']):
+            response = {
+                'status':'FAIL',
+                'error':'INVALID_WEPAY',
+                'message':'The wepay account is invalid.'
+            }
+            return json_response(response)
+        wepayAccount = Wepay_account.objects.get(id = params['wepay'])
+        if user != wepayAccount.owner:
+            response = {
+                'status':'FAIL',
+                'error':'NOT_WEPAY_OWNER',
+                'message':'You don\'t have permission for this WePay account.'
+            }
+            return json_response(response)
+        profile.wepay_account = wepayAccount
     # Save profile and establish manager role
     profile.save()
-    user = User.objects.get(id = request.session['user']['id'])
     profileManager = Profile_manager(user = user,
                                      profile = profile,
                                      is_creator = True)
