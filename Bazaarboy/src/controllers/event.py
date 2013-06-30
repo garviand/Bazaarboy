@@ -88,20 +88,19 @@ def create(request, params):
                   category = params['category'], 
                   owner = profile)
     # Check if coordinates are specified, and if so, if they are legal
-    if (params['latitude'] is not None and 
-        params['longitude'] is not None and 
-        not (-90.0 <= float(params['latitude']) <= 90.0 and 
-             -180.0 <= float(params['longitude']) <= 180.0)):
-        response = {
-            'status':'FAIL',
-            'error':'INVALID_COORDINATES',
-            'message':'Latitude/longitude combination is invalid.'
-        }
-        return json_response(response)
-    else:
-        # Valid coordinates, set to event
-        event.latitude = float(params['latitude'])
-        event.longitude = float(params['longitude'])
+    if params['latitude'] is not None and params['longitude'] is not None:
+        if not (-90.0 <= float(params['latitude']) <= 90.0 and 
+                -180.0 <= float(params['longitude']) <= 180.0):
+            response = {
+                'status':'FAIL',
+                'error':'INVALID_COORDINATES',
+                'message':'Latitude/longitude combination is invalid.'
+            }
+            return json_response(response)
+        else:
+            # Valid coordinates, set to event
+            event.latitude = float(params['latitude'])
+            event.longitude = float(params['longitude'])
     # Check if it's a private event
     if params['is_private'] is not None:
         event.is_private = params['is_private']
@@ -115,8 +114,8 @@ def create(request, params):
 
 @login_required()
 @validate('POST', ['id'], 
-          ['description', 'start_time', 'end_time', 'location', 'latitude', 
-           'longitude', 'category', 'is_private'])
+          ['name', 'description', 'start_time', 'end_time', 'location', 
+           'latitude', 'longitude', 'category', 'is_private'])
 def edit(request, params):
     """
     Edit an existing event
@@ -129,7 +128,7 @@ def edit(request, params):
             'message':'The event doesn\'t exist.'
         }
         return json_response(response)
-    event = Event.objects.get(id = params['event'])
+    event = Event.objects.get(id = params['id'])
     # Check if user has permission for the event
     user = User.objects.get(id = request.session['user'])
     if not Profile_manager.objects.filter(user = user, profile = event.owner) \
@@ -141,6 +140,16 @@ def edit(request, params):
         }
         return json_response(response)
     # Go through all the params and edit the event accordingly
+    if params['name'] is not None:
+        if len(params['name']) == 0:
+            response = {
+                'status':'FAIL',
+                'error':'BLANK_NAME',
+                'message':'Name cannot be blank.'
+            }
+            return json_response(response)
+        else:
+            event.name = params['name']
     if params['description'] is not None:
         if len(params['description']) == 0:
             response = {
@@ -181,19 +190,18 @@ def edit(request, params):
             return json_response(response)
         else:
             event.location = params['location']
-    if (params['latitude'] is not None and 
-        params['longitude'] is not None and 
-        not (-90.0 <= float(params['latitude']) <= 90.0 and 
-             -180.0 <= float(params['longitude']) <= 180.0)):
-        response = {
-            'status':'FAIL',
-            'error':'INVALID_COORDINATES',
-            'message':'Latitude/longitude combination is invalid.'
-        }
-        return json_response(response)
-    else:
-        event.latitude = float(params['latitude'])
-        event.longitude = float(params['longitude'])
+    if params['latitude'] is not None and params['longitude'] is not None: 
+        if not (-90.0 <= float(params['latitude']) <= 90.0 and 
+                -180.0 <= float(params['longitude']) <= 180.0):
+            response = {
+                'status':'FAIL',
+                'error':'INVALID_COORDINATES',
+                'message':'Latitude/longitude combination is invalid.'
+            }
+            return json_response(response)
+        else:
+            event.latitude = float(params['latitude'])
+            event.longitude = float(params['longitude'])
     if params['category'] is not None:
         event.category = params['category']
     if params['is_private'] is not None:

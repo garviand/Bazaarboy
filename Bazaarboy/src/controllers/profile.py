@@ -47,20 +47,19 @@ def create(request, params):
                       community = community, 
                       category = params['category'])
     # Check if coordinates are specified, and if so, if they are legal
-    if (params['latitude'] is not None and 
-        params['longitude'] is not None and 
-        not (-90.0 <= float(params['latitude']) <= 90.0 and 
-             -180.0 <= float(params['longitude']) <= 180.0)):
-        response = {
-            'status':'FAIL',
-            'error':'INVALID_COORDINATES',
-            'message':'Latitude/longitude combination is invalid.'
-        }
-        return json_response(response)
-    else:
-        # Valid coordinates, set to profile
-        profile.latitude = float(params['latitude'])
-        profile.longitude = float(params['longitude'])
+    if params['latitude'] is not None and params['longitude'] is not None:
+        if not (-90.0 <= float(params['latitude']) <= 90.0 and 
+                -180.0 <= float(params['longitude']) <= 180.0):
+            response = {
+                'status':'FAIL',
+                'error':'INVALID_COORDINATES',
+                'message':'Latitude/longitude combination is invalid.'
+            }
+            return json_response(response)
+        else:
+            # Valid coordinates, set to profile
+            profile.latitude = float(params['latitude'])
+            profile.longitude = float(params['longitude'])
     # Check WePay account
     user = User.objects.get(id = request.session['user'])
     if params['wepay'] is not None:

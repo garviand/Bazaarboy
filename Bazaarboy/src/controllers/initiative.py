@@ -40,12 +40,12 @@ def initiative(request, params):
 
 @login_required()
 @validate('POST', 
-          ['profile', 'name', 'description', 'start_time', 'location', 
-           'category', 'goal', 'deadline'], 
-          ['end_time', 'latitude', 'longitude', 'is_private', 'is_launched'])
+          ['profile', 'name', 'description', 'location', 'category', 'goal', 
+           'deadline'], 
+          ['latitude', 'longitude', 'is_private'])
 def create(request, params):
     """
-    Create a new normal event
+    Create a new initiative event
     """
     # Check if the profile is valid
     if not Profile.objects.filter(id = params['profile']).exists():
@@ -66,27 +66,17 @@ def create(request, params):
             'message':'You don\'t have permission for the profile.'
         }
         return json_response(response)
-    # Check start and end time
-    if (params['start_time'] < timezone.now() + timedelta(hours = 6) or 
-        (params['end_time'] is not None and 
-         params['end_time'] <= params['start_time'])):
-        response = {
-            'status':'FAIL',
-            'error':'INVALID_TIME',
-            'message':'The timing is invalid.'
-        }
     # Check the goal
     params['goal'] = float(params['goal'])
     if params['goal'] < 20.0:
         response = {
             'status':'FAIL',
             'error':'INVALID_GOAL',
-            'message':'The initiative goal is invalid.'
+            'message':'The initiative goal is too small.'
         }
     # Check the deadline
     params['deadline'] = datetime.strptime(params['deadline'], FORMAT_DATETIME)
-    if (params['deadline'] < timezone.now() + timedelta(hours = 6) or 
-        params['deadline'] >= params['start_time']):
+    if params['deadline'] < timezone.now():
         response = {
             'status':'FAIL',
             'error':'INVALID_DEADLINE',
@@ -95,38 +85,149 @@ def create(request, params):
     # Validated, create the model
     initiative = Initiative(name = params['name'], 
                             description = params['description'], 
-                            start_time = params['start_time'], 
-                            end_time = params['end_time'], 
                             location = params['location'], 
                             category = params['category'], 
                             owner = profile, 
                             goal = params['goal'], 
                             deadline = params['deadline'])
     # Check if coordinates are specified, and if so, if they are legal
-    if (params['latitude'] is not None and 
-        params['longitude'] is not None and 
-        not (-90.0 <= float(params['latitude']) <= 90.0 and 
-             -180.0 <= float(params['longitude']) <= 180.0)):
-        response = {
-            'status':'FAIL',
-            'error':'INVALID_COORDINATES',
-            'message':'Latitude/longitude combination is invalid.'
-        }
-        return json_response(response)
-    else:
-        # Valid coordinates, set to profile
-        initiative.latitude = float(params['latitude'])
-        initiative.longitude = float(params['longitude'])
-    # Boolean parameters
+    if params['latitude'] is not None and params['longitude'] is not None:
+        if not (-90.0 <= float(params['latitude']) <= 90.0 and 
+                -180.0 <= float(params['longitude']) <= 180.0):
+            response = {
+                'status':'FAIL',
+                'error':'INVALID_COORDINATES',
+                'message':'Latitude/longitude combination is invalid.'
+            }
+            return json_response(response)
+        else:
+            # Valid coordinates, set to initiative
+            initiative.latitude = float(params['latitude'])
+            initiative.longitude = float(params['longitude'])
+    # Check if it's a private initiative
     if params['is_private'] is not None:
         initiative.is_private = params['is_private']
-    if params['is_launched'] is not None:
-        initiative.is_launched = params['is_launched']
     # Save to database
     initiative.save()
     response = {
         'status':'OK',
         'event':serialize_one(initiative)
+    }
+    return json_response(response)
+
+@login_required()
+@validate('POST', ['id'], 
+          ['name', 'description', 'location', 'latitude', 'longitude', 
+           'category', 'is_private', 'goal', 'deadline'])
+def edit(request, params):
+    """
+    Edit an existing initiative
+    """
+    # Check if the initiative is valid
+    if not Initiative.objects.filter(id = params['id']).exists():
+        response = {
+            'status':'FAIL',
+            'error':'INITIATIVE_NOT_FOUND',
+            'message':'The initiative doesn\'t exist.'
+        }
+        return json_response(response)
+    initiative = Initiative.objects.get(id = params['id'])
+    # Check if user has permission for the initiative
+    user = User.objects.get(id = request.session['user'])
+    if not Profile_manager.objects.filter(user = user, 
+                                          profile = initiative.owner) \
+                                  .exists():
+        response = {
+            'status':'FAIL',
+            'error':'NOT_A_MANAGER',
+            'message':'You don\'t have permission for the initiative.'
+        }
+        return json_response(response)
+    # Go through all params and edit the initiative accordingly
+    if params['goal'] is not None:
+        if initiative.is_launched:
+            response = {
+                'status':'FAIL',
+                'error':'LAUNCHED_INITIATIVE',
+                'message':'You can\'t change the goal while launched.'
+            }
+            return json_response(response)
+        params['goal'] = float(params['goal'])
+        if params['goal'] < 20.0:
+            response = {
+                'status':'FAIL',
+                'error':'INVALID_GOAL',
+                'message':'The goal is too small.'
+            }
+        else:
+            initiative.goal = params['goal']
+    if params['deadline'] is not None:
+        if initiative.is_launched:
+            response = {
+                'status':'FAIL',
+                'error':'LAUNCHED_INITIATIVE',
+                'message':'You can\'t change the deadline while launched.'
+            }
+            return json_response(response)
+        params['deadline'] = datetime.strptime(params['deadline'], 
+                                               FORMAT_DATETIME)
+        if params['deadline'] < timezone.now():
+            response = {
+                'status':'FAIL',
+                'error':'INVALID_DEADLINE',
+                'message':'The deadline is too small.'
+            }
+        else:
+            initiative.deadline = params['deadline']
+    if params['name'] is not None:
+        if len(params['name']) == 0:
+            response = {
+                'status':'FAIL',
+                'error':'BLANK_NAME',
+                'message':'Name cannot be blank.'
+            }
+            return json_response(response)
+        else:
+            initiative.name = params['name']
+    if params['description'] is not None:
+        if len(params['description']) == 0:
+            response = {
+                'status':'FAIL',
+                'error':'BLANK_DESCRIPTION',
+                'message':'Description cannot be blank.'
+            }
+            return json_response(response)
+        else:
+            initiative.description = params['description']
+    if params['location'] is not None:
+        if len(params['location']) == 0:
+            response = {
+                'status':'FAIL',
+                'error':'BLANK_LOCATION',
+                'message':'Location cannot be blank.'
+            }
+            return json_response(response)
+        else:
+            initiative.location = params['location']
+    if params['latitude'] is not None and params['longitude'] is not None: 
+        if not (-90.0 <= float(params['latitude']) <= 90.0 and 
+                -180.0 <= float(params['longitude']) <= 180.0):
+            response = {
+                'status':'FAIL',
+                'error':'INVALID_COORDINATES',
+                'message':'Latitude/longitude combination is invalid.'
+            }
+            return json_response(response)
+        else:
+            initiative.latitude = float(params['latitude'])
+            initiative.longitude = float(params['longitude'])
+    if params['category'] is not None:
+        initiative.category = params['category']
+    if params['is_private'] is not None:
+        initiative.is_private = params['is_private']
+    response = {
+        'status':'OK',
+        'initiative':serialize_one(initiative)
     }
     return json_response(response)
 

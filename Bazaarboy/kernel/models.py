@@ -175,8 +175,6 @@ class Event_base(models.Model):
     """
     name = models.CharField(max_length = 100)
     description = models.TextField()
-    start_time = models.DateTimeField()
-    end_time = models.DateTimeField(null = True, default = None)
     location = models.CharField(max_length = 100)
     latitude = models.FloatField(null = True, default = None)
     longitude = models.FloatField(null = True, default = None)
@@ -213,7 +211,8 @@ class Event(Event_base):
     """
     Event model for normal events
     """
-    pass
+    start_time = models.DateTimeField()
+    end_time = models.DateTimeField(null = True, default = None)
 
 class Ticket(models.Model):
     """
@@ -277,15 +276,7 @@ class Fundraiser(Event_base):
     """
     Event model for fundraising events
     """
-    pass
-
-    def save(self, *args, **kwargs):
-        """
-        Overrides save to force an end time for the fundraiser
-        """
-        if self.end_time is None:
-            raise IntegrityError()
-        super(Fundraiser, self).save(*args, **kwargs)
+    deadline = models.DateTimeField()
 
 class Donation(models.Model):
     """

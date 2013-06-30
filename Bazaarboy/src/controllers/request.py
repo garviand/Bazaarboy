@@ -6,6 +6,7 @@ import json
 from functools import wraps
 from django.http import *
 from django.shortcuts import redirect
+from django.utils import timezone
 
 import pdb
 
@@ -15,6 +16,7 @@ def json_response(response):
     """
     A wrapper method to return a http response in JSON format
     """
+    response['timestamp'] = float(timezone.now().strftime('%s'))
     return HttpResponse(json.dumps(response))
 
 def params_from_request(requestArray, required=[], optional=[], 
