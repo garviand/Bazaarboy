@@ -3,9 +3,14 @@ Controller for community
 """
 
 from kernel.models import *
-from src.controllers.request import json_response, validate, admin_required
+from src.controllers.request import *
 from src.serializer import serialize_one
 
+@login_required()
+def index(request, id):
+    pass
+
+@admin_required()
 @validate('GET', ['id'])
 def community(request, params):
     """
@@ -49,3 +54,13 @@ def create(request, params):
         'community':serialize_one(community)
     }
     return json_response(response)
+
+@admin_required()
+@validate('POST')
+def edit(request, params):
+    pass
+
+@admin_required()
+@validate('POST')
+def delete(request, params):
+    pass

@@ -55,3 +55,11 @@ def create(request, params):
                                  name = params['name'])
     wepayAccount.save()
     return redirect('index')
+
+@login_required()
+def checkout(request):
+    pass
+
+@login_required()
+def preapproval(request):
+    pass

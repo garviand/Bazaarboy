@@ -5,7 +5,9 @@ Controller for initiative events
 from datetime import datetime, timedelta
 from django.http import Http404
 from django.utils import timezone
-from src.controllers.request import validate, login_check, login_required
+from kernel.models import *
+from src.controllers.request import *
+from src.serializer import serialize_one
 
 FORMAT_DATETIME = '%Y-%m-%d %X'
 
@@ -16,6 +18,7 @@ def index(request, id, loggedIn):
     """
     if not Initiative.objects.filter(id = id).exists():
         return Http404
+    initiative = Initiative.objects.get(id = id)
     return render(request, 'initiative.html', locals())
 
 @login_required()
@@ -232,6 +235,21 @@ def edit(request, params):
     return json_response(response)
 
 @login_required()
+@validate()
+def launch(request, params):
+    pass
+
+@login_required()
+@validate()
+def delaunch(request, params):
+    pass
+
+@login_required()
+@validate()
+def delete(request, params):
+    pass
+
+@login_required()
 @validate('POST', ['initiative', 'name', 'description', 'price'], ['quantity'])
 def create_reward(request, params):
     """
@@ -297,3 +315,18 @@ def create_reward(request, params):
         'reward':serialize_one(reward)
     }
     return json_response(response)
+
+@login_required()
+@validate()
+def edit_reward(request, params):
+    pass
+
+@login_required()
+@validate()
+def delete_reward(request, params):
+    pass
+
+@login_required()
+@validate()
+def pledge(request, params):
+    pass

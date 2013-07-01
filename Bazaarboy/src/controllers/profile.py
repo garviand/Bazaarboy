@@ -15,6 +15,11 @@ def index(request, id, loggedIn):
     return render(request, 'profile.html', locals())
 
 @login_required()
+@validate('GET', ['id'])
+def profile(request, params):
+    pass
+
+@login_required()
 @validate('POST', 
           ['name', 'description', 'community', 'category'], 
           ['latitude', 'longitude', 'wepay'])
@@ -90,3 +95,13 @@ def create(request, params):
         'profile':serialize_one(profile)
     }
     return json_response(response)
+
+@login_required()
+@validate('POST', ['id'])
+def edit(request, params):
+    pass
+
+@login_required()
+@validate('POST', ['id'])
+def delete(request, params):
+    pass

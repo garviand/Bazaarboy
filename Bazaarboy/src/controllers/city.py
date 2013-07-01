@@ -3,9 +3,14 @@ Controller for city
 """
 
 from kernel.models import *
-from src.controllers.request import json_response, validate, admin_required
+from src.controllers.request import *
 from src.serializer import serialize_one
 
+@login_required()
+def index(request, id):
+    pass
+
+@admin_required()
 @validate('GET', ['id'])
 def city(request, params):
     """
@@ -26,7 +31,7 @@ def city(request, params):
     return json_response(response)
 
 @admin_required()
-@validate('GET', ['name', 'state', 'latitude', 'longitude'])
+@validate('POST', ['name', 'state', 'latitude', 'longitude'])
 def create(request, params):
     """
     Create a new city
@@ -41,3 +46,13 @@ def create(request, params):
         'city':serialize_one(city)
     }
     return json_response(response)
+
+@admin_required()
+@validate('POST', ['id'])
+def edit(request, params):
+    pass
+
+@admin_required()
+@validate('POST', ['id'])
+def delete(request, params):
+    pass

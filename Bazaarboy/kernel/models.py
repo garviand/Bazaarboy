@@ -64,6 +64,18 @@ class Wepay_account(models.Model):
     is_expired = models.BooleanField(default = False)
     created_time = models.DateTimeField(auto_now_add = True)
 
+class Wepay_checkout(models.Model):
+    """
+    A model for checkouts
+    """
+    pass
+
+class Wepay_preapproval(models.Model):
+    """
+    A model for preapprovals
+    """
+    pass
+
 class City(models.Model):
     """
     City model
