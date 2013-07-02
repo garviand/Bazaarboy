@@ -149,7 +149,7 @@ class ProfileTest(TestCase):
 	response = json.loads(client.post('/profile/create/', params).content)
         self.assertEqual(response['status'], 'FAIL')
 	# Should not allow if not WePay owner
-	params['longitude'] = -90.305 # VALID latitude
+	params['longitude'] = -90.305 # VALID longitude
 	params['wepay'] = 2
 	response = json.loads(client.post('/profile/create/', params).content)
         self.assertEqual(response['status'], 'FAIL')
