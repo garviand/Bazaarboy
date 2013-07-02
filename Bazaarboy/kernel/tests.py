@@ -56,11 +56,11 @@ class UserTest(TestCase):
 	params['password'] = '123456'
 	params['confirm'] = '123456'
 	# Should not allow nonexistent city
-	params['city'] = '999999999999999999999999999'
+	params['city'] = 999999999999999999999999999
 	response = json.loads(client.post('/user/create/', params).content)
         self.assertEqual(response['status'], 'FAIL')
 	# Should be able to register normally
-	params['city'] = '1'
+	params['city'] = 1
         response = json.loads(client.post('/user/create/', params).content)
         self.assertEqual(response['status'], 'OK')
         # Should not allow register if a session exists
@@ -119,9 +119,43 @@ class ProfileTest(TestCase):
         }
         response = client.post('/profile/create/', params)
         self.assertEqual(response.status_code, 403)
-        # Should be able to create if logged in
+	# Should be able to create if logged in
         client = loggedInClient()
         response = json.loads(client.post('/profile/create/', params).content)
+        self.assertEqual(response['status'], 'OK')
+	# Should not be able to create if name/description/category is too long
+	params['category'] = '0123456789012345678901234567890'
+	response = json.loads(client.post('/profile/create/', params).content)
+        self.assertEqual(response['status'], 'FAIL')
+	# Should not allow nonexistent community
+	params['category'] = 'School' # VALID category
+	params['community'] = 999999999999
+	response = json.loads(client.post('/profile/create/', params).content)
+        self.assertEqual(response['status'], 'FAIL')
+	# Should not allow latitude (<-90) or (>90)
+	params['community'] = 1 # VALID community
+	params['latitude'] = -91
+	response = json.loads(client.post('/profile/create/', params).content)
+        self.assertEqual(response['status'], 'FAIL')
+	params['latitude'] = 91
+	response = json.loads(client.post('/profile/create/', params).content)
+        self.assertEqual(response['status'], 'FAIL')
+	# Should not allow longitude (<-180) or (>180)
+	params['latitude'] = 38.648 # VALID latitude
+	params['longitude'] = -181
+	response = json.loads(client.post('/profile/create/', params).content)
+        self.assertEqual(response['status'], 'FAIL')
+	params['longitude'] = 181
+	response = json.loads(client.post('/profile/create/', params).content)
+        self.assertEqual(response['status'], 'FAIL')
+	# Should not allow if not WePay owner
+	params['longitude'] = -90.305 # VALID latitude
+	params['wepay'] = 2
+	response = json.loads(client.post('/profile/create/', params).content)
+        self.assertEqual(response['status'], 'FAIL')
+	# Should not allow if params are correct
+	params['wepay'] = 1 # VALID wepay
+	response = json.loads(client.post('/profile/create/', params).content)
         self.assertEqual(response['status'], 'OK')
 
 class EventTests(TestCase):
