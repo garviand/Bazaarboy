@@ -219,7 +219,40 @@ def launch(request, params):
     """
     Launch an event
     """
-    pass
+    # Check if the event is valid
+    if not Event.objects.filter(id = params['id']).exists():
+        response = {
+            'status':'FAIL',
+            'error':'EVENT_NOT_FOUND',
+            'message':'The event doesn\'t exist.'
+        }
+        return json_response(response)
+    event = Event.objects.get(id = params['event'])
+    # Check if user has permission for the event
+    user = User.objects.get(id = request.session['user'])
+    if not Profile_manager.objects.filter(user = user, profile = event.owner) \
+                                  .exists():
+        response = {
+            'status':'FAIL',
+            'error':'NOT_A_MANAGER',
+            'message':'You don\'t have permission for the event.'
+        }
+        return json_response(response)
+    # Check if the event has started
+    if event.start_time <= timezone.now():
+        response = {
+            'status':'FAIL',
+            'error':'STARTED_EVENT',
+            'message':'The start time of the event has passed.'
+        }
+        return json_response(response)
+    # Launch the event
+    event.is_launched = True
+    response = {
+        'status':'OK',
+        'event':serialize_one(event)
+    }
+    return json_response(response)
 
 @login_required()
 @validate('POST', ['id'])
