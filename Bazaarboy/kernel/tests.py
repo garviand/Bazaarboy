@@ -153,7 +153,7 @@ class ProfileTest(TestCase):
 	params['wepay'] = 2
 	response = json.loads(client.post('/profile/create/', params).content)
         self.assertEqual(response['status'], 'FAIL')
-	# Should not allow if params are correct
+	# Should allow if params are correct
 	params['wepay'] = 1 # VALID wepay
 	response = json.loads(client.post('/profile/create/', params).content)
         self.assertEqual(response['status'], 'OK')
