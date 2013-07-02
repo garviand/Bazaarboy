@@ -31,6 +31,10 @@ class UserTest(TestCase):
         }
         response = json.loads(client.post('/user/create/', params).content)
         self.assertEqual(response['status'], 'FAIL')
+	# Should not allow invalid email address
+	params['email'] = 'nothandyatandy.com'
+	response = json.loads(client.post('/user/create/', params).content)
+        self.assertEqual(response['status'], 'FAIL')
         # Should be able to register normally
         params['email'] = 'nothandy@andy.com'
         response = json.loads(client.post('/user/create/', params).content)
