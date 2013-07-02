@@ -35,8 +35,32 @@ class UserTest(TestCase):
 	params['email'] = 'nothandyatandy.com'
 	response = json.loads(client.post('/user/create/', params).content)
         self.assertEqual(response['status'], 'FAIL')
-        # Should be able to register normally
-        params['email'] = 'nothandy@andy.com'
+	# Set VALID email to test password      
+	params['email'] = 'nothandy@andy.com'
+	# Should not allow short password (<6)
+	params['password'] = '12345'
+	params['confirm'] = '12345'
+	response = json.loads(client.post('/user/create/', params).content)
+        self.assertEqual(response['status'], 'FAIL')
+	# Should not allow long password (>16)
+	params['password'] = '12345678901234567'
+	params['confirm'] = '12345678901234567'
+	response = json.loads(client.post('/user/create/', params).content)
+        self.assertEqual(response['status'], 'FAIL')
+	# Should not allow mismatching 'password' and 'confirm'
+	params['password'] = '123456'
+	params['confirm'] = '654321'
+	response = json.loads(client.post('/user/create/', params).content)
+        self.assertEqual(response['status'], 'FAIL')
+	# Set VALID password to test city
+	params['password'] = '123456'
+	params['confirm'] = '123456'
+	# Should not allow nonexistent city
+	params['city'] = '999999999999999999999999999'
+	response = json.loads(client.post('/user/create/', params).content)
+        self.assertEqual(response['status'], 'FAIL')
+	# Should be able to register normally
+	params['city'] = '1'
         response = json.loads(client.post('/user/create/', params).content)
         self.assertEqual(response['status'], 'OK')
         # Should not allow register if a session exists
