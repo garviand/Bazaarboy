@@ -1,2 +1,5 @@
-$(document).ready ->
-    return
+@Bazaarboy.landing = 
+    init: =>
+        $(document).ready ->
+            return
+        return
