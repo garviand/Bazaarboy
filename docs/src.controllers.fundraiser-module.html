@@ -105,7 +105,8 @@
         <tr>
           <td><span class="summary-sig"><a href="src.controllers.fundraiser-module.html#fundraiser" class="summary-sig-name">fundraiser</a>(<span class="summary-sig-arg">request</span>=<span class="summary-sig-default">None</span>,
         <span class="summary-sig-arg">*args</span>,
-        <span class="summary-sig-arg">**kwargs</span>)</span></td>
+        <span class="summary-sig-arg">**kwargs</span>)</span><br />
+      Return serialized data for the fundraiser</td>
           <td align="right" valign="top">
             <span class="codelink"><a href="src.controllers.fundraiser-pysrc.html#fundraiser">source&nbsp;code</a></span>
             
@@ -142,7 +143,8 @@
         <tr>
           <td><span class="summary-sig"><a href="src.controllers.fundraiser-module.html#edit" class="summary-sig-name">edit</a>(<span class="summary-sig-arg">request</span>=<span class="summary-sig-default">None</span>,
         <span class="summary-sig-arg">*args</span>,
-        <span class="summary-sig-arg">**kwargs</span>)</span></td>
+        <span class="summary-sig-arg">**kwargs</span>)</span><br />
+      Edit an existing fundraiser</td>
           <td align="right" valign="top">
             <span class="codelink"><a href="src.controllers.fundraiser-pysrc.html#edit">source&nbsp;code</a></span>
             
@@ -160,7 +162,8 @@
         <tr>
           <td><span class="summary-sig"><a href="src.controllers.fundraiser-module.html#launch" class="summary-sig-name">launch</a>(<span class="summary-sig-arg">request</span>=<span class="summary-sig-default">None</span>,
         <span class="summary-sig-arg">*args</span>,
-        <span class="summary-sig-arg">**kwargs</span>)</span></td>
+        <span class="summary-sig-arg">**kwargs</span>)</span><br />
+      Launch a fundraiser</td>
           <td align="right" valign="top">
             <span class="codelink"><a href="src.controllers.fundraiser-pysrc.html#launch">source&nbsp;code</a></span>
             
@@ -178,7 +181,8 @@
         <tr>
           <td><span class="summary-sig"><a href="src.controllers.fundraiser-module.html#delaunch" class="summary-sig-name">delaunch</a>(<span class="summary-sig-arg">request</span>=<span class="summary-sig-default">None</span>,
         <span class="summary-sig-arg">*args</span>,
-        <span class="summary-sig-arg">**kwargs</span>)</span></td>
+        <span class="summary-sig-arg">**kwargs</span>)</span><br />
+      Take a fundraiser offline</td>
           <td align="right" valign="top">
             <span class="codelink"><a href="src.controllers.fundraiser-pysrc.html#delaunch">source&nbsp;code</a></span>
             
@@ -196,7 +200,8 @@
         <tr>
           <td><span class="summary-sig"><a href="src.controllers.fundraiser-module.html#delete" class="summary-sig-name">delete</a>(<span class="summary-sig-arg">request</span>=<span class="summary-sig-default">None</span>,
         <span class="summary-sig-arg">*args</span>,
-        <span class="summary-sig-arg">**kwargs</span>)</span></td>
+        <span class="summary-sig-arg">**kwargs</span>)</span><br />
+      Delete a fundraiser</td>
           <td align="right" valign="top">
             <span class="codelink"><a href="src.controllers.fundraiser-pysrc.html#delete">source&nbsp;code</a></span>
             
@@ -253,7 +258,7 @@
     <td width="15%" align="right" valign="top" class="summary">
       <span class="summary-type">&nbsp;</span>
     </td><td class="summary">
-        <a name="RAISE_ERROR"></a><span class="summary-name">RAISE_ERROR</span> = <code title="&lt;object object at 0x7f9a2c9943c0&gt;">&lt;object object at 0x7f9a2c9943c0&gt;</code>
+        <a name="RAISE_ERROR"></a><span class="summary-name">RAISE_ERROR</span> = <code title="&lt;object object at 0x7fb6e4e293c0&gt;">&lt;object object at 0x7fb6e4e293c0&gt;</code>
     </td>
   </tr>
 <tr>
@@ -288,7 +293,7 @@
     <td width="15%" align="right" valign="top" class="summary">
       <span class="summary-type">&nbsp;</span>
     </td><td class="summary">
-        <a name="settings"></a><span class="summary-name">settings</span> = <code title="&lt;django.conf.LazySettings object at 0x12489d0&gt;">&lt;django.conf.LazySettings object at 0x12489d0&gt;</code>
+        <a name="settings"></a><span class="summary-name">settings</span> = <code title="&lt;django.conf.LazySettings object at 0x17a79d0&gt;">&lt;django.conf.LazySettings object at 0x17a79d0&gt;</code>
     </td>
   </tr>
 </table>
@@ -351,7 +356,7 @@
     </td>
   </tr></table>
   
-  
+  <p>Return serialized data for the fundraiser</p>
   <dl class="fields">
     <dt>Decorators:</dt>
     <dd><ul class="nomargin-top">
@@ -382,7 +387,7 @@
     <dt>Decorators:</dt>
     <dd><ul class="nomargin-top">
         <li><code>@login_required()</code></li>
-        <li><code>@validate('POST', [''], [''])</code></li>
+        <li><code>@validate('POST', ['profile', 'name', 'description', 'location', 'category', 'deadline'], ['latitude', 'longitude', 'is_private'])</code></li>
     </ul></dd>
   </dl>
 </td></tr></table>
@@ -403,12 +408,12 @@
     </td>
   </tr></table>
   
-  
+  <p>Edit an existing fundraiser</p>
   <dl class="fields">
     <dt>Decorators:</dt>
     <dd><ul class="nomargin-top">
         <li><code>@login_required()</code></li>
-        <li><code>@validate()</code></li>
+        <li><code>@validate('POST', ['id'])</code></li>
     </ul></dd>
   </dl>
 </td></tr></table>
@@ -429,12 +434,12 @@
     </td>
   </tr></table>
   
-  
+  <p>Launch a fundraiser</p>
   <dl class="fields">
     <dt>Decorators:</dt>
     <dd><ul class="nomargin-top">
         <li><code>@login_required()</code></li>
-        <li><code>@validate()</code></li>
+        <li><code>@validate('POST', ['id'])</code></li>
     </ul></dd>
   </dl>
 </td></tr></table>
@@ -455,12 +460,12 @@
     </td>
   </tr></table>
   
-  
+  <p>Take a fundraiser offline</p>
   <dl class="fields">
     <dt>Decorators:</dt>
     <dd><ul class="nomargin-top">
         <li><code>@login_required()</code></li>
-        <li><code>@validate()</code></li>
+        <li><code>@validate('POST', ['id'])</code></li>
     </ul></dd>
   </dl>
 </td></tr></table>
@@ -481,12 +486,12 @@
     </td>
   </tr></table>
   
-  
+  <p>Delete a fundraiser</p>
   <dl class="fields">
     <dt>Decorators:</dt>
     <dd><ul class="nomargin-top">
         <li><code>@login_required()</code></li>
-        <li><code>@validate()</code></li>
+        <li><code>@validate('POST', ['id'])</code></li>
     </ul></dd>
   </dl>
 </td></tr></table>
@@ -583,7 +588,7 @@ re.compile(r'^<code class="re-group">(</code><code class="re-group">[</code>a<co
 <table border="0" cellpadding="0" cellspacing="0" width="100%%">
   <tr>
     <td align="left" class="footer">
-    Generated by Epydoc 3.0.1 on Wed Jul  3 06:51:55 2013
+    Generated by Epydoc 3.0.1 on Wed Jul  3 23:45:02 2013
     </td>
     <td align="right" class="footer">
       <a target="mainFrame" href="http://epydoc.sourceforge.net"

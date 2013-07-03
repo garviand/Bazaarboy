@@ -170,6 +170,63 @@
       
     </td>
   </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a href="src.controllers.community-module.html#follow" class="summary-sig-name">follow</a>(<span class="summary-sig-arg">request</span>=<span class="summary-sig-default">None</span>,
+        <span class="summary-sig-arg">*args</span>,
+        <span class="summary-sig-arg">**kwargs</span>)</span><br />
+      Follow a community</td>
+          <td align="right" valign="top">
+            <span class="codelink"><a href="src.controllers.community-pysrc.html#follow">source&nbsp;code</a></span>
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a href="src.controllers.community-module.html#rank_follow" class="summary-sig-name">rank_follow</a>(<span class="summary-sig-arg">request</span>=<span class="summary-sig-default">None</span>,
+        <span class="summary-sig-arg">*args</span>,
+        <span class="summary-sig-arg">**kwargs</span>)</span><br />
+      Set the rank of a community following</td>
+          <td align="right" valign="top">
+            <span class="codelink"><a href="src.controllers.community-pysrc.html#rank_follow">source&nbsp;code</a></span>
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a href="src.controllers.community-module.html#unfollow" class="summary-sig-name">unfollow</a>(<span class="summary-sig-arg">request</span>=<span class="summary-sig-default">None</span>,
+        <span class="summary-sig-arg">*args</span>,
+        <span class="summary-sig-arg">**kwargs</span>)</span><br />
+      Unfollow a community</td>
+          <td align="right" valign="top">
+            <span class="codelink"><a href="src.controllers.community-pysrc.html#unfollow">source&nbsp;code</a></span>
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
 </table>
 <!-- ==================== VARIABLES ==================== -->
 <a name="section-Variables"></a>
@@ -199,7 +256,7 @@
     <td width="15%" align="right" valign="top" class="summary">
       <span class="summary-type">&nbsp;</span>
     </td><td class="summary">
-        <a name="RAISE_ERROR"></a><span class="summary-name">RAISE_ERROR</span> = <code title="&lt;object object at 0x7f9a2c9943c0&gt;">&lt;object object at 0x7f9a2c9943c0&gt;</code>
+        <a name="RAISE_ERROR"></a><span class="summary-name">RAISE_ERROR</span> = <code title="&lt;object object at 0x7fb6e4e293c0&gt;">&lt;object object at 0x7fb6e4e293c0&gt;</code>
     </td>
   </tr>
 <tr>
@@ -234,7 +291,7 @@
     <td width="15%" align="right" valign="top" class="summary">
       <span class="summary-type">&nbsp;</span>
     </td><td class="summary">
-        <a name="settings"></a><span class="summary-name">settings</span> = <code title="&lt;django.conf.LazySettings object at 0x12489d0&gt;">&lt;django.conf.LazySettings object at 0x12489d0&gt;</code>
+        <a name="settings"></a><span class="summary-name">settings</span> = <code title="&lt;django.conf.LazySettings object at 0x17a79d0&gt;">&lt;django.conf.LazySettings object at 0x17a79d0&gt;</code>
     </td>
   </tr>
 </table>
@@ -385,6 +442,84 @@
   </dl>
 </td></tr></table>
 </div>
+<a name="follow"></a>
+<div>
+<table class="details" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr><td>
+  <table width="100%" cellpadding="0" cellspacing="0" border="0">
+  <tr valign="top"><td>
+  <h3 class="epydoc"><span class="sig"><span class="sig-name">follow</span>(<span class="sig-arg">request</span>=<span class="sig-default">None</span>,
+        <span class="sig-arg">*args</span>,
+        <span class="sig-arg">**kwargs</span>)</span>
+  </h3>
+  </td><td align="right" valign="top"
+    ><span class="codelink"><a href="src.controllers.community-pysrc.html#follow">source&nbsp;code</a></span>&nbsp;
+    </td>
+  </tr></table>
+  
+  <p>Follow a community</p>
+  <dl class="fields">
+    <dt>Decorators:</dt>
+    <dd><ul class="nomargin-top">
+        <li><code>@login_required()</code></li>
+        <li><code>@validate('POST', ['id'])</code></li>
+    </ul></dd>
+  </dl>
+</td></tr></table>
+</div>
+<a name="rank_follow"></a>
+<div>
+<table class="details" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr><td>
+  <table width="100%" cellpadding="0" cellspacing="0" border="0">
+  <tr valign="top"><td>
+  <h3 class="epydoc"><span class="sig"><span class="sig-name">rank_follow</span>(<span class="sig-arg">request</span>=<span class="sig-default">None</span>,
+        <span class="sig-arg">*args</span>,
+        <span class="sig-arg">**kwargs</span>)</span>
+  </h3>
+  </td><td align="right" valign="top"
+    ><span class="codelink"><a href="src.controllers.community-pysrc.html#rank_follow">source&nbsp;code</a></span>&nbsp;
+    </td>
+  </tr></table>
+  
+  <p>Set the rank of a community following</p>
+  <dl class="fields">
+    <dt>Decorators:</dt>
+    <dd><ul class="nomargin-top">
+        <li><code>@login_required()</code></li>
+        <li><code>@validate('POST', ['id', 'rank'])</code></li>
+    </ul></dd>
+  </dl>
+</td></tr></table>
+</div>
+<a name="unfollow"></a>
+<div>
+<table class="details" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr><td>
+  <table width="100%" cellpadding="0" cellspacing="0" border="0">
+  <tr valign="top"><td>
+  <h3 class="epydoc"><span class="sig"><span class="sig-name">unfollow</span>(<span class="sig-arg">request</span>=<span class="sig-default">None</span>,
+        <span class="sig-arg">*args</span>,
+        <span class="sig-arg">**kwargs</span>)</span>
+  </h3>
+  </td><td align="right" valign="top"
+    ><span class="codelink"><a href="src.controllers.community-pysrc.html#unfollow">source&nbsp;code</a></span>&nbsp;
+    </td>
+  </tr></table>
+  
+  <p>Unfollow a community</p>
+  <dl class="fields">
+    <dt>Decorators:</dt>
+    <dd><ul class="nomargin-top">
+        <li><code>@login_required()</code></li>
+        <li><code>@validate('POST', ['id'])</code></li>
+    </ul></dd>
+  </dl>
+</td></tr></table>
+</div>
 <br />
 <!-- ==================== VARIABLES DETAILS ==================== -->
 <a name="section-VariablesDetails"></a>
@@ -451,7 +586,7 @@ re.compile(r'^<code class="re-group">(</code><code class="re-group">[</code>a<co
 <table border="0" cellpadding="0" cellspacing="0" width="100%%">
   <tr>
     <td align="left" class="footer">
-    Generated by Epydoc 3.0.1 on Wed Jul  3 06:51:55 2013
+    Generated by Epydoc 3.0.1 on Wed Jul  3 23:45:02 2013
     </td>
     <td align="right" class="footer">
       <a target="mainFrame" href="http://epydoc.sourceforge.net"
