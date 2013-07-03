@@ -1,5 +1,6 @@
 import os
-from fabric.api import settings, hide, lcd, local
+from multiprocessing import Process
+from fabric.api import *
 
 def console():
     """
@@ -41,9 +42,13 @@ def compile():
     """
     with lcd('./Bazaarboy/views/'):
         # Jade
-        local('jade templates --out ../templates/')
+        compileJade = lambda: local('jade -w templates/*.jade -o ../templates/')
+        processJade = Process(target = compileJade)
+        processJade.start()
         # CoffeeScript
-        local('coffee --compile --output ../static/js/ js/')
+        compileCS = lambda: local('coffee -c -w -o ../static/js/ js/')
+        processCS = Process(target = compileCS)
+        processCS.start()
         # Less
         lessPath = os.path.realpath(os.path.dirname(__file__))
         lessPath += '/Bazaarboy/views/css/'
@@ -58,7 +63,8 @@ def dev(port=8080):
     """
     Start a development environment
     """
-    compile()
+    compileProcess = Process(target = compile)
+    compileProcess.start()
     with lcd('./Bazaarboy/'):
         with settings(
             hide('warnings'),
