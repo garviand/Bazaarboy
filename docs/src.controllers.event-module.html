@@ -160,25 +160,6 @@
     </td><td class="summary">
       <table width="100%" cellpadding="0" cellspacing="0" border="0">
         <tr>
-          <td><span class="summary-sig"><a href="src.controllers.event-module.html#delete" class="summary-sig-name">delete</a>(<span class="summary-sig-arg">request</span>=<span class="summary-sig-default">None</span>,
-        <span class="summary-sig-arg">*args</span>,
-        <span class="summary-sig-arg">**kwargs</span>)</span><br />
-      Delete an event</td>
-          <td align="right" valign="top">
-            <span class="codelink"><a href="src.controllers.event-pysrc.html#delete">source&nbsp;code</a></span>
-            
-          </td>
-        </tr>
-      </table>
-      
-    </td>
-  </tr>
-<tr>
-    <td width="15%" align="right" valign="top" class="summary">
-      <span class="summary-type">&nbsp;</span>
-    </td><td class="summary">
-      <table width="100%" cellpadding="0" cellspacing="0" border="0">
-        <tr>
           <td><span class="summary-sig"><a href="src.controllers.event-module.html#launch" class="summary-sig-name">launch</a>(<span class="summary-sig-arg">request</span>=<span class="summary-sig-default">None</span>,
         <span class="summary-sig-arg">*args</span>,
         <span class="summary-sig-arg">**kwargs</span>)</span><br />
@@ -204,6 +185,25 @@
       Take an event offline and refund all tickets</td>
           <td align="right" valign="top">
             <span class="codelink"><a href="src.controllers.event-pysrc.html#delaunch">source&nbsp;code</a></span>
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a href="src.controllers.event-module.html#delete" class="summary-sig-name">delete</a>(<span class="summary-sig-arg">request</span>=<span class="summary-sig-default">None</span>,
+        <span class="summary-sig-arg">*args</span>,
+        <span class="summary-sig-arg">**kwargs</span>)</span><br />
+      Delete an event</td>
+          <td align="right" valign="top">
+            <span class="codelink"><a href="src.controllers.event-pysrc.html#delete">source&nbsp;code</a></span>
             
           </td>
         </tr>
@@ -268,6 +268,24 @@
       
     </td>
   </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a href="src.controllers.event-module.html#purchase" class="summary-sig-name">purchase</a>(<span class="summary-sig-arg">request</span>=<span class="summary-sig-default">None</span>,
+        <span class="summary-sig-arg">*args</span>,
+        <span class="summary-sig-arg">**kwargs</span>)</span></td>
+          <td align="right" valign="top">
+            <span class="codelink"><a href="src.controllers.event-pysrc.html#purchase">source&nbsp;code</a></span>
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
 </table>
 <!-- ==================== VARIABLES ==================== -->
 <a name="section-Variables"></a>
@@ -297,7 +315,7 @@
     <td width="15%" align="right" valign="top" class="summary">
       <span class="summary-type">&nbsp;</span>
     </td><td class="summary">
-        <a name="RAISE_ERROR"></a><span class="summary-name">RAISE_ERROR</span> = <code title="&lt;object object at 0x7f1b724b43c0&gt;">&lt;object object at 0x7f1b724b43c0&gt;</code>
+        <a name="RAISE_ERROR"></a><span class="summary-name">RAISE_ERROR</span> = <code title="&lt;object object at 0x7f9a2c9943c0&gt;">&lt;object object at 0x7f9a2c9943c0&gt;</code>
     </td>
   </tr>
 <tr>
@@ -332,7 +350,7 @@
     <td width="15%" align="right" valign="top" class="summary">
       <span class="summary-type">&nbsp;</span>
     </td><td class="summary">
-        <a name="settings"></a><span class="summary-name">settings</span> = <code title="&lt;django.conf.LazySettings object at 0x2aa33d0&gt;">&lt;django.conf.LazySettings object at 0x2aa33d0&gt;</code>
+        <a name="settings"></a><span class="summary-name">settings</span> = <code title="&lt;django.conf.LazySettings object at 0x12489d0&gt;">&lt;django.conf.LazySettings object at 0x12489d0&gt;</code>
     </td>
   </tr>
 </table>
@@ -452,33 +470,7 @@
     <dt>Decorators:</dt>
     <dd><ul class="nomargin-top">
         <li><code>@login_required()</code></li>
-        <li><code>@validate('POST', ['id'], ['description', 'start_time', 'end_time', 'location', 'latitude', 'longitude', 'category', 'is_private'])</code></li>
-    </ul></dd>
-  </dl>
-</td></tr></table>
-</div>
-<a name="delete"></a>
-<div>
-<table class="details" border="1" cellpadding="3"
-       cellspacing="0" width="100%" bgcolor="white">
-<tr><td>
-  <table width="100%" cellpadding="0" cellspacing="0" border="0">
-  <tr valign="top"><td>
-  <h3 class="epydoc"><span class="sig"><span class="sig-name">delete</span>(<span class="sig-arg">request</span>=<span class="sig-default">None</span>,
-        <span class="sig-arg">*args</span>,
-        <span class="sig-arg">**kwargs</span>)</span>
-  </h3>
-  </td><td align="right" valign="top"
-    ><span class="codelink"><a href="src.controllers.event-pysrc.html#delete">source&nbsp;code</a></span>&nbsp;
-    </td>
-  </tr></table>
-  
-  <p>Delete an event</p>
-  <dl class="fields">
-    <dt>Decorators:</dt>
-    <dd><ul class="nomargin-top">
-        <li><code>@login_required()</code></li>
-        <li><code>@validate('POST', ['id'])</code></li>
+        <li><code>@validate('POST', ['id'], ['name', 'description', 'start_time', 'end_time', 'location', 'latitude', 'longitude', 'category', 'is_private'])</code></li>
     </ul></dd>
   </dl>
 </td></tr></table>
@@ -526,6 +518,32 @@
   </tr></table>
   
   <p>Take an event offline and refund all tickets</p>
+  <dl class="fields">
+    <dt>Decorators:</dt>
+    <dd><ul class="nomargin-top">
+        <li><code>@login_required()</code></li>
+        <li><code>@validate('POST', ['id'])</code></li>
+    </ul></dd>
+  </dl>
+</td></tr></table>
+</div>
+<a name="delete"></a>
+<div>
+<table class="details" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr><td>
+  <table width="100%" cellpadding="0" cellspacing="0" border="0">
+  <tr valign="top"><td>
+  <h3 class="epydoc"><span class="sig"><span class="sig-name">delete</span>(<span class="sig-arg">request</span>=<span class="sig-default">None</span>,
+        <span class="sig-arg">*args</span>,
+        <span class="sig-arg">**kwargs</span>)</span>
+  </h3>
+  </td><td align="right" valign="top"
+    ><span class="codelink"><a href="src.controllers.event-pysrc.html#delete">source&nbsp;code</a></span>&nbsp;
+    </td>
+  </tr></table>
+  
+  <p>Delete an event</p>
   <dl class="fields">
     <dt>Decorators:</dt>
     <dd><ul class="nomargin-top">
@@ -613,6 +631,32 @@
   </dl>
 </td></tr></table>
 </div>
+<a name="purchase"></a>
+<div>
+<table class="details" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr><td>
+  <table width="100%" cellpadding="0" cellspacing="0" border="0">
+  <tr valign="top"><td>
+  <h3 class="epydoc"><span class="sig"><span class="sig-name">purchase</span>(<span class="sig-arg">request</span>=<span class="sig-default">None</span>,
+        <span class="sig-arg">*args</span>,
+        <span class="sig-arg">**kwargs</span>)</span>
+  </h3>
+  </td><td align="right" valign="top"
+    ><span class="codelink"><a href="src.controllers.event-pysrc.html#purchase">source&nbsp;code</a></span>&nbsp;
+    </td>
+  </tr></table>
+  
+  
+  <dl class="fields">
+    <dt>Decorators:</dt>
+    <dd><ul class="nomargin-top">
+        <li><code>@login_required()</code></li>
+        <li><code>@validate()</code></li>
+    </ul></dd>
+  </dl>
+</td></tr></table>
+</div>
 <br />
 <!-- ==================== VARIABLES DETAILS ==================== -->
 <a name="section-VariablesDetails"></a>
@@ -679,7 +723,7 @@ re.compile(r'^<code class="re-group">(</code><code class="re-group">[</code>a<co
 <table border="0" cellpadding="0" cellspacing="0" width="100%%">
   <tr>
     <td align="left" class="footer">
-    Generated by Epydoc 3.0.1 on Sat Jun 29 05:50:24 2013
+    Generated by Epydoc 3.0.1 on Wed Jul  3 06:51:55 2013
     </td>
     <td align="right" class="footer">
       <a target="mainFrame" href="http://epydoc.sourceforge.net"

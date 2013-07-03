@@ -207,6 +207,7 @@ def edit(request, params):
     if params['is_private'] is not None:
         event.is_private = params['is_private']
     # Save the changes
+    event.save()
     response = {
         'status':'OK',
         'event':serialize_one(event)
@@ -248,6 +249,7 @@ def launch(request, params):
         return json_response(response)
     # Launch the event
     event.is_launched = True
+    event.save()
     response = {
         'status':'OK',
         'event':serialize_one(event)
@@ -279,6 +281,14 @@ def delaunch(request, params):
             'message':'You don\'t have permission for the event.'
         }
         return json_response(response)
+    # Check if the event is launched
+    if not event.is_launched:
+        response = {
+            'status':'FAIL',
+            'error':'NOT_LAUNCHED',
+            'message':'The event is not yet launched.'
+        }
+        return json_response(response)
     # Check if the event has started
     if event.start_time <= timezone.now():
         response = {
@@ -287,12 +297,13 @@ def delaunch(request, params):
             'message':'You cannot take a started event offline.'
         }
         return json_response(response)
-    # Refund all tickets
+    # Refund all purchases
     tickets = Ticket.objects.filter(event = event)
     for ticket in tickets:
         pass
     # Mark the event as offline
     event.is_launched = False
+    event.save()
     response = {
         'status':'OK',
         'event':serialize_one(event)
@@ -322,14 +333,6 @@ def delete(request, params):
             'status':'FAIL',
             'error':'NOT_A_MANAGER',
             'message':'You don\'t have permission for the event.'
-        }
-        return json_response(response)
-    # Check if the event has started
-    if event.start_time <= timezone.now():
-        response = {
-            'status':'FAIL',
-            'error':'STARTED_EVENT',
-            'message':'You cannot delete a started event.'
         }
         return json_response(response)
     # Check if the event is launched
@@ -576,7 +579,7 @@ def delete_ticket(request, params):
         }
         return json_response(response)
     # Check if the event has started
-    if event.start_time <= timezone.now():
+    if event.is_launched and event.start_time <= timezone.now():
         response = {
             'status':'FAIL',
             'error':'STARTED_EVENT',

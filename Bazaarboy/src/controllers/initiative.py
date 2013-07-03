@@ -235,19 +235,152 @@ def edit(request, params):
     return json_response(response)
 
 @login_required()
-@validate()
+@validate('POST', ['id'])
 def launch(request, params):
-    pass
+    """
+    Launch an initiative
+    """
+    # Check if the initiative is valid
+    if not Initiative.objects.filter(id = params['id']).exists():
+        response = {
+            'status':'FAIL',
+            'error':'INITIATIVE_NOT_FOUND',
+            'message':'The initiative doesn\'t exist.'
+        }
+        return json_response(response)
+    initiative = Initiative.objects.get(id = params['id'])
+    # Check if user has permission for the initiative
+    user = User.objects.get(id = request.session['user'])
+    if not Profile_manager.objects.filter(user = user, 
+                                          profile = initiative.owner) \
+                                  .exists():
+        response = {
+            'status':'FAIL',
+            'error':'NOT_A_MANAGER',
+            'message':'You don\'t have permission for the initiative.'
+        }
+        return json_response(response)
+    # Check if the deadline is valid
+    if initiative.deadline < timezone.now():
+        response = {
+            'status':'FAIL',
+            'error':'PASSED_DEADLINE',
+            'message':'The initiative deadline has passed.'
+        }
+        return json_response(response)
+    # Launch the initiative
+    initiative.is_launched = True
+    initiative.save()
+    response = {
+        'status':'OK',
+        'initiative':serialize_one(initiative)
+    }
+    return json_response(response)
 
 @login_required()
 @validate()
 def delaunch(request, params):
-    pass
+    """
+    Take an initiative offline
+    """
+    # Check if the initiative is valid
+    if not Initiative.objects.filter(id = params['id']).exists():
+        response = {
+            'status':'FAIL',
+            'error':'INITIATIVE_NOT_FOUND',
+            'message':'The initiative doesn\'t exist.'
+        }
+        return json_response(response)
+    initiative = Initiative.objects.get(id = params['id'])
+    # Check if user has permission for the initiative
+    user = User.objects.get(id = request.session['user'])
+    if not Profile_manager.objects.filter(user = user, 
+                                          profile = initiative.owner) \
+                                  .exists():
+        response = {
+            'status':'FAIL',
+            'error':'NOT_A_MANAGER',
+            'message':'You don\'t have permission for the initiative.'
+        }
+        return json_response(response)
+    # Check if the initiative is launched
+    if not initiative.is_launched:
+        response = {
+            'status':'FAIL',
+            'error':'NOT_LAUNCHED',
+            'message':'The initiative is not yet launched.'
+        }
+        return json_response(response)
+    # Check if the deadline has reached
+    if initiative.deadline <= timezone.now():
+        response = {
+            'status':'FAIL',
+            'error':'DEADLINE_PAST_DUE',
+            'message':'The deadline has passed.'
+        }
+        return json_response(response)
+    # Refund all pledges
+    rewards = Reward.objects.filter(initiative = initiative)
+    for reward in rewards:
+        pass
+    # Mark the initiative as offline
+    initiative.is_launched = False
+    initiative.save()
+    response = {
+        'status':'OK',
+        'initiative':serialize_one(initiative)
+    }
+    return json_response(response)
 
 @login_required()
-@validate()
+@validate('POST', ['id'])
 def delete(request, params):
-    pass
+    """
+    Delete an initiative
+    """
+    # Check if the initiative is valid
+    if not Initiative.objects.filter(id = params['id']).exists():
+        response = {
+            'status':'FAIL',
+            'error':'INITIATIVE_NOT_FOUND',
+            'message':'The initiative doesn\'t exist.'
+        }
+        return json_response(response)
+    initiative = Initiative.objects.get(id = params['id'])
+    # Check if user has permission for the initiative
+    user = User.objects.get(id = request.session['user'])
+    if not Profile_manager.objects.filter(user = user, 
+                                          profile = initiative.owner) \
+                                  .exists():
+        response = {
+            'status':'FAIL',
+            'error':'NOT_A_MANAGER',
+            'message':'You don\'t have permission for the initiative.'
+        }
+        return json_response(response)
+    # Check if the initiative is launched
+    if initiative.is_launched:
+        response = {
+            'status':'FAIL',
+            'error':'LAUNCHED_INITIATIVE',
+            'message':'The initiative is launched, please take it offline first.'
+        }
+        return json_response(response)
+    # Check if the deadline has reached
+    if initiative.deadline <= timezone.now():
+        response = {
+            'status':'FAIL',
+            'error':'DEADLINE_PAST_DUE',
+            'message':'The deadline has passed.'
+        }
+        return json_response(response)
+    # Delete the initiative and all its rewards
+    Rewards.objects.filter(initiative = initiative).delete()
+    initiative.delete()
+    response = {
+        'status':'OK'
+    }
+    return json_response(response)
 
 @login_required()
 @validate('POST', ['initiative', 'name', 'description', 'price'], ['quantity'])
@@ -317,14 +450,136 @@ def create_reward(request, params):
     return json_response(response)
 
 @login_required()
-@validate()
+@validate('POST', ['id'], ['name', 'description', 'price', 'quantity'])
 def edit_reward(request, params):
-    pass
+    """
+    Edit a reward
+    """
+    # Check if reward is valid
+    if not Reward.objects.filter(id = params['id']):
+        response = {
+            'status':'FAIL',
+            'error':'INVALID_REWARD',
+            'message':'The reward doesn\'t exist.'
+        }
+        return json_response(response)
+    reward = Reward.objects.get(id = params['id'])
+    initiative = reward.initiative
+    # Check if user has permission for the initiative
+    user = User.objects.get(id = request.session['user'])
+    if not Profile_manager.objects.filter(user = user, 
+                                          profile = initiative.owner) \
+                                  .exists():
+        response = {
+            'status':'FAIL',
+            'error':'NOT_A_MANAGER',
+            'message':'You don\'t have permission for the initiative.'
+        }
+        return json_response(response)
+    # Check if the deadline has passed
+    if initiative.is_launched and initiative.deadline <= timezone.now():
+        response = {
+            'status':'FAIL',
+            'error':'DEADLINE_PAST_DUE',
+            'message':'You cannot make changes to a past initiative'
+        }
+        return json_response(response)
+    # Go through all params and change the rewards accordingly
+    if params['name'] is not None:
+        if len(params['name']) == 0:
+            response = {
+                'status':'FAIL',
+                'error':'BLANK_NAME',
+                'message':'Reward name cannot be blank.'
+            }
+            return json_response(response)
+        else:
+            reward.name = params['name']
+    if params['description'] is not None:
+        if len(params['description']) == 0:
+            response = {
+                'status':'FAIL',
+                'error':'BLANK_DESCRIPTION',
+                'message':'Reward description cannot be blank.'
+            }
+            return json_response(response)
+        else:
+            reward.description = params['description']
+    if params['price'] is not None:
+        params['price'] = float(params['price'])
+        if params['price'] < 0:
+            response = {
+                'status':'FAIL',
+                'error':'NEGATIVE_PRICE',
+                'message':'Price cannot be a negative number.'
+            }
+            return json_response(response)
+        else:
+            reward.price = params['price']
+    if params['quantity'] is not None:
+        params['quantity'] = int(params['quantity'])
+        if params['quantity'] <= 0:
+            response = {
+                'status':'FAIL',
+                'error':'NON_POSITIVE_QUANTITY',
+                'message':'Quantity must be a positive integer.'
+            }
+            return json_response(response)
+        else:
+            reward.quantity = params['quantity']
+    # Save the changes
+    reward.save()
+    response = {
+        'status':'OK',
+        'reward':serialize_one(reward)
+    }
+    return json_response(response)
 
 @login_required()
-@validate()
+@validate('POST', ['id'])
 def delete_reward(request, params):
-    pass
+    """
+    Delete a reward
+    """
+    # Check if reward is valid
+    if not Reward.objects.filter(id = params['id']):
+        response = {
+            'status':'FAIL',
+            'error':'INVALID_REWARD',
+            'message':'The reward doesn\'t exist.'
+        }
+        return json_response(response)
+    reward = Reward.objects.get(id = params['id'])
+    initiative = reward.initiative
+    # Check if user has permission for the initiative
+    user = User.objects.get(id = request.session['user'])
+    if not Profile_manager.objects.filter(user = user, 
+                                          profile = initiative.owner) \
+                                  .exists():
+        response = {
+            'status':'FAIL',
+            'error':'NOT_A_MANAGER',
+            'message':'You don\'t have permission for the initiative.'
+        }
+        return json_response(response)
+    # Check if the deadline has passed
+    if initiative.is_launched and initiative.deadline <= timezone.now():
+        response = {
+            'status':'FAIL',
+            'error':'DEADLINE_PAST_DUE',
+            'message':'You cannot make changes to a past initiative'
+        }
+        return json_response(response)
+    # Refund all pledges for the reward
+    pledges = Pledge.objects.filter(reward = reward)
+    for pledge in pledges:
+        pass
+    # Delete the reward
+    reward.delete()
+    response = {
+        'status':'OK'
+    }
+    return json_response(response)
 
 @login_required()
 @validate()
