@@ -181,11 +181,27 @@ class EventTests(TestCase):
         response = json.loads(client.post('/event/create/', params).content)
         self.assertEqual(response['status'], 'FAIL')
         # Should check the profile ownership
-        params['profile'] = 1
+        params['profile'] = 1 # not woner
+        response = json.loads(client.post('/event/create/', params).content)
+        self.assertEqual(response['status'], 'FAIL')
+	# Should not allow latitude (<-90) or (>90)
+	params['profile'] = 2 # VALID owner
+	params['latitude'] = -91
+        response = json.loads(client.post('/event/create/', params).content)
+        self.assertEqual(response['status'], 'FAIL')
+	params['latitude'] = 91
+        response = json.loads(client.post('/event/create/', params).content)
+        self.assertEqual(response['status'], 'FAIL')
+	# Should not allow longitude (<-180) or (>180)
+	params['latitude'] = 38.655833 # VALID latitude
+	params['longitude'] = -181
+        response = json.loads(client.post('/event/create/', params).content)
+        self.assertEqual(response['status'], 'FAIL')
+	params['longitude'] = 181
         response = json.loads(client.post('/event/create/', params).content)
         self.assertEqual(response['status'], 'FAIL')
         # Should be able to create normal event
-        params['profile'] = 2
+	params['longitude'] = -90.305 # VALID longitude
         response = json.loads(client.post('/event/create/', params).content)
         self.assertEqual(response['status'], 'OK')
         event = response['event']['pk']
@@ -199,6 +215,52 @@ class EventTests(TestCase):
         response = client.post('/event/ticket/create/', params).content
         response = json.loads(response)
         self.assertEqual(response['status'], 'OK')
+	# Should NOT be able to create a ticket with end time < start time
+        params = {
+            'event':event,
+            'name':'Late',
+            'description':'Late admission ticket',
+            'price':35.00,
+            'start_time':'2013-12-28 00:00:00',
+	    'end_time':'2013-12-27 00:00:00'
+        }
+        response = client.post('/event/ticket/create/', params).content
+        response = json.loads(response)
+        self.assertEqual(response['status'], 'FAIL')
+	# Should NOT be able to create a ticket with price < 0
+        params = {
+            'event':event,
+            'name':'Already Started',
+            'description':'This event happened in 2012',
+            'price':-35.00,
+            'start_time':'2012-12-28 00:00:00'
+        }
+        response = client.post('/event/ticket/create/', params).content
+        response = json.loads(response)
+        self.assertEqual(response['status'], 'FAIL')
+	# Should NOT be able to create a ticket with quantity < 0
+        params = {
+            'event':event,
+            'name':'Already Started',
+            'description':'This event happened in 2012',
+            'price':35.00,
+            'start_time':'2012-12-28 00:00:00',
+	    'quantity': -5
+        }
+        response = client.post('/event/ticket/create/', params).content
+        response = json.loads(response)
+        self.assertEqual(response['status'], 'FAIL')
+	# Should NOT be able to create a ticket with start_time > event.start_time
+        params = {
+            'event':event,
+            'name':'Already Started',
+            'description':'This event happened in 2012',
+            'price':35.00,
+            'start_time':'2013-12-31 23:00:01' # event = 2013-12-31 23:00:00
+        }
+        response = client.post('/event/ticket/create/', params).content
+        response = json.loads(response)
+        self.assertEqual(response['status'], 'FAIL')
         # Should be able to create a ticket with start time
         params = {
             'event':event,
