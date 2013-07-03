@@ -1,8 +1,8 @@
 """
-Controller for normal events
+Controller for events
 """
 
-from datetime import datetime, timedelta
+from datetime import datetime
 from django.http import Http404
 from django.shortcuts import render
 from django.utils import timezone
@@ -10,12 +10,10 @@ from kernel.models import *
 from src.controllers.request import *
 from src.serializer import serialize_one
 
-import pdb
-
 @login_check()
 def index(request, id, loggedIn):
     """
-    Normal event page
+    Event page
     """
     if not Event.objects.filter(id = id).exists():
         return Http404
@@ -26,7 +24,7 @@ def index(request, id, loggedIn):
 @validate('GET', ['id'])
 def event(request, params):
     """
-    Return serialized data for the normal event
+    Return serialized data for the event
     """
     if not Event.objects.filter(id = params['id']).exists():
         response = {
@@ -49,7 +47,7 @@ def event(request, params):
           ['end_time', 'latitude', 'longitude', 'is_private'])
 def create(request, params):
     """
-    Create a new normal event
+    Create a new event
     """
     # Check if the profile is valid
     if not Profile.objects.filter(id = params['profile']).exists():

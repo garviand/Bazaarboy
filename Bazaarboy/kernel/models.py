@@ -8,8 +8,6 @@ from django.db import models, IntegrityError
 from django.db.models import F
 from django.utils import timezone
 
-import pdb
-
 class User(models.Model):
     """
     User model
