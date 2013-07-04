@@ -3,6 +3,7 @@ Controller for events
 """
 
 from datetime import datetime
+from django.db.models import F
 from django.http import Http404
 from django.shortcuts import render
 from django.utils import timezone
@@ -596,6 +597,68 @@ def delete_ticket(request, params):
     return json_response(response)
 
 @login_required()
-@validate()
+@validate('POST', ['ticket'])
 def purchase(request, params):
-    pass
+    # Check if the ticket is valid
+    if not Ticket.objects.filter(id = params['ticket']).exists():
+        response = {
+            'status':'FAIL',
+            'error':'TICKET_NOT_FOUND',
+            'message':'The ticket doesn\'t exist.'
+        }
+        return json_response(response)
+    ticket = Ticket.objects.get(id = params['ticket'])
+    event = ticket.event
+    # Check if the event is launched
+    if not event.is_launched:
+        response = {
+            'status':'FAIL',
+            'error':'EVENT_NOT_LAUNCHED',
+            'message':'The event is not launched yet.'
+        }
+        return json_response(response)
+    # Check if the event has started
+    if event.start_time <= timezone.now():
+        response = {
+            'status':'FAIL',
+            'error':'STARTED_EVENT',
+            'message':'You can\'t buy ticket to a started event.'
+        }
+        return json_response(response)
+    # Check if the ticket is sold out
+    if ticket.quantity is not None and ticket.quantity == 0:
+        response = {
+            'status':'FAIL',
+            'error':'TICKET_SOLD_OUT',
+            'message':'This ticket is sold out.'
+        }
+        return json_response(response)
+    # Check if there is exisiting purchase
+    user = User.objects.get(id = request.session['user'])
+    if Purchase.objects.filter(owner = user, event = event, 
+                               checkout__is_captured = True, 
+                               checkout__is_refunded = False, 
+                               is_expired = False).exists():
+        response = {
+            'status':'FAIL',
+            'error':'PURCHASED_ALREADY',
+            'message':'You have already bought a ticket to the event.'
+        }
+        return json_response(response)
+    # All checks passed, create the purchase
+    checkout = Checkout(payer = user, payee = event.owner.wepay_account, 
+                        amount = ticket.price)
+    checkout.save()
+    purchase = Purchase(owner = user, ticket = ticket, event = event, 
+                        price = ticket.price, checkout = checkout)
+    purchase.save()
+    # Schedule the purchase to be expired after some amount of time
+    # Adjust the ticket quantity
+    if ticket.quantity is not None:
+        ticket.quantity = F('quantity') - 1
+        ticket.save()
+    response = {
+        'status':'OK',
+        'checkout':checkout.id
+    }
+    return json_response(response)

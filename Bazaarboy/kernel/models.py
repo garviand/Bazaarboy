@@ -66,13 +66,27 @@ class Wepay_checkout(models.Model):
     """
     A model for checkouts
     """
-    pass
+    payer = models.ForeignKey('User')
+    payee = models.ForeignKey('Wepay_account')
+    checkout_id = models.CharField(max_length = 50, null = True, default = None)
+    amount = models.FloatField()
+    is_captured = models.BooleanField(default = False)
+    is_refunded = models.BooleanField(default = False)
+    created_time = models.DateTimeField(auto_now_add = True)
 
 class Wepay_preapproval(models.Model):
     """
     A model for preapprovals
     """
-    pass
+    payer = models.ForeignKey('User')
+    payee = models.ForeignKey('Wepay_account')
+    preapproval_id = models.CharField(max_length = 50, null = True, 
+                                      default = None)
+    amount = models.FloatField()
+    checkout = models.ForeignKey('Wepay_checkout', null = True, default = None)
+    is_captured = models.BooleanField(default = False)
+    is_cancelled = models.BooleanField(default = False)
+    created_time = models.DateTimeField(auto_now_add = True)
 
 class City(models.Model):
     """
@@ -252,7 +266,10 @@ class Purchase(models.Model):
     """
     owner = models.ForeignKey('User')
     ticket = models.ForeignKey('Ticket')
+    event = models.ForeignKey('Event')
     price = models.FloatField()
+    checkout = models.ForeignKey('Wepay_checkout')
+    is_expired = models.BooleanField(default = False)
     created_time = models.DateTimeField(auto_now_add = True)
 
 class Initiative(Event_base):
@@ -279,13 +296,16 @@ class Pledge(models.Model):
     """
     owner = models.ForeignKey('User')
     reward = models.ForeignKey('Reward')
+    initiative = models.ForeignKey('Initiative')
     amount = models.FloatField()
+    preapproval = models.ForeignKey('Wepay_preapproval')
     created_time = models.DateTimeField(auto_now_add = True)
 
 class Fundraiser(Event_base):
     """
     Event model for fundraising events
     """
+    goal = models.FloatField()
     deadline = models.DateTimeField()
 
 class Donation(models.Model):
@@ -295,6 +315,7 @@ class Donation(models.Model):
     owner = models.ForeignKey('User')
     fundraiser = models.ForeignKey('Fundraiser')
     amount = models.FloatField()
+    preapproval = models.ForeignKey('Wepay_checkout')
     created_time = models.DateTimeField(auto_now_add = True)
 
 class Redeemable(models.Model):
