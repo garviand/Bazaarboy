@@ -2,12 +2,14 @@
 Controller for events
 """
 
-from datetime import datetime
+from datetime import datetime, timedelta
 from django.db.models import F
 from django.http import Http404
 from django.shortcuts import render
 from django.utils import timezone
+from celery import task
 from kernel.models import *
+from src.config import *
 from src.controllers.request import *
 from src.serializer import serialize_one
 
@@ -596,6 +598,20 @@ def delete_ticket(request, params):
     }
     return json_response(response)
 
+@task()
+def mark_purchase_as_expired(purchase):
+    """
+    Expires a purchase after some time and release the ticket
+    """
+    if not purchase.checkout.is_captured:
+        purchase.is_expired = True
+        purchase.save()
+        ticket = purchase.ticket
+        if ticket.quantity is not None:
+            ticket.quantity = F('quantity') + 1
+            ticket.save()
+    return True
+
 @login_required()
 @validate('POST', ['ticket'])
 def purchase(request, params):
@@ -653,6 +669,8 @@ def purchase(request, params):
                         price = ticket.price, checkout = checkout)
     purchase.save()
     # Schedule the purchase to be expired after some amount of time
+    expiration = timezone.now() + timedelta(minutes = BBOY_PURCHASE_EXPIRATION)
+    mark_purchase_as_expired.apply_async(args = [purchase], eta = expiration)
     # Adjust the ticket quantity
     if ticket.quantity is not None:
         ticket.quantity = F('quantity') - 1
