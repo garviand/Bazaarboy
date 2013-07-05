@@ -1,21 +1,22 @@
 """
-Controller for normal events
+Controller for events
 """
 
 from datetime import datetime, timedelta
+from django.db.models import F
 from django.http import Http404
 from django.shortcuts import render
 from django.utils import timezone
+from celery import task
 from kernel.models import *
+from src.config import *
 from src.controllers.request import *
 from src.serializer import serialize_one
-
-import pdb
 
 @login_check()
 def index(request, id, loggedIn):
     """
-    Normal event page
+    Event page
     """
     if not Event.objects.filter(id = id).exists():
         return Http404
@@ -26,7 +27,7 @@ def index(request, id, loggedIn):
 @validate('GET', ['id'])
 def event(request, params):
     """
-    Return serialized data for the normal event
+    Return serialized data for the event
     """
     if not Event.objects.filter(id = params['id']).exists():
         response = {
@@ -49,7 +50,7 @@ def event(request, params):
           ['end_time', 'latitude', 'longitude', 'is_private'])
 def create(request, params):
     """
-    Create a new normal event
+    Create a new event
     """
     # Check if the profile is valid
     if not Profile.objects.filter(id = params['profile']).exists():
@@ -597,7 +598,85 @@ def delete_ticket(request, params):
     }
     return json_response(response)
 
+@task()
+def mark_purchase_as_expired(purchase):
+    """
+    Expires a purchase after some time and release the ticket
+    """
+    if not purchase.checkout.is_captured:
+        purchase.is_expired = True
+        purchase.save()
+        ticket = purchase.ticket
+        if ticket.quantity is not None:
+            ticket.quantity = F('quantity') + 1
+            ticket.save()
+    return True
+
 @login_required()
-@validate()
+@validate('POST', ['ticket'])
 def purchase(request, params):
-    pass
+    # Check if the ticket is valid
+    if not Ticket.objects.filter(id = params['ticket']).exists():
+        response = {
+            'status':'FAIL',
+            'error':'TICKET_NOT_FOUND',
+            'message':'The ticket doesn\'t exist.'
+        }
+        return json_response(response)
+    ticket = Ticket.objects.get(id = params['ticket'])
+    event = ticket.event
+    # Check if the event is launched
+    if not event.is_launched:
+        response = {
+            'status':'FAIL',
+            'error':'EVENT_NOT_LAUNCHED',
+            'message':'The event is not launched yet.'
+        }
+        return json_response(response)
+    # Check if the event has started
+    if event.start_time <= timezone.now():
+        response = {
+            'status':'FAIL',
+            'error':'STARTED_EVENT',
+            'message':'You can\'t buy ticket to a started event.'
+        }
+        return json_response(response)
+    # Check if the ticket is sold out
+    if ticket.quantity is not None and ticket.quantity == 0:
+        response = {
+            'status':'FAIL',
+            'error':'TICKET_SOLD_OUT',
+            'message':'This ticket is sold out.'
+        }
+        return json_response(response)
+    # Check if there is exisiting purchase
+    user = User.objects.get(id = request.session['user'])
+    if Purchase.objects.filter(owner = user, event = event, 
+                               checkout__is_captured = True, 
+                               checkout__is_refunded = False, 
+                               is_expired = False).exists():
+        response = {
+            'status':'FAIL',
+            'error':'PURCHASED_ALREADY',
+            'message':'You have already bought a ticket to the event.'
+        }
+        return json_response(response)
+    # All checks passed, create the purchase
+    checkout = Checkout(payer = user, payee = event.owner.wepay_account, 
+                        amount = ticket.price)
+    checkout.save()
+    purchase = Purchase(owner = user, ticket = ticket, event = event, 
+                        price = ticket.price, checkout = checkout)
+    purchase.save()
+    # Schedule the purchase to be expired after some amount of time
+    expiration = timezone.now() + timedelta(minutes = BBOY_PURCHASE_EXPIRATION)
+    mark_purchase_as_expired.apply_async(args = [purchase], eta = expiration)
+    # Adjust the ticket quantity
+    if ticket.quantity is not None:
+        ticket.quantity = F('quantity') - 1
+        ticket.save()
+    response = {
+        'status':'OK',
+        'checkout':checkout.id
+    }
+    return json_response(response)

@@ -122,8 +122,8 @@ INSTALLED_APPS = (
     'django.contrib.sites',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    #'django_extensions', 
-    'south',
+    #'south',
+    'djcelery',
     'kernel',
     'analytics',
     'admin',
@@ -163,3 +163,21 @@ LOGGING = {
 }
 
 SESSION_EXPIRE_AT_BROWSER_CLOSE = True
+
+# Amazon AWS
+
+AWS_ACCESS_KEY_ID = 'AKIAJVHJSPLDIV7XVLUQ'
+AWS_SECRET_ACCESS_KEY = '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'
+
+# Celery
+
+import djcelery
+import urllib
+
+BROKER_URL = 'sqs://%s:%s@' % (urllib.quote(AWS_ACCESS_KEY_ID, safe = ''), 
+                               urllib.quote(AWS_SECRET_ACCESS_KEY, safe = ''))
+CELERY_IMPORTS = (
+    'src.controllers.event', 
+)
+
+djcelery.setup_loader()

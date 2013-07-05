@@ -3,6 +3,7 @@ Bazaarboy configurations
 """
 
 BBOY_URL_ROOT = 'http://localhost:8080'
+BBOY_PURCHASE_EXPIRATION = 15 # In minutes
 
 # WePay
 

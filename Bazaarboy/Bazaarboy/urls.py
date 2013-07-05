@@ -132,4 +132,8 @@ urlpatterns = patterns('',
     url(r'^fundraiser/donate/$', 'src.controllers.fundraiser.donate', 
         name = 'fundraiser-donate'),
 
+    # Testing
+
+    url(r'^test/$', 'src.controllers.test.index'),
+
 )

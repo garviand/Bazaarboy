@@ -2,22 +2,41 @@
 Controller for Profile
 """
 
+from django.http import Http404
 from django.shortcuts import render
 from kernel.models import *
+from src.controllers.request import *
 from src.serializer import serialize_one
-from request import json_response, validate, login_required, login_check
 
 @login_check()
 def index(request, id, loggedIn):
     """
     Profile page
     """
+    if not Profile.objects.filter(id = id).exists():
+        return Http404
+    profile = Profile.objects.get(id = id)
     return render(request, 'profile.html', locals())
 
 @login_required()
 @validate('GET', ['id'])
 def profile(request, params):
-    pass
+    """
+    Return serialized profile data
+    """
+    if not Profile.objects.filter(id = params['id']).exists():
+        response = {
+            'status':'FAIL',
+            'error':'PROFILE_NOT_FOUND',
+            'message':'The profile doesn\'t exist.'
+        }
+        return json_response(response)
+    profile = Profile.objects.get(id = params['id'])
+    response = {
+        'status':'OK',
+        'profile':serialize_one(profile)
+    }
+    return json_response(response)
 
 @login_required()
 @validate('POST', 

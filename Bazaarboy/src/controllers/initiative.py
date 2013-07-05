@@ -1,8 +1,8 @@
 """
-Controller for initiative events
+Controller for initiatives
 """
 
-from datetime import datetime, timedelta
+from datetime import datetime
 from django.http import Http404
 from django.utils import timezone
 from kernel.models import *
@@ -14,7 +14,7 @@ FORMAT_DATETIME = '%Y-%m-%d %X'
 @login_check()
 def index(request, id, loggedIn):
     """
-    Initiative event page
+    Initiative page
     """
     if not Initiative.objects.filter(id = id).exists():
         return Http404
@@ -25,7 +25,7 @@ def index(request, id, loggedIn):
 @validate('GET', ['id'])
 def initiative(request, params):
     """
-    Return serialized data for the initiative event
+    Return serialized data for the initiative
     """
     if not initiative.objects.filter(id = params['id']).exists():
         response = {
@@ -37,7 +37,7 @@ def initiative(request, params):
     initiative = Initiative.objects.get(id = params['id'])
     response = {
         'status':'OK',
-        'event':serialize_one(initiative)
+        'initiative':serialize_one(initiative)
     }
     return json_response(response)
 
@@ -48,7 +48,7 @@ def initiative(request, params):
           ['latitude', 'longitude', 'is_private'])
 def create(request, params):
     """
-    Create a new initiative event
+    Create a new initiative
     """
     # Check if the profile is valid
     if not Profile.objects.filter(id = params['profile']).exists():
@@ -77,6 +77,7 @@ def create(request, params):
             'error':'INVALID_GOAL',
             'message':'The initiative goal is too small.'
         }
+        return json_response(response)
     # Check the deadline
     params['deadline'] = datetime.strptime(params['deadline'], FORMAT_DATETIME)
     if params['deadline'] < timezone.now():
@@ -85,6 +86,7 @@ def create(request, params):
             'error':'INVALID_DEADLINE',
             'message':'The deadline is invalid.'
         }
+        return json_response(response)
     # Validated, create the model
     initiative = Initiative(name = params['name'], 
                             description = params['description'], 
@@ -114,7 +116,7 @@ def create(request, params):
     initiative.save()
     response = {
         'status':'OK',
-        'event':serialize_one(initiative)
+        'initiative':serialize_one(initiative)
     }
     return json_response(response)
 
@@ -178,7 +180,7 @@ def edit(request, params):
             response = {
                 'status':'FAIL',
                 'error':'INVALID_DEADLINE',
-                'message':'The deadline is too small.'
+                'message':'The deadline is invalid.'
             }
         else:
             initiative.deadline = params['deadline']
@@ -366,14 +368,6 @@ def delete(request, params):
             'message':'The initiative is launched, please take it offline first.'
         }
         return json_response(response)
-    # Check if the deadline has reached
-    if initiative.deadline <= timezone.now():
-        response = {
-            'status':'FAIL',
-            'error':'DEADLINE_PAST_DUE',
-            'message':'The deadline has passed.'
-        }
-        return json_response(response)
     # Delete the initiative and all its rewards
     Rewards.objects.filter(initiative = initiative).delete()
     initiative.delete()
@@ -409,7 +403,7 @@ def create_reward(request, params):
         }
         return json_response(response)
     # Check if the initiative has passed its deadline
-    if initiative.deadline <= timezone.now():
+    if initiative.is_launched and initiative.deadline <= timezone.now():
         response = {
             'status':'FAIL',
             'error':'PAST_INITIATIVE',
