@@ -108,7 +108,7 @@ def checkout(request, id, refType, refId):
     redirectUrl += reverse('wepay-checkout-confirm', kwargs = confirmParams)
     checkoutInfo = wepay.call('/checkout/create', {
         'account_id':checkout.payee.account_id,
-        'short_description':'',
+        'short_description':checkout.description,
         'type':checkoutType,
         'amount':checkout.amount,
         'app_fee':appFee,

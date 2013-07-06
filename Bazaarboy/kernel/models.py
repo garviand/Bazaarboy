@@ -70,6 +70,7 @@ class Wepay_checkout(models.Model):
     payee = models.ForeignKey('Wepay_account')
     checkout_id = models.CharField(max_length = 50, null = True, default = None)
     amount = models.FloatField()
+    description = models.CharField(max_length = 127)
     is_captured = models.BooleanField(default = False)
     is_refunded = models.BooleanField(default = False)
     created_time = models.DateTimeField(auto_now_add = True)

@@ -662,8 +662,10 @@ def purchase(request, params):
         }
         return json_response(response)
     # All checks passed, create the purchase
+    checkoutDescription = '%s - %s' % (event.name, ticket.name)
     checkout = Checkout(payer = user, payee = event.owner.wepay_account, 
-                        amount = ticket.price)
+                        amount = ticket.price, 
+                        description = checkoutDescription[:127])
     checkout.save()
     purchase = Purchase(owner = user, ticket = ticket, event = event, 
                         price = ticket.price, checkout = checkout)
