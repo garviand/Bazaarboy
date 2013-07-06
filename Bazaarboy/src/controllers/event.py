@@ -229,7 +229,7 @@ def launch(request, params):
             'message':'The event doesn\'t exist.'
         }
         return json_response(response)
-    event = Event.objects.get(id = params['event'])
+    event = Event.objects.get(id = params['id'])
     # Check if user has permission for the event
     user = User.objects.get(id = request.session['user'])
     if not Profile_manager.objects.filter(user = user, profile = event.owner) \

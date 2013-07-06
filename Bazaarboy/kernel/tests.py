@@ -31,8 +31,36 @@ class UserTest(TestCase):
         }
         response = json.loads(client.post('/user/create/', params).content)
         self.assertEqual(response['status'], 'FAIL')
-        # Should be able to register normally
-        params['email'] = 'nothandy@andy.com'
+	# Should not allow invalid email address
+	params['email'] = 'nothandyatandy.com'
+	response = json.loads(client.post('/user/create/', params).content)
+        self.assertEqual(response['status'], 'FAIL')
+	# Set VALID email to test password      
+	params['email'] = 'nothandy@andy.com'
+	# Should not allow short password (<6)
+	params['password'] = '12345'
+	params['confirm'] = '12345'
+	response = json.loads(client.post('/user/create/', params).content)
+        self.assertEqual(response['status'], 'FAIL')
+	# Should not allow long password (>16)
+	params['password'] = '12345678901234567'
+	params['confirm'] = '12345678901234567'
+	response = json.loads(client.post('/user/create/', params).content)
+        self.assertEqual(response['status'], 'FAIL')
+	# Should not allow mismatching 'password' and 'confirm'
+	params['password'] = '123456'
+	params['confirm'] = '654321'
+	response = json.loads(client.post('/user/create/', params).content)
+        self.assertEqual(response['status'], 'FAIL')
+	# Set VALID password to test city
+	params['password'] = '123456'
+	params['confirm'] = '123456'
+	# Should not allow nonexistent city
+	params['city'] = 999999999999999999999999999
+	response = json.loads(client.post('/user/create/', params).content)
+        self.assertEqual(response['status'], 'FAIL')
+	# Should be able to register normally
+	params['city'] = 1
         response = json.loads(client.post('/user/create/', params).content)
         self.assertEqual(response['status'], 'OK')
         # Should not allow register if a session exists
@@ -91,9 +119,43 @@ class ProfileTest(TestCase):
         }
         response = client.post('/profile/create/', params)
         self.assertEqual(response.status_code, 403)
-        # Should be able to create if logged in
+	# Should be able to create if logged in
         client = loggedInClient()
         response = json.loads(client.post('/profile/create/', params).content)
+        self.assertEqual(response['status'], 'OK')
+	# Should not be able to create if name/description/category is too long
+	params['category'] = '0123456789012345678901234567890'
+	response = json.loads(client.post('/profile/create/', params).content)
+        self.assertEqual(response['status'], 'FAIL')
+	# Should not allow nonexistent community
+	params['category'] = 'School' # VALID category
+	params['community'] = 999999999999
+	response = json.loads(client.post('/profile/create/', params).content)
+        self.assertEqual(response['status'], 'FAIL')
+	# Should not allow latitude (<-90) or (>90)
+	params['community'] = 1 # VALID community
+	params['latitude'] = -91
+	response = json.loads(client.post('/profile/create/', params).content)
+        self.assertEqual(response['status'], 'FAIL')
+	params['latitude'] = 91
+	response = json.loads(client.post('/profile/create/', params).content)
+        self.assertEqual(response['status'], 'FAIL')
+	# Should not allow longitude (<-180) or (>180)
+	params['latitude'] = 38.648 # VALID latitude
+	params['longitude'] = -181
+	response = json.loads(client.post('/profile/create/', params).content)
+        self.assertEqual(response['status'], 'FAIL')
+	params['longitude'] = 181
+	response = json.loads(client.post('/profile/create/', params).content)
+        self.assertEqual(response['status'], 'FAIL')
+	# Should not allow if not WePay owner
+	params['longitude'] = -90.305 # VALID longitude
+	params['wepay'] = 2
+	response = json.loads(client.post('/profile/create/', params).content)
+        self.assertEqual(response['status'], 'FAIL')
+	# Should allow if params are correct
+	params['wepay'] = 1 # VALID wepay
+	response = json.loads(client.post('/profile/create/', params).content)
         self.assertEqual(response['status'], 'OK')
 
 class EventTests(TestCase):
@@ -119,11 +181,129 @@ class EventTests(TestCase):
         response = json.loads(client.post('/event/create/', params).content)
         self.assertEqual(response['status'], 'FAIL')
         # Should check the profile ownership
-        params['profile'] = 1
+        params['profile'] = 1 # not woner
+        response = json.loads(client.post('/event/create/', params).content)
+        self.assertEqual(response['status'], 'FAIL')
+	# Should not allow latitude (<-90) or (>90)
+	params['profile'] = 2 # VALID owner
+	params['latitude'] = -91
+        response = json.loads(client.post('/event/create/', params).content)
+        self.assertEqual(response['status'], 'FAIL')
+	params['latitude'] = 91
+        response = json.loads(client.post('/event/create/', params).content)
+        self.assertEqual(response['status'], 'FAIL')
+	# Should not allow longitude (<-180) or (>180)
+	params['latitude'] = 38.655833 # VALID latitude
+	params['longitude'] = -181
+        response = json.loads(client.post('/event/create/', params).content)
+        self.assertEqual(response['status'], 'FAIL')
+	params['longitude'] = 181
         response = json.loads(client.post('/event/create/', params).content)
         self.assertEqual(response['status'], 'FAIL')
         # Should be able to create normal event
-        params['profile'] = 2
+	params['longitude'] = -90.305 # VALID longitude
+        response = json.loads(client.post('/event/create/', params).content)
+        self.assertEqual(response['status'], 'OK')
+        event = response['event']['pk']
+
+    def test_edit(self):
+        client = loggedInClient()
+        # CREATE EVENT FOR EDITING
+        params = {
+            'profile':2,
+            'name':'Thursday Happy Hour at BlueHill',
+            'description':'An open bar celebration at BlueHill',
+            'start_time':'2013-12-31 23:00:00',
+            'end_time':'2014-01-01 01:00:00',
+            'location':'Blueberry Hill',
+            'latitude':38.655833,
+            'longitude':-90.305,
+            'category':'Social'
+        }
+        response = json.loads(client.post('/event/create/', params).content)
+        self.assertEqual(response['status'], 'OK')
+        event = response['event']['pk']
+        # Should be able to edit an event
+	params = {
+            'id': event,
+            'name':'Thursday Happy Hour at Nico',
+            'description':'An open bar celebration at Nico',
+            'start_time':'2013-12-31 23:00:00',
+            'end_time':'2014-01-01 01:00:00',
+            'location':'Nico',
+            'latitude':38.655833,
+            'longitude':-90.305,
+            'category':'Social'
+        }
+        #response = json.loads(client.post('/event/edit/', params).content)
+        #self.assertEqual(response['status'], 'OK')
+
+    def test_launch(self):
+        client = loggedInClient()
+        # CREATE EVENT FOR LAUNCH
+        params = {
+            'profile':2,
+            'name':'Thursday Happy Hour at BlueHill',
+            'description':'An open bar celebration at BlueHill',
+            'start_time':'2013-12-31 23:00:00',
+            'end_time':'2014-01-01 01:00:00',
+            'location':'Blueberry Hill',
+            'latitude':38.655833,
+            'longitude':-90.305,
+            'category':'Social'
+        }
+        response = json.loads(client.post('/event/create/', params).content)
+        self.assertEqual(response['status'], 'OK')
+        event = response['event']['pk']
+        # Should be able to launch an event
+        params = {
+            'id':event
+        }
+	response = json.loads(client.post('/event/launch/', params).content)
+        self.assertEqual(response['status'], 'OK')
+        # Should not be able to launch a nonexistent event
+        params = {
+            'id':9999999
+        }
+	response = json.loads(client.post('/event/launch/', params).content)
+        self.assertEqual(response['status'], 'FAIL')
+        # CREATE EVENT FOR LAUNCH THAT HAS ALREADY STARTED
+        params = {
+            'profile':2,
+            'name':'Thursday Happy Hour at Three Kings',
+            'description':'An open bar celebration at Three Kings',
+            'start_time':'2014-01-31 23:00:00',
+            'end_time':'2015-01-01 01:00:00',
+            'location':'Three Kings',
+            'latitude':38.655833,
+            'longitude':-90.305,
+            'category':'Social'
+        }
+        response = json.loads(client.post('/event/create/', params).content)
+        self.assertEqual(response['status'], 'OK')
+        event = response['event']['pk']
+        # Should not be able to launch a started event
+        params = {
+            'id':event
+        }
+	response = json.loads(client.post('/event/launch/', params).content)
+        self.assertEqual(response['status'], 'FAIL')
+        # Should be able to delaunch an event
+        # Should be able to delete an event
+    def test_create_ticket(self):
+        client = loggedInClient()
+        # CREATE EVENT FOR TICKETS
+        params = {
+            'profile':2,
+            'name':'Thursday Happy Hour at BlueHill',
+            'description':'An open bar celebration at BlueHill',
+            'start_time':'2013-12-31 23:00:00',
+            'end_time':'2014-01-01 01:00:00',
+            'location':'Blueberry Hill',
+            'latitude':38.655833,
+            'longitude':-90.305,
+            'category':'Social'
+        }
         response = json.loads(client.post('/event/create/', params).content)
         self.assertEqual(response['status'], 'OK')
         event = response['event']['pk']
@@ -137,6 +317,52 @@ class EventTests(TestCase):
         response = client.post('/event/ticket/create/', params).content
         response = json.loads(response)
         self.assertEqual(response['status'], 'OK')
+	# Should NOT be able to create a ticket with end time < start time
+        params = {
+            'event':event,
+            'name':'Late',
+            'description':'Late admission ticket',
+            'price':35.00,
+            'start_time':'2013-12-28 00:00:00',
+	    'end_time':'2013-12-27 00:00:00'
+        }
+        response = client.post('/event/ticket/create/', params).content
+        response = json.loads(response)
+        self.assertEqual(response['status'], 'FAIL')
+	# Should NOT be able to create a ticket with price < 0
+        params = {
+            'event':event,
+            'name':'Already Started',
+            'description':'This event happened in 2012',
+            'price':-35.00,
+            'start_time':'2012-12-28 00:00:00'
+        }
+        response = client.post('/event/ticket/create/', params).content
+        response = json.loads(response)
+        self.assertEqual(response['status'], 'FAIL')
+	# Should NOT be able to create a ticket with quantity < 0
+        params = {
+            'event':event,
+            'name':'Already Started',
+            'description':'This event happened in 2012',
+            'price':35.00,
+            'start_time':'2012-12-28 00:00:00',
+	    'quantity': -5
+        }
+        response = client.post('/event/ticket/create/', params).content
+        response = json.loads(response)
+        self.assertEqual(response['status'], 'FAIL')
+	# Should NOT be able to create a ticket with start_time > event.start_time
+        params = {
+            'event':event,
+            'name':'Already Started',
+            'description':'This event happened in 2012',
+            'price':35.00,
+            'start_time':'2013-12-31 23:00:01' # event = 2013-12-31 23:00:00
+        }
+        response = client.post('/event/ticket/create/', params).content
+        response = json.loads(response)
+        self.assertEqual(response['status'], 'FAIL')
         # Should be able to create a ticket with start time
         params = {
             'event':event,
@@ -163,17 +389,77 @@ class EventTests(TestCase):
         self.assertEqual(response['status'], 'OK')
         self.assertEqual(response['ticket']['end_time'], 
                          params['end_time'])
-        # Should be able to edit an event
-        # Should be able to launch an event
-        # Should be able to delaunch an event
-        # Should be able to delete a ticket
+        
+    def test_edit_ticket(self):
+        client = loggedInClient()
+        # CREATE EVENT FOR TICKETS
+        params = {
+            'profile':2,
+            'name':'Thursday Happy Hour at BlueHill',
+            'description':'An open bar celebration at BlueHill',
+            'start_time':'2013-12-31 23:00:00',
+            'end_time':'2014-01-01 01:00:00',
+            'location':'Blueberry Hill',
+            'latitude':38.655833,
+            'longitude':-90.305,
+            'category':'Social'
+        }
+        response = json.loads(client.post('/event/create/', params).content)
+        self.assertEqual(response['status'], 'OK')
+        event = response['event']['pk']
+        # CREATE TICKET FOR EDITING
+        params = {
+            'event':event,
+            'name':'Regular',
+            'description':'Regular admission ticket',
+            'price':20.00,
+        }
+        response = client.post('/event/ticket/create/', params).content
+        response = json.loads(response)
+        self.assertEqual(response['status'], 'OK')
+	# Should be able to edit a ticket
+        params = {
+            'id':response['ticket']['pk'],
+            'name':'Regular',
+            'description':'Regular admission ticket WITH EDITS',
+            'price':20.00,
+        }
+        response = json.loads(client.post('/event/ticket/edit/', params).content)
+        self.assertEqual(response['status'], 'OK')
+
+    def test_delete_ticket(self):
+        client = loggedInClient()
+        # CREATE EVENT FOR TICKETS
+        params = {
+            'profile':2,
+            'name':'Thursday Happy Hour at BlueHill',
+            'description':'An open bar celebration at BlueHill',
+            'start_time':'2013-12-31 23:00:00',
+            'end_time':'2014-01-01 01:00:00',
+            'location':'Blueberry Hill',
+            'latitude':38.655833,
+            'longitude':-90.305,
+            'category':'Social'
+        }
+        response = json.loads(client.post('/event/create/', params).content)
+        self.assertEqual(response['status'], 'OK')
+        event = response['event']['pk']
+        # CREATE TICKET FOR DELETION
+        params = {
+            'event':event,
+            'name':'Regular',
+            'description':'Regular admission ticket',
+            'price':20.00,
+        }
+        response = json.loads(client.post('/event/ticket/create/', params).content)
+        self.assertEqual(response['status'], 'OK')
+	# Should be able to delete a ticket
         params = {
             'id':response['ticket']['pk']
         }
         response = client.post('/event/ticket/delete/', params).content
         response = json.loads(response)
         self.assertEqual(response['status'], 'OK')
-        # Should be able to delete an event
 
     def test_transact(self):
         pass
