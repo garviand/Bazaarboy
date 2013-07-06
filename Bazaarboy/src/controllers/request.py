@@ -8,8 +8,6 @@ from django.http import *
 from django.shortcuts import redirect
 from django.utils import timezone
 
-import pdb
-
 FORMAT_DATETIME = '%Y-%m-%d %X'
 
 def json_response(response):

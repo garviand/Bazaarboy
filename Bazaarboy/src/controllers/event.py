@@ -669,7 +669,8 @@ def purchase(request, params):
                         price = ticket.price, checkout = checkout)
     purchase.save()
     # Schedule the purchase to be expired after some amount of time
-    expiration = timezone.now() + timedelta(minutes = BBOY_PURCHASE_EXPIRATION)
+    expiration = timezone.now()
+    expiration += timedelta(minutes = BBOY_TRANSACTION_EXPIRATION)
     mark_purchase_as_expired.apply_async(args = [purchase], eta = expiration)
     # Adjust the ticket quantity
     if ticket.quantity is not None:

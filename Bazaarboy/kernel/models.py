@@ -315,7 +315,7 @@ class Donation(models.Model):
     owner = models.ForeignKey('User')
     fundraiser = models.ForeignKey('Fundraiser')
     amount = models.FloatField()
-    preapproval = models.ForeignKey('Wepay_checkout')
+    checkout = models.ForeignKey('Wepay_checkout')
     created_time = models.DateTimeField(auto_now_add = True)
 
 class Redeemable(models.Model):

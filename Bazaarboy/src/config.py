@@ -3,7 +3,7 @@ Bazaarboy configurations
 """
 
 BBOY_URL_ROOT = 'http://localhost:8080'
-BBOY_PURCHASE_EXPIRATION = 15 # In minutes
+BBOY_TRANSACTION_EXPIRATION = 15 # In minutes
 
 # WePay
 
@@ -19,4 +19,10 @@ WEPAY_SCOPE = [
     'view_user', 
     'refund_payments', 
     'preapprove_payments'
+]
+WEPAY_SUCCESS_STATES = [
+    'authorized',
+    'reserved',
+    'captured',
+    'settled'
 ]
