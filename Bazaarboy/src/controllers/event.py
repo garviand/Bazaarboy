@@ -615,6 +615,9 @@ def mark_purchase_as_expired(purchase):
 @login_required()
 @validate('POST', ['ticket'])
 def purchase(request, params):
+    """
+    Purchase a ticket
+    """
     # Check if the ticket is valid
     if not Ticket.objects.filter(id = params['ticket']).exists():
         response = {
@@ -683,3 +686,8 @@ def purchase(request, params):
         'checkout':checkout.id
     }
     return json_response(response)
+
+@login_required()
+@validate('POST', ['event'])
+def rsvp(request, params):
+    pass

@@ -172,10 +172,11 @@ AWS_SECRET_ACCESS_KEY = 'WXL/qbReT5g/7i7cd3rgskzI7Ae4B5BHvvj3HF+j'
 # Celery
 
 import djcelery
-import urllib
+#import urllib
 
-BROKER_URL = 'sqs://%s:%s@' % (urllib.quote(AWS_ACCESS_KEY_ID, safe = ''), 
-                               urllib.quote(AWS_SECRET_ACCESS_KEY, safe = ''))
+#BROKER_URL = 'sqs://%s:%s@' % (urllib.quote(AWS_ACCESS_KEY_ID, safe = ''), 
+#                               urllib.quote(AWS_SECRET_ACCESS_KEY, safe = ''))
+BROKER_URL = 'redis://localhost:6379/0'
 CELERY_IMPORTS = (
     'src.controllers.event', 
 )

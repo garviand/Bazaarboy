@@ -45,6 +45,10 @@ sudo apt-get install python-pip
 echo -e "\nInstalling virtualenvwrapper\n"
 sudo pip install virtualenvwrapper
 
+# Others
+echo -e "\nInstalling redis\n"
+sudo apt-get install redis-server
+
 # Setup virtualenv
 
 echo -e "\nIn another terminal, append the following lines to ~/.bashrc\n"
