@@ -22,10 +22,18 @@ urlpatterns = patterns('',
         name = 'wepay-authorize'),
     url(r'^wepay/create/$', 'src.controllers.wepay.create', 
         name = 'wepay-create'),
-    url(r'^wepay/checkout/$', 'src.controllers.wepay.checkout', 
+    url(r'^wepay/checkout/(?P<id>\d+)/(?P<refType>p|d)/(?P<refId>\d+)/$', 
+        'src.controllers.wepay.checkout',  
         name = 'wepay-checkout'),
-    url(r'^wepay/preapproval/$', 'src.controllers.wepay.preapproval', 
+    url(r'^wepay/checkout/confirm/(?P<id>\d+)/(?P<refType>p|d)/(?P<refId>\d+)/$', 
+        'src.controllers.wepay.confirm_checkout', 
+        name = 'wepay-checkout-confirm'),
+    url(r'^wepay/preapproval/(?P<id>\d+)/$', 
+        'src.controllers.wepay.preapproval', 
         name = 'wepay-preapproval'),
+    url(r'^wepay/preapproval/confirm/(?P<id>\d+)/$', 
+        'src.controllers.wepay.confirm_preapproval', 
+        name = 'wepay-preapproval-confirm'),
 
     # City
 
@@ -131,9 +139,5 @@ urlpatterns = patterns('',
         name = 'fundraiser-delaunch'),
     url(r'^fundraiser/donate/$', 'src.controllers.fundraiser.donate', 
         name = 'fundraiser-donate'),
-
-    # Testing
-
-    url(r'^test/$', 'src.controllers.test.index'),
 
 )
