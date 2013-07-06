@@ -179,6 +179,7 @@ import djcelery
 BROKER_URL = 'redis://localhost:6379/0'
 CELERY_IMPORTS = (
     'src.controllers.event', 
+    'src.controllers.initiative'
 )
 
 djcelery.setup_loader()

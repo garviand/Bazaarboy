@@ -2,10 +2,13 @@
 Controller for initiatives
 """
 
-from datetime import datetime
+from datetime import datetime, timedelta
+from django.db.models import F
 from django.http import Http404
+from django.shortcuts import render
 from django.utils import timezone
 from kernel.models import *
+from src.config import *
 from src.controllers.request import *
 from src.serializer import serialize_one
 
@@ -575,7 +578,103 @@ def delete_reward(request, params):
     }
     return json_response(response)
 
+@task()
+def mark_pledge_as_expired(pledge):
+    """
+    Expires a pledge after some time and release the reward
+    """
+    if not pledge.preapproval.is_captured:
+        pledge.is_expired = True
+        pledge.save()
+        reward = purchase.reward
+        if reward.quantity is not None:
+            reward.quantity = F('quantity') + 1
+            reward.save()
+    return True
+
 @login_required()
-@validate()
+@validate('POST', ['reward', 'amount'])
 def pledge(request, params):
-    pass
+    """
+    Pledge for a reward
+    """
+    # Check if the reward is valid
+    if not Reward.objects.filter(id = params['reward']).exists():
+        response = {
+            'status':'FAIL',
+            'error':'REWARD_NOT_FOUND',
+            'message':'The reward doesn\'t exist.'
+        }
+        return json_response(response)
+    reward = Reward.objects.get(id = params['reward'])
+    initiative = reward.initiative
+    # Check if the initiative is launched
+    if not initiative.is_launched:
+        response = {
+            'status':'FAIL',
+            'error':'INITIATIVE_NOT_LAUNCHED',
+            'message':'The initiative is not launched yet.'
+        }
+        return json_response(response)
+    # Check if the initiative has reached its deadline
+    if initiative.deadline <= timezone.now():
+        response = {
+            'status':'FAIL',
+            'error':'DEADLINE_PAST_DUE',
+            'message':'The initiative is closed.'
+        }
+        return json_response(response)
+    # Check if the reward has run out
+    if reward.quantity is not None and reward.quantity == 0:
+        response = {
+            'status':'FAIL',
+            'error':'REWARD_RUN_OUT',
+            'message':'This reward has run out.'
+        }
+        return json_response(response)
+    # Check if there is an existing pledge
+    user = User.objects.get(id = request.session['user'])
+    if Pledge.objects.filter(owner = user, initiative = initiative, 
+                             preapproval__is_captured = True, 
+                             preapproval__is_cancelled = False, 
+                             is_expired = False).exists():
+        response = {
+            'status':'FAIL',
+            'error':'PLEDGED_ALREADY',
+            'message':'You have pledged for the initiative already.'
+        }
+        return json_response(response)
+    # Check if the pledge amount reaches the threshold
+    params['amount'] = float(params['amount'])
+    if params['amount'] < reward.price:
+        response = {
+            'status':'FAIL',
+            'error':'AMOUNT_NOT_ENOUGH',
+            'message':'You need to pledge at least $%.2f.' % reward.price
+        }
+        return json_response(response)
+    # All checks passed, create the pledge
+    preapprovalDescription = '%s - %s' % (initiative.name, reward.name)
+    preapproval = Wepay_preapproval(payer = user, 
+                                    payee = initiative.owner.wepay_account, 
+                                    amount = params['amount'], 
+                                    description = preapprovalDescription[:127])
+    preapproval.save()
+    pledge = Pledge(owner = user, reward = reward, initiative = initiative, 
+                    amount = params['amount'], preapproval = preapproval)
+    pledge.save()
+    # If the reward has a quantity limit
+    if reward.quantity is not None:
+        # Schedule the purchase to be expired after some amount of time
+        expiration = timezone.now()
+        expiration += timedelta(minutes = BBOY_TRANSACTION_EXPIRATION)
+        mark_purchase_as_expired.apply_async(args = [pledge], 
+                                             eta = expiration)
+        # Adjust the reward quantity
+        reward.quantity = F('quantity') - 1
+        reward.save()
+    response = {
+        'status':'OK',
+        'preapproval':preapproval.id
+    }
+    return json_response(response)

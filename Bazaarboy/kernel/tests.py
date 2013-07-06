@@ -234,8 +234,8 @@ class EventTests(TestCase):
             'longitude':-90.305,
             'category':'Social'
         }
-        #response = json.loads(client.post('/event/edit/', params).content)
-        #self.assertEqual(response['status'], 'OK')
+        response = json.loads(client.post('/event/edit/', params).content)
+        self.assertEqual(response['status'], 'OK')
 
     def test_launch(self):
         client = loggedInClient()

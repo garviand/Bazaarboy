@@ -213,7 +213,7 @@ def edit(request, params):
         'status':'OK',
         'event':serialize_one(event)
     }
-    return json_response(event)
+    return json_response(response)
 
 @login_required()
 @validate('POST', ['id'])
@@ -652,7 +652,7 @@ def purchase(request, params):
             'message':'This ticket is sold out.'
         }
         return json_response(response)
-    # Check if there is exisiting purchase
+    # Check if there is an exisiting purchase
     user = User.objects.get(id = request.session['user'])
     if Purchase.objects.filter(owner = user, event = event, 
                                checkout__is_captured = True, 
@@ -666,23 +666,26 @@ def purchase(request, params):
         return json_response(response)
     # All checks passed, create the purchase
     checkoutDescription = '%s - %s' % (event.name, ticket.name)
-    checkout = Checkout(payer = user, payee = event.owner.wepay_account, 
-                        amount = ticket.price, 
-                        description = checkoutDescription[:127])
+    checkout = Wepay_checkout(payer = user, payee = event.owner.wepay_account, 
+                              amount = ticket.price, 
+                              description = checkoutDescription[:127])
     checkout.save()
     purchase = Purchase(owner = user, ticket = ticket, event = event, 
                         price = ticket.price, checkout = checkout)
     purchase.save()
-    # Schedule the purchase to be expired after some amount of time
-    expiration = timezone.now()
-    expiration += timedelta(minutes = BBOY_TRANSACTION_EXPIRATION)
-    mark_purchase_as_expired.apply_async(args = [purchase], eta = expiration)
-    # Adjust the ticket quantity
+    # If the ticket has a quantity limit
     if ticket.quantity is not None:
+        # Schedule the purchase to be expired after some amount of time
+        expiration = timezone.now()
+        expiration += timedelta(minutes = BBOY_TRANSACTION_EXPIRATION)
+        mark_purchase_as_expired.apply_async(args = [purchase], 
+                                             eta = expiration)
+        # Adjust the ticket quantity
         ticket.quantity = F('quantity') - 1
         ticket.save()
     response = {
         'status':'OK',
+        'purchase':purchase.id,
         'checkout':checkout.id
     }
     return json_response(response)

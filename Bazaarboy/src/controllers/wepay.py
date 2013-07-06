@@ -62,7 +62,7 @@ def checkout(request, id, refType, refId):
     """
     Checkout page
     """
-    # Check if checkout is valid
+    # Check if checkout exists
     if not Wepay_checkout.objects.filter(id = id).exists():
         return Http404
     checkout = Wepay_checkout.objects.get(id = id)
@@ -75,6 +75,9 @@ def checkout(request, id, refType, refId):
     if not refModel.objects.filter(id = refId).exists():
         return Http404
     ref = refModel.objects.get(id = refId)
+    # Check if reference is expired
+    if refModel == Purchase and ref.is_expired:
+        return redirect('index')
     # Check if the checkout belongs to the reference
     if ref.checkout != checkout:
         return redirect('index')
@@ -124,7 +127,7 @@ def confirm_checkout(request, id, refType, refId):
     """
     Checkout confirmation page
     """
-    # Check if checkout is valid
+    # Check if checkout exists
     if not Wepay_checkout.objects.filter(id = id).exists():
         return Http404
     checkout = Wepay_checkout.objects.get(id = id)
@@ -163,7 +166,21 @@ def confirm_checkout(request, id, refType, refId):
 
 @login_required('index')
 def preapproval(request, id):
-    pass
+    """
+    Preapproval page
+    """
+    # Check if preapproval exists
+    if not Preapproval.objects.filter(id = id).exists():
+        return Http404
+    preapproval = Preapproval.objects.get(id = id)
+    # Check if the user is the payer
+    user = User.objects.get(id = request.session['user'])
+    if preapproval.payer != user:
+        return redirect('index')
+    # Check if the pledge is expired
+    pledge = Pledge.objects.get(preapproval = preapproval)
+    if pledge.is_expired:
+        return redirect('index')
 
 @login_required('index')
 def confirm_preapproval(request, id):

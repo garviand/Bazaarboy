@@ -84,6 +84,7 @@ class Wepay_preapproval(models.Model):
     preapproval_id = models.CharField(max_length = 50, null = True, 
                                       default = None)
     amount = models.FloatField()
+    description = models.CharField(max_length = 127)
     checkout = models.ForeignKey('Wepay_checkout', null = True, default = None)
     is_captured = models.BooleanField(default = False)
     is_cancelled = models.BooleanField(default = False)
@@ -300,6 +301,7 @@ class Pledge(models.Model):
     initiative = models.ForeignKey('Initiative')
     amount = models.FloatField()
     preapproval = models.ForeignKey('Wepay_preapproval')
+    is_expired = models.BooleanField(default = False)
     created_time = models.DateTimeField(auto_now_add = True)
 
 class Fundraiser(Event_base):
