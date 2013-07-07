@@ -655,10 +655,9 @@ class EventTests(TestCase):
         }
         response = json.loads(client.post('/event/ticket/create/', params).content)
         self.assertEqual(response['status'], 'OK')
+        ticket = response['ticket']['pk']
         # Should not be able to purchase a ticket to an unlaunched event
-        params = {
-            'ticket':response['ticket']['pk']
-        }
+        params['ticket'] = ticket
         response = client.post('/event/purchase/', params).content
         response = json.loads(response)
         self.assertEqual(response['status'], 'FAIL')
@@ -667,17 +666,26 @@ class EventTests(TestCase):
         response = client.post('/event/launch/', params).content
         response = json.loads(response)
         self.assertEqual(response['status'], 'OK')
-        # Should not be able to purchase a ticket with quantity == 0
-        params['quantity'] = 0
-        response = client.post('/event/purchase/', params).content
-        response = json.loads(response)
-        self.assertEqual(response['status'], 'FAIL')
-        # Should be able to purchase a ticket with quantity > 0
-        params['quantity'] = 10
+        # Should be able to purchase a ticket after launch
         response = client.post('/event/purchase/', params).content
         response = json.loads(response)
         self.assertEqual(response['status'], 'OK')
         # Should not be able to purchase a ticket you have already purchased
+        response = client.post('/event/purchase/', params).content
+        response = json.loads(response)
+        self.assertEqual(response['status'], 'FAIL')
+        # CREATE TICKET FOR PURCHASE WITH QUANTITY 0
+        params = {
+            'event':event,
+            'name':'Regular Two',
+            'description':'Regular admission ticket',
+            'price':20.00,
+            'quantity':0
+        }
+        response = json.loads(client.post('/event/ticket/create/', params).content)
+        self.assertEqual(response['status'], 'OK')
+        ticket = response['ticket']['pk']
+        # Should not be able to purchase a ticket with quantity == 0
         response = client.post('/event/purchase/', params).content
         response = json.loads(response)
         self.assertEqual(response['status'], 'FAIL')
