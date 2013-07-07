@@ -94,7 +94,7 @@ def checkout(request, id, refType, refId):
         return redirect('wepay-checkout-confirm', kwargs = confirmParams)
     if checkout.checkout_id is not None:
         wepay = WePay(production = WEPAY_PRODUCTION, 
-                      access_token = WEPAY_ACCESS_TOKEN)
+                      access_token = checkout.payee.access_token)
         checkoutInfo = wepay.call('/checkout', {
             'checkout_id':checkout.checkout_id
         })
@@ -152,7 +152,7 @@ def confirm_checkout(request, id, refType, refId):
             return redirect('index')
         else:
             wepay = WePay(production = WEPAY_PRODUCTION, 
-                          access_token = WEPAY_ACCESS_TOKEN)
+                          access_token = checkout.payee.access_token)
             checkoutInfo = wepay.call('/checkout', {
                 'checkout_id':checkout.checkout_id
             })
@@ -181,7 +181,70 @@ def preapproval(request, id):
     pledge = Pledge.objects.get(preapproval = preapproval)
     if pledge.is_expired:
         return redirect('index')
+    # Check if the preapproval is cancelled
+    if preapproval.is_cancelled:
+        return redirect('index')
+    # Check if the preapproval is captured
+    if preapproval.is_captured:
+        return redirect('wepay-preapproval-confirm', args = [id])
+    if preapproval.preapproval_id is not None:
+        wepay = WePay(production = WEPAY_PRODUCTION, 
+                      access_token = preapproval.payee.access_token)
+        preapprovalInfo = wepay.call('/preapproval', {
+            'preapproval_id':preapproval.preapproval_id
+        })
+        if preapprovalInfo['state'] in WEPAY_SUCCESS_STATES:
+            preapproval.is_captured = True
+            preapproval.save()
+            return redirect('wepay-preapproval-confirm', args = [id])
+    # Create a preapproval
+    wepay = WePay(production = WEPAY_PRODUCTION, 
+                  access_token = preapproval.payee.access_token)
+    appFee = preapproval.amount * WEPAY_APP_FEE_RATIO
+    redirectUrl = BBOY_URL_ROOT
+    redirectUrl += reverse('wepay-preapproval-confirm', args = [id])
+    preapprovalInfo = wepay.call('/preapproval/create', {
+        'account_id':preapproval.payee.account_id,
+        'amount':preapproval.amount,
+        'short_description':preapproval.amount,
+        'period':'once',
+        'app_fee':appFee,
+        'mode':'iframe'
+    })
+    preapproval.preapproval_id = preapprovalInfo['preapproval_id']
+    preapproval.save()
+    return render(request, 'wepay-preapproval.html', locals())
 
 @login_required('index')
 def confirm_preapproval(request, id):
-    pass
+    """
+    Preapproval confirmation page
+    """
+    # Check if preapproval exists
+    if not Preapproval.objects.filter(id = id).exists():
+        return Http404
+    preapproval = Preapproval.objects.get(id = id)
+    # Check if the user is the payer
+    user = User.objects.get(id = request.session['user'])
+    if preapproval.payer != user:
+        return redirect('index')
+    # Check if the preapproval is cancelled
+    if preapproval.is_cancelled:
+        return redirect('index')
+    # Check if the preapproval is captured
+    if not preapproval.is_captured:
+        if preapproval.preapproval_id is None:
+            return redirect('index')
+        else:
+            wepay = WePay(production = WEPAY_PRODUCTION, 
+                          access_token = preapproval.payee.access_token)
+            preapprovalInfo = wepay.call('/preapproval', {
+                'preapproval_id':preapproval.preapproval_id
+            })
+            if preapprovalInfo['state'] in WEPAY_SUCCESS_STATES:
+                preapproval.is_captured = True
+                preapproval.save()
+            else:
+                return redirect('index')
+    # Render the confirmation page
+    return render(request, 'wepay-preapproval-confirm.html', locals())
