@@ -2,7 +2,7 @@
 Controller for events
 """
 
-from datetime import datetime, timedelta
+from datetime import timedelta
 from django.db.models import F
 from django.http import Http404
 from django.shortcuts import render
