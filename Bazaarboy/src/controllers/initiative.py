@@ -2,7 +2,7 @@
 Controller for initiatives
 """
 
-from datetime import datetime, timedelta
+from datetime import timedelta
 from django.db.models import F
 from django.http import Http404
 from django.shortcuts import render
@@ -83,7 +83,9 @@ def create(request, params):
         }
         return json_response(response)
     # Check the deadline
-    params['deadline'] = datetime.strptime(params['deadline'], FORMAT_DATETIME)
+    params['deadline'] = datetime.datetime.strptime(params['deadline'], 
+                                                    FORMAT_DATETIME) \
+                                          .replace(tzinfo = timezone.utc)
     if params['deadline'] < timezone.now():
         response = {
             'status':'FAIL',
@@ -178,8 +180,9 @@ def edit(request, params):
                 'message':'You can\'t change the deadline while launched.'
             }
             return json_response(response)
-        params['deadline'] = datetime.strptime(params['deadline'], 
-                                               FORMAT_DATETIME)
+        params['deadline'] = datetime.datetime.strptime(params['deadline'], 
+                                                        FORMAT_DATETIME) \
+                                              .replace(tzinfo = timezone.utc)
         if params['deadline'] < timezone.now():
             response = {
                 'status':'FAIL',
