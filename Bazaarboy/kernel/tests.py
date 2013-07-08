@@ -678,7 +678,29 @@ class InitiativeTests(TestCase):
     fixtures = ['tests.json']
 
     def test_create(self):
-        pass
+        client = loggedInClient()
+        # Should check the profile existence
+        params = {
+        'profile':3,
+        'name':'American Cancer Society benefit at BlueHill',
+        'description':'A charity event at BlueHill',
+        'location':'Blueberry Hill',
+        'latitude':38.655833,
+        'longitude':-90.305,
+        'category':'Social',
+        'goal':1000,
+        'deadline': '2013-12-31 23:00:00'
+        }
+        response = json.loads(client.post('/initiative/create/', params).content)
+        self.assertEqual(response['status'], 'FAIL')
+        # Should check the user is the manager of the profile
+        params['profile'] = 1
+        response = json.loads(client.post('/initiative/create/', params).content)
+        self.assertEqual(response['status'], 'FAIL')
+        # Should allow initiative creation
+        params['profile'] = 2 # VALID profile
+        response = json.loads(client.post('/initiative/create/', params).content)
+        self.assertEqual(response['status'], 'OK')
 
     def test_transact(self):
         pass
