@@ -685,8 +685,8 @@ def purchase(request, params):
         ticket.save()
     response = {
         'status':'OK',
-        'purchase':purchase.id,
-        'checkout':checkout.id
+        'purchase':serialize_one(purchase),
+        'checkout':serialize_one(checkout)
     }
     return json_response(response)
 

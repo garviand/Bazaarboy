@@ -597,6 +597,20 @@ def delete_reward(request, params):
     }
     return json_response(response)
 
+@task()
+def mark_donation_as_expired(donation):
+    """
+    Expires a donation after some time and release the reward
+    """
+    if not donation.checkout.is_captured:
+        donation.is_expired = True
+        donation.save()
+        reward = donation.reward
+        if reward.quantity is not None:
+            reward.quantity = F('quantity') + 1
+            reward.save()
+    return True
+
 @login_required()
 @validate('POST', ['reward', 'amount'])
 def donate(request, params):
@@ -659,10 +673,20 @@ def donate(request, params):
         }
         return json_response(response)
     # All checks passed, create the donation
-    pass
+    checkoutDescription = fundraiser.name
+    if len(reward.name) > 0:
+        checkoutDescription += ' - ' + reward.name
+    checkout = Wepay_checkout(payer = user, 
+                              payee = fundraiser.owner.wepay_account, 
+                              amount = params['amount'], 
+                              description = checkoutDescription[:127])
+    checkout.save()
+    donation = Donation(owner = user, reward = reward, fundraiser = fundraiser, 
+                        amount = params['amount'], checkout = checkout)
+    donation.save()
     # If the reward has a quantity limit
     if reward.quantity is not None:
-        # Schedule the purchase to be expired after some amount of time
+        # Schedule the donation to be expired after some amount of time
         expiration = timezone.now()
         expiration += timedelta(minutes = BBOY_TRANSACTION_EXPIRATION)
         mark_donation_as_expired.apply_async(args = [donation], 
@@ -671,6 +695,8 @@ def donate(request, params):
         reward.quantity = F('quantity') - 1
         reward.save()
     response = {
-        'status':'OK'
+        'status':'OK',
+        'donation':serialize_one(donation),
+        'checkout':serialize_one(checkout)
     }
     return json_response(response)

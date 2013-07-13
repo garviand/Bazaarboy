@@ -227,6 +227,8 @@ class Event(Event_base):
     """
     start_time = models.DateTimeField()
     end_time = models.DateTimeField(null = True, default = None)
+    is_rsvp = models.BooleanField(default = False)
+    rsvp_limit = models.IntegerField(null = True, default = None)
 
 class Ticket(models.Model):
     """
