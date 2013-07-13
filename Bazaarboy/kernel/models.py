@@ -18,6 +18,9 @@ class User(models.Model):
     email = models.CharField(max_length = 50, unique = True)
     password = models.CharField(max_length = 128)
     salt = models.CharField(max_length = 128)
+    fb_id = models.CharField(max_length = 50, unique = True, 
+                            null = True, default = None)
+    fb_access_token = models.TextField(null = True, default = None)
     city = models.ForeignKey('City')
     following = models.ManyToManyField('Community', 
                                        through = 'User_following')
@@ -73,21 +76,6 @@ class Wepay_checkout(models.Model):
     description = models.CharField(max_length = 127)
     is_captured = models.BooleanField(default = False)
     is_refunded = models.BooleanField(default = False)
-    created_time = models.DateTimeField(auto_now_add = True)
-
-class Wepay_preapproval(models.Model):
-    """
-    A model for preapprovals
-    """
-    payer = models.ForeignKey('User')
-    payee = models.ForeignKey('Wepay_account')
-    preapproval_id = models.CharField(max_length = 50, null = True, 
-                                      default = None)
-    amount = models.FloatField()
-    description = models.CharField(max_length = 127)
-    checkout = models.ForeignKey('Wepay_checkout', null = True, default = None)
-    is_captured = models.BooleanField(default = False)
-    is_cancelled = models.BooleanField(default = False)
     created_time = models.DateTimeField(auto_now_add = True)
 
 class City(models.Model):
@@ -199,7 +187,7 @@ class Event_base(models.Model):
     """
     A base model for information shared by the two types of events
     """
-    name = models.CharField(max_length = 100)
+    name = models.CharField(max_length = 50)
     description = models.TextField()
     location = models.CharField(max_length = 100)
     latitude = models.FloatField(null = True, default = None)
@@ -235,7 +223,7 @@ class InsufficientQuantity(Exception):
 
 class Event(Event_base):
     """
-    Event model for normal events
+    Model for normal events
     """
     start_time = models.DateTimeField()
     end_time = models.DateTimeField(null = True, default = None)
@@ -274,51 +262,44 @@ class Purchase(models.Model):
     is_expired = models.BooleanField(default = False)
     created_time = models.DateTimeField(auto_now_add = True)
 
-class Initiative(Event_base):
+class Fundraiser(Event_base):
     """
-    Event model for initiative-based events
+    Event model for fundraisers
     """
     goal = models.FloatField()
     deadline = models.DateTimeField()
-    is_reached = models.BooleanField(default = False)
+
+    def save(self, *args, **kwargs):
+        """
+        Overrides save method to auto-create a reward of no price
+        """
+        shouldCreateFreeReward = self.pk is None
+        super(Fundraiser, self).save(*args, **kwargs)
+        if shouldCreateFreeReward:
+            reward = Reward(fundraiser = self, name = '', 
+                            description = '', price = 0)
+            reward.save()
 
 class Reward(models.Model):
     """
-    Reward model for initiative events
+    Reward model for fundraisers
     """
-    initiative = models.ForeignKey('Initiative')
+    fundraiser = models.ForeignKey('Fundraiser')
     name = models.CharField(max_length = 15)
     description = models.CharField(max_length = 150)
     price = models.FloatField()
     quantity = models.IntegerField(null = True, default = None)
-
-class Pledge(models.Model):
-    """
-    Pledge model for a reward
-    """
-    owner = models.ForeignKey('User')
-    reward = models.ForeignKey('Reward')
-    initiative = models.ForeignKey('Initiative')
-    amount = models.FloatField()
-    preapproval = models.ForeignKey('Wepay_preapproval')
-    is_expired = models.BooleanField(default = False)
-    created_time = models.DateTimeField(auto_now_add = True)
-
-class Fundraiser(Event_base):
-    """
-    Event model for fundraising events
-    """
-    goal = models.FloatField()
-    deadline = models.DateTimeField()
 
 class Donation(models.Model):
     """
     Donation model for a fundraiser
     """
     owner = models.ForeignKey('User')
+    reward = models.ForeignKey('Reward')
     fundraiser = models.ForeignKey('Fundraiser')
     amount = models.FloatField()
     checkout = models.ForeignKey('Wepay_checkout')
+    is_expired = models.BooleanField(default = False)
     created_time = models.DateTimeField(auto_now_add = True)
 
 class Redeemable(models.Model):
