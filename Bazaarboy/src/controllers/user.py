@@ -156,7 +156,7 @@ def fbAuth(request, params, loggedIn):
         if User.objects.filter(fb_id = fbProfile['id']).exists():
             # Account linked to the Facebook ID exists, start session
             user = User.objects.get(fb_id = fbProfile['id'])
-            request.session['id'] = user.id
+            request.session['user'] = user.id
             response = {
                 'status':'OK'
             }
@@ -192,6 +192,7 @@ def fbAuth(request, params, loggedIn):
             user.save()
             # Creation done, send out confirmation email
             # Start the session
+            request.session['user'] = user.id
             response = {
                 'status':'OK'
             }

@@ -1,5 +1,5 @@
 @Bazaarboy.landing = 
-    init: =>
-        $(document).ready ->
+    init: () ->
+        $(document).ready () =>
             return
         return

@@ -14,6 +14,7 @@ urlpatterns = patterns('',
         name = 'user-create'),
     url(r'^user/login/$', 'src.controllers.user.login', name = 'user-login'),
     url(r'^user/auth/$', 'src.controllers.user.auth', name = 'user-auth'),
+    url(r'^user/fbAuth/$', 'src.controllers.user.fbAuth', name = 'user-fbAuth'),
     url(r'^user/logout/$', 'src.controllers.user.logout', name = 'user-logout'),
 
     # WePay
