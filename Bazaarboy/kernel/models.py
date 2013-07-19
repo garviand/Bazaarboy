@@ -15,16 +15,23 @@ class User(models.Model):
     User is a real user of the site. It can make purchases on the site,
     as well as create profiles to in turn organize events.
     """
+    first_name = models.CharField(max_length = 35)
+    last_name = models.CharField(max_length = 35)
     email = models.CharField(max_length = 50, unique = True)
-    password = models.CharField(max_length = 128)
-    salt = models.CharField(max_length = 128)
+    password = models.CharField(max_length = 128, null = True, default = None)
+    salt = models.CharField(max_length = 128, null = True, default = None)
     fb_id = models.CharField(max_length = 50, unique = True, 
                             null = True, default = None)
     fb_access_token = models.TextField(null = True, default = None)
-    city = models.ForeignKey('City')
+    city = models.ForeignKey('City', null = True, default = None)
     following = models.ManyToManyField('Community', 
                                        through = 'User_following')
-    points = models.IntegerField()
+    points = models.IntegerField(default = 0)
+    is_confirmed = models.BooleanField(default = False)
+    confirmation_code = models.CharField(max_length = 128, null = True, 
+                                         default = None)
+    reset_code = models.CharField(max_length = 128, null = True, 
+                                  default = None)
     created_time = models.DateTimeField(auto_now_add = True)
 
     # A copy of the user's original password
@@ -40,11 +47,10 @@ class User(models.Model):
 
     def save(self, *args, **kwargs):
         """
-        Overrides save method to validate the model and rehash password
+        Overrides save method to rehash password if necessary
         """
-        if self.pk is None:
-            self.points = 0
-        if self.pk is None or self.password != self.__original_password:
+        if ((self.pk is None or self.password != self.__original_password) and 
+            self.password is not None):
             # Password is changed, rehash it
             self.salt = os.urandom(128).encode('base_64')[:128]
             saltedPassword = self.salt + self.password
@@ -227,7 +233,6 @@ class Event(Event_base):
     """
     start_time = models.DateTimeField()
     end_time = models.DateTimeField(null = True, default = None)
-    is_rsvp = models.BooleanField(default = False)
     rsvp_limit = models.IntegerField(null = True, default = None)
 
 class Ticket(models.Model):
@@ -260,7 +265,7 @@ class Purchase(models.Model):
     ticket = models.ForeignKey('Ticket')
     event = models.ForeignKey('Event')
     price = models.FloatField()
-    checkout = models.ForeignKey('Wepay_checkout')
+    checkout = models.ForeignKey('Wepay_checkout', null = True, default = None)
     is_expired = models.BooleanField(default = False)
     created_time = models.DateTimeField(auto_now_add = True)
 

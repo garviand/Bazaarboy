@@ -689,8 +689,3 @@ def purchase(request, params):
         'checkout':serialize_one(checkout)
     }
     return json_response(response)
-
-@login_required()
-@validate('POST', ['event'])
-def rsvp(request, params):
-    pass

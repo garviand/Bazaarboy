@@ -12,3 +12,9 @@
                 return
             return
         return
+
+fbSDKReady = () ->
+    FB.getLoginStatus (response) ->
+        if response.status is 'connected'
+            fbAccessToken = response.authResponse.accessToken
+            console.log fbAccessToken

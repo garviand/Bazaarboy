@@ -74,8 +74,8 @@ def dev(port=8080):
             #local('python manage.py schemamigration kernel --auto')
             pass
         # Run the celery worker
-        celeryWorker = lambda: local('python manage.py celery worker --loglevel=info')
-        processCelery = Process(target = celeryWorker)
-        processCelery.start()
+        #celeryWorker = lambda: local('python manage.py celery worker --loglevel=info')
+        #processCelery = Process(target = celeryWorker)
+        #processCelery.start()
         # Run the django development server on specified port
         local('python manage.py runserver 0.0.0.0:%s' % port)
