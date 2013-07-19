@@ -6,10 +6,16 @@ block title
 append head
     script(type="text/javascript").
         var next = '{% if params.next %}{{ params.next }}{% endif %}';
+    script(type="text/javascript", src="{{ STATIC_URL }}js/register.js")
+    script(type="text/javascript").
+        Bazaarboy.user.register.init()
 
 block body
+    include facebook
     div#register
         h2 Register
+        br
+        a#fb_login(href="javascript:;") Login with Facebook
         br
         form(name="register")
             label Email

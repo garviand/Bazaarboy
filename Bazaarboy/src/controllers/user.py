@@ -49,8 +49,8 @@ def create(request, params, loggedIn):
     if loggedIn:
         return HttpResponseForbidden('Access forbidden.')
     # Check if the email has already been registered
-    if User.objects.filter(email = params['email'], 
-                           Q(password = None) | Q(fb_id = None)).exists():
+    if User.objects.filter(Q(password = None) | Q(fb_id = None), 
+                           email = params['email']).exists():
         response = {
             'status':'FAIL',
             'error':'DUPLICATE_EMAIL',
@@ -173,9 +173,8 @@ def fbAuth(request, params, loggedIn):
                 }
                 return json_response(response)
             # Check if the email has already been registered
-            if User.objects.filter(email = params['email'], 
-                                   Q(password = None) | Q(fb_id = None)) \
-                           .exists():
+            if User.objects.filter(Q(password = None) | Q(fb_id = None), 
+                                   email = params['email']).exists():
                 response = {
                     'status':'FAIL',
                     'error':'DUPLICATE_EMAIL',
