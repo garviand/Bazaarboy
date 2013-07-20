@@ -163,3 +163,20 @@ def confirm_checkout(request, id, refType, refId):
                 return redirect('index')
     # Render the confirmation page
     return render(request, 'wepay-checkout-confirm.html', locals())
+
+def create_checkout(wepayCheckout):
+    """
+    Create an actual checkout based on the Wepay_checkout model
+    """
+    if wepayCheckout.is_captured:
+        return None, False, True
+    if wepayCheckout.checkout_id is not None:
+        wepay = WePay(production = WEPAY_PRODUCTION, 
+                      access_token = wepayCheckout.payee.access_token)
+        checkoutInfo = wepay.call('/checkout', {
+            'checkout_id':checkout.checkout_id
+        })
+        if checkoutInfo['state'] in WEPAY_SUCCESS_STATES:
+            wepayCheckout.is_captured = True
+            wepayCheckout.save()
+            

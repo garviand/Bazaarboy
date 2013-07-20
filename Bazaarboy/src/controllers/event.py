@@ -612,12 +612,30 @@ def mark_purchase_as_expired(purchase):
             ticket.save()
     return True
 
-@login_required()
-@validate('POST', ['ticket'])
-def purchase(request, params):
+@login_check()
+@validate('POST', ['ticket'], ['email'])
+def purchase(request, params, loggedIn):
     """
     Purchase a ticket
     """
+    # Check login status
+    user = User.objects.get(id = request.session['user']) if loggedIn else None
+    if user is None:
+        if params['email'] is None:
+            response = {
+                'status':'FAIL',
+                'error':'MISSING_EMAIL',
+                'message':'You need an email to purchase the ticket.'
+            }
+            return json_response(response)
+        user, created = User.objects.get_or_create(email = params['email'])
+        if not (user.password is None and user.fb_id is None):
+            response = {
+                'status':'FAIL',
+                'error':'EMAIL_EXISTS',
+                'message':'This email collides with an existing account.'
+            }
+            return json_response(response)
     # Check if the ticket is valid
     if not Ticket.objects.filter(id = params['ticket']).exists():
         response = {
@@ -653,7 +671,6 @@ def purchase(request, params):
         }
         return json_response(response)
     # Check if there is an exisiting purchase
-    user = User.objects.get(id = request.session['user'])
     if Purchase.objects.filter(owner = user, event = event, 
                                checkout__is_captured = True, 
                                checkout__is_refunded = False, 

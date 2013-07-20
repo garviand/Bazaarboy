@@ -613,12 +613,30 @@ def mark_donation_as_expired(donation):
             reward.save()
     return True
 
-@login_required()
-@validate('POST', ['reward', 'amount'])
+@login_check()
+@validate('POST', ['reward', 'amount'], ['email'])
 def donate(request, params):
     """
     Donate for a reward
     """
+    # Check login status
+    user = User.objects.get(id = request.session['user']) if loggedIn else None
+    if user is None:
+        if params['email'] is None:
+            response = {
+                'status':'FAIL',
+                'error':'MISSING_EMAIL',
+                'message':'You need an email to purchase the ticket.'
+            }
+            return json_response(response)
+        user, created = User.objects.get_or_create(email = params['email'])
+        if not (user.password is None and user.fb_id is None):
+            response = {
+                'status':'FAIL',
+                'error':'EMAIL_EXISTS',
+                'message':'This email collides with an existing account.'
+            }
+            return json_response(response)
     # Check if the reward is valid
     if not Reward.objects.filter(id = params['reward']).exists():
         response = {
@@ -654,7 +672,6 @@ def donate(request, params):
         }
         return json_response(response)
     # Check if there is an existing donation
-    user = User.objects.get(id = request.session['user'])
     if Donation.objects.filter(owner = user, fundraiser = fundraiser, 
                                checkout__is_captured = True, 
                                checkout__is_cancelled = False, 

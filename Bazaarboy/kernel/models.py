@@ -28,10 +28,6 @@ class User(models.Model):
                                        through = 'User_following')
     points = models.IntegerField(default = 0)
     is_confirmed = models.BooleanField(default = False)
-    confirmation_code = models.CharField(max_length = 128, null = True, 
-                                         default = None)
-    reset_code = models.CharField(max_length = 128, null = True, 
-                                  default = None)
     created_time = models.DateTimeField(auto_now_add = True)
 
     # A copy of the user's original password
@@ -58,6 +54,22 @@ class User(models.Model):
             self.password = hashlib.sha512(saltedPassword).hexdigest()
         super(User, self).save(*args, **kwargs)
         self.__original_password = self.password
+
+class User_confirmation_code(models.Model):
+    """
+    A code used to confirm a user's email address
+    """
+    user = models.OneToOneField('User')
+    code = models.CharField(max_length = 128)
+
+class User_reset_code(models.Model):
+    """
+    A code used to reset a user's password
+    """
+    user = models.ForeignKey('User')
+    code = models.CharField(max_length = 128)
+    is_expired = models.BooleanField(default = False)
+    expiration_time = models.DateTimeField()
 
 class Wepay_account(models.Model):
     """
