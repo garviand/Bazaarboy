@@ -703,6 +703,8 @@ def donate(request, params):
     donation = Donation(owner = user, reward = reward, fundraiser = fundraiser, 
                         amount = params['amount'], checkout = checkout)
     donation.save()
+    # Request a checkout on WePay
+    checkout = create_checkout(donation)
     # If the reward has a quantity limit
     if reward.quantity is not None:
         # Schedule the donation to be expired after some amount of time

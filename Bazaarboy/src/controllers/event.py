@@ -11,6 +11,7 @@ from celery import task
 from kernel.models import *
 from src.config import *
 from src.controllers.request import *
+from src.controllers.wepay import create_checkout
 from src.serializer import serialize_one
 
 @login_check()
@@ -690,6 +691,8 @@ def purchase(request, params, loggedIn):
     purchase = Purchase(owner = user, ticket = ticket, event = event, 
                         price = ticket.price, checkout = checkout)
     purchase.save()
+    # Request a checkout on WePay
+    checkout = create_checkout(purchase)
     # If the ticket has a quantity limit
     if ticket.quantity is not None:
         # Schedule the purchase to be expired after some amount of time
