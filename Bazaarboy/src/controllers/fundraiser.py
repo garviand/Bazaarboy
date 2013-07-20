@@ -21,7 +21,7 @@ def index(request, id, loggedIn):
     Fundraiser event page
     """
     if not Fundraiser.objects.filter(id = id).exists():
-        return Http404
+        raise Http404
     fundraiser = Fundraiser.objects.get(id = id)
     return render(request, 'fundraiser.html', locals())
 

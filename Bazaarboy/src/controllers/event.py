@@ -20,7 +20,7 @@ def index(request, id, loggedIn):
     Event page
     """
     if not Event.objects.filter(id = id).exists():
-        return Http404
+        raise Http404
     event = Event.objects.get(id = id)
     return render(request, 'event.html', locals())
 

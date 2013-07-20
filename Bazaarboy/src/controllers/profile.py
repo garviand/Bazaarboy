@@ -14,7 +14,7 @@ def index(request, id, loggedIn):
     Profile page
     """
     if not Profile.objects.filter(id = id).exists():
-        return Http404
+        raise Http404
     profile = Profile.objects.get(id = id)
     return render(request, 'profile.html', locals())
 
