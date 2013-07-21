@@ -8,6 +8,12 @@ from django.test.client import Client
 
 import pdb
 
+class EmailTest(TestCase):
+    """
+    Tests for email utilities
+    """
+    pass
+
 class UserTest(TestCase):
     """
     Tests for the user controller

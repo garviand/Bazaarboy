@@ -46,14 +46,12 @@ def create(request, params):
     """
     Create a profile and set the creating user as the creator
     """
-    # Check name, description, and category
-    if not (len(params['name']) <= 100 and 
-            len(params['description']) <= 1000 and 
-            len(params['category']) <= 30):
+    # Check if the name is too long
+    if len(params['name']) > 100:
         response = {
             'status':'FAIL',
-            'error':'INVALID_PARAM',
-            'message':'Some parameters are invalid.'
+            'error':'INVALID_NAME',
+            'message':'Profile name cannot be over 100 characters.'
         }
         return json_response(response)
     # Check if community exists
@@ -116,9 +114,66 @@ def create(request, params):
     return json_response(response)
 
 @login_required()
-@validate('POST', ['id'])
+@validate('POST', ['id'], 
+          ['name', 'description', 'category', 'latitude', 'longitude', 
+           'wepay'])
 def edit(request, params):
-    pass
+    """
+    Edit an existing profile
+    """
+    # Check if the profile is valid
+    if not Profile.objects.filter(id = params['id']).exists():
+        response = {
+            'status':'FAIL',
+            'error':'PROFILE_NOT_FOUND',
+            'message':'The profile doesn\'t exist.'
+        }
+        return json_response(response)
+    profile = Profile.objects.get(id = params['id'])
+    # Check if the user has permission for the profile
+    user = User.objects.get(id = request.session['user'])
+    if not Profile_manager.objects.filter(user = user, profile = profile) \
+                                  .exists():
+        response = {
+            'status':'FAIL',
+            'error':'NOT_A_MANAGER',
+            'message':'You don\'t have permission for the profile.'
+        }
+        return json_response(response)
+    # Go through all the params and edit the profile accordingly
+    if params['name'] is not None:
+        if not (0 < len(params['name']) <= 100):
+            response = {
+                'status':'FAIL',
+                'error':'INVALID_NAME',
+                'message':'Profile name cannot be blank or over 100 characters.'
+            }
+            return json_response(response)
+        else:
+            profile.name = params['name']
+    if params['description'] is not None:
+        profile.description = params['description']
+    if params['category'] is not None:
+        profile.category = params['category']
+    if params['latitude'] is not None and params['longitude'] is not None: 
+        if not (-90.0 <= float(params['latitude']) <= 90.0 and 
+                -180.0 <= float(params['longitude']) <= 180.0):
+            response = {
+                'status':'FAIL',
+                'error':'INVALID_COORDINATES',
+                'message':'Latitude/longitude combination is invalid.'
+            }
+            return json_response(response)
+        else:
+            profile.latitude = float(params['latitude'])
+            profile.longitude = float(params['longitude'])
+    # Save the changes
+    profile.save()
+    response = {
+        'status':'OK',
+        'profile':serialize_one(profile)
+    }
+    return json_response(response)
 
 @login_required()
 @validate('POST', ['id'])

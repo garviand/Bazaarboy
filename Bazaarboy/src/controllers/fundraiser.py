@@ -410,6 +410,22 @@ def create_reward(request, params):
             'message':'You don\'t have permission for the fundraiser.'
         }
         return json_response(response)
+    # Check if the name is too long
+    if len(params['name']) > 15:
+        response = {
+            'status':'FAIL',
+            'error':'INVALID_NAME',
+            'message':'Reward name cannot be over 15 characters.'
+        }
+        return json_response(response)
+    # Check if the description is too long
+    if len(params['description']) > 150:
+        response = {
+            'status':'FAIL',
+            'error':'INVALID_DESCRIPTION',
+            'message':'Reward description cannot be over 150 characters.'
+        }
+        return json_response(response)
     # Check if the fundraiser has passed its deadline
     if fundraiser.is_launched and fundraiser.deadline <= timezone.now():
         response = {
@@ -496,21 +512,21 @@ def edit_reward(request, params):
         return json_response(response)
     # Go through all params and change the rewards accordingly
     if params['name'] is not None:
-        if len(params['name']) == 0:
+        if not (0 < len(params['name']) <= 15):
             response = {
                 'status':'FAIL',
-                'error':'BLANK_NAME',
-                'message':'Reward name cannot be blank.'
+                'error':'INVALID_NAME',
+                'message':'Reward name cannot be blank or over 15 characters.'
             }
             return json_response(response)
         else:
             reward.name = params['name']
     if params['description'] is not None:
-        if len(params['description']) == 0:
+        if not (0 < len(params['description']) <= 150):
             response = {
                 'status':'FAIL',
-                'error':'BLANK_DESCRIPTION',
-                'message':'Reward description cannot be blank.'
+                'error':'INVALID_DESCRIPTION',
+                'message':'Reward description must be between 0-150 characters.'
             }
             return json_response(response)
         else:

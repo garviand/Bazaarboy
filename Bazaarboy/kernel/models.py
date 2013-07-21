@@ -2,8 +2,8 @@
 All the core models for Bazaarboy
 """
 
-import os
 import hashlib
+import os
 from django.db import models, IntegrityError
 from django.db.models import F
 from django.utils import timezone

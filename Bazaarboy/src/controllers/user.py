@@ -3,12 +3,16 @@ Controller for all user related actions
 """
 
 import hashlib
+import os
+from datetime import timedelta
 from django.db.models import Q
-from django.http import HttpResponseForbidden
+from django.http import HttpResponse, HttpResponseForbidden
 from django.shortcuts import render, redirect
+from django.utils import timezone
 from facebook import GraphAPI, GraphAPIError
 from kernel.models import *
 from src.controllers.request import json_response, validate, login_check
+from src.email import Email
 from src.regex import REGEX_EMAIL
 from src.serializer import serialize_one
 
@@ -26,7 +30,7 @@ def register(request, params, loggedIn):
     return render(request, 'register.html', locals())
 
 @login_check()
-@validate('GET')
+@validate('GET', [], ['next'])
 def login(request, params, loggedIn):
     """
     Login page
@@ -37,6 +41,16 @@ def login(request, params, loggedIn):
         # Session already exists, redirect to index
         return redirect('index')
     return render(request, 'login.html', locals())
+
+@login_check()
+@validate('GET', [], ['code'])
+def reset(request, params, loggedIn):
+    """
+    Reset password page
+    """
+    if loggedIn:
+        pass
+    pass
 
 @login_check()
 @validate('POST', 
@@ -78,7 +92,7 @@ def create(request, params, loggedIn):
         response = {
             'status':'FAIL',
             'error':'PASSWORDS_MISMATCH',
-            'message':'The confirm password does not match the original one'
+            'message':'The confirm password does not match the original one.'
         }
         return json_response(response)
     # Check if the name is valid
@@ -191,12 +205,104 @@ def fbAuth(request, params, loggedIn):
             user.last_name = fbProfile['last_name'][:35]
             user.save()
             # Creation done, send out confirmation email
+            code = os.urandom(128).encode('base_64')[:128]
+            confirmationCode = User_confirmation_code(user = user, code = code)
+            email = Email()
+            email.sendConfirmationEmail(confirmationCode)
             # Start the session
             request.session['user'] = user.id
             response = {
                 'status':'OK'
             }
             return json_response(response)
+
+@login_check()
+@validate('POST', ['email'])
+def create_reset(request, params, loggedIn):
+    """
+    Create a request for password reset
+    """
+    # Check if session exists
+    if loggedIn:
+        return HttpResponseForbidden('Access forbidden.')
+    # Check if account exists
+    if not User.objects.filter(Q(password = None) | Q(fb_id = None), 
+                               email = params['email']).exists():
+        response = {
+            'status':'FAIL',
+            'message':'The email has not been registered yet.'
+        }
+        return json_response(response)
+    user = User.objects.get(email = params['email'])
+    expirationTime = timezone.now() + timedelta(days = 3)
+    resetCode = User_reset_code(user = user, 
+                           code = os.urandom(128).encode('base_64')[:128], 
+                           expiration_time = expirationTime)
+    resetCode.save()
+    email = Email()
+    email.sendResetRequestEmail(resetCode)
+    response = {
+        'status':'OK'
+    }
+    return json_response(response)
+
+@login_check()
+@validate('POST', ['password', 'confirm'], ['code'])
+def chnage_password(request, params, loggedIn):
+    """
+    Change the password of a user
+    """
+    # Check password format
+    if not 6 <= len(params['password']) <= 16:
+        response = {
+            'status':'FAIL',
+            'error':'INVALID_PASSWORD',
+            'message':'The length of password is invalid.'
+        }
+        return json_response(response)
+    # Check confirm password
+    if params['confirm'] != params['password']:
+        response = {
+            'status':'FAIL',
+            'error':'PASSWORDS_MISMATCH',
+            'message':'The confirm password does not match the original one.'
+        }
+        return json_response(response)
+    # Get the user from session or using a reset code
+    user = User.objects.get(id = request.session['user']) if loggedIn else None
+    if user is None:
+        if (params['code'] is None or 
+            not User_reset_code.objects.filter(code = params['code']).exists()):
+            response = {
+                'status':'FAIL',
+                'error':'INVALID_CODE',
+                'message':'The reset code is invalid.'
+            }
+            return json_response(response)
+        resetCode = User_reset_code.objects.get(code = params['code'])
+        if resetCode.expiration_time <= timezone.now():
+            resetCode.is_expired = True
+        if resetCode.is_expired:
+            resetCode.save()
+            response = {
+                'status':'FAIL',
+                'error':'EXPIRED_CODE',
+                'message':'The code is expired.'
+            }
+            return json_response(response)
+        resetCode.is_expired = True
+        resetCode.save()
+        user = resetCode.user
+    # Checks passed, change the password
+    user.password = params['password']
+    user.save()
+    # Send a notification email to the user
+    email = Email()
+    email.sendPasswordChangedEmail(user)
+    response = {
+        'status':'OK'
+    }
+    return json_response(response)
 
 def logout(request):
     """
