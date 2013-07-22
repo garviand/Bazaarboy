@@ -43,14 +43,46 @@ def login(request, params, loggedIn):
     return render(request, 'login.html', locals())
 
 @login_check()
+@validate('GET', ['code'])
+def confirm(request, params, loggedIn):
+    """
+    Confirm email page
+    """
+    if not User_confirmation_code.objects.filter(code = params['code']) \
+                                         .exists():
+        return HttpResponseForbidden('Access forbidden.')
+    confirmationCode = User_confirmation_code.objects.get(code = params['code'])
+    confirmationCode.user.is_confirmed = True
+    confirmationCode.user.save()
+    confirmationCode.delete()
+    if loggedIn:
+        return redirect('index')
+    return redirect('user:login')
+
+@login_check()
 @validate('GET', [], ['code'])
 def reset(request, params, loggedIn):
     """
     Reset password page
     """
     if loggedIn:
-        pass
-    pass
+        # Logged user should use their account settings to change password
+        return redirect('index')
+    if params['code'] is not None:
+        # If a code is passed, check if it's valid
+        isCodeValid = True
+        if not User_reset_code.objects.filter(code = params['code']).exists():
+            isCodeValid = False
+        else:
+            resetCode = User_reset_code.objects.get(code = params['code'])
+            if resetCode.expiration_time <= timezone.now():
+                resetCode.is_expired = True
+                resetCode.save()
+            isCodeValid = not resetCode.is_expired
+        # Render the page to reset the password
+        return render(request, 'reset.html', locals())
+    # No code is passed, render the page to send a reset request
+    return render(request, 'reset.html', locals())
 
 @login_check()
 @validate('POST', 

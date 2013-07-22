@@ -14,3 +14,16 @@ def index(request, params, loggedIn):
     if not loggedIn:
         return render(request, 'landing.html', locals())
     return render(request, 'index.html', locals())
+
+def terms(request):
+    pass
+
+def about(request):
+    pass
+
+@login_check()
+def pageNotFound(request, loggedIn):
+    return render(request, '404.html', locals())
+
+def serverError(request):
+    return render(request, '500.html', locals())

@@ -1,7 +1,8 @@
 from django.conf.urls import patterns, include, url
 
 index_urlpatterns = patterns('src.controllers.index', 
-    url(r'^$', 'index', name = 'index'),
+    url(r'^terms/$', 'terms', name = 'terms'), 
+    url(r'^about/$', 'about', name = 'about'),
 )
 
 user_urlpatterns = patterns('src.controllers.user', 
@@ -71,6 +72,7 @@ fundraiser_urlpatterns = patterns('src.controllers.fundraiser',
 )
 
 urlpatterns = patterns('',
+    url(r'^$', 'src.controllers.index.index', name = 'index'),
     url(r'^', include(index_urlpatterns, namespace = 'index')),
     url(r'^user/', include(user_urlpatterns, namespace = 'user')),
     url(r'^wepay/', include(wepay_urlpatterns, namespace = 'wepay')),
@@ -82,3 +84,6 @@ urlpatterns = patterns('',
     url(r'^fundraiser/', 
         include(fundraiser_urlpatterns, namespace = 'fundraiser')),
 )
+
+handler404 = 'src.controllers.index.pageNotFound'
+handler500 = 'src.controllers.index.serverError'
