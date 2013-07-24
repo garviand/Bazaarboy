@@ -3,10 +3,10 @@ script.
     window.fbAsyncInit = function() {
         // init the FB JS SDK
         FB.init({
-            appId      : '370497763029710',                        // App ID from the app dashboard
-            channelUrl : '{{ STATIC_URL }}channel.html', // Channel file for x-domain comms
-            status     : true,                                 // Check Facebook Login status
-            xfbml      : true                                  // Look for social plugins on the page
+            appId      : '370497763029710', 
+            channelUrl : '{{ STATIC_URL }}channel.html', 
+            status     : true, 
+            xfbml      : true
         });
         if (typeof window.fbSDKReady == 'function') {
             fbSDKReady();

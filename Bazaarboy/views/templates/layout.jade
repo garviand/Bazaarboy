@@ -5,18 +5,23 @@ html(lang="en")
             title
                 block title
                     | Bazaarboy
-            script(type="text/javascript", 
-                   src="{{ STATIC_URL }}js/jquery-1.10.1.min.js")
+            script(type="text/javascript", src="{{ STATIC_URL }}js/jquery-1.10.1.min.js")
             script(type="text/javascript").
                 var rootUrl = '{% url index %}';
                 var csrfToken = '{{ csrf_token }}';
-            script(type="text/javascript", 
-                   src="{{ STATIC_URL }}js/layout.js")
+            script(type="text/javascript", src="{{ STATIC_URL }}js/layout.js")
+            link(rel="stylesheet", href="{{ STATIC_URL }}css/layout.css")
     body
         block body
             div#wrapper_top
                 block top
+                    include top
             div#wrapper_main
                 block main
+                    div#wrapper_sidebar
+                        block sidebar
+                    div#wrapper_content
+                        block content
+                    div.clear
             div#wrapper_foot
                 block foot

@@ -1,5 +1,130 @@
-@base: #000;
+// Reset
+
+html, body, div, span, applet, object, iframe,
+h1, h2, h3, h4, h5, h6, p, blockquote, pre,
+a, abbr, acronym, address, big, cite, code,
+del, dfn, em, img, ins, kbd, q, s, samp,
+small, strike, strong, sub, sup, tt, var,
+b, u, i, center,
+dl, dt, dd, ol, ul, li,
+fieldset, form, label, legend,
+table, caption, tbody, tfoot, thead, tr, th, td,
+article, aside, canvas, details, embed, 
+figure, figcaption, footer, header, hgroup, 
+menu, nav, output, ruby, section, summary,
+time, mark, audio, video {
+    margin: 0;
+    padding: 0;
+    border: 0;
+    font-size: 100%;
+    font: inherit;
+    vertical-align: baseline;
+}
+article, aside, details, figcaption, figure, 
+footer, header, hgroup, menu, nav, section {
+    display: block;
+}
+body {
+    line-height: 1;
+}
+ol, ul {
+    list-style: none;
+}
+blockquote, q {
+    quotes: none;
+}
+blockquote:before, blockquote:after,
+q:before, q:after {
+    content: '';
+    content: none;
+}
+table {
+    border-collapse: collapse;
+    border-spacing: 0;
+}
+
+// Global values
+
+@body_width: 960px;
+@sidebar_width: 160px;
+@sidebar_width_collapsed: 60px;
+@content_width: 800px;
+@content_width_expanded: 900px;
+
+@font_family_base: Helvetica, Arial, sans-serif;
+@font_size_base: 16px;
+@font_color_base: #000;
+
+// Global classes
+
+.left {
+    float: left;
+}
+
+.right {
+    float: right;
+}
+
+.clear {
+    clear: both;
+}
+
+.center {
+    display: block;
+    margin: 0 auto;
+}
+
+// Layout
 
 body {
-    color: @base;
+    font-family: @font_family_base;
+    font-size: @font_size_base;
+    color: @font_color_base;
+}
+
+div#wrapper_top {
+    width: @body_width;
+    .center
+}
+
+div#top_logo {
+    width: @sidebar_width;
+    .collapsed & {
+        width: @sidebar_width_collapsed;
+    }
+    .left
+}
+
+div#top_header {
+    width: @content_width;
+    .collapsed & {
+        width: @content_width_expanded;
+    }
+    .right
+}
+
+div#wrapper_main {
+    width: @body_width;
+    .center
+}
+
+div#wrapper_sidebar {
+    width: @sidebar_width;
+    .collapsed & {
+        width: @sidebar_width_collapsed;
+    }
+    .left
+}
+
+div#wrapper_content {
+    width: @content_width;
+    .collapsed & {
+        width: @content_width_expanded;
+    }
+    .right
+}
+
+div#wrapper_foot {
+    width: @body_width;
+    .center
 }
