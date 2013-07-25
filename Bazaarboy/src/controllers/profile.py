@@ -179,3 +179,138 @@ def edit(request, params):
 @validate('POST', ['id'])
 def delete(request, params):
     pass
+
+@login_required()
+@validate('POST', ['profile', 'user'])
+def create_manager(request, params):
+    """
+    Make a user the manager of a profile
+    """
+    # Check if the profile is valid
+    if not Profile.objects.filter(id = params['profile']).exists():
+        response = {
+            'status':'FAIL',
+            'error':'PROFILE_NOT_FOUND',
+            'message':'The profile doesn\'t exist.'
+        }
+        return json_response(response)
+    profile = Profile.objects.get(id = params['profile'])
+    # Check if the specified user is valid
+    if not User.objects.filter(id = params['user']).exists():
+        response = {
+            'status':'FAIL',
+            'error':'USER_NOT_FOUND',
+            'message':'The user doesn\'t exist.'
+        }
+        return json_response(response)
+    user = User.objects.get(id = params['user'])
+    # Check if the logged-in user is the creator of the profile
+    creator = User.objects.get(id = request.session['user'])
+    if not Profile_manager.objects.filter(user = creator, profile = profile, 
+                                          is_creator = True).exists():
+        response = {
+            'status':'FAIL',
+            'error':'NOT_A_CREATOR',
+            'message':'Only the creator of the profile can create managers.'
+        }
+        return json_response(response)
+    # Make the specified user the manager
+    profileManager = Profile_manager(user = user, profile = profile)
+    profileManager.save()
+    response = {
+        'status':'OK'
+    }
+    return json_response(response)
+
+@login_required()
+@validate('POST', ['profile'], ['user'])
+def delete_manager(request, params):
+    """
+    Remove a user from the managers of a profile
+    """
+    # Check if the profile is valid
+    if not Profile.objects.filter(id = params['profile']).exists():
+        response = {
+            'status':'FAIL',
+            'error':'PROFILE_NOT_FOUND',
+            'message':'The profile doesn\'t exist.'
+        }
+        return json_response(response)
+    profile = Profile.objects.get(id = params['profile'])
+    # Check if a user is specified
+    if params['user'] is not None:
+        # If so, treat it as a creator's attempt to delete a manager
+        # Check if the logged-in user is the creator of the profile
+        creator = User.objects.get(id = request.session['user'])
+        if not Profile_manager.objects.filter(user = creator, 
+                                              profile = profile, 
+                                              is_creator = True).exists():
+            response = {
+                'status':'FAIL',
+                'error':'NOT_A_CREATOR',
+                'message':'Only the creator can delete managers.'
+            }
+            return json_response(response)
+        # Check if the specified user exists
+        if not User.objects.filter(id = params['user']).exists():
+            response = {
+                'status':'FAIL',
+                'error':'USER_NOT_FOUND',
+                'message':'The user doesn\'t exist.'
+            }
+            return json_response(response)
+        user = User.objects.get(id = params['user'])
+        # Check if the specified user is a manager
+        if not Profile_manager.objects.filter(user = user, profile = profile) \
+                                      .exists():
+            response = {
+                'status':'FAIL',
+                'error':'NOT_A_MANAGER',
+                'message':'The user is not a manager of the profile.'
+            }
+            return json_response(response)
+        profileManager = Profile_manager.objects.get(user = user, 
+                                                     profile = profile)
+        # Check if the specified user is the creator
+        if user.id == creator.id:
+            response = {
+                'status':'FAIL',
+                'error':'IS_CREATOR',
+                'message':'You cannot be removed from the profile you created.'
+            }
+            return json_response(response)
+        # Remove the user from the managers
+        profileManager.delete()
+        response = {
+            'status':'OK'
+        }
+        return json_response(response)
+    else:
+        # If not, treat it as a manager's attempt to delete itself from 
+        # the profile
+        user = User.objects.get(id = request.session['user'])
+        # Check if the user is a manager
+        if not Profile_manager.objects.filter(user = user, profile = profile) \
+                                      .exists():
+            response = {
+                'status':'FAIL',
+                'error':'NOT_A_MANAGER',
+                'message':'You are not a manager of the profile.'
+            }
+            return json_response(response)
+        profileManager = Profile_manager.objects.get(user = user, 
+                                                     profile = profile)
+        # Check if the user is the creator of the profile
+        if profileManager.is_creator:
+            response = {
+                'status':'FAIL',
+                'error':'IS_CREATOR',
+                'message':'You cannot be removed from the profile you created.'
+            }
+            return json_response(response)
+        # Remove the user from the managers
+        profileManager.delete()
+        response = {
+            'status':'OK'
+        }
+        return json_response(response)

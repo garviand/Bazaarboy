@@ -50,6 +50,11 @@ table {
 @sidebar_width_collapsed: 60px;
 @content_width: 800px;
 @content_width_expanded: 900px;
+@top_height: 30px;
+
+@top_border_color: #79A69B;
+@logo_color: #688F86;
+@sidebar_color: #2F4241;
 
 @font_family_base: Helvetica, Arial, sans-serif;
 @font_size_base: 16px;
@@ -84,11 +89,15 @@ body {
 
 div#wrapper_top {
     width: @body_width;
+    height: @top_height;
+    border-bottom: 2px solid @top_border_color;
     .center
 }
 
 div#top_logo {
     width: @sidebar_width;
+    height: @top_height;
+    background: @logo_color;
     .collapsed & {
         width: @sidebar_width_collapsed;
     }
@@ -97,6 +106,7 @@ div#top_logo {
 
 div#top_header {
     width: @content_width;
+    height: @top_height;
     .collapsed & {
         width: @content_width_expanded;
     }
@@ -110,6 +120,7 @@ div#wrapper_main {
 
 div#wrapper_sidebar {
     width: @sidebar_width;
+    background-color: @sidebar_color;
     .collapsed & {
         width: @sidebar_width_collapsed;
     }
