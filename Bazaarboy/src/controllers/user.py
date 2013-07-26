@@ -17,12 +17,10 @@ from src.regex import REGEX_EMAIL
 from src.serializer import serialize_one
 
 @login_check()
-@validate('GET', [], ['next'])
+@validate('GET')
 def register(request, params, loggedIn):
     """
     Register page
-
-    An optional parameter 'next' is taken to denote a redirect after action.
     """
     if loggedIn:
         # Session already exists, redirect to index
@@ -30,12 +28,10 @@ def register(request, params, loggedIn):
     return render(request, 'register.html', locals())
 
 @login_check()
-@validate('GET', [], ['next'])
+@validate('GET')
 def login(request, params, loggedIn):
     """
     Login page
-
-    An optional parameter 'next' is taken to denote a redirect after action.
     """
     if loggedIn:
         # Session already exists, redirect to index
