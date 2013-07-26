@@ -143,7 +143,7 @@ class Community(models.Model):
         - Washington University in St. Louis (Community)
         - The Loop Business District (Community)
     """
-    name = models.CharField(max_length = 100)
+    name = models.CharField(max_length = 50)
     description = models.TextField()
     city = models.ForeignKey('City')
     latitude = models.FloatField()
