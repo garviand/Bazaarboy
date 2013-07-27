@@ -1,4 +1,4 @@
-extends layout
+extends ../layout
 
 block title
     | Bazaarboy | Register
@@ -9,7 +9,7 @@ append head
         Bazaarboy.user.register.init()
 
 block body
-    include facebook
+    include ../facebook
     div#register
         h2 Register
         br

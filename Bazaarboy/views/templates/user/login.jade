@@ -1,4 +1,4 @@
-extends layout
+extends ../layout
 
 block title
     | Bazaarboy | Login
@@ -9,6 +9,7 @@ append head
         Bazaarboy.user.login.init()
 
 block body
+    include ../facebook
     div#login
         h2 Login
         br

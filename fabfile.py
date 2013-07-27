@@ -40,24 +40,7 @@ def compile():
     """
     Compile files of sugar into normal format
     """
-    with lcd('./Bazaarboy/views/'):
-        # Jade
-        compileJade = lambda: local('jade -w templates/*.jade -o ../templates/')
-        processJade = Process(target = compileJade)
-        processJade.start()
-        # CoffeeScript
-        compileCS = lambda: local('coffee -c -w -o ../static/js/ js/')
-        processCS = Process(target = compileCS)
-        processCS.start()
-        # Less
-        lessPath = os.path.realpath(os.path.dirname(__file__))
-        lessPath += '/Bazaarboy/views/css/'
-        with lcd('./css/'):
-            for root, dirs, lessFiles in os.walk(lessPath):
-                for less in lessFiles:
-                    lessName = os.path.splitext(less)[0]
-                    local('lessc %s > ../../static/css/%s.css' % (less, 
-                                                                  lessName))
+    local('grunt watch')
 
 def dev(port=8080):
     """
