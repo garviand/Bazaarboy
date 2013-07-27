@@ -1,5 +1,6 @@
+import multiprocessing
 import os
-from multiprocessing import Process
+import signal
 from fabric.api import *
 
 def console():
@@ -40,25 +41,38 @@ def compile():
     """
     Compile files of sugar into normal format
     """
-    local('grunt watch')
+    with settings(
+        hide('warnings'),
+        warn_only=True
+    ):
+        local('grunt dev')
 
 def dev(port=8080):
     """
     Start a development environment
     """
-    compileProcess = Process(target = compile)
-    compileProcess.start()
-    with lcd('./Bazaarboy/'):
-        with settings(
-            hide('warnings'),
-            warn_only=True
-        ):
-            # Check to see if models have changed, if so then migrate
-            #local('python manage.py schemamigration kernel --auto')
-            pass
-        # Run the celery worker
-        #celeryWorker = lambda: local('python manage.py celery worker --loglevel=info')
-        #processCelery = Process(target = celeryWorker)
-        #processCelery.start()
-        # Run the django development server on specified port
-        local('python manage.py runserver 0.0.0.0:%s' % port)
+    def init_worker():
+        signal.signal(signal.SIGINT, signal.SIG_IGN)
+    pool = multiprocessing.Pool(5, init_worker)
+    pool.apply_async(compile)
+    try:
+        with lcd('./Bazaarboy/'):
+            with settings(
+                hide('warnings'),
+                warn_only=True
+            ):
+                # Check to see if models have changed, if so then migrate
+                #local('python manage.py schemamigration kernel --auto')
+                pass
+            # Run the celery worker
+            #celeryWorker = lambda: local('python manage.py celery worker --loglevel=info')
+            #processCelery = Process(target = celeryWorker)
+            #processCelery.start()
+            # Run the django development server on specified port
+            local('python manage.py runserver 0.0.0.0:%s' % port)
+    except KeyboardInterrupt:
+        pool.terminate()
+        pool.join()
+    else:
+        pool.close()
+        pool.join()

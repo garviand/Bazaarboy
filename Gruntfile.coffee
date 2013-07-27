@@ -56,17 +56,21 @@ module.exports = (grunt) ->
         ext = parts[parts.length - 1]
         if ext is 'jade'
             output = filepath.replace(/Bazaarboy\/views/, 'Bazaarboy')
+                             .replace(/\.jade/, '.html')
             opts = {}
             opts[output] = filepath
             grunt.config(['jade', 'compile', 'files'], opts)
         else if ext is 'coffee'
             output = filepath.replace(/Bazaarboy\/views\/js/, 'Bazaarboy/static/js')
+                             .replace(/\.coffee/, '.js')
             opts = {}
             opts[output] = filepath
-            grunt.config(['coffee', 'compile', 'files'], filepath)
+            grunt.config(['coffee', 'compile', 'files'], opts)
         else if ext is 'less'
             output = filepath.replace(/Bazaarboy\/views\/css/, 'Bazaarboy/static/css')
+                             .replace(/\.less/, '.css')
             opts = {}
             opts[output] = filepath
-            grunt.config(['less', 'compile', 'files'], filepath)
+            grunt.config(['less', 'compile', 'files'], opts)
+    grunt.registerTask('dev', ['jade', 'coffee', 'less', 'watch'])
     return
