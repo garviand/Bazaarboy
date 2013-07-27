@@ -21,18 +21,8 @@ command -v node >/dev/null 2>&1 || {
     echo -e "\nNode.js is not installed. Aborting";
     exit 1;
 }
-echo -e "\nInstalling jade\n"
-command -v jade >/dev/null 2>&1 || {
-    sudo npm install -g jade
-}
-echo -e "\nInstalling coffeescript\n"
-command -v coffee >/dev/null 2>&1 || {
-    sudo npm install -g coffee-script
-}
-echo -e "\nInstalling less.css\n"
-command -v lessc >/dev/null 2>&1 || {
-    sudo npm install -g less
-}
+echo -e "\nInstalling node packages\n"
+sudo npm install
 
 # Python related
 
