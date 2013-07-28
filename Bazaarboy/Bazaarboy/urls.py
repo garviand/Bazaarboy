@@ -71,6 +71,13 @@ fundraiser_urlpatterns = patterns('src.controllers.fundraiser',
     url(r'^donate/$', 'donate', name = 'donate'),
 )
 
+admin_urlpatterns = patterns('src.controllers.admin.admin', 
+    url(r'^$', 'index', name = 'index'),
+    url(r'^login/$', 'login', name = 'login'),
+    url(r'^auth/$', 'auth', name = 'auth'),
+    url(r'^logout/$', 'logout', name = 'logout'),
+)
+
 urlpatterns = patterns('',
     url(r'^$', 'src.controllers.index.index', name = 'index'),
     url(r'^', include(index_urlpatterns, namespace = 'index')),
@@ -83,6 +90,7 @@ urlpatterns = patterns('',
     url(r'^event/', include(event_urlpatterns, namespace = 'event')),
     url(r'^fundraiser/', 
         include(fundraiser_urlpatterns, namespace = 'fundraiser')),
+    url(r'^x/', include(admin_urlpatterns, namespace = 'admin')),
 )
 
 handler404 = 'src.controllers.index.pageNotFound'

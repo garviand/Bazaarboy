@@ -1,0 +1,16 @@
+extends layout
+
+prepend top
+    div.welcome 
+        | Hello, 
+        b {{ admin.name }}
+append top
+    div.logout
+        a(href="{% url admin:logout %}") Logout
+
+block main
+    div.summary.box
+        div.icon
+            img(src="{{ STATIC_URL }}admin/fui/images/icons/Clipboard@2x.png")
+        div.specs
+        div.clear

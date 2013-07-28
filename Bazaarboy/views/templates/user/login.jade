@@ -3,13 +3,13 @@ extends ../layout
 block title
     | Bazaarboy | Login
 
-append head
-    script(type="text/javascript", src="{{ STATIC_URL }}js/login.js")
+append script
+    script(type="text/javascript", src="{{ STATIC_URL }}js/user/login.js")
     script(type="text/javascript").
-        Bazaarboy.user.login.init()
+        Bazaarboy.user.login.init();
 
 block body
-    include ../facebook
+    include ../components/facebook
     div#login
         h2 Login
         br

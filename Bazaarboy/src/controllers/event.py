@@ -12,6 +12,7 @@ from kernel.models import *
 from src.config import *
 from src.controllers.request import *
 from src.controllers.wepay import create_checkout
+from src.sanitizer import sanitize_redactor_input
 from src.serializer import serialize_one
 
 @login_check()
@@ -20,9 +21,10 @@ def index(request, id, loggedIn):
     Event page
     """
     if not Event.objects.filter(id = id).exists():
-        raise Http404
-    event = Event.objects.get(id = id)
-    return render(request, 'event.html', locals())
+        #raise Http404
+        pass
+    #event = Event.objects.get(id = id)
+    return render(request, 'event/index.html', locals())
 
 @login_required()
 @validate('GET', ['id'])
@@ -91,7 +93,7 @@ def create(request, params):
         }
     # Validated, create the model
     event = Event(name = params['name'], 
-                  description = params['description'], 
+                  description = sanitize_redactor_input(params['description']), 
                   start_time = params['start_time'], 
                   end_time = params['end_time'], 
                   location = params['location'], 
@@ -161,6 +163,7 @@ def edit(request, params):
         else:
             event.name = params['name']
     if params['description'] is not None:
+        params['description'] = sanitize_redactor_input(params['description'])
         if len(params['description']) == 0:
             response = {
                 'status':'FAIL',

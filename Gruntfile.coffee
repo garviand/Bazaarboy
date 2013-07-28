@@ -16,6 +16,12 @@ module.exports = (grunt) ->
                     src: ['**/*.jade']
                     dest: 'Bazaarboy/templates/'
                     ext: '.html'
+                ,
+                    expand: true
+                    cwd: 'Bazaarboy/views/admin/templates/'
+                    src: ['**/*.jade']
+                    dest: 'Bazaarboy/templates/admin/'
+                    ext: '.html'
                 ]
         coffee:
             compile:
@@ -24,6 +30,12 @@ module.exports = (grunt) ->
                     cwd: 'Bazaarboy/views/js/'
                     src: ['**/*.coffee']
                     dest: 'Bazaarboy/static/js/'
+                    ext: '.js'
+                ,
+                    expand: true
+                    cwd: 'Bazaarboy/views/admin/js/'
+                    src: ['**/*.coffee']
+                    dest: 'Bazaarboy/static/admin/js/'
                     ext: '.js'
                 ]
         less:
@@ -34,22 +46,37 @@ module.exports = (grunt) ->
                     src: ['**/*.less']
                     dest: 'Bazaarboy/static/css/'
                     ext: '.css'
+                ,
+                    expand: true
+                    cwd: 'Bazaarboy/views/admin/css/'
+                    src: ['**/*.less']
+                    dest: 'Bazaarboy/static/admin/css/'
+                    ext: '.css'
                 ]
         watch:
             jade:
                 options:
                     nospawn: true
-                files: 'Bazaarboy/views/templates/**/*.jade'
+                files: [
+                    'Bazaarboy/views/templates/**/*.jade',
+                    'Bazaarboy/views/admin/templates/**/*.jade'
+                ]
                 tasks: ['jade']
             coffee:
                 options:
                     nospawn: true
-                files: 'Bazaarboy/views/js/**/*.coffee'
+                files: [
+                    'Bazaarboy/views/js/**/*.coffee',
+                    'Bazaarboy/views/admin/js/**/*.coffee'
+                ]
                 tasks: ['coffee']
             less:
                 options:
                     nospawn: true
-                files: 'Bazaarboy/views/css/**/*.less'
+                files: [
+                    'Bazaarboy/views/css/**/*.less',
+                    'Bazaarboy/views/admin/css/**/*.less'
+                ]
                 tasks: ['less']
     grunt.event.on 'watch', (action, filepath) ->
         parts = filepath.split('.')
@@ -57,17 +84,21 @@ module.exports = (grunt) ->
         if ext is 'jade'
             output = filepath.replace(/Bazaarboy\/views/, 'Bazaarboy')
                              .replace(/\.jade/, '.html')
+            if filepath.indexOf('Bazaarboy/views/admin/templates') isnt -1
+                output = filepath.replace(/Bazaarboy\/views\/admin\/templates/, 
+                                          'Bazaarboy/templates/admin')
+                                 .replace(/\.jade/, '.html')
             opts = {}
             opts[output] = filepath
             grunt.config(['jade', 'compile', 'files'], opts)
         else if ext is 'coffee'
-            output = filepath.replace(/Bazaarboy\/views\/js/, 'Bazaarboy/static/js')
+            output = filepath.replace(/Bazaarboy\/views/, 'Bazaarboy/static')
                              .replace(/\.coffee/, '.js')
             opts = {}
             opts[output] = filepath
             grunt.config(['coffee', 'compile', 'files'], opts)
         else if ext is 'less'
-            output = filepath.replace(/Bazaarboy\/views\/css/, 'Bazaarboy/static/css')
+            output = filepath.replace(/Bazaarboy\/views/, 'Bazaarboy/static')
                              .replace(/\.less/, '.css')
             opts = {}
             opts[output] = filepath

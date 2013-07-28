@@ -16,7 +16,7 @@ def index(request, id, loggedIn):
     if not Profile.objects.filter(id = id).exists():
         raise Http404
     profile = Profile.objects.get(id = id)
-    return render(request, 'profile.html', locals())
+    return render(request, 'profile/index.html', locals())
 
 @login_required()
 @validate('GET', ['id'])

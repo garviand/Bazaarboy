@@ -25,3 +25,5 @@
     # Sub namespaces
     index: {}
     user: {}
+    event: {}
+    admin: {}

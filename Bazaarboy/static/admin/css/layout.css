@@ -1,0 +1,235 @@
+html,
+body,
+div,
+span,
+applet,
+object,
+iframe,
+h1,
+h2,
+h3,
+h4,
+h5,
+h6,
+p,
+blockquote,
+pre,
+a,
+abbr,
+acronym,
+address,
+big,
+cite,
+code,
+del,
+dfn,
+em,
+img,
+ins,
+kbd,
+q,
+s,
+samp,
+small,
+strike,
+strong,
+sub,
+sup,
+tt,
+var,
+b,
+u,
+i,
+center,
+dl,
+dt,
+dd,
+ol,
+ul,
+li,
+fieldset,
+form,
+label,
+legend,
+table,
+caption,
+tbody,
+tfoot,
+thead,
+tr,
+th,
+td,
+article,
+aside,
+canvas,
+details,
+embed,
+figure,
+figcaption,
+footer,
+header,
+hgroup,
+menu,
+nav,
+output,
+ruby,
+section,
+summary,
+time,
+mark,
+audio,
+video {
+  margin: 0;
+  padding: 0;
+  border: 0;
+  font-size: 100%;
+  font: inherit;
+  vertical-align: baseline;
+}
+article,
+aside,
+details,
+figcaption,
+figure,
+footer,
+header,
+hgroup,
+menu,
+nav,
+section {
+  display: block;
+}
+body {
+  line-height: 1;
+}
+ol,
+ul {
+  list-style: none;
+}
+blockquote,
+q {
+  quotes: none;
+}
+blockquote:before,
+blockquote:after,
+q:before,
+q:after {
+  content: '';
+  content: none;
+}
+table {
+  border-collapse: collapse;
+  border-spacing: 0;
+}
+.hidden {
+  display: none;
+}
+.left {
+  float: left;
+}
+.right {
+  float: right;
+}
+.clear {
+  clear: both;
+}
+.center {
+  display: block;
+  margin: auto;
+}
+.capitalize {
+  text-transform: uppercase;
+}
+.box {
+  position: relative;
+  padding: 24px;
+  border-radius: 6px;
+  background-color: #EDEFF1;
+}
+b {
+  font-family: Helvetica, sans-serif;
+  font-style: normal;
+  font-weight: 700;
+}
+body {
+  font-family: Helvetica, sans-serif;
+  font-style: normal;
+  font-weight: 400;
+}
+div#wrapper_top {
+  position: relative;
+  width: 100%;
+  min-width: 960px;
+  height: 60px;
+  color: rgba(255, 255, 255, 0.9);
+}
+div#wrapper_top div#top_inner {
+  width: 960px;
+  height: 60px;
+  display: block;
+  margin: auto;
+}
+div#wrapper_top div#top_inner div.title {
+  width: 960px;
+  padding-top: 15px;
+  font-size: 30px;
+  text-align: center;
+  display: block;
+  margin: auto;
+  text-transform: uppercase;
+}
+div#wrapper_main {
+  width: 960px;
+  padding: 20px 0;
+  display: block;
+  margin: auto;
+}
+div#wrapper_bottom {
+  width: 960px;
+  display: block;
+  margin: auto;
+}
+div#login div.login-form {
+  width: 313px;
+  margin-top: 40px !important;
+  display: block;
+  margin: auto;
+}
+div#login div.login-form:before {
+  display: none;
+}
+div#login div.quote {
+  width: 100%;
+  margin: 40px 0;
+  font-size: 14px;
+  text-align: center;
+}
+div#wrapper_top div#top_inner div.welcome {
+  position: absolute;
+  top: 22px;
+  left: 22px;
+}
+div#wrapper_top div#top_inner div.logout {
+  position: absolute;
+  top: 22px;
+  right: 22px;
+}
+div#wrapper_top div#top_inner div.logout a {
+  font-size: 16px;
+  color: #FFF;
+  text-decoration: none;
+}
+div#wrapper_main div.summary {
+  width: 912px;
+  height: 100px;
+}
+div#wrapper_main div.summary div.icon {
+  width: 100px;
+  height: 100px;
+  float: left;
+}
+div#wrapper_main div.summary div.specs {
+  width: 812px;
+  height: 100px;
+  float: left;
+}

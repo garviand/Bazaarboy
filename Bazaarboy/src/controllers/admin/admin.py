@@ -4,13 +4,21 @@ Controller for admin
 
 from __future__ import absolute_import
 import hashlib
-from django.shortcuts import render
+from django.shortcuts import render, redirect
 from django.http import HttpResponseForbidden
 from admin.models import *
 from src.controllers.request import json_response, validate
+from src.serializer import serialize_one
 
 def index(request):
-    pass
+    """
+    Admin index
+    """
+    if not request.session.has_key('admin'):
+        # No admin session, redirect to login
+        return redirect('admin:login')
+    admin = request.session['admin']
+    return render(request, 'admin/index.html', locals())
 
 def login(request):
     """
@@ -18,7 +26,7 @@ def login(request):
     """
     if request.session.has_key('admin'):
         # Session already exists, redirect to admin index
-        return redirect('admin-index')
+        return redirect('admin:index')
     return render(request, 'admin/login.html', locals())
 
 @validate('GET', ['name', 'password'])
@@ -35,7 +43,7 @@ def auth(request, params):
         saltedPassword = admin.salt + params['password']
         if admin.password == hashlib.sha512(saltedPassword).hexdigest():
             # Name and password match, start admin session
-            sessionAdmin = serialize_one(user, ('id', 'name', 'role'))
+            sessionAdmin = serialize_one(admin, ('id', 'name', 'role'))
             request.session['admin'] = sessionAdmin
             response = {
                 'status':'OK'
@@ -47,3 +55,11 @@ def auth(request, params):
         'message':'Invalid name and password combination.'
     }
     return json_response(response)
+
+def logout(request):
+    """
+    Logout the admin
+    """
+    if request.session.has_key('admin'):
+        del request.session['admin']
+    return redirect('admin:login')

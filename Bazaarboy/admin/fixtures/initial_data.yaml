@@ -1,0 +1,7 @@
+- model: admin.admin
+  pk: 1
+  fields:
+    name: evan
+    password: 444a0c021afbb81648b96911c476fe5e281d8e4a84f83872887f8a29b3548f5391e8a9e8717edd617922a1dbb61fd4744c7fc49fa7b367d7ba1c037edf6e8b7f
+    salt: PGPyCrHXmTaZRqTymMik4qh1XQ6KAm8Qpg7fYzhUj3dVK/XmzZxhe5DSNoK+uwT006Bif3jpDQIo\nlmSldE3d79EV0hj1h+VuloGBUwfUtGiQY7z2DQEEInornM1oDLF
+    role: S

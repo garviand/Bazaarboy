@@ -25,7 +25,7 @@ def register(request, params, loggedIn):
     if loggedIn:
         # Session already exists, redirect to index
         return redirect('index')
-    return render(request, 'register.html', locals())
+    return render(request, 'user/register.html', locals())
 
 @login_check()
 @validate('GET')
@@ -36,7 +36,7 @@ def login(request, params, loggedIn):
     if loggedIn:
         # Session already exists, redirect to index
         return redirect('index')
-    return render(request, 'login.html', locals())
+    return render(request, 'user/login.html', locals())
 
 @login_check()
 @validate('GET', ['code'])

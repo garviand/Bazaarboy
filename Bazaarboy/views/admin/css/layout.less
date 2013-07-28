@@ -1,0 +1,207 @@
+// Reset
+
+html, body, div, span, applet, object, iframe,
+h1, h2, h3, h4, h5, h6, p, blockquote, pre,
+a, abbr, acronym, address, big, cite, code,
+del, dfn, em, img, ins, kbd, q, s, samp,
+small, strike, strong, sub, sup, tt, var,
+b, u, i, center,
+dl, dt, dd, ol, ul, li,
+fieldset, form, label, legend,
+table, caption, tbody, tfoot, thead, tr, th, td,
+article, aside, canvas, details, embed, 
+figure, figcaption, footer, header, hgroup, 
+menu, nav, output, ruby, section, summary,
+time, mark, audio, video {
+    margin: 0;
+    padding: 0;
+    border: 0;
+    font-size: 100%;
+    font: inherit;
+    vertical-align: baseline;
+}
+article, aside, details, figcaption, figure, 
+footer, header, hgroup, menu, nav, section {
+    display: block;
+}
+body {
+    line-height: 1;
+}
+ol, ul {
+    list-style: none;
+}
+blockquote, q {
+    quotes: none;
+}
+blockquote:before, blockquote:after,
+q:before, q:after {
+    content: '';
+    content: none;
+}
+table {
+    border-collapse: collapse;
+    border-spacing: 0;
+}
+
+// Global values
+
+@body_width: 960px;
+@top_height: 60px;
+
+@box_padding: 24px;
+
+@title_color_white: rgba(255, 255, 255, 0.9);
+
+@font_family_base: Helvetica, sans-serif;
+@font_style_base: normal;
+@font_size_base: 16px;
+@font_weight_base: 400;
+@font_weight_bold: 700;
+
+// Mixins
+
+.hidden {
+    display: none;
+}
+
+.left {
+    float: left;
+}
+
+.right {
+    float: right;
+}
+
+.clear {
+    clear: both;
+}
+
+.center {
+    display: block;
+    margin: auto;
+}
+
+.capitalize {
+    text-transform: uppercase;
+}
+
+.box {
+    position: relative;
+    padding: @box_padding;
+    border-radius: 6px;
+    background-color: #EDEFF1;
+}
+
+// Tags
+
+b {
+    font-family: @font_family_base;
+    font-style: @font_style_base;
+    font-weight: @font_weight_bold;
+}
+
+// Admin layout
+
+body {
+    font-family: @font_family_base;
+    font-style: @font_style_base;
+    font-weight: @font_weight_base;
+}
+
+div#wrapper_top {
+    position: relative;
+    width: 100%;
+    min-width: @body_width;
+    height: @top_height;
+    color: @title_color_white;
+
+    div#top_inner {
+        width: @body_width;
+        height: @top_height;
+        .center;
+
+        div.title {
+            width: @body_width;
+            padding-top: floor((@top_height - 30px) / 2);
+            font-size: 30px;
+            text-align: center;
+            .center;
+            .capitalize;
+        }
+    }
+}
+
+div#wrapper_main {
+    width: @body_width;
+    padding: 20px 0;
+    .center;
+}
+
+div#wrapper_bottom {
+    width: @body_width;
+    .center;
+}
+
+// Login
+
+div#login {
+    div.login-form {
+        width: 313px;
+        margin-top: 40px !important;
+        .center;
+
+        &:before {
+            display:none;
+        }
+    }
+
+    div.quote {
+        width: 100%;
+        margin: 40px 0;
+        font-size: @font_size_base - 2;
+        text-align: center;
+    }
+}
+
+// Index
+
+div#wrapper_top {
+    div#top_inner {
+        div.welcome {
+            position: absolute;
+            top: floor((@top_height - @font_size_base) / 2);
+            left: floor((@top_height - @font_size_base) / 2);
+        }
+
+        div.logout {
+            position: absolute;
+            top: floor((@top_height - @font_size_base) / 2);
+            right: floor((@top_height - @font_size_base) / 2);
+
+            a {
+                font-size: @font_size_base;
+                color: #FFF;
+                text-decoration: none;
+            }
+        }
+    }
+}
+
+div#wrapper_main {
+    div.summary {
+        width: @body_width - @box_padding * 2;
+        height: 100px;
+
+        div.icon {
+            width: 100px;
+            height: 100px;
+            .left;
+        }
+
+        div.specs {
+            width: @body_width - @box_padding * 2 - 100px;
+            height: 100px;
+            .left
+        }
+    }
+}

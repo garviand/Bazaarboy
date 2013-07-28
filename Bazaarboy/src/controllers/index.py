@@ -12,8 +12,8 @@ def index(request, params, loggedIn):
     Index page
     """
     if not loggedIn:
-        return render(request, 'landing.html', locals())
-    return render(request, 'index.html', locals())
+        return render(request, 'index/landing.html', locals())
+    return render(request, 'index/index.html', locals())
 
 def terms(request):
     pass

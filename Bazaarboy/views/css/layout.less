@@ -46,11 +46,13 @@ table {
 // Global values
 
 @body_width: 960px;
-@sidebar_width: 160px;
+@sidebar_width: 180px;
 @sidebar_width_collapsed: 60px;
-@content_width: 800px;
+@content_width: 780px;
 @content_width_expanded: 900px;
-@top_height: 30px;
+@top_height: 45px;
+@event_body_width: 630px;
+@event_description_width: 420px;
 
 @top_border_color: #79A69B;
 @logo_color: #688F86;
@@ -60,7 +62,7 @@ table {
 @font_size_base: 16px;
 @font_color_base: #000;
 
-// Global classes
+// Mixins
 
 .left {
     float: left;
@@ -76,7 +78,7 @@ table {
 
 .center {
     display: block;
-    margin: 0 auto;
+    margin: auto;
 }
 
 // Layout
@@ -90,7 +92,7 @@ body {
 div#wrapper_top {
     width: @body_width;
     height: @top_height;
-    border-bottom: 2px solid @top_border_color;
+    border-bottom: 1px solid @top_border_color;
     .center
 }
 
@@ -138,4 +140,60 @@ div#wrapper_content {
 div#wrapper_foot {
     width: @body_width;
     .center
+}
+
+// Event
+
+div#event {
+    position: relative;
+    width: 100%;
+
+    div.cover {
+        position: absolute;
+        &.none {
+            height: 0;
+        }
+        &.small {
+
+        }
+        &.big {
+
+        }
+    }
+
+    div.title {
+        width: 100%;
+        min-height: 62px;
+
+        div.controls {
+            .left
+        }
+        div.text {
+            .left
+        }
+    }
+
+    div.info {
+        width: @event_body_width;
+        .center
+
+        div.right {
+            
+        }
+    }
+
+    div.details {
+        width: @event_body_width;
+        .center;
+
+        div.description {
+            width: @event_description_width;
+            height: 400px;
+            .left
+        }
+
+        div.extra {
+            .left
+        }
+    }
 }

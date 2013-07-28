@@ -1,0 +1,39 @@
+extends ../layout
+
+block title
+    | {{ event.title }}
+
+append head
+    {% if event.is_private %}
+    meta(name="robots", content="noindex,nofollow")
+    {% endif %}
+    link(rel="stylesheet", href="{{ STATIC_URL }}redactor/redactor.css")
+
+block content
+    div#event
+        div.cover
+            div.image
+            div.caption
+        div.title
+            div.controls
+            div.text
+            div.clear
+        div.info
+            div.right
+                div.action
+                div.middle
+                div.friends
+            div.clear
+        div.details
+            div.description
+                div.editable
+                div.controls
+                    a.save(href="javascript:;") Save
+            div.extra
+            div.clear
+
+append script
+    script(type="text/javascript", src="{{ STATIC_URL }}redactor/redactor.min.js")
+    script(type="text/javascript", src="{{ STATIC_URL }}js/event/index.js")
+    script(type="text/javascript").
+        Bazaarboy.event.index.init()

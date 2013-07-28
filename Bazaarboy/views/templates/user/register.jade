@@ -3,13 +3,13 @@ extends ../layout
 block title
     | Bazaarboy | Register
 
-append head
-    script(type="text/javascript", src="{{ STATIC_URL }}js/register.js")
+append script
+    script(type="text/javascript", src="{{ STATIC_URL }}js/user/register.js")
     script(type="text/javascript").
-        Bazaarboy.user.register.init()
+        Bazaarboy.user.register.init();
 
 block body
-    include ../facebook
+    include ../components/facebook
     div#register
         h2 Register
         br
