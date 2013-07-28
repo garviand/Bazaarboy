@@ -21,6 +21,8 @@ command -v node >/dev/null 2>&1 || {
     echo -e "\nNode.js is not installed. Aborting";
     exit 1;
 }
+echo -e "\nIntalling grunt"
+sudo npm install -g grunt-cli
 echo -e "\nInstalling node packages\n"
 sudo npm install
 
