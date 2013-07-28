@@ -57,24 +57,18 @@ def create(request, params):
     wepayAccount.save()
     return redirect('index')
 
-def create_checkout(obj):
+def create_checkout(_type, accountID, description, amount):
     """
-    Create a checkout on WePay based on a purchase or donation
+    Create a checkout on WePay
     """
-    checkout = obj.checkout
-    appFee = checkout.amount * WEPAY_APP_FEE_RATIO
+    appFee = amount * WEPAY_APP_FEE_RATIO
     checkoutParams = {
-        'account_id':checkout.payee.account_id,
-        'short_description':checkout.description,
-        'amount':checkout.amount,
+        'type':_type.upper(),
+        'account_id':accountID,
+        'short_description':description,
+        'amount':amount,
         'app_fee':appFee,
         'mode':'iframe'
     }
-    if type(obj) == Purchase:
-        checkoutParams['type'] = 'EVENT'
-    else:
-        checkoutParams['type'] = 'DONATION'
-    checkoutInfo = wepay.call('/checkout/create', checkoutParams)
-    checkout.checkout_id = checkoutInfo['checkout_id']
-    checkout.save()
+    checkout = wepay.call('/checkout/create', checkoutParams)
     return checkout

@@ -71,6 +71,10 @@ fundraiser_urlpatterns = patterns('src.controllers.fundraiser',
     url(r'^donate/$', 'donate', name = 'donate'),
 )
 
+sponsorship_urlpatterns = patterns('src.controllers.sponsorship', 
+    url(r'^create/$', 'create', name = 'create'),
+)
+
 admin_urlpatterns = patterns('src.controllers.admin.admin', 
     url(r'^$', 'index', name = 'index'),
     url(r'^login/$', 'login', name = 'login'),

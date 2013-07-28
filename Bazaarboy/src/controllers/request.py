@@ -70,8 +70,7 @@ def validate(method='GET', required=[], optional=[]):
             elif method == 'POST':
                 requestArray = request.POST
             else:
-                # Other http methods, do nothing
-                return controller(request, *args, **kwargs)
+                requestArray = request.REQUEST
             params = params_from_request(requestArray, required, optional)
             if params is False:
                 # Param validation failed, return 400 (Bad Request)

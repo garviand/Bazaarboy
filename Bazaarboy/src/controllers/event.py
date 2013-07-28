@@ -3,7 +3,7 @@ Controller for events
 """
 
 from datetime import timedelta
-from django.db.models import F
+from django.db.models import F, Q
 from django.http import Http404
 from django.shortcuts import render
 from django.utils import timezone
@@ -541,16 +541,19 @@ def edit_ticket(request, params):
         else:
             ticket.price = params['price']
     if params['quantity'] is not None:
-        params['quantity'] = int(params['quantity'])
-        if params['quantity'] <= 0:
-            response = {
-                'status':'FAIL',
-                'error':'NON_POSITIVE_QUANTITY',
-                'message':'Quantity must be a positive integer.'
-            }
-            return json_response(response)
+        if params['quantity'].lower() == 'none':
+            ticket.quantity = None
         else:
-            ticket.quantity = params['quantity']
+            params['quantity'] = int(params['quantity'])
+            if params['quantity'] <= 0:
+                response = {
+                    'status':'FAIL',
+                    'error':'NON_POSITIVE_QUANTITY',
+                    'message':'Quantity must be a positive integer.'
+                }
+                return json_response(response)
+            else:
+                ticket.quantity = params['quantity']
     if params['start_time'] is not None:
         if params['start_time'] >= event.start_time:
             response = {
@@ -698,10 +701,32 @@ def purchase(request, params, loggedIn):
             'message':'This ticket is sold out.'
         }
         return json_response(response)
+    # Check if it's a free ticket
+    if ticket.price == 0:
+        # Check if there ia an existing purchase
+        if Purchase.objects.filter(owner = user, event = event, 
+                                   checkout = None, is_expired = False) \
+                           .exists():
+            response = {
+                'status':'FAIL',
+                'error':'PURCHASED_ALREADY',
+                'message':'You have already bought a ticket to the event.'
+            }
+            return json_response(response)
+        # Make the purchase record
+        purchase = Purchase(owner = user, ticket = ticket, event = event, 
+                            price = ticket.price)
+        purchase.save()
+        response = {
+            'status':'OK',
+            'purchase':serialize_one(purchase)
+        }
+        return json_response(response)
     # Check if there is an exisiting purchase
-    if Purchase.objects.filter(owner = user, event = event, 
-                               checkout__is_captured = True, 
-                               checkout__is_refunded = False, 
+    if Purchase.objects.filter(Q(checkout = None) | 
+                               Q(checkout__is_captured = True, 
+                                 checkout__is_refunded = False), 
+                               owner = user, event = event, 
                                is_expired = False).exists():
         response = {
             'status':'FAIL',
@@ -709,17 +734,20 @@ def purchase(request, params, loggedIn):
             'message':'You have already bought a ticket to the event.'
         }
         return json_response(response)
-    # All checks passed, create the purchase
+    # All checks passed, request a checkout on WePay
     checkoutDescription = '%s - %s' % (event.name, ticket.name)
+    checkoutInfo = create_checkout('EVENT', 
+                                   event.owner.wepay_account.accound_id, 
+                                   checkoutDescription, ticket.price)
     checkout = Wepay_checkout(payer = user, payee = event.owner.wepay_account, 
+                              checkout_id = checkoutInfo['checkout_id']
                               amount = ticket.price, 
                               description = checkoutDescription[:127])
     checkout.save()
+    # Create the purchase
     purchase = Purchase(owner = user, ticket = ticket, event = event, 
                         price = ticket.price, checkout = checkout)
     purchase.save()
-    # Request a checkout on WePay
-    checkout = create_checkout(purchase)
     # If the ticket has a quantity limit
     if ticket.quantity is not None:
         # Schedule the purchase to be expired after some amount of time

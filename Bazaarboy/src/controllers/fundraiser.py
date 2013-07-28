@@ -543,16 +543,19 @@ def edit_reward(request, params):
         else:
             reward.price = params['price']
     if params['quantity'] is not None:
-        params['quantity'] = int(params['quantity'])
-        if params['quantity'] <= 0:
-            response = {
-                'status':'FAIL',
-                'error':'NON_POSITIVE_QUANTITY',
-                'message':'Quantity must be a positive integer.'
-            }
-            return json_response(response)
+        if params['quantity'].lower() == 'none':
+            reward.quantity = None
         else:
-            reward.quantity = params['quantity']
+            params['quantity'] = int(params['quantity'])
+            if params['quantity'] <= 0:
+                response = {
+                    'status':'FAIL',
+                    'error':'NON_POSITIVE_QUANTITY',
+                    'message':'Quantity must be a positive integer.'
+                }
+                return json_response(response)
+            else:
+                reward.quantity = params['quantity']
     # Save the changes
     reward.save()
     response = {
@@ -707,15 +710,20 @@ def donate(request, params):
             'message':'Your donation amount is not valid for this reward.'
         }
         return json_response(response)
-    # All checks passed, create the donation
+    # All checks passed, request a checkout on WePay
     checkoutDescription = fundraiser.name
     if len(reward.name) > 0:
         checkoutDescription += ' - ' + reward.name
+    checkoutInfo = create_checkout('DONATION', 
+                                   fundraiser.owner.wepay_account.accound_id, 
+                                   checkoutDescription, params['amount'])
     checkout = Wepay_checkout(payer = user, 
                               payee = fundraiser.owner.wepay_account, 
+                              checkout_id = checkoutInfo['checkout_id'], 
                               amount = params['amount'], 
                               description = checkoutDescription[:127])
     checkout.save()
+    # Create the donation
     donation = Donation(owner = user, reward = reward, fundraiser = fundraiser, 
                         amount = params['amount'], checkout = checkout)
     donation.save()

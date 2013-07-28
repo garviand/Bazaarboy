@@ -89,7 +89,7 @@ class Wepay_checkout(models.Model):
     """
     payer = models.ForeignKey('User')
     payee = models.ForeignKey('Wepay_account')
-    checkout_id = models.CharField(max_length = 50, null = True, default = None)
+    checkout_id = models.CharField(max_length = 50)
     amount = models.FloatField()
     description = models.CharField(max_length = 127)
     is_captured = models.BooleanField(default = False)
@@ -320,6 +320,58 @@ class Donation(models.Model):
     checkout = models.ForeignKey('Wepay_checkout')
     is_expired = models.BooleanField(default = False)
     created_time = models.DateTimeField(auto_now_add = True)
+
+class Criteria(models.Model):
+    """
+    Criteria model for sponsorship
+    """
+    name = models.CharField(max_length = 50)
+    description = models.CharField(max_length = 150)
+    price = models.FloatField()
+    quantity = models.IntegerField(null = True, default = None)
+
+    class Meta:
+        abstract = True
+
+class Event_criteria(Criteria):
+    """
+    Sponsorship criteria model for an event
+    """
+    _for = models.ForeignKey('Event')
+
+class Fundraiser_criteria(Criteria):
+    """
+    Sponsorship criteria model for a fundraiser
+    """
+    _for = models.ForeignKey('Fundraiser')
+
+class Sponsorship(models.Model):
+    """
+    Sponsorship model
+    """
+    owner = models.ForeignKey('Profile', related_name = '%(class)s_profile')
+    amount = models.FloatField()
+    checkout_id = models.CharField(max_length = 50)
+    is_captured = models.BooleanField(default = False)
+    is_refunded = models.BooleanField(default = False)
+    created_time = models.DateTimeField(auto_now_add = True)
+
+    class Meta:
+        abstract = True
+
+class Event_sponsorship(Sponsorship):
+    """
+    Sponsorship model for an event
+    """
+    criteria = models.ForeignKey('Event_criteria')
+    _for = models.ForeignKey('Event')
+
+class Fundraiser_sponsorship(Sponsorship):
+    """
+    Sponsorship model for a fundraiser
+    """
+    criteria = models.ForeignKey('Fundraiser_criteria')
+    _for = models.ForeignKey('Fundraiser')
 
 class Redeemable(models.Model):
     """
