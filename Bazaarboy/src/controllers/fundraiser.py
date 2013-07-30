@@ -2,6 +2,7 @@
 Controller for fundraisers
 """
 
+import os
 from datetime import timedelta
 from django.db.models import F
 from django.http import Http404
@@ -48,31 +49,12 @@ def fundraiser(request, params):
 @login_required()
 @validate('POST', 
           ['profile', 'name', 'description', 'category', 'goal', 'deadline'], 
-          ['latitude', 'longitude', 'is_private'])
+          ['latitude', 'longitude', 'is_private', 'token'])
 def create(request, params):
     """
     Create a new fundraiser
     """
-    # Check if the profile is valid
-    if not Profile.objects.filter(id = params['profile']).exists():
-        response = {
-            'status':'FAIL',
-            'error':'PROFILE_NOT_FOUND',
-            'message':'The profile doesn\'t exist.'
-        }
-        return json_response(response)
-    profile = Profile.objects.get(id = params['profile'])
-    user = User.objects.get(id = request.session['user'])
-    # Check if the user is a manager of the profile
-    if not Profile_manager.objects.filter(profile = profile, 
-                                          user = user).exists():
-        response = {
-            'status':'FAIL',
-            'error':'NOT_A_MANAGER',
-            'message':'You don\'t have permission for the profile.'
-        }
-        return json_response(response)
-    # Check the name length
+    # Check if the name is too long
     params['name'] = params['name'].strip()
     if len(params['name']) > 50:
         response = {
@@ -126,6 +108,32 @@ def create(request, params):
     # Check if it's a private fundraiser
     if params['is_private'] is not None:
         fundraiser.is_private = params['is_private']
+    # Check if the user has logged in
+    if loggedIn:
+        # If so, check if the profile is valid
+        if not Profile.objects.filter(id = params['profile']).exists():
+            response = {
+                'status':'FAIL',
+                'error':'PROFILE_NOT_FOUND',
+                'message':'The profile doesn\'t exist.'
+            }
+            return json_response(response)
+        profile = Profile.objects.get(id = params['profile'])
+        user = User.objects.get(id = request.session['user'])
+        # Check if the user is a manager of the profile
+        if not Profile_manager.objects.filter(profile = profile, 
+                                              user = user).exists():
+            response = {
+                'status':'FAIL',
+                'error':'NOT_A_MANAGER',
+                'message':'You don\'t have permission for the profile.'
+            }
+            return json_response(response)
+        # Set the owner of the fundraiser to the specified profile
+        fundraiser.owner = profile
+    else:
+        # Otherwise, generate an access token for the anonymous user
+        fundraiser.access_token = os.urandom(128).encode('base_64')[:128]
     # Save to database
     fundraiser.save()
     response = {
@@ -135,7 +143,9 @@ def create(request, params):
     return json_response(response)
 
 @login_required()
-@validate('POST', ['id'])
+@validate('POST', ['id'], 
+          ['name', 'description', 'goal', 'deadline', 'location', 'latitude', 
+           'longitude', 'category', 'is_private', 'token'])
 def edit(request, params):
     """
     Edit an existing fundraiser
@@ -149,17 +159,29 @@ def edit(request, params):
         }
         return json_response(response)
     fundraiser = Fundraiser.objects.get(id = params['id'])
-    # Check if user has permission for the fundraiser
-    user = User.objects.get(id = request.session['user'])
-    if not Profile_manager.objects.filter(user = user, 
-                                          profile = fundraiser.owner) \
-                                  .exists():
-        response = {
-            'status':'FAIL',
-            'error':'NOT_A_MANAGER',
-            'message':'You don\'t have permission for the fundraiser.'
-        }
-        return json_response(response)
+    # Check if user has logged in
+    if loggedIn:
+        # If so, check if user has permission for the fundraiser
+        user = User.objects.get(id = request.session['user'])
+        if not Profile_manager.objects.filter(user = user, 
+                                              profile = fundraiser.owner) \
+                                      .exists():
+            response = {
+                'status':'FAIL',
+                'error':'NOT_A_MANAGER',
+                'message':'You don\'t have permission for the fundraiser.'
+            }
+            return json_response(response)
+    else:
+        # Otherwise check if the access token is valid
+        if (params['token'] is None or 
+            fundraiser.access_token != params['token']):
+            response = {
+                'status':'FAIL',
+                'error':'PERMISSION_DENIED',
+                'message':'You don\'t have permission for the fundraiser.'
+            }
+            return json_response(response)
     # Go through all params and edit the fundraiser accordingly
     if params['goal'] is not None:
         if fundraiser.is_launched:
@@ -344,7 +366,7 @@ def delaunch(request, params):
     return json_response(response)
 
 @login_required()
-@validate('POST', ['id'])
+@validate('POST', ['id'], ['token'])
 def delete(request, params):
     """
     Delete a fundraiser
@@ -358,17 +380,29 @@ def delete(request, params):
         }
         return json_response(response)
     fundraiser = Fundraiser.objects.get(id = params['id'])
-    # Check if user has permission for the fundraiser
-    user = User.objects.get(id = request.session['user'])
-    if not Profile_manager.objects.filter(user = user, 
-                                          profile = fundraiser.owner) \
-                                  .exists():
-        response = {
-            'status':'FAIL',
-            'error':'NOT_A_MANAGER',
-            'message':'You don\'t have permission for the fundraiser.'
-        }
-        return json_response(response)
+    # Check if user has logged in
+    if loggedIn:
+        # If so, check if user has permission for the fundraiser
+        user = User.objects.get(id = request.session['user'])
+        if not Profile_manager.objects.filter(user = user, 
+                                              profile = fundraiser.owner) \
+                                      .exists():
+            response = {
+                'status':'FAIL',
+                'error':'NOT_A_MANAGER',
+                'message':'You don\'t have permission for the fundraiser.'
+            }
+            return json_response(response)
+    else:
+        # Otherwise check if the access token is valid
+        if (params['token'] is None or 
+            fundraiser.access_token != params['token']):
+            response = {
+                'status':'FAIL',
+                'error':'PERMISSION_DENIED',
+                'message':'You don\'t have permission for the fundraiser.'
+            }
+            return json_response(response)
     # Check if the fundraiser is launched
     if fundraiser.is_launched:
         response = {
@@ -385,7 +419,8 @@ def delete(request, params):
     return json_response(response)
 
 @login_required()
-@validate('POST', ['fundraiser', 'name', 'description', 'price'], ['quantity'])
+@validate('POST', ['fundraiser', 'name', 'description', 'price'], 
+          ['quantity', 'token'])
 def create_reward(request, params):
     """
     Create a reward for the fundraiser
@@ -399,17 +434,29 @@ def create_reward(request, params):
         }
         return json_response(response)
     fundraiser = Initiative.objects.get(id = params['fundraiser'])
-    # Check if user has permission for the fundraiser
-    user = User.objects.get(id = request.session['user'])
-    if not Profile_manager.objects.filter(user = user, 
-                                          profile = fundraiser.owner) \
-                                  .exists():
-        response = {
-            'status':'FAIL',
-            'error':'NOT_A_MANAGER',
-            'message':'You don\'t have permission for the fundraiser.'
-        }
-        return json_response(response)
+    # Check if user has logged in
+    if loggedIn:
+        # If so, check if user has permission for the fundraiser
+        user = User.objects.get(id = request.session['user'])
+        if not Profile_manager.objects.filter(user = user, 
+                                              profile = fundraiser.owner) \
+                                      .exists():
+            response = {
+                'status':'FAIL',
+                'error':'NOT_A_MANAGER',
+                'message':'You don\'t have permission for the fundraiser.'
+            }
+            return json_response(response)
+    else:
+        # Otherwise check if the access token is valid
+        if (params['token'] is None or 
+            fundraiser.access_token != params['token']):
+            response = {
+                'status':'FAIL',
+                'error':'PERMISSION_DENIED',
+                'message':'You don\'t have permission for the fundraiser.'
+            }
+            return json_response(response)
     # Check if the name is too long
     if len(params['name']) > 15:
         response = {
@@ -468,7 +515,7 @@ def create_reward(request, params):
     return json_response(response)
 
 @login_required()
-@validate('POST', ['id'], ['name', 'description', 'price', 'quantity'])
+@validate('POST', ['id'], ['name', 'description', 'price', 'quantity', 'token'])
 def edit_reward(request, params):
     """
     Edit a reward
@@ -483,17 +530,29 @@ def edit_reward(request, params):
         return json_response(response)
     reward = Reward.objects.get(id = params['id'])
     fundraiser = reward.fundraiser
-    # Check if user has permission for the fundraiser
-    user = User.objects.get(id = request.session['user'])
-    if not Profile_manager.objects.filter(user = user, 
-                                          profile = fundraiser.owner) \
-                                  .exists():
-        response = {
-            'status':'FAIL',
-            'error':'NOT_A_MANAGER',
-            'message':'You don\'t have permission for the fundraiser.'
-        }
-        return json_response(response)
+    # Check if user has logged in
+    if loggedIn:
+        # If so, check if user has permission for the fundraiser
+        user = User.objects.get(id = request.session['user'])
+        if not Profile_manager.objects.filter(user = user, 
+                                              profile = fundraiser.owner) \
+                                      .exists():
+            response = {
+                'status':'FAIL',
+                'error':'NOT_A_MANAGER',
+                'message':'You don\'t have permission for the fundraiser.'
+            }
+            return json_response(response)
+    else:
+        # Otherwise check if the access token is valid
+        if (params['token'] is None or 
+            fundraiser.access_token != params['token']):
+            response = {
+                'status':'FAIL',
+                'error':'PERMISSION_DENIED',
+                'message':'You don\'t have permission for the fundraiser.'
+            }
+            return json_response(response)
     # Check if the deadline has passed
     if fundraiser.is_launched and fundraiser.deadline <= timezone.now():
         response = {
@@ -565,7 +624,7 @@ def edit_reward(request, params):
     return json_response(response)
 
 @login_required()
-@validate('POST', ['id'])
+@validate('POST', ['id'], ['token'])
 def delete_reward(request, params):
     """
     Delete a reward
@@ -580,17 +639,29 @@ def delete_reward(request, params):
         return json_response(response)
     reward = Reward.objects.get(id = params['id'])
     fundraiser = reward.fundraiser
-    # Check if user has permission for the fundraiser
-    user = User.objects.get(id = request.session['user'])
-    if not Profile_manager.objects.filter(user = user, 
-                                          profile = fundraiser.owner) \
-                                  .exists():
-        response = {
-            'status':'FAIL',
-            'error':'NOT_A_MANAGER',
-            'message':'You don\'t have permission for the fundraiser.'
-        }
-        return json_response(response)
+    # Check if user has logged in
+    if loggedIn:
+        # If so, check if user has permission for the fundraiser
+        user = User.objects.get(id = request.session['user'])
+        if not Profile_manager.objects.filter(user = user, 
+                                              profile = fundraiser.owner) \
+                                      .exists():
+            response = {
+                'status':'FAIL',
+                'error':'NOT_A_MANAGER',
+                'message':'You don\'t have permission for the fundraiser.'
+            }
+            return json_response(response)
+    else:
+        # Otherwise check if the access token is valid
+        if (params['token'] is None or 
+            fundraiser.access_token != params['token']):
+            response = {
+                'status':'FAIL',
+                'error':'PERMISSION_DENIED',
+                'message':'You don\'t have permission for the fundraiser.'
+            }
+            return json_response(response)
     # Check if the deadline has passed
     if fundraiser.is_launched and fundraiser.deadline <= timezone.now():
         response = {

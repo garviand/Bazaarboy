@@ -1,7 +1,6 @@
 Bazaarboy.event.index = 
     init: () ->
         $(document).ready () ->
-            ###
             $('div.description div.editable').redactor
                 buttons: [
                     'formatting','bold', 'italic', 'deleted', 'fontcolor', 
@@ -15,6 +14,5 @@ Bazaarboy.event.index =
                 description = $('div.description div.editable').redactor('get')
                 console.log description
                 return
-            ###
             return
         return

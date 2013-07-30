@@ -2,6 +2,7 @@
 Controller for events
 """
 
+import os
 from datetime import timedelta
 from django.db.models import F, Q
 from django.http import Http404
@@ -46,34 +47,15 @@ def event(request, params):
     }
     return json_response(response)
 
-@login_required()
+@login_check()
 @validate('POST', 
           ['profile', 'name', 'description', 'start_time', 'location', 
            'category'], 
           ['end_time', 'latitude', 'longitude', 'is_private'])
-def create(request, params):
+def create(request, loggedIn, params):
     """
     Create a new event
     """
-    # Check if the profile is valid
-    if not Profile.objects.filter(id = params['profile']).exists():
-        response = {
-            'status':'FAIL',
-            'error':'PROFILE_NOT_FOUND',
-            'message':'The profile doesn\'t exist.'
-        }
-        return json_response(response)
-    profile = Profile.objects.get(id = params['profile'])
-    user = User.objects.get(id = request.session['user'])
-    # Check if the user is a manager of the profile
-    if not Profile_manager.objects.filter(profile = profile, 
-                                          user = user).exists():
-        response = {
-            'status':'FAIL',
-            'error':'NOT_A_MANAGER',
-            'message':'You don\'t have permission for the profile.'
-        }
-        return json_response(response)
     # Check if the event name is too long
     if len(params['name']) > 50:
         response = {
@@ -97,8 +79,7 @@ def create(request, params):
                   start_time = params['start_time'], 
                   end_time = params['end_time'], 
                   location = params['location'], 
-                  category = params['category'], 
-                  owner = profile)
+                  category = params['category'])
     # Check if coordinates are specified, and if so, if they are legal
     if params['latitude'] is not None and params['longitude'] is not None:
         if not (-90.0 <= float(params['latitude']) <= 90.0 and 
@@ -116,6 +97,32 @@ def create(request, params):
     # Check if it's a private event
     if params['is_private'] is not None:
         event.is_private = params['is_private']
+    # Check if the user has logged in
+    if loggedIn:
+        # If so, check if the profile is valid
+        if not Profile.objects.filter(id = params['profile']).exists():
+            response = {
+                'status':'FAIL',
+                'error':'PROFILE_NOT_FOUND',
+                'message':'The profile doesn\'t exist.'
+            }
+            return json_response(response)
+        profile = Profile.objects.get(id = params['profile'])
+        user = User.objects.get(id = request.session['user'])
+        # Check if the user is a manager of the profile
+        if not Profile_manager.objects.filter(profile = profile, 
+                                              user = user).exists():
+            response = {
+                'status':'FAIL',
+                'error':'NOT_A_MANAGER',
+                'message':'You don\'t have permission for the profile.'
+            }
+            return json_response(response)
+        # Set the owner of the event to the specified profile
+        event.owner = profile
+    else:
+        # Otherwise, generate an access token for the anonymous user
+        event.access_token = os.urandom(128).encode('base_64')[:128]
     # Save to database
     event.save()
     response = {
@@ -124,11 +131,11 @@ def create(request, params):
     }
     return json_response(response)
 
-@login_required()
+@login_check()
 @validate('POST', ['id'], 
           ['name', 'description', 'start_time', 'end_time', 'location', 
-           'latitude', 'longitude', 'category', 'is_private'])
-def edit(request, params):
+           'latitude', 'longitude', 'category', 'is_private', 'token'])
+def edit(request, loggedIn, params):
     """
     Edit an existing event
     """
@@ -141,16 +148,27 @@ def edit(request, params):
         }
         return json_response(response)
     event = Event.objects.get(id = params['id'])
-    # Check if user has permission for the event
-    user = User.objects.get(id = request.session['user'])
-    if not Profile_manager.objects.filter(user = user, profile = event.owner) \
-                                  .exists():
-        response = {
-            'status':'FAIL',
-            'error':'NOT_A_MANAGER',
-            'message':'You don\'t have permission for the event.'
-        }
-        return json_response(response)
+    # Check if user has logged in
+    if loggedIn:
+        # If so, check if user has permission for the event
+        user = User.objects.get(id = request.session['user'])
+        if not Profile_manager.objects.filter(user = user, 
+                                              profile = event.owner).exists():
+            response = {
+                'status':'FAIL',
+                'error':'NOT_A_MANAGER',
+                'message':'You don\'t have permission for the event.'
+            }
+            return json_response(response)
+    else:
+        # Otherwise check if the access token is valid
+        if params['token'] is None or event.access_token != params['token']:
+            response = {
+                'status':'FAIL',
+                'error':'PERMISSION_DENIED',
+                'message':'You don\'t have permission for the event.'
+            }
+            return json_response(response)
     # Go through all the params and edit the event accordingly
     if params['name'] is not None:
         if not (0 < len(params['name']) <= 50):
@@ -323,9 +341,9 @@ def delaunch(request, params):
     }
     return json_response(response)
 
-@login_required()
-@validate('POST', ['id'])
-def delete(request, params):
+@login_check()
+@validate('POST', ['id'], ['token'])
+def delete(request, loggedIn, params):
     """
     Delete an event
     """
@@ -338,16 +356,27 @@ def delete(request, params):
         }
         return json_response(response)
     event = Event.objects.get(id = params['id'])
-    # Check if user has permission for the event
-    user = User.objects.get(id = request.session['user'])
-    if not Profile_manager.objects.filter(user = user, profile = event.owner) \
-                                  .exists():
-        response = {
-            'status':'FAIL',
-            'error':'NOT_A_MANAGER',
-            'message':'You don\'t have permission for the event.'
-        }
-        return json_response(response)
+    # Check if user is logged in
+    if loggedIn:
+        # If so, check if user has permission for the event
+        user = User.objects.get(id = request.session['user'])
+        if not Profile_manager.objects.filter(user = user, profile = event.owner) \
+                                      .exists():
+            response = {
+                'status':'FAIL',
+                'error':'NOT_A_MANAGER',
+                'message':'You don\'t have permission for the event.'
+            }
+            return json_response(response)
+    else:
+        # Otherwise check if the access token is valid
+        if params['token'] is None or event.access_token != params['token']:
+            response = {
+                'status':'FAIL',
+                'error':'PERMISSION_DENIED',
+                'message':'You don\'t have permission for the event.'
+            }
+            return json_response(response)
     # Check if the event is launched
     if event.is_launched:
         response = {
@@ -367,7 +396,7 @@ def delete(request, params):
 @login_required()
 @validate('POST', 
           ['event', 'name', 'description'], 
-          ['price', 'quantity', 'start_time', 'end_time'])
+          ['price', 'quantity', 'start_time', 'end_time', 'token'])
 def create_ticket(request, params):
     """
     Create a ticket for an event
@@ -381,24 +410,27 @@ def create_ticket(request, params):
         }
         return json_response(response)
     event = Event.objects.get(id = params['event'])
-    # Check if user has permission for the event
-    user = User.objects.get(id = request.session['user'])
-    if not Profile_manager.objects.filter(user = user, profile = event.owner) \
-                                  .exists():
-        response = {
-            'status':'FAIL',
-            'error':'NOT_A_MANAGER',
-            'message':'You don\'t have permission for the event.'
-        }
-        return json_response(response)
-    # Check if the name is too long
-    if len(params['name']) > 15:
-        response = {
-            'status':'FAIL',
-            'error':'INVALID_NAME',
-            'message':'Ticket name cannot be over 15 characters.'
-        }
-        return json_response(response)
+    # Check if user is logged in
+    if loggedIn:
+        # If so, check if user has permission for the event
+        user = User.objects.get(id = request.session['user'])
+        if not Profile_manager.objects.filter(user = user, profile = event.owner) \
+                                      .exists():
+            response = {
+                'status':'FAIL',
+                'error':'NOT_A_MANAGER',
+                'message':'You don\'t have permission for the event.'
+            }
+            return json_response(response)
+    else:
+        # Otherwise check if the access token is valid
+        if params['token'] is None or event.access_token != params['token']:
+            response = {
+                'status':'FAIL',
+                'error':'PERMISSION_DENIED',
+                'message':'You don\'t have permission for the event.'
+            }
+            return json_response(response)
     # Check if the description is too long
     if len(params['description']) > 150:
         response = {
@@ -475,7 +507,7 @@ def create_ticket(request, params):
 @login_required()
 @validate('POST', ['id'], 
           ['name', 'description', 'price', 'quantity', 'start_time', 
-           'end_time'])
+           'end_time', 'token'])
 def edit_ticket(request, params):
     """
     Edit a ticket
@@ -489,17 +521,28 @@ def edit_ticket(request, params):
         }
         return json_response(response)
     ticket = Ticket.objects.get(id = params['id'])
-    # Check if the user has permission for the event
-    user = User.objects.get(id = request.session['user'])
     event = ticket.event
-    if not Profile_manager.objects.filter(user = user, profile = event.owner) \
-                                  .exists():
-        response = {
-            'status':'FAIL',
-            'error':'NOT_A_MANAGER',
-            'message':'You don\'t have permission for the event.'
-        }
-        return json_response(response)
+    # Check if user is logged in
+    if loggedIn:
+        # If so, check if user has permission for the event
+        user = User.objects.get(id = request.session['user'])
+        if not Profile_manager.objects.filter(user = user, profile = event.owner) \
+                                      .exists():
+            response = {
+                'status':'FAIL',
+                'error':'NOT_A_MANAGER',
+                'message':'You don\'t have permission for the event.'
+            }
+            return json_response(response)
+    else:
+        # Otherwise check if the access token is valid
+        if params['token'] is None or event.access_token != params['token']:
+            response = {
+                'status':'FAIL',
+                'error':'PERMISSION_DENIED',
+                'message':'You don\'t have permission for the event.'
+            }
+            return json_response(response)
     # Check if the event has started
     if event.start_time <= timezone.now():
         response = {
@@ -585,7 +628,7 @@ def edit_ticket(request, params):
     return json_response(response)
 
 @login_required()
-@validate('POST', ['id'])
+@validate('POST', ['id'], ['token'])
 def delete_ticket(request, params):
     """
     Delete a ticket
@@ -599,17 +642,28 @@ def delete_ticket(request, params):
         }
         return json_response(response)
     ticket = Ticket.objects.get(id = params['id'])
-    # Check if the user has permission for the event
-    user = User.objects.get(id = request.session['user'])
     event = ticket.event
-    if not Profile_manager.objects.filter(user = user, profile = event.owner) \
-                                  .exists():
-        response = {
-            'status':'FAIL',
-            'error':'NOT_A_MANAGER',
-            'message':'You don\'t have permission for the event.'
-        }
-        return json_response(response)
+    # Check if user is logged in
+    if loggedIn:
+        # If so, check if user has permission for the event
+        user = User.objects.get(id = request.session['user'])
+        if not Profile_manager.objects.filter(user = user, profile = event.owner) \
+                                      .exists():
+            response = {
+                'status':'FAIL',
+                'error':'NOT_A_MANAGER',
+                'message':'You don\'t have permission for the event.'
+            }
+            return json_response(response)
+    else:
+        # Otherwise check if the access token is valid
+        if params['token'] is None or event.access_token != params['token']:
+            response = {
+                'status':'FAIL',
+                'error':'PERMISSION_DENIED',
+                'message':'You don\'t have permission for the event.'
+            }
+            return json_response(response)
     # Check if the event has started
     if event.is_launched and event.start_time <= timezone.now():
         response = {
@@ -740,7 +794,7 @@ def purchase(request, params, loggedIn):
                                    event.owner.wepay_account.accound_id, 
                                    checkoutDescription, ticket.price)
     checkout = Wepay_checkout(payer = user, payee = event.owner.wepay_account, 
-                              checkout_id = checkoutInfo['checkout_id']
+                              checkout_id = checkoutInfo['checkout_id'],
                               amount = ticket.price, 
                               description = checkoutDescription[:127])
     checkout.save()

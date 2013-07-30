@@ -214,10 +214,14 @@ class Event_base(models.Model):
     is_launched = models.BooleanField(default = False)
     is_closed = models.BooleanField(default = False)
     category = models.CharField(max_length = 30)
-    owner = models.ForeignKey('Profile')
+    owner = models.ForeignKey('Profile', null = True, default = None)
     community = models.ForeignKey('Community', 
-                                  related_name = '%(class)s_community')
-    city = models.ForeignKey('City', related_name = '%(class)s_city')
+                                  related_name = '%(class)s_community', 
+                                  null = True, default = None)
+    city = models.ForeignKey('City', related_name = '%(class)s_city', 
+                             null = True, default = None)
+    access_token = models.CharField(max_length = 128, null = True, 
+                                    default = None)
     created_time = models.DateTimeField(auto_now_add = True)
 
     class Meta:
@@ -227,7 +231,7 @@ class Event_base(models.Model):
         """
         Overrides save to auto-set community and city
         """
-        if self.pk is None:
+        if self.pk is None and self.owner is not None:
             # Auto-set the community and city for the new event
             self.community = self.owner.community
             self.city = self.owner.city
