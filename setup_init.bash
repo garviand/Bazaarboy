@@ -36,6 +36,11 @@ echo -e "\nInstalling pip\n"
 sudo apt-get install python-pip
 echo -e "\nInstalling virtualenvwrapper\n"
 sudo pip install virtualenvwrapper
+echo -e "\nInstalling PIL requirements\n"
+sudo apt-get build-dep python-imaging
+sudo ln -s /usr/lib/`uname -i`-linux-gnu/libfreetype.so /usr/lib/
+sudo ln -s /usr/lib/`uname -i`-linux-gnu/libjpeg.so /usr/lib/
+sudo ln -s /usr/lib/`uname -i`-linux-gnu/libz.so /usr/lib/
 
 # Others
 echo -e "\nInstalling redis\n"
