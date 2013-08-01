@@ -16,6 +16,7 @@
 @top_border_color: #79A69B;
 @logo_color: #688F86;
 @sidebar_color: #2F4241;
+@pale_blue: #F0F5F5;
 
 @font_family_base: Helvetica, Arial, sans-serif;
 @font_size_base: 16px;
@@ -56,7 +57,7 @@ div#wrapper_top {
     position: relative;
     width: @body_width;
     height: @top_height;
-    z-index: @overlay_z_index;
+    //z-index: @overlay_z_index;
     border-bottom: 1px solid @top_border_color;
     background-color: #FFF;
     .center;
@@ -121,7 +122,7 @@ div#wrapper_overlay {
     top: 0;
     left: 0;
     z-index: @overlay_mask_z_index;
-    background-color: rgba(0, 0, 0, 0.5);
+    background-color: rgba(0, 0, 0, 0.7);
     cursor: pointer;
 }
 
@@ -210,7 +211,7 @@ div#event {
 
         div.description {
             width: @event_description_width;
-            height: 200px;
+            min-height: 200px;
             .left;
         }
 
@@ -252,14 +253,19 @@ div#event {
 }
 
 div#rsvp {
+    @rsvp_width: @event_description_width - 20;
+
     display: none;
     position: absolute;
-    width: @event_description_width;
-    height: 500px;
+    width: @rsvp_width;
+    padding: 10px;
     top: 10px;
-    right: (@content_width_expanded - @event_body_width) / 2 + (@event_body_width - @event_description_width);
+    right: @content_width / 2 + @event_body_width / 2 - @event_description_width;
     z-index: @overlay_z_index;
-    background-color: #FFF;
+    background-color: @pale_blue;
+    body.collapsed & {
+        right: @content_width_expanded / 2 + @event_body_width / 2 - @event_description_width;
+    }
 
     &:before {
         content: '';
@@ -268,10 +274,52 @@ div#rsvp {
         height: 0;
         border-style: solid;
         border-width: 10px 10px 10px 0;
-        border-color: transparent #FFF transparent transparent;
+        border-color: transparent @pale_blue transparent transparent;
         right: -10px;
         top: 60px;
-        
         -webkit-transform: rotate(180deg);
+    }
+
+    > div.divider {
+        width: @rsvp_width;
+        height: 14px;
+        text-align: center;
+    }
+
+    div.user {
+        width: @rsvp_width;
+
+        div.normal {
+            width: @rsvp_width;
+            height: 100%;
+            background-color: #FFF;
+
+            div.divider {
+                width: 1px;
+                height: 160px;
+                margin: 10px 0;
+                background-color: @pale_blue;
+                .left;
+            }
+
+            div.login {
+                width: (@rsvp_width - 1) / 2 - 20;
+                height: 160px;
+                padding: 10px;
+                .left;
+            }
+
+            div.register {
+                width: (@rsvp_width - 1) / 2 - 20;
+                height: 160px;
+                padding: 10px;
+                .left;
+            }
+        }
+    }
+
+    div.email {
+        width: @rsvp_width;
+        background-color: #FFF;
     }
 }

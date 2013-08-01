@@ -59,11 +59,32 @@ block content
     div#rsvp
         div.title
             {{ event.title }}
-        {% if not user %}
+        {% if not loggedIn %}
         div.user
-            div.login
-            div.register
-            div.clear
+            div.caption Do you have a Bazaarboy account?
+            div.normal
+                div.login
+                    div.caption Log In
+                    div.form
+                        form.login
+                            input(type="text", name="email", placeholder="Email")
+                            input(type="password", name="password", placeholder="Password")
+                            input(type="submit", value="Log In")
+                div.divider
+                div.register
+                    div.caption Register
+                    div.form
+                        form.register
+                            input(type="text", name="full_name", placeholder="Your Name")
+                            input(type="text", name="email", placeholder="Email")
+                            input(type="password", name="password", placeholder="Password")
+                            input(type="submit", value="Register")
+                            // Dev only
+                            input(type="hidden", name="city", value="1")
+                div.clear
+        div.divider or
+        div.email
+            input(type="text", name="email", placeholder="Email")
         {% endif %}
         div.tickets
         div.action

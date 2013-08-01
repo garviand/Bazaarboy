@@ -71,8 +71,10 @@ def dev(port=8080):
             # Run the django development server on specified port
             local('python manage.py runserver 0.0.0.0:%s' % port)
     except KeyboardInterrupt:
+        pool.close()
         pool.terminate()
         pool.join()
     else:
         pool.close()
+        pool.terminate()
         pool.join()

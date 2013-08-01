@@ -82,7 +82,7 @@ def reset(request, params, loggedIn):
 
 @login_check()
 @validate('POST', 
-          ['email', 'password', 'confirm', 'first_name', 'last_name', 'city'])
+          ['email', 'password', 'full_name', 'city'])
 def create(request, params, loggedIn):
     """
     Create a new user using email and password
@@ -115,20 +115,12 @@ def create(request, params, loggedIn):
             'message':'The length of password is invalid.'
         }
         return json_response(response)
-    # Check confirm password
-    if params['confirm'] != params['password']:
-        response = {
-            'status':'FAIL',
-            'error':'PASSWORDS_MISMATCH',
-            'message':'The confirm password does not match the original one.'
-        }
-        return json_response(response)
     # Check if the name is valid
-    if len(params['first_name']) > 30 or len(params['last_name']) > 30:
+    if len(params['full_name']) > 50:
         response = {
             'status':'FAIL',
             'error':'NAME_TOO_LONG',
-            'message':'Your first/last name is too long.'
+            'message':'Your full name is too long.'
         }
         return json_response(response)
     # Find the unactivated user, or create a new one
@@ -137,8 +129,7 @@ def create(request, params, loggedIn):
         user = User.objects.get(email = params['email'])
     # Set the user information
     user.password = params['password']
-    user.first_name = params['first_name']
-    user.last_name = params['last_name']
+    user.full_name = params['full_name']
     user.save()
     # Creation done, send out a confirmation email
     # Start the session
@@ -160,6 +151,12 @@ def auth(request, params, loggedIn):
     # Authenticate email and password combination
     if User.objects.filter(email = params['email']).exists():
         user = User.objects.get(email = params['email'])
+        if user.password is None:
+            response = {
+                'status':'FAIL',
+                'message':'You must log in using facebook.'
+            }
+            return json_response(response)
         saltedPassword = user.salt + params['password']
         if user.password == hashlib.sha512(saltedPassword).hexdigest():
             # Email and password match, start session
@@ -229,8 +226,8 @@ def fbAuth(request, params, loggedIn):
                 user = User.objects.get(email = params['email'])
             user.fb_id = fbProfile['id']
             user.fb_access_token = params['fb_token']
-            user.first_name = fbProfile['first_name'][:35]
-            user.last_name = fbProfile['last_name'][:35]
+            user.full_name = ('%s %s' % (fbProfile['first_name'], 
+                                        fbProfile['last_name']))[:50]
             user.save()
             # Creation done, send out confirmation email
             code = os.urandom(128).encode('base_64')[:128]

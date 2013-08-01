@@ -15,8 +15,7 @@ class User(models.Model):
     User is a real user of the site. It can make purchases on the site,
     as well as create profiles to in turn organize events.
     """
-    first_name = models.CharField(max_length = 35)
-    last_name = models.CharField(max_length = 35)
+    full_name = models.CharField(max_length = 50)
     email = models.CharField(max_length = 50, unique = True)
     password = models.CharField(max_length = 128, null = True, default = None)
     salt = models.CharField(max_length = 128, null = True, default = None)

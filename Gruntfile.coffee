@@ -8,16 +8,19 @@ module.exports = (grunt) ->
         concat:
             css:
                 src: [
-                    'Bazaarboy/static/normalize.css',
+                    'Bazaarboy/static/css/normalize.css',
                     'Bazaarboy/static/css/layout.css'
                 ]
                 dest: 'Bazaarboy/static/css/layout.css'
             css_admin:
                 src: [
-                    'Bazaarboy/static/normalize.css',
+                    'Bazaarboy/static/css/normalize.css',
                     'Bazaarboy/static/admin/css/layout.css'
                 ]
                 dest: 'Bazaarboy/static/admin/css/layout.css'
+            js:
+                src: 'Bazaarboy/static/js/libraries/**/*.js'
+                dest: 'Bazaarboy/static/js/libraries.js'
         jade:
             compile: 
                 options:
@@ -98,6 +101,13 @@ module.exports = (grunt) ->
                     'Bazaarboy/views/admin/css/**/*.less'
                 ]
                 tasks: ['less', 'concat:css_admin']
+            libraries:
+                options:
+                    nospawn: true
+                files: [
+                    'Bazaarboy/static/js/libraries/**/*.js'
+                ]
+                tasks: ['concat:js']
     grunt.event.on 'watch', (action, filepath) ->
         parts = filepath.split('.')
         ext = parts[parts.length - 1]
@@ -123,5 +133,5 @@ module.exports = (grunt) ->
             opts = {}
             opts[output] = filepath
             grunt.config(['less', 'compile', 'files'], opts)
-    grunt.registerTask('dev', ['jade', 'coffee', 'less', 'concat:css', 'watch'])
+    grunt.registerTask('dev', ['jade', 'coffee', 'less', 'concat', 'watch'])
     return
