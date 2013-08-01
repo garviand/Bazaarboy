@@ -6,7 +6,9 @@ html(lang="en")
                 block title
                     | Bazaarboy
             link(rel="stylesheet", href="{{ STATIC_URL }}css/layout.css")
-    body
+    block vars
+    - var bodyClass = collapsed !== undefined && collapsed ? 'collapsed' : ''
+    body(class="#{bodyClass}")
         block body
             div#wrapper_top
                 block top
@@ -15,11 +17,13 @@ html(lang="en")
                 block main
                     div#wrapper_sidebar
                         block sidebar
+                            include components/sidebar
                     div#wrapper_content
                         block content
                     div.clear
             div#wrapper_bottom
                 block bottom
+            div#wrapper_overlay
         block script
             script(type="text/javascript", src="{{ STATIC_URL }}js/jquery-1.10.1.min.js")
             script(type="text/javascript").

@@ -27,3 +27,15 @@
     user: {}
     event: {}
     admin: {}
+    # Initialization
+    init: () ->
+        # Sidebar
+        $('div#wrapper_sidebar div.switch a').click () ->
+            if $('body').hasClass('collapsed')
+                $('body').removeClass('collapsed')
+            else
+                $('body').addClass('collapsed')
+            return
+        return
+
+Bazaarboy.init()
