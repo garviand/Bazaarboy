@@ -16,6 +16,7 @@ celery==3.0.21
 django-celery==3.0.17
 django-celery-with-redis==3.0
 django-extensions==1.1.1
+django-storages==1.1.8
 docutils==0.10
 epydoc==3.0.1
 facebook-sdk==0.4.0

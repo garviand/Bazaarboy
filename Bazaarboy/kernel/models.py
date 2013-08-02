@@ -170,6 +170,9 @@ class Profile(models.Model):
     """
     name = models.CharField(max_length = 100)
     description = models.TextField()
+    image = models.ForeignKey('Image', 
+                              related_name = '%(class)s_image', 
+                              null = True, default = None)
     community = models.ForeignKey('Community')
     city = models.ForeignKey('City')
     category = models.CharField(max_length = 30)
@@ -206,6 +209,9 @@ class Event_base(models.Model):
     """
     name = models.CharField(max_length = 50)
     description = models.TextField()
+    image = models.ForeignKey('Image', 
+                              related_name = '%(class)s_image', 
+                              null = True, default = None)
     location = models.CharField(max_length = 100)
     latitude = models.FloatField(null = True, default = None)
     longitude = models.FloatField(null = True, default = None)
@@ -457,3 +463,13 @@ class Claim(models.Model):
             Subtract_points_event(user = self.owner, 
                                   redeemable = self.redeemable, 
                                   points = self.redeemable.points).save()
+
+class Image(models.Model):
+    """
+    Image model
+    """
+    original = models.ImageField(max_length = 150, 
+                                 upload_to = 'uploads/%Y/%m/%d/')
+    thumbnail = models.ImageField(max_length = 150, 
+                                  upload_to = 'uploads/%Y/%m/%d/')
+    created_time = models.DateTimeField(auto_now_add = True)

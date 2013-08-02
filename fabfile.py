@@ -23,6 +23,12 @@ def docs():
     # Use epydoc to generate new docs
     local('epydoc --config docs.config')
 
+def uploads():
+    """
+    Fix the permission for the uploads folder
+    """
+    local('sudo chown -R www-data:www-data media/uploads/')
+
 def syncdb():
     """
     Sync the models to database
