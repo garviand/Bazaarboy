@@ -1,13 +1,21 @@
+// Grid values
+
+@column_width: 48px;
+@column_margin: 12px;
+@gutter_width: @column_margin * 2;
+
 // Global values
 
-@body_width: 960px;
-@sidebar_width: 180px;
-@sidebar_width_collapsed: 60px;
-@content_width: 780px;
-@content_width_expanded: 900px;
-@top_height: 45px;
-@event_body_width: 680px;
-@event_description_width: 440px;
+@body_width: (@column_width + @gutter_width) * 13;
+@sidebar_width: 186px;
+@sidebar_width_collapsed: @column_width + @column_margin;
+@content_width: @body_width - @sidebar_width;
+@content_width_expanded: @body_width - @sidebar_width_collapsed;
+@event_body_width: @column_width * 8.5 + @gutter_width * 9;
+@event_description_width: @column_width * 5.5 + @gutter_width * 6;
+@event_sidebar_width: @event_body_width - @event_description_width - @column_width / 2;
+
+@top_height: 44px;
 
 @above_plain_z_index: 5;
 @overlay_mask_z_index: 10;
@@ -16,6 +24,8 @@
 @top_border_color: #79A69B;
 @logo_color: #688F86;
 @sidebar_color: #2F4241;
+
+@event_blue: #4795F2;
 @pale_blue: #F0F5F5;
 
 @font_family_base: Helvetica, Arial, sans-serif;
@@ -130,7 +140,11 @@ div#wrapper_overlay {
 
 div#event {
     position: relative;
-    width: 100%;
+    width: @event_body_width;
+    margin-left: (@content_width - @event_body_width) / 2;
+    body.collapsed & {
+        margin-left: (@body_width - @event_body_width) / 2 - @sidebar_width_collapsed;
+    }
     &.no_cover {
         div.cover {
             height: 0;
@@ -148,9 +162,15 @@ div#event {
     }
     &.big_cover {
         div.cover {
-            width: 100%;
+            width: @content_width;
             height: 62px + 10px + 300px;
+            left: 0 - ((@content_width - @event_body_width) / 2);
+            top: 0;
             background: #BBB;
+            body.collapsed & {
+                width: @content_width_expanded;
+                left: 0 - ((@body_width - @event_body_width) / 2 - @sidebar_width_collapsed);
+            }
         }
     }
 
@@ -160,10 +180,15 @@ div#event {
 
     div.title {
         position: relative;
-        width: 100%;
+        width: @content_width;
         min-height: 62px;
+        left: 0 - ((@content_width - @event_body_width) / 2);
         z-index: @above_plain_z_index;
         background-color: #CCC;
+        body.collapsed & {
+            width: @content_width_expanded;
+            left: 0 - ((@body_width - @event_body_width) / 2 - @sidebar_width_collapsed);
+        }
 
         div.controls {
             .left;
@@ -178,29 +203,58 @@ div#event {
         width: @event_body_width;
         height: 300px;
         background: #CCC;
-        .center;
         margin-top: 10px;
 
         div.right {
-            width: @event_body_width - @event_description_width - 20;
+            width: @event_sidebar_width;
             height: 100%;
 
             > div {
                 position: relative;
+                width: 100%;
                 z-index: @overlay_z_index;
                 background: #FFF;
             }
 
             div.action {
-                height: 100px;
+                height: 48px;
+                cursor: pointer;
+
+                div.button {
+                    width: 140px;
+                    height: 100%;
+                    background-color: @event_blue;
+                    color: #FFF;
+                    text-align: center;
+                    .left;
+                }
+
+                div.price {
+                    position: relative;
+                    width: @event_sidebar_width - 140;
+                    height: 100%;
+                    background-color: #FFF;
+                    .left;
+
+                    &:before {
+                        content: '';
+                        position: absolute;
+                        width: 0;
+                        height: 0;
+                        border-style: solid;
+                        border-width: 10px 10px 10px 0;
+                        border-color: transparent #FFF transparent transparent;
+                        left: -10px;
+                        top: 14px;
+                    }
+                }
             }
 
             div.middle {
-                height: 100px;
+                margin-top: 68px;
             }
 
             div.friends {
-                height: 100px;
             }
         }
     }
@@ -260,11 +314,11 @@ div#rsvp {
     width: @rsvp_width;
     padding: 10px;
     top: 10px;
-    right: @content_width / 2 + @event_body_width / 2 - @event_description_width;
+    left: (@content_width - @event_body_width) / 2;
     z-index: @overlay_z_index;
     background-color: @pale_blue;
     body.collapsed & {
-        right: @content_width_expanded / 2 + @event_body_width / 2 - @event_description_width;
+        left: (@body_width - @event_body_width) / 2 - @sidebar_width_collapsed;
     }
 
     &:before {
@@ -276,7 +330,7 @@ div#rsvp {
         border-width: 10px 10px 10px 0;
         border-color: transparent @pale_blue transparent transparent;
         right: -10px;
-        top: 60px;
+        top: 74px;
         -webkit-transform: rotate(180deg);
     }
 

@@ -1,7 +1,7 @@
 Bazaarboy.event.index = 
     init: () ->
         # RSVP
-        $('div#event div.action a').click () ->
+        $('div#event div.action').click () ->
             $('div#wrapper_overlay').fadeIn(200)
             $('div#rsvp').fadeIn(200)
             return

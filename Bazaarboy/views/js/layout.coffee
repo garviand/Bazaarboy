@@ -27,14 +27,33 @@
     user: {}
     event: {}
     admin: {}
+    # Collapsed states, formats are like this:
+    #       selector: [String] selector
+    #       attr: [String] property to be animated
+    #       expanded: [*] property value in expanded state
+    #       collapsed: [*] property value in collapsed state
+    collapsedStates: {}
     # Initialization
     init: () ->
         # Sidebar
-        $('div#wrapper_sidebar div.switch a').click () ->
-            if $('body').hasClass('collapsed')
-                $('body').removeClass('collapsed')
-            else
-                $('body').addClass('collapsed')
+        @collapsedStates = [
+            selector: 'div#wrapper_top div.logo'
+            attr: 'width'
+            expanded: '186px'
+            collapsed: '60px'
+        ]
+        $('div#wrapper_sidebar div.switch a').click () =>
+            collapse = !$('body').hasClass('collapsed')
+            _to = if collapse then 'collapsed' else 'expanded'
+            for selector, value of @collapsedStates
+                animation = {}
+                animation[value.attr] = value[_to]
+                $(value.selector).animate animation, 200, () =>
+                    if collapse
+                        $('body').addClass('collapsed')
+                    else
+                        $('body').removeClass('collapsed')
+                    return
             return
         return
 

@@ -20,7 +20,7 @@ prepend body
     {% endif %}
 
 block content
-    div#event.no_cover
+    div#event.big_cover
         div.cover
             div.image
             div.caption
@@ -32,7 +32,9 @@ block content
         div.info
             div.right
                 div.action
-                    a(href="javascript:;") RSVP
+                    div.button RSVP
+                    div.price
+                    div.clear
                 div.middle
                     | Time and Location
                 div.friends
@@ -59,7 +61,7 @@ block content
     div#rsvp
         div.title
             {{ event.title }}
-        {% if not loggedIn %}
+        {% if not user %}
         div.user
             div.caption Do you have a Bazaarboy account?
             div.normal
