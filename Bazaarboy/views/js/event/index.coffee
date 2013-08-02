@@ -1,5 +1,18 @@
 Bazaarboy.event.index = 
     init: () ->
+        # Extend collapse animations
+        collapseStates = [
+            ['div#event', [['margin-left', '63px', '96px']]]
+            ['div#event.big_cover div.cover', [
+                ['width', '750px', '876px']
+                ['left', '-63px', '-96px']
+            ]]
+            ['div#event div.title', [
+                ['width', '750px', '876px']
+                ['left', '-63px', '-96px']
+            ]]
+        ]
+        $.merge(Bazaarboy.collapseStates, collapseStates)
         # RSVP
         $('div#event div.action').click () ->
             $('div#wrapper_overlay').fadeIn(200)

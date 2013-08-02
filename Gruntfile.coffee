@@ -19,7 +19,11 @@ module.exports = (grunt) ->
                 ]
                 dest: 'Bazaarboy/static/admin/css/layout.css'
             js:
-                src: 'Bazaarboy/static/js/libraries/**/*.js'
+                src: [
+                    'Bazaarboy/static/js/libraries/jquery.min.js',
+                    'Bazaarboy/static/js/libraries/jquery.easing.min.js',
+                    'Bazaarboy/static/js/libraries/jquery.serialize-object.min.js'
+                ]
                 dest: 'Bazaarboy/static/js/libraries.js'
         jade:
             compile: 
