@@ -17,7 +17,7 @@ from src.sanitizer import sanitize_redactor_input
 from src.serializer import serialize_one
 
 @login_check()
-def index(request, id, loggedIn):
+def index(request, id, user):
     """
     Event page
     """
@@ -29,7 +29,7 @@ def index(request, id, loggedIn):
 
 @login_required()
 @validate('GET', ['id'])
-def event(request, params):
+def event(request, params, user):
     """
     Return serialized data for the event
     """
@@ -52,7 +52,7 @@ def event(request, params):
           ['profile', 'name', 'description', 'start_time', 'location', 
            'category'], 
           ['end_time', 'latitude', 'longitude', 'is_private'])
-def create(request, loggedIn, params):
+def create(request, params, user):
     """
     Create a new event
     """
@@ -98,7 +98,7 @@ def create(request, loggedIn, params):
     if params['is_private'] is not None:
         event.is_private = params['is_private']
     # Check if the user has logged in
-    if loggedIn:
+    if user is not None:
         # If so, check if the profile is valid
         if not Profile.objects.filter(id = params['profile']).exists():
             response = {
@@ -108,7 +108,6 @@ def create(request, loggedIn, params):
             }
             return json_response(response)
         profile = Profile.objects.get(id = params['profile'])
-        user = User.objects.get(id = request.session['user'])
         # Check if the user is a manager of the profile
         if not Profile_manager.objects.filter(profile = profile, 
                                               user = user).exists():
@@ -135,7 +134,7 @@ def create(request, loggedIn, params):
 @validate('POST', ['id'], 
           ['name', 'description', 'start_time', 'end_time', 'location', 
            'latitude', 'longitude', 'category', 'is_private', 'token'])
-def edit(request, loggedIn, params):
+def edit(request, params, user):
     """
     Edit an existing event
     """
@@ -149,9 +148,8 @@ def edit(request, loggedIn, params):
         return json_response(response)
     event = Event.objects.get(id = params['id'])
     # Check if user has logged in
-    if loggedIn:
+    if user is not None:
         # If so, check if user has permission for the event
-        user = User.objects.get(id = request.session['user'])
         if not Profile_manager.objects.filter(user = user, 
                                               profile = event.owner).exists():
             response = {
@@ -247,7 +245,7 @@ def edit(request, loggedIn, params):
 
 @login_required()
 @validate('POST', ['id'])
-def launch(request, params):
+def launch(request, params, user):
     """
     Launch an event
     """
@@ -261,7 +259,6 @@ def launch(request, params):
         return json_response(response)
     event = Event.objects.get(id = params['id'])
     # Check if user has permission for the event
-    user = User.objects.get(id = request.session['user'])
     if not Profile_manager.objects.filter(user = user, profile = event.owner) \
                                   .exists():
         response = {
@@ -289,7 +286,7 @@ def launch(request, params):
 
 @login_required()
 @validate('POST', ['id'])
-def delaunch(request, params):
+def delaunch(request, params, user):
     """
     Take an event offline and refund all tickets
     """
@@ -303,7 +300,6 @@ def delaunch(request, params):
         return json_response(response)
     event = Event.objects.get(id = params['id'])
     # Check if user has permission for the event
-    user = User.objects.get(id = request.session['user'])
     if not Profile_manager.objects.filter(user = user, profile = event.owner) \
                                   .exists():
         response = {
@@ -343,7 +339,7 @@ def delaunch(request, params):
 
 @login_check()
 @validate('POST', ['id'], ['token'])
-def delete(request, loggedIn, params):
+def delete(request, params, user):
     """
     Delete an event
     """
@@ -357,9 +353,8 @@ def delete(request, loggedIn, params):
         return json_response(response)
     event = Event.objects.get(id = params['id'])
     # Check if user is logged in
-    if loggedIn:
+    if user is not None:
         # If so, check if user has permission for the event
-        user = User.objects.get(id = request.session['user'])
         if not Profile_manager.objects.filter(user = user, profile = event.owner) \
                                       .exists():
             response = {
@@ -397,7 +392,7 @@ def delete(request, loggedIn, params):
 @validate('POST', 
           ['event', 'name', 'description'], 
           ['price', 'quantity', 'start_time', 'end_time', 'token'])
-def create_ticket(request, params):
+def create_ticket(request, params, user):
     """
     Create a ticket for an event
     """
@@ -411,9 +406,8 @@ def create_ticket(request, params):
         return json_response(response)
     event = Event.objects.get(id = params['event'])
     # Check if user is logged in
-    if loggedIn:
+    if user is not None:
         # If so, check if user has permission for the event
-        user = User.objects.get(id = request.session['user'])
         if not Profile_manager.objects.filter(user = user, profile = event.owner) \
                                       .exists():
             response = {
@@ -508,7 +502,7 @@ def create_ticket(request, params):
 @validate('POST', ['id'], 
           ['name', 'description', 'price', 'quantity', 'start_time', 
            'end_time', 'token'])
-def edit_ticket(request, params):
+def edit_ticket(request, params, user):
     """
     Edit a ticket
     """
@@ -523,9 +517,8 @@ def edit_ticket(request, params):
     ticket = Ticket.objects.get(id = params['id'])
     event = ticket.event
     # Check if user is logged in
-    if loggedIn:
+    if user is not None:
         # If so, check if user has permission for the event
-        user = User.objects.get(id = request.session['user'])
         if not Profile_manager.objects.filter(user = user, profile = event.owner) \
                                       .exists():
             response = {
@@ -629,7 +622,7 @@ def edit_ticket(request, params):
 
 @login_required()
 @validate('POST', ['id'], ['token'])
-def delete_ticket(request, params):
+def delete_ticket(request, params, user):
     """
     Delete a ticket
     """
@@ -644,7 +637,7 @@ def delete_ticket(request, params):
     ticket = Ticket.objects.get(id = params['id'])
     event = ticket.event
     # Check if user is logged in
-    if loggedIn:
+    if user is not None:
         # If so, check if user has permission for the event
         user = User.objects.get(id = request.session['user'])
         if not Profile_manager.objects.filter(user = user, profile = event.owner) \
@@ -699,12 +692,11 @@ def mark_purchase_as_expired(purchase):
 
 @login_check()
 @validate('POST', ['ticket'], ['email'])
-def purchase(request, params, loggedIn):
+def purchase(request, params, user):
     """
     Purchase a ticket
     """
     # Check login status
-    user = User.objects.get(id = request.session['user']) if loggedIn else None
     if user is None:
         if params['email'] is None:
             response = {

@@ -12,7 +12,7 @@ from src.config import *
 from src.controllers.request import validate, login_required
 
 @login_required('index')
-def authorize(request):
+def authorize(request, user):
     """
     Redirect user to authorize the creation of a WePay account
     """
@@ -27,7 +27,7 @@ def authorize(request):
 
 @login_required('index')
 @validate('GET', ['code'], ['name'])
-def create(request, params):
+def create(request, params, user):
     """
     Create a WePay account for the user
     """
@@ -48,7 +48,6 @@ def create(request, params):
         'description':'Account for Bazaarboy platform.'
     }
     accountInfo = wepay.call('/account/create', accountRequest)
-    user = User.objects.get(id = request.session['user'])
     wepayAccount = Wepay_account(owner = user, 
                                  user_id = tokenInfo['user_id'], 
                                  account_id = accountInfo['account_id'], 

@@ -7,11 +7,11 @@ from src.controllers.request import validate, login_check
 
 @login_check()
 @validate('GET', [], ['next'])
-def index(request, params, loggedIn):
+def index(request, params, user):
     """
     Index page
     """
-    if not loggedIn:
+    if user is None:
         return render(request, 'index/landing.html', locals())
     return render(request, 'index/index.html', locals())
 
@@ -22,7 +22,7 @@ def about(request):
     pass
 
 @login_check()
-def pageNotFound(request, loggedIn):
+def pageNotFound(request, user):
     return render(request, '404.html', locals())
 
 def serverError(request):

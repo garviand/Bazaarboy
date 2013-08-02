@@ -18,29 +18,29 @@ from src.serializer import serialize_one
 
 @login_check()
 @validate('GET')
-def register(request, params, loggedIn):
+def register(request, params, user):
     """
     Register page
     """
-    if loggedIn:
+    if user is not None:
         # Session already exists, redirect to index
         return redirect('index')
     return render(request, 'user/register.html', locals())
 
 @login_check()
 @validate('GET')
-def login(request, params, loggedIn):
+def login(request, params, user):
     """
     Login page
     """
-    if loggedIn:
+    if user is not None:
         # Session already exists, redirect to index
         return redirect('index')
     return render(request, 'user/login.html', locals())
 
 @login_check()
 @validate('GET', ['code'])
-def confirm(request, params, loggedIn):
+def confirm(request, params, user):
     """
     Confirm email page
     """
@@ -57,11 +57,11 @@ def confirm(request, params, loggedIn):
 
 @login_check()
 @validate('GET', [], ['code'])
-def reset(request, params, loggedIn):
+def reset(request, params, user):
     """
     Reset password page
     """
-    if loggedIn:
+    if user is not None:
         # Logged user should use their account settings to change password
         return redirect('index')
     if params['code'] is not None:
@@ -83,12 +83,12 @@ def reset(request, params, loggedIn):
 @login_check()
 @validate('POST', 
           ['email', 'password', 'full_name', 'city'])
-def create(request, params, loggedIn):
+def create(request, params, user):
     """
     Create a new user using email and password
     """
     # Check if session exists
-    if loggedIn:
+    if user is not None:
         return HttpResponseForbidden('Access forbidden.')
     # Check if the email has already been registered
     if User.objects.filter(Q(password = None) | Q(fb_id = None), 
@@ -141,12 +141,12 @@ def create(request, params, loggedIn):
 
 @login_check()
 @validate('GET', ['email', 'password'])
-def auth(request, params, loggedIn):
+def auth(request, params, user):
     """
     Authenticate a user using email and password
     """
     # Check if session exists
-    if loggedIn:
+    if user is not None:
         return HttpResponseForbidden('Access forbidden.')
     # Authenticate email and password combination
     if User.objects.filter(email = params['email']).exists():
@@ -174,12 +174,12 @@ def auth(request, params, loggedIn):
 
 @login_check()
 @validate('POST', ['fb_token'], ['email'])
-def fbAuth(request, params, loggedIn):
+def fbAuth(request, params, user):
     """
     Authenticate or create a user using a Facebook account
     """
     # Check if session exists
-    if loggedIn:
+    if user is not None:
         return HttpResponseForbidden('Access forbidden.')
     # Verify the access token by trying to get the profile information
     fbClient = GraphAPI(params['fb_token'])
@@ -243,12 +243,12 @@ def fbAuth(request, params, loggedIn):
 
 @login_check()
 @validate('POST', ['email'])
-def create_reset(request, params, loggedIn):
+def create_reset(request, params, user):
     """
     Create a request for password reset
     """
     # Check if session exists
-    if loggedIn:
+    if user is not None:
         return HttpResponseForbidden('Access forbidden.')
     # Check if account exists
     if not User.objects.filter(Q(password = None) | Q(fb_id = None), 
@@ -273,7 +273,7 @@ def create_reset(request, params, loggedIn):
 
 @login_check()
 @validate('POST', ['password', 'confirm'], ['code'])
-def chnage_password(request, params, loggedIn):
+def change_password(request, params, user):
     """
     Change the password of a user
     """
@@ -294,7 +294,6 @@ def chnage_password(request, params, loggedIn):
         }
         return json_response(response)
     # Get the user from session or using a reset code
-    user = User.objects.get(id = request.session['user']) if loggedIn else None
     if user is None:
         if (params['code'] is None or 
             not User_reset_code.objects.filter(code = params['code']).exists()):

@@ -7,6 +7,7 @@ from functools import wraps
 from django.http import *
 from django.shortcuts import redirect
 from django.utils import timezone
+from kernel.models import *
 
 FORMAT_DATETIME = '%Y-%m-%d %X'
 
@@ -95,6 +96,8 @@ def login_required(redirectUrl=None):
                     return redirect(redirectUrl)
                 else:
                     return HttpResponseForbidden('Access forbidden.')
+            # Pass the user object along
+            kwargs['user'] = User.objects.get(id = request.session['user'])
             return controller(request, *args, **kwargs)
         return wraps(controller)(login_required_controller)
     return login_required_decorator
@@ -108,7 +111,10 @@ def login_check():
             if request is None:
                 request = kwargs['request']
             # Check if session exists
-            kwargs['loggedIn'] = request.session.has_key('user')
+            if request.session.has_key('user'):
+                kwargs['user'] = User.objects.get(id = request.session['user'])
+            else:
+                kwargs['user'] = None
             return controller(request, *args, **kwargs)
         return wraps(controller)(login_checked_controller)
     return login_check_decorator
@@ -128,6 +134,8 @@ def admin_required(roleRequirement=None):
             if (roleRequirement == 'Super' and 
                 request.session['admin']['role'] != 'S'):
                 return HttpResponseForbidden('Permission denied.')
+            # Pass the admin object along
+            kwargs['admin'] = request.session['admin']
             return controller(request, *args, **kwargs)
         return wraps(controller)(admin_required_controller)
     return admin_required_decorator

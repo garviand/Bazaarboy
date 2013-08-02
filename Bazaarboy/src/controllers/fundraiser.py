@@ -17,7 +17,7 @@ from src.serializer import serialize_one
 FORMAT_DATETIME = '%Y-%m-%d %X'
 
 @login_check()
-def index(request, id, loggedIn):
+def index(request, id, user):
     """
     Fundraiser event page
     """
@@ -28,7 +28,7 @@ def index(request, id, loggedIn):
 
 @login_required()
 @validate('GET', ['id'])
-def fundraiser(request, params):
+def fundraiser(request, params, user):
     """
     Return serialized data for the fundraiser
     """
@@ -50,7 +50,7 @@ def fundraiser(request, params):
 @validate('POST', 
           ['profile', 'name', 'description', 'category', 'goal', 'deadline'], 
           ['latitude', 'longitude', 'is_private', 'token'])
-def create(request, params):
+def create(request, params, user):
     """
     Create a new fundraiser
     """
@@ -109,7 +109,7 @@ def create(request, params):
     if params['is_private'] is not None:
         fundraiser.is_private = params['is_private']
     # Check if the user has logged in
-    if loggedIn:
+    if user is not None:
         # If so, check if the profile is valid
         if not Profile.objects.filter(id = params['profile']).exists():
             response = {
@@ -119,7 +119,6 @@ def create(request, params):
             }
             return json_response(response)
         profile = Profile.objects.get(id = params['profile'])
-        user = User.objects.get(id = request.session['user'])
         # Check if the user is a manager of the profile
         if not Profile_manager.objects.filter(profile = profile, 
                                               user = user).exists():
@@ -146,7 +145,7 @@ def create(request, params):
 @validate('POST', ['id'], 
           ['name', 'description', 'goal', 'deadline', 'location', 'latitude', 
            'longitude', 'category', 'is_private', 'token'])
-def edit(request, params):
+def edit(request, params, user):
     """
     Edit an existing fundraiser
     """
@@ -160,9 +159,8 @@ def edit(request, params):
         return json_response(response)
     fundraiser = Fundraiser.objects.get(id = params['id'])
     # Check if user has logged in
-    if loggedIn:
+    if user is not None:
         # If so, check if user has permission for the fundraiser
-        user = User.objects.get(id = request.session['user'])
         if not Profile_manager.objects.filter(user = user, 
                                               profile = fundraiser.owner) \
                                       .exists():
@@ -267,7 +265,7 @@ def edit(request, params):
 
 @login_required()
 @validate('POST', ['id'])
-def launch(request, params):
+def launch(request, params, user):
     """
     Launch a fundraiser
     """
@@ -281,7 +279,6 @@ def launch(request, params):
         return json_response(response)
     fundraiser = Fundraiser.objects.get(id = params['id'])
     # Check if user has permission for the fundraiser
-    user = User.objects.get(id = request.session['user'])
     if not Profile_manager.objects.filter(user = user, 
                                           profile = fundraiser.owner) \
                                   .exists():
@@ -310,7 +307,7 @@ def launch(request, params):
 
 @login_required()
 @validate('POST', ['id'])
-def delaunch(request, params):
+def delaunch(request, params, user):
     """
     Take a fundraiser offline
     """
@@ -324,7 +321,6 @@ def delaunch(request, params):
         return json_response(response)
     fundraiser = Fundraiser.objects.get(id = params['id'])
     # Check if user has permission for the fundraiser
-    user = User.objects.get(id = request.session['user'])
     if not Profile_manager.objects.filter(user = user, 
                                           profile = fundraiser.owner) \
                                   .exists():
@@ -367,7 +363,7 @@ def delaunch(request, params):
 
 @login_required()
 @validate('POST', ['id'], ['token'])
-def delete(request, params):
+def delete(request, params, user):
     """
     Delete a fundraiser
     """
@@ -381,9 +377,8 @@ def delete(request, params):
         return json_response(response)
     fundraiser = Fundraiser.objects.get(id = params['id'])
     # Check if user has logged in
-    if loggedIn:
+    if user is not None:
         # If so, check if user has permission for the fundraiser
-        user = User.objects.get(id = request.session['user'])
         if not Profile_manager.objects.filter(user = user, 
                                               profile = fundraiser.owner) \
                                       .exists():
@@ -421,7 +416,7 @@ def delete(request, params):
 @login_required()
 @validate('POST', ['fundraiser', 'name', 'description', 'price'], 
           ['quantity', 'token'])
-def create_reward(request, params):
+def create_reward(request, params, user):
     """
     Create a reward for the fundraiser
     """
@@ -435,9 +430,8 @@ def create_reward(request, params):
         return json_response(response)
     fundraiser = Initiative.objects.get(id = params['fundraiser'])
     # Check if user has logged in
-    if loggedIn:
+    if user is not None:
         # If so, check if user has permission for the fundraiser
-        user = User.objects.get(id = request.session['user'])
         if not Profile_manager.objects.filter(user = user, 
                                               profile = fundraiser.owner) \
                                       .exists():
@@ -516,7 +510,7 @@ def create_reward(request, params):
 
 @login_required()
 @validate('POST', ['id'], ['name', 'description', 'price', 'quantity', 'token'])
-def edit_reward(request, params):
+def edit_reward(request, params, user):
     """
     Edit a reward
     """
@@ -531,9 +525,8 @@ def edit_reward(request, params):
     reward = Reward.objects.get(id = params['id'])
     fundraiser = reward.fundraiser
     # Check if user has logged in
-    if loggedIn:
+    if user is not None:
         # If so, check if user has permission for the fundraiser
-        user = User.objects.get(id = request.session['user'])
         if not Profile_manager.objects.filter(user = user, 
                                               profile = fundraiser.owner) \
                                       .exists():
@@ -625,7 +618,7 @@ def edit_reward(request, params):
 
 @login_required()
 @validate('POST', ['id'], ['token'])
-def delete_reward(request, params):
+def delete_reward(request, params, user):
     """
     Delete a reward
     """
@@ -640,9 +633,8 @@ def delete_reward(request, params):
     reward = Reward.objects.get(id = params['id'])
     fundraiser = reward.fundraiser
     # Check if user has logged in
-    if loggedIn:
+    if user is not None:
         # If so, check if user has permission for the fundraiser
-        user = User.objects.get(id = request.session['user'])
         if not Profile_manager.objects.filter(user = user, 
                                               profile = fundraiser.owner) \
                                       .exists():
@@ -705,12 +697,11 @@ def mark_donation_as_expired(donation):
 
 @login_check()
 @validate('POST', ['reward', 'amount'], ['email'])
-def donate(request, params):
+def donate(request, params, user):
     """
     Donate for a reward
     """
     # Check login status
-    user = User.objects.get(id = request.session['user']) if loggedIn else None
     if user is None:
         if params['email'] is None:
             response = {

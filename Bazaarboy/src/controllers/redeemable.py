@@ -8,25 +8,25 @@ from src.serializer import serialize_one
 
 @login_required()
 @validate('GET', ['id'])
-def redeemable(request, params):
+def redeemable(request, params, user):
     pass
 
 @login_required()
 @validate('POST')
-def create(request, params):
+def create(request, params, user):
     pass
 
 @login_required()
 @validate('POST')
-def edit(request, params):
+def edit(request, params, user):
     pass
 
 @login_required()
 @validate('POST')
-def delete(request, params):
+def delete(request, params, user):
     pass
 
 @login_required()
 @validate('POST')
-def redeem(request, params):
+def redeem(request, params, user):
     pass

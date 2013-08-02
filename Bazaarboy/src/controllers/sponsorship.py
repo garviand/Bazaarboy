@@ -37,7 +37,7 @@ def isValidEvent(event, eventType):
 @login_required()
 @validate('POST', ['type', 'for', 'name', 'description', 'price'], 
           ['quantity'])
-def create(request, params):
+def create(request, params, user):
     """
     Create a criteria for sponsorship
     """
@@ -110,7 +110,7 @@ def create(request, params):
 
 @login_required()
 @validate('POST', ['type', 'id'], ['name', 'description', 'price', 'quantity'])
-def edit(request, params):
+def edit(request, params, user):
     """
     Edit a criteria for sponsorship
     """
@@ -192,7 +192,7 @@ def edit(request, params):
 
 @login_required()
 @validate('POST', ['type', 'id'])
-def delete(request, params):
+def delete(request, params, user):
     """
     Delete a criteria for a sponsorship
     """
@@ -238,7 +238,7 @@ def delete(request, params):
 
 @login_required()
 @validate('POST', ['type', 'criteria', 'profile', 'amount'])
-def sponsor(request, params):
+def sponsor(request, params, user):
     """
     Sponsor for an event
     """
@@ -289,7 +289,6 @@ def sponsor(request, params):
         }
         return json_response(response)
     profile = Profile.objects.get(id = params['profile'])
-    user = User.objects.get(id = request.session['user'])
     if not Profile_manager.objects.filter(profile = profile, 
                                           user = user).exists():
         response = {

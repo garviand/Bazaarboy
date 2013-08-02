@@ -9,12 +9,12 @@ from src.controllers.request import *
 from src.serializer import serialize_one
 
 @login_required()
-def index(request, id):
+def index(request, id, user):
     pass
 
 @admin_required()
 @validate('GET', ['id'])
-def community(request, params):
+def community(request, params, admin):
     """
     Returns the serialized data about a community
     """
@@ -34,7 +34,7 @@ def community(request, params):
 
 @admin_required()
 @validate('POST', ['name', 'description', 'city', 'latitude', 'longitude'])
-def create(request, params):
+def create(request, params, admin):
     """
     Create a new community
     """
@@ -79,7 +79,7 @@ def create(request, params):
 
 @admin_required()
 @validate('POST', ['id'], ['name', 'description', 'latitude', 'longitude'])
-def edit(request, params):
+def edit(request, params, admin):
     """
     Edit an existing community
     """
@@ -127,7 +127,7 @@ def edit(request, params):
 
 @admin_required()
 @validate('POST', ['id'])
-def delete(request, params):
+def delete(request, params, admin):
     """
     Delete a community
     """
@@ -165,7 +165,7 @@ def delete(request, params):
 
 @login_required()
 @validate('POST', ['id'])
-def follow(request, params):
+def follow(request, params, user):
     """
     Follow a community
     """
@@ -179,7 +179,6 @@ def follow(request, params):
         return json_response(response)
     community = Community.objects.get(id = params['id'])
     # Follow the community
-    user = User.objects.get(id = request.session['user'])
     rank = User_following.objects.filter(user = user).count()
     following = User_following(user = user, community = community, rank = rank)
     following.save()
@@ -190,7 +189,7 @@ def follow(request, params):
 
 @login_required()
 @validate('POST', ['id', 'rank'])
-def rank_follow(request, params):
+def rank_follow(request, params, user):
     """
     Set the rank of a community following
     """
@@ -204,7 +203,6 @@ def rank_follow(request, params):
         return json_response(response)
     community = Community.objects.get(id = params['id'])
     # Check if the user is following the community
-    user = User.objects.get(id = request.session['user'])
     if not User_following.objects.filter(user = user, community = community) \
                                  .exists():
         response = {
@@ -241,7 +239,7 @@ def rank_follow(request, params):
 
 @login_required()
 @validate('POST', ['id'])
-def unfollow(request, params):
+def unfollow(request, params, user):
     """
     Unfollow a community
     """
@@ -255,7 +253,6 @@ def unfollow(request, params):
         return json_response(response)
     community = Community.objects.get(id = params['id'])
     # Check if the user is following the community
-    user = User.objects.get(id = request.session['user'])
     if not User_following.objects.filter(user = user, community = community) \
                                  .exists():
         response = {

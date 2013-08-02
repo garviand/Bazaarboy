@@ -9,7 +9,7 @@ from src.controllers.request import *
 from src.serializer import serialize_one
 
 @login_check()
-def index(request, id, loggedIn):
+def index(request, id, user):
     """
     Profile page
     """
@@ -19,8 +19,16 @@ def index(request, id, loggedIn):
     return render(request, 'profile/index.html', locals())
 
 @login_required()
+def manage(request, user):
+    """
+    Manage profiles page
+    """
+    pass
+
+
+@login_required()
 @validate('GET', ['id'])
-def profile(request, params):
+def profile(request, params, user):
     """
     Return serialized profile data
     """
@@ -42,7 +50,7 @@ def profile(request, params):
 @validate('POST', 
           ['name', 'description', 'community', 'category'], 
           ['latitude', 'longitude', 'wepay'])
-def create(request, params):
+def create(request, params, user):
     """
     Create a profile and set the creating user as the creator
     """
@@ -83,7 +91,6 @@ def create(request, params):
             profile.latitude = float(params['latitude'])
             profile.longitude = float(params['longitude'])
     # Check WePay account
-    user = User.objects.get(id = request.session['user'])
     if params['wepay'] is not None:
         if not Wepay_account.objects.filter(id = params['wepay']):
             response = {
@@ -117,7 +124,7 @@ def create(request, params):
 @validate('POST', ['id'], 
           ['name', 'description', 'category', 'latitude', 'longitude', 
            'wepay'])
-def edit(request, params):
+def edit(request, params, user):
     """
     Edit an existing profile
     """
@@ -131,7 +138,6 @@ def edit(request, params):
         return json_response(response)
     profile = Profile.objects.get(id = params['id'])
     # Check if the user has permission for the profile
-    user = User.objects.get(id = request.session['user'])
     if not Profile_manager.objects.filter(user = user, profile = profile) \
                                   .exists():
         response = {
@@ -177,12 +183,12 @@ def edit(request, params):
 
 @login_required()
 @validate('POST', ['id'])
-def delete(request, params):
+def delete(request, params, user):
     pass
 
 @login_required()
 @validate('POST', ['profile', 'user'])
-def create_manager(request, params):
+def create_manager(request, params, user):
     """
     Make a user the manager of a profile
     """
@@ -203,10 +209,9 @@ def create_manager(request, params):
             'message':'The user doesn\'t exist.'
         }
         return json_response(response)
-    user = User.objects.get(id = params['user'])
+    manager = User.objects.get(id = params['user'])
     # Check if the logged-in user is the creator of the profile
-    creator = User.objects.get(id = request.session['user'])
-    if not Profile_manager.objects.filter(user = creator, profile = profile, 
+    if not Profile_manager.objects.filter(user = user, profile = profile, 
                                           is_creator = True).exists():
         response = {
             'status':'FAIL',
@@ -215,7 +220,7 @@ def create_manager(request, params):
         }
         return json_response(response)
     # Make the specified user the manager
-    profileManager = Profile_manager(user = user, profile = profile)
+    profileManager = Profile_manager(user = manager, profile = profile)
     profileManager.save()
     response = {
         'status':'OK'
@@ -241,9 +246,7 @@ def delete_manager(request, params):
     if params['user'] is not None:
         # If so, treat it as a creator's attempt to delete a manager
         # Check if the logged-in user is the creator of the profile
-        creator = User.objects.get(id = request.session['user'])
-        if not Profile_manager.objects.filter(user = creator, 
-                                              profile = profile, 
+        if not Profile_manager.objects.filter(user = user, profile = profile, 
                                               is_creator = True).exists():
             response = {
                 'status':'FAIL',
@@ -259,20 +262,20 @@ def delete_manager(request, params):
                 'message':'The user doesn\'t exist.'
             }
             return json_response(response)
-        user = User.objects.get(id = params['user'])
+        manager = User.objects.get(id = params['user'])
         # Check if the specified user is a manager
-        if not Profile_manager.objects.filter(user = user, profile = profile) \
-                                      .exists():
+        if not Profile_manager.objects.filter(user = manager, 
+                                              profile = profile).exists():
             response = {
                 'status':'FAIL',
                 'error':'NOT_A_MANAGER',
                 'message':'The user is not a manager of the profile.'
             }
             return json_response(response)
-        profileManager = Profile_manager.objects.get(user = user, 
+        profileManager = Profile_manager.objects.get(user = manager, 
                                                      profile = profile)
         # Check if the specified user is the creator
-        if user.id == creator.id:
+        if user.id == manager.id:
             response = {
                 'status':'FAIL',
                 'error':'IS_CREATOR',
@@ -288,7 +291,6 @@ def delete_manager(request, params):
     else:
         # If not, treat it as a manager's attempt to delete itself from 
         # the profile
-        user = User.objects.get(id = request.session['user'])
         # Check if the user is a manager
         if not Profile_manager.objects.filter(user = user, profile = profile) \
                                       .exists():

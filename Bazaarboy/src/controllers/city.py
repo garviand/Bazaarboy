@@ -9,12 +9,12 @@ from src.controllers.request import *
 from src.serializer import serialize_one
 
 @login_required()
-def index(request, id):
+def index(request, id, user):
     pass
 
 @admin_required()
 @validate('GET', ['id'])
-def city(request, params):
+def city(request, params, admin):
     """
     Returns the serialized data about a city
     """
@@ -34,7 +34,7 @@ def city(request, params):
 
 @admin_required()
 @validate('POST', ['name', 'state', 'latitude', 'longitude'])
-def create(request, params):
+def create(request, params, admin):
     """
     Create a new city
     """
@@ -78,7 +78,7 @@ def create(request, params):
 
 @admin_required()
 @validate('POST', ['id'])
-def edit(request, params):
+def edit(request, params, admin):
     # Check if city exists
     if not City.objects.filter(id = params['id']).exists():
         response = {
@@ -132,7 +132,7 @@ def edit(request, params):
 
 @admin_required()
 @validate('POST', ['id'])
-def delete(request, params):
+def delete(request, params, admin):
     # Check if city exists
     if not City.objects.filter(id = params['id']).exists():
         response = {
