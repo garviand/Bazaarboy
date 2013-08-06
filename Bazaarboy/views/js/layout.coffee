@@ -45,14 +45,13 @@
         $('div#wrapper_sidebar div.switch a').click () =>
             collapse = !$('body').hasClass('collapsed')
             _to = if collapse then 2 else 1
-            collapseAnimations = $.map(@collapseStates, (element, i) =>
+            collapseAnimations = $.map @collapseStates, (element, i) =>
                 animations = {}
                 for attr in element[1]
                     animations[attr[0]] = attr[_to]
                 return $(element[0]).stop()
                                     .animate(animations, 300, 'easeInOutQuint')
                                     .promise()
-            )
             $.when(collapseAnimations).then () =>
                 if collapse
                     $('body').addClass('collapsed')

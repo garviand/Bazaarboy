@@ -18,13 +18,13 @@ def index(request, id, user):
     profile = Profile.objects.get(id = id)
     return render(request, 'profile/index.html', locals())
 
-@login_required()
+@login_required('index')
 def manage(request, user):
     """
     Manage profiles page
     """
-    pass
-
+    profiles = Profile.objects.filter(managers = user)
+    return render(request, 'profile/manage.html', locals())
 
 @login_required()
 @validate('GET', ['id'])

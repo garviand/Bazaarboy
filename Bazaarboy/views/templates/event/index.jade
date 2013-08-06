@@ -20,7 +20,7 @@ prepend body
     {% endif %}
 
 block content
-    div#event.big_cover
+    div#event.no_cover
         div.cover
             div.image
             div.caption
@@ -32,27 +32,45 @@ block content
         div.info
             div.right
                 div.action
-                    div.button RSVP
+                    div.button 
+                        b RSVP
                     div.price
                     div.clear
-                div.middle
-                    | Time and Location
-                div.friends
-                    {% if user.fb_id %}
-                    {% else %}
-                    | Connect with Facebook
-                    {% endif %}
+                div.time
             div.clear
         div.details
             div.description
-                div.editable
-                    {{ event.description|safe }}
+                div.editor
+                    div.inner
+                        {{ event.description|safe }}
                 div.controls
                     a.save(href="javascript:;") Save
             div.extra
+                div.friends
+                    div.caption
+                        div.text Friends Going
+                        {% if user.fb_id %}
+                        div.share
+                            b Share
+                        {% endif %}
+                        div.clear
+                    div.content
+                        {% if user.fb_id %}
+                        {% else %}
+                        {% endif %}
                 div.organizers
+                    div.caption
+                        div.text Organizers
+                        div.clear
+                div.tags
+                    div.caption
+                        div.text Tags
+                        div.clear
             div.clear
         div.sponsors
+            div.caption
+                div.text Sponsors
+                div.clear
         div.others
             div.similar
             div.nearby
@@ -95,5 +113,3 @@ block content
 append script
     script(type="text/javascript", src="{{ STATIC_URL }}redactor/redactor.min.js")
     script(type="text/javascript", src="{{ STATIC_URL }}js/event/index.js")
-    script(type="text/javascript").
-        Bazaarboy.event.index.init()

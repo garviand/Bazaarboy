@@ -21,14 +21,15 @@
 @overlay_mask_z_index: 10;
 @overlay_z_index: 20;
 
-@top_border_color: #79A69B;
-@logo_color: #688F86;
-@sidebar_color: #2F4241;
-
+@bboy_orange: #F7931E;
 @event_blue: #4795F2;
 @pale_blue: #F0F5F5;
 
-@font_family_base: Helvetica, Arial, sans-serif;
+@font_family_base: "pt-sans", Helvetica, Arial, sans-serif;
+@font_weight_base: 400;
+@font_weight_bold: 700;
+@font_style_base: normal;
+@font_style_italic: italic;
 @font_size_base: 16px;
 @font_color_base: #000;
 
@@ -59,23 +60,31 @@
 
 body {
     font-family: @font_family_base;
+    font-weight: @font_weight_base;
+    font-style: @font_style_base;
     font-size: @font_size_base;
     color: @font_color_base;
+}
+
+b {
+    font-weight: @font_weight_bold;
+}
+
+i {
+    font-style: @font_style_italic;
 }
 
 div#wrapper_top {
     position: relative;
     width: @body_width;
     height: @top_height;
-    //z-index: @overlay_z_index;
-    border-bottom: 1px solid @top_border_color;
     background-color: #FFF;
     .center;
 
     div.logo {
         width: @sidebar_width;
         height: @top_height;
-        background: @logo_color;
+        background: @bboy_orange;
         body.collapsed & {
             width: @sidebar_width_collapsed;
         }
@@ -95,7 +104,7 @@ div#wrapper_top {
 div#wrapper_main {
     position: relative;
     width: @body_width;
-    background-color: @sidebar_color;
+    background-color: @pale_blue;
     .center;
 }
 
@@ -149,10 +158,6 @@ div#event {
         div.cover {
             height: 0;
         }
-
-        div.details div.description {
-            margin-top: -300px;
-        }
     }
     &.small_cover {
         div.cover {
@@ -166,7 +171,6 @@ div#event {
             height: 62px + 10px + 300px;
             left: 0 - ((@content_width - @event_body_width) / 2);
             top: 0;
-            background: #BBB;
             body.collapsed & {
                 width: @content_width_expanded;
                 left: 0 - ((@body_width - @event_body_width) / 2 - @sidebar_width_collapsed);
@@ -179,12 +183,12 @@ div#event {
     }
 
     div.title {
-        position: relative;
+        position: absolute;
         width: @content_width;
         min-height: 62px;
         left: 0 - ((@content_width - @event_body_width) / 2);
         z-index: @above_plain_z_index;
-        background-color: #CCC;
+        background-color: rgba(0, 0, 0, 0.6);
         body.collapsed & {
             width: @content_width_expanded;
             left: 0 - ((@body_width - @event_body_width) / 2 - @sidebar_width_collapsed);
@@ -201,30 +205,34 @@ div#event {
 
     div.info {
         width: @event_body_width;
-        height: 300px;
-        background: #CCC;
-        margin-top: 10px;
+        height: 320px;
 
         div.right {
+            position: relative;
             width: @event_sidebar_width;
             height: 100%;
 
             > div {
-                position: relative;
+                position: absolute;
                 width: 100%;
                 z-index: @overlay_z_index;
-                background: #FFF;
+                background-color: @pale_blue;
             }
 
             div.action {
                 height: 48px;
+                bottom: 28px + 60px + 10px;
+                right: 0;
                 cursor: pointer;
 
                 div.button {
                     width: 140px;
-                    height: 100%;
+                    height: @font_size_base + 2;
+                    padding: (48px - (@font_size_base + 2)) / 2 0;
                     background-color: @event_blue;
                     color: #FFF;
+                    line-height: @font_size_base + 2;
+                    font-size: @font_size_base + 2;
                     text-align: center;
                     .left;
                 }
@@ -233,7 +241,6 @@ div#event {
                     position: relative;
                     width: @event_sidebar_width - 140;
                     height: 100%;
-                    background-color: #FFF;
                     .left;
 
                     &:before {
@@ -243,64 +250,140 @@ div#event {
                         height: 0;
                         border-style: solid;
                         border-width: 10px 10px 10px 0;
-                        border-color: transparent #FFF transparent transparent;
+                        border-color: transparent @pale_blue transparent transparent;
                         left: -10px;
                         top: 14px;
                     }
                 }
             }
 
-            div.middle {
-                margin-top: 68px;
-            }
-
-            div.friends {
+            div.time {
+                height: 40px;
+                padding: 10px 0;
+                bottom: 28px;
+                right: 0;
             }
         }
     }
 
     div.details {
         width: @event_body_width;
-        .center;
+        margin-top: 30px;
 
         div.description {
             width: @event_description_width;
-            min-height: 200px;
             .left;
+
+            div.editor {
+                width: @event_description_width;
+
+                &.editable {
+                    width: @event_description_width + 22;
+                    margin-left: -11px;
+
+                    div.inner {
+                        width: @event_description_width;
+                        .center;
+                    }
+                }
+
+                div.inner {
+                    width: 100%;
+                }
+            }
         }
 
         div.extra {
+            width: @event_sidebar_width;
+            margin-left: @gutter_width;
             .left;
+
+            > div {
+                position: relative;
+                width: @event_sidebar_width - 20;
+                padding: 10px;
+                z-index: @overlay_z_index;
+                background-color: @pale_blue;
+
+                div.caption {
+                    width: 100%;
+                    height: 18px;
+                    font-size: @font_size_base - 2;
+
+                    div.text {
+                        .left;
+                    }
+                }
+            }
+
+            div.friends {
+                height: 70px;
+
+                div.caption {
+                    div.share {
+                        padding: 0 4px;
+                        background-color: @bboy_orange;
+                        color: #FFF;
+                        font-size: @font_size_base - 4;
+                        text-transform: uppercase;
+                        cursor: pointer;
+                        .right;
+                    }
+                }
+            }
+
+            div.organizers {
+                margin-top: 10px;
+            }
+
+            div.tags {
+                margin-top: 10px;
+            }
         }
     }
 
     div.sponsors {
         width: @event_body_width;
-        height: 200px;
-        background: #CCC;
-        .center;
-        margin-top: 20px;
+        margin-top: 10px;
+        background-color: @pale_blue;
+
+        div.caption {
+            width: @event_body_width - 20;
+            height: 18px;
+            padding: 10px;
+            font-size: @font_size_base - 2;
+
+            div.text {
+                .left;
+            }
+        }
     }
 
     div.others {
         width: @event_body_width;
-        height: 200px;
-        background: #CCC;
-        .center;
-        margin-top: 20px;
+        height: 180px;
+        margin: 32px 0;
 
         div.similar {
+            width: (@event_body_width - @gutter_width * 2) / 3;
             height: 100%;
+            margin-right: @gutter_width;
+            background-color: @pale_blue;
             .left;
         }
 
         div.nearby {
             height: 100%;
+            width: (@event_body_width - @gutter_width * 2) / 3;
+            margin-right: @gutter_width;
+            background-color: @pale_blue;
             .left;
         }
 
         div.recommendation {
             height: 100%;
+            width: (@event_body_width - @gutter_width * 2) / 3;
+            background-color: @pale_blue;
             .left;
         }
     }

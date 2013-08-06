@@ -1,4 +1,20 @@
 Bazaarboy.event.index = 
+    startDescriptionEdit: (cb) ->
+        $('div.description div.editor').addClass('editable')
+        $('div.description div.editor div.inner').redactor
+            buttons: [
+                'formatting','bold', 'italic', 'deleted', 'fontcolor', 
+                'alignment', '|',
+                'unorderedlist', 'orderedlist', 'outdent', 'indent', '|',
+                'image', 'video', 'link', '|',
+                'horizontalrule'
+            ]
+            imageUpload: rootUrl
+        return
+    stopDescriptionEdit: (cb) ->
+        $('div.description div.editor').removeClass('editable')
+        $('div.description div.editor div.inner').redactor('destroy')
+        return
     init: () ->
         # Extend collapse animations
         collapseStates = [
@@ -48,20 +64,15 @@ Bazaarboy.event.index =
             event.preventDefault()
             return
         # Redactor
-        $('div.description div.editable').redactor
-            buttons: [
-                'formatting','bold', 'italic', 'deleted', 'fontcolor', 
-                'alignment', '|',
-                'unorderedlist', 'orderedlist', 'outdent', 'indent', '|',
-                'image', 'video', 'link', '|',
-                'horizontalrule'
-            ]
-            imageUpload: rootUrl
-        $('div.description div.controls a.save').click () ->
-            description = $('div.description div.editable').redactor('get')
-            console.log description
+        $('div#event div.description div.controls a.save').click () =>
+            if $('div.description div.editor').hasClass('editable')
+                @stopDescriptionEdit()
+            else
+                @startDescriptionEdit()
             return
         # Check whether to open the RSVP modal
         if window.location.hash? and window.location.hash is '#rsvp'
-            $('div#event div.action a').click()
+            $('div#event div.action').click()
         return
+
+Bazaarboy.event.index.init()

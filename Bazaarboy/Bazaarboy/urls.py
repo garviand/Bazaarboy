@@ -37,6 +37,7 @@ community_urlpatterns = patterns('src.controllers.community',
 
 profile_urlpatterns = patterns('src.controllers.profile', 
     url(r'^(?P<id>\d+)/$', 'index', name = 'index'),
+    url(r'^manage/$', 'manage', name = 'manage'),
     url(r'^$', 'profile', name = 'profile'),
     url(r'^create/$', 'create', name = 'create'),
     url(r'^edit/$', 'edit', name = 'edit'),

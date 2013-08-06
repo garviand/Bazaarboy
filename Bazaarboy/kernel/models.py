@@ -472,4 +472,5 @@ class Image(models.Model):
                                  upload_to = 'uploads/%Y/%m/%d/')
     thumbnail = models.ImageField(max_length = 150, 
                                   upload_to = 'uploads/%Y/%m/%d/')
+    archived = models.BooleanField(default = False)
     created_time = models.DateTimeField(auto_now_add = True)
