@@ -76,6 +76,11 @@ sponsorship_urlpatterns = patterns('src.controllers.sponsorship',
     url(r'^create/$', 'create', name = 'create'),
 )
 
+file_urlpatterns = patterns('src.controllers.file', 
+    url(r'^image/upload/$', 'upload_image', name = 'image-upload'),
+    url(r'^image/delete/$', 'delete_image', name = 'image-delete'),
+)
+
 admin_urlpatterns = patterns('src.controllers.admin.admin', 
     url(r'^$', 'index', name = 'index'),
     url(r'^login/$', 'login', name = 'login'),
@@ -95,6 +100,9 @@ urlpatterns = patterns('',
     url(r'^event/', include(event_urlpatterns, namespace = 'event')),
     url(r'^fundraiser/', 
         include(fundraiser_urlpatterns, namespace = 'fundraiser')),
+    url(r'^sponsorship/', 
+        include(sponsorship_urlpatterns, namespace = 'sponsorship')),
+    url(r'^file/', include(file_urlpatterns, namespace = 'file')),
     url(r'^x/', include(admin_urlpatterns, namespace = 'admin')),
 )
 

@@ -4,7 +4,7 @@ Email utilities
 
 from celery import task
 
-class Email:
+class Email(object):
     """
     A wrapper class for all email functions
 
@@ -13,20 +13,20 @@ class Email:
     def __init__(self):
         super(Email, self).__init__()
 
-    def sendConfirmationEmail(confirmationCode):
+    def sendConfirmationEmail(self, confirmationCode):
         pass
 
-    def sendResetRequestEmail(resetCode):
+    def sendResetRequestEmail(self, resetCode):
         pass
 
-    def sendPasswordChangedEmail(user):
+    def sendPasswordChangedEmail(self, user):
         pass
 
-    def sendPurchaseConfirmationEmail(purchase):
+    def sendPurchaseConfirmationEmail(self, purchase):
         pass
 
-    def sendDonationConfirmationEmail(donation):
+    def sendDonationConfirmationEmail(self, donation):
         pass
 
-    def sendWeeklyDigestEmail():
+    def sendWeeklyDigestEmail(self):
         pass

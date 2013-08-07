@@ -32,6 +32,9 @@ echo -e "\nInstalling gcc/g++ compilers\n"
 sudo apt-get install build-essential
 echo -e "\nInstalling python developer package\n"
 sudo apt-get install python-dev
+echo -e "\nInstalling python-mysqldb\n"
+sudo apt-get build-dep python-mysqldb
+sudo apt-get install python-mysqldb
 echo -e "\nInstalling pip\n"
 sudo apt-get install python-pip
 echo -e "\nInstalling virtualenvwrapper\n"
@@ -48,11 +51,11 @@ sudo apt-get install redis-server
 
 # Setup virtualenv
 
-echo -e "\nIn another terminal, append the following lines to ~/.bashrc\n"
+echo -e "\nIn another terminal, append the following lines to ~/.bashrc\n\n"
 echo "export WORKON_HOME=$HOME/.virtualenvs"
 echo "export PROJECT_HOME=$HOME/{{ DEVELOPMENT_DIRECTORY }}"
 echo "source /usr/local/bin/virtualenvwrapper.sh"
-echo -e "\nReplace {{ DEVELOPMENT_DIRECTORY }} with the path of this repo"
+echo -e "\n\nReplace {{ DEVELOPMENT_DIRECTORY }} with the path of this repo"
 echo -e "For example, if this repo is under\n"
 echo "~/Development/Bazaarboy"
 echo -e "\nThen the line will be\n"

@@ -468,9 +468,6 @@ class Image(models.Model):
     """
     Image model
     """
-    original = models.ImageField(max_length = 150, 
-                                 upload_to = 'uploads/%Y/%m/%d/')
-    thumbnail = models.ImageField(max_length = 150, 
-                                  upload_to = 'uploads/%Y/%m/%d/')
-    archived = models.BooleanField(default = False)
+    source = models.ImageField(upload_to = 'uploads/%Y-%m-%d/')
+    is_archived = models.BooleanField(default = False)
     created_time = models.DateTimeField(auto_now_add = True)

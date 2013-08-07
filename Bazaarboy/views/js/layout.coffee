@@ -25,6 +25,7 @@
     # Sub namespaces
     index: {}
     user: {}
+    profile: {}
     event: {}
     admin: {}
     # Collapsed states, formats are like this:

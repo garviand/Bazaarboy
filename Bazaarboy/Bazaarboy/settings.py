@@ -53,7 +53,7 @@ USE_TZ = True
 
 # Absolute filesystem path to the directory that will hold user-uploaded files.
 # Example: "/home/media/media.lawrence.com/media/"
-MEDIA_ROOT = PROJECT_PATH + 'media/'
+MEDIA_ROOT = PROJECT_PATH + 'static/media/'
 
 # URL that handles the media served from MEDIA_ROOT. Make sure to use a
 # trailing slash.
@@ -125,6 +125,7 @@ INSTALLED_APPS = (
     #'south',
     'djcelery',
     'storages',
+    #'easy_thumbnails',
     'kernel',
     'analytics',
     'admin',

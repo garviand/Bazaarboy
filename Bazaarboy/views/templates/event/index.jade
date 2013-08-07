@@ -20,7 +20,7 @@ prepend body
     {% endif %}
 
 block content
-    div#event.no_cover
+    div#event.small_cover
         div.cover
             div.image
             div.caption
@@ -29,24 +29,23 @@ block content
             div.text
                 {{ event.title }}
             div.clear
-        div.info
+        div.frame
+            div.left
+                div.placeholder
+                div.description
+                    div.editor
+                        div.inner
+                            {{ event.description|safe }}
+                    div.controls
+                        a.save(href="javascript:;") Save
             div.right
                 div.action
                     div.button 
                         b RSVP
                     div.price
                     div.clear
-                div.time
-            div.clear
-        div.details
-            div.description
-                div.editor
-                    div.inner
-                        {{ event.description|safe }}
-                div.controls
-                    a.save(href="javascript:;") Save
-            div.extra
-                div.friends
+                div.time.info
+                div.friends.info
                     div.caption
                         div.text Friends Going
                         {% if user.fb_id %}
@@ -58,11 +57,15 @@ block content
                         {% if user.fb_id %}
                         {% else %}
                         {% endif %}
-                div.organizers
+                div.organizers.info
                     div.caption
                         div.text Organizers
                         div.clear
-                div.tags
+                div.summary.info
+                    div.caption
+                        div.text Summary
+                        div.clear
+                div.tags.info
                     div.caption
                         div.text Tags
                         div.clear
