@@ -5,10 +5,12 @@ extends ../layout
 block content
     div#profile_manage
         h2 Create
-        form.create(enctype="multipart/form-data")
+        form.create
             input(type="text", name="name", placeholder="Profile Name")
             textarea(name="description", placeholder="Description")
-            input(type="file", name="image")
+            input(type="file", name="image_file")
+            img(src="")
+            input(type="hidden", name="image")
             input(type="text", name="community", placeholder="Community")
             input(type="text", name="category", placeholder="Category")
             input(type="text", name="latitude", placeholder="Latitude")

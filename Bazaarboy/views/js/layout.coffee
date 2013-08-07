@@ -13,14 +13,14 @@
         params.csrfmiddlewaretoken = csrfToken
         $.get rootUrl + endpoint, params, (data) ->
             response = $.parseJSON data
-            return cb response
+            return cb response if cb?
         return
     # Shortcut for $.post, similar to the shortcut for $.get
     post: (endpoint, params={}, cb) ->
         params.csrfmiddlewaretoken = csrfToken
         $.post rootUrl + endpoint, params, (data) ->
             response = $.parseJSON data
-            return cb response
+            return cb response if cb?
         return
     # Sub namespaces
     index: {}

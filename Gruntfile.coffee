@@ -8,21 +8,24 @@ module.exports = (grunt) ->
         concat:
             css:
                 src: [
-                    'Bazaarboy/static/css/normalize.css',
+                    'Bazaarboy/static/css/normalize.css'
                     'Bazaarboy/static/css/layout.css'
                 ]
                 dest: 'Bazaarboy/static/css/layout.css'
             css_admin:
                 src: [
-                    'Bazaarboy/static/css/normalize.css',
+                    'Bazaarboy/static/css/normalize.css'
                     'Bazaarboy/static/admin/css/layout.css'
                 ]
                 dest: 'Bazaarboy/static/admin/css/layout.css'
             js:
                 src: [
-                    'Bazaarboy/static/js/libraries/jquery.min.js',
-                    'Bazaarboy/static/js/libraries/jquery.easing.min.js',
+                    'Bazaarboy/static/js/libraries/jquery.min.js'
+                    'Bazaarboy/static/js/libraries/jquery.easing.min.js'
                     'Bazaarboy/static/js/libraries/jquery.serialize-object.min.js'
+                    'Bazaarboy/static/js/libraries/jquery.ui.widget.min.js'
+                    'Bazaarboy/static/js/libraries/jquery.iframe-transport.min.js'
+                    'Bazaarboy/static/js/libraries/jquery.fileupload.min.js'
                 ]
                 dest: 'Bazaarboy/static/js/libraries.js'
         jade:

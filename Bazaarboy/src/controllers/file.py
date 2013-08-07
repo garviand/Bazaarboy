@@ -16,9 +16,9 @@ def upload_image(request, params):
     """
     Upload a image that is stored temporarily
     """
-    if not request.FILES.has_key('image'):
+    if not request.FILES.has_key('image_file'):
         return HttpResponseBadRequest('Bad request.')
-    rawImage = request.FILES['image']
+    rawImage = request.FILES['image_file']
     imageExt = str(rawImage.name).split('.')[-1].lower()
     if not imageExt in IMAGE_TYPES:
         response = {

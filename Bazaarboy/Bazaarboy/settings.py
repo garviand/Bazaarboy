@@ -1,5 +1,7 @@
 # Django settings for Bazaarboy project.
 
+PRODUCTION = False
+
 import os
 
 PROJECT_PATH = os.path.realpath(os.path.dirname(__file__)) + '/../'
@@ -177,10 +179,10 @@ CELERY_IMPORTS = (
 
 # Environment-specific settings
 
-if DEBUG:
-    from development import *
-else:
+if PRODUCTION:
     from production import *
+else:
+    from development import *
 
 # Celery
 
