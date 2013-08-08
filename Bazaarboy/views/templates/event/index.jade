@@ -102,8 +102,7 @@ block content
                             input(type="text", name="email", placeholder="Email")
                             input(type="password", name="password", placeholder="Password")
                             input(type="submit", value="Register")
-                            // Dev only
-                            input(type="hidden", name="city", value="1")
+                            input(type="hidden", name="city", value="{% event.city.id %}")
                 div.clear
         div.divider or
         div.email

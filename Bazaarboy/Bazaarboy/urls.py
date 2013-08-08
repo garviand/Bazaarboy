@@ -46,6 +46,7 @@ profile_urlpatterns = patterns('src.controllers.profile',
 
 event_urlpatterns = patterns('src.controllers.event', 
     url(r'^(?P<id>\d+)/$', 'index', name = 'index'),
+    url(r'^new/$', 'new', name = 'new'),
     url(r'^$', 'event', name = 'event'),
     url(r'^create/$', 'create', name = 'create'),
     url(r'^edit/$', 'edit', name = 'edit'),
@@ -103,7 +104,7 @@ urlpatterns = patterns('',
     url(r'^sponsorship/', 
         include(sponsorship_urlpatterns, namespace = 'sponsorship')),
     url(r'^file/', include(file_urlpatterns, namespace = 'file')),
-    url(r'^x/', include(admin_urlpatterns, namespace = 'admin')),
+    url(r'^admin/', include(admin_urlpatterns, namespace = 'admin')),
 )
 
 handler404 = 'src.controllers.index.pageNotFound'

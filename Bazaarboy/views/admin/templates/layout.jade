@@ -4,7 +4,7 @@ html(lang="en")
         block head
             title
                 block title
-                    | Bazaarboy X
+                    | Bazaarboy Admin
             link(rel="stylesheet", href="{{ STATIC_URL }}admin/fui/bootstrap/css/bootstrap.css")
             link(rel="stylesheet", href="{{ STATIC_URL }}admin/fui/css/flat-ui.css")
             link(rel="stylesheet", href="{{ STATIC_URL }}admin/css/layout.css")
@@ -12,13 +12,13 @@ html(lang="en")
         div#wrapper_top.palette-midnight-blue
             div#top_inner
                 block top
-                    div.title Bazaarboy X
+                    div.title Bazaarboy Admin
         div#wrapper_main
             block main
         div#wrapper_bottom
             block bottom
         block script
-            script(type="text/javascript", src="{{ STATIC_URL }}js/libraries/jquery-1.10.1.min.js")
+            script(type="text/javascript", src="{{ STATIC_URL }}js/libraries/jquery.min.js")
             script(type="text/javascript", src="{{ STATIC_URL }}admin/fui/js/bootstrap.min.js")
             script(type="text/javascript").
                 var rootUrl = '{% url index %}';

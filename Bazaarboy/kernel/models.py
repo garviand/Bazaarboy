@@ -212,6 +212,7 @@ class Event_base(models.Model):
     image = models.ForeignKey('Image', 
                               related_name = '%(class)s_image', 
                               null = True, default = None)
+    is_cover = models.BooleanField(default = False)
     location = models.CharField(max_length = 100)
     latitude = models.FloatField(null = True, default = None)
     longitude = models.FloatField(null = True, default = None)

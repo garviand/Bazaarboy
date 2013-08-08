@@ -27,6 +27,14 @@ def index(request, id, user):
     #event = Event.objects.get(id = id)
     return render(request, 'event/index.html', locals())
 
+@login_check()
+def new(request, user):
+    """
+    Create event page
+    """
+    categories = BBOY_EVENT_CATEGORIES
+    return render(request, 'event/create.html', locals())
+
 @login_required()
 @validate('GET', ['id'])
 def event(request, params, user):
@@ -49,9 +57,8 @@ def event(request, params, user):
 
 @login_check()
 @validate('POST', 
-          ['profile', 'name', 'description', 'start_time', 'location', 
-           'category'], 
-          ['end_time', 'latitude', 'longitude', 'is_private'])
+          ['name', 'description', 'start_time', 'location', 'category'], 
+          ['end_time', 'latitude', 'longitude', 'is_private', 'profile'])
 def create(request, params, user):
     """
     Create a new event

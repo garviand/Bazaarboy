@@ -5,6 +5,7 @@ Controller for Profile
 from django.http import Http404
 from django.shortcuts import render
 from kernel.models import *
+from src.config import BBOY_PROFILE_CATEGORIES
 from src.controllers.request import *
 from src.serializer import serialize_one
 
@@ -24,6 +25,7 @@ def manage(request, user):
     Manage profiles page
     """
     profiles = Profile.objects.filter(managers = user)
+    categories = BBOY_PROFILE_CATEGORIES
     return render(request, 'profile/manage.html', locals())
 
 @login_required()

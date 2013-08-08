@@ -11,6 +11,12 @@ BBOY_STATES = [
     'NV', 'NY', 'OH', 'OK', 'OR', 'PA', 'PR', 'PW', 'RI', 'SC', 'SD', 'TN', 
     'TX', 'UT', 'VA', 'VI', 'VT', 'WA', 'WI', 'WV', 'WY'
 ]
+BBOY_PROFILE_CATEGORIES = [
+    'Personal', 'Non-profit', 'Business', 'Other'
+]
+BBOY_EVENT_CATEGORIES = [
+    'Nightlife', 'Charity', 'Other'
+]
 
 # WePay
 

@@ -1,0 +1,26 @@
+// Create Event
+
+extends ../layout
+
+block title
+    | Create Event
+
+block vars
+    - var collapsed = true
+
+block content
+    div#event_create
+        h2 Create Event
+        form.create
+            input(type="text", name="name", placeholder="Name")
+            textarea(name="description", placeholder="Description")
+            input(type="text", name="start_time", placeholder="Start Time")
+            input(type="text", name="location", placeholder="Location")
+            select(name="category")
+                {% for category in categories %}
+                option(value="{{ category }}") {{ category }}
+                {% endfor %}
+            input(type="submit", value="Create")
+
+append script
+    script(type="text/javascript", src="{{ STATIC_URL }}js/event/create.js")

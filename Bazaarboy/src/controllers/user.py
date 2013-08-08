@@ -11,6 +11,7 @@ from django.shortcuts import render, redirect
 from django.utils import timezone
 from facebook import GraphAPI, GraphAPIError
 from kernel.models import *
+from src.config import *
 from src.controllers.request import json_response, validate, login_check
 from src.email import Email
 from src.regex import REGEX_EMAIL
@@ -123,6 +124,15 @@ def create(request, params, user):
             'message':'Your full name is too long.'
         }
         return json_response(response)
+    # Check if the city is valid
+    if not City.objects.filter(id = params['city']).exists():
+        response = {
+            'status':'FAIL',
+            'error':'CITY_NOT_FOUND',
+            'message':'The city doesn\'t exist.'
+        }
+        return json_response(response)
+    city = City.objects.get(id = params['city'])
     # Find the unactivated user, or create a new one
     user = User(email = params['email'])
     if User.objects.filter(email = params['email']).exists():
@@ -130,7 +140,18 @@ def create(request, params, user):
     # Set the user information
     user.password = params['password']
     user.full_name = params['full_name']
+    user.city = city
     user.save()
+    # Create the pseudo profile for user
+    profile = Profile(name = user.full_name, 
+                      description = user.full_name + '\'s personal profile', 
+                      community = user.city.pseudo, 
+                      category = 'personal')
+    profile.save()
+    profileManager = Profile_manager(user = user,
+                                     profile = profile,
+                                     is_creator = True)
+    profileManager.save()
     # Creation done, send out a confirmation email
     # Start the session
     request.session['user'] = user.id
@@ -173,7 +194,7 @@ def auth(request, params, user):
     return json_response(response)
 
 @login_check()
-@validate('POST', ['fb_token'], ['email'])
+@validate('POST', ['fb_token'], ['email', 'city'])
 def fbAuth(request, params, user):
     """
     Authenticate or create a user using a Facebook account
@@ -211,6 +232,15 @@ def fbAuth(request, params, user):
                     'message':'Email format is invalid.'
                 }
                 return json_response(response)
+            if (params['city'] is None or len(params['city']) == 0 or 
+                not City.objects.filter(id = params['city']).exists()):
+                response = {
+                    'status':'FAIL',
+                    'error':'INVALID_CITY',
+                    'message':'You need to specify a valid city.'
+                }
+                return json_response(response)
+            city = City.objects.get(id = params['city'])
             # Check if the email has already been registered
             if User.objects.filter(Q(password = None) | Q(fb_id = None), 
                                    email = params['email']).exists():
@@ -228,7 +258,19 @@ def fbAuth(request, params, user):
             user.fb_access_token = params['fb_token']
             user.full_name = ('%s %s' % (fbProfile['first_name'], 
                                         fbProfile['last_name']))[:50]
+            user.city = city
             user.save()
+            # Create the pseudo profile for user
+            profile = Profile(name = user.full_name, 
+                              description = user.full_name + 
+                                            '\'s personal profile', 
+                              community = user.city.pseudo, 
+                              category = 'personal')
+            profile.save()
+            profileManager = Profile_manager(user = user,
+                                             profile = profile,
+                                             is_creator = True)
+            profileManager.save()
             # Creation done, send out confirmation email
             code = os.urandom(128).encode('base_64')[:128]
             confirmationCode = User_confirmation_code(user = user, code = code)

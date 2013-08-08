@@ -33,4 +33,5 @@ html(lang="en")
                 var rootUrl = '{% url index %}';
                 var mediaUrl = '{{ MEDIA_URL }}';
                 var csrfToken = '{{ csrf_token }}';
+                var loggedIn = {% if user %}true{% else %}false{% endif %};
             script(type="text/javascript", src="{{ STATIC_URL }}js/layout.js")
