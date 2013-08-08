@@ -8,6 +8,8 @@ AWS_STORAGE_BUCKET_NAME = 'bazaarboy_media'
 
 DEFAULT_FILE_STORAGE = 'storages.backends.s3boto.S3BotoStorage'
 
+MEDIA_URL = 'https://s3.amazonaws.com/' + AWS_STORAGE_BUCKET_NAME + '/'
+
 # Celery
 
 import urllib

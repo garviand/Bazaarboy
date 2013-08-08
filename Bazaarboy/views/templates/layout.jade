@@ -31,5 +31,6 @@ html(lang="en")
             script(type="text/javascript", src="{{ STATIC_URL }}js/libraries.js")
             script(type="text/javascript").
                 var rootUrl = '{% url index %}';
+                var mediaUrl = '{{ MEDIA_URL }}';
                 var csrfToken = '{{ csrf_token }}';
             script(type="text/javascript", src="{{ STATIC_URL }}js/layout.js")

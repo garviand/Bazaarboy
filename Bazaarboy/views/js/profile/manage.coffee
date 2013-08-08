@@ -13,7 +13,7 @@ Bazaarboy.profile.manage =
                 result = jQuery.parseJSON(data.result)
                 if result.status is 'OK'
                     $('form.create input[name=image]').val(result.image.pk)
-                    imgUrl = rootUrl + 'static/media/' + result.image.source
+                    imgUrl = mediaUrl + result.image.source
                     $('form.create img').attr('src', imgUrl)
                 else
                     console.log result

@@ -4,11 +4,8 @@ All the core models for Bazaarboy
 
 import hashlib
 import os
-from django.conf import settings
 from django.db import models, IntegrityError
 from django.db.models import F
-from django.db.models.signals import post_delete
-from django.dispatch.dispatcher import receiver
 from django.utils import timezone
 
 class User(models.Model):
@@ -475,11 +472,9 @@ class Image(models.Model):
     is_archived = models.BooleanField(default = False)
     created_time = models.DateTimeField(auto_now_add = True)
 
-@receiver(post_delete, sender = Image)
-def deleteFileOnImageDelete(sender, instance, **kwargs):
-    """
-    Automatically delete the image file when an image model is deleted
-    """
-    if not settings.PRODUCTION:
-        if instance.source and os.path.isfile(instance.source.path):
-            os.remove(instance.source.path)
+    def delete(self, *args, **kwargs):
+        """
+        Automatically delete the image file after model deletion
+        """
+        self.source.delete(save = False)
+        super(Image, self).delete(*args, **kwargs)
