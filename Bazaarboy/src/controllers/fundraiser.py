@@ -17,14 +17,30 @@ from src.serializer import serialize_one
 FORMAT_DATETIME = '%Y-%m-%d %X'
 
 @login_check()
-def index(request, id, user):
+@validate('GET', [], ['token'])
+def index(request, id, params, user):
     """
     Fundraiser event page
     """
+    """
     if not Fundraiser.objects.filter(id = id).exists():
         raise Http404
-    fundraiser = Fundraiser.objects.get(id = id)
-    return render(request, 'fundraiser.html', locals())
+    fundraiser = Fundraiser.objects.select_related().get(id = id)
+    editable = False
+    if fundraiser.owner is not None:
+        editable = (user is not None and 
+                    Profile_manager.objects.filter(user = user, 
+                                                   profile = fundraiser.owner) \
+                                           .exists())
+        if not editable and not fundraiser.is_launched:
+            return redirect('index')
+    elif (params['token'] is not None and 
+          fundraiser.access_token == params['token']):
+        editable = True
+    else:
+        return redirect('index')
+    """
+    return render(request, 'fundraiser/index.html', locals())
 
 @login_required()
 @validate('GET', ['id'])

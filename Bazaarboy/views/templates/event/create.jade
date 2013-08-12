@@ -12,6 +12,12 @@ block content
     div#event_create
         h2 Create Event
         form.create
+            {% if user %}
+            select(name="profile")
+                {% for profile in profiles %}
+                option(value="{{ profile.id }}") {{ profile.name }}
+                {% endfor %}
+            {% endif %}
             input(type="text", name="name", placeholder="Name")
             textarea(name="description", placeholder="Description")
             input(type="text", name="start_time", placeholder="Start Time")

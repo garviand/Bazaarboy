@@ -6,7 +6,7 @@ import os
 from datetime import timedelta
 from django.db.models import F, Q
 from django.http import Http404
-from django.shortcuts import render
+from django.shortcuts import render, redirect
 from django.utils import timezone
 from celery import task
 from kernel.models import *
@@ -17,14 +17,26 @@ from src.sanitizer import sanitize_redactor_input
 from src.serializer import serialize_one
 
 @login_check()
-def index(request, id, user):
+@validate('GET', [], ['token'])
+def index(request, id, params, user):
     """
     Event page
     """
     if not Event.objects.filter(id = id).exists():
-        #raise Http404
-        pass
-    #event = Event.objects.get(id = id)
+        raise Http404
+    event = Event.objects.select_related().get(id = id)
+    editable = False
+    if event.owner is not None:
+        editable = (user is not None and 
+                    Profile_manager.objects.filter(user = user, 
+                                                   profile = event.owner) \
+                                           .exists())
+        if not editable and not event.is_launched:
+            return redirect('index')
+    elif params['token'] is not None and event.access_token == params['token']:
+        editable = True
+    else:
+        return redirect('index')
     return render(request, 'event/index.html', locals())
 
 @login_check()
@@ -33,6 +45,8 @@ def new(request, user):
     Create event page
     """
     categories = BBOY_EVENT_CATEGORIES
+    if user is not None:
+        profiles = Profile.objects.filter(managers = user)
     return render(request, 'event/create.html', locals())
 
 @login_required()
@@ -128,7 +142,7 @@ def create(request, params, user):
         event.owner = profile
     else:
         # Otherwise, generate an access token for the anonymous user
-        event.access_token = os.urandom(128).encode('base_64')[:128]
+        event.access_token = os.urandom(32).encode('base_64')[:32]
     # Save to database
     event.save()
     response = {

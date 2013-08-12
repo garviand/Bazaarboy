@@ -7,7 +7,7 @@ Bazaarboy.event.create =
                 if response.status is 'OK'
                     eventUrl = 'event/' + response.event.pk
                     if not loggedIn
-                        eventUrl += '?token=' + response.event.token
+                        eventUrl += '?token=' + response.event.access_token
                     Bazaarboy.redirect eventUrl
                 else
                     console.log response

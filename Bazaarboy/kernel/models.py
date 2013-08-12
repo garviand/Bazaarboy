@@ -226,7 +226,7 @@ class Event_base(models.Model):
                                   null = True, default = None)
     city = models.ForeignKey('City', related_name = '%(class)s_city', 
                              null = True, default = None)
-    access_token = models.CharField(max_length = 128, null = True, 
+    access_token = models.CharField(max_length = 32, null = True, 
                                     default = None)
     created_time = models.DateTimeField(auto_now_add = True)
 
