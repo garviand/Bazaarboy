@@ -18,10 +18,6 @@ Application Healthcheck URL=
 
 [aws:elasticbeanstalk:application:environment]
 DJANGO_SETTINGS_MODULE=Bazaarboy.settings
-BBOY_ENV=staging
-BBOY_DEBUG=true
-BBOY_MEDIA_URL=https://s3.amazonaws.com/bazaarboy_media_staging/
-BBOY_STATIC_URL=/static/
 
 [aws:elasticbeanstalk:container:python]
 NumProcesses=1
