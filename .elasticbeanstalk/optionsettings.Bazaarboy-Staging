@@ -1,0 +1,51 @@
+[aws:autoscaling:asg]
+Custom Availability Zones=
+MaxSize=4
+MinSize=1
+
+[aws:autoscaling:launchconfiguration]
+EC2KeyName=bazaarboy
+InstanceType=t1.micro
+
+[aws:ec2:vpc]
+ELBScheme=public
+ELBSubnets=
+Subnets=
+VPCId=
+
+[aws:elasticbeanstalk:application]
+Application Healthcheck URL=
+
+[aws:elasticbeanstalk:application:environment]
+DJANGO_SETTINGS_MODULE=Bazaarboy.settings
+BBOY_ENV=staging
+BBOY_DEBUG=true
+BBOY_MEDIA_URL=https://s3.amazonaws.com/bazaarboy_media_staging/
+BBOY_STATIC_URL=/static/
+
+[aws:elasticbeanstalk:container:python]
+NumProcesses=1
+NumThreads=15
+StaticFiles=/static=
+WSGIPath=Bazaarboy/Bazaarboy/wsgi.py
+
+[aws:elasticbeanstalk:container:python:staticfiles]
+/static=Bazaarboy/static/
+
+[aws:elasticbeanstalk:hostmanager]
+LogPublicationControl=false
+
+[aws:elasticbeanstalk:monitoring]
+Automatically Terminate Unhealthy Instances=true
+
+[aws:elasticbeanstalk:sns:topics]
+Notification Endpoint=
+Notification Protocol=email
+
+[aws:rds:dbinstance]
+DBDeletionPolicy=Snapshot
+DBEngine=mysql
+DBInstanceClass=db.t1.micro
+DBSnapshotIdentifier=
+DBUser=ebroot
+
