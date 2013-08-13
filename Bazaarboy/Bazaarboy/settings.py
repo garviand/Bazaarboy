@@ -6,7 +6,7 @@ import os
 
 PROJECT_PATH = os.path.realpath(os.path.dirname(__file__)) + '/../'
 
-DEBUG = True
+DEBUG = os.environ['BBOY_DEBUG'] == 'true'
 TEMPLATE_DEBUG = DEBUG
 
 ADMINS = (
@@ -60,7 +60,7 @@ MEDIA_ROOT = PROJECT_PATH + 'static/media/'
 # URL that handles the media served from MEDIA_ROOT. Make sure to use a
 # trailing slash.
 # Examples: "http://media.lawrence.com/media/", "http://example.com/media/"
-MEDIA_URL = '/static/media/'
+MEDIA_URL = os.environ['BBOY_MEDIA_URL']
 
 # Absolute path to the directory static files should be collected to.
 # Don't put anything in this directory yourself; store your static files
@@ -70,7 +70,7 @@ STATIC_ROOT = ''
 
 # URL prefix for static files.
 # Example: "http://media.lawrence.com/static/"
-STATIC_URL = '/static/'
+STATIC_URL = os.environ['BBOY_STATIC_URL']
 
 # Additional locations of static files
 STATICFILES_DIRS = (
@@ -180,8 +180,10 @@ CELERY_IMPORTS = (
 
 # Environment-specific settings
 
-if PRODUCTION:
+if os.environ['BBOY_ENV'] == 'production':
     from production import *
+elif os.environ['BBOY_ENV'] == 'staging':
+    from staging import *
 else:
     from development import *
 

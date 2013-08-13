@@ -1,0 +1,15 @@
+Django==1.4.5
+Fabric==1.6.1
+MySQL-python==1.2.4
+PIL==1.1.7
+South==0.8.1
+beautifulsoup4==4.2.1
+boto==2.9.6
+celery==3.0.21
+django-celery==3.0.17
+django-celery-with-redis==3.0
+django-storages==1.1.8
+epydoc==3.0.1
+facebook-sdk==0.4.0
+redis==2.7.6
+wepay==0.1.5

@@ -8,11 +8,12 @@ AWS_STORAGE_BUCKET_NAME = 'bazaarboy_media'
 
 DEFAULT_FILE_STORAGE = 'storages.backends.s3boto.S3BotoStorage'
 
-MEDIA_URL = 'https://s3.amazonaws.com/' + AWS_STORAGE_BUCKET_NAME + '/'
-
 # Celery
 
 import urllib
 
 BROKER_URL = 'sqs://%s:%s@' % (urllib.quote(AWS_ACCESS_KEY_ID, safe = ''), 
                                urllib.quote(AWS_SECRET_ACCESS_KEY, safe = ''))
+BROKER_TRANSPORT_OPTIONS = {
+    'queue_name_prefix':'bboy-'
+}

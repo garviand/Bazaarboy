@@ -12,7 +12,7 @@ fi
 # Other python packages
 
 echo -e "\nInstalling dependent python packages\n"
-pip install -r pip.list
+pip install -r requirements.txt
 
 echo -e "\nDevelopment environment is now finished!"
 echo -e "Run 'fab dev' to kickstart your development process!\n"

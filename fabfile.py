@@ -53,10 +53,24 @@ def compile():
     ):
         local('grunt dev')
 
+def set_env(env='development'):
+    if env == 'development':
+        os.environ['BBOY_ENV'] = 'development'
+        os.environ['BBOY_DEBUG'] = 'true'
+        os.environ['BBOY_MEDIA_URL'] = '/static/media/'
+        os.environ['BBOY_STATIC_URL'] = '/static/'
+    elif env == 'staging':
+        os.environ['BBOY_DB_PASS'] = 'bboymafia1'
+    elif env == 'production':
+        pass
+
 def dev(port=8080):
     """
     Start a development environment
     """
+    # Set up development environment variables
+    set_env('development')
+    # Use worker process to run the watch task
     def init_worker():
         signal.signal(signal.SIGINT, signal.SIG_IGN)
     pool = multiprocessing.Pool(5, init_worker)
