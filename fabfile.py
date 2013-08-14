@@ -43,6 +43,9 @@ def test(app=''):
     """
     Run unit tests
     """
+    # Set up development environment variables
+    set_env('development')
+    # Run tests
     with lcd('./Bazaarboy/'):
         local('python manage.py test %s' % app)
 
