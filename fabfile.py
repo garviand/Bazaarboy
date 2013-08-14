@@ -33,6 +33,9 @@ def syncdb():
     """
     Sync the models to database
     """
+    # Set up development environment variables
+    set_env('development')
+    # Sync database
     with lcd('./Bazaarboy/'):
         local('python manage.py syncdb')
 
@@ -60,9 +63,10 @@ def set_env(env='development'):
         os.environ['BBOY_MEDIA_URL'] = '/static/media/'
         os.environ['BBOY_STATIC_URL'] = '/static/'
     elif env == 'staging':
+        os.environ['BBOY_ENV'] = 'staging'
         os.environ['BBOY_DB_PASS'] = 'bboymafia1'
     elif env == 'production':
-        pass
+        os.environ['BBOY_ENV'] = 'production'
 
 def dev(port=8080):
     """
