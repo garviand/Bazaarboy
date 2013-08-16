@@ -1,12 +1,12 @@
 # Django settings for Bazaarboy project.
 
-PRODUCTION = False
-
 import os
+
+BBOY_ENV = os.getenv('BBOY_ENV', 'development')
 
 PROJECT_PATH = os.path.realpath(os.path.dirname(__file__)) + '/../'
 
-DEBUG = os.environ['BBOY_DEBUG'] == 'true'
+DEBUG = os.getenv('BBOY_DEBUG', 'true') == 'true'
 TEMPLATE_DEBUG = DEBUG
 
 ADMINS = (
@@ -60,7 +60,7 @@ MEDIA_ROOT = PROJECT_PATH + 'static/media/'
 # URL that handles the media served from MEDIA_ROOT. Make sure to use a
 # trailing slash.
 # Examples: "http://media.lawrence.com/media/", "http://example.com/media/"
-MEDIA_URL = os.environ['BBOY_MEDIA_URL']
+MEDIA_URL = os.getenv('BBOY_MEDIA_URL', '/static/media/')
 
 # Absolute path to the directory static files should be collected to.
 # Don't put anything in this directory yourself; store your static files
@@ -70,7 +70,7 @@ STATIC_ROOT = ''
 
 # URL prefix for static files.
 # Example: "http://media.lawrence.com/static/"
-STATIC_URL = os.environ['BBOY_STATIC_URL']
+STATIC_URL = os.getenv('BBOY_STATIC_URL', '/static/')
 
 # Additional locations of static files
 STATICFILES_DIRS = (
@@ -180,9 +180,9 @@ CELERY_IMPORTS = (
 
 # Environment-specific settings
 
-if os.environ['BBOY_ENV'] == 'production':
+if BBOY_ENV == 'production':
     from production import *
-elif os.environ['BBOY_ENV'] == 'staging':
+elif BBOY_ENV == 'staging':
     from staging import *
 else:
     from development import *

@@ -64,9 +64,10 @@ def set_env(env='development'):
         os.environ['BBOY_STATIC_URL'] = '/static/'
     elif env == 'staging':
         os.environ['BBOY_ENV'] = 'staging'
-        os.environ['BBOY_DB_PASS'] = 'bboymafia1'
+        os.environ['BBOY_DEBUG'] = 'true'
     elif env == 'production':
         os.environ['BBOY_ENV'] = 'production'
+        os.environ['BBOY_DEBUG'] = 'false'
 
 def dev(port=8080):
     """
