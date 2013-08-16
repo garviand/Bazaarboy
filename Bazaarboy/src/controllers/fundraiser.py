@@ -794,8 +794,7 @@ def donate(request, params, user):
     checkoutDescription = fundraiser.name
     if len(reward.name) > 0:
         checkoutDescription += ' - ' + reward.name
-    checkoutInfo = create_checkout('DONATION', 
-                                   fundraiser.owner.wepay_account.accound_id, 
+    checkoutInfo = create_checkout('DONATION', fundraiser.owner.wepay_account, 
                                    checkoutDescription, params['amount'])
     checkout = Wepay_checkout(payer = user, 
                               payee = fundraiser.owner.wepay_account, 

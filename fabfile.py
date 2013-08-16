@@ -7,6 +7,9 @@ def console():
     """
     Open up the interactive python console with django context
     """
+    # Set up development environment variables
+    set_env('development')
+    # Invoke console
     with lcd('./Bazaarboy/'):
         local('python manage.py shell')
 
@@ -22,12 +25,6 @@ def docs():
         local('rm -r ./docs/')
     # Use epydoc to generate new docs
     local('epydoc --config docs.config')
-
-def uploads():
-    """
-    Fix the permission for the uploads folder
-    """
-    local('sudo chown -R www-data:www-data media/uploads/')
 
 def syncdb():
     """
