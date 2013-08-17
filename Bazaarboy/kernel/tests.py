@@ -16,7 +16,7 @@ class EmailTest(TestCase):
 
     def test_confirmation_email(self):
         email_client = Email()
-        response = email_client.sendConfirmationEmail(self, 'WHATEVER')
+        response = email_client.sendConfirmationEmail('WHATEVER')
         self.assertEqual(response['status'], 'sent')
 
 class UserTest(TestCase):
