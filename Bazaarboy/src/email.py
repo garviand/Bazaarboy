@@ -20,13 +20,12 @@ class Email(object):
         Send Confirmation after Registration
         """
         mandrill_client = mandrill.Mandrill('EJmj_TdbdCy6Xda_9hREKA')
-        template_content = []
+        template_content = [{'header-title': '<h2>Thanks for the help douche!</h2>'}]
         message = {
          'from_email': 'build@bazaarboy.com',
          'from_name': 'Bazaarboy',
          'headers': {'Reply-To': 'build@bazaarboy.com'},
          'subject': 'Welcome to Bazaarboy',
-         'text': confirmationCode,
          'to': [{'email': 'garvin.andy@gmail.com', 'name': 'Andy Garvin'}],
          'track_clicks': True,
          'track_opens': True}
