@@ -18,7 +18,7 @@ def authorize(request, user):
     """
     wepay = WePay(production = WEPAY_PRODUCTION, 
                   access_token = WEPAY_ACCESS_TOKEN)
-    redirectUrl = BBOY_URL_ROOT + reverse('wepay-create')
+    redirectUrl = BBOY_URL_ROOT + reverse('wepay:create')
     scope = ','.join(WEPAY_SCOPE)
     authorizationUrl = wepay.get_authorization_url(redirect_uri = redirectUrl, 
                                                    client_id = WEPAY_CLIENT_ID, 
@@ -37,7 +37,7 @@ def create(request, params, user):
     # Legal name acquired, request for an access token
     wepay = WePay(production = WEPAY_PRODUCTION, 
                   access_token = WEPAY_ACCESS_TOKEN)
-    redirectUrl = BBOY_URL_ROOT + reverse('wepay-create')
+    redirectUrl = BBOY_URL_ROOT + reverse('wepay:create')
     tokenInfo = wepay.get_token(redirect_uri = redirectUrl, 
                                 client_id = WEPAY_CLIENT_ID, 
                                 client_secret = WEPAY_CLIENT_SECRET, 

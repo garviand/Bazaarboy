@@ -1,5 +1,6 @@
 module.exports = (grunt) ->
     grunt.loadNpmTasks('grunt-contrib-coffee')
+    grunt.loadNpmTasks('grunt-contrib-uglify')
     grunt.loadNpmTasks('grunt-contrib-jade')
     grunt.loadNpmTasks('grunt-contrib-less')
     grunt.loadNpmTasks('grunt-contrib-concat')
@@ -62,6 +63,21 @@ module.exports = (grunt) ->
                     dest: 'Bazaarboy/static/admin/js/'
                     ext: '.js'
                 ]
+        uglify:
+            compile:
+                files: [
+                    expand: true
+                    cwd: 'Bazaarboy/static/js/'
+                    src: ['**/*.js', '!libraries/**/*.js', '!libraries.js']
+                    dest: 'Bazaarboy/static/js/'
+                    ext: '.js'
+                ,
+                    expand: true
+                    cwd: 'Bazaarboy/static/admin/js/'
+                    src: ['**/*.js']
+                    dest: 'Bazaarboy/static/admin/js/'
+                    ext: '.js'
+                ]
         less:
             compile:
                 files: [
@@ -93,7 +109,7 @@ module.exports = (grunt) ->
                     'Bazaarboy/views/js/**/*.coffee',
                     'Bazaarboy/views/admin/js/**/*.coffee'
                 ]
-                tasks: ['coffee']
+                tasks: ['coffee', 'uglify']
             less:
                 options:
                     nospawn: true
@@ -133,12 +149,15 @@ module.exports = (grunt) ->
                              .replace(/\.coffee/, '.js')
             opts = {}
             opts[output] = filepath
+            uglifyOpts = {}
+            uglifyOpts[output] = output
             grunt.config(['coffee', 'compile', 'files'], opts)
+            grunt.config(['uglify', 'compile', 'files'], uglifyOpts)
         else if ext is 'less'
             output = filepath.replace(/Bazaarboy\/views/, 'Bazaarboy/static')
                              .replace(/\.less/, '.css')
             opts = {}
             opts[output] = filepath
             grunt.config(['less', 'compile', 'files'], opts)
-    grunt.registerTask('dev', ['jade', 'coffee', 'less', 'concat', 'watch'])
+    grunt.registerTask('dev', ['jade', 'coffee', 'uglify', 'less', 'concat', 'watch'])
     return
