@@ -383,6 +383,35 @@ class Fundraiser_sponsorship(Sponsorship):
     criteria = models.ForeignKey('Fundraiser_criteria')
     _for = models.ForeignKey('Fundraiser')
 
+class Sponsorship_display(models.Model):
+    """
+    Sponsorship display model, which allows for custom sponsors
+    """
+    name = models.CharField(max_length = 50, null = True, default = None)
+    description = models.CharField(max_length = 150, null = True, 
+                                   default = None)
+    image = models.ForeignKey('Image', null = True, default = None)
+    sponsor = models.ForeignKey('Profile', null = True, default = None)
+
+    class Meta:
+        abstract = True
+
+class Event_sponsorship_display(Sponsorship_display):
+    """
+    Event sponsorship display
+    """
+    sponsorship = models.ForeignKey('Event_sponsorship', 
+                                    null = True, default = None)
+    _for = models.ForeignKey('Event')
+
+class Fundraiser_sponsorship_display(Sponsorship_display):
+    """
+    Fundraiser sponsorship display
+    """
+    sponsorship = models.ForeignKey('Fundraiser_sponsorship', 
+                                    null = True, default = None)
+    _for = models.ForeignKey('Fundraiser')
+
 class Redeemable(models.Model):
     """
     Redeemable rewards for points

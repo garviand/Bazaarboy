@@ -803,8 +803,12 @@ def purchase(request, params, user):
         return json_response(response)
     # All checks passed, request a checkout on WePay
     checkoutDescription = '%s - %s' % (event.name, ticket.name)
+<<<<<<< HEAD
     checkoutInfo = create_checkout('EVENT', 
                                    event.owner.wepay_account.account_id, 
+=======
+    checkoutInfo = create_checkout('EVENT', event.owner.wepay_account, 
+>>>>>>> 82be9a39cad708d4eb2cf3a62be9d8635559fc91
                                    checkoutDescription, ticket.price)
     checkout = Wepay_checkout(payer = user, payee = event.owner.wepay_account, 
                               checkout_id = checkoutInfo['checkout_id'],

@@ -56,14 +56,16 @@ def create(request, params, user):
     wepayAccount.save()
     return redirect('index')
 
-def create_checkout(_type, accountID, description, amount):
+def create_checkout(_type, account, description, amount):
     """
     Create a checkout on WePay
     """
+    wepay = WePay(production = WEPAY_PRODUCTION, 
+                  access_token = account.access_token)
     appFee = amount * WEPAY_APP_FEE_RATIO
     checkoutParams = {
         'type':_type.upper(),
-        'account_id':accountID,
+        'account_id':account.account_id,
         'short_description':description,
         'amount':amount,
         'app_fee':appFee,
