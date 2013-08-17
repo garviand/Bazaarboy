@@ -3,6 +3,8 @@ Email utilities
 """
 
 from celery import task
+import mandrill
+
 
 class Email(object):
     """
@@ -14,7 +16,24 @@ class Email(object):
         super(Email, self).__init__()
 
     def sendConfirmationEmail(self, confirmationCode):
-        pass
+        """
+        Send Confirmation after Registration
+        """
+        mandrill_client = mandrill.Mandrill('EJmj_TdbdCy6Xda_9hREKA')
+        template_content = []
+        message = {
+         'from_email': 'build@bazaarboy.com',
+         'from_name': 'Bazaarboy',
+         'headers': {'Reply-To': 'build@bazaarboy.com'},
+         'subject': 'Welcome to Bazaarboy',
+         'text': confirmationCode,
+         'to': [{'email': 'garvin.andy@gmail.com', 'name': 'Andy Garvin'}],
+         'track_clicks': True,
+         'track_opens': True}
+
+        result = mandrill_client.messages.send_template(template_name='untitled-template', template_content=template_content, message=message, async=False)
+
+        return result
 
     def sendResetRequestEmail(self, resetCode):
         pass

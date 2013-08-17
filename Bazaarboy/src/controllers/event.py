@@ -804,7 +804,7 @@ def purchase(request, params, user):
     # All checks passed, request a checkout on WePay
     checkoutDescription = '%s - %s' % (event.name, ticket.name)
     checkoutInfo = create_checkout('EVENT', 
-                                   event.owner.wepay_account.accound_id, 
+                                   event.owner.wepay_account.account_id, 
                                    checkoutDescription, ticket.price)
     checkout = Wepay_checkout(payer = user, payee = event.owner.wepay_account, 
                               checkout_id = checkoutInfo['checkout_id'],

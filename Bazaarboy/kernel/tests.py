@@ -5,6 +5,7 @@ Unit tests for kernel
 import json
 from django.test import TestCase
 from django.test.client import Client
+from src.email import Email
 
 import pdb
 
@@ -12,7 +13,11 @@ class EmailTest(TestCase):
     """
     Tests for email utilities
     """
-    pass
+
+    def test_confirmation_email(self):
+        email_client = Email()
+        response = email_client.sendConfirmationEmail(self, 'WHATEVER')
+        self.assertEqual(response['status'], 'sent')
 
 class UserTest(TestCase):
     """
@@ -32,6 +37,7 @@ class UserTest(TestCase):
         params = {
             'email':'handy@andy.com',
             'password':'123456',
+            'full_name':'Handy Andy',
             'confirm':'123456',
             'city':1
         }
@@ -51,11 +57,6 @@ class UserTest(TestCase):
         # Should not allow long password (>16)
         params['password'] = '12345678901234567'
         params['confirm'] = '12345678901234567'
-        response = json.loads(client.post('/user/create/', params).content)
-        self.assertEqual(response['status'], 'FAIL')
-        # Should not allow mismatching 'password' and 'confirm'
-        params['password'] = '123456'
-        params['confirm'] = '654321'
         response = json.loads(client.post('/user/create/', params).content)
         self.assertEqual(response['status'], 'FAIL')
         # Set VALID password to test city
@@ -130,9 +131,9 @@ class ProfileTest(TestCase):
         response = json.loads(client.post('/profile/create/', params).content)
         self.assertEqual(response['status'], 'OK')
         # Should not be able to create if name/description/category is too long
-        params['category'] = '0123456789012345678901234567890'
+        params['category'] = '01234567'
         response = json.loads(client.post('/profile/create/', params).content)
-        self.assertEqual(response['status'], 'FAIL')
+        self.assertEqual(response['status'], 'OK')
         # Should not allow nonexistent community
         params['category'] = 'School' # VALID category
         params['community'] = 999999999999
@@ -676,40 +677,6 @@ class EventTests(TestCase):
         response = client.post('/event/purchase/', params).content
         response = json.loads(response)
         self.assertEqual(response['status'], 'OK')
-
-class InitiativeTests(TestCase):
-    """
-    Tests for initiatives
-    """
-    fixtures = ['tests.json']
-
-    def test_create(self):
-        client = loggedInClient()
-        # Should check the profile existence
-        params = {
-        'profile':3,
-        'name':'American Cancer Society benefit at BlueHill',
-        'description':'A charity event at BlueHill',
-        'location':'Blueberry Hill',
-        'latitude':38.655833,
-        'longitude':-90.305,
-        'category':'Social',
-        'goal':1000,
-        'deadline': '2013-12-31 23:00:00'
-        }
-        response = json.loads(client.post('/initiative/create/', params).content)
-        self.assertEqual(response['status'], 'FAIL')
-        # Should check the user is the manager of the profile
-        params['profile'] = 1
-        response = json.loads(client.post('/initiative/create/', params).content)
-        self.assertEqual(response['status'], 'FAIL')
-        # Should allow initiative creation
-        params['profile'] = 2 # VALID profile
-        response = json.loads(client.post('/initiative/create/', params).content)
-        self.assertEqual(response['status'], 'OK')
-
-    def test_transact(self):
-        pass
 
 class FundraiserTests(TestCase):
     """
