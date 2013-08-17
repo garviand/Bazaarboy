@@ -1,1 +1,10 @@
 extends ../layout
+
+block content
+    div#wepay
+        {% for account in wepayAccounts %}
+        div.account
+            {{ account.account_id }}
+        {% empty %}
+        a(href="{% url wepay:authorize %}") Connect WePay
+        {% endfor %}

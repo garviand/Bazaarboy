@@ -86,6 +86,7 @@ def settings(request, user):
     """
     User settings page
     """
+    wepayAccounts = user.wepay_account_set.all()
     return render(request, 'user/settings.html', locals())
 
 @login_check()

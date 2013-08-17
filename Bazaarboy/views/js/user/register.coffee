@@ -2,6 +2,13 @@
     init: () ->
         $('form[name=register]').submit (event) ->
             event.preventDefault()
+            data = $(this).serializeObject()
+            Bazaarboy.post 'user/create/', data, (response) ->
+                if response.status is 'OK'
+                    Bazaarboy.redirect 'index'
+                else
+                    alert response.message
+                return
             return
         return
     fbAuth: (fbAccessToken, email='', city='') ->
