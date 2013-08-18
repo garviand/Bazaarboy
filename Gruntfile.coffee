@@ -34,14 +34,20 @@ module.exports = (grunt) ->
                 options:
                     data:
                         debug: false
-                        pretty: true
+                        pretty: false
                 files: [
                     expand: true
                     cwd: 'Bazaarboy/views/templates/'
                     src: ['**/*.jade']
                     dest: 'Bazaarboy/templates/'
                     ext: '.html'
-                ,
+                ]
+            admin:
+                options:
+                    data:
+                        debug: false
+                        pretty: false
+                files: [
                     expand: true
                     cwd: 'Bazaarboy/views/admin/templates/'
                     src: ['**/*.jade']
@@ -99,9 +105,16 @@ module.exports = (grunt) ->
                     nospawn: true
                 files: [
                     'Bazaarboy/views/templates/**/*.jade',
+                    '!Bazaarboy/views/admin/templates/**/*.jade'
+                ]
+                tasks: ['jade:compile']
+            jade_admin:
+                options:
+                    nospawn: true
+                files: [
                     'Bazaarboy/views/admin/templates/**/*.jade'
                 ]
-                tasks: ['jade']
+                tasks: ['jade:admin']
             coffee:
                 options:
                     nospawn: true
@@ -134,16 +147,20 @@ module.exports = (grunt) ->
     grunt.event.on 'watch', (action, filepath) ->
         parts = filepath.split('.')
         ext = parts[parts.length - 1]
+        parts = filepath.split('/')
+        name = parts[parts.length - 1]
+        parent = if parts.length > 1 then parts[parts.length - 2] else ''
         if ext is 'jade'
-            output = filepath.replace(/Bazaarboy\/views/, 'Bazaarboy')
-                             .replace(/\.jade/, '.html')
-            if filepath.indexOf('Bazaarboy/views/admin/templates') isnt -1
-                output = filepath.replace(/Bazaarboy\/views\/admin\/templates/, 
-                                          'Bazaarboy/templates/admin')
+            if name.indexOf('layout') isnt 0 and parent isnt 'components'
+                output = filepath.replace(/Bazaarboy\/views/, 'Bazaarboy')
                                  .replace(/\.jade/, '.html')
-            opts = {}
-            opts[output] = filepath
-            grunt.config(['jade', 'compile', 'files'], opts)
+                if filepath.indexOf('Bazaarboy/views/admin/templates') isnt -1
+                    output = filepath.replace(/Bazaarboy\/views\/admin\/templates/, 
+                                              'Bazaarboy/templates/admin')
+                                     .replace(/\.jade/, '.html')
+                opts = {}
+                opts[output] = filepath
+                grunt.config(['jade', 'compile', 'files'], opts)
         else if ext is 'coffee'
             output = filepath.replace(/Bazaarboy\/views/, 'Bazaarboy/static')
                              .replace(/\.coffee/, '.js')
