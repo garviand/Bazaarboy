@@ -122,7 +122,7 @@ module.exports = (grunt) ->
                     'Bazaarboy/views/js/**/*.coffee',
                     'Bazaarboy/views/admin/js/**/*.coffee'
                 ]
-                tasks: ['coffee', 'uglify']
+                tasks: ['coffee']
             less:
                 options:
                     nospawn: true
@@ -176,5 +176,5 @@ module.exports = (grunt) ->
             opts = {}
             opts[output] = filepath
             grunt.config(['less', 'compile', 'files'], opts)
-    grunt.registerTask('dev', ['jade', 'coffee', 'uglify', 'less', 'concat', 'watch'])
+    grunt.registerTask('dev', ['jade', 'coffee', 'less', 'concat', 'watch'])
     return

@@ -40,6 +40,12 @@
     display: none;
 }
 
+input[type=file].hidden {
+    display: block;
+    width: 0;
+    height: 0;
+}
+
 .left {
     float: left;
 }
@@ -172,14 +178,53 @@ div#wrapper_overlay {
 div#profile {
     div.cover {
         position: absolute;
-        overflow: hidden;
+        width: @content_width;
+        height: 230px;
+        left: 0 - ((@content_width - @content_inner_width) / 2);
+        top: 0;
+        body.collapsed & {
+            width: @content_width_expanded;
+            left: 0 - ((@body_width - @content_inner_width) / 2 - @sidebar_width_collapsed);
 
-        div.image {
-            background: #CCC;
+            div.controls {
+                left: (@body_width - @content_inner_width) / 2 - @sidebar_width_collapsed;
+            }
+        }
+        &:hover {
+            div.controls {
+                display: block;
+            }
         }
 
-        div.caption {
-            background: #BBB;
+        div.image {
+            position: relative;
+            width: 100%;
+            height: 100%;
+            overflow: hidden;
+
+            div.bounds {
+                position: absolute;
+                width: 100%;
+                height: 100%;
+                top: 0;
+                left: 0;
+
+                img.editing {
+                    cursor: pointer;
+                }
+            }
+        }
+
+        div.controls {
+            display: none;
+            position: absolute;
+            top: 60px;
+            left: (@content_width - @content_inner_width) / 2;
+            background: #FFF;
+
+            &.stick {
+                display: block;
+            }
         }
     }
 
@@ -242,20 +287,101 @@ div#profile {
 
             div.tab {
                 height: @font_size_base - 2;
-                padding: (30px - (@font_size_base - 2)) / 2 0;
-                margin-right: (30px - (@font_size_base - 2)) / 2;
+                padding: (30px - (@font_size_base - 2)) / 2;
                 color: #FFF;
                 font-size: @font_size_base - 2;
                 line-height: @font_size_base - 2;
                 cursor: pointer;
                 .left;
+                &:hover {
+                    background-color: #999;
+                }
+                &.show {
+                    background-color: #000;
+                }
             }
         }
     }
 
     div.frame {
         div.left {
+            div.placeholder {
+                width: @content_inner_body_width;
+                height: 260px;
+            }
 
+            div.wrapper {
+                width: @content_inner_body_width;
+
+                > div {
+                    display: none;
+                    width: @content_inner_body_width;
+
+                    &.show {
+                        display: block;
+                    }
+                }
+
+                div.overview {
+                    padding: 20px 0;
+
+                    div.info {
+                        width: 100%;
+                        height: 120px;
+                        padding: 10px 0;
+                        background-color: @pale_blue;
+                    }
+
+                    div.description {
+                        width: 100%;
+                        margin-top: 20px;
+
+                        div.editor {
+                            width: 100%;
+
+                            &.editing {
+                                width: @content_inner_body_width + 22;
+                                margin-left: -11px;
+
+                                div.inner {
+                                    width: @content_inner_body_width - 10;
+                                    padding: 15px;
+                                    background-color: none;
+                                    .center;
+                                }
+                            }
+
+                            div.inner {
+                                width: @content_inner_body_width - 10;
+                                padding: 10px 5px;
+                                background-color: @pale_blue;
+                            }
+
+                            img {
+                                max-width: @content_inner_body_width;
+                            }
+
+                            iframe {
+                                max-width: @content_inner_body_width;
+                            }
+                        }
+
+                        div.controls {
+                            a.save {
+                                
+                            }
+                        }
+                    }
+                }
+
+                div.events {
+
+                }
+
+                div.sponsorships {
+
+                }
+            }
         }
 
         div.right {
@@ -273,6 +399,7 @@ div#profile {
                 width: @content_inner_sidebar_width;
                 height: @font_size_base + 2;
                 padding: (48px - (@font_size_base + 2)) / 2 0;
+                z-index: @overlay_z_index;
                 background-color: @event_blue;
                 color: #FFF;
                 line-height: @font_size_base + 2;

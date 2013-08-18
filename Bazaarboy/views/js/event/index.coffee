@@ -111,6 +111,7 @@ Bazaarboy.event.index =
             $('div#wrapper_overlay').fadeOut(200)
             $('div.event_overlay_canvas').fadeOut(200)
             return
+        # Further initialization
         if editable then @initEditing() else @initTransaction()
         return
 
