@@ -1,5 +1,7 @@
 Bazaarboy.profile.index = 
     description: undefined
+    image: undefined
+    cover: undefined
     uploads:
         image: undefined
         cover: undefined
@@ -45,6 +47,10 @@ Bazaarboy.profile.index =
         $(coverImage).draggable 
             containment: bounds
             scroll: false
+        # Reveal the controls
+        $('div#profile div.cover div.controls span').removeClass('hidden')
+        $('div#profile div.cover div.controls a.save').removeClass('hidden')
+        $('div#profile div.cover div.controls a.cancel').removeClass('hidden')
         # Create the expose effect
         maskZ = parseInt($('div#wrapper_overlay').css('z-index'))
         $('div#profile div.cover').css
@@ -61,7 +67,18 @@ Bazaarboy.profile.index =
         $('div#wrapper_overlay').fadeIn(200)
         $('div#profile div.cover div.controls').addClass('stick')
         return
-    stopEditingCoverImage: () ->
+    stopEditingCoverImage: (original=null) ->
+        # Disable the draggable
+        $('div#profile div.cover div.image img').draggable('disable')
+        # Restore z-indices
+        $('div#profile div.cover').css 'z-index', ''
+        $('div#profile > div.title').css 'z-index', ''
+        $('div#profile div.right div.image').css 'z-index', ''
+        $('div#profile div.right div.action').css 'z-index', ''
+        $('div#wrapper_overlay').fadeOut(200)
+        $('div#profile div.cover div.controls').removeClass('stick')
+        return
+    saveCoverImage: () ->
         return
     startEditingDescription: () ->
         $('div.overview div.description div.controls a.edit').html('Cancel')
@@ -132,10 +149,20 @@ Bazaarboy.profile.index =
                 @switchTab tab
                 return
             return
+        # Save original images
+        @image = $('div#profile div.right div.image img')
+        if @image.length > 0
+            @image = @image.clone()
+        @cover = $('div#profile div.cover div.image div.bounds img')
+        if @cover.length > 0
+            @cover = @cover.clone()
         # Image uploads
         $('div#profile div.cover a.edit').click () ->
             $('div#profile div.cover input[name=image_file]').click()
             return
+        $('div#profile div.cover a.cancel').click () =>
+            original = if @cover? @cover else null
+            @stopEditingCoverImage(original)
         $('div#profile div.cover input[name=image_file]').fileupload 
             url: rootUrl + 'file/image/upload/'
             type: 'POST'
