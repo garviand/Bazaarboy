@@ -95,11 +95,11 @@ Bazaarboy.event.index =
                 ['width', '750px', '876px']
                 ['left', '-63px', '-96px']
             ]]
-            ['div#event div.title', [
+            ['div#event > div.title', [
                 ['width', '750px', '876px']
                 ['left', '-63px', '-96px']
             ]]
-            ['div#event div.title div.text', [['left', '63px', '96px']]]
+            ['div#event > div.title div.text', [['left', '63px', '96px']]]
         ]
         $.merge(Bazaarboy.collapseStates, collapseStates)
         # Overlay

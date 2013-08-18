@@ -1,3 +1,47 @@
 // Profile
 
 extends ../layout
+
+block title
+    | {{ profile.title }}
+
+append head
+    link(rel="stylesheet", href="{{ STATIC_URL }}redactor/redactor.css")
+
+block vars
+    - var collapsed = true
+
+block content
+    div#profile.content_divided
+        div.cover
+            div.image
+            div.caption
+        div.title
+            div.controls
+            div.text
+                {{ profile.name }}
+            div.clear
+        div.tabs
+            div.inner
+                div.tab.overview Overview
+                div.tab.about About
+                div.tab.events Events
+                div.tab.sponsorships Sponsorships
+                div.clear
+        div.frame
+            div.left
+            div.right
+                div.image
+                div.action
+                    {% if editable %}
+                    {% else %}
+                    b Follow
+                    {% endif %}
+            div.clear
+
+append script
+    script(type="text/javascript", src="{{ STATIC_URL }}redactor/redactor.min.js")
+    script(type="text/javascript").
+        var profileId = {{ profile.id }};
+        var editable = {% if editable %}true{% else %}false{% endif %};
+    script(type="text/javascript", src="{{ STATIC_URL }}js/profile/index.js")
