@@ -12,7 +12,7 @@ from django.utils import timezone
 from facebook import GraphAPI, GraphAPIError
 from kernel.models import *
 from src.config import *
-from src.controllers.request import json_response, validate, login_check
+from src.controllers.request import *
 from src.email import Email
 from src.regex import REGEX_EMAIL
 from src.serializer import serialize_one
@@ -77,9 +77,17 @@ def reset(request, params, user):
                 resetCode.save()
             isCodeValid = not resetCode.is_expired
         # Render the page to reset the password
-        return render(request, 'reset.html', locals())
+        return render(request, 'user/reset.html', locals())
     # No code is passed, render the page to send a reset request
-    return render(request, 'reset.html', locals())
+    return render(request, 'user/reset.html', locals())
+
+@login_required()
+def settings(request, user):
+    """
+    User settings page
+    """
+    wepayAccounts = user.wepay_account_set.all()
+    return render(request, 'user/settings.html', locals())
 
 @login_check()
 @validate('POST', 

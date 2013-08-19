@@ -1,3 +1,78 @@
 // Profile
 
 extends ../layout
+
+block title
+    | {{ profile.title }}
+
+append head
+    link(rel="stylesheet", href="{{ STATIC_URL }}jQueryUI/jquery-ui.css")
+    link(rel="stylesheet", href="{{ STATIC_URL }}redactor/redactor.css")
+
+block vars
+    - var collapsed = true
+
+block content
+    div#profile.content_divided
+        div.cover
+            div.image
+                div.bounds
+                    {% if profile.cover %}
+                    img(src="{{ profile.cover.url }}")
+                    {% endif %}
+            div.caption
+            {% if manager %}
+            div.controls
+                span.hidden Drag the image to position you think fit. 
+                a.edit(href="javascript:;") 
+                    | {% if profile.cover %}Edit Cover{% else %}Add Cover{% endif %}
+                a.hidden.save(href="javascript:;") Save
+                a.hidden.cancel(href="javascript:;") Cancel
+                form.upload_cover
+                    input.hidden(type="file", name="image_file")
+                    {% csrf_token %}
+            {% endif %}
+        div.title
+            div.controls
+            div.text
+                {{ profile.name }}
+            div.clear
+        div.tabs
+            div.inner
+                div.tab.overview.show Overview
+                div.tab.events Events
+                div.tab.sponsorships Sponsorships
+                div.clear
+        div.frame
+            div.left
+                div.placeholder
+                div.wrapper
+                    div.overview.show
+                        div.info
+                        div.description
+                            div.editor
+                                div.inner
+                                    {{ profile.description|safe }}
+                            {% if manager %}
+                            div.controls
+                                a.save(href="javascript:;") Save
+                                a.edit(href="javascript:;") Edit
+                            {% endif %}
+                    div.events
+                    div.sponsorships
+            div.right
+                div.image
+                div.action
+                    {% if manager %}
+                    {% else %}
+                    b Follow
+                    {% endif %}
+            div.clear
+
+append script
+    script(type="text/javascript", src="{{ STATIC_URL }}jQueryUI/jquery-ui.min.js")
+    script(type="text/javascript", src="{{ STATIC_URL }}redactor/redactor.min.js")
+    script(type="text/javascript").
+        var profileId = {{ profile.id }};
+        var editable = {% if manager %}true{% else %}false{% endif %};
+    script(type="text/javascript", src="{{ STATIC_URL }}js/profile/index.js")

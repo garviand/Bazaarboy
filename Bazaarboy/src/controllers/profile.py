@@ -17,6 +17,9 @@ def index(request, id, user):
     if not Profile.objects.filter(id = id).exists():
         raise Http404
     profile = Profile.objects.get(id = id)
+    manager = None
+    if Profile_manager.objects.filter(user = user, profile = profile).exists():
+        manager = Profile_manager.objects.get(user = user, profile = profile)
     return render(request, 'profile/index.html', locals())
 
 @login_required('index')

@@ -11,6 +11,7 @@ user_urlpatterns = patterns('src.controllers.user',
     url(r'^login/$', 'login', name = 'login'),
     url(r'^auth/$', 'auth', name = 'auth'),
     url(r'^fbAuth/$', 'fbAuth', name = 'fbAuth'),
+    url(r'^settings/$', 'settings', name = 'settings'),
     url(r'^logout/$', 'logout', name = 'logout'),
 )
 

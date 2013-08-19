@@ -1,5 +1,6 @@
 module.exports = (grunt) ->
     grunt.loadNpmTasks('grunt-contrib-coffee')
+    grunt.loadNpmTasks('grunt-contrib-uglify')
     grunt.loadNpmTasks('grunt-contrib-jade')
     grunt.loadNpmTasks('grunt-contrib-less')
     grunt.loadNpmTasks('grunt-contrib-concat')
@@ -33,14 +34,20 @@ module.exports = (grunt) ->
                 options:
                     data:
                         debug: false
-                        pretty: true
+                        pretty: false
                 files: [
                     expand: true
                     cwd: 'Bazaarboy/views/templates/'
                     src: ['**/*.jade']
                     dest: 'Bazaarboy/templates/'
                     ext: '.html'
-                ,
+                ]
+            admin:
+                options:
+                    data:
+                        debug: false
+                        pretty: false
+                files: [
                     expand: true
                     cwd: 'Bazaarboy/views/admin/templates/'
                     src: ['**/*.jade']
@@ -59,6 +66,21 @@ module.exports = (grunt) ->
                     expand: true
                     cwd: 'Bazaarboy/views/admin/js/'
                     src: ['**/*.coffee']
+                    dest: 'Bazaarboy/static/admin/js/'
+                    ext: '.js'
+                ]
+        uglify:
+            compile:
+                files: [
+                    expand: true
+                    cwd: 'Bazaarboy/static/js/'
+                    src: ['**/*.js', '!libraries/**/*.js', '!libraries.js']
+                    dest: 'Bazaarboy/static/js/'
+                    ext: '.js'
+                ,
+                    expand: true
+                    cwd: 'Bazaarboy/static/admin/js/'
+                    src: ['**/*.js']
                     dest: 'Bazaarboy/static/admin/js/'
                     ext: '.js'
                 ]
@@ -83,9 +105,16 @@ module.exports = (grunt) ->
                     nospawn: true
                 files: [
                     'Bazaarboy/views/templates/**/*.jade',
+                    '!Bazaarboy/views/admin/templates/**/*.jade'
+                ]
+                tasks: ['jade:compile']
+            jade_admin:
+                options:
+                    nospawn: true
+                files: [
                     'Bazaarboy/views/admin/templates/**/*.jade'
                 ]
-                tasks: ['jade']
+                tasks: ['jade:admin']
             coffee:
                 options:
                     nospawn: true
@@ -118,22 +147,29 @@ module.exports = (grunt) ->
     grunt.event.on 'watch', (action, filepath) ->
         parts = filepath.split('.')
         ext = parts[parts.length - 1]
+        parts = filepath.split('/')
+        name = parts[parts.length - 1]
+        parent = if parts.length > 1 then parts[parts.length - 2] else ''
         if ext is 'jade'
-            output = filepath.replace(/Bazaarboy\/views/, 'Bazaarboy')
-                             .replace(/\.jade/, '.html')
-            if filepath.indexOf('Bazaarboy/views/admin/templates') isnt -1
-                output = filepath.replace(/Bazaarboy\/views\/admin\/templates/, 
-                                          'Bazaarboy/templates/admin')
+            if name.indexOf('layout') isnt 0 and parent isnt 'components'
+                output = filepath.replace(/Bazaarboy\/views/, 'Bazaarboy')
                                  .replace(/\.jade/, '.html')
-            opts = {}
-            opts[output] = filepath
-            grunt.config(['jade', 'compile', 'files'], opts)
+                if filepath.indexOf('Bazaarboy/views/admin/templates') isnt -1
+                    output = filepath.replace(/Bazaarboy\/views\/admin\/templates/, 
+                                              'Bazaarboy/templates/admin')
+                                     .replace(/\.jade/, '.html')
+                opts = {}
+                opts[output] = filepath
+                grunt.config(['jade', 'compile', 'files'], opts)
         else if ext is 'coffee'
             output = filepath.replace(/Bazaarboy\/views/, 'Bazaarboy/static')
                              .replace(/\.coffee/, '.js')
             opts = {}
             opts[output] = filepath
+            uglifyOpts = {}
+            uglifyOpts[output] = output
             grunt.config(['coffee', 'compile', 'files'], opts)
+            grunt.config(['uglify', 'compile', 'files'], uglifyOpts)
         else if ext is 'less'
             output = filepath.replace(/Bazaarboy\/views/, 'Bazaarboy/static')
                              .replace(/\.less/, '.css')
