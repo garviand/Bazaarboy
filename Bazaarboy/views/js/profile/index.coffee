@@ -35,20 +35,25 @@ Bazaarboy.profile.index =
         # Set up the draggable boundaries
         frame = $('div#profile div.cover div.image')
         coverImage = $('div#profile div.cover div.image img')
-        width = Math.abs(frame.width() - coverImage.width()) * 2 + frame.width()
-        height = Math.abs(frame.height() - coverImage.height()) * 2 + frame.height()
-        left = 0 - Math.abs(frame.width() - coverImage.width())
-        top = 0 - Math.abs(frame.height() - coverImage.height())
-        bounds = $(frame).find('div.bounds')
-                         .width(width).height(height)
                          .css
+                            top: 0
+                            left: 0
+        width = coverImage.width() * 2 - frame.width()
+        height = coverImage.height() * 2 - frame.height()
+        left = 0 - (width - frame.width()) / 2
+        top = 0 - (height - frame.height()) / 2
+        bounds = $(frame).find('div.bounds')
+                         .css
+                            width: width
+                            height: height
                             top: top
                             left: left
         $(coverImage).draggable 
             containment: bounds
             scroll: false
-        # Reveal the controls
+        # Adjust the controls
         $('div#profile div.cover div.controls span').removeClass('hidden')
+        $('div#profile div.cover div.controls a.edit').html('Edit Cover')
         $('div#profile div.cover div.controls a.save').removeClass('hidden')
         $('div#profile div.cover div.controls a.cancel').removeClass('hidden')
         # Create the expose effect
@@ -68,17 +73,66 @@ Bazaarboy.profile.index =
         $('div#profile div.cover div.controls').addClass('stick')
         return
     stopEditingCoverImage: (original=null) ->
-        # Disable the draggable
-        $('div#profile div.cover div.image img').draggable('disable')
+        # Destroy the image if necessary
+        if original?
+            $('div#profile div.cover div.image div.bounds img').remove()
+            if original
+                $('div#profile div.cover div.image div.bounds').append(original)
+            else
+                $('div#profile div.cover div.controls a.edit')
+                    .html('Add Cover')
+        else
+            # Or remove the draggable
+            $('div#profile div.cover div.image img').draggable('destroy')
         # Restore z-indices
         $('div#profile div.cover').css 'z-index', ''
         $('div#profile > div.title').css 'z-index', ''
         $('div#profile div.right div.image').css 'z-index', ''
         $('div#profile div.right div.action').css 'z-index', ''
         $('div#wrapper_overlay').fadeOut(200)
+        # Adjust the controls
+        $('div#profile div.cover div.controls span').addClass('hidden')
+        $('div#profile div.cover div.controls a.delete').addClass('hidden')
+        $('div#profile div.cover div.controls a.save').addClass('hidden')
+        $('div#profile div.cover div.controls a.cancel').addClass('hidden')
         $('div#profile div.cover div.controls').removeClass('stick')
         return
     saveCoverImage: () ->
+        # Get the viewport of the image
+        frame = $('div#profile div.cover div.image')
+        bounds = $('div#profile div.cover div.image div.bounds')
+        coverImage = $('div#profile div.cover div.image div.bounds img')
+        x = 0
+        y = 0
+        width = 0
+        height = 0
+        if coverImage.width() > frame.width()
+            scale = @uploads.cover.height / frame.height()
+            x = (Math.abs(parseInt($(bounds).css('left'))) - 
+                parseInt(coverImage.css('left'))) * scale
+            y = 0
+            width = frame.width() * scale
+            height = @uploads.cover.height
+        else
+            scale = @uploads.cover.width / frame.width()
+            x = 0
+            y = (Math.abs(parseInt($(bounds).css('top'))) - 
+                parseInt(coverImage.css('top'))) * scale
+            width = @uploads.cover.width
+            height = frame.height() * scale
+        x = parseInt(x)
+        y = parseInt(y)
+        width = parseInt(width)
+        height = parseInt(height)
+        viewport = "#{x},#{y},#{width},#{height}"
+        console.log viewport
+        Bazaarboy.post 'file/image/crop/', 
+            id: @uploads.cover.pk
+            viewport: viewport
+        , (response) =>
+            console.log response
+            #@stopEditingCoverImage()
+            return
         return
     startEditingDescription: () ->
         $('div.overview div.description div.controls a.edit').html('Cancel')
@@ -160,9 +214,18 @@ Bazaarboy.profile.index =
         $('div#profile div.cover a.edit').click () ->
             $('div#profile div.cover input[name=image_file]').click()
             return
+        $('div#profile div.cover a.save').click () =>
+            @saveCoverImage()
+            return
         $('div#profile div.cover a.cancel').click () =>
-            original = if @cover? @cover else null
+            original = if @cover? @cover else false
             @stopEditingCoverImage(original)
+            if @uploads.cover?
+                Bazaarboy.post 'file/image/delete/', 
+                    id: @uploads.cover.pk
+                , (response) =>
+                    @uploads.cover = null
+            return
         $('div#profile div.cover input[name=image_file]').fileupload 
             url: rootUrl + 'file/image/upload/'
             type: 'POST'
@@ -182,6 +245,8 @@ Bazaarboy.profile.index =
                         .attr('src', mediaUrl + response.image.source)
                         .addClass('editing')
                         .load () ->
+                            scope.uploads.cover.width = @width
+                            scope.uploads.cover.height = @height
                             # Adjust the size of the image to fill the frame
                             frame = $('div#profile div.cover div.image')
                             frameWidth = $(frame).width()

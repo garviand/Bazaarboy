@@ -80,6 +80,7 @@ sponsorship_urlpatterns = patterns('src.controllers.sponsorship',
 
 file_urlpatterns = patterns('src.controllers.file', 
     url(r'^image/upload/$', 'upload_image', name = 'image-upload'),
+    url(r'^image/crop/$', 'crop_image', name = 'image-crop'),
     url(r'^image/delete/$', 'delete_image', name = 'image-delete'),
 )
 
