@@ -26,6 +26,8 @@ block content
                 span.hidden Drag the image to position you think fit. 
                 a.edit(href="javascript:;") 
                     | {% if profile.cover %}Edit Cover{% else %}Add Cover{% endif %}
+                a.delete(href="javascript:;", class="{% if not profile.cover %}hidden{% endif %}") 
+                    | Delete
                 a.hidden.save(href="javascript:;") Save
                 a.hidden.cancel(href="javascript:;") Cancel
                 form.upload_cover

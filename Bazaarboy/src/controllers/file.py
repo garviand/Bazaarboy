@@ -2,11 +2,16 @@
 Controller for files
 """
 
+import PIL
 import uuid
+from StringIO import StringIO
+from django.core.files.uploadedfile import InMemoryUploadedFile
 from django.http import HttpResponseBadRequest
 from kernel.models import *
 from src.controllers.request import validate, json_response
 from src.serializer import serialize_one
+
+import pdb
 
 IMAGE_TYPES = ['jpg', 'jpeg', 'png', 'gif']
 IMAGE_SIZE_LIMIT = 2621440
@@ -37,6 +42,59 @@ def upload_image(request, params):
     imageUid = uuid.uuid4().hex
     rawImage.name = '%s.%s' % (imageUid, imageExt)
     image = Image(source = rawImage)
+    image.save()
+    response = {
+        'status':'OK',
+        'image':serialize_one(image)
+    }
+    return json_response(response)
+
+@validate('POST', ['id', 'viewport'])
+def crop_image(request, params):
+    """
+    Crop an image by a viewport
+    """
+    if not Image.objects.filter(id = params['id']).exists():
+        response = {
+            'status':'FAIL',
+            'error':'IMAGE_NOT_FOUND',
+            'message':'The image doesn\'t exist.'
+        }
+        return json_response(response)
+    image = Image.objects.get(id = params['id'])
+    viewport = params['viewport'].split(',')
+    try:
+        for i in range(0, 4):
+            viewport[i] = int(viewport[i])
+            if viewport[i] < 0:
+                raise ValueError()
+    except (ValueError, IndexError):
+        response = {
+            'status':'FAIL',
+            'error':'INVALID_VIEWPORT',
+            'message':'The viewport is invalid.'
+        }
+        return json_response(response)
+    imageUrl = image.source.url
+    parts = imageUrl.split('/')
+    imageName = parts[-1]
+    left = viewport[0]
+    upper = viewport[1]
+    right = left + viewport[2]
+    lower = upper + viewport[3]
+    box = left, upper, right, lower
+    imageFile = PIL.Image.open(StringIO(image.source.read()))
+    croppedImageFile = imageFile.crop(box)
+    croppedImageIO = StringIO()
+    croppedImageFile.save(croppedImageIO, format = 'JPEG')
+    croppedImage = InMemoryUploadedFile(file = croppedImageIO, 
+                                        field_name = None, 
+                                        name = imageName, 
+                                        content_type = 'image/jpeg', 
+                                        size = croppedImageIO.len, 
+                                        charset = None)
+    image.source.delete(save = False)
+    image.source = croppedImage
     image.save()
     response = {
         'status':'OK',
