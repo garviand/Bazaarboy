@@ -172,10 +172,12 @@ class Profile(models.Model):
     description = models.TextField()
     image = models.ForeignKey('Image', 
                               related_name = '%(class)s_image', 
-                              null = True, default = None)
+                              null = True, default = None, 
+                              on_delete = models.SET_NULL)
     cover = models.ForeignKey('Image', 
                               related_name = '%(class)s_cover', 
-                              null = True, default = None)
+                              null = True, default = None, 
+                              on_delete = models.SET_NULL)
     community = models.ForeignKey('Community')
     city = models.ForeignKey('City')
     category = models.CharField(max_length = 30)
@@ -214,7 +216,8 @@ class Event_base(models.Model):
     description = models.TextField()
     image = models.ForeignKey('Image', 
                               related_name = '%(class)s_image', 
-                              null = True, default = None)
+                              null = True, default = None, 
+                              on_delete = models.SET_NULL)
     is_cover = models.BooleanField(default = False)
     location = models.CharField(max_length = 100)
     latitude = models.FloatField(null = True, default = None)

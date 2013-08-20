@@ -14,6 +14,12 @@ from src.serializer import serialize_one
 import pdb
 
 IMAGE_TYPES = ['jpg', 'jpeg', 'png', 'gif']
+IMAGE_CONTENT_TYPES = {
+    'jpg':'image/jpeg',
+    'jpeg':'image/jpeg',
+    'png':'image/png',
+    'gif':'image/gif'
+}
 IMAGE_SIZE_LIMIT = 2621440
 
 @validate('POST')
@@ -78,6 +84,10 @@ def crop_image(request, params):
     imageUrl = image.source.url
     parts = imageUrl.split('/')
     imageName = parts[-1]
+    parts = imageName.split('.')
+    imageExt = parts[-1].lower()
+    imageFormat = 'jpeg' if imageExt == 'jpg' else imageExt
+    imageContentType = IMAGE_CONTENT_TYPES[imageExt]
     left = viewport[0]
     upper = viewport[1]
     right = left + viewport[2]
@@ -86,11 +96,11 @@ def crop_image(request, params):
     imageFile = PIL.Image.open(StringIO(image.source.read()))
     croppedImageFile = imageFile.crop(box)
     croppedImageIO = StringIO()
-    croppedImageFile.save(croppedImageIO, format = 'JPEG')
+    croppedImageFile.save(croppedImageIO, format = imageFormat)
     croppedImage = InMemoryUploadedFile(file = croppedImageIO, 
                                         field_name = None, 
                                         name = imageName, 
-                                        content_type = 'image/jpeg', 
+                                        content_type = imageContentType, 
                                         size = croppedImageIO.len, 
                                         charset = None)
     image.source.delete(save = False)

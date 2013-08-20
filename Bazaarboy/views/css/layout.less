@@ -180,11 +180,16 @@ div#profile {
         position: absolute;
         width: @content_width;
         height: 230px;
-        left: 0 - ((@content_width - @content_inner_width) / 2);
         top: 0;
+        left: 0 - ((@content_width - @content_inner_width) / 2);
+        overflow: hidden;
         body.collapsed & {
             width: @content_width_expanded;
             left: 0 - ((@body_width - @content_inner_width) / 2 - @sidebar_width_collapsed);
+
+            div.image {
+                left: 0;
+            }
 
             div.controls {
                 left: (@body_width - @content_inner_width) / 2 - @sidebar_width_collapsed;
@@ -198,8 +203,10 @@ div#profile {
 
         div.image {
             position: relative;
-            width: 100%;
+            width: @content_width_expanded;
             height: 100%;
+            top: 0;
+            left: @content_width - @content_width_expanded;
             overflow: hidden;
 
             div.bounds {
@@ -209,8 +216,15 @@ div#profile {
                 top: 0;
                 left: 0;
 
-                img.editing {
-                    cursor: pointer;
+                img {
+                    &.normal {
+                        width: 100%;
+                        height: 100%;
+                    }
+
+                    &.editing {
+                        cursor: pointer;
+                    }
                 }
             }
         }
