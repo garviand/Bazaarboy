@@ -26,7 +26,7 @@ class Email(object):
          'from_name': 'Bazaarboy',
          'headers': {'Reply-To': 'build@bazaarboy.com'},
          'subject': 'Welcome to Bazaarboy',
-         'global_merge_vars': [{'username': 'Andy'}],
+         'global_merge_vars': [{'name': 'username', 'content':'Andy'}],
          'to': [{'email': 'garvin.andy@gmail.com', 'name': 'Andy Garvin'}],
          'track_clicks': True,
          'track_opens': True}
