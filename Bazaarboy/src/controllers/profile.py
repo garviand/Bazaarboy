@@ -16,7 +16,7 @@ def index(request, id, user):
     """
     if not Profile.objects.filter(id = id).exists():
         raise Http404
-    profile = Profile.objects.get(id = id)
+    profile = Profile.objects.select_related().get(id = id)
     manager = None
     if Profile_manager.objects.filter(user = user, profile = profile).exists():
         manager = Profile_manager.objects.get(user = user, profile = profile)
@@ -127,8 +127,8 @@ def create(request, params, user):
 
 @login_required()
 @validate('POST', ['id'], 
-          ['name', 'description', 'category', 'latitude', 'longitude', 
-           'wepay'])
+          ['name', 'description', 'image', 'cover', 'category', 'latitude', 
+           'longitude', 'wepay'])
 def edit(request, params, user):
     """
     Edit an existing profile
@@ -164,6 +164,48 @@ def edit(request, params, user):
             profile.name = params['name']
     if params['description'] is not None:
         profile.description = params['description']
+    if params['image'] is not None:
+        if params['image'].lower() == 'delete':
+            if profile.image is not None:
+                oldImage = Image.objects.get(id = profile.image.id)
+                oldImage.delete()
+                profile.image = None
+        elif not Image.objects.filter(id = params['image']).exists():
+            response = {
+                'status':'FAIL',
+                'error':'IMAGE_NOT_FOUND',
+                'message':'The image doesn\'t exist.'
+            }
+            return json_response(response)
+        else:
+            image = Image.objects.get(id = params['image'])
+            if profile.image is not None:
+                oldImage = Image.objects.get(id = profile.image.id)
+                oldImage.delete()
+            image.is_archived = True
+            image.save()
+            profile.image = image
+    if params['cover'] is not None:
+        if params['cover'].lower() == 'delete':
+            if profile.cover is not None:
+                oldCover = Image.objects.get(id = profile.cover.id)
+                oldCover.delete()
+                profile.cover = None
+        elif not Image.objects.filter(id = params['cover']).exists():
+            response = {
+                'status':'FAIL',
+                'error':'COVER_IMAGE_NOT_FOUND',
+                'message':'The cover image doesn\'t exist.'
+            }
+            return json_response(response)
+        else:
+            cover = Image.objects.get(id = params['cover'])
+            if profile.cover is not None:
+                oldCover = Image.objects.get(id = profile.cover.id)
+                oldCover.delete()
+            cover.is_archived = True
+            cover.save()
+            profile.cover = cover
     if params['category'] is not None:
         profile.category = params['category']
     if params['latitude'] is not None and params['longitude'] is not None: 

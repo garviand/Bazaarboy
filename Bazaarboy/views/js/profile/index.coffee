@@ -31,6 +31,34 @@ Bazaarboy.profile.index =
                 return cb err, null
             return
         return
+    prepareUploadedCoverImage: (coverUrl) ->
+        if not $('body').hasClass('collapsed')
+            Bazaarboy.switchCollapsedStates () =>
+                @prepareUploadedCoverImage(coverUrl)
+                return
+            return
+        scope = this
+        $('<img>')
+            .attr('src', mediaUrl + coverUrl)
+            .addClass('editing')
+            .load () ->
+                scope.uploads.cover.width = @width
+                scope.uploads.cover.height = @height
+                # Adjust the size of the image to fill the frame
+                frame = $('div#profile div.cover div.image')
+                frameWidth = $(frame).width()
+                frameHeight = $(frame).height()
+                if @width / @height > frameWidth / frameHeight
+                    $(this).height(frameHeight)
+                    $(this).width(@width / @height * frameHeight)
+                else
+                    $(this).width(frameWidth)
+                    $(this).height(@height / @width * frameWidth)
+                $(frame).find('div.bounds').children().remove()
+                $(frame).find('div.bounds').append(this)
+                scope.startEditingCoverImage()
+                return
+        return
     startEditingCoverImage: () ->
         # Set up the draggable boundaries
         frame = $('div#profile div.cover div.image')
@@ -53,7 +81,10 @@ Bazaarboy.profile.index =
             scroll: false
         # Adjust the controls
         $('div#profile div.cover div.controls span').removeClass('hidden')
-        $('div#profile div.cover div.controls a.edit').html('Edit Cover')
+        $('div#profile div.cover div.controls a.edit')
+            .addClass('hidden')
+            .html('Edit Cover')
+            $('div#profile div.cover div.controls a.delete').addClass('hidden')
         $('div#profile div.cover div.controls a.save').removeClass('hidden')
         $('div#profile div.cover div.controls a.cancel').removeClass('hidden')
         # Create the expose effect
@@ -72,18 +103,22 @@ Bazaarboy.profile.index =
         $('div#wrapper_overlay').fadeIn(200)
         $('div#profile div.cover div.controls').addClass('stick')
         return
-    stopEditingCoverImage: (original=null) ->
-        # Destroy the image if necessary
-        if original?
-            $('div#profile div.cover div.image div.bounds img').remove()
-            if original
-                $('div#profile div.cover div.image div.bounds').append(original)
+    stopEditingCoverImage: (cover=null) ->
+        # Destroy the image and restore the bounds
+        $('div#profile div.cover div.image div.bounds img').remove()
+        $('div#profile div.cover div.image div.bounds')
+            .css
+                width: ''
+                height: ''
+                top: ''
+                left: ''
+        # Replace the cover
+        if cover?
+            if cover
+                $('div#profile div.cover div.image div.bounds').append(cover)
             else
                 $('div#profile div.cover div.controls a.edit')
                     .html('Add Cover')
-        else
-            # Or remove the draggable
-            $('div#profile div.cover div.image img').draggable('destroy')
         # Restore z-indices
         $('div#profile div.cover').css 'z-index', ''
         $('div#profile > div.title').css 'z-index', ''
@@ -92,7 +127,8 @@ Bazaarboy.profile.index =
         $('div#wrapper_overlay').fadeOut(200)
         # Adjust the controls
         $('div#profile div.cover div.controls span').addClass('hidden')
-        $('div#profile div.cover div.controls a.delete').addClass('hidden')
+        $('div#profile div.cover div.controls a.edit').removeClass('hidden')
+        $('div#profile div.cover div.controls a.delete').removeClass('hidden')
         $('div#profile div.cover div.controls a.save').addClass('hidden')
         $('div#profile div.cover div.controls a.cancel').addClass('hidden')
         $('div#profile div.cover div.controls').removeClass('stick')
@@ -130,10 +166,36 @@ Bazaarboy.profile.index =
             id: @uploads.cover.pk
             viewport: viewport
         , (response) =>
-            console.log response
-            #@stopEditingCoverImage()
+            if response.status is 'OK'
+                @save {cover: response.image.pk}, (err, profile) =>
+                    unless err
+                        @cover = response.image
+                        @cover.width = width
+                        @cover.height = height
+                        @uploads.cover = null
+                        scope = this
+                        $('<img>')
+                            .attr('src', mediaUrl + response.image.source)
+                            .addClass('normal')
+                            .load () ->
+                                scope.stopEditingCoverImage(this)
+                                return
+                    else
+                        alert err.message
+                    return
+            else
+                alert response.message
             return
         return
+    deleteCoverImage: () ->
+        @save {cover: 'delete'}, (err, profile) =>
+            unless err
+                $('div#profile div.cover div.image div.bounds img').remove()
+                $('div#profile div.cover div.controls a.edit').html('Add Cover')
+                $('div#profile div.cover div.controls a.delete').addClass('hidden')
+            else
+                alert err.message
+            return
     startEditingDescription: () ->
         $('div.overview div.description div.controls a.edit').html('Cancel')
         $('div.overview div.description div.controls a.save').show()
@@ -157,7 +219,7 @@ Bazaarboy.profile.index =
     saveDescription: () ->
         description = $('div.overview div.description div.editor div.inner')
                       .redactor('get')
-        @save {description: description}, (err, event) =>
+        @save {description: description}, (err, profile) =>
             unless err
                 @description = profile.description
                 @stopEditingDescription @description
@@ -176,33 +238,6 @@ Bazaarboy.profile.index =
             else
                 @startEditingDescription()
             return
-        return
-    init: () ->
-        # Extend collapse animations
-        collapseStates = [
-            ['div#profile', [['margin-left', '63px', '96px']]]
-            ['div#profile div.cover', [
-                ['width', '750px', '876px']
-                ['left', '-63px', '-96px']
-            ]]
-            ['div#profile > div.title', [
-                ['width', '750px', '876px']
-                ['left', '-63px', '-96px']
-            ]]
-            ['div#profile > div.title div.text', [['left', '63px', '96px']]]
-            ['div#profile > div.tabs', [
-                ['width', '750px', '876px']
-                ['left', '-63px', '-96px']
-            ]]
-            ['div#profile > div.tabs div.inner', [['left', '63px', '96px']]]
-        ]
-        $.merge(Bazaarboy.collapseStates, collapseStates)
-        # Tabs
-        $.each ['overview', 'events', 'sponsorships'], (index, tab) =>
-            $('div.tabs div.tab.' + tab).click () =>
-                @switchTab tab
-                return
-            return
         # Save original images
         @image = $('div#profile div.right div.image img')
         if @image.length > 0
@@ -213,6 +248,10 @@ Bazaarboy.profile.index =
         # Image uploads
         $('div#profile div.cover a.edit').click () ->
             $('div#profile div.cover input[name=image_file]').click()
+            return
+        $('div#profile div.cover a.delete').click () =>
+            if confirm('Are you sure you want to delete the cover image?')
+                @deleteCoverImage()
             return
         $('div#profile div.cover a.save').click () =>
             @saveCoverImage()
@@ -240,30 +279,38 @@ Bazaarboy.profile.index =
                         Bazaarboy.post 'file/image/delete/', 
                             id: @uploads.cover.pk
                     @uploads.cover = response.image
-                    scope = this
-                    $('<img>')
-                        .attr('src', mediaUrl + response.image.source)
-                        .addClass('editing')
-                        .load () ->
-                            scope.uploads.cover.width = @width
-                            scope.uploads.cover.height = @height
-                            # Adjust the size of the image to fill the frame
-                            frame = $('div#profile div.cover div.image')
-                            frameWidth = $(frame).width()
-                            frameHeight = $(frame).height()
-                            if @width / @height > frameWidth / frameHeight
-                                $(this).height(frameHeight)
-                                $(this).width(@width / @height * frameHeight)
-                            else
-                                $(this).width(frameWidth)
-                                $(this).height(@height / @width * frameWidth)
-                            $(frame).find('div.bounds').children().remove()
-                            $(frame).find('div.bounds').append(this)
-                            scope.startEditingCoverImage()
-                            return
+                    @prepareUploadedCoverImage(response.image.source)
                 else
                     alert response.message
                 return
+        return
+    init: () ->
+        # Extend collapse animations
+        collapseStates = [
+            ['div#profile', [['margin-left', '63px', '96px']]]
+            ['div#profile div.cover', [
+                ['width', '750px', '876px']
+                ['left', '-63px', '-96px']
+            ]]
+            ['div#profile div.cover div.image', [['left', '-126px', '0']]]
+            ['div#profile > div.title', [
+                ['width', '750px', '876px']
+                ['left', '-63px', '-96px']
+            ]]
+            ['div#profile > div.title div.text', [['left', '63px', '96px']]]
+            ['div#profile > div.tabs', [
+                ['width', '750px', '876px']
+                ['left', '-63px', '-96px']
+            ]]
+            ['div#profile > div.tabs div.inner', [['left', '63px', '96px']]]
+        ]
+        $.merge(Bazaarboy.collapseStates, collapseStates)
+        # Tabs
+        $.each ['overview', 'events', 'sponsorships'], (index, tab) =>
+            $('div.tabs div.tab.' + tab).click () =>
+                @switchTab tab
+                return
+            return
         # Further initialization
         if editable then @initEditing()
         return

@@ -18,7 +18,7 @@ block content
             div.image
                 div.bounds
                     {% if profile.cover %}
-                    img(src="{{ profile.cover.url }}")
+                    img.normal(src="{{ profile.cover.source.url }}")
                     {% endif %}
             div.caption
             {% if manager %}

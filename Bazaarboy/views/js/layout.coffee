@@ -1,5 +1,17 @@
 # Start namesapce
 @Bazaarboy = 
+    # Sub namespaces
+    index: {}
+    user: {}
+    profile: {}
+    event: {}
+    admin: {}
+    # Collapsed states, formats are like this:
+    #       selector: [String] selector
+    #       attr: [String] property to be animated
+    #       expanded: [*] property value in expanded state
+    #       collapsed: [*] property value in collapsed state
+    collapseStates: []
     # Shortcut for endpoint redirect
     redirect: (endpoint) ->
         redirectUrl = rootUrl
@@ -13,27 +25,34 @@
         params.csrfmiddlewaretoken = csrfToken
         $.get rootUrl + endpoint, params, (data) ->
             response = $.parseJSON data
-            return cb response if cb?
+            return cb? response
         return
     # Shortcut for $.post, similar to the shortcut for $.get
     post: (endpoint, params={}, cb) ->
         params.csrfmiddlewaretoken = csrfToken
         $.post rootUrl + endpoint, params, (data) ->
             response = $.parseJSON data
-            return cb response if cb?
+            return cb? response
         return
-    # Sub namespaces
-    index: {}
-    user: {}
-    profile: {}
-    event: {}
-    admin: {}
-    # Collapsed states, formats are like this:
-    #       selector: [String] selector
-    #       attr: [String] property to be animated
-    #       expanded: [*] property value in expanded state
-    #       collapsed: [*] property value in collapsed state
-    collapseStates: {}
+    # Shortcut for switch viewport states
+    switchCollapsedStates: (cb) ->
+        collapse = !$('body').hasClass('collapsed')
+        _to = if collapse then 2 else 1
+        collapseAnimations = []
+        for element in @collapseStates
+            animations = {}
+            for attr in element[1]
+                animations[attr[0]] = attr[_to]
+            collapseAnimations.push($(element[0]).stop()
+                                    .animate(animations, 300, 'easeInOutQuint')
+                                    .promise())
+        $.when.apply($, collapseAnimations).done () =>
+            if collapse
+                $('body').addClass('collapsed')
+            else
+                $('body').removeClass('collapsed')
+            return cb?()
+        return
     # Initialization
     init: () ->
         # Sidebar
@@ -44,22 +63,7 @@
             ['div#wrapper_content', [['width', '750px', '876px']]]
         ]
         $('div#wrapper_sidebar div.switch a').click () =>
-            collapse = !$('body').hasClass('collapsed')
-            _to = if collapse then 2 else 1
-            collapseAnimations = $.map @collapseStates, (element, i) =>
-                animations = {}
-                for attr in element[1]
-                    animations[attr[0]] = attr[_to]
-                return $(element[0]).stop()
-                                    .animate(animations, 300, 'easeInOutQuint')
-                                    .promise()
-            $.when(collapseAnimations).then () =>
-                if collapse
-                    $('body').addClass('collapsed')
-                else
-                    $('body').removeClass('collapsed')
-                return
-            return
+            @switchCollapsedStates()
         return
 
 Bazaarboy.init()
