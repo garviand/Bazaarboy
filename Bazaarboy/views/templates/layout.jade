@@ -5,9 +5,9 @@ html(lang="en")
             title
                 block title
                     | Bazaarboy
-            //script(type="text/javascript", src="//use.typekit.net/zbt1bom.js")
-            //script(type="text/javascript").
-            //    try{Typekit.load();}catch(e){}
+            script(type="text/javascript", src="//use.typekit.net/zbt1bom.js")
+            script(type="text/javascript").
+                try{Typekit.load();}catch(e){}
             link(rel="stylesheet", href="{{ STATIC_URL }}css/layout.css")
     block vars
     - var bodyClass = collapsed !== undefined && collapsed ? 'collapsed' : ''

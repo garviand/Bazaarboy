@@ -67,8 +67,14 @@ block content
                         {% endif %}
                 div.organizers.info
                     div.caption
-                        div.text Organizers
+                        div.text Organizer
                         div.clear
+                    div.body
+                        div.organizer
+                            div.icon
+                            div.name
+                                a(href="{% url profile:index event.owner.id %}")
+                                    | {{ event.owner.name }}
                 div.summary.info
                     div.caption
                         div.text Summary

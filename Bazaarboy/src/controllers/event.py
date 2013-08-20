@@ -16,6 +16,8 @@ from src.controllers.wepay import create_checkout
 from src.sanitizer import sanitize_redactor_input
 from src.serializer import serialize_one
 
+import pdb
+
 @login_check()
 @validate('GET', [], ['token'])
 def index(request, id, params, user):
@@ -200,7 +202,9 @@ def edit(request, params, user):
         else:
             event.name = params['name']
     if params['description'] is not None:
+        pdb.set_trace()
         params['description'] = sanitize_redactor_input(params['description'])
+        pdb.set_trace()
         if len(params['description']) == 0:
             response = {
                 'status':'FAIL',

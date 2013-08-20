@@ -641,7 +641,38 @@ div.event_base {
             }
 
             div.organizers {
-                
+                div.body {
+                    width: 100%;
+                    padding-top: 7px;
+                    padding-bottom: 5px;
+
+                    div.organizer {
+                        width: @content_inner_sidebar_width - 20;
+                        height: 25px;
+                        padding-top: 4px;
+
+                        div.icon {
+                            width: 25px;
+                            height: 25px;
+                            background-color: #CCC;
+                            .left;
+                        }
+
+                        div.name {
+                            width: @content_inner_sidebar_width - 20 - 25 - 14;
+                            height: 15px;
+                            padding: 5px 7px;
+                            font-size: 15px;
+                            line-height: 15px;
+                            .left;
+
+                            a {
+                                color: #000;
+                                text-decoration: none;
+                            }
+                        }
+                    }
+                }
             }
         }
     }
