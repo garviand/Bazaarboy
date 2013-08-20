@@ -613,9 +613,29 @@ div.event_base {
                     width: 100%;
                     height: 18px;
                     font-size: @font_size_base - 2;
+                    &:hover {
+                        div.button {
+                            display: block;
+                        }
+                    }
 
                     div.text {
+                        width: 75%;
+                        height: 18px;
                         .left;
+                    }
+
+                    div.button {
+                        display: none;
+                        width: 25%;
+                        height: 14px;
+                        padding: 2px 0;
+                        background-color: #CCC;
+                        font-size: @font_size_base - 3;
+                        font-weight: @font_weight_bold;
+                        text-align: center;
+                        cursor: pointer;
+                        .right;
                     }
                 }
             }

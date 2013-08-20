@@ -67,7 +67,8 @@ def fundraiser(request, params, user):
 @login_required()
 @validate('POST', 
           ['profile', 'name', 'description', 'category', 'goal', 'deadline'], 
-          ['latitude', 'longitude', 'is_private', 'token'])
+          ['summary', 'tags', 'location', 'latitude', 'longitude', 
+           'is_private', 'token'])
 def create(request, params, user):
     """
     Create a new fundraiser
@@ -106,9 +107,38 @@ def create(request, params, user):
                             owner = profile, 
                             goal = params['goal'], 
                             deadline = params['deadline'])
+    # Check if summary and tags are legal
+    if params['summary'] is not None:
+        if len(params['summary']) > 150:
+            response = {
+                'status':'FAIL',
+                'error':'SUMMARY_TOO_LONG',
+                'message':'The summary must be within 150 characters.'
+            }
+            return json_response(response)
+        else:
+            fundraiser.summary = params['summary']
+    if params['tags'] is not None:
+        if len(params['tags']) > 150:
+            response = {
+                'status':'FAIL',
+                'error':'TAGS_TOO_LONG',
+                'message':'The tags must be within 150 characters.'
+            }
+            return json_response(response)
+        else:
+            fundraiser.tags = params['tags']
     # Check if the location is specified
     if params['location'] is not None:
-        fundraiser.location = params['location'].strip()
+        if len(params['location']) > 100:
+            response = {
+                'status':'FAIL',
+                'error':'LOCATION_TOO_LONG',
+                'message':'The location must be within 100 characters.'
+            }
+            return json_response(response)
+        else:
+            fundraiser.location = params['location']
     # Check if coordinates are specified, and if so, if they are legal
     if params['latitude'] is not None and params['longitude'] is not None:
         if not (-90.0 <= float(params['latitude']) <= 90.0 and 
@@ -161,8 +191,9 @@ def create(request, params, user):
 
 @login_required()
 @validate('POST', ['id'], 
-          ['name', 'description', 'goal', 'deadline', 'location', 'latitude', 
-           'longitude', 'category', 'is_private', 'token'])
+          ['name', 'description', 'summary', 'tags', 'goal', 'deadline', 
+           'location', 'latitude', 'longitude', 'category', 'is_private', 
+           'token'])
 def edit(request, params, user):
     """
     Edit an existing fundraiser
@@ -255,8 +286,36 @@ def edit(request, params, user):
             return json_response(response)
         else:
             fundraiser.description = params['description']
+    if params['summary'] is not None:
+        if len(params['summary']) > 150:
+            response = {
+                'status':'FAIL',
+                'error':'SUMMARY_TOO_LONG',
+                'message':'The summary must be within 150 characters.'
+            }
+            return json_response(response)
+        else:
+            fundraiser.summary = params['summary']
+    if params['tags'] is not None:
+        if len(params['tags']) > 150:
+            response = {
+                'status':'FAIL',
+                'error':'TAGS_TOO_LONG',
+                'message':'The tags must be within 150 characters.'
+            }
+            return json_response(response)
+        else:
+            fundraiser.tags = params['tags']
     if params['location'] is not None:
-        fundraiser.location = params['location'].strip()
+        if len(params['location']) > 100:
+            response = {
+                'status':'FAIL',
+                'error':'LOCATION_TOO_LONG',
+                'message':'The location must be within 100 characters.'
+            }
+            return json_response(response)
+        else:
+            fundraiser.location = params['location']
     if params['latitude'] is not None and params['longitude'] is not None: 
         if not (-90.0 <= float(params['latitude']) <= 90.0 and 
                 -180.0 <= float(params['longitude']) <= 180.0):

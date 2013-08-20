@@ -20,7 +20,6 @@ prepend body
     {% endif %}
 
 block content
-    {% load humanize %}
     div#event.content_divided.event_base.small_cover
         div.cover
             div.image
@@ -78,10 +77,16 @@ block content
                 div.summary.info
                     div.caption
                         div.text Summary
+                        {% if editable %}
+                        div.button Edit
+                        {% endif %}
                         div.clear
                 div.tags.info
                     div.caption
                         div.text Tags
+                        {% if editable %}
+                        div.button Edit
+                        {% endif %}
                         div.clear
             div.clear
         div.sponsors
