@@ -35,6 +35,7 @@ def syncdb():
     # Sync database
     with lcd('./Bazaarboy/'):
         local('python manage.py syncdb')
+        local('python manage.py loaddata kernel/fixtures/tests.json')
 
 def test(app=''):
     """

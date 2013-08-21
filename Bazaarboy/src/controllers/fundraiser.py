@@ -109,7 +109,7 @@ def create(request, params, user):
                             deadline = params['deadline'])
     # Check if summary and tags are legal
     if params['summary'] is not None:
-        if len(params['summary']) > 150:
+        if len(params['summary']) > 100:
             response = {
                 'status':'FAIL',
                 'error':'SUMMARY_TOO_LONG',
@@ -119,7 +119,7 @@ def create(request, params, user):
         else:
             fundraiser.summary = params['summary']
     if params['tags'] is not None:
-        if len(params['tags']) > 150:
+        if len(params['tags']) > 50:
             response = {
                 'status':'FAIL',
                 'error':'TAGS_TOO_LONG',
@@ -287,7 +287,7 @@ def edit(request, params, user):
         else:
             fundraiser.description = params['description']
     if params['summary'] is not None:
-        if len(params['summary']) > 150:
+        if len(params['summary']) > 100:
             response = {
                 'status':'FAIL',
                 'error':'SUMMARY_TOO_LONG',
@@ -297,7 +297,7 @@ def edit(request, params, user):
         else:
             fundraiser.summary = params['summary']
     if params['tags'] is not None:
-        if len(params['tags']) > 150:
+        if len(params['tags']) > 50:
             response = {
                 'status':'FAIL',
                 'error':'TAGS_TOO_LONG',
