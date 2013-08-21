@@ -34,7 +34,7 @@
             response = $.parseJSON data
             return cb? response
         return
-    # Shortcut for switch viewport states
+    # Switch viewport states
     switchCollapsedStates: (cb) ->
         collapse = !$('body').hasClass('collapsed')
         _to = if collapse then 2 else 1
@@ -55,6 +55,8 @@
         return
     # Initialization
     init: () ->
+        # Pass the timezone information back to server
+        @post 'timezone/', {timezone: getTimezoneName()}
         # Sidebar
         @collapseStates = [
             ['div#wrapper_top div.logo', [['width', '186px', '60px']]]

@@ -1,4 +1,5 @@
 from django import template
+from src.timezone import localize
 
 register = template.Library()
 
@@ -18,9 +19,6 @@ def shouldShortenEndTime(endTime, startTime):
     if endTime is None or startTime is None:
         return False
     # See if the two are on the same day
-    if False:
-        pass
-    # See if the end time is within 12 hours of the start time
-    gap = endTime - startTime
-    return 0 < gap.total_seconds() < 60 * 60 * 12
-
+    endTime = localize(endTime)
+    startTime = localize(startTime)
+    return endTime.day == startTime.day

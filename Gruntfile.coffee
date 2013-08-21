@@ -27,6 +27,7 @@ module.exports = (grunt) ->
                     'Bazaarboy/static/js/libraries/jquery.ui.widget.min.js'
                     'Bazaarboy/static/js/libraries/jquery.iframe-transport.min.js'
                     'Bazaarboy/static/js/libraries/jquery.fileupload.min.js'
+                    'Bazaarboy/static/js/libraries/misc.js'
                 ]
                 dest: 'Bazaarboy/static/js/libraries.js'
         jade:

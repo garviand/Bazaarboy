@@ -54,13 +54,17 @@ block content
                 div.details.info
                     div.time
                         // Format the times to form something like this
-                        // Jul 9th, 10am - 2pm
+                        // Jul 9th, 10pm - 11pm
+                        // or
+                        // Jul 9th, 10am - Jul 10th, 11pm
                         | {% spaceless %}
                         | {{ event.start_time|date:"M jS, f" }}{{ event.start_time|date:"A"|lower }}
                         | {% if event.end_time %}
                         | {% if event.end_time|shouldShortenEndTime:event.start_time %}
-                        |  - {{ event.end_time|date:"f" }}{{ event.start_time|date:"A"|lower }}
+                        |  - {{ event.end_time|date:"f" }}{{ event.end_time|date:"A"|lower }}
                         | {% else %}
+                        |  - 
+                        br
                         | {{ event.end_time|date:"M jS, f" }}{{ event.end_time|date:"A"|lower }}
                         | {% endif %}
                         | {% endif %}
