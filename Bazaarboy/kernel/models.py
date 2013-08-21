@@ -214,8 +214,8 @@ class Event_base(models.Model):
     """
     name = models.CharField(max_length = 50)
     description = models.TextField()
-    summary = models.CharField(max_length = 150)
-    tags = models.CharField(max_length = 150)
+    summary = models.CharField(max_length = 100)
+    tags = models.CharField(max_length = 50)
     image = models.ForeignKey('Image', 
                               related_name = '%(class)s_image', 
                               null = True, default = None, 

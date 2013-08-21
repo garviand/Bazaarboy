@@ -51,7 +51,27 @@ block content
                         {% endif %}
                     div.price
                     div.clear
-                div.time.info
+                div.details.info
+                    div.time
+                        // Format the times to form something like this
+                        // Jul 9th, 10pm - 11pm
+                        // or
+                        // Jul 9th, 10am - Jul 10th, 11pm
+                        | {% spaceless %}
+                        | {{ event.start_time|date:"M jS, f" }}{{ event.start_time|date:"A"|lower }}
+                        | {% if event.end_time %}
+                        | {% if event.end_time|shouldShortenEndTime:event.start_time %}
+                        |  - {{ event.end_time|date:"f" }}{{ event.end_time|date:"A"|lower }}
+                        | {% else %}
+                        |  - 
+                        br
+                        | {{ event.end_time|date:"M jS, f" }}{{ event.end_time|date:"A"|lower }}
+                        | {% endif %}
+                        | {% endif %}
+                        | {% endspaceless %}
+                    {% if event.location|length != 0 %}
+                    div.location at {{ event.location }}
+                    {% endif %}
                 div.friends.info
                     div.caption
                         div.text Friends Going
@@ -81,6 +101,18 @@ block content
                         div.button Edit
                         {% endif %}
                         div.clear
+                    div.body
+                        div.text
+                            {% if event.summary|length != 0 %}
+                            {{ event.summary }}
+                            {% else %}
+                            | No summary yet.
+                            {% endif %}
+                        {% if editable %}
+                        div.editor.hidden
+                            textarea(name="summary", placeholder="Maximum 100 Characters")
+                                | {{ event.summary}}
+                        {% endif %}
                 div.tags.info
                     div.caption
                         div.text Tags
@@ -88,6 +120,21 @@ block content
                         div.button Edit
                         {% endif %}
                         div.clear
+                    div.body
+                        div.text
+                            {% if event.tags|length != 0 %}
+                            {% for tag in event.tags|split:"," %}
+                            div.tag {{ tag }}
+                            {% endfor %}
+                            div.clear
+                            {% else %}
+                            | No tags yet.
+                            {% endif %}
+                        {% if editable %}
+                        div.editor.hidden
+                            textarea(name="tags", placeholder="Max. 50 Chars. Separate by comma")
+                                | {{ event.tags }}
+                        {% endif %}
             div.clear
         div.sponsors
             div.caption

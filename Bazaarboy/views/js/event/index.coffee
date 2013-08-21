@@ -77,6 +77,62 @@ Bazaarboy.event.index =
                 alert err.message
             return
         return
+    startEditingSummary: () ->
+        $('div#event div.summary div.body div.text').addClass('hidden')
+        $('div#event div.right div.summary div.editor').removeClass('hidden')
+        $('div#event div.right div.summary div.button')
+            .html('Save')
+            .addClass('stick')
+        return
+    stopEditingSummary: () ->
+        summary = $('div#event div.summary div.editor textarea').val().trim()
+        @save {summary: summary}, (err, event) =>
+            unless err
+                summaryText = summary
+                if summary.length is 0
+                    summaryText = '<i>No summary yet.</i>'
+                $('div#event div.summary div.body div.text')
+                    .html(summaryText)
+                    .removeClass('hidden')
+                $('div#event div.summary div.editor textarea').val(summary)
+                $('div#event div.summary div.editor').addClass('hidden')
+                $('div#event div.summary div.button')
+                    .html('Edit')
+                    .removeClass('stick')
+            else
+                alert err.message
+            return
+        return
+    startEditingTags: () ->
+        $('div#event div.tags div.body div.text').addClass('hidden')
+        $('div#event div.right div.tags div.editor').removeClass('hidden')
+        $('div#event div.right div.tags div.button')
+            .html('Save')
+            .addClass('stick')
+        return
+    stopEditingTags: () ->
+        tags = $('div#event div.tags div.editor textarea').val().trim()
+        @save {tags: tags}, (err, event) =>
+            unless err
+                $('div#event div.tags div.editor textarea').val(tags)
+                tagsText = '<i>No tags yet.</i>'
+                if tags.length isnt 0
+                    tagsText = ''
+                    tags = tags.split(',')
+                    for tag in tags
+                        tagsText += "<div class=\"tag\">#{tag}</div>"
+                    tagsText += '<div class="clear"></div>'
+                $('div#event div.tags div.body div.text')
+                    .html(tagsText)
+                    .removeClass('hidden')
+                $('div#event div.tags div.editor').addClass('hidden')
+                $('div#event div.tags div.button')
+                    .html('Edit')
+                    .removeClass('stick')
+            else
+                alert err.message
+            return
+        return
     initEditing: () ->
         # Edit description
         @description = $('div#event div.description div.inner').html()
@@ -87,6 +143,21 @@ Bazaarboy.event.index =
                 @stopEditingDescription @description
             else
                 @startEditingDescription()
+            return
+        # Edit summary
+        scope = this
+        $('div#event div.summary div.button').click () ->
+            if $(this).hasClass('stick')
+                scope.stopEditingSummary()
+            else
+                scope.startEditingSummary()
+            return
+        # Edit tags
+        $('div#event div.tags div.button').click () ->
+            if $(this).hasClass('stick')
+                scope.stopEditingTags()
+            else
+                scope.startEditingTags()
             return
         return
     init: () ->

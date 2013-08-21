@@ -2,6 +2,8 @@
 Controller for index
 """
 
+import pytz
+from django.http import HttpResponse
 from django.shortcuts import render
 from src.controllers.request import validate, login_check
 
@@ -27,3 +29,11 @@ def pageNotFound(request, user):
 
 def serverError(request):
     return render(request, '500.html', locals())
+
+@validate('POST', ['timezone'])
+def timezone(request, params):
+    """
+    Set timezone info for this session
+    """
+    request.session['django_timezone'] = pytz.timezone(params['timezone'])
+    return HttpResponse()
