@@ -15,7 +15,7 @@ class Email(object):
     def __init__(self):
         super(Email, self).__init__()
 
-    def sendConfirmationEmail(self, confirmationCode):
+    def sendConfirmationEmail(self, confirmationCode, user):
         """
         Send Confirmation after Registration
         """
@@ -26,12 +26,12 @@ class Email(object):
          'from_name': 'Bazaarboy',
          'headers': {'Reply-To': 'build@bazaarboy.com'},
          'subject': 'Welcome to Bazaarboy',
-         'global_merge_vars': [{'name': 'username', 'content':'Andy'}],
-         'to': [{'email': 'garvin.andy@gmail.com', 'name': 'Andy Garvin'}],
+         'global_merge_vars': [{'name': 'user_name', 'content':'Eric'}],
+         'to': [{'email': 'eric@bazaarboy.com', 'name': 'Andy Garvin'}],
          'track_clicks': True,
          'track_opens': True}
 
-        result = mandrill_client.messages.send_template(template_name='welcome', template_content=template_content, message=message, async=False)
+        result = mandrill_client.messages.send_template(template_name='confirm-registration', template_content=template_content, message=message, async=False)
 
         return result
 
