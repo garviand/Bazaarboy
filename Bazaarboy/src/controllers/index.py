@@ -3,9 +3,8 @@ Controller for index
 """
 
 import pytz
-from django.http import HttpResponse
 from django.shortcuts import render
-from src.controllers.request import validate, login_check
+from src.controllers.request import validate, login_check, json_response
 
 @login_check()
 @validate('GET', [], ['next'])
@@ -36,4 +35,4 @@ def timezone(request, params):
     Set timezone info for this session
     """
     request.session['django_timezone'] = pytz.timezone(params['timezone'])
-    return HttpResponse()
+    return json_response({})

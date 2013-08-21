@@ -20,10 +20,27 @@ prepend body
     {% endif %}
 
 block content
-    div#event.content_divided.event_base.small_cover
+    div#event.content_divided.event_base(class="{% if event.cover %}big_cover{% endif %}")
         div.cover
             div.image
+                div.bounds
+                    {% if event.cover %}
+                    img.normal(src="{{ event.cover.source.url }}")
+                    {% endif %}
             div.caption
+            {% if editable %}
+            div.controls(class="{% if not event.cover %}stick{% endif %}")
+                span.hidden Drag the image to position you think fit. 
+                a.edit(href="javascript:;") 
+                    | {% if event.cover %}Edit Cover{% else %}Add Cover{% endif %}
+                a.delete(href="javascript:;", class="{% if not event.cover %}hidden{% endif %}") 
+                    | Delete
+                a.hidden.save(href="javascript:;") Save
+                a.hidden.cancel(href="javascript:;") Cancel
+                form.upload_cover
+                    input.hidden(type="file", name="image_file")
+                    {% csrf_token %}
+            {% endif %}
         div.title
             div.controls
             div.text
@@ -31,7 +48,6 @@ block content
             div.clear
         div.frame
             div.left
-                div.placeholder
                 div.description
                     div.editor
                         div.inner
@@ -53,10 +69,10 @@ block content
                     div.clear
                 div.details.info
                     div.time
-                        // Format the times to form something like this
-                        // Jul 9th, 10pm - 11pm
-                        // or
-                        // Jul 9th, 10am - Jul 10th, 11pm
+                        //- Format the times to form something like this
+                        //- Jul 9th, 10pm - 11pm
+                        //- or
+                        //- Jul 9th, 10am - Jul 10th, 11pm
                         | {% spaceless %}
                         | {{ event.start_time|date:"M jS, f" }}{{ event.start_time|date:"A"|lower }}
                         | {% if event.end_time %}
@@ -70,9 +86,20 @@ block content
                         | {% endif %}
                         | {% endspaceless %}
                     {% if event.location|length != 0 %}
-                    div.location at {{ event.location }}
+                    div.location 
+                        div.text
+                            | at 
+                            b {{ event.location }}
+                        //div.map(data-latitude="{{ event.latitude }}", data-longitude="{{ event.longitude }}")
+                        //    div#map_canvas
                     {% endif %}
-                div.friends.info
+                div.facebook.info
+                    {% if editable %}
+                    div.caption
+                        div.text Sync to Facebook
+                        div.clear
+                    div.content
+                    {% else %}
                     div.caption
                         div.text Friends Going
                         {% if user.fb_id %}
@@ -84,6 +111,7 @@ block content
                         {% if user.fb_id %}
                         {% else %}
                         {% endif %}
+                    {% endif %}
                 div.organizers.info
                     div.caption
                         div.text Organizer
@@ -184,6 +212,7 @@ block content
     {% endif %}
 
 append script
+    script(type="text/javascript", src="https://maps.googleapis.com/maps/api/js?sensor=false&key=AIzaSyBb4LqJdxCDjVWlgqLsdgtMpiI3fFloTiw")
     script(type="text/javascript", src="{{ STATIC_URL }}redactor/redactor.min.js")
     script(type="text/javascript").
         var eventId = {{ event.id }};

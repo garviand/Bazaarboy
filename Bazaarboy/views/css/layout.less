@@ -428,32 +428,15 @@ div#profile {
 // Event base
 
 div.event_base {
-    &.no_cover {
-        div.cover {
-            height: 0;
-        }
-
-        div.description {
-            margin-top: 20px;
-        }
-    }
-    &.small_cover {
-        div.cover {
-            width: @content_inner_width;
-        }
-
-        div.description {
-            margin-top: 20px;
-        }
-    }
     &.big_cover {
         div.cover {
-            width: @content_width;
-            left: 0 - ((@content_width - @content_inner_width) / 2);
-            top: 0;
             body.collapsed & {
                 width: @content_width_expanded;
                 left: 0 - ((@body_width - @content_inner_width) / 2 - @sidebar_width_collapsed);
+
+                div.controls {
+                    left: (@body_width - @content_inner_width) / 2 - @sidebar_width_collapsed;
+                }
             }
 
             div.image {
@@ -472,6 +455,10 @@ div.event_base {
 
     div.cover {
         position: absolute;
+        width: @content_width;
+        height: 88px;
+        left: 0 - ((@content_width - @content_inner_width) / 2);
+        top: 0;
         overflow: hidden;
 
         div.image {
@@ -480,6 +467,14 @@ div.event_base {
 
         div.caption {
             background: #BBB;
+        }
+
+        div.controls {
+            display: none;
+            position: absolute;
+            top: 60px;
+            left: (@content_width - @content_inner_width) / 2;
+            background: #FFF;
         }
     }
 
@@ -518,13 +513,9 @@ div.event_base {
 
     div.frame {
         div.left {
-            div.placeholder {
-                width: @content_inner_body_width;
-                height: @content_title_height_single;
-            }
-
             div.description {
                 width: 100%;
+                margin-top: 88px;
                 .left;
 
                 div.editor {
@@ -668,24 +659,39 @@ div.event_base {
             }
 
             div.details {
-                min-height: 40px;
-
                 div.time {
                     width: 100%;
-                    min-height: 22px;
+                    min-height: 20px;
                     font-size: 18px;
+                    line-height: 20px;
                 }
 
                 div.location {
                     width: 100%;
-                    height: 16px;
-                    margin-top: 2px;
+                    margin-top: 8px;
                     font-size: 13px;
-                    line-height: 16px;
+                    line-height: 13px;
+
+                    div.text {
+                        width: 100%;
+                        height: 13px;
+                    }
+
+                    div.map {
+                        width: 100%;
+                        //height: 0;
+                        //overflow: hidden;
+
+                        div#map_canvas {
+                            width: 100%;
+                            height: 80px;
+                            margin-top: 10px;
+                        }
+                    }
                 }
             }
 
-            div.friends {
+            div.facebook {
                 height: 70px;
 
                 div.caption {
@@ -869,16 +875,6 @@ div.event_base {
 // Event
 
 div#event {
-    &.no_cover {
-        div.organizers {
-            margin-top: 10px;
-        }
-    }
-    &.small_cover {
-        div.organizers {
-            margin-top: 10px;
-        }
-    }
     &.big_cover {
         div.organizers {
             margin-top: 44px;
@@ -894,6 +890,10 @@ div#event {
 
             div.info {
                 margin-bottom: 10px;
+            }
+
+            div.organizers {
+                margin-top: 10px;
             }
         }
     }

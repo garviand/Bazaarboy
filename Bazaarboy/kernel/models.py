@@ -216,11 +216,10 @@ class Event_base(models.Model):
     description = models.TextField()
     summary = models.CharField(max_length = 100)
     tags = models.CharField(max_length = 50)
-    image = models.ForeignKey('Image', 
+    cover = models.ForeignKey('Image', 
                               related_name = '%(class)s_image', 
                               null = True, default = None, 
                               on_delete = models.SET_NULL)
-    is_cover = models.BooleanField(default = False)
     location = models.CharField(max_length = 100)
     latitude = models.FloatField(null = True, default = None)
     longitude = models.FloatField(null = True, default = None)
