@@ -21,6 +21,8 @@ def sanitize_redactor_input(string):
     """
     Sanitize the input from redactor
     """
+    string = unicode(string)
+    string = string.replace('<br>', '<br />')
     while True:
         soup = BeautifulSoup(string)
         removed = False

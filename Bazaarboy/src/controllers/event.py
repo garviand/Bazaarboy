@@ -16,6 +16,8 @@ from src.controllers.wepay import create_checkout
 from src.sanitizer import sanitize_redactor_input
 from src.serializer import serialize_one
 
+import pdb
+
 @login_check()
 @validate('GET', [], ['token'])
 def index(request, id, params, user):
@@ -71,8 +73,9 @@ def event(request, params, user):
 
 @login_check()
 @validate('POST', 
-          ['name', 'description', 'start_time', 'location', 'category'], 
-          ['end_time', 'latitude', 'longitude', 'is_private', 'profile'])
+          ['name', 'description', 'start_time', 'category'], 
+          ['summary', 'tags', 'end_time', 'location', 'latitude', 'longitude', 
+           'is_private', 'profile'])
 def create(request, params, user):
     """
     Create a new event
@@ -99,8 +102,39 @@ def create(request, params, user):
                   description = sanitize_redactor_input(params['description']), 
                   start_time = params['start_time'], 
                   end_time = params['end_time'], 
-                  location = params['location'], 
                   category = params['category'])
+    # Check if summary and tags are legal
+    if params['summary'] is not None:
+        if len(params['summary']) > 150:
+            response = {
+                'status':'FAIL',
+                'error':'SUMMARY_TOO_LONG',
+                'message':'The summary must be within 150 characters.'
+            }
+            return json_response(response)
+        else:
+            event.summary = params['summary']
+    if params['tags'] is not None:
+        if len(params['tags']) > 150:
+            response = {
+                'status':'FAIL',
+                'error':'TAGS_TOO_LONG',
+                'message':'The tags must be within 150 characters.'
+            }
+            return json_response(response)
+        else:
+            event.tags = params['tags']
+    # Check if the location is specified
+    if params['location'] is not None:
+        if len(params['location']) > 100:
+            response = {
+                'status':'FAIL',
+                'error':'LOCATION_TOO_LONG',
+                'message':'The location must be within 100 characters.'
+            }
+            return json_response(response)
+        else:
+            event.location = params['location']
     # Check if coordinates are specified, and if so, if they are legal
     if params['latitude'] is not None and params['longitude'] is not None:
         if not (-90.0 <= float(params['latitude']) <= 90.0 and 
@@ -153,8 +187,9 @@ def create(request, params, user):
 
 @login_check()
 @validate('POST', ['id'], 
-          ['name', 'description', 'start_time', 'end_time', 'location', 
-           'latitude', 'longitude', 'category', 'is_private', 'token'])
+          ['name', 'description', 'summary', 'tags', 'start_time', 'end_time', 
+           'location', 'latitude', 'longitude', 'category', 'is_private', 
+           'token'])
 def edit(request, params, user):
     """
     Edit an existing event
@@ -210,6 +245,26 @@ def edit(request, params, user):
             return json_response(response)
         else:
             event.description = params['description']
+    if params['summary'] is not None:
+        if len(params['summary']) > 150:
+            response = {
+                'status':'FAIL',
+                'error':'SUMMARY_TOO_LONG',
+                'message':'The summary must be within 150 characters.'
+            }
+            return json_response(response)
+        else:
+            event.summary = params['summary']
+    if params['tags'] is not None:
+        if len(params['tags']) > 150:
+            response = {
+                'status':'FAIL',
+                'error':'TAGS_TOO_LONG',
+                'message':'The tags must be within 150 characters.'
+            }
+            return json_response(response)
+        else:
+            event.tags = params['tags']
     if params['start_time'] is not None:
         if params['start_time'] < timezone.now():
             response = {
@@ -231,11 +286,11 @@ def edit(request, params, user):
         else:
             event.end_time = params['end_time']
     if params['location'] is not None:
-        if len(params['location']) == 0:
+        if len(params['location']) > 100:
             response = {
                 'status':'FAIL',
-                'error':'BLANK_LOCATION',
-                'message':'Location cannot be blank.'
+                'error':'LOCATION_TOO_LONG',
+                'message':'The location must be within 100 characters.'
             }
             return json_response(response)
         else:

@@ -20,7 +20,6 @@ prepend body
     {% endif %}
 
 block content
-    {% load humanize %}
     div#event.content_divided.event_base.small_cover
         div.cover
             div.image
@@ -67,15 +66,27 @@ block content
                         {% endif %}
                 div.organizers.info
                     div.caption
-                        div.text Organizers
+                        div.text Organizer
                         div.clear
+                    div.body
+                        div.organizer
+                            div.icon
+                            div.name
+                                a(href="{% url profile:index event.owner.id %}")
+                                    | {{ event.owner.name }}
                 div.summary.info
                     div.caption
                         div.text Summary
+                        {% if editable %}
+                        div.button Edit
+                        {% endif %}
                         div.clear
                 div.tags.info
                     div.caption
                         div.text Tags
+                        {% if editable %}
+                        div.button Edit
+                        {% endif %}
                         div.clear
             div.clear
         div.sponsors
