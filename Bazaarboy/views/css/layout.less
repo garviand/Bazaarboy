@@ -430,16 +430,15 @@ div#profile {
 div.event_base {
     &.big_cover {
         div.cover {
-            body.collapsed & {
-                width: @content_width_expanded;
-                left: 0 - ((@body_width - @content_inner_width) / 2 - @sidebar_width_collapsed);
-
+            height: 320px;
+            &:hover {
                 div.controls {
-                    left: (@body_width - @content_inner_width) / 2 - @sidebar_width_collapsed;
+                    display: block;
                 }
             }
 
             div.image {
+                left: 0;
                 height: 320px;
             }
 
@@ -448,8 +447,31 @@ div.event_base {
             }
         }
 
-        div.description {
-            margin-top: 350px - @content_title_height_single;
+        div.frame {
+            div.left {
+                div.description {
+                    margin-top: 370px;
+                }
+            }
+        }
+    }
+    &.with_caption {
+        div.cover {
+            height: 350px;
+        }
+    }
+    body.collapsed & {
+        div.cover {
+            width: @content_width_expanded;
+            left: 0 - ((@body_width - @content_inner_width) / 2 - @sidebar_width_collapsed);
+
+            div.caption {
+                width: @content_width_expanded;
+            }
+
+            div.controls {
+                left: (@body_width - @content_inner_width) / 2 - @sidebar_width_collapsed;
+            }
         }
     }
 
@@ -462,11 +484,38 @@ div.event_base {
         overflow: hidden;
 
         div.image {
-            background: #CCC;
+            position: relative;
+            width: @content_width_expanded;
+            height: 0;
+            top: 0;
+            left: @content_width - @content_width_expanded;
+            overflow: hidden;
+
+            div.bounds {
+                position: absolute;
+                width: 100%;
+                height: 100%;
+                top: 0;
+                left: 0;
+
+                img {
+                    &.normal {
+                        width: 100%;
+                        height: 100%;
+                    }
+
+                    &.editing {
+                        cursor: pointer;
+                    }
+                }
+            }
         }
 
         div.caption {
+            width: @content_width;
+            height: 0;
             background: #BBB;
+            overflow: hidden;
         }
 
         div.controls {
@@ -876,8 +925,21 @@ div.event_base {
 
 div#event {
     &.big_cover {
-        div.organizers {
-            margin-top: 44px;
+        div.frame {
+            div.right {
+                div.organizers {
+                    margin-top: 13px;
+                }
+            }
+        }
+    }
+    &.with_caption {
+        div.frame {
+            div.right {
+                div.organizers {
+                    margin-top: 43px;
+                }
+            }
         }
     }
 

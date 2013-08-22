@@ -257,7 +257,7 @@ Bazaarboy.profile.index =
             @saveCoverImage()
             return
         $('div#profile div.cover a.cancel').click () =>
-            original = if @cover? @cover else false
+            original = if @cover? then @cover else false
             @stopEditingCoverImage(original)
             if @uploads.cover?
                 Bazaarboy.post 'file/image/delete/', 

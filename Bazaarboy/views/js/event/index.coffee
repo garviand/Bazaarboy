@@ -4,6 +4,7 @@ Bazaarboy.event.index =
     cover: undefined
     uploads:
         cover: undefined
+    coverEditInProgress: false
     drawMapWithCenter: (latitude, longitude) ->
         center = new google.maps.LatLng(latitude + 0.0015, longitude)
         mapOpts = 
@@ -73,6 +74,7 @@ Bazaarboy.event.index =
                 @prepareUploadedCoverImage(coverUrl)
                 return
             return
+        $('div#event').addClass('big_cover').addClass('with_caption')
         scope = this
         $('<img>')
             .attr('src', mediaUrl + coverUrl)
@@ -96,6 +98,7 @@ Bazaarboy.event.index =
                 return
         return
     startEditingCoverImage: () ->
+        @coverEditInProgress = true
         # Set up the draggable boundaries
         frame = $('div#event div.cover div.image')
         coverImage = $('div#event div.cover div.image img')
@@ -130,12 +133,9 @@ Bazaarboy.event.index =
         $('div#event > div.title').css
             'z-index': maskZ + parseInt($('div#event > div.title')
                                         .css('z-index'))
-        $('div#event div.right div.image').css
-            'z-index': maskZ + parseInt($('div#event div.right div.image')
-                                        .css('z-index'))
-        $('div#event div.right div.action').css
-            'z-index': maskZ + parseInt($('div#event div.right div.action')
-                                        .css('z-index'))
+        $('div#event div.frame div.right div.info')
+            .not('div.action').not('div.details').not('div.facebook')
+            .css('z-index', maskZ - 1)
         $('div#wrapper_overlay').fadeIn(200)
         $('div#event div.cover div.controls').addClass('stick')
         return
@@ -153,13 +153,16 @@ Bazaarboy.event.index =
             if cover
                 $('div#event div.cover div.image div.bounds').append(cover)
             else
+                $('div#event').removeClass('with_caption').removeClass('big_cover')
+                $('div#event div.cover div.controls').addClass('stick')
                 $('div#event div.cover div.controls a.edit')
                     .html('Add Cover')
         # Restore z-indices
         $('div#event div.cover').css 'z-index', ''
         $('div#event > div.title').css 'z-index', ''
-        $('div#event div.right div.image').css 'z-index', ''
-        $('div#event div.right div.action').css 'z-index', ''
+        $('div#event div.frame div.right div.info')
+            .not('div.action').not('div.details').not('div.facebook')
+            .css('z-index', '')
         $('div#wrapper_overlay').fadeOut(200)
         # Adjust the controls
         $('div#event div.cover div.controls span').addClass('hidden')
@@ -168,6 +171,7 @@ Bazaarboy.event.index =
         $('div#event div.cover div.controls a.save').addClass('hidden')
         $('div#event div.cover div.controls a.cancel').addClass('hidden')
         $('div#event div.cover div.controls').removeClass('stick')
+        @coverEditInProgress = false
         return
     saveCoverImage: () ->
         # Get the viewport of the image
@@ -321,6 +325,49 @@ Bazaarboy.event.index =
             return
         return
     initEditing: () ->
+        # Save original images
+        @cover = $('div#event div.cover div.image div.bounds img')
+        if @cover.length > 0
+            @cover = @cover.clone()
+        # Image uploads
+        $('div#event div.cover a.edit').click () ->
+            $('div#event div.cover input[name=image_file]').click()
+            return
+        $('div#event div.cover a.delete').click () =>
+            if confirm('Are you sure you want to delete the cover image?')
+                @deleteCoverImage()
+            return
+        $('div#event div.cover a.save').click () =>
+            @saveCoverImage()
+            return
+        $('div#event div.cover a.cancel').click () =>
+            original = if @cover? then @cover else false
+            @stopEditingCoverImage(original)
+            if @uploads.cover?
+                Bazaarboy.post 'file/image/delete/', 
+                    id: @uploads.cover.pk
+                , (response) =>
+                    @uploads.cover = null
+            return
+        $('div#event div.cover input[name=image_file]').fileupload 
+            url: rootUrl + 'file/image/upload/'
+            type: 'POST'
+            add: (event, data) =>
+                data.submit()
+                return
+            done: (event, data) =>
+                response = jQuery.parseJSON data.result
+                if response.status is 'OK'
+                    # Attempt to delete the last uploaded image
+                    if @uploads.cover?
+                        Bazaarboy.post 'file/image/delete/', 
+                            id: @uploads.cover.pk
+                    @uploads.cover = response.image
+                    @prepareUploadedCoverImage(response.image.source)
+                else
+                    alert response.message
+                return
+        return
         # Edit description
         @description = $('div#event div.description div.inner').html()
         $('div#event div.description div.controls a.save').hide().click () =>
@@ -367,9 +414,10 @@ Bazaarboy.event.index =
             $('div#wrapper_overlay').fadeIn(200)
             $('div.event_overlay_canvas').fadeIn(200)
             return
-        $('div#wrapper_overlay').click () ->
-            $('div#wrapper_overlay').fadeOut(200)
-            $('div.event_overlay_canvas').fadeOut(200)
+        $('div#wrapper_overlay').click () =>
+            if not @coverEditInProgress
+                $('div#wrapper_overlay').fadeOut(200)
+                $('div.event_overlay_canvas').fadeOut(200)
             return
         # Maps
         ###

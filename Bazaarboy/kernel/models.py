@@ -506,6 +506,7 @@ class Image(models.Model):
     Image model
     """
     source = models.ImageField(upload_to = 'uploads/%Y-%m-%d/')
+    caption = models.CharField(max_length = 100)
     is_archived = models.BooleanField(default = False)
     created_time = models.DateTimeField(auto_now_add = True)
 

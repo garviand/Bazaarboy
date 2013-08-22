@@ -187,9 +187,9 @@ def create(request, params, user):
 
 @login_check()
 @validate('POST', ['id'], 
-          ['name', 'description', 'summary', 'tags', 'start_time', 'end_time', 
-           'location', 'latitude', 'longitude', 'category', 'is_private', 
-           'token'])
+          ['name', 'description', 'cover', 'summary', 'tags', 'start_time', 
+           'end_time', 'location', 'latitude', 'longitude', 'category', 
+           'is_private', 'token'])
 def edit(request, params, user):
     """
     Edit an existing event
@@ -245,6 +245,27 @@ def edit(request, params, user):
             return json_response(response)
         else:
             event.description = params['description']
+    if params['cover'] is not None:
+        if params['cover'].lower() == 'delete':
+            if event.cover is not None:
+                oldCover = Image.objects.get(id = event.cover.id)
+                oldCover.delete()
+                event.cover = None
+        elif not Image.objects.filter(id = params['cover']).exists():
+            response = {
+                'status':'FAIL',
+                'error':'COVER_IMAGE_NOT_FOUND',
+                'message':'The cover image doesn\'t exist.'
+            }
+            return json_response(response)
+        else:
+            cover = Image.objects.get(id = params['cover'])
+            if event.cover is not None:
+                oldCover = Image.objects.get(id = event.cover.id)
+                oldCover.delete()
+            cover.is_archived = True
+            cover.save()
+            event.cover = cover
     if params['summary'] is not None:
         if len(params['summary']) > 100:
             response = {

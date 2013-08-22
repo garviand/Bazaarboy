@@ -9,6 +9,7 @@ append head
     {% if event.is_private %}
     meta(name="robots", content="noindex,nofollow")
     {% endif %}
+    link(rel="stylesheet", href="{{ STATIC_URL }}jQueryUI/jquery-ui.css")
     link(rel="stylesheet", href="{{ STATIC_URL }}redactor/redactor.css")
 
 block vars
@@ -20,7 +21,7 @@ prepend body
     {% endif %}
 
 block content
-    div#event.content_divided.event_base(class="{% if event.cover %}big_cover{% endif %}")
+    div#event.content_divided.event_base(class="{% if event.cover %}big_cover {% if editable %}with_caption{% endif %}{% endif %}")
         div.cover
             div.image
                 div.bounds
@@ -28,6 +29,17 @@ block content
                     img.normal(src="{{ event.cover.source.url }}")
                     {% endif %}
             div.caption
+                div.text
+                    {% if event.cover and event.cover.caption|length != 0 %}
+                    {{ event.cover.caption }}
+                    {% else %}
+                    i No caption yet.
+                    {% endif %}
+                {% if event.cover and editable %}
+                div.editor.hidden
+                    textarea(name="cover_caption", placeholder="Maximum 100 Characters")
+                        | {{ event.cover.caption }}
+                {% endif %}
             {% if editable %}
             div.controls(class="{% if not event.cover %}stick{% endif %}")
                 span.hidden Drag the image to position you think fit. 
@@ -139,7 +151,7 @@ block content
                         {% if editable %}
                         div.editor.hidden
                             textarea(name="summary", placeholder="Maximum 100 Characters")
-                                | {{ event.summary}}
+                                | {{ event.summary }}
                         {% endif %}
                 div.tags.info
                     div.caption
@@ -212,7 +224,8 @@ block content
     {% endif %}
 
 append script
-    script(type="text/javascript", src="https://maps.googleapis.com/maps/api/js?sensor=false&key=AIzaSyBb4LqJdxCDjVWlgqLsdgtMpiI3fFloTiw")
+    //script(type="text/javascript", src="https://maps.googleapis.com/maps/api/js?sensor=false&key=AIzaSyBb4LqJdxCDjVWlgqLsdgtMpiI3fFloTiw")
+    script(type="text/javascript", src="{{ STATIC_URL }}jQueryUI/jquery-ui.min.js")
     script(type="text/javascript", src="{{ STATIC_URL }}redactor/redactor.min.js")
     script(type="text/javascript").
         var eventId = {{ event.id }};
