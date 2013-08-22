@@ -64,6 +64,9 @@
     },
     init: function() {
       var _this = this;
+      this.post('timezone/', {
+        timezone: getTimezoneName()
+      });
       this.collapseStates = [['div#wrapper_top div.logo', [['width', '186px', '60px']]], ['div#wrapper_top div.search', [['width', '750px', '876px']]], ['div#wrapper_sidebar', [['width', '186px', '60px']]], ['div#wrapper_content', [['width', '750px', '876px']]]];
       $('div#wrapper_sidebar div.switch a').click(function() {
         return _this.switchCollapsedStates();

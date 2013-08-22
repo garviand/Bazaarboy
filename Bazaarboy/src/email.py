@@ -3,6 +3,7 @@ Email utilities
 """
 
 from celery import task
+from kernel.models import *
 import mandrill
 
 
@@ -15,7 +16,7 @@ class Email(object):
     def __init__(self):
         super(Email, self).__init__()
 
-    def sendConfirmationEmail(self, confirmationCode, user):
+    def sendConfirmationEmail(self, confirmationCode, resetCode, user):
         """
         Send Confirmation after Registration
         """
@@ -26,8 +27,8 @@ class Email(object):
          'from_name': 'Bazaarboy',
          'headers': {'Reply-To': 'build@bazaarboy.com'},
          'subject': 'Welcome to Bazaarboy',
-         'global_merge_vars': [{'name': 'user_name', 'content':'Eric'}],
-         'to': [{'email': 'eric@bazaarboy.com', 'name': 'Andy Garvin'}],
+         'global_merge_vars': [{'name': 'user_name', 'content': user.full_name},{'name': 'confirmation_code', 'content': confirmationCode.code}, {'name': 'reset_code', 'content': resetCode.code}],
+         'to': [{'email': user.email, 'name': user.full_name}],
          'track_clicks': True,
          'track_opens': True}
 
@@ -35,11 +36,45 @@ class Email(object):
 
         return result
 
-    def sendResetRequestEmail(self, resetCode):
-        pass
+    def sendResetRequestEmail(self, resetCode, user):
+        """
+        Send Reset Instructions
+        """
+        mandrill_client = mandrill.Mandrill('EJmj_TdbdCy6Xda_9hREKA')
+        template_content = []
+        message = {
+         'from_email': 'build@bazaarboy.com',
+         'from_name': 'Bazaarboy',
+         'headers': {'Reply-To': 'build@bazaarboy.com'},
+         'subject': 'Reset Your Password',
+         'global_merge_vars': [{'name': 'user_name', 'content': user.full_name}, {'name': 'reset_code', 'content': resetCode.code}],
+         'to': [{'email': user.email, 'name': user.full_name}],
+         'track_clicks': True,
+         'track_opens': True}
+
+        result = mandrill_client.messages.send_template(template_name='reset-password', template_content=template_content, message=message, async=False)
+
+        return result
 
     def sendPasswordChangedEmail(self, user):
-        pass
+        """
+        Send Reset Instructions
+        """
+        mandrill_client = mandrill.Mandrill('EJmj_TdbdCy6Xda_9hREKA')
+        template_content = []
+        message = {
+         'from_email': 'build@bazaarboy.com',
+         'from_name': 'Bazaarboy',
+         'headers': {'Reply-To': 'build@bazaarboy.com'},
+         'subject': 'Your Password Has Been Changed',
+         'global_merge_vars': [{'name': 'user_name', 'content': user.full_name}],
+         'to': [{'email': user.email, 'name': user.full_name}],
+         'track_clicks': True,
+         'track_opens': True}
+
+        result = mandrill_client.messages.send_template(template_name='password-changed', template_content=template_content, message=message, async=False)
+
+        return result
 
     def sendPurchaseConfirmationEmail(self, purchase):
         pass

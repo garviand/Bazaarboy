@@ -54,8 +54,9 @@
       $('div.description div.controls a.save').show();
       $('div.description div.editor').addClass('editing');
       $('div.description div.editor div.inner').redactor({
-        buttons: ['formatting', 'bold', 'italic', 'deleted', 'fontcolor', 'alignment', '|', 'unorderedlist', 'orderedlist', 'outdent', 'indent', '|', 'image', 'video', 'link'],
-        imageUpload: rootUrl
+        buttons: ['formatting', 'bold', 'italic', 'deleted', 'fontcolor', 'alignment', '|', 'unorderedlist', 'orderedlist', 'outdent', 'indent', '|', 'image', 'video', 'link', '|', 'html'],
+        boldTag: 'b',
+        italicTag: 'i'
       });
     },
     stopEditingDescription: function(description) {
@@ -80,8 +81,69 @@
         }
       });
     },
+    startEditingSummary: function() {
+      $('div#event div.summary div.body div.text').addClass('hidden');
+      $('div#event div.right div.summary div.editor').removeClass('hidden');
+      $('div#event div.right div.summary div.button').html('Save').addClass('stick');
+    },
+    stopEditingSummary: function() {
+      var summary,
+        _this = this;
+      summary = $('div#event div.summary div.editor textarea').val().trim();
+      this.save({
+        summary: summary
+      }, function(err, event) {
+        var summaryText;
+        if (!err) {
+          summaryText = summary;
+          if (summary.length === 0) {
+            summaryText = '<i>No summary yet.</i>';
+          }
+          $('div#event div.summary div.body div.text').html(summaryText).removeClass('hidden');
+          $('div#event div.summary div.editor textarea').val(summary);
+          $('div#event div.summary div.editor').addClass('hidden');
+          $('div#event div.summary div.button').html('Edit').removeClass('stick');
+        } else {
+          alert(err.message);
+        }
+      });
+    },
+    startEditingTags: function() {
+      $('div#event div.tags div.body div.text').addClass('hidden');
+      $('div#event div.right div.tags div.editor').removeClass('hidden');
+      $('div#event div.right div.tags div.button').html('Save').addClass('stick');
+    },
+    stopEditingTags: function() {
+      var tags,
+        _this = this;
+      tags = $('div#event div.tags div.editor textarea').val().trim();
+      this.save({
+        tags: tags
+      }, function(err, event) {
+        var tag, tagsText, _i, _len;
+        if (!err) {
+          $('div#event div.tags div.editor textarea').val(tags);
+          tagsText = '<i>No tags yet.</i>';
+          if (tags.length !== 0) {
+            tagsText = '';
+            tags = tags.split(',');
+            for (_i = 0, _len = tags.length; _i < _len; _i++) {
+              tag = tags[_i];
+              tagsText += "<div class=\"tag\">" + tag + "</div>";
+            }
+            tagsText += '<div class="clear"></div>';
+          }
+          $('div#event div.tags div.body div.text').html(tagsText).removeClass('hidden');
+          $('div#event div.tags div.editor').addClass('hidden');
+          $('div#event div.tags div.button').html('Edit').removeClass('stick');
+        } else {
+          alert(err.message);
+        }
+      });
+    },
     initEditing: function() {
-      var _this = this;
+      var scope,
+        _this = this;
       this.description = $('div#event div.description div.inner').html();
       $('div#event div.description div.controls a.save').hide().click(function() {
         return _this.saveDescription();
@@ -91,6 +153,21 @@
           _this.stopEditingDescription(_this.description);
         } else {
           _this.startEditingDescription();
+        }
+      });
+      scope = this;
+      $('div#event div.summary div.button').click(function() {
+        if ($(this).hasClass('stick')) {
+          scope.stopEditingSummary();
+        } else {
+          scope.startEditingSummary();
+        }
+      });
+      $('div#event div.tags div.button').click(function() {
+        if ($(this).hasClass('stick')) {
+          scope.stopEditingTags();
+        } else {
+          scope.startEditingTags();
         }
       });
     },

@@ -6,6 +6,7 @@ import json
 from django.test import TestCase
 from django.test.client import Client
 from src.email import Email
+from models import *
 
 import pdb
 
@@ -13,10 +14,27 @@ class EmailTest(TestCase):
     """
     Tests for email utilities
     """
+    fixtures = ['tests.json']
 
     def test_confirmation_email(self):
         email_client = Email()
-        response = email_client.sendConfirmationEmail('WHATEVER')
+        user = User.objects.get(id = 3)
+        user_confirmation = User_confirmation_code.objects.get(user = user)
+        user_reset = User_reset_code.objects.get(user = user)
+        response = email_client.sendConfirmationEmail(user_confirmation, user_reset, user)
+        self.assertEqual(response[0]['status'], 'sent')
+
+    def test_reset_email(self):
+        email_client = Email()
+        user = User.objects.get(id = 3)
+        user_reset = User_reset_code.objects.get(user = user)
+        response = email_client.sendResetRequestEmail(user_reset, user)
+        self.assertEqual(response[0]['status'], 'sent')
+
+    def test_password_changed_email(self):
+        email_client = Email()
+        user = User.objects.get(id = 3)
+        response = email_client.sendPasswordChangedEmail(user)
         self.assertEqual(response[0]['status'], 'sent')
 
 class UserTest(TestCase):
@@ -268,13 +286,8 @@ class EventTests(TestCase):
         params['description'] = ''
         response = json.loads(client.post('/event/edit/', params).content)
         self.assertEqual(response['status'], 'FAIL')
-        # Should not allow blank location
-        params['description'] = 'something' # VALID description
-        params['location'] = ''
-        response = json.loads(client.post('/event/edit/', params).content)
-        self.assertEqual(response['status'], 'FAIL')
         # Should not allow edits to started event
-        params['location'] = 'something' # VALID location
+        params['description'] = 'something' # VALID location
         params['start_time'] = '2013-01-31 23:00:00'
         response = json.loads(client.post('/event/edit/', params).content)
         self.assertEqual(response['status'], 'FAIL')
