@@ -193,6 +193,7 @@ Bazaarboy.profile.index =
                 $('div#profile div.cover div.image div.bounds img').remove()
                 $('div#profile div.cover div.controls a.edit').html('Add Cover')
                 $('div#profile div.cover div.controls a.delete').addClass('hidden')
+                @cover = null
             else
                 alert err.message
             return

@@ -233,6 +233,9 @@ Bazaarboy.event.index =
                 $('div#event div.cover div.image div.bounds img').remove()
                 $('div#event div.cover div.controls a.edit').html('Add Cover')
                 $('div#event div.cover div.controls a.delete').addClass('hidden')
+                $('div#event div.cover div.controls').addClass('stick')
+                $('div#event').removeClass('big_cover').removeClass('with_caption')
+                @cover = null
             else
                 alert err.message
             return
