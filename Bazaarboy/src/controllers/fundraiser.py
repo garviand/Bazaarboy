@@ -191,9 +191,9 @@ def create(request, params, user):
 
 @login_required()
 @validate('POST', ['id'], 
-          ['name', 'description', 'summary', 'tags', 'goal', 'deadline', 
-           'location', 'latitude', 'longitude', 'category', 'is_private', 
-           'token'])
+          ['name', 'description', 'cover', 'caption', 'summary', 'tags', 
+           'goal', 'deadline', 'location', 'latitude', 'longitude', 
+           'category', 'is_private', 'token'])
 def edit(request, params, user):
     """
     Edit an existing fundraiser
@@ -286,6 +286,45 @@ def edit(request, params, user):
             return json_response(response)
         else:
             fundraiser.description = params['description']
+    if params['cover'] is not None:
+        if params['cover'].lower() == 'delete':
+            if fundraiser.cover is not None:
+                oldCover = Image.objects.get(id = fundraiser.cover.id)
+                oldCover.delete()
+                fundraiser.cover = None
+        elif not Image.objects.filter(id = params['cover']).exists():
+            response = {
+                'status':'FAIL',
+                'error':'COVER_IMAGE_NOT_FOUND',
+                'message':'The cover image doesn\'t exist.'
+            }
+            return json_response(response)
+        else:
+            cover = Image.objects.get(id = params['cover'])
+            if fundraiser.cover is not None:
+                oldCover = Image.objects.get(id = fundraiser.cover.id)
+                oldCover.delete()
+            cover.is_archived = True
+            cover.save()
+            fundraiser.cover = cover
+    if params['caption'] is not None:
+        if fundraiser.cover is None:
+            response = {
+                'status':'FAIL',
+                'error':'NO_COVER',
+                'message':'You must set a cover image before adding caption.'
+            }
+            return json_response(response)
+        elif len(params['caption']) > 100:
+            response = {
+                'status':'FAIL',
+                'error':'CAPTION_TOO_LONG',
+                'message':'The caption must be within 100 characters.'
+            }
+            return json_response(response)
+        else:
+            fundraiser.cover.caption = params['caption']
+            fundraiser.cover.save()
     if params['summary'] is not None:
         if len(params['summary']) > 100:
             response = {

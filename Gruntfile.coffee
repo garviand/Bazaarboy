@@ -162,6 +162,15 @@ module.exports = (grunt) ->
                 opts = {}
                 opts[output] = filepath
                 grunt.config(['jade', 'compile', 'files'], opts)
+            else
+                opts = [
+                    expand: true
+                    cwd: 'Bazaarboy/views/templates/'
+                    src: ['**/*.jade']
+                    dest: 'Bazaarboy/templates/'
+                    ext: '.html'
+                ]
+                grunt.config(['jade', 'compile', 'files'], opts)
         else if ext is 'coffee'
             output = filepath.replace(/Bazaarboy\/views/, 'Bazaarboy/static')
                              .replace(/\.coffee/, '.js')

@@ -193,6 +193,7 @@ Bazaarboy.profile.index =
                 $('div#profile div.cover div.image div.bounds img').remove()
                 $('div#profile div.cover div.controls a.edit').html('Add Cover')
                 $('div#profile div.cover div.controls a.delete').addClass('hidden')
+                @cover = null
             else
                 alert err.message
             return
@@ -257,7 +258,7 @@ Bazaarboy.profile.index =
             @saveCoverImage()
             return
         $('div#profile div.cover a.cancel').click () =>
-            original = if @cover? @cover else false
+            original = if @cover? then @cover else false
             @stopEditingCoverImage(original)
             if @uploads.cover?
                 Bazaarboy.post 'file/image/delete/', 

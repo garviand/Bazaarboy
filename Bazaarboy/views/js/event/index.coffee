@@ -1,5 +1,28 @@
 Bazaarboy.event.index = 
     description: undefined
+    map: undefined
+    cover: undefined
+    uploads:
+        cover: undefined
+    coverEditInProgress: false
+    drawMapWithCenter: (latitude, longitude) ->
+        center = new google.maps.LatLng(latitude + 0.0015, longitude)
+        mapOpts = 
+            center: center
+            zoom: 14
+            mapTypeId: google.maps.MapTypeId.ROADMAP
+            draggable: false
+            mapTypeControl: false
+            overviewMapControl: false
+            streetViewControl: false
+            scaleControl: false
+            zoomControl: false
+        canvas = document.getElementById('map_canvas')
+        @map = new google.maps.Map(canvas, mapOpts)
+        markerPos = new google.maps.LatLng(latitude, longitude)
+        marker = new google.maps.Marker({position: markerPos})
+        marker.setMap @map
+        return
     initTransaction: () ->
         # Account control
         $('div#rsvp form.login').submit (event) ->
@@ -43,6 +66,233 @@ Bazaarboy.event.index =
                     error: response.error
                     message: response.message
                 return cb err, null
+            return
+        return
+    startEditingTitle: () ->
+        $('div#event div.title div.text').addClass('hidden')
+        $('div#event div.title div.editor').removeClass('hidden')
+        title = $('div#event div.title div.editor input').val()
+        $('div#event div.title div.editor input').focus().val('').val(title)
+        $('div#event div.title div.button')
+            .html('Save')
+            .addClass('stick')
+        return
+    stopEditingTitle: () ->
+        title = $('div#event div.title div.editor input').val()
+        @save {name: title}, (err, event) =>
+            unless err
+                $('div#event div.title div.text')
+                    .html(title)
+                    .removeClass('hidden')
+                $('div#event div.title div.editor input').val(title)
+                $('div#event div.title div.editor').addClass('hidden')
+                $('div#event div.title div.button')
+                    .html('Edit')
+                    .removeClass('stick')
+            else
+                alert err.message
+            return
+        return
+    prepareUploadedCoverImage: (coverUrl) ->
+        if not $('body').hasClass('collapsed')
+            Bazaarboy.switchCollapsedStates () =>
+                @prepareUploadedCoverImage(coverUrl)
+                return
+            return
+        $('div#event').addClass('big_cover').addClass('with_caption')
+        scope = this
+        $('<img>')
+            .attr('src', mediaUrl + coverUrl)
+            .addClass('editing')
+            .load () ->
+                scope.uploads.cover.width = @width
+                scope.uploads.cover.height = @height
+                # Adjust the size of the image to fill the frame
+                frame = $('div#event div.cover div.image')
+                frameWidth = $(frame).width()
+                frameHeight = $(frame).height()
+                if @width / @height > frameWidth / frameHeight
+                    $(this).height(frameHeight)
+                    $(this).width(@width / @height * frameHeight)
+                else
+                    $(this).width(frameWidth)
+                    $(this).height(@height / @width * frameWidth)
+                $(frame).find('div.bounds').children().remove()
+                $(frame).find('div.bounds').append(this)
+                scope.startEditingCoverImage()
+                return
+        return
+    startEditingCoverImage: () ->
+        @coverEditInProgress = true
+        # Set up the draggable boundaries
+        frame = $('div#event div.cover div.image')
+        coverImage = $('div#event div.cover div.image img')
+                         .css
+                            top: 0
+                            left: 0
+        width = coverImage.width() * 2 - frame.width()
+        height = coverImage.height() * 2 - frame.height()
+        left = 0 - (width - frame.width()) / 2
+        top = 0 - (height - frame.height()) / 2
+        bounds = $(frame).find('div.bounds')
+                         .css
+                            width: width
+                            height: height
+                            top: top
+                            left: left
+        $(coverImage).draggable 
+            containment: bounds
+            scroll: false
+        # Adjust the controls
+        $('div#event div.cover div.controls span').removeClass('hidden')
+        $('div#event div.cover div.controls a.edit')
+            .addClass('hidden')
+            .html('Edit Cover')
+            $('div#event div.cover div.controls a.delete').addClass('hidden')
+        $('div#event div.cover div.controls a.save').removeClass('hidden')
+        $('div#event div.cover div.controls a.cancel').removeClass('hidden')
+        # Create the expose effect
+        maskZ = parseInt($('div#wrapper_overlay').css('z-index'))
+        $('div#event div.cover').css
+            'z-index': maskZ + 1
+        $('div#event > div.title').css
+            'z-index': maskZ + parseInt($('div#event > div.title')
+                                        .css('z-index'))
+        $('div#event div.frame div.right div.info')
+            .not('div.action').not('div.details').not('div.facebook')
+            .css('z-index', maskZ - 1)
+        $('div#wrapper_overlay').fadeIn(200)
+        $('div#event div.cover div.controls').addClass('stick')
+        return
+    stopEditingCoverImage: (cover=null) ->
+        # Destroy the image and restore the bounds
+        $('div#event div.cover div.image div.bounds img').remove()
+        $('div#event div.cover div.image div.bounds')
+            .css
+                width: ''
+                height: ''
+                top: ''
+                left: ''
+        # Replace the cover
+        if cover?
+            if cover
+                $('div#event div.cover div.image div.bounds').append(cover)
+            else
+                $('div#event').removeClass('with_caption').removeClass('big_cover')
+                $('div#event div.cover div.controls').addClass('stick')
+                $('div#event div.cover div.controls a.edit')
+                    .html('Add Cover')
+        # Restore z-indices
+        $('div#event div.cover').css 'z-index', ''
+        $('div#event > div.title').css 'z-index', ''
+        $('div#event div.frame div.right div.info')
+            .not('div.action').not('div.details').not('div.facebook')
+            .css('z-index', '')
+        $('div#wrapper_overlay').fadeOut(200)
+        # Adjust the controls
+        $('div#event div.cover div.controls span').addClass('hidden')
+        $('div#event div.cover div.controls a.edit').removeClass('hidden')
+        $('div#event div.cover div.controls a.delete').removeClass('hidden')
+        $('div#event div.cover div.controls a.save').addClass('hidden')
+        $('div#event div.cover div.controls a.cancel').addClass('hidden')
+        $('div#event div.cover div.controls').removeClass('stick')
+        @coverEditInProgress = false
+        return
+    saveCoverImage: () ->
+        # Get the viewport of the image
+        frame = $('div#event div.cover div.image')
+        bounds = $('div#event div.cover div.image div.bounds')
+        coverImage = $('div#event div.cover div.image div.bounds img')
+        x = 0
+        y = 0
+        width = 0
+        height = 0
+        if coverImage.width() > frame.width()
+            scale = @uploads.cover.height / frame.height()
+            x = (Math.abs(parseInt($(bounds).css('left'))) - 
+                parseInt(coverImage.css('left'))) * scale
+            y = 0
+            width = frame.width() * scale
+            height = @uploads.cover.height
+        else
+            scale = @uploads.cover.width / frame.width()
+            x = 0
+            y = (Math.abs(parseInt($(bounds).css('top'))) - 
+                parseInt(coverImage.css('top'))) * scale
+            width = @uploads.cover.width
+            height = frame.height() * scale
+        x = parseInt(x)
+        y = parseInt(y)
+        width = parseInt(width)
+        height = parseInt(height)
+        viewport = "#{x},#{y},#{width},#{height}"
+        console.log viewport
+        Bazaarboy.post 'file/image/crop/', 
+            id: @uploads.cover.pk
+            viewport: viewport
+        , (response) =>
+            if response.status is 'OK'
+                @save {cover: response.image.pk}, (err, event) =>
+                    unless err
+                        @cover = response.image
+                        @cover.width = width
+                        @cover.height = height
+                        @uploads.cover = null
+                        scope = this
+                        $('<img>')
+                            .attr('src', mediaUrl + response.image.source)
+                            .addClass('normal')
+                            .load () ->
+                                scope.stopEditingCoverImage(this)
+                                return
+                    else
+                        alert err.message
+                    return
+            else
+                alert response.message
+            return
+        return
+    deleteCoverImage: () ->
+        @save {cover: 'delete'}, (err, event) =>
+            unless err
+                $('div#event div.cover div.image div.bounds img').remove()
+                $('div#event div.cover div.controls a.edit').html('Add Cover')
+                $('div#event div.cover div.controls a.delete').addClass('hidden')
+                $('div#event div.cover div.controls').addClass('stick')
+                $('div#event').removeClass('big_cover').removeClass('with_caption')
+                @cover = null
+            else
+                alert err.message
+            return
+    startEditingCoverCaption: () ->
+        $('div#event div.cover div.caption div.text').addClass('hidden')
+        $('div#event div.cover div.caption div.editor').removeClass('hidden')
+        caption = $('div#event div.cover div.caption div.editor input').val()
+        $('div#event div.cover div.caption div.editor input')
+            .focus().val('').val(caption)
+        $('div#event div.cover div.caption div.button')
+            .html('Save')
+            .addClass('stick')
+        return
+    stopEditingCoverCaption: () ->
+        caption = $('div#event div.cover div.caption div.editor input').val()
+        @save {caption: caption}, (err, event) =>
+            unless err
+                captionText = caption
+                if caption.length is 0
+                    captionText = '<i>No caption yet.</i>'
+                $('div#event div.cover div.caption div.text')
+                    .html(captionText)
+                    .removeClass('hidden')
+                $('div#event div.cover div.caption div.editor input')
+                    .val(caption)
+                $('div#event div.cover div.caption div.editor')
+                    .addClass('hidden')
+                $('div#event div.cover div.caption div.button')
+                    .html('Edit')
+                    .removeClass('stick')
+            else
+                alert err.message
             return
         return
     startEditingDescription: () ->
@@ -134,6 +384,64 @@ Bazaarboy.event.index =
             return
         return
     initEditing: () ->
+        scope = this
+        # Edit title
+        $('div#event div.title div.button').click () ->
+            if $(this).hasClass('stick')
+                scope.stopEditingTitle()
+            else
+                scope.startEditingTitle()
+            return
+        return
+        # Save original images
+        @cover = $('div#event div.cover div.image div.bounds img')
+        if @cover.length > 0
+            @cover = @cover.clone()
+        # Image uploads
+        $('div#event div.cover a.edit').click () ->
+            $('div#event div.cover input[name=image_file]').click()
+            return
+        $('div#event div.cover a.delete').click () =>
+            if confirm('Are you sure you want to delete the cover image?')
+                @deleteCoverImage()
+            return
+        $('div#event div.cover a.save').click () =>
+            @saveCoverImage()
+            return
+        $('div#event div.cover a.cancel').click () =>
+            original = if @cover? then @cover else false
+            @stopEditingCoverImage(original)
+            if @uploads.cover?
+                Bazaarboy.post 'file/image/delete/', 
+                    id: @uploads.cover.pk
+                , (response) =>
+                    @uploads.cover = null
+            return
+        $('div#event div.cover input[name=image_file]').fileupload 
+            url: rootUrl + 'file/image/upload/'
+            type: 'POST'
+            add: (event, data) =>
+                data.submit()
+                return
+            done: (event, data) =>
+                response = jQuery.parseJSON data.result
+                if response.status is 'OK'
+                    # Attempt to delete the last uploaded image
+                    if @uploads.cover?
+                        Bazaarboy.post 'file/image/delete/', 
+                            id: @uploads.cover.pk
+                    @uploads.cover = response.image
+                    @prepareUploadedCoverImage(response.image.source)
+                else
+                    alert response.message
+                return
+        # Edit cover caption
+        $('div#event div.cover div.caption div.button').click () ->
+            if $(this).hasClass('stick')
+                scope.stopEditingCoverCaption()
+            else
+                scope.startEditingCoverCaption()
+            return
         # Edit description
         @description = $('div#event div.description div.inner').html()
         $('div#event div.description div.controls a.save').hide().click () =>
@@ -145,7 +453,6 @@ Bazaarboy.event.index =
                 @startEditingDescription()
             return
         # Edit summary
-        scope = this
         $('div#event div.summary div.button').click () ->
             if $(this).hasClass('stick')
                 scope.stopEditingSummary()
@@ -168,11 +475,22 @@ Bazaarboy.event.index =
                 ['width', '750px', '876px']
                 ['left', '-63px', '-96px']
             ]]
+            ['div#event div.cover div.image', [['left', '-126px', '0']]]
             ['div#event > div.title', [
                 ['width', '750px', '876px']
                 ['left', '-63px', '-96px']
             ]]
-            ['div#event > div.title div.text', [['left', '63px', '96px']]]
+            ['div#event.big_cover div.cover div.caption', [
+                ['width', '750px', '876px']
+            ]]
+            ['div#event.big_cover div.cover div.caption div.inner', [
+                ['margin-left', '63px', '96px']
+            ]]
+            ['div#event > div.title', [
+                ['width', '750px', '876px']
+                ['left', '-63px', '-96px']
+            ]]
+            ['div#event > div.title div.inner', [['left', '63px', '96px']]]
         ]
         $.merge(Bazaarboy.collapseStates, collapseStates)
         # Overlay
@@ -180,10 +498,18 @@ Bazaarboy.event.index =
             $('div#wrapper_overlay').fadeIn(200)
             $('div.event_overlay_canvas').fadeIn(200)
             return
-        $('div#wrapper_overlay').click () ->
-            $('div#wrapper_overlay').fadeOut(200)
-            $('div.event_overlay_canvas').fadeOut(200)
+        $('div#wrapper_overlay').click () =>
+            if not @coverEditInProgress
+                $('div#wrapper_overlay').fadeOut(200)
+                $('div.event_overlay_canvas').fadeOut(200)
             return
+        # Maps
+        ###
+        latitude = parseFloat $('div#event div.details div.map').attr('data-latitude')
+        longitude = parseFloat $('div#event div.details div.map').attr('data-longitude')
+        if latitude isnt NaN and longitude isnt NaN
+            @drawMapWithCenter latitude, longitude
+        ###
         # Further initialization
         if editable then @initEditing() else @initTransaction()
         return
