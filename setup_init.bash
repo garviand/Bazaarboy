@@ -45,7 +45,7 @@ sudo ln -s /usr/lib/`uname -i`-linux-gnu/libfreetype.so /usr/lib/
 sudo ln -s /usr/lib/`uname -i`-linux-gnu/libjpeg.so /usr/lib/
 sudo ln -s /usr/lib/`uname -i`-linux-gnu/libz.so /usr/lib/
 
-# Others
+# Redis
 echo -e "\nInstalling redis\n"
 sudo apt-get install redis-server
 
