@@ -37,6 +37,12 @@ class EmailTest(TestCase):
         response = email_client.sendPasswordChangedEmail(user)
         self.assertEqual(response[0]['status'], 'sent')
 
+    def test_purchase_confirmation_email(self):
+        email_client = Email()
+        purchase = Purchase.objects.get(id = 1)
+        response = email_client.sendPurchaseConfirmationEmail(purchase)
+        self.assertEqual(response[0]['status'], 'sent')
+
 class UserTest(TestCase):
     """
     Tests for the user controller
