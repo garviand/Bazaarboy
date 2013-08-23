@@ -61,8 +61,6 @@ def set_env(env='development'):
     if env == 'development':
         os.environ['BBOY_ENV'] = 'development'
         os.environ['BBOY_DEBUG'] = 'true'
-        os.environ['BBOY_MEDIA_URL'] = '/static/media/'
-        os.environ['BBOY_STATIC_URL'] = '/static/'
     elif env == 'staging':
         os.environ['BBOY_ENV'] = 'staging'
         os.environ['BBOY_DEBUG'] = 'true'
