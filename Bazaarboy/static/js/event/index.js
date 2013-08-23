@@ -400,7 +400,6 @@
     initEditing: function() {
       var scope,
         _this = this;
-      console.log(this);
       scope = this;
       $('div#event div.title div.button').click(function() {
         if ($(this).hasClass('stick')) {
@@ -409,13 +408,11 @@
           scope.startEditingTitle();
         }
       });
-      return;
       this.cover = $('div#event div.cover div.image div.bounds img');
       if (this.cover.length > 0) {
         this.cover = this.cover.clone();
       }
       $('div#event div.cover a.edit').click(function() {
-        console.log('Clicked');
         $('div#event div.cover input[name=image_file]').click();
       });
       $('div#event div.cover a.delete').click(function() {

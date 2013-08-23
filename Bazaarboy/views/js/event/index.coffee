@@ -384,7 +384,6 @@ Bazaarboy.event.index =
             return
         return
     initEditing: () ->
-        console.log this
         scope = this
         # Edit title
         $('div#event div.title div.button').click () ->
@@ -393,14 +392,12 @@ Bazaarboy.event.index =
             else
                 scope.startEditingTitle()
             return
-        return
         # Save original images
         @cover = $('div#event div.cover div.image div.bounds img')
         if @cover.length > 0
             @cover = @cover.clone()
         # Image uploads
         $('div#event div.cover a.edit').click () ->
-            console.log 'Clicked'
             $('div#event div.cover input[name=image_file]').click()
             return
         $('div#event div.cover a.delete').click () =>
