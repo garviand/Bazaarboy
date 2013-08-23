@@ -2,7 +2,7 @@
 Controller for files
 """
 
-import PIL
+import PIL.Image
 import uuid
 from StringIO import StringIO
 from django.core.files.uploadedfile import InMemoryUploadedFile
