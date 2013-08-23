@@ -1,0 +1,1270 @@
+/*! normalize.css v2.1.2 | MIT License | git.io/normalize */
+
+/* ==========================================================================
+   HTML5 display definitions
+   ========================================================================== */
+
+/**
+ * Correct `block` display not defined in IE 8/9.
+ */
+
+article,
+aside,
+details,
+figcaption,
+figure,
+footer,
+header,
+hgroup,
+main,
+nav,
+section,
+summary {
+    display: block;
+}
+
+/**
+ * Correct `inline-block` display not defined in IE 8/9.
+ */
+
+audio,
+canvas,
+video {
+    display: inline-block;
+}
+
+/**
+ * Prevent modern browsers from displaying `audio` without controls.
+ * Remove excess height in iOS 5 devices.
+ */
+
+audio:not([controls]) {
+    display: none;
+    height: 0;
+}
+
+/**
+ * Address styling not present in IE 8/9.
+ */
+
+[hidden] {
+    display: none;
+}
+
+/* ==========================================================================
+   Base
+   ========================================================================== */
+
+/**
+ * 1. Set default font family to sans-serif.
+ * 2. Prevent iOS text size adjust after orientation change, without disabling
+ *    user zoom.
+ */
+
+html {
+    font-family: sans-serif; /* 1 */
+    -ms-text-size-adjust: 100%; /* 2 */
+    -webkit-text-size-adjust: 100%; /* 2 */
+}
+
+/**
+ * Remove default margin.
+ */
+
+body {
+    margin: 0;
+}
+
+/* ==========================================================================
+   Links
+   ========================================================================== */
+
+/**
+ * Address `outline` inconsistency between Chrome and other browsers.
+ */
+
+a:focus {
+    outline: thin dotted;
+}
+
+/**
+ * Improve readability when focused and also mouse hovered in all browsers.
+ */
+
+a:active,
+a:hover {
+    outline: 0;
+}
+
+/* ==========================================================================
+   Typography
+   ========================================================================== */
+
+/**
+ * Address variable `h1` font-size and margin within `section` and `article`
+ * contexts in Firefox 4+, Safari 5, and Chrome.
+ */
+
+h1 {
+    font-size: 2em;
+    margin: 0.67em 0;
+}
+
+/**
+ * Address styling not present in IE 8/9, Safari 5, and Chrome.
+ */
+
+abbr[title] {
+    border-bottom: 1px dotted;
+}
+
+/**
+ * Address style set to `bolder` in Firefox 4+, Safari 5, and Chrome.
+ */
+
+b,
+strong {
+    font-weight: bold;
+}
+
+/**
+ * Address styling not present in Safari 5 and Chrome.
+ */
+
+dfn {
+    font-style: italic;
+}
+
+/**
+ * Address differences between Firefox and other browsers.
+ */
+
+hr {
+    -moz-box-sizing: content-box;
+    box-sizing: content-box;
+    height: 0;
+}
+
+/**
+ * Address styling not present in IE 8/9.
+ */
+
+mark {
+    background: #ff0;
+    color: #000;
+}
+
+/**
+ * Correct font family set oddly in Safari 5 and Chrome.
+ */
+
+code,
+kbd,
+pre,
+samp {
+    font-family: monospace, serif;
+    font-size: 1em;
+}
+
+/**
+ * Improve readability of pre-formatted text in all browsers.
+ */
+
+pre {
+    white-space: pre-wrap;
+}
+
+/**
+ * Set consistent quote types.
+ */
+
+q {
+    quotes: "\201C" "\201D" "\2018" "\2019";
+}
+
+/**
+ * Address inconsistent and variable font size in all browsers.
+ */
+
+small {
+    font-size: 80%;
+}
+
+/**
+ * Prevent `sub` and `sup` affecting `line-height` in all browsers.
+ */
+
+sub,
+sup {
+    font-size: 75%;
+    line-height: 0;
+    position: relative;
+    vertical-align: baseline;
+}
+
+sup {
+    top: -0.5em;
+}
+
+sub {
+    bottom: -0.25em;
+}
+
+/* ==========================================================================
+   Embedded content
+   ========================================================================== */
+
+/**
+ * Remove border when inside `a` element in IE 8/9.
+ */
+
+img {
+    border: 0;
+}
+
+/**
+ * Correct overflow displayed oddly in IE 9.
+ */
+
+svg:not(:root) {
+    overflow: hidden;
+}
+
+/* ==========================================================================
+   Figures
+   ========================================================================== */
+
+/**
+ * Address margin not present in IE 8/9 and Safari 5.
+ */
+
+figure {
+    margin: 0;
+}
+
+/* ==========================================================================
+   Forms
+   ========================================================================== */
+
+/**
+ * Define consistent border, margin, and padding.
+ */
+
+fieldset {
+    border: 1px solid #c0c0c0;
+    margin: 0 2px;
+    padding: 0.35em 0.625em 0.75em;
+}
+
+/**
+ * 1. Correct `color` not being inherited in IE 8/9.
+ * 2. Remove padding so people aren't caught out if they zero out fieldsets.
+ */
+
+legend {
+    border: 0; /* 1 */
+    padding: 0; /* 2 */
+}
+
+/**
+ * 1. Correct font family not being inherited in all browsers.
+ * 2. Correct font size not being inherited in all browsers.
+ * 3. Address margins set differently in Firefox 4+, Safari 5, and Chrome.
+ */
+
+button,
+input,
+select,
+textarea {
+    font-family: inherit; /* 1 */
+    font-size: 100%; /* 2 */
+    margin: 0; /* 3 */
+}
+
+/**
+ * Address Firefox 4+ setting `line-height` on `input` using `!important` in
+ * the UA stylesheet.
+ */
+
+button,
+input {
+    line-height: normal;
+}
+
+/**
+ * Address inconsistent `text-transform` inheritance for `button` and `select`.
+ * All other form control elements do not inherit `text-transform` values.
+ * Correct `button` style inheritance in Chrome, Safari 5+, and IE 8+.
+ * Correct `select` style inheritance in Firefox 4+ and Opera.
+ */
+
+button,
+select {
+    text-transform: none;
+}
+
+/**
+ * 1. Avoid the WebKit bug in Android 4.0.* where (2) destroys native `audio`
+ *    and `video` controls.
+ * 2. Correct inability to style clickable `input` types in iOS.
+ * 3. Improve usability and consistency of cursor style between image-type
+ *    `input` and others.
+ */
+
+button,
+html input[type="button"], /* 1 */
+input[type="reset"],
+input[type="submit"] {
+    -webkit-appearance: button; /* 2 */
+    cursor: pointer; /* 3 */
+}
+
+/**
+ * Re-set default cursor for disabled elements.
+ */
+
+button[disabled],
+html input[disabled] {
+    cursor: default;
+}
+
+/**
+ * 1. Address box sizing set to `content-box` in IE 8/9.
+ * 2. Remove excess padding in IE 8/9.
+ */
+
+input[type="checkbox"],
+input[type="radio"] {
+    box-sizing: border-box; /* 1 */
+    padding: 0; /* 2 */
+}
+
+/**
+ * 1. Address `appearance` set to `searchfield` in Safari 5 and Chrome.
+ * 2. Address `box-sizing` set to `border-box` in Safari 5 and Chrome
+ *    (include `-moz` to future-proof).
+ */
+
+input[type="search"] {
+    -webkit-appearance: textfield; /* 1 */
+    -moz-box-sizing: content-box;
+    -webkit-box-sizing: content-box; /* 2 */
+    box-sizing: content-box;
+}
+
+/**
+ * Remove inner padding and search cancel button in Safari 5 and Chrome
+ * on OS X.
+ */
+
+input[type="search"]::-webkit-search-cancel-button,
+input[type="search"]::-webkit-search-decoration {
+    -webkit-appearance: none;
+}
+
+/**
+ * Remove inner padding and border in Firefox 4+.
+ */
+
+button::-moz-focus-inner,
+input::-moz-focus-inner {
+    border: 0;
+    padding: 0;
+}
+
+/**
+ * 1. Remove default vertical scrollbar in IE 8/9.
+ * 2. Improve readability and alignment in all browsers.
+ */
+
+textarea {
+    overflow: auto; /* 1 */
+    vertical-align: top; /* 2 */
+}
+
+/* ==========================================================================
+   Tables
+   ========================================================================== */
+
+/**
+ * Remove most spacing between table cells.
+ */
+
+table {
+    border-collapse: collapse;
+    border-spacing: 0;
+}
+
+.hidden {
+  display: none;
+}
+input[type=file].hidden {
+  display: block;
+  width: 0;
+  height: 0;
+}
+.stick {
+  display: block !important;
+}
+.left {
+  float: left;
+}
+.right {
+  float: right;
+}
+.clear {
+  clear: both;
+}
+.center {
+  display: block;
+  margin: auto;
+}
+body {
+  font-family: "pt-sans", Helvetica, Arial, sans-serif;
+  font-weight: 400;
+  font-style: normal;
+  font-size: 16px;
+  color: #000000;
+}
+b {
+  font-weight: 700;
+}
+i {
+  font-style: italic;
+}
+div#wrapper_top {
+  position: relative;
+  width: 936px;
+  height: 44px;
+  background-color: #FFF;
+  display: block;
+  margin: auto;
+}
+div#wrapper_top div.logo {
+  width: 186px;
+  height: 44px;
+  background: #f7931e;
+  float: left;
+}
+body.collapsed div#wrapper_top div.logo {
+  width: 60px;
+}
+div#wrapper_top div.search {
+  width: 750px;
+  height: 44px;
+  float: left;
+}
+body.collapsed div#wrapper_top div.search {
+  width: 876px;
+}
+div#wrapper_main {
+  position: relative;
+  width: 936px;
+  background-color: #f0f5f5;
+  display: block;
+  margin: auto;
+}
+div#wrapper_sidebar {
+  position: relative;
+  width: 186px;
+  float: left;
+}
+body.collapsed div#wrapper_sidebar {
+  width: 60px;
+}
+div#wrapper_content {
+  position: relative;
+  width: 750px;
+  background-color: #FFF;
+  float: right;
+}
+body.collapsed div#wrapper_content {
+  width: 876px;
+}
+div#wrapper_foot {
+  position: relative;
+  width: 936px;
+  display: block;
+  margin: auto;
+}
+div#wrapper_overlay {
+  display: none;
+  position: fixed;
+  width: 100%;
+  height: 100%;
+  top: 0;
+  left: 0;
+  z-index: 10;
+  background-color: rgba(0, 0, 0, 0.7);
+  cursor: pointer;
+}
+.content_divided {
+  position: relative;
+  width: 624px;
+  margin-left: 63px;
+}
+body.collapsed .content_divided {
+  margin-left: 96px;
+}
+.content_divided div.frame {
+  width: 624px;
+}
+.content_divided div.frame div.left {
+  width: 408px;
+}
+.content_divided div.frame div.right {
+  width: 192px;
+}
+div#profile div.cover {
+  position: absolute;
+  width: 750px;
+  height: 230px;
+  top: 0;
+  left: -63px;
+  overflow: hidden;
+}
+body.collapsed div#profile div.cover {
+  width: 876px;
+  left: -96px;
+}
+body.collapsed div#profile div.cover div.image {
+  left: 0;
+}
+body.collapsed div#profile div.cover div.controls {
+  left: 96px;
+}
+div#profile div.cover:hover div.controls {
+  display: block;
+}
+div#profile div.cover div.image {
+  position: relative;
+  width: 876px;
+  height: 100%;
+  top: 0;
+  left: -126px;
+  overflow: hidden;
+}
+div#profile div.cover div.image div.bounds {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  top: 0;
+  left: 0;
+}
+div#profile div.cover div.image div.bounds img.normal {
+  width: 100%;
+  height: 100%;
+}
+div#profile div.cover div.image div.bounds img.editing {
+  cursor: pointer;
+}
+div#profile div.cover div.controls {
+  display: none;
+  position: absolute;
+  top: 60px;
+  left: 63px;
+  background: #FFF;
+}
+div#profile > div.title {
+  position: absolute;
+  width: 750px;
+  height: 48px;
+  left: -63px;
+  z-index: 5;
+  background-color: rgba(0, 0, 0, 0.6);
+}
+body.collapsed div#profile > div.title {
+  width: 876px;
+  left: -96px;
+}
+body.collapsed div#profile > div.title div.text {
+  left: 96px;
+}
+div#profile > div.title div.controls {
+  position: absolute;
+}
+div#profile > div.title div.text {
+  position: absolute;
+  width: 408px;
+  height: 20px;
+  left: 63px;
+  padding: 14px 0;
+  color: #FFF;
+  font-size: 20px;
+  font-weight: 700;
+  line-height: 20px;
+}
+div#profile div.tabs {
+  position: absolute;
+  width: 750px;
+  height: 30px;
+  top: 230px;
+  left: -63px;
+  z-index: 5;
+  background-color: rgba(0, 0, 0, 0.6);
+}
+body.collapsed div#profile div.tabs {
+  width: 876px;
+  left: -96px;
+}
+body.collapsed div#profile div.tabs div.inner {
+  left: 96px;
+}
+div#profile div.tabs div.inner {
+  position: absolute;
+  width: 624px;
+  height: 100%;
+  left: 63px;
+}
+div#profile div.tabs div.inner div.tab {
+  height: 14px;
+  padding: 8px;
+  color: #FFF;
+  font-size: 14px;
+  line-height: 14px;
+  cursor: pointer;
+  float: left;
+}
+div#profile div.tabs div.inner div.tab:hover {
+  background-color: #999;
+}
+div#profile div.tabs div.inner div.tab.show {
+  background-color: #000;
+}
+div#profile div.frame div.left div.placeholder {
+  width: 408px;
+  height: 260px;
+}
+div#profile div.frame div.left div.wrapper {
+  width: 408px;
+}
+div#profile div.frame div.left div.wrapper > div {
+  display: none;
+  width: 408px;
+}
+div#profile div.frame div.left div.wrapper > div.show {
+  display: block;
+}
+div#profile div.frame div.left div.wrapper div.overview {
+  padding: 20px 0;
+}
+div#profile div.frame div.left div.wrapper div.overview div.info {
+  width: 100%;
+  height: 120px;
+  padding: 10px 0;
+  background-color: #f0f5f5;
+}
+div#profile div.frame div.left div.wrapper div.overview div.description {
+  width: 100%;
+  margin-top: 20px;
+}
+div#profile div.frame div.left div.wrapper div.overview div.description div.editor {
+  width: 100%;
+}
+div#profile div.frame div.left div.wrapper div.overview div.description div.editor.editing {
+  width: 430px;
+  margin-left: -11px;
+}
+div#profile div.frame div.left div.wrapper div.overview div.description div.editor.editing div.inner {
+  width: 398px;
+  padding: 15px;
+  background-color: none;
+  display: block;
+  margin: auto;
+}
+div#profile div.frame div.left div.wrapper div.overview div.description div.editor div.inner {
+  width: 398px;
+  padding: 10px 5px;
+  background-color: #f0f5f5;
+}
+div#profile div.frame div.left div.wrapper div.overview div.description div.editor img {
+  max-width: 408px;
+}
+div#profile div.frame div.left div.wrapper div.overview div.description div.editor iframe {
+  max-width: 408px;
+}
+div#profile div.frame div.right div.image {
+  position: relative;
+  width: 192px;
+  height: 144px;
+  margin-top: 14px;
+  z-index: 20;
+  background-color: #f0f5f5;
+}
+div#profile div.frame div.right div.action {
+  position: relative;
+  width: 192px;
+  height: 18px;
+  padding: 15px 0;
+  z-index: 20;
+  background-color: #4795f2;
+  color: #FFF;
+  line-height: 18px;
+  font-size: 18px;
+  text-align: center;
+  cursor: pointer;
+}
+div.event_base.big_cover div.cover {
+  height: 320px;
+}
+div.event_base.big_cover div.cover:hover div.controls {
+  display: block;
+}
+div.event_base.big_cover div.cover div.image {
+  left: 0;
+  height: 320px;
+}
+div.event_base.big_cover div.cover div.caption {
+  height: 30px;
+}
+div.event_base.big_cover div.frame div.left div.description {
+  margin-top: 370px;
+}
+div.event_base.with_caption div.cover {
+  height: 350px;
+}
+body.collapsed div.event_base div.cover {
+  width: 876px;
+  left: -96px;
+}
+body.collapsed div.event_base div.cover div.caption div.inner {
+  margin-left: 96px;
+}
+body.collapsed div.event_base div.cover div.controls {
+  left: 96px;
+}
+div.event_base div.cover {
+  position: absolute;
+  width: 750px;
+  height: 88px;
+  left: -63px;
+  top: 0;
+  overflow: hidden;
+}
+div.event_base div.cover div.image {
+  position: relative;
+  width: 876px;
+  height: 0;
+  top: 0;
+  left: -126px;
+  overflow: hidden;
+}
+div.event_base div.cover div.image div.bounds {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  top: 0;
+  left: 0;
+}
+div.event_base div.cover div.image div.bounds img.normal {
+  width: 100%;
+  height: 100%;
+}
+div.event_base div.cover div.image div.bounds img.editing {
+  cursor: pointer;
+}
+div.event_base div.cover div.caption {
+  position: relative;
+  width: 100%;
+  height: 0;
+  background: #BBB;
+  overflow: hidden;
+}
+div.event_base div.cover div.caption:hover div.inner div.button {
+  display: block;
+}
+div.event_base div.cover div.caption div.inner {
+  position: relative;
+  width: 624px;
+  height: 100%;
+  margin-left: 63px;
+}
+div.event_base div.cover div.caption div.inner div.text {
+  width: 100%;
+  height: 16px;
+  padding-top: 7px;
+  padding-bottom: 8px;
+  font-size: 15px;
+  line-height: 15px;
+}
+div.event_base div.cover div.caption div.inner div.button {
+  display: none;
+  position: absolute;
+  width: 40px;
+  height: 80%;
+  left: -45px;
+  top: 10%;
+  background-color: #FFF;
+  text-align: center;
+  cursor: pointer;
+}
+div.event_base div.cover div.caption div.inner div.editor {
+  width: 100%;
+  height: 100%;
+}
+div.event_base div.cover div.caption div.inner div.editor input {
+  width: 624px;
+  height: 15px;
+  padding: 0;
+  padding-top: 7px;
+  padding-bottom: 8px;
+  border: none;
+  outline: none;
+  background: none;
+  font-size: 15px;
+  line-height: 15px;
+}
+div.event_base div.cover div.caption div.inner div.editor input .placeholder {
+  color: rgba(0, 0, 0, 0.6);
+  font-size: 16px;
+  font-weight: 400;
+}
+div.event_base div.cover div.caption div.inner div.editor input::-webkit-input-placeholder {
+  color: rgba(0, 0, 0, 0.6);
+  font-size: 16px;
+  font-weight: 400;
+}
+div.event_base div.cover div.caption div.inner div.editor input:-moz-placeholder {
+  color: rgba(0, 0, 0, 0.6);
+  font-size: 16px;
+  font-weight: 400;
+}
+div.event_base div.cover div.caption div.inner div.editor input::-moz-placeholder {
+  color: rgba(0, 0, 0, 0.6);
+  font-size: 16px;
+  font-weight: 400;
+}
+div.event_base div.cover div.caption div.inner div.editor input:-ms-input-placeholder {
+  color: rgba(0, 0, 0, 0.6);
+  font-size: 16px;
+  font-weight: 400;
+}
+div.event_base div.cover div.controls {
+  display: none;
+  position: absolute;
+  top: 60px;
+  left: 63px;
+  background: #FFF;
+}
+div.event_base > div.title {
+  position: absolute;
+  width: 750px;
+  height: 48px;
+  left: -63px;
+  z-index: 5;
+  background-color: rgba(0, 0, 0, 0.6);
+}
+div.event_base > div.title:hover div.inner div.button {
+  display: block;
+}
+body.collapsed div.event_base > div.title {
+  width: 876px;
+  left: -96px;
+}
+body.collapsed div.event_base > div.title div.inner {
+  left: 96px;
+}
+div.event_base > div.title div.inner {
+  position: absolute;
+  width: 624px;
+  height: 20px;
+  left: 63px;
+  padding: 14px 0;
+}
+div.event_base > div.title div.inner .title_text {
+  color: #FFF;
+  font-size: 20px;
+  font-weight: 700;
+  line-height: 20px;
+}
+div.event_base > div.title div.inner div.text {
+  color: #FFF;
+  font-size: 20px;
+  font-weight: 700;
+  line-height: 20px;
+}
+div.event_base > div.title div.inner div.button {
+  display: none;
+  position: absolute;
+  width: 40px;
+  height: 16px;
+  left: -55px;
+  top: 15px;
+  padding: 2px 4px;
+  background-color: #FFF;
+  color: #000;
+  font-size: 16px;
+  font-weight: 400;
+  line-height: 16px;
+  cursor: pointer;
+}
+div.event_base > div.title div.inner div.editor input {
+  width: 624px;
+  height: 20px;
+  margin: 0;
+  padding: 0;
+  border: none;
+  outline: none;
+  background: none;
+  color: #FFF;
+  font-size: 20px;
+  font-weight: 700;
+  line-height: 20px;
+}
+div.event_base > div.title div.inner div.editor input .placeholder {
+  color: rgba(255, 255, 255, 0.6);
+  font-size: 16px;
+  font-weight: 400;
+}
+div.event_base > div.title div.inner div.editor input::-webkit-input-placeholder {
+  color: rgba(255, 255, 255, 0.6);
+  font-size: 16px;
+  font-weight: 400;
+}
+div.event_base > div.title div.inner div.editor input:-moz-placeholder {
+  color: rgba(255, 255, 255, 0.6);
+  font-size: 16px;
+  font-weight: 400;
+}
+div.event_base > div.title div.inner div.editor input::-moz-placeholder {
+  color: rgba(255, 255, 255, 0.6);
+  font-size: 16px;
+  font-weight: 400;
+}
+div.event_base > div.title div.inner div.editor input:-ms-input-placeholder {
+  color: rgba(255, 255, 255, 0.6);
+  font-size: 16px;
+  font-weight: 400;
+}
+div.event_base > div.title div.inner div.controls {
+  position: absolute;
+}
+div.event_base div.frame div.left div.description {
+  width: 100%;
+  margin-top: 88px;
+  float: left;
+}
+div.event_base div.frame div.left div.description div.editor {
+  width: 100%;
+}
+div.event_base div.frame div.left div.description div.editor.editing {
+  width: 430px;
+  margin-left: -11px;
+}
+div.event_base div.frame div.left div.description div.editor.editing div.inner {
+  width: 408px;
+  display: block;
+  margin: auto;
+}
+div.event_base div.frame div.left div.description div.editor div.inner {
+  width: 100%;
+}
+div.event_base div.frame div.left div.description div.editor img {
+  max-width: 408px;
+}
+div.event_base div.frame div.left div.description div.editor iframe {
+  max-width: 408px;
+}
+div.event_base div.frame div.right div.action {
+  position: relative;
+  width: 192px;
+  height: 48px;
+  z-index: 20;
+  background-color: #f0f5f5;
+  cursor: pointer;
+}
+div.event_base div.frame div.right div.action div.button {
+  width: 140px;
+  height: 18px;
+  padding: 15px 0;
+  background-color: #4795f2;
+  color: #FFF;
+  line-height: 18px;
+  font-size: 18px;
+  text-align: center;
+  float: left;
+}
+div.event_base div.frame div.right div.action div.price {
+  position: relative;
+  width: 52px;
+  height: 100%;
+  float: left;
+}
+div.event_base div.frame div.right div.action div.price:before {
+  content: '';
+  position: absolute;
+  width: 0;
+  height: 0;
+  border-style: solid;
+  border-width: 10px 10px 10px 0;
+  border-color: transparent #f0f5f5 transparent transparent;
+  left: -10px;
+  top: 14px;
+}
+div.event_base div.frame div.right div.info {
+  position: relative;
+  width: 172px;
+  padding: 10px;
+  z-index: 20;
+  background-color: #f0f5f5;
+}
+div.event_base div.frame div.right div.info:hover div.button {
+  display: block !important;
+}
+div.event_base div.frame div.right div.info div.caption {
+  width: 100%;
+  height: 18px;
+  font-size: 14px;
+}
+div.event_base div.frame div.right div.info div.caption div.text {
+  width: 75%;
+  height: 18px;
+  float: left;
+}
+div.event_base div.frame div.right div.info div.caption div.button {
+  display: none;
+  width: 25%;
+  height: 14px;
+  padding: 2px 0;
+  background-color: #CCC;
+  font-size: 13px;
+  font-weight: 700;
+  text-align: center;
+  cursor: pointer;
+  float: right;
+}
+div.event_base div.frame div.right div.info div.body {
+  width: 100%;
+  padding-top: 7px;
+  padding-bottom: 5px;
+}
+div.event_base div.frame div.right div.info div.body div.text {
+  font-size: 13px;
+  line-height: 16px;
+  font-style: italic;
+}
+div.event_base div.frame div.right div.info div.body div.editor {
+  width: 100%;
+  min-height: 30px;
+}
+div.event_base div.frame div.right div.info div.body div.editor textarea {
+  width: 162px;
+  min-height: 50px;
+  padding: 5px;
+  border: none;
+  resize: none;
+  font-size: 13px;
+}
+div.event_base div.frame div.right div.details div.time {
+  width: 100%;
+  min-height: 20px;
+  font-size: 18px;
+  line-height: 20px;
+}
+div.event_base div.frame div.right div.details div.location {
+  width: 100%;
+  margin-top: 8px;
+  font-size: 13px;
+  line-height: 13px;
+}
+div.event_base div.frame div.right div.details div.location div.text {
+  width: 100%;
+  height: 13px;
+}
+div.event_base div.frame div.right div.details div.location div.map {
+  width: 100%;
+}
+div.event_base div.frame div.right div.details div.location div.map div#map_canvas {
+  width: 100%;
+  height: 80px;
+  margin-top: 10px;
+}
+div.event_base div.frame div.right div.facebook {
+  height: 70px;
+}
+div.event_base div.frame div.right div.facebook div.caption div.share {
+  padding: 0 4px;
+  background-color: #f7931e;
+  color: #FFF;
+  font-size: 12px;
+  text-transform: uppercase;
+  cursor: pointer;
+  float: right;
+}
+div.event_base div.frame div.right div.organizers div.body div.organizer {
+  width: 172px;
+  height: 25px;
+  padding-top: 4px;
+}
+div.event_base div.frame div.right div.organizers div.body div.organizer div.icon {
+  width: 25px;
+  height: 25px;
+  background-color: #CCC;
+  float: left;
+}
+div.event_base div.frame div.right div.organizers div.body div.organizer div.name {
+  width: 133px;
+  height: 15px;
+  padding: 5px 7px;
+  font-size: 15px;
+  line-height: 15px;
+  float: left;
+}
+div.event_base div.frame div.right div.organizers div.body div.organizer div.name a {
+  color: #000;
+  text-decoration: none;
+}
+div.event_base div.frame div.right div.tags div.tag {
+  padding: 2px 4px;
+  margin: 2px 0;
+  margin-right: 4px;
+  border-radius: 6px;
+  background-color: #999;
+  color: #FFF;
+  font-style: normal;
+  float: left;
+}
+div.event_base div.sponsors {
+  width: 624px;
+  margin-top: 20px;
+  background-color: #f0f5f5;
+}
+div.event_base div.sponsors div.caption {
+  width: 604px;
+  height: 18px;
+  padding: 10px;
+  font-size: 14px;
+}
+div.event_base div.sponsors div.caption div.text {
+  float: left;
+}
+div.event_base div.others {
+  width: 624px;
+  height: 180px;
+  margin: 32px 0;
+}
+div.event_base div.others div.similar {
+  width: 192px;
+  height: 100%;
+  margin-right: 24px;
+  background-color: #f0f5f5;
+  float: left;
+}
+div.event_base div.others div.nearby {
+  height: 100%;
+  width: 192px;
+  margin-right: 24px;
+  background-color: #f0f5f5;
+  float: left;
+}
+div.event_base div.others div.recommendation {
+  height: 100%;
+  width: 192px;
+  background-color: #f0f5f5;
+  float: left;
+}
+.event_overlay_canvas {
+  display: none;
+  position: absolute;
+  width: 388px;
+  padding: 10px;
+  top: 10px;
+  left: 63px;
+  z-index: 20;
+  background-color: #f0f5f5;
+}
+body.collapsed .event_overlay_canvas {
+  left: 96px;
+}
+.event_overlay_canvas:before {
+  content: '';
+  position: absolute;
+  width: 0;
+  height: 0;
+  border-style: solid;
+  border-width: 10px 10px 10px 0;
+  border-color: transparent #f0f5f5 transparent transparent;
+  right: -10px;
+  top: 74px;
+  -webkit-transform: rotate(180deg);
+}
+.event_overlay_canvas > div.divider {
+  width: 388px;
+  height: 14px;
+  text-align: center;
+}
+.event_overlay_canvas div.user {
+  width: 388px;
+}
+.event_overlay_canvas div.user div.normal {
+  width: 388px;
+  height: 100%;
+  background-color: #FFF;
+}
+.event_overlay_canvas div.user div.normal div.divider {
+  width: 1px;
+  height: 160px;
+  margin: 10px 0;
+  background-color: #f0f5f5;
+  float: left;
+}
+.event_overlay_canvas div.user div.normal div.login {
+  width: 173.5px;
+  height: 160px;
+  padding: 10px;
+  float: left;
+}
+.event_overlay_canvas div.user div.normal div.register {
+  width: 173.5px;
+  height: 160px;
+  padding: 10px;
+  float: left;
+}
+.event_overlay_canvas div.email {
+  width: 388px;
+  background-color: #FFF;
+}
+div#event.big_cover div.frame div.right div.organizers {
+  margin-top: 13px;
+}
+div#event.with_caption div.frame div.right div.organizers {
+  margin-top: 43px;
+}
+div#event div.frame div.right div.action {
+  margin-top: 88px;
+  margin-bottom: 10px;
+}
+div#event div.frame div.right div.info {
+  margin-bottom: 10px;
+}
+div#event div.frame div.right div.organizers {
+  margin-top: 10px;
+}
+div#fundraiser div.frame div.right div.goal {
+  position: relative;
+  width: 172px;
+  padding: 10px;
+  margin-top: 58px;
+  z-index: 20;
+  background-color: #f0f5f5;
+}
+div#fundraiser div.frame div.right div.goal div.caption {
+  width: 100%;
+  height: 18px;
+  font-size: 14px;
+}
+div#fundraiser div.frame div.right div.goal div.caption div.text {
+  float: left;
+}
+div#fundraiser div.frame div.right div.action {
+  margin-top: 10px;
+}
+div#fundraiser div.frame div.right div.organizers {
+  margin-top: 10px;
+}
+div#fundraiser div.frame div.right div.friends {
+  margin-top: 10px;
+}
+div#fundraiser div.frame div.right div.summary {
+  margin-top: 10px;
+}
