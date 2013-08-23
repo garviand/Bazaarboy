@@ -1,5 +1,7 @@
 # Staging Settings
 
+STATIC_ROOT = os.path.join(os.path.dirname(os.path.dirname(os.path.abspath(__file__))), 'static')
+
 # Use RDS as database backend
 
 import os
