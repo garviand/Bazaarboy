@@ -67,6 +67,26 @@ input[type=file].hidden {
     margin: auto;
 }
 
+.input_placeholder(@color; @font-size: @font_size_base; @font-weight: @font_weight_base) {
+    .placeholder {
+        color: @color;
+        font-size: @font-size;
+        font-weight: @font-weight;
+    }
+    &::-webkit-input-placeholder {
+        .placeholder;
+    }
+    &:-moz-placeholder {
+        .placeholder;
+    }
+    &::-moz-placeholder {
+        .placeholder;
+    }
+    &:-ms-input-placeholder {
+        .placeholder;
+    }
+}
+
 // Layout
 
 body {
@@ -466,7 +486,9 @@ div.event_base {
             left: 0 - ((@body_width - @content_inner_width) / 2 - @sidebar_width_collapsed);
 
             div.caption {
-                width: @content_width_expanded;
+                div.inner {
+                    margin-left: (@body_width - @content_inner_width) / 2 - @sidebar_width_collapsed;
+                }
             }
 
             div.controls {
@@ -512,10 +534,65 @@ div.event_base {
         }
 
         div.caption {
-            width: @content_width;
+            position: relative;
+            width: 100%;
             height: 0;
             background: #BBB;
             overflow: hidden;
+            &:hover {
+                div.inner {
+                    div.button {
+                        display: block;
+                    }
+                }
+            }
+
+            div.inner {
+                position: relative;
+                width: @content_inner_width;
+                height: 100%;
+                margin-left: (@content_width - @content_inner_width) / 2;
+
+                div.text {
+                    width: 100%;
+                    height: @font_size_base;
+                    padding-top: floor((30px - (@font_size_base - 1)) / 2);
+                    padding-bottom: ceil((30px - (@font_size_base - 1)) / 2);
+                    font-size: @font_size_base - 1;
+                    line-height: @font_size_base - 1;
+                }
+
+                div.button {
+                    display: none;
+                    position: absolute;
+                    width: 40px;
+                    height: 80%;
+                    left: -45px;
+                    top: 10%;
+                    background-color: #FFF;
+                    text-align: center;
+                    cursor: pointer;
+                }
+
+                div.editor {
+                    width: 100%;
+                    height: 100%;
+
+                    input {
+                        width: @content_inner_width;
+                        height: @font_size_base - 1;
+                        padding: 0;
+                        padding-top: floor((30px - (@font_size_base - 1)) / 2);
+                        padding-bottom: ceil((30px - (@font_size_base - 1)) / 2);
+                        border: none;
+                        outline: none;
+                        background: none;
+                        font-size: @font_size_base - 1;
+                        line-height: @font_size_base - 1;
+                        .input_placeholder(rgba(0, 0, 0, 0.6));
+                    }
+                }
+            }
         }
 
         div.controls {
@@ -534,29 +611,73 @@ div.event_base {
         left: 0 - ((@content_width - @content_inner_width) / 2);
         z-index: @above_plain_z_index;
         background-color: rgba(0, 0, 0, 0.6);
+        &:hover {
+            div.inner {
+                div.button {
+                    display: block;
+                }
+            }
+        }
         body.collapsed & {
             width: @content_width_expanded;
             left: 0 - ((@body_width - @content_inner_width) / 2 - @sidebar_width_collapsed);
 
-            div.text {
+            div.inner {
                 left: (@body_width - @content_inner_width) / 2 - @sidebar_width_collapsed;
             }
         }
 
-        div.controls {
-            position: absolute;
-        }
-
-        div.text {
+        div.inner {
             position: absolute;
             width: @content_inner_width;
             height: @font_size_base + 4;
             left: (@content_width - @content_inner_width) / 2;
             padding: (@content_title_height_single - (@font_size_base + 4)) / 2 0;
-            color: #FFF;
-            font-size: @font_size_base + 4;
-            font-weight: @font_weight_bold;
-            line-height: @font_size_base + 4;
+
+            .title_text {
+                color: #FFF;
+                font-size: @font_size_base + 4;
+                font-weight: @font_weight_bold;
+                line-height: @font_size_base + 4;
+            }
+
+            div.text {
+                .title_text;
+            }
+
+            div.button {
+                display: none;
+                position: absolute;
+                width: 40px;
+                height: @font_size_base;
+                left: -55px;
+                top: (@content_title_height_single - (@font_size_base + 2)) / 2;
+                padding: 2px 4px;
+                background-color: #FFF;
+                color: #000;
+                font-size: @font_size_base;
+                font-weight: @font_weight_base;
+                line-height: @font_size_base;
+                cursor: pointer;
+            }
+
+            div.editor {
+                input {
+                    width: @content_inner_width;
+                    height: @font_size_base + 4;
+                    margin: 0;
+                    padding: 0;
+                    border: none;
+                    outline: none;
+                    background: none;
+                    .title_text;
+                    .input_placeholder(rgba(255, 255, 255, 0.6));
+                }
+            }
+
+            div.controls {
+                position: absolute;
+            }
         }
     }
 

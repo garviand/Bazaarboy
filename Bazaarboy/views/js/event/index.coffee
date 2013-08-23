@@ -68,6 +68,31 @@ Bazaarboy.event.index =
                 return cb err, null
             return
         return
+    startEditingTitle: () ->
+        $('div#event div.title div.text').addClass('hidden')
+        $('div#event div.title div.editor').removeClass('hidden')
+        title = $('div#event div.title div.editor input').val()
+        $('div#event div.title div.editor input').focus().val('').val(title)
+        $('div#event div.title div.button')
+            .html('Save')
+            .addClass('stick')
+        return
+    stopEditingTitle: () ->
+        title = $('div#event div.title div.editor input').val()
+        @save {name: title}, (err, event) =>
+            unless err
+                $('div#event div.title div.text')
+                    .html(title)
+                    .removeClass('hidden')
+                $('div#event div.title div.editor input').val(title)
+                $('div#event div.title div.editor').addClass('hidden')
+                $('div#event div.title div.button')
+                    .html('Edit')
+                    .removeClass('stick')
+            else
+                alert err.message
+            return
+        return
     prepareUploadedCoverImage: (coverUrl) ->
         if not $('body').hasClass('collapsed')
             Bazaarboy.switchCollapsedStates () =>
@@ -239,6 +264,37 @@ Bazaarboy.event.index =
             else
                 alert err.message
             return
+    startEditingCoverCaption: () ->
+        $('div#event div.cover div.caption div.text').addClass('hidden')
+        $('div#event div.cover div.caption div.editor').removeClass('hidden')
+        caption = $('div#event div.cover div.caption div.editor input').val()
+        $('div#event div.cover div.caption div.editor input')
+            .focus().val('').val(caption)
+        $('div#event div.cover div.caption div.button')
+            .html('Save')
+            .addClass('stick')
+        return
+    stopEditingCoverCaption: () ->
+        caption = $('div#event div.cover div.caption div.editor input').val()
+        @save {caption: caption}, (err, event) =>
+            unless err
+                captionText = caption
+                if caption.length is 0
+                    captionText = '<i>No caption yet.</i>'
+                $('div#event div.cover div.caption div.text')
+                    .html(captionText)
+                    .removeClass('hidden')
+                $('div#event div.cover div.caption div.editor input')
+                    .val(caption)
+                $('div#event div.cover div.caption div.editor')
+                    .addClass('hidden')
+                $('div#event div.cover div.caption div.button')
+                    .html('Edit')
+                    .removeClass('stick')
+            else
+                alert err.message
+            return
+        return
     startEditingDescription: () ->
         $('div.description div.controls a.edit').html('Cancel')
         $('div.description div.controls a.save').show()
@@ -328,6 +384,15 @@ Bazaarboy.event.index =
             return
         return
     initEditing: () ->
+        scope = this
+        # Edit title
+        $('div#event div.title div.button').click () ->
+            if $(this).hasClass('stick')
+                scope.stopEditingTitle()
+            else
+                scope.startEditingTitle()
+            return
+        return
         # Save original images
         @cover = $('div#event div.cover div.image div.bounds img')
         if @cover.length > 0
@@ -370,7 +435,13 @@ Bazaarboy.event.index =
                 else
                     alert response.message
                 return
-        return
+        # Edit cover caption
+        $('div#event div.cover div.caption div.button').click () ->
+            if $(this).hasClass('stick')
+                scope.stopEditingCoverCaption()
+            else
+                scope.startEditingCoverCaption()
+            return
         # Edit description
         @description = $('div#event div.description div.inner').html()
         $('div#event div.description div.controls a.save').hide().click () =>
@@ -382,7 +453,6 @@ Bazaarboy.event.index =
                 @startEditingDescription()
             return
         # Edit summary
-        scope = this
         $('div#event div.summary div.button').click () ->
             if $(this).hasClass('stick')
                 scope.stopEditingSummary()
@@ -405,11 +475,22 @@ Bazaarboy.event.index =
                 ['width', '750px', '876px']
                 ['left', '-63px', '-96px']
             ]]
+            ['div#event div.cover div.image', [['left', '-126px', '0']]]
             ['div#event > div.title', [
                 ['width', '750px', '876px']
                 ['left', '-63px', '-96px']
             ]]
-            ['div#event > div.title div.text', [['left', '63px', '96px']]]
+            ['div#event.big_cover div.cover div.caption', [
+                ['width', '750px', '876px']
+            ]]
+            ['div#event.big_cover div.cover div.caption div.inner', [
+                ['margin-left', '63px', '96px']
+            ]]
+            ['div#event > div.title', [
+                ['width', '750px', '876px']
+                ['left', '-63px', '-96px']
+            ]]
+            ['div#event > div.title div.inner', [['left', '63px', '96px']]]
         ]
         $.merge(Bazaarboy.collapseStates, collapseStates)
         # Overlay

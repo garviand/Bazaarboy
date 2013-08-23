@@ -187,9 +187,9 @@ def create(request, params, user):
 
 @login_check()
 @validate('POST', ['id'], 
-          ['name', 'description', 'cover', 'summary', 'tags', 'start_time', 
-           'end_time', 'location', 'latitude', 'longitude', 'category', 
-           'is_private', 'token'])
+          ['name', 'description', 'cover', 'caption', 'summary', 'tags', 
+           'start_time', 'end_time', 'location', 'latitude', 'longitude', 
+           'category', 'is_private', 'token'])
 def edit(request, params, user):
     """
     Edit an existing event
@@ -266,6 +266,24 @@ def edit(request, params, user):
             cover.is_archived = True
             cover.save()
             event.cover = cover
+    if params['caption'] is not None:
+        if event.cover is None:
+            response = {
+                'status':'FAIL',
+                'error':'NO_COVER',
+                'message':'You must set a cover image before adding caption.'
+            }
+            return json_response(response)
+        elif len(params['caption']) > 100:
+            response = {
+                'status':'FAIL',
+                'error':'CAPTION_TOO_LONG',
+                'message':'The caption must be within 100 characters.'
+            }
+            return json_response(response)
+        else:
+            event.cover.caption = params['caption']
+            event.cover.save()
     if params['summary'] is not None:
         if len(params['summary']) > 100:
             response = {

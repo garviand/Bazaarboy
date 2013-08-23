@@ -11,8 +11,6 @@ from kernel.models import *
 from src.controllers.request import validate, json_response
 from src.serializer import serialize_one
 
-import pdb
-
 IMAGE_TYPES = ['jpg', 'jpeg', 'png', 'gif']
 IMAGE_CONTENT_TYPES = {
     'jpg':'image/jpeg',

@@ -29,17 +29,18 @@ block content
                     img.normal(src="{{ event.cover.source.url }}")
                     {% endif %}
             div.caption
-                div.text
-                    {% if event.cover and event.cover.caption|length != 0 %}
-                    {{ event.cover.caption }}
-                    {% else %}
-                    i No caption yet.
+                div.inner
+                    div.text
+                        {% if event.cover and event.cover.caption|length != 0 %}
+                        {{ event.cover.caption }}
+                        {% else %}
+                        i No caption yet.
+                        {% endif %}
+                    {% if event.cover and editable %}
+                    div.button Edit
+                    div.editor.hidden
+                        input(type="text", name="caption", placeholder="Maximum 100 Characters", value="{{ event.cover.caption }}")
                     {% endif %}
-                {% if event.cover and editable %}
-                div.editor.hidden
-                    textarea(name="cover_caption", placeholder="Maximum 100 Characters")
-                        | {{ event.cover.caption }}
-                {% endif %}
             {% if editable %}
             div.controls(class="{% if not event.cover %}stick{% endif %}")
                 span.hidden Drag the image to position you think fit. 
@@ -54,10 +55,17 @@ block content
                     {% csrf_token %}
             {% endif %}
         div.title
-            div.controls
-            div.text
-                {{ event.name }}
-            div.clear
+            div.inner
+                div.text
+                    {{ event.name }}
+                {% if editable %}
+                div.button Edit
+                div.editor.hidden
+                    input(type="text", name="name", placeholder="Event name", value="{{ event.name }}")
+                {% else %}
+                div.controls
+                {% endif %}
+                div.clear
         div.frame
             div.left
                 div.description
