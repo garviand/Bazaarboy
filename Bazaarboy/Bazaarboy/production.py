@@ -7,7 +7,7 @@ AWS_SECRET_ACCESS_KEY = 'pHdrBtgIcORoffeF0ZmF1JFpOkkKniVRB3CIAhF2'
 AWS_STORAGE_BUCKET_NAME = 'bazaarboy'
 
 DEFAULT_FILE_STORAGE = 'src.s3utils.MediaS3BotoStorage'
-STATIC_FILE_STORAGE = 'src.s3utils.StaticS3BotoStorage'
+STATICFILES_STORAGE = 'src.s3utils.StaticS3BotoStorage'
 
 S3_URL = 'https://%s.s3.amazonaws.com' % AWS_STORAGE_BUCKET_NAME
 STATIC_URL = S3_URL + '/static/'
