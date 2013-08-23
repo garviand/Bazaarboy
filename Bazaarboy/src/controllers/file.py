@@ -80,10 +80,8 @@ def crop_image(request, params):
         }
         return json_response(response)
     imageUrl = image.source.url
-    parts = imageUrl.split('/')
-    imageName = parts[-1]
-    parts = imageName.split('.')
-    imageExt = parts[-1].lower()
+    imageName = imageUrl.split('/')[-1].split('?')[0]
+    imageExt = imageName.split('.')[-1].lower()
     imageFormat = 'jpeg' if imageExt == 'jpg' else imageExt
     imageContentType = IMAGE_CONTENT_TYPES[imageExt]
     left = viewport[0]
