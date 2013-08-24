@@ -1168,7 +1168,7 @@ div.event_base div.others div.recommendation {
   position: absolute;
   width: 388px;
   padding: 10px;
-  top: 10px;
+  top: 58px;
   left: 63px;
   z-index: 20;
   background-color: #f0f5f5;
@@ -1185,44 +1185,8 @@ body.collapsed .event_overlay_canvas {
   border-width: 10px 10px 10px 0;
   border-color: transparent #f0f5f5 transparent transparent;
   right: -10px;
-  top: 74px;
+  top: 44px;
   -webkit-transform: rotate(180deg);
-}
-.event_overlay_canvas > div.divider {
-  width: 388px;
-  height: 14px;
-  text-align: center;
-}
-.event_overlay_canvas div.user {
-  width: 388px;
-}
-.event_overlay_canvas div.user div.normal {
-  width: 388px;
-  height: 100%;
-  background-color: #FFF;
-}
-.event_overlay_canvas div.user div.normal div.divider {
-  width: 1px;
-  height: 160px;
-  margin: 10px 0;
-  background-color: #f0f5f5;
-  float: left;
-}
-.event_overlay_canvas div.user div.normal div.login {
-  width: 173.5px;
-  height: 160px;
-  padding: 10px;
-  float: left;
-}
-.event_overlay_canvas div.user div.normal div.register {
-  width: 173.5px;
-  height: 160px;
-  padding: 10px;
-  float: left;
-}
-.event_overlay_canvas div.email {
-  width: 388px;
-  background-color: #FFF;
 }
 div#event.big_cover div.frame div.right div.organizers {
   margin-top: 13px;
@@ -1239,6 +1203,54 @@ div#event div.frame div.right div.info {
 }
 div#event div.frame div.right div.organizers {
   margin-top: 10px;
+}
+div#tickets div.tickets div.ticket.editing div.text {
+  display: none;
+}
+div#tickets div.tickets div.ticket.editing div.editor {
+  display: block;
+}
+div#tickets div.tickets div.ticket div.text {
+  display: block;
+}
+div#tickets div.tickets div.ticket div.editor {
+  display: none;
+}
+div#rsvp > div.divider {
+  width: 388px;
+  height: 14px;
+  text-align: center;
+}
+div#rsvp div.user {
+  width: 388px;
+}
+div#rsvp div.user div.normal {
+  width: 388px;
+  height: 100%;
+  background-color: #FFF;
+}
+div#rsvp div.user div.normal div.divider {
+  width: 1px;
+  height: 160px;
+  margin: 10px 0;
+  background-color: #f0f5f5;
+  float: left;
+}
+div#rsvp div.user div.normal div.login {
+  width: 173.5px;
+  height: 160px;
+  padding: 10px;
+  float: left;
+}
+div#rsvp div.user div.normal div.register {
+  width: 173.5px;
+  height: 160px;
+  padding: 10px;
+  float: left;
+}
+div#rsvp div.email {
+  width: 388px;
+  background-color: #FFF;
 }
 div#fundraiser div.frame div.right div.goal {
   position: relative;

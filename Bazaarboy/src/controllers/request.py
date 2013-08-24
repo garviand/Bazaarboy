@@ -27,7 +27,9 @@ def params_from_request(requestArray, required=[], optional=[],
     # A shortcut function to parse the param by its flag
     def parseByFlag(name, param):
         if param is not None:
-            if name[:3] == 'is_':
+            if param.lower() == 'none':
+                param = 'none'
+            elif name[:3] == 'is_':
                 param = param == '1'
             elif name[-5:] == '_time':
                 from datetime import datetime

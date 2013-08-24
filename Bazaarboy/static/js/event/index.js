@@ -397,6 +397,96 @@
         }
       });
     },
+    addTicket: function() {
+      var ticket;
+      if (!$('div#tickets div.tickets div.empty').hasClass('hidden')) {
+        $('div#tickets div.tickets div.empty').addClass('hidden');
+      }
+      ticket = $('div#tickets div.ticket.template').clone(true);
+      $(ticket).removeClass('hidden').prependTo($('div#tickets div.tickets'));
+      this.startEditingTicket(ticket);
+    },
+    deleteTicket: function(ticket) {
+      var id,
+        _this = this;
+      id = $(ticket).attr('data-id');
+      if ((id == null) || id.trim().length === 0) {
+        $(ticket).remove();
+        if ($('div#tickets div.tickets div.ticket').length === 0) {
+          $('div#tickets div.tickets div.empty').removeClass('hidden');
+        }
+      } else {
+        Bazaarboy.post('event/ticket/delete/', {
+          id: id
+        }, function(response) {
+          if (response.status === 'OK') {
+            $(ticket).remove();
+            if ($('div#tickets div.tickets div.ticket').length === 0) {
+              $('div#tickets div.tickets div.empty').removeClass('hidden');
+            }
+          } else {
+            alert(response.message);
+          }
+        });
+      }
+    },
+    startEditingTicket: function(ticket) {
+      $(ticket).find('a.switch').html('Save').removeClass('edit').addClass('save');
+      $(ticket).addClass('editing');
+    },
+    stopEditingTicket: function(ticket) {
+      var data, endpoint, id,
+        _this = this;
+      console.log(ticket);
+      id = $(ticket).attr('data-id');
+      data = $(ticket).find('form').serializeObject();
+      endpoint = '';
+      if ((id == null) || id.trim().length === 0) {
+        endpoint = 'event/ticket/create/';
+        data.event = eventId;
+        if (data.quantity.trim() === '') {
+          delete data.quantity;
+        }
+        if (data.start_time.trim() === '') {
+          delete data.start_time;
+        }
+        if (data.end_time.trim() === '') {
+          delete data.end_time;
+        }
+      } else {
+        endpoint = 'event/ticket/edit/';
+        data.id = id;
+        if (data.quantity.trim() === '') {
+          data.quantity = 'none';
+        }
+      }
+      if (typeof token !== "undefined" && token !== null) {
+        data.token = token;
+      }
+      Bazaarboy.post(endpoint, data, function(response) {
+        if (response.status !== 'OK') {
+          alert(response.message);
+        } else {
+          console.log(response.ticket);
+          $(ticket).attr('data-id', response.ticket.pk);
+          $(ticket).find('div.name div.text').html(response.ticket.name);
+          $(ticket).find('div.name div.editor input').val(response.ticket.name);
+          $(ticket).find('div.description div.text').html(response.ticket.description);
+          $(ticket).find('div.description div.editor input').val(response.ticket.description);
+          $(ticket).find('div.price div.text').html("$ " + response.ticket.price);
+          $(ticket).find('div.price div.editor input').val(response.ticket.price);
+          $(ticket).find('div.quantity div.text').html(response.ticket.quantity);
+          $(ticket).find('div.quantity div.editor input').val(response.ticket.quantity);
+          $(ticket).find('div.start_time div.text').html(response.ticket.start_time);
+          $(ticket).find('div.start_time div.editor input').val(response.ticket.start_time);
+          $(ticket).find('div.end_time div.text').html(response.ticket.start_time);
+          $(ticket).find('div.end_time div.editor input');
+          $(ticket).find('a.swith').html('Edit').addClass('edit').removeClass('save');
+          $(ticket).find('a.delete').removeClass('cancel');
+          $(ticket).removeClass('editing');
+        }
+      });
+    },
     initEditing: function() {
       var scope,
         _this = this;
@@ -488,6 +578,23 @@
         } else {
           scope.startEditingTags();
         }
+      });
+      $('div#tickets div.controls a.add').click(function() {
+        _this.addTicket();
+      });
+      $('div#tickets div.ticket a.switch').click(function() {
+        var ticket;
+        ticket = $(this).parent().parent().parent();
+        if ($(this).hasClass('edit')) {
+          scope.startEditingTicket(ticket);
+        } else if ($(this).hasClass('save')) {
+          scope.stopEditingTicket(ticket);
+        }
+      });
+      $('div#tickets div.ticket a.delete').click(function() {
+        var ticket;
+        ticket = $(this).parent().parent().parent();
+        scope.deleteTicket(ticket);
       });
     },
     init: function() {

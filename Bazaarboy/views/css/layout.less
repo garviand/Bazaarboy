@@ -977,7 +977,7 @@ div.event_base {
     position: absolute;
     width: @overlay_width;
     padding: 10px;
-    top: 10px;
+    top: 58px;
     left: (@content_width - @content_inner_width) / 2;
     z-index: @overlay_z_index;
     background-color: @pale_blue;
@@ -994,51 +994,8 @@ div.event_base {
         border-width: 10px 10px 10px 0;
         border-color: transparent @pale_blue transparent transparent;
         right: -10px;
-        top: 74px;
+        top: 44px;
         -webkit-transform: rotate(180deg);
-    }
-
-    > div.divider {
-        width: @overlay_width;
-        height: 14px;
-        text-align: center;
-    }
-
-    div.user {
-        width: @overlay_width;
-
-        div.normal {
-            width: @overlay_width;
-            height: 100%;
-            background-color: #FFF;
-
-            div.divider {
-                width: 1px;
-                height: 160px;
-                margin: 10px 0;
-                background-color: @pale_blue;
-                .left;
-            }
-
-            div.login {
-                width: (@overlay_width - 1) / 2 - 20;
-                height: 160px;
-                padding: 10px;
-                .left;
-            }
-
-            div.register {
-                width: (@overlay_width - 1) / 2 - 20;
-                height: 160px;
-                padding: 10px;
-                .left;
-            }
-        }
-    }
-
-    div.email {
-        width: @overlay_width;
-        background-color: #FFF;
     }
 }
 
@@ -1083,11 +1040,72 @@ div#event {
 }
 
 div#tickets {
+    div.tickets {
+        div.ticket {
+            &.editing {
+                div.text {
+                    display: none;
+                }
 
+                div.editor {
+                    display: block;
+                }
+            }
+
+            div.text {
+                display: block;
+            }
+
+            div.editor {
+                display: none;
+            }
+        }
+    }
 }
 
 div#rsvp {
+    > div.divider {
+        width: @overlay_width;
+        height: 14px;
+        text-align: center;
+    }
 
+    div.user {
+        width: @overlay_width;
+
+        div.normal {
+            width: @overlay_width;
+            height: 100%;
+            background-color: #FFF;
+
+            div.divider {
+                width: 1px;
+                height: 160px;
+                margin: 10px 0;
+                background-color: @pale_blue;
+                .left;
+            }
+
+            div.login {
+                width: (@overlay_width - 1) / 2 - 20;
+                height: 160px;
+                padding: 10px;
+                .left;
+            }
+
+            div.register {
+                width: (@overlay_width - 1) / 2 - 20;
+                height: 160px;
+                padding: 10px;
+                .left;
+            }
+        }
+    }
+
+    div.email {
+        width: @overlay_width;
+        background-color: #FFF;
+    }
 }
 
 // Fundraiser

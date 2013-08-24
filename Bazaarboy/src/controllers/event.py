@@ -27,6 +27,7 @@ def index(request, id, params, user):
     if not Event.objects.filter(id = id).exists():
         raise Http404
     event = Event.objects.select_related().get(id = id)
+    tickets = Ticket.objects.filter(event = event)
     editable = False
     if event.owner is not None:
         editable = (user is not None and 
@@ -335,7 +336,11 @@ def edit(request, params, user):
         else:
             event.location = params['location']
     if params['latitude'] is not None and params['longitude'] is not None: 
-        if not (-90.0 <= float(params['latitude']) <= 90.0 and 
+        if (params['latitude'].lower() == 'none' or 
+            params['longitude'].lower() == 'none'):
+            event.latitude = None
+            event.longitude = None
+        elif not (-90.0 <= float(params['latitude']) <= 90.0 and 
                 -180.0 <= float(params['longitude']) <= 180.0):
             response = {
                 'status':'FAIL',

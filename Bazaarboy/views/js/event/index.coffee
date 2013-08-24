@@ -383,6 +383,105 @@ Bazaarboy.event.index =
                 alert err.message
             return
         return
+    addTicket: () ->
+        if not $('div#tickets div.tickets div.empty').hasClass('hidden')
+            $('div#tickets div.tickets div.empty').addClass('hidden')
+        ticket = $('div#tickets div.ticket.template').clone(true)
+        $(ticket)
+            .removeClass('hidden')
+            .prependTo($('div#tickets div.tickets'))
+        @startEditingTicket(ticket)
+        return
+    deleteTicket: (ticket) ->
+        id = $(ticket).attr('data-id')
+        if not id? or id.trim().length is 0
+            $(ticket).remove()
+            if $('div#tickets div.tickets div.ticket').length is 0
+                $('div#tickets div.tickets div.empty').removeClass('hidden')
+        else
+            Bazaarboy.post 'event/ticket/delete/', {id: id}, (response) =>
+                if response.status is 'OK'
+                    $(ticket).remove()
+                    if $('div#tickets div.tickets div.ticket').length is 0
+                        $('div#tickets div.tickets div.empty')
+                            .removeClass('hidden')
+                else
+                    alert response.message
+                return
+        return
+    startEditingTicket: (ticket) ->
+        $(ticket)
+            .find('a.switch').html('Save')
+            .removeClass('edit').addClass('save')
+        $(ticket).addClass('editing')
+        return
+    stopEditingTicket: (ticket) ->
+        console.log ticket
+        id = $(ticket).attr('data-id')
+        data = $(ticket).find('form').serializeObject()
+        endpoint = ''
+        if not id? or id.trim().length is 0
+            # Create new ticket
+            endpoint = 'event/ticket/create/'
+            data.event = eventId
+            if data.quantity.trim() is ''
+                delete data.quantity
+            if data.start_time.trim() is ''
+                delete data.start_time
+            if data.end_time.trim() is ''
+                delete data.end_time
+        else
+            # Save changes
+            endpoint = 'event/ticket/edit/'
+            data.id = id
+            if data.quantity.trim() is ''
+                data.quantity = 'none'
+        if token?
+            data.token = token
+        Bazaarboy.post endpoint, data, (response) =>
+            if response.status isnt 'OK'
+                alert response.message
+            else
+                console.log response.ticket
+                # Update the information
+                $(ticket).attr('data-id', response.ticket.pk)
+                $(ticket).find('div.name div.text').html(response.ticket.name)
+                $(ticket)
+                    .find('div.name div.editor input').val(response.ticket.name)
+                $(ticket)
+                    .find('div.description div.text')
+                    .html(response.ticket.description)
+                $(ticket)
+                    .find('div.description div.editor input')
+                    .val(response.ticket.description)
+                $(ticket).find('div.price div.text')
+                    .html("$ #{response.ticket.price}")
+                $(ticket)
+                    .find('div.price div.editor input').val(response.ticket.price)
+                $(ticket)
+                    .find('div.quantity div.text')
+                    .html(response.ticket.quantity)
+                $(ticket)
+                    .find('div.quantity div.editor input')
+                    .val(response.ticket.quantity)
+                $(ticket)
+                    .find('div.start_time div.text')
+                    .html(response.ticket.start_time)
+                $(ticket)
+                    .find('div.start_time div.editor input')
+                    .val(response.ticket.start_time)
+                $(ticket)
+                    .find('div.end_time div.text')
+                    .html(response.ticket.start_time)
+                $(ticket)
+                    .find('div.end_time div.editor input')
+                $(ticket)
+                    .find('a.swith').html('Edit')
+                    .addClass('edit').removeClass('save')
+                $(ticket).find('a.delete').removeClass('cancel')
+                $(ticket).removeClass('editing')
+            return
+        return
     initEditing: () ->
         scope = this
         # Edit title
@@ -464,6 +563,21 @@ Bazaarboy.event.index =
                 scope.stopEditingTags()
             else
                 scope.startEditingTags()
+            return
+        # Edit tickets
+        $('div#tickets div.controls a.add').click () =>
+            @addTicket()
+            return
+        $('div#tickets div.ticket a.switch').click () ->
+            ticket = $(this).parent().parent().parent()
+            if $(this).hasClass('edit')
+                scope.startEditingTicket(ticket)
+            else if $(this).hasClass('save')
+                scope.stopEditingTicket(ticket)
+            return
+        $('div#tickets div.ticket a.delete').click () ->
+            ticket = $(this).parent().parent().parent()
+            scope.deleteTicket(ticket)
             return
         return
     init: () ->

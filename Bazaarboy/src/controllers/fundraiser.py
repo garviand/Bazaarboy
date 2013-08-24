@@ -356,7 +356,11 @@ def edit(request, params, user):
         else:
             fundraiser.location = params['location']
     if params['latitude'] is not None and params['longitude'] is not None: 
-        if not (-90.0 <= float(params['latitude']) <= 90.0 and 
+        if (params['latitude'].lower() == 'none' or 
+            params['longitude'].lower() == 'none'):
+            fundraiser.latitude = None
+            fundraiser.longitude = None
+        elif not (-90.0 <= float(params['latitude']) <= 90.0 and 
                 -180.0 <= float(params['longitude']) <= 180.0):
             response = {
                 'status':'FAIL',

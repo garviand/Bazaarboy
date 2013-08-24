@@ -3,7 +3,7 @@
 extends ../layout
 
 block title
-    | {{ event.title }}
+    | {{ event.name }}
 
 append head
     {% if event.is_private %}
@@ -195,11 +195,48 @@ block content
             div.clear
     {% if editable %}
     div#tickets.event_overlay_canvas
-        div.title Edit Tickets
+        div.title Edit RSVP Options
+        div.controls
+            a.add(href="javascript:;") Add RSVP Option
+        mixin ticket(id, name, description, price, quantity, start_time, end_time)
+            div.ticket(class=attributes.class, data-id=id)
+                form
+                    div.name
+                        div.text= name
+                        div.editor
+                            input(type="text", name="name", placeholder="Name", value=name)
+                    div.description
+                        div.text= description
+                        div.editor
+                            input(type="text", name="description", placeholder="Short description", value=description)
+                    div.price
+                        div.text= '$ ' + price
+                        div.editor
+                            input(type="text", name="price", placeholder="Price", value=price)
+                    div.quantity
+                        div.text= quantity
+                        div.editor
+                            input(type="text", name="quantity", placeholder="Quantity (Unlimited if left blank)", value=quantity)
+                    div.start_time
+                        div.text= start_time
+                        div.editor
+                            input(type="text", name="start_time", placeholder="Start time", value=start_time)
+                    div.end_time
+                        div.text= end_time
+                        div.editor
+                            input(type="text", name="end_time", placeholder="End time", value=end_time)
+                    div.buttons
+                        a.switch.edit(href="javascript:;") Edit
+                        a.delete(href="javascript:;") Delete
+        +ticket()(class="template hidden")
+        div.tickets
+            {% for ticket in tickets %}
+            +ticket('{{ ticket.id }}', '{{ ticket.name }}', '{{ ticket.description }}', '{{ ticket.price|floatformat:-2 }}', '{{ event.quantity }}', '{{ event.start_time|date }}', '{{ event.end_time|date }}')
+            {% endfor %}
+            div.empty(class="{% if tickets|length != 0 %}hidden{% endif %}")
+                i No RSVP options yet.
     {% else %}
     div#rsvp.event_overlay_canvas
-        div.title
-            {{ event.title }}
         {% if not user %}
         div.user
             div.caption Do you have a Bazaarboy account?
