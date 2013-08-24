@@ -86,7 +86,7 @@ class Email(object):
          'from_email': 'build@bazaarboy.com',
          'from_name': 'Bazaarboy',
          'headers': {'Reply-To': 'build@bazaarboy.com'},
-         'subject': 'You have RSVP\'d for the event \''+purchase.event.name+'\'',
+         'subject': 'You have RSVP\'d for \''+purchase.event.name+'\'',
          'global_merge_vars': [{'name': 'event_name', 'content': purchase.event.name}, {'name': 'confirmation_code', 'content': 'fakecode'}],
          'to': [{'email': purchase.owner.email, 'name': purchase.owner.full_name}],
          'track_clicks': True,
@@ -94,10 +94,27 @@ class Email(object):
 
         result = mandrill_client.messages.send_template(template_name='confirm-rsvp', template_content=template_content, message=message, async=False)
 
-        return result 
+        return result
 
-    def sendDonationConfirmationEmail(self, donation):
-        pass
+    def sendDonationConfirmationEmail(self, donation, userProfile):
+        """
+        Send Donation Confirmation
+        """
+        mandrill_client = mandrill.Mandrill('EJmj_TdbdCy6Xda_9hREKA')
+        template_content = []
+        message = {
+         'from_email': 'build@bazaarboy.com',
+         'from_name': 'Bazaarboy',
+         'headers': {'Reply-To': 'build@bazaarboy.com'},
+         'subject': 'Thanks for donating to \''+donation.fundraiser.name+'\'',
+         'global_merge_vars': [{'name': 'fundraiser_name', 'content': donation.fundraiser.name}, {'name': 'user_name', 'content': donation.owner.full_name},  {'name': 'user_profile', 'content': userProfile.profile.id}],
+         'to': [{'email': donation.owner.email, 'name': donation.owner.full_name}],
+         'track_clicks': True,
+         'track_opens': True}
+
+        result = mandrill_client.messages.send_template(template_name='confirm-donation', template_content=template_content, message=message, async=False)
+
+        return result
 
     def sendWeeklyDigestEmail(self, user):
         pass

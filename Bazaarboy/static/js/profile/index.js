@@ -204,6 +204,7 @@
           $('div#profile div.cover div.image div.bounds img').remove();
           $('div#profile div.cover div.controls a.edit').html('Add Cover');
           $('div#profile div.cover div.controls a.delete').addClass('hidden');
+          _this.cover = null;
         } else {
           alert(err.message);
         }
@@ -274,7 +275,7 @@
       });
       $('div#profile div.cover a.cancel').click(function() {
         var original;
-        original = (typeof _this.cover === "function" ? _this.cover(_this.cover) : void 0) ? void 0 : false;
+        original = _this.cover != null ? _this.cover : false;
         _this.stopEditingCoverImage(original);
         if (_this.uploads.cover != null) {
           Bazaarboy.post('file/image/delete/', {
