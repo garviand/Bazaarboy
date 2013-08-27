@@ -231,7 +231,7 @@ block content
         +ticket()(class="template hidden")
         div.tickets
             {% for ticket in tickets %}
-            +ticket('{{ ticket.id }}', '{{ ticket.name }}', '{{ ticket.description }}', '{{ ticket.price|floatformat:-2 }}', '{{ event.quantity }}', '{{ event.start_time|date }}', '{{ event.end_time|date }}')
+            +ticket('{{ ticket.id }}', '{{ ticket.name }}', '{{ ticket.description }}', '{{ ticket.price|floatformat:-2 }}', '{{ ticket.quantity }}', '{{ ticket.start_time|standardTime }}', '{{ ticket.end_time|standardTime }}')
             {% endfor %}
             div.empty(class="{% if tickets|length != 0 %}hidden{% endif %}")
                 i No RSVP options yet.

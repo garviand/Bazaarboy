@@ -230,7 +230,6 @@
       width = parseInt(width);
       height = parseInt(height);
       viewport = "" + x + "," + y + "," + width + "," + height;
-      console.log(viewport);
       Bazaarboy.post('file/image/crop/', {
         id: this.uploads.cover.pk,
         viewport: viewport
@@ -416,18 +415,20 @@
           $('div#tickets div.tickets div.empty').removeClass('hidden');
         }
       } else {
-        Bazaarboy.post('event/ticket/delete/', {
-          id: id
-        }, function(response) {
-          if (response.status === 'OK') {
-            $(ticket).remove();
-            if ($('div#tickets div.tickets div.ticket').length === 0) {
-              $('div#tickets div.tickets div.empty').removeClass('hidden');
+        if (confirm('Are you sure you want to delete this ticket?')) {
+          Bazaarboy.post('event/ticket/delete/', {
+            id: id
+          }, function(response) {
+            if (response.status === 'OK') {
+              $(ticket).remove();
+              if ($('div#tickets div.tickets div.ticket').length === 0) {
+                $('div#tickets div.tickets div.empty').removeClass('hidden');
+              }
+            } else {
+              alert(response.message);
             }
-          } else {
-            alert(response.message);
-          }
-        });
+          });
+        }
       }
     },
     startEditingTicket: function(ticket) {
@@ -437,7 +438,6 @@
     stopEditingTicket: function(ticket) {
       var data, endpoint, id,
         _this = this;
-      console.log(ticket);
       id = $(ticket).attr('data-id');
       data = $(ticket).find('form').serializeObject();
       endpoint = '';
@@ -459,28 +459,34 @@
         if (data.quantity.trim() === '') {
           data.quantity = 'none';
         }
+        if (data.start_time.trim() === '') {
+          data.start_time = 'none';
+        }
+        if (data.end_time.trim() === '') {
+          data.end_time = 'none';
+        }
       }
       if (typeof token !== "undefined" && token !== null) {
         data.token = token;
       }
       Bazaarboy.post(endpoint, data, function(response) {
+        var key, value, _ref;
         if (response.status !== 'OK') {
           alert(response.message);
         } else {
           console.log(response.ticket);
-          $(ticket).attr('data-id', response.ticket.pk);
-          $(ticket).find('div.name div.text').html(response.ticket.name);
-          $(ticket).find('div.name div.editor input').val(response.ticket.name);
-          $(ticket).find('div.description div.text').html(response.ticket.description);
-          $(ticket).find('div.description div.editor input').val(response.ticket.description);
-          $(ticket).find('div.price div.text').html("$ " + response.ticket.price);
-          $(ticket).find('div.price div.editor input').val(response.ticket.price);
-          $(ticket).find('div.quantity div.text').html(response.ticket.quantity);
-          $(ticket).find('div.quantity div.editor input').val(response.ticket.quantity);
-          $(ticket).find('div.start_time div.text').html(response.ticket.start_time);
-          $(ticket).find('div.start_time div.editor input').val(response.ticket.start_time);
-          $(ticket).find('div.end_time div.text').html(response.ticket.start_time);
-          $(ticket).find('div.end_time div.editor input');
+          _ref = response.ticket;
+          for (key in _ref) {
+            value = _ref[key];
+            if (key === 'pk') {
+              $(ticket).attr('data-id', response.ticket.pk);
+            } else if (key === 'price') {
+              $(ticket).find('div.price div.text').html("$ " + response.ticket.price);
+            } else {
+              $(ticket).find("div." + key + " div.text").html(response.ticket[key]);
+              $(ticket).find("div." + key + " div.editor input").val(response.ticket[key]);
+            }
+          }
           $(ticket).find('a.swith').html('Edit').addClass('edit').removeClass('save');
           $(ticket).find('a.delete').removeClass('cancel');
           $(ticket).removeClass('editing');

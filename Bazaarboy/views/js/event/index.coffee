@@ -226,7 +226,6 @@ Bazaarboy.event.index =
         width = parseInt(width)
         height = parseInt(height)
         viewport = "#{x},#{y},#{width},#{height}"
-        console.log viewport
         Bazaarboy.post 'file/image/crop/', 
             id: @uploads.cover.pk
             viewport: viewport
@@ -399,15 +398,16 @@ Bazaarboy.event.index =
             if $('div#tickets div.tickets div.ticket').length is 0
                 $('div#tickets div.tickets div.empty').removeClass('hidden')
         else
-            Bazaarboy.post 'event/ticket/delete/', {id: id}, (response) =>
-                if response.status is 'OK'
-                    $(ticket).remove()
-                    if $('div#tickets div.tickets div.ticket').length is 0
-                        $('div#tickets div.tickets div.empty')
-                            .removeClass('hidden')
-                else
-                    alert response.message
-                return
+            if confirm('Are you sure you want to delete this ticket?')
+                Bazaarboy.post 'event/ticket/delete/', {id: id}, (response) =>
+                    if response.status is 'OK'
+                        $(ticket).remove()
+                        if $('div#tickets div.tickets div.ticket').length is 0
+                            $('div#tickets div.tickets div.empty')
+                                .removeClass('hidden')
+                    else
+                        alert response.message
+                    return
         return
     startEditingTicket: (ticket) ->
         $(ticket)
@@ -416,7 +416,6 @@ Bazaarboy.event.index =
         $(ticket).addClass('editing')
         return
     stopEditingTicket: (ticket) ->
-        console.log ticket
         id = $(ticket).attr('data-id')
         data = $(ticket).find('form').serializeObject()
         endpoint = ''
@@ -436,6 +435,10 @@ Bazaarboy.event.index =
             data.id = id
             if data.quantity.trim() is ''
                 data.quantity = 'none'
+            if data.start_time.trim() is ''
+                data.start_time = 'none'
+            if data.end_time.trim() is ''
+                data.end_time = 'none'
         if token?
             data.token = token
         Bazaarboy.post endpoint, data, (response) =>
@@ -444,37 +447,19 @@ Bazaarboy.event.index =
             else
                 console.log response.ticket
                 # Update the information
-                $(ticket).attr('data-id', response.ticket.pk)
-                $(ticket).find('div.name div.text').html(response.ticket.name)
-                $(ticket)
-                    .find('div.name div.editor input').val(response.ticket.name)
-                $(ticket)
-                    .find('div.description div.text')
-                    .html(response.ticket.description)
-                $(ticket)
-                    .find('div.description div.editor input')
-                    .val(response.ticket.description)
-                $(ticket).find('div.price div.text')
-                    .html("$ #{response.ticket.price}")
-                $(ticket)
-                    .find('div.price div.editor input').val(response.ticket.price)
-                $(ticket)
-                    .find('div.quantity div.text')
-                    .html(response.ticket.quantity)
-                $(ticket)
-                    .find('div.quantity div.editor input')
-                    .val(response.ticket.quantity)
-                $(ticket)
-                    .find('div.start_time div.text')
-                    .html(response.ticket.start_time)
-                $(ticket)
-                    .find('div.start_time div.editor input')
-                    .val(response.ticket.start_time)
-                $(ticket)
-                    .find('div.end_time div.text')
-                    .html(response.ticket.start_time)
-                $(ticket)
-                    .find('div.end_time div.editor input')
+                for key, value of response.ticket
+                    if key is 'pk'
+                        $(ticket).attr('data-id', response.ticket.pk)
+                    else if key is 'price'
+                        $(ticket).find('div.price div.text')
+                            .html("$ #{response.ticket.price}")
+                    else
+                        $(ticket)
+                            .find("div.#{key} div.text")
+                            .html(response.ticket[key])
+                        $(ticket)
+                            .find("div.#{key} div.editor input")
+                            .val(response.ticket[key])
                 $(ticket)
                     .find('a.swith').html('Edit')
                     .addClass('edit').removeClass('save')

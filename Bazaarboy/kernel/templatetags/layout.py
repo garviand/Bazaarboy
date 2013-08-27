@@ -22,3 +22,11 @@ def shouldShortenEndTime(endTime, startTime):
     endTime = localize(endTime)
     startTime = localize(startTime)
     return endTime.day == startTime.day
+
+@register.filter
+def standardTime(time):
+    """
+    Output a datetime object to text in standard format
+    """
+    time = localize(time)
+    return time.strftime('%Y-%m-%d %X') if time is not None else ''

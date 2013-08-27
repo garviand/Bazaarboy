@@ -457,6 +457,11 @@ def delaunch(request, params, user):
     }
     return json_response(response)
 
+@login_required()
+@validate('POST', ['id'])
+def syncToFB(request, params, user):
+    pass
+
 @login_check()
 @validate('POST', ['id'], ['token'])
 def delete(request, params, user):
@@ -599,7 +604,7 @@ def create_ticket(request, params, user):
         else:
             ticket.start_time = params['start_time']
     if params['end_time'] is not None:
-        if (params['end_time'] >= event.start_time or 
+        if (params['end_time'] > event.start_time or 
             (ticket.start_time is not None and 
              params['end_time'] <= ticket.start_time)):
             response = {
@@ -721,7 +726,7 @@ def edit_ticket(request, params, user):
         else:
             ticket.start_time = params['start_time']
     if params['end_time'] is not None:
-        if (params['end_time'] >= event.start_time or 
+        if (params['end_time'] > event.start_time or 
             (ticket.start_time is not None and 
              params['end_time'] <= ticket.start_time)):
             response = {
