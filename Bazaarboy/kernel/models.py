@@ -227,7 +227,6 @@ class Event_base(models.Model):
     is_launched = models.BooleanField(default = False)
     is_closed = models.BooleanField(default = False)
     category = models.CharField(max_length = 30)
-    owner = models.ForeignKey('Profile', null = True, default = None)
     community = models.ForeignKey('Community', 
                                   related_name = '%(class)s_community', 
                                   null = True, default = None)
@@ -239,16 +238,6 @@ class Event_base(models.Model):
 
     class Meta:
         abstract = True
-
-    def save(self, *args, **kwargs):
-        """
-        Overrides save to auto-set community and city
-        """
-        if self.pk is None and self.owner is not None:
-            # Auto-set the community and city for the new event
-            self.community = self.owner.community
-            self.city = self.owner.city
-        super(Event_base, self).save(*args, **kwargs)
 
 class InsufficientQuantity(Exception):
     """
@@ -262,6 +251,17 @@ class Event(Event_base):
     """
     start_time = models.DateTimeField()
     end_time = models.DateTimeField(null = True, default = None)
+    organizers = models.ManyToManyField('Profile', 
+                                        through = 'Event_organizer')
+
+class Event_organizer(models.Model):
+    """
+    Organizer model for an event
+    """
+    event = models.ForeignKey('Event')
+    profile = models.ForeignKey('Profile')
+    is_creator = models.BooleanField(default = False)
+    created_time = models.DateTimeField(auto_now_add = True)
 
 class Ticket(models.Model):
     """
@@ -303,6 +303,8 @@ class Fundraiser(Event_base):
     """
     goal = models.FloatField()
     deadline = models.DateTimeField()
+    organizers = models.ManyToManyField('Profile', 
+                                        through = 'Fundraiser_organizer')
 
     def save(self, *args, **kwargs):
         """
@@ -314,6 +316,15 @@ class Fundraiser(Event_base):
             reward = Reward(fundraiser = self, name = '', 
                             description = '', price = 0)
             reward.save()
+
+class Fundraiser_organizer(models.Model):
+    """
+    Organizer model for a fundraiser
+    """
+    fundraiser = models.ForeignKey('Fundraiser')
+    profile = models.ForeignKey('Profile')
+    is_creator = models.BooleanField(default = False)
+    created_time = models.DateTimeField(auto_now_add = True)
 
 class Reward(models.Model):
     """
@@ -417,88 +428,6 @@ class Fundraiser_sponsorship_display(Sponsorship_display):
     sponsorship = models.ForeignKey('Fundraiser_sponsorship', 
                                     null = True, default = None)
     _for = models.ForeignKey('Fundraiser')
-
-class Redeemable(models.Model):
-    """
-    Redeemable rewards for points
-    """
-    owner = models.ForeignKey('Profile')
-    name = models.CharField(max_length = 50)
-    description = models.CharField(max_length = 500)
-    quantity = models.IntegerField(null = True)
-    value = models.IntegerField() # Monetary value
-    points = models.IntegerField()
-    is_expired = models.BooleanField(default = False)
-    expiration_time = models.DateTimeField(null = True, default = None)
-    community = models.ForeignKey('Community')
-    city = models.ForeignKey('City')
-    created_time = models.DateTimeField(auto_now_add = True)
-
-    def save(self, *args, **kwargs):
-        """
-        Overrides save to auto-set community and city
-        """
-        if self.pk is None:
-            # Auto-set the community and city for the redeemable
-            self.community = self.owner.community
-            self.city = self.owner.city
-        super(Redeemable, self).save(*args, **kwargs)
-
-class InsufficientPoints(Exception):
-    """
-    An exception for when points are not sufficient to claim a redeemable
-    """
-    def __init__(self, pointsNeeded):
-        self.pointsNeeded = pointsNeeded
-
-class ExpiredRedeemable(Exception):
-    """
-    An exception for claiming an expired redeemable
-    """
-    def __init__(self, redeemable):
-        self.redeemable = redeemable
-
-class Claim(models.Model):
-    """
-    A claim for a redeemable
-    """
-    redeemable = models.ForeignKey('Redeemable')
-    owner = models.ForeignKey('User')
-    code = models.CharField(max_length = 100)
-    is_redeemed = models.BooleanField(default = False)
-    redeemed_time = models.DateTimeField(null = True, default = None)
-    created_time = models.DateTimeField(auto_now_add = True)
-
-    def save(self, *args, **kwargs):
-        """
-        Overrides save to conduct proper claiming behavior
-        """
-        shouldFireSubtractEvent = False
-        if self.pk is None:
-            # Check if the redeemable is expired
-            if (self.redeemable.is_expired or 
-                self.redeemable.expiration_time <= timezone.now()):
-                raise ExpiredRedeemable(self.redeemable)
-            # Check if the redeemable has sufficient quantity
-            if (self.redeemable.quantity is not None and 
-                self.redeemable.quantity < 1):
-                raise InsufficientQuantity()
-            # Check if user has sufficient points
-            remainingPoints = self.owner.points - self.redeemable.points
-            if remainingPoints < 0:
-                raise InsufficientPoints(abs(remainingPoints))
-            # All checks passed, perform transactions
-            self.redeemable.quantity = F('quantity') - 1
-            self.redeemable.save()
-            self.user.points = F('points') - self.redeemable.points
-            self.user.save()
-            shouldFireSubtractEvent = True
-        super(Claim, self).save(*args, **kwargs)
-        if shouldFireSubtractEvent:
-            # Fire a subtract points event
-            Subtract_points_event(user = self.owner, 
-                                  redeemable = self.redeemable, 
-                                  points = self.redeemable.points).save()
 
 class Image(models.Model):
     """

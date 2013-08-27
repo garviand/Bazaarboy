@@ -173,13 +173,17 @@ def create(request, params, user):
                 'message':'You don\'t have permission for the profile.'
             }
             return json_response(response)
-        # Set the owner of the event to the specified profile
-        event.owner = profile
+        # Save to database
+        event.save()
+        # Set the profile as the organizer and creator of the event
+        organizer = Event_organizer(event = event, profile = profile, 
+                                    is_creator = True)
+        organizer.save()
     else:
         # Otherwise, generate an access token for the anonymous user
         event.access_token = os.urandom(32).encode('base_64')[:32]
-    # Save to database
-    event.save()
+        # Save to database
+        event.save()
     response = {
         'status':'OK',
         'event':serialize_one(event)
@@ -207,8 +211,9 @@ def edit(request, params, user):
     # Check if user has logged in
     if user is not None:
         # If so, check if user has permission for the event
-        if not Profile_manager.objects.filter(user = user, 
-                                              profile = event.owner).exists():
+        if not Event_organizer.objects.filter(event = event, 
+                                              profile__managers = user) \
+                                      .exists():
             response = {
                 'status':'FAIL',
                 'error':'NOT_A_MANAGER',
@@ -379,7 +384,8 @@ def launch(request, params, user):
         return json_response(response)
     event = Event.objects.get(id = params['id'])
     # Check if user has permission for the event
-    if not Profile_manager.objects.filter(user = user, profile = event.owner) \
+    if not Event_organizer.objects.filter(event = event, 
+                                          profile__managers = user) \
                                   .exists():
         response = {
             'status':'FAIL',
@@ -420,7 +426,8 @@ def delaunch(request, params, user):
         return json_response(response)
     event = Event.objects.get(id = params['id'])
     # Check if user has permission for the event
-    if not Profile_manager.objects.filter(user = user, profile = event.owner) \
+    if not Event_organizer.objects.filter(event = event, 
+                                          profile__managers = user) \
                                   .exists():
         response = {
             'status':'FAIL',
@@ -480,7 +487,8 @@ def delete(request, params, user):
     # Check if user is logged in
     if user is not None:
         # If so, check if user has permission for the event
-        if not Profile_manager.objects.filter(user = user, profile = event.owner) \
+        if not Event_organizer.objects.filter(event = event, 
+                                              profile__managers = user) \
                                       .exists():
             response = {
                 'status':'FAIL',
@@ -533,7 +541,8 @@ def create_ticket(request, params, user):
     # Check if user is logged in
     if user is not None:
         # If so, check if user has permission for the event
-        if not Profile_manager.objects.filter(user = user, profile = event.owner) \
+        if not Event_organizer.objects.filter(event = event, 
+                                              profile__managers = user) \
                                       .exists():
             response = {
                 'status':'FAIL',
@@ -644,7 +653,8 @@ def edit_ticket(request, params, user):
     # Check if user is logged in
     if user is not None:
         # If so, check if user has permission for the event
-        if not Profile_manager.objects.filter(user = user, profile = event.owner) \
+        if not Event_organizer.objects.filter(event = event, 
+                                              profile__managers = user) \
                                       .exists():
             response = {
                 'status':'FAIL',
@@ -764,8 +774,8 @@ def delete_ticket(request, params, user):
     # Check if user is logged in
     if user is not None:
         # If so, check if user has permission for the event
-        user = User.objects.get(id = request.session['user'])
-        if not Profile_manager.objects.filter(user = user, profile = event.owner) \
+        if not Event_organizer.objects.filter(event = event, 
+                                              profile__managers = user) \
                                       .exists():
             response = {
                 'status':'FAIL',

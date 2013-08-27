@@ -176,13 +176,18 @@ def create(request, params, user):
                 'message':'You don\'t have permission for the profile.'
             }
             return json_response(response)
-        # Set the owner of the fundraiser to the specified profile
-        fundraiser.owner = profile
+        # Save to database
+        fundraiser.save()
+        # Set the profile as the organizer and creator of the fundraiser
+        organizer = Fundraiser_organizer(fundraiser = fundraiser, 
+                                         profile = profile, 
+                                         is_creator = True)
+        organizer.save()
     else:
         # Otherwise, generate an access token for the anonymous user
         fundraiser.access_token = os.urandom(128).encode('base_64')[:128]
-    # Save to database
-    fundraiser.save()
+        # Save to database
+        fundraiser.save()
     response = {
         'status':'OK',
         'fundraiser':serialize_one(fundraiser)
@@ -210,9 +215,9 @@ def edit(request, params, user):
     # Check if user has logged in
     if user is not None:
         # If so, check if user has permission for the fundraiser
-        if not Profile_manager.objects.filter(user = user, 
-                                              profile = fundraiser.owner) \
-                                      .exists():
+        if not Fundraiser_organizer.objects.filter(fundraiser = fundraiser,  
+                                                   profile_managers = user) \
+                                           .exists():
             response = {
                 'status':'FAIL',
                 'error':'NOT_A_MANAGER',
@@ -399,9 +404,9 @@ def launch(request, params, user):
         return json_response(response)
     fundraiser = Fundraiser.objects.get(id = params['id'])
     # Check if user has permission for the fundraiser
-    if not Profile_manager.objects.filter(user = user, 
-                                          profile = fundraiser.owner) \
-                                  .exists():
+    if not Fundraiser_organizer.objects.filter(fundraiser = fundraiser,  
+                                               profile_managers = user) \
+                                       .exists():
         response = {
             'status':'FAIL',
             'error':'NOT_A_MANAGER',
@@ -441,9 +446,9 @@ def delaunch(request, params, user):
         return json_response(response)
     fundraiser = Fundraiser.objects.get(id = params['id'])
     # Check if user has permission for the fundraiser
-    if not Profile_manager.objects.filter(user = user, 
-                                          profile = fundraiser.owner) \
-                                  .exists():
+    if not Fundraiser_organizer.objects.filter(fundraiser = fundraiser,  
+                                               profile_managers = user) \
+                                       .exists():
         response = {
             'status':'FAIL',
             'error':'NOT_A_MANAGER',
@@ -499,9 +504,9 @@ def delete(request, params, user):
     # Check if user has logged in
     if user is not None:
         # If so, check if user has permission for the fundraiser
-        if not Profile_manager.objects.filter(user = user, 
-                                              profile = fundraiser.owner) \
-                                      .exists():
+        if not Fundraiser_organizer.objects.filter(fundraiser = fundraiser,  
+                                                   profile_managers = user) \
+                                           .exists():
             response = {
                 'status':'FAIL',
                 'error':'NOT_A_MANAGER',
@@ -552,9 +557,9 @@ def create_reward(request, params, user):
     # Check if user has logged in
     if user is not None:
         # If so, check if user has permission for the fundraiser
-        if not Profile_manager.objects.filter(user = user, 
-                                              profile = fundraiser.owner) \
-                                      .exists():
+        if not Fundraiser_organizer.objects.filter(fundraiser = fundraiser,  
+                                                   profile_managers = user) \
+                                           .exists():
             response = {
                 'status':'FAIL',
                 'error':'NOT_A_MANAGER',
@@ -647,9 +652,9 @@ def edit_reward(request, params, user):
     # Check if user has logged in
     if user is not None:
         # If so, check if user has permission for the fundraiser
-        if not Profile_manager.objects.filter(user = user, 
-                                              profile = fundraiser.owner) \
-                                      .exists():
+        if not Fundraiser_organizer.objects.filter(fundraiser = fundraiser,  
+                                                   profile_managers = user) \
+                                           .exists():
             response = {
                 'status':'FAIL',
                 'error':'NOT_A_MANAGER',
@@ -755,9 +760,9 @@ def delete_reward(request, params, user):
     # Check if user has logged in
     if user is not None:
         # If so, check if user has permission for the fundraiser
-        if not Profile_manager.objects.filter(user = user, 
-                                              profile = fundraiser.owner) \
-                                      .exists():
+        if not Fundraiser_organizer.objects.filter(fundraiser = fundraiser,  
+                                                   profile_managers = user) \
+                                           .exists():
             response = {
                 'status':'FAIL',
                 'error':'NOT_A_MANAGER',
