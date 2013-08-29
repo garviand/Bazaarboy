@@ -13,6 +13,7 @@ from kernel.models import *
 from src.config import *
 from src.controllers.request import *
 from src.controllers.wepay import create_checkout
+from src.regex import REGEX_EMAIL
 from src.sanitizer import sanitize_redactor_input
 from src.serializer import serialize_one
 
@@ -29,10 +30,10 @@ def index(request, id, params, user):
     event = Event.objects.select_related().get(id = id)
     tickets = Ticket.objects.filter(event = event)
     editable = False
-    if event.owner is not None:
+    if Event_organizer.objects.filter(event = event).count() != 0:
         editable = (user is not None and 
-                    Profile_manager.objects.filter(user = user, 
-                                                   profile = event.owner) \
+                    Event_organizer.objects.filter(event = event, 
+                                                   profile__managers = user) \
                                            .exists())
         if not editable and not event.is_launched:
             return redirect('index')
@@ -40,6 +41,7 @@ def index(request, id, params, user):
         editable = True
     else:
         return redirect('index')
+    organizers = Event_organizer.objects.filter(event = event)
     return render(request, 'event/index.html', locals())
 
 @login_check()
@@ -367,6 +369,16 @@ def edit(request, params, user):
         'event':serialize_one(event)
     }
     return json_response(response)
+
+@login_required()
+@validate('POST', ['id', 'profile'])
+def add_organizer(request, params, user):
+    pass
+
+@login_required()
+@validate('POST', ['id', 'profile'])
+def delete_organizer(request, params, user):
+    pass
 
 @login_required()
 @validate('POST', ['id'])
@@ -826,7 +838,7 @@ def mark_purchase_as_expired(purchase):
     return True
 
 @login_check()
-@validate('POST', ['ticket'], ['email'])
+@validate('POST', ['ticket'], ['email', 'full_name'])
 def purchase(request, params, user):
     """
     Purchase a ticket
@@ -840,6 +852,13 @@ def purchase(request, params, user):
                 'message':'You need an email to purchase the ticket.'
             }
             return json_response(response)
+        if not REGEX_EMAIL.match(params['email']):
+            response = {
+                'status':'FAIL',
+                'error':'INVALID_EMAIL',
+                'message':'Email format is invalid.'
+            }
+            return json_response(response)
         user, created = User.objects.get_or_create(email = params['email'])
         if not (user.password is None and user.fb_id is None):
             response = {
@@ -848,6 +867,22 @@ def purchase(request, params, user):
                 'message':'This email collides with an existing account.'
             }
             return json_response(response)
+        if params['full_name'] is None:
+            response = {
+                'status':'FAIL',
+                'error':'MISSING_FULL_NAME',
+                'message':'You need your full name to purchase the ticket.'
+            }
+            return json_response(response)
+        if not (0 < len(params['full_name']) <= 50):
+            response = {
+                'status':'FAIL',
+                'error':'INVALID_NAME',
+                'message':'Your full name cannot be blank or over 50 chars.'
+            }
+            return json_response(response)
+        user.full_name = params['full_name']
+        user.save()
     # Check if the ticket is valid
     if not Ticket.objects.filter(id = params['ticket']).exists():
         response = {
@@ -915,11 +950,17 @@ def purchase(request, params, user):
             'message':'You have already bought a ticket to the event.'
         }
         return json_response(response)
+    # Get the event creator's wepay account
+    creator = Event_organizer.objects.get(event = event, is_creator = True) \
+                                     .profile
     # All checks passed, request a checkout on WePay
     checkoutDescription = '%s - %s' % (event.name, ticket.name)
-    checkoutInfo = create_checkout('EVENT', event.owner.wepay_account, 
-                                   checkoutDescription, ticket.price)
-    checkout = Wepay_checkout(payer = user, payee = event.owner.wepay_account, 
+    checkoutInfo = create_checkout('event', 
+                                   creator.wepay_account, 
+                                   checkoutDescription, 
+                                   ticket.price, 
+                                   'type=purchase')
+    checkout = Wepay_checkout(payer = user, payee = creator.wepay_account, 
                               checkout_id = checkoutInfo['checkout_id'],
                               amount = ticket.price, 
                               description = checkoutDescription[:127])
@@ -941,6 +982,7 @@ def purchase(request, params, user):
     response = {
         'status':'OK',
         'purchase':serialize_one(purchase),
-        'checkout':serialize_one(checkout)
+        'checkout':serialize_one(checkout),
+        'checkoutUri':checkoutInfo['checkout_uri']
     }
     return json_response(response)

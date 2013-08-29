@@ -2,7 +2,9 @@
 Bazaarboy configurations
 """
 
-BBOY_URL_ROOT = 'http://localhost:8080'
+import os
+
+BBOY_URL_ROOT = os.getenv('BBOY_URL_ROOT', 'https://www.bazaarboy.com')
 BBOY_TRANSACTION_EXPIRATION = 15 # In minutes
 BBOY_STATES = [
     'AK', 'AL', 'AR', 'AS', 'AZ', 'CA', 'CO', 'CT', 'DC', 'DE', 'FL', 'GA', 

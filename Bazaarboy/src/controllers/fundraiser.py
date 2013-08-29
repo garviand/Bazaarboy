@@ -29,11 +29,11 @@ def index(request, id, params, user):
         raise Http404
     fundraiser = Fundraiser.objects.select_related().get(id = id)
     editable = False
-    if fundraiser.owner is not None:
+    if Fundraiser_organizer.objects.filter(fundraiser = fundraiser).count():
         editable = (user is not None and 
-                    Profile_manager.objects.filter(user = user, 
-                                                   profile = fundraiser.owner) \
-                                           .exists())
+                    Fundraiser_organizer.objects.filter(fundraiser = fundraiser, 
+                                                        profile__managers = user) \
+                                                .exists())
         if not editable and not fundraiser.is_launched:
             return redirect('index')
     elif (params['token'] is not None and 
@@ -41,6 +41,7 @@ def index(request, id, params, user):
         editable = True
     else:
         return redirect('index')
+    organizers = Fundraiser_organizer.objects.filter(fundraiser = fundraiser)
     """
     return render(request, 'fundraiser/index.html', locals())
 
@@ -821,7 +822,7 @@ def mark_donation_as_expired(donation):
     return True
 
 @login_check()
-@validate('POST', ['reward', 'amount'], ['email'])
+@validate('POST', ['reward', 'amount'], ['email', 'full_name'])
 def donate(request, params, user):
     """
     Donate for a reward
@@ -835,6 +836,13 @@ def donate(request, params, user):
                 'message':'You need an email to purchase the ticket.'
             }
             return json_response(response)
+        if not REGEX_EMAIL.match(params['email']):
+            response = {
+                'status':'FAIL',
+                'error':'INVALID_EMAIL',
+                'message':'Email format is invalid.'
+            }
+            return json_response(response)
         user, created = User.objects.get_or_create(email = params['email'])
         if not (user.password is None and user.fb_id is None):
             response = {
@@ -843,6 +851,22 @@ def donate(request, params, user):
                 'message':'This email collides with an existing account.'
             }
             return json_response(response)
+        if params['full_name'] is None:
+            response = {
+                'status':'FAIL',
+                'error':'MISSING_FULL_NAME',
+                'message':'You need your full name to purchase the ticket.'
+            }
+            return json_response(response)
+        if not (0 < len(params['full_name']) <= 50):
+            response = {
+                'status':'FAIL',
+                'error':'INVALID_NAME',
+                'message':'Your full name cannot be blank or over 50 chars.'
+            }
+            return json_response(response)
+        user.full_name = params['full_name']
+        user.save()
     # Check if the reward is valid
     if not Reward.objects.filter(id = params['reward']).exists():
         response = {
@@ -897,14 +921,21 @@ def donate(request, params, user):
             'message':'Your donation amount is not valid for this reward.'
         }
         return json_response(response)
+    # Get the fundraiser creator's wepay account
+    creator = Fundraiser_organizer.objects.get(fundraiser = fundraiser, 
+                                               is_creator = True) \
+                                          .profile
     # All checks passed, request a checkout on WePay
     checkoutDescription = fundraiser.name
     if len(reward.name) > 0:
         checkoutDescription += ' - ' + reward.name
-    checkoutInfo = create_checkout('DONATION', fundraiser.owner.wepay_account, 
-                                   checkoutDescription, params['amount'])
+    checkoutInfo = create_checkout('donation', 
+                                   creator.wepay_account, 
+                                   checkoutDescription, 
+                                   params['amount'], 
+                                   'type=fundraiser')
     checkout = Wepay_checkout(payer = user, 
-                              payee = fundraiser.owner.wepay_account, 
+                              payee = creator.wepay_account, 
                               checkout_id = checkoutInfo['checkout_id'], 
                               amount = params['amount'], 
                               description = checkoutDescription[:127])

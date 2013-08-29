@@ -21,7 +21,7 @@ prepend body
     {% endif %}
 
 block content
-    div#event.content_divided.event_base(class="{% if event.cover %}big_cover {% if editable %}with_caption{% endif %}{% endif %}")
+    div#event.content_divided.event_base(class="{% if event.cover %}big_cover {% if editable %}with_caption{% else %}{% if event.cover and event.cover.caption|length != 0 %}with_caption{% endif %}{% endif %}{% endif %}")
         div.cover
             div.image
                 div.bounds
@@ -134,14 +134,16 @@ block content
                     {% endif %}
                 div.organizers.info
                     div.caption
-                        div.text Organizer
+                        div.text Organizer{{ organizers|pluralize }}
                         div.clear
                     div.body
+                        {% for organizer in organizers %}
                         div.organizer
                             div.icon
                             div.name
-                                a(href="{% url profile:index event.owner.id %}")
-                                    | {{ event.owner.name }}
+                                a(href="{% url profile:index organizer.profile.id %}")
+                                    | {{ organizer.profile.name }}
+                        {% endfor %}
                 div.summary.info
                     div.caption
                         div.text Summary
@@ -184,6 +186,7 @@ block content
                                 | {{ event.tags }}
                         {% endif %}
             div.clear
+        div.placeholder
         div.sponsors
             div.caption
                 div.text Sponsors
@@ -237,10 +240,37 @@ block content
                 i No RSVP options yet.
     {% else %}
     div#rsvp.event_overlay_canvas
+        div.tickets
+            div.header
+                div.title RSVP Options
+                div.caption
+            div.content
+                {% for ticket in tickets %}
+                div.ticket(class="{% if ticket|validateTiming %}valid{% endif %}", data-id="{{ ticket.id }}")
+                    div.input
+                        input(type="radio")
+                    div.body
+                        div.name {{ ticket.name }}
+                        div.description {{ ticket.description }}
+                    div.detail
+                        div.price 
+                            b $ {{ ticket.price|floatformat:-2 }}
+                        div.quantity 
+                            | {% if ticket.quantity == None %}
+                            | Unlimited
+                            | {% elif ticket.quantity == 0 %}
+                            | Sold Out
+                            | {% else %}
+                            | {{ ticket.quantity }} Left
+                            | {% endif %}
+                    div.clear
+                {% endfor %}
         {% if not user %}
-        div.user
-            div.caption Do you have a Bazaarboy account?
-            div.normal
+        div.user.hidden
+            div.header
+                div.title Continue as a user
+                div.caption Save time with an account on Bazaarboy
+            div.content
                 div.login
                     div.caption Log In
                     div.form
@@ -259,19 +289,39 @@ block content
                             input(type="submit", value="Register")
                             input(type="hidden", name="city", value="{{ event.city.id }}")
                 div.clear
-        div.divider or
-        div.email
-            input(type="text", name="email", placeholder="Email")
+        div.info
+            div.header
+                div.title RSVP details
+                div.caption
+            div.content
+                input(type="text", name="email", placeholder="Email")
+                input(type="text", name="full_name", placeholder="Full Name")
+                input(type="text", name="phone", placeholder="Phone Number (Optional)")
         {% endif %}
-        div.tickets
-        div.action
-        div.checkout
+        div.action.hidden
+            div.header
+                div.title
+                    a.confirm(href="javascript:;") Confirm
+        div.checkout.hidden
+            div.header
+                div.title Checkout
+            div.content
+                div#checkout_frame
+        div.confirmation.hidden
+            div.header
+                div.title Confirmation
+            div.content
+                div.caption Thank you!
     {% endif %}
 
 append script
-    //script(type="text/javascript", src="https://maps.googleapis.com/maps/api/js?sensor=false&key=AIzaSyBb4LqJdxCDjVWlgqLsdgtMpiI3fFloTiw")
+    //-script(type="text/javascript", src="https://maps.googleapis.com/maps/api/js?sensor=false&key=AIzaSyBb4LqJdxCDjVWlgqLsdgtMpiI3fFloTiw")
+    {% if editable %}
     script(type="text/javascript", src="{{ STATIC_URL }}jQueryUI/jquery-ui.min.js")
     script(type="text/javascript", src="{{ STATIC_URL }}redactor/redactor.min.js")
+    {% else %}
+    script(type="text/javascript", src="https://www.wepay.com/min/js/iframe.wepay.js")
+    {% endif %}
     script(type="text/javascript").
         var eventId = {{ event.id }};
         var editable = {% if editable %}true{% else %}false{% endif %};

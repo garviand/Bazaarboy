@@ -1,5 +1,5 @@
 {% load humanize %}
-{% load layout %}<!DOCTYPE html><html lang="en"><head><title>Bazaarboy</title><script type="text/javascript" src="//use.typekit.net/zbt1bom.js"></script><script type="text/javascript">try{Typekit.load();}catch(e){}</script><link rel="stylesheet" href="{{ STATIC_URL }}css/layout.css"></head><body><h1>Welcome to Bazaarboy</h1><br><a href="{% url user:login %}">Login</a><br><a href="{% url user:register %}">Register</a><script type="text/javascript" src="{{ STATIC_URL }}js/libraries.js"></script><script type="text/javascript">var rootUrl = '{% url index %}';
+{% load layout %}<!DOCTYPE html><html lang="en"><head><title>Bazaarboy</title><script type="text/javascript" src="//use.typekit.net/gjc0hvy.js"></script><script type="text/javascript">try{Typekit.load();}catch(e){}</script><link rel="stylesheet" href="{{ STATIC_URL }}css/layout.css"></head><body><h1>Welcome to Bazaarboy</h1><br><a href="{% url user:login %}">Login</a><br><a href="{% url user:register %}">Register</a><script type="text/javascript" src="{{ STATIC_URL }}js/libraries.js"></script><script type="text/javascript">var rootUrl = '{% url index %}';
 var mediaUrl = '{{ MEDIA_URL }}';
 var csrfToken = '{{ csrf_token }}';
 var loggedIn = {% if user %}true{% else %}false{% endif %};</script><script type="text/javascript" src="{{ STATIC_URL }}js/layout.js"></script></body></html>

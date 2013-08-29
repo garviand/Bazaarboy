@@ -19,6 +19,7 @@ user_urlpatterns = patterns('src.controllers.user',
 wepay_urlpatterns = patterns('src.controllers.wepay', 
     url(r'^authorize/$', 'authorize', name = 'authorize'),
     url(r'^create/$', 'create', name = 'create'),
+    url(r'^ipn/$', 'ipn', name = 'ipn'),
 )
 
 city_urlpatterns = patterns('src.controllers.city',

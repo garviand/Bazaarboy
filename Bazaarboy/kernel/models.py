@@ -16,6 +16,7 @@ class User(models.Model):
     as well as create profiles to in turn organize events.
     """
     full_name = models.CharField(max_length = 50)
+    phone = models.CharField(max_length = 10)
     email = models.CharField(max_length = 50, unique = True)
     password = models.CharField(max_length = 128, null = True, default = None)
     salt = models.CharField(max_length = 128, null = True, default = None)

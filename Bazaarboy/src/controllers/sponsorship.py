@@ -297,12 +297,15 @@ def sponsor(request, params, user):
             'message':'You don\'t have permission for the profile.'
         }
         return json_response(response)
-    checkoutType = 'EVENT' if params['type'].lower() == 'event' else 'DONATION'
+    checkoutType = 'event' if params['type'].lower() == 'event' else 'donation'
     checkoutDescription = '%s - Sponsorship %s' % (criteria._for.name, 
                                                    criteria.name)
+    # FIXME
     checkoutInfo = create_checkout(checkoutType, 
                                    criteria._for.owner.wepay_account.account_id, 
-                                   checkoutDescription, params['amount'])
+                                   checkoutDescription, 
+                                   params['amount'], 
+                                   'type=sponsorship')
     sponsorship = SponsorshipModel(owner = profile, criteria = criteria, 
                                    _for = criteria._for, 
                                    amount = params['amount'], 

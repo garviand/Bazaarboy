@@ -419,8 +419,11 @@ input[type=file].hidden {
   display: block;
   margin: auto;
 }
+.rounded {
+  border-radius: 2px;
+}
 body {
-  font-family: "pt-sans", Helvetica, Arial, sans-serif;
+  font-family: "rooney-sans", Helvetica, sans-serif;
   font-weight: 400;
   font-style: normal;
   font-size: 16px;
@@ -430,7 +433,7 @@ b {
   font-weight: 700;
 }
 i {
-  font-style: italic;
+  font-style: oblique;
 }
 div#wrapper_top {
   position: relative;
@@ -977,7 +980,9 @@ div.event_base div.frame div.right div.action {
   height: 48px;
   z-index: 20;
   background-color: #f0f5f5;
+  overflow: hidden;
   cursor: pointer;
+  border-radius: 2px;
 }
 div.event_base div.frame div.right div.action div.button {
   width: 140px;
@@ -1130,9 +1135,12 @@ div.event_base div.frame div.right div.tags div.tag {
   font-style: normal;
   float: left;
 }
+div.event_base > div.placeholder {
+  width: 100%;
+  height: 20px;
+}
 div.event_base div.sponsors {
   width: 624px;
-  margin-top: 20px;
   background-color: #f0f5f5;
 }
 div.event_base div.sponsors div.caption {
@@ -1173,11 +1181,13 @@ div.event_base div.others div.recommendation {
   display: none;
   position: absolute;
   width: 388px;
-  padding: 10px;
-  top: 58px;
+  padding: 0;
+  top: 68px;
   left: 63px;
   z-index: 20;
-  background-color: #f0f5f5;
+  background-color: #FFF;
+  overflow: hidden;
+  border-radius: 2px;
 }
 body.collapsed .event_overlay_canvas {
   left: 96px;
@@ -1188,11 +1198,97 @@ body.collapsed .event_overlay_canvas {
   width: 0;
   height: 0;
   border-style: solid;
-  border-width: 10px 10px 10px 0;
-  border-color: transparent #f0f5f5 transparent transparent;
+  border-width: 10px 0 10px 10px;
+  border-color: transparent transparent transparent #FFF;
   right: -10px;
-  top: 44px;
-  -webkit-transform: rotate(180deg);
+  top: 54px;
+}
+.event_overlay_canvas > div {
+  width: 100%;
+}
+.event_overlay_canvas > div div.header {
+  background-color: #f0f5f5;
+  padding: 16px;
+  border-top: 1px solid #E8EBEA;
+  border-bottom: 1px solid #DCE2E2;
+}
+.event_overlay_canvas > div div.header div.title {
+  width: 100%;
+  padding-bottom: 2px;
+  color: #2f4241;
+  font-size: 18px;
+  text-shadow: 0 1px 0 #FFF;
+  text-transform: uppercase;
+}
+.event_overlay_canvas > div div.content {
+  padding-top: 0.5rem;
+  padding-bottom: 3rem;
+  border-bottom: 1px solid #FFF;
+  background-image: -webkit-linear-gradient(top, #ffffff, #fdfaf7);
+}
+.event_overlay_canvas > div div.content input[type=text],
+.event_overlay_canvas > div div.content input[type=password],
+.event_overlay_canvas > div div.content textarea {
+  display: block;
+  width: 338px;
+  height: 15px;
+  margin: 0.5rem auto 0;
+  padding: 0.5rem;
+  border-radius: 2px;
+  border: 1px solid #D7E9E9;
+  background-color: transparent;
+  color: #2f4241;
+  font-size: 15px;
+  outline: none;
+}
+.event_overlay_canvas > div div.content input[type=text]:disabled,
+.event_overlay_canvas > div div.content input[type=password]:disabled,
+.event_overlay_canvas > div div.content textarea:disabled {
+  background-color: #EDF5F5;
+  font-style: oblique;
+}
+.event_overlay_canvas > div div.content input[type=text]:focus,
+.event_overlay_canvas > div div.content input[type=password]:focus,
+.event_overlay_canvas > div div.content textarea:focus,
+.event_overlay_canvas > div div.content input[type=text]:selected,
+.event_overlay_canvas > div div.content input[type=password]:selected,
+.event_overlay_canvas > div div.content textarea:selected {
+  border: 1px solid #AEBDBC;
+  box-shadow: inset 0 0 5px #AEBDBC;
+}
+.event_overlay_canvas > div div.content input[type=text].required,
+.event_overlay_canvas > div div.content input[type=password].required,
+.event_overlay_canvas > div div.content textarea.required {
+  border: 1px solid #FFA575;
+  box-shadow: 0 0 5px #FFA575;
+}
+.event_overlay_canvas div.action div.header {
+  padding: 0;
+}
+.event_overlay_canvas div.action div.header div.title {
+  text-align: center;
+  padding: 0;
+}
+.event_overlay_canvas div.action div.header div.title a {
+  display: block;
+  width: 356px;
+  height: 16px;
+  padding: 16px;
+  color: #2f4241;
+  line-height: 16px;
+  text-decoration: none;
+}
+.event_overlay_canvas div.action div.header div.title a:hover {
+  background-color: #4795f2;
+  color: #FFF;
+  text-shadow: 0 1px 0 #2f4241;
+}
+.event_overlay_canvas div.checkout div.content {
+  padding: 10px;
+}
+.event_overlay_canvas div.checkout div.content div#checkout_frame > iframe {
+  width: 368px;
+  height: 450px;
 }
 div#event.big_cover div.frame div.right div.organizers {
   margin-top: 13px;
@@ -1254,9 +1350,79 @@ div#rsvp div.user div.normal div.register {
   padding: 10px;
   float: left;
 }
-div#rsvp div.email {
+div#rsvp div.info {
   width: 388px;
   background-color: #FFF;
+}
+div#rsvp div.tickets div.content {
+  padding: 0;
+  background-image: none;
+}
+div#rsvp div.tickets div.content div.ticket {
+  width: 100%;
+  height: 80px;
+  border-bottom: 1px solid #f0f5f5;
+  background-image: -webkit-linear-gradient(top, #ffffff, #fdfaf7);
+  cursor: pointer;
+}
+div#rsvp div.tickets div.content div.ticket.selected {
+  border-top: 1px solid #AEBDBC;
+  border-bottom: 1px solid #AEBDBC;
+  background-image: -webkit-linear-gradient(top, #ffb769, #ff8f4d);
+}
+div#rsvp div.tickets div.content div.ticket div.input {
+  position: relative;
+  width: 40px;
+  height: 80px;
+  float: left;
+}
+div#rsvp div.tickets div.content div.ticket div.input input {
+  position: absolute;
+  margin: auto;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+}
+div#rsvp div.tickets div.content div.ticket div.body {
+  width: 228px;
+  height: 60px;
+  padding: 10px 0;
+  color: #2f4241;
+  float: left;
+}
+div#rsvp div.tickets div.content div.ticket div.body div.name {
+  width: 100%;
+  height: 16px;
+  color: #000;
+  font-size: 16px;
+}
+div#rsvp div.tickets div.content div.ticket div.body div.description {
+  width: 100%;
+  height: 34px;
+  margin-top: 10px;
+  font-size: 14px;
+  line-height: 16px;
+}
+div#rsvp div.tickets div.content div.ticket div.detail {
+  width: 100px;
+  height: 60px;
+  margin-left: 20px;
+  padding: 10px 0;
+  float: left;
+}
+div#rsvp div.tickets div.content div.ticket div.detail div.price {
+  width: 90px;
+  height: 25px;
+  font-size: 25px;
+  text-align: center;
+}
+div#rsvp div.tickets div.content div.ticket div.detail div.quantity {
+  width: 90px;
+  height: 14px;
+  margin-top: 15px;
+  font-size: 14px;
+  text-align: center;
 }
 div#fundraiser div.frame div.right div.goal {
   position: relative;

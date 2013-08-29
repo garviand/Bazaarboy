@@ -1,4 +1,5 @@
 from django import template
+from django.utils import timezone
 from src.timezone import localize
 
 register = template.Library()
@@ -30,3 +31,10 @@ def standardTime(time):
     """
     time = localize(time)
     return time.strftime('%Y-%m-%d %X') if time is not None else ''
+
+@register.filter
+def validateTiming(obj):
+    """
+    Validate an object to make sure it has started and hasn't ended
+    """
+    return obj.start_time <= timezone.now() and obj.end_time > timezone.now()

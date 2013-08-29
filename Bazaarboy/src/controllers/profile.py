@@ -220,6 +220,24 @@ def edit(request, params, user):
         else:
             profile.latitude = float(params['latitude'])
             profile.longitude = float(params['longitude'])
+    if params['wepay'] is not None:
+        if not Wepay_account.objects.filter(id = params['wepay']).exists():
+            response = {
+                'status':'FAIL',
+                'error':'WEPAY_ACCOUNT_NOT_FOUND',
+                'message':'The wepay account doesn\'t exist.'
+            }
+            return json_response(response)
+        wepayAccount = Wepay_account.objects.get(id = params['wepay'])
+        if wepayAccount.owner.id != user.id:
+            response = {
+                'status':'FAIL',
+                'error':'WEPAY_ACCOUNT_PERMISSION_DENIED',
+                'nmessage':'You don\'t have permission for this account.'
+            }
+            return json_response(response)
+        else:
+            profile.wepay_account = wepayAccount
     # Save the changes
     profile.save()
     response = {

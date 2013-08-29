@@ -61,6 +61,7 @@ def set_env(env='development'):
     if env == 'development':
         os.environ['BBOY_ENV'] = 'development'
         os.environ['BBOY_DEBUG'] = 'true'
+        os.environ['BBOY_URL_ROOT'] = 'http://localhost:8080'
     elif env == 'staging':
         os.environ['BBOY_ENV'] = 'staging'
         os.environ['BBOY_DEBUG'] = 'true'

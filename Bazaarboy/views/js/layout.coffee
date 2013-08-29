@@ -8,9 +8,10 @@
     admin: {}
     # Collapsed states, formats are like this:
     #       selector: [String] selector
-    #       attr: [String] property to be animated
-    #       expanded: [*] property value in expanded state
-    #       collapsed: [*] property value in collapsed state
+    #       []:
+    #           attr: [String] property to be animated
+    #           expanded: [*] property value in expanded state
+    #           collapsed: [*] property value in collapsed state
     collapseStates: []
     # Shortcut for endpoint redirect
     redirect: (endpoint) ->

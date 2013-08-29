@@ -23,7 +23,33 @@ Bazaarboy.event.index =
         marker = new google.maps.Marker({position: markerPos})
         marker.setMap @map
         return
+    purchase: (ticket, email=null, fullName=null) ->
+        params = 
+            ticket: ticket
+        if email? and fullName?
+            params.email = email
+            params.full_name = fullName
+        Bazaarboy.post 'event/purchase/', params, (response) =>
+            if response.status is 'OK'
+                $('div#rsvp div.user').css('overflow', 'hidden').animate
+                    'height': 0
+                $('div#rsvp div.info').css('overflow', 'hidden').animate
+                    'height': 0
+                $('div#rsvp div.action').css('overflow', 'hidden').animate
+                    'height': 0
+                $('div#rsvp div.checkout').removeClass('hidden')
+                WePay.iframe_checkout 'checkout_frame', response.checkoutUri
+                WePay.listen 'iframe_checkout_complete', () =>
+                    @completeCheckout()
+            else
+                alert response.message
+            return
+        return
+    completeCheckout: () ->
+        alert 'Checkout is done!'
+        return
     initTransaction: () ->
+        scope = this
         # Account control
         $('div#rsvp form.login').submit (event) ->
             event.preventDefault()
@@ -49,6 +75,32 @@ Bazaarboy.event.index =
             return
         $('div#rsvp form.register').submit (event) ->
             event.preventDefault()
+            return
+        # Select ticket
+        $('div#rsvp div.ticket.valid').click () ->
+            $('div#rsvp div.ticket.valid').removeClass('selected')
+            $('div#rsvp div.ticket.valid input[type=radio]')
+                .prop('checked', false)
+            $(this).addClass('selected')
+            $(this).find('input[type=radio]').prop('checked', true)
+            $('div#rsvp div.action').removeClass('hidden')
+            return
+        # Confirm ticket selection
+        $('div#rsvp div.action a.confirm').click () =>
+            if $('div#rsvp div.ticket.valid.selected').length > 0
+                ticket = $('div#rsvp div.ticket.valid.selected').attr('data-id')
+                if $('div#rsvp div.info').length is 0
+                    @purchase ticket
+                else
+                    email = $('div#rsvp div.info input[name=email]').val()
+                    fullName = $('div#rsvp div.info input[name=full_name]').val()
+                    if email.trim() is ''
+                        alert 'You must enter a valid email address.'
+                        return
+                    if fullName.trim() is ''
+                        alert 'You must enter your full name,'
+                        return
+                    @purchase ticket, email, fullName
             return
         # Check whether to open the RSVP modal
         if window.location.hash? and window.location.hash is '#rsvp' and editable

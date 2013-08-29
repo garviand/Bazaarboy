@@ -29,7 +29,50 @@
       });
       marker.setMap(this.map);
     },
+    purchase: function(ticket, email, fullName) {
+      var params,
+        _this = this;
+      if (email == null) {
+        email = null;
+      }
+      if (fullName == null) {
+        fullName = null;
+      }
+      params = {
+        ticket: ticket
+      };
+      if ((email != null) && (fullName != null)) {
+        params.email = email;
+        params.full_name = fullName;
+      }
+      Bazaarboy.post('event/purchase/', params, function(response) {
+        if (response.status === 'OK') {
+          $('div#rsvp div.user').css('overflow', 'hidden').animate({
+            'height': 0
+          });
+          $('div#rsvp div.info').css('overflow', 'hidden').animate({
+            'height': 0
+          });
+          $('div#rsvp div.action').css('overflow', 'hidden').animate({
+            'height': 0
+          });
+          $('div#rsvp div.checkout').removeClass('hidden');
+          WePay.iframe_checkout('checkout_frame', response.checkoutUri);
+          WePay.listen('iframe_checkout_complete', function() {
+            return _this.completeCheckout();
+          });
+        } else {
+          alert(response.message);
+        }
+      });
+    },
+    completeCheckout: function() {
+      alert('Checkout is done!');
+    },
     initTransaction: function() {
+      var scope,
+        _this = this;
+      scope = this;
       $('div#rsvp form.login').submit(function(event) {
         event.preventDefault();
         Bazaarboy.get('user/auth/', $(this).serializeObject(), function(response) {
@@ -54,6 +97,34 @@
       });
       $('div#rsvp form.register').submit(function(event) {
         event.preventDefault();
+      });
+      $('div#rsvp div.ticket.valid').click(function() {
+        $('div#rsvp div.ticket.valid').removeClass('selected');
+        $('div#rsvp div.ticket.valid input[type=radio]').prop('checked', false);
+        $(this).addClass('selected');
+        $(this).find('input[type=radio]').prop('checked', true);
+        $('div#rsvp div.action').removeClass('hidden');
+      });
+      $('div#rsvp div.action a.confirm').click(function() {
+        var email, fullName, ticket;
+        if ($('div#rsvp div.ticket.valid.selected').length > 0) {
+          ticket = $('div#rsvp div.ticket.valid.selected').attr('data-id');
+          if ($('div#rsvp div.info').length === 0) {
+            _this.purchase(ticket);
+          } else {
+            email = $('div#rsvp div.info input[name=email]').val();
+            fullName = $('div#rsvp div.info input[name=full_name]').val();
+            if (email.trim() === '') {
+              alert('You must enter a valid email address.');
+              return;
+            }
+            if (fullName.trim() === '') {
+              alert('You must enter your full name,');
+              return;
+            }
+            _this.purchase(ticket, email, fullName);
+          }
+        }
       });
       if ((window.location.hash != null) && window.location.hash === '#rsvp' && editable) {
         $('div#event div.action').click();
