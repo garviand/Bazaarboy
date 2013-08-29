@@ -80,12 +80,23 @@ block content
             div.right
                 div.action
                     div.button
-                        {% if editable %}
-                        b Edit Tickets
-                        {% else %}
-                        b RSVP
-                        {% endif %}
+                        b
+                            {% if editable %}
+                            | Edit Tickets
+                            {% else %}
+                            {% if rsvp %}
+                            | RSVP
+                            {% else %}
+                            | Buy Tickets
+                            {% endif %}
+                            {% endif %}
                     div.price
+                        b
+                            {% if rsvp %}
+                            | Free
+                            {% else %}
+                            | ${{ cheapest|floatformat:-2 }}{% if tickets|length != 1 %}+{% endif %}
+                            {% endif %}
                     div.clear
                 div.details.info
                     div.time
@@ -198,9 +209,9 @@ block content
             div.clear
     {% if editable %}
     div#tickets.event_overlay_canvas
-        div.title Edit RSVP Options
+        div.title Edit Ticket Options
         div.controls
-            a.add(href="javascript:;") Add RSVP Option
+            a.add(href="javascript:;") Add Ticket/RSVP Option
         mixin ticket(id, name, description, price, quantity, start_time, end_time)
             div.ticket(class=attributes.class, data-id=id)
                 form
@@ -242,7 +253,7 @@ block content
     div#rsvp.event_overlay_canvas
         div.tickets
             div.header
-                div.title RSVP Options
+                div.title {% if rsvp %}RSVP Options{% else %}Ticket Options{% endif %}
                 div.caption
             div.content
                 {% for ticket in tickets %}
@@ -291,7 +302,7 @@ block content
                 div.clear
         div.info
             div.header
-                div.title RSVP details
+                div.title Some details about you
                 div.caption
             div.content
                 input(type="text", name="email", placeholder="Email")
@@ -312,6 +323,24 @@ block content
                 div.title Confirmation
             div.content
                 div.caption Thank you!
+                div.body
+                    div.upper
+                        h2 You have {% if rsvp %}RSVP'd{% else %}purchased a ticket{% endif %} for
+                        p.name Endless Summer with Bit Funk (21+)
+                        p.time 
+                            | {{ event.start_time|date:"F jS, Y @ f" }}{{ event.start_time|date:"A"|lower }}
+                        p.location
+                            | at {{ event.location }}
+                    div.lower
+                        p.top
+                            span.ticket Normal Admission
+                            span.price $ 30
+                            span.clear
+                        p 
+                            | A more detailed confirmation invoice will be emailed to you 
+                            | at 
+                            span.email 
+                            |  shortly. Thanks for your purchase!
     {% endif %}
 
 append script

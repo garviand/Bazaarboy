@@ -28,7 +28,6 @@ def index(request, id, params, user):
     if not Event.objects.filter(id = id).exists():
         raise Http404
     event = Event.objects.select_related().get(id = id)
-    tickets = Ticket.objects.filter(event = event)
     editable = False
     if Event_organizer.objects.filter(event = event).count() != 0:
         editable = (user is not None and 
@@ -41,6 +40,14 @@ def index(request, id, params, user):
         editable = True
     else:
         return redirect('index')
+    tickets = Ticket.objects.filter(event = event)
+    rsvp = True
+    cheapest = float('inf')
+    for ticket in tickets:
+        if ticket.price > 0:
+            rsvp = False
+        if ticket.price < cheapest:
+            cheapest = ticket.price
     organizers = Event_organizer.objects.filter(event = event)
     return render(request, 'event/index.html', locals())
 

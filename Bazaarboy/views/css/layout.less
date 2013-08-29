@@ -25,7 +25,7 @@
 @bboy_orange: #F7931E;
 @event_blue: #4795F2;
 @pale_blue: #F0F5F5;
-@dark_black: #2F4241;
+@dark_green: #2F4241;
 
 @font_family_base: "rooney-sans", Helvetica, sans-serif;
 @font_family_web: "rooney-web", Helvetica, sans-serif;
@@ -69,8 +69,26 @@ input[type=file].hidden {
     margin: auto;
 }
 
+.absolute_center {
+    display: block;
+    position: absolute;
+    margin: auto;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+}
+
 .rounded {
     border-radius: 2px;
+}
+
+.linear_gradient(@start, @from, @to) {
+    background-image: linear-gradient(@start, @from, @to);
+    background-image: -o-linear-gradient(@start, @from, @to);
+    background-image: -moz-linear-gradient(@start, @from, @to);
+    background-image: -webkit-linear-gradient(@start, @from, @to);
+    background-image: -ms-linear-gradient(@start, @from, @to);
 }
 
 .input_placeholder(@color; @font-size: @font_size_base; @font-weight: @font_weight_base) {
@@ -745,7 +763,7 @@ div.event_base {
                 .rounded;
 
                 div.button {
-                    width: 140px;
+                    width: 130px;
                     height: @font_size_base + 2;
                     padding: (48px - (@font_size_base + 2)) / 2 0;
                     background-color: @event_blue;
@@ -758,7 +776,7 @@ div.event_base {
 
                 div.price {
                     position: relative;
-                    width: @content_inner_sidebar_width - 140;
+                    width: @content_inner_sidebar_width - 130;
                     height: 100%;
                     .left;
 
@@ -772,6 +790,16 @@ div.event_base {
                         border-color: transparent @pale_blue transparent transparent;
                         left: -10px;
                         top: 14px;
+                    }
+
+                    b {
+                        width: 100%;
+                        height: @font_size_base + 4;
+                        color: @dark_green;
+                        font-size: @font_size_base + 4;
+                        line-height: @font_size_base + 4;
+                        text-align: center;
+                        .absolute_center;
                     }
                 }
             }
@@ -1029,7 +1057,7 @@ div.event_base {
             div.title {
                 width: 100%;
                 padding-bottom: 0.125 * @font_size_base;
-                color: @dark_black;
+                color: @dark_green;
                 font-size: @font_size_base + 2;
                 text-shadow: 0 1px 0 #FFF;
                 text-transform: uppercase;
@@ -1040,7 +1068,7 @@ div.event_base {
             padding-top: 0.5rem;
             padding-bottom: 3rem;
             border-bottom: 1px solid #FFF;
-            background-image: -webkit-linear-gradient(top, #FFF, #FDFAF7);
+            .linear_gradient(top, #FFF, #FDFAF7);
 
             input[type=text], input[type=password], textarea {
                 display: block;
@@ -1051,7 +1079,7 @@ div.event_base {
                 border-radius: 2px;
                 border: 1px solid #D7E9E9;
                 background-color: transparent;
-                color: @dark_black;
+                color: @dark_green;
                 font-size: @font_size_base - 1;
                 outline: none;
                 &:disabled {
@@ -1083,13 +1111,13 @@ div.event_base {
                     width: @overlay_width - @font_size_base * 2;
                     height: @font_size_base;
                     padding: @font_size_base;
-                    color: @dark_black;
+                    background-color: @event_blue;
+                    color: #FFF;
+                    text-shadow: 0 1px 0 @dark_green;
                     line-height: @font_size_base;
                     text-decoration: none;
                     &:hover {
-                        background-color: @event_blue;
-                        color: #FFF;
-                        text-shadow: 0 1px 0 @dark_black;
+                        .linear_gradient(top, lighten(@event_blue, 5%), @event_blue);
                     }
                 }
             }
@@ -1227,13 +1255,13 @@ div#rsvp {
                 width: 100%;
                 height: 80px;
                 border-bottom: 1px solid @pale_blue;
-                background-image: -webkit-linear-gradient(top, #FFF, #FDFAF7);
+                .linear_gradient(top, #FFF, #FDFAF7);
                 overflow: hidden;
                 cursor: pointer;
                 &.selected {
                     border-top: 1px solid #AEBDBC;
                     border-bottom: 1px solid #AEBDBC;
-                    background-image: -webkit-linear-gradient(top, #FFB769, #FF8F4D);
+                    .linear_gradient(top, #FFB769, #FF8F4D);
                 }
 
                 div.input {
@@ -1243,12 +1271,7 @@ div#rsvp {
                     .left;
 
                     input {
-                        position: absolute;
-                        margin: auto;
-                        top: 0;
-                        left: 0;
-                        right: 0;
-                        bottom: 0;
+                        .absolute_center;
                     }
                 }
 
@@ -1256,7 +1279,7 @@ div#rsvp {
                     width: @overlay_width - 160px;
                     height: 60px;
                     padding: 10px 0;
-                    color: @dark_black;
+                    color: @dark_green;
                     .left;
 
                     div.name {
@@ -1295,6 +1318,87 @@ div#rsvp {
                         margin-top: 15px;
                         font-size: @font_size_base - 2;
                         text-align: center;
+                    }
+                }
+            }
+        }
+    }
+
+    div.confirmation {
+        div.content {
+            div.caption {
+                margin-top: 10px;
+                font-size: @font_size_base + 4;
+                text-transform: uppercase;
+                text-align: center;
+            }
+
+            div.body {
+                margin: 1rem 2rem;
+                border-top: 3px solid lighten(@event_blue, 20%);
+                box-shadow: 0 2px 5px 0 #DCE2E2;
+
+                p {
+                    padding: 0 1rem;
+                }
+
+                div.upper {
+                    background-color: lighten(@event_blue, 5%);
+                    padding-bottom: 1.5rem;
+                    border-left: 2px solid #FFF;
+                    border-right: 2px solid #FFF;
+
+                    h2 {
+                        padding: 1rem 1rem;
+                        margin-top: 0;
+                        margin-bottom: 1rem;
+                        border-bottom: 1px dotted #FFF;
+                        color: #000;
+                        font-size: 1rem;
+                        font-weight: 300;
+                        text-align: left;
+                        text-transform: uppercase;
+                        text-shadow: 0 1px 0 rgba(255, 255, 255, 0.6);
+                    }
+
+                    p.name {
+                        margin-top: 0.5rem;
+                        color: #FFF;
+                        font-size: 1.4rem;
+                        line-height: 1.8rem;
+                        text-align: left;
+                        text-shadow: 0 1px 0 lighten(@dark_green, 30%);
+                    }
+
+                    p.time, p.location {
+                        margin: 0.4rem 0;
+                        color: #FFF;
+                    }
+                }
+
+                div.lower {
+                    padding-top: 0.2rem;
+                    padding-bottom: 1rem;
+                    border-top: 1px dotted #C2F4FF;
+                    border-bottom: 2px solid #C2F4FF;
+                    background-color: white;
+                    font-size: 0.6rem;
+
+                    p.top {
+                        height: 0.8rem;
+                        padding-bottom: 0.8rem;
+                        border-bottom: 1px dotted #C2F4FF;
+                        margin-bottom: 0.5rem;
+                        font-size: 0.8rem;
+                        line-height: 0.8rem;
+
+                        span.ticket {
+                            .left;
+                        }
+
+                        span.price {
+                            .right;
+                        }
                     }
                 }
             }

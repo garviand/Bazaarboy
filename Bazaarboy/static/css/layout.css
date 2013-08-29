@@ -419,6 +419,15 @@ input[type=file].hidden {
   display: block;
   margin: auto;
 }
+.absolute_center {
+  display: block;
+  position: absolute;
+  margin: auto;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+}
 .rounded {
   border-radius: 2px;
 }
@@ -985,7 +994,7 @@ div.event_base div.frame div.right div.action {
   border-radius: 2px;
 }
 div.event_base div.frame div.right div.action div.button {
-  width: 140px;
+  width: 130px;
   height: 18px;
   padding: 15px 0;
   background-color: #4795f2;
@@ -997,7 +1006,7 @@ div.event_base div.frame div.right div.action div.button {
 }
 div.event_base div.frame div.right div.action div.price {
   position: relative;
-  width: 52px;
+  width: 62px;
   height: 100%;
   float: left;
 }
@@ -1011,6 +1020,21 @@ div.event_base div.frame div.right div.action div.price:before {
   border-color: transparent #f0f5f5 transparent transparent;
   left: -10px;
   top: 14px;
+}
+div.event_base div.frame div.right div.action div.price b {
+  width: 100%;
+  height: 20px;
+  color: #2f4241;
+  font-size: 20px;
+  line-height: 20px;
+  text-align: center;
+  display: block;
+  position: absolute;
+  margin: auto;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
 }
 div.event_base div.frame div.right div.info {
   position: relative;
@@ -1224,7 +1248,11 @@ body.collapsed .event_overlay_canvas {
   padding-top: 0.5rem;
   padding-bottom: 3rem;
   border-bottom: 1px solid #FFF;
+  background-image: linear-gradient(top, #ffffff, #fdfaf7);
+  background-image: -o-linear-gradient(top, #ffffff, #fdfaf7);
+  background-image: -moz-linear-gradient(top, #ffffff, #fdfaf7);
   background-image: -webkit-linear-gradient(top, #ffffff, #fdfaf7);
+  background-image: -ms-linear-gradient(top, #ffffff, #fdfaf7);
 }
 .event_overlay_canvas > div div.content input[type=text],
 .event_overlay_canvas > div div.content input[type=password],
@@ -1274,14 +1302,18 @@ body.collapsed .event_overlay_canvas {
   width: 356px;
   height: 16px;
   padding: 16px;
-  color: #2f4241;
+  background-color: #4795f2;
+  color: #FFF;
+  text-shadow: 0 1px 0 #2f4241;
   line-height: 16px;
   text-decoration: none;
 }
 .event_overlay_canvas div.action div.header div.title a:hover {
-  background-color: #4795f2;
-  color: #FFF;
-  text-shadow: 0 1px 0 #2f4241;
+  background-image: linear-gradient(top, #5fa3f4, #4795f2);
+  background-image: -o-linear-gradient(top, #5fa3f4, #4795f2);
+  background-image: -moz-linear-gradient(top, #5fa3f4, #4795f2);
+  background-image: -webkit-linear-gradient(top, #5fa3f4, #4795f2);
+  background-image: -ms-linear-gradient(top, #5fa3f4, #4795f2);
 }
 .event_overlay_canvas div.checkout div.content {
   padding: 10px;
@@ -1362,14 +1394,22 @@ div#rsvp div.tickets div.content div.ticket {
   width: 100%;
   height: 80px;
   border-bottom: 1px solid #f0f5f5;
+  background-image: linear-gradient(top, #ffffff, #fdfaf7);
+  background-image: -o-linear-gradient(top, #ffffff, #fdfaf7);
+  background-image: -moz-linear-gradient(top, #ffffff, #fdfaf7);
   background-image: -webkit-linear-gradient(top, #ffffff, #fdfaf7);
+  background-image: -ms-linear-gradient(top, #ffffff, #fdfaf7);
   overflow: hidden;
   cursor: pointer;
 }
 div#rsvp div.tickets div.content div.ticket.selected {
   border-top: 1px solid #AEBDBC;
   border-bottom: 1px solid #AEBDBC;
+  background-image: linear-gradient(top, #ffb769, #ff8f4d);
+  background-image: -o-linear-gradient(top, #ffb769, #ff8f4d);
+  background-image: -moz-linear-gradient(top, #ffb769, #ff8f4d);
   background-image: -webkit-linear-gradient(top, #ffb769, #ff8f4d);
+  background-image: -ms-linear-gradient(top, #ffb769, #ff8f4d);
 }
 div#rsvp div.tickets div.content div.ticket div.input {
   position: relative;
@@ -1378,6 +1418,7 @@ div#rsvp div.tickets div.content div.ticket div.input {
   float: left;
 }
 div#rsvp div.tickets div.content div.ticket div.input input {
+  display: block;
   position: absolute;
   margin: auto;
   top: 0;
@@ -1424,6 +1465,73 @@ div#rsvp div.tickets div.content div.ticket div.detail div.quantity {
   margin-top: 15px;
   font-size: 14px;
   text-align: center;
+}
+div#rsvp div.confirmation div.content div.caption {
+  margin-top: 10px;
+  font-size: 20px;
+  text-transform: uppercase;
+  text-align: center;
+}
+div#rsvp div.confirmation div.content div.body {
+  margin: 1rem 2rem;
+  border-top: 3px solid #a6ccf9;
+  box-shadow: 0 2px 5px 0 #DCE2E2;
+}
+div#rsvp div.confirmation div.content div.body p {
+  padding: 0 1rem;
+}
+div#rsvp div.confirmation div.content div.body div.upper {
+  background-color: #5fa3f4;
+  padding-bottom: 1.5rem;
+  border-left: 2px solid #FFF;
+  border-right: 2px solid #FFF;
+}
+div#rsvp div.confirmation div.content div.body div.upper h2 {
+  padding: 1rem 1rem;
+  margin-top: 0;
+  margin-bottom: 1rem;
+  border-bottom: 1px dotted #FFF;
+  color: #000;
+  font-size: 1rem;
+  font-weight: 300;
+  text-align: left;
+  text-transform: uppercase;
+  text-shadow: 0 1px 0 rgba(255, 255, 255, 0.6);
+}
+div#rsvp div.confirmation div.content div.body div.upper p.name {
+  margin-top: 0.5rem;
+  color: #FFF;
+  font-size: 1.4rem;
+  line-height: 1.8rem;
+  text-align: left;
+  text-shadow: 0 1px 0 #709a97;
+}
+div#rsvp div.confirmation div.content div.body div.upper p.time,
+div#rsvp div.confirmation div.content div.body div.upper p.location {
+  margin: 0.4rem 0;
+  color: #FFF;
+}
+div#rsvp div.confirmation div.content div.body div.lower {
+  padding-top: 0.2rem;
+  padding-bottom: 1rem;
+  border-top: 1px dotted #C2F4FF;
+  border-bottom: 2px solid #C2F4FF;
+  background-color: white;
+  font-size: 0.6rem;
+}
+div#rsvp div.confirmation div.content div.body div.lower p.top {
+  height: 0.8rem;
+  padding-bottom: 0.8rem;
+  border-bottom: 1px dotted #C2F4FF;
+  margin-bottom: 0.5rem;
+  font-size: 0.8rem;
+  line-height: 0.8rem;
+}
+div#rsvp div.confirmation div.content div.body div.lower p.top span.ticket {
+  float: left;
+}
+div#rsvp div.confirmation div.content div.body div.lower p.top span.price {
+  float: right;
 }
 div#fundraiser div.frame div.right div.goal {
   position: relative;

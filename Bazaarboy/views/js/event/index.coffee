@@ -31,6 +31,7 @@ Bazaarboy.event.index =
             params.full_name = fullName
         Bazaarboy.post 'event/purchase/', params, (response) =>
             if response.status is 'OK'
+                $('div#rsvp div.tickets').addClass('collapsed')
                 $('div#rsvp div.tickets div.ticket').not('div.selected').animate
                     'height': 0
                 , () ->
@@ -51,7 +52,11 @@ Bazaarboy.event.index =
             return
         return
     completeCheckout: () ->
-        alert 'Checkout is done!'
+        $('div#rsvp div.tickets').css('overflow', 'hidden').animate
+            'height': 0
+        $('div#rsvp div.checkout').css('overflow', 'hidden').animate
+            'height': 0
+        $('div#rsvp div.confirmation').removeClass('hidden')
         return
     initTransaction: () ->
         scope = this
