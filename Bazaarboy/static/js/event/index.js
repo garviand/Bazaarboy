@@ -47,6 +47,11 @@
       }
       Bazaarboy.post('event/purchase/', params, function(response) {
         if (response.status === 'OK') {
+          $('div#rsvp div.tickets div.ticket').not('div.selected').animate({
+            'height': 0
+          }, function() {
+            $(this).addClass('hidden');
+          });
           $('div#rsvp div.user').css('overflow', 'hidden').animate({
             'height': 0
           });
@@ -99,11 +104,13 @@
         event.preventDefault();
       });
       $('div#rsvp div.ticket.valid').click(function() {
-        $('div#rsvp div.ticket.valid').removeClass('selected');
-        $('div#rsvp div.ticket.valid input[type=radio]').prop('checked', false);
-        $(this).addClass('selected');
-        $(this).find('input[type=radio]').prop('checked', true);
-        $('div#rsvp div.action').removeClass('hidden');
+        if (!$('div#rsvp div.tickets').hasClass('collapsed')) {
+          $('div#rsvp div.ticket.valid').removeClass('selected');
+          $('div#rsvp div.ticket.valid input[type=radio]').prop('checked', false);
+          $(this).addClass('selected');
+          $(this).find('input[type=radio]').prop('checked', true);
+          $('div#rsvp div.action').removeClass('hidden');
+        }
       });
       $('div#rsvp div.action a.confirm').click(function() {
         var email, fullName, ticket;

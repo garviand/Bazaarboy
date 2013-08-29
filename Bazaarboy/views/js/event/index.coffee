@@ -31,6 +31,11 @@ Bazaarboy.event.index =
             params.full_name = fullName
         Bazaarboy.post 'event/purchase/', params, (response) =>
             if response.status is 'OK'
+                $('div#rsvp div.tickets div.ticket').not('div.selected').animate
+                    'height': 0
+                , () ->
+                    $(this).addClass('hidden')
+                    return
                 $('div#rsvp div.user').css('overflow', 'hidden').animate
                     'height': 0
                 $('div#rsvp div.info').css('overflow', 'hidden').animate
@@ -78,12 +83,13 @@ Bazaarboy.event.index =
             return
         # Select ticket
         $('div#rsvp div.ticket.valid').click () ->
-            $('div#rsvp div.ticket.valid').removeClass('selected')
-            $('div#rsvp div.ticket.valid input[type=radio]')
-                .prop('checked', false)
-            $(this).addClass('selected')
-            $(this).find('input[type=radio]').prop('checked', true)
-            $('div#rsvp div.action').removeClass('hidden')
+            if not $('div#rsvp div.tickets').hasClass('collapsed')
+                $('div#rsvp div.ticket.valid').removeClass('selected')
+                $('div#rsvp div.ticket.valid input[type=radio]')
+                    .prop('checked', false)
+                $(this).addClass('selected')
+                $(this).find('input[type=radio]').prop('checked', true)
+                $('div#rsvp div.action').removeClass('hidden')
             return
         # Confirm ticket selection
         $('div#rsvp div.action a.confirm').click () =>

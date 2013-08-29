@@ -1363,6 +1363,7 @@ div#rsvp div.tickets div.content div.ticket {
   height: 80px;
   border-bottom: 1px solid #f0f5f5;
   background-image: -webkit-linear-gradient(top, #ffffff, #fdfaf7);
+  overflow: hidden;
   cursor: pointer;
 }
 div#rsvp div.tickets div.content div.ticket.selected {
