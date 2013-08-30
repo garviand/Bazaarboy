@@ -1176,10 +1176,18 @@ div.event_base div.frame div.right div.organizers div.body div.organizer div.ico
   bottom: 0;
   left: -150px;
   right: 0;
+  background-color: #77b0f5;
 }
 div.event_base div.frame div.right div.organizers div.body div.organizer div.icon img {
-  width: 25px;
-  height: 25px;
+  width: 20px;
+  height: 20px;
+  display: block;
+  position: absolute;
+  margin: auto;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
 }
 div.event_base div.frame div.right div.organizers div.body div.organizer div.name {
   width: 133px;
