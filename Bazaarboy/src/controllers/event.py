@@ -1053,20 +1053,22 @@ def purchase(request, params, user):
     creator = Event_organizer.objects.get(event = event, is_creator = True) \
                                      .profile
     # All checks passed, request a checkout on WePay
+    wepayAccountID = str(creator.wepay_account.id)
     checkoutDescription = '%s - %s' % (event.name, ticket.name)
     checkoutInfo = create_checkout('event', 
                                    creator.wepay_account, 
                                    checkoutDescription, 
                                    ticket.price, 
-                                   'type=purchase')
+                                   'type=purchase&account=' + wepayAccountID)
     checkout = Wepay_checkout(payer = user, payee = creator.wepay_account, 
                               checkout_id = checkoutInfo['checkout_id'],
                               amount = ticket.price, 
                               description = checkoutDescription[:127])
     checkout.save()
     # Create the purchase
+    code = os.urandom(6).encode('base_64')[:6].upper()
     purchase = Purchase(owner = user, ticket = ticket, event = event, 
-                        price = ticket.price, checkout = checkout)
+                        price = ticket.price, code = code, checkout = checkout)
     purchase.save()
     # If the ticket has a quantity limit
     if ticket.quantity is not None:

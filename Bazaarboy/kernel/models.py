@@ -294,6 +294,7 @@ class Purchase(models.Model):
     ticket = models.ForeignKey('Ticket')
     event = models.ForeignKey('Event')
     price = models.FloatField()
+    code = models.CharField(max_length = 6)
     checkout = models.ForeignKey('Wepay_checkout', null = True, default = None)
     is_expired = models.BooleanField(default = False)
     created_time = models.DateTimeField(auto_now_add = True)

@@ -161,6 +161,11 @@ def create(request, params, user):
                                      is_creator = True)
     profileManager.save()
     # Creation done, send out a confirmation email
+    code = os.urandom(128).encode('base_64')[:128]
+    confirmationCode = User_confirmation_code(user = user, code = code)
+    confirmationCode.save()
+    email = Email()
+    email.sendConfirmationEmail(user, confirmationCode)
     # Start the session
     request.session['user'] = user.id
     response = {
@@ -282,6 +287,7 @@ def fbAuth(request, params, user):
             # Creation done, send out confirmation email
             code = os.urandom(128).encode('base_64')[:128]
             confirmationCode = User_confirmation_code(user = user, code = code)
+            confirmationCode.save()
             email = Email()
             email.sendConfirmationEmail(confirmationCode)
             # Start the session

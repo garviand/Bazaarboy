@@ -10,6 +10,7 @@ from kernel.models import *
 from wepay import WePay
 from src.config import *
 from src.controllers.request import *
+from src.email import Email
 
 import pdb
 
@@ -88,6 +89,8 @@ def ipn(request, params):
                         checkout.is_captured = True
                         checkout.save()
                         # Send confirmation email
+                        email = Email()
+                        email.sendPurchaseConfirmationEmail(purchase)
             elif params['type'].lower() == 'donation':
                 pass
             elif params['type'].lower() == 'sponsorship':

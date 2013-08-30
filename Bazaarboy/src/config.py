@@ -41,3 +41,9 @@ WEPAY_SUCCESS_STATES = [
     'captured',
     'settled'
 ]
+
+# Mandrill
+
+MANDRILL_API_KEY = 'EJmj_TdbdCy6Xda_9hREKA'
+MANDRILL_FROM_EMAIL = 'build@bazaarboy.com'
+MANDRILL_FROM_NAME = 'Bazaarboy'
