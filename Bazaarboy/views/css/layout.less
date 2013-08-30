@@ -22,15 +22,15 @@
 @overlay_mask_z_index: 10;
 @overlay_z_index: 20;
 
-@bboy_orange: #F7931E;
+@bboy_orange: #FF9C00;
 @event_blue: #4795F2;
 @pale_blue: #F0F5F5;
 @dark_green: #2F4241;
 
 @font_family_base: "rooney-sans", Helvetica, sans-serif;
 @font_family_web: "rooney-web", Helvetica, sans-serif;
-@font_weight_base: 400;
-@font_weight_bold: 700;
+@font_weight_base: 300;
+@font_weight_bold: 500;
 @font_style_base: normal;
 @font_style_italic: oblique;
 @font_size_base: 16px;
@@ -114,6 +114,7 @@ input[type=file].hidden {
 // Layout
 
 body {
+    background-color: #333;
     font-family: @font_family_base;
     font-weight: @font_weight_base;
     font-style: @font_style_base;
@@ -133,22 +134,54 @@ div#wrapper_top {
     position: relative;
     width: @body_width;
     height: @top_height;
-    background-color: #FFF;
+    background-color: @pale_blue;
+    border-bottom: 1px solid lighten(@bboy_orange, 20%);
     .center;
 
     div.logo {
+        position: relative;
         width: @sidebar_width;
         height: @top_height;
-        background: @bboy_orange;
+        background-color: @bboy_orange;
+        //background-color: rgba(25, 25, 25, 0.75);
+        //.linear_gradient(left, rgba(red(@bboy_orange), green(@bboy_orange), blue(@bboy_orange), 0.8), rgba(red(@bboy_orange), green(@bboy_orange), blue(@bboy_orange), 0.6));
+        overflow: hidden;
         body.collapsed & {
             width: @sidebar_width_collapsed;
         }
         .left;
+
+        a {
+            display: block;
+            position: absolute;
+            width: @sidebar_width;
+            height: 100%;
+            top: 0;
+            left: 0;
+        }
+
+        div.left {
+            position: relative;
+            width: @sidebar_width_collapsed;
+            height: 100%;
+
+            img {
+                .absolute_center;
+            }
+        }
+
+        div.right {
+            width: @sidebar_width - @sidebar_width_collapsed;
+            height: 100%;
+            float: left;
+        }
     }
 
     div.search {
         width: @content_width;
         height: @top_height;
+        background-color: @pale_blue;
+        //.linear_gradient(left, rgba(red(@bboy_orange), green(@bboy_orange), blue(@bboy_orange), 0.6), rgba(red(@bboy_orange), green(@bboy_orange), blue(@bboy_orange), 0.5));
         body.collapsed & {
             width: @content_width_expanded;
         }
@@ -159,7 +192,7 @@ div#wrapper_top {
 div#wrapper_main {
     position: relative;
     width: @body_width;
-    background-color: @pale_blue;
+    background-color: #B6C4C3;
     .center;
 }
 
@@ -923,22 +956,26 @@ div.event_base {
                 div.body {
                     div.organizer {
                         width: @content_inner_sidebar_width - 20;
-                        height: 25px;
+                        min-height: 25px;
                         padding-top: 4px;
 
                         div.icon {
                             width: 25px;
                             height: 25px;
-                            background-color: #CCC;
                             .left;
+
+                            img {
+                                width: 25px;
+                                height: 25px;
+                            }
                         }
 
                         div.name {
                             width: @content_inner_sidebar_width - 20 - 25 - 14;
-                            height: 15px;
+                            min-height: 15px;
                             padding: 5px 7px;
                             font-size: 15px;
-                            line-height: 15px;
+                            line-height: 18px;
                             .left;
 
                             a {
@@ -1023,6 +1060,7 @@ div.event_base {
     position: absolute;
     width: @overlay_width;
     padding: 0;
+    margin-bottom: 20px;
     top: 68px;
     left: (@content_width - @content_inner_width) / 2;
     z-index: @overlay_z_index;
@@ -1061,6 +1099,10 @@ div.event_base {
                 font-size: @font_size_base + 2;
                 text-shadow: 0 1px 0 #FFF;
                 text-transform: uppercase;
+            }
+
+            div.caption {
+                font-size: @font_size_base - 4;
             }
         }
 

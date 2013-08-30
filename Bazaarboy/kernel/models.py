@@ -269,7 +269,7 @@ class Ticket(models.Model):
     Ticket model for normal events
     """
     event = models.ForeignKey('Event')
-    name = models.CharField(max_length = 15)
+    name = models.CharField(max_length = 30)
     description = models.CharField(max_length = 150)
     price = models.FloatField()
     quantity = models.IntegerField(null = True, default = None)
@@ -332,7 +332,7 @@ class Reward(models.Model):
     Reward model for fundraisers
     """
     fundraiser = models.ForeignKey('Fundraiser')
-    name = models.CharField(max_length = 15)
+    name = models.CharField(max_length = 30)
     description = models.CharField(max_length = 150)
     price = models.FloatField()
     quantity = models.IntegerField(null = True, default = None)

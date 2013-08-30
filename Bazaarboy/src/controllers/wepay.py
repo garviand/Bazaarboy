@@ -11,6 +11,8 @@ from wepay import WePay
 from src.config import *
 from src.controllers.request import *
 
+import pdb
+
 @login_required('index')
 def authorize(request, user):
     """
@@ -54,41 +56,42 @@ def create(request, params, user):
     return redirect('index')
 
 @validate('POST', [], 
-          ['account_id', 'checkout_id', 'type'])
+          ['account_id', 'checkout_id', 'type', 'account'])
 def ipn(request, params):
     """
     Endpoint for WePay IPN
     """
-    wepay = WePay(production = WEPAY_PRODUCTION, 
-                  access_token = WEPAY_ACCESS_TOKEN)
     if params['account_id'] is not None:
         # Account status change
         pass
     elif params['checkout_id'] is not None:
-        # Checkout status chanage
-        params = {
-            'checkout_id':params['checkout_id']
-        }
-        checkout = wepay.call('/checkout/', params)
-        if checkout['state'] in WEPAY_SUCCESS_STATES:
-            # Checkout captured
-            if params['type'] is not None:
-                if params['type'].lower() == 'purchase':
-                    try:
-                        checkout = Checkout.objects.get(id = params['checkout_id'])
-                        purchase = Purchase.objects.get(checkout = checkout)
-                    except Exception:
-                        pass
-                    else:
+        if params['type'] is not None and params['account'] is not None:
+            if params['type'].lower() == 'purchase':
+                try:
+                    # Try get all related objects out of database
+                    account = Wepay_account.objects.get(id = params['account'])
+                    wepay = WePay(production = WEPAY_PRODUCTION, 
+                                  access_token = account.access_token)
+                    checkoutParams = {
+                        'checkout_id':params['checkout_id']
+                    }
+                    checkoutInfo = wepay.call('/checkout/', checkoutParams)
+                    checkout = Wepay_checkout.objects \
+                                             .get(checkout_id = params['checkout_id'])
+                    purchase = Purchase.objects.get(checkout = checkout)
+                except Exception:
+                    pass
+                else:
+                    # See if the checkout is successful
+                    if checkoutInfo['state'] in WEPAY_SUCCESS_STATES:
+                        # If so, mark it
                         checkout.is_captured = True
                         checkout.save()
                         # Send confirmation email
-                elif params['type'].lower() == 'donation':
-                    pass
-                elif params['type'].lower() == 'sponsorship':
-                    pass
-        else:
-            pass
+            elif params['type'].lower() == 'donation':
+                pass
+            elif params['type'].lower() == 'sponsorship':
+                pass
     return json_response({})
 
 def create_checkout(_type, account, description, amount, extra):

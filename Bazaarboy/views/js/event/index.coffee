@@ -95,6 +95,10 @@ Bazaarboy.event.index =
                 $(this).addClass('selected')
                 $(this).find('input[type=radio]').prop('checked', true)
                 $('div#rsvp div.action').removeClass('hidden')
+                $('div#rsvp div.confirmation span.ticket')
+                    .html($(this).find('div.name').html())
+                $('div#rsvp div.confirmation span.price')
+                    .html($(this).find('div.price b').html())
             return
         # Confirm ticket selection
         $('div#rsvp div.action a.confirm').click () =>

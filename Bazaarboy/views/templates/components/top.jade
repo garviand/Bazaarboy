@@ -2,6 +2,11 @@
 
 div.inner
     div.logo
+        a(href="{% url index %}")
+            div.left
+                img(src="{{ STATIC_URL }}images/logo.png")
+            div.right
+            div.clear
     div.search
         div.field
         div.action

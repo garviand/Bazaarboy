@@ -380,12 +380,104 @@ def edit(request, params, user):
 @login_required()
 @validate('POST', ['id', 'profile'])
 def add_organizer(request, params, user):
-    pass
+    # Check if the event is valid
+    if not Event.objects.filter(id = params['id']).exists():
+        response = {
+            'status':'FAIL',
+            'error':'EVENT_NOT_FOUND',
+            'message':'The event doesn\'t exist.'
+        }
+        return json_response(response)
+    event = Event.objects.get(id = params['id'])
+    # Check if user has permission for the event
+    if not Event_organizer.objects.filter(event = event, 
+                                          profile__managers = user) \
+                                  .exists():
+        response = {
+            'status':'FAIL',
+            'error':'NOT_A_MANAGER',
+            'message':'You don\'t have permission for the event.'
+        }
+        return json_response(response)
+    # Check if the profile exists
+    if not Profile.objects.filter(id = params['profile']).exists():
+        response = {
+            'status':'FAIL',
+            'error':'PROFILE_NOT_FOUND',
+            'message':'The profile doesn\'t exist.'
+        }
+        return json_response(response)
+    profile = Profile.objects.get(id = params['profile'])
+    # Check if the profile is an organizer of the event
+    if Event_organizer.objects.filter(event = event, profile = profile).exists():
+        response = {
+            'status':'FAIL',
+            'error':'ALREADY_AN_ORGANIZER',
+            'message':'The profile is already an organizer.'
+        }
+        return json_response(response)
+    # Add the profile as an organizer
+    organizer = Event_organizer(event = event, profile = profile)
+    organizer.save()
+    response = {
+        'status':'OK'
+    }
+    return json_response(response)
 
 @login_required()
 @validate('POST', ['id', 'profile'])
 def delete_organizer(request, params, user):
-    pass
+    # Check if the event is valid
+    if not Event.objects.filter(id = params['id']).exists():
+        response = {
+            'status':'FAIL',
+            'error':'EVENT_NOT_FOUND',
+            'message':'The event doesn\'t exist.'
+        }
+        return json_response(response)
+    event = Event.objects.get(id = params['id'])
+    # Check if user has permission for the event
+    if not Event_organizer.objects.filter(event = event, 
+                                          profile__managers = user) \
+                                  .exists():
+        response = {
+            'status':'FAIL',
+            'error':'NOT_A_MANAGER',
+            'message':'You don\'t have permission for the event.'
+        }
+        return json_response(response)
+    # Check if the profile exists
+    if not Profile.objects.filter(id = params['profile']).exists():
+        response = {
+            'status':'FAIL',
+            'error':'PROFILE_NOT_FOUND',
+            'message':'The profile doesn\'t exist.'
+        }
+        return json_response(response)
+    # Check if the profile is an organizer of the event
+    if not Event_organizer.objects.filter(event = event, profile = profile) \
+                                  .exists():
+        response = {
+            'status':'FAIL',
+            'error':'NOT_AN_ORGANIZER',
+            'message':'The profile is not an organizer.'
+        }
+        return json_response(response)
+    organizer = Event_organizer.objects.get(event = event, profile = profile)
+    # Check if the profile is the creator of the event
+    if organizer.is_creator:
+        response = {
+            'status':'FAIL',
+            'error':'PROFILE_IS_CREATOR',
+            'message':'You cannot remove the creator from organizers.'
+        }
+        return json_response(response)
+    # Remove the profile from organizers
+    organizer.delete()
+    response = {
+        'status':'OK'
+    }
+    return json_response(response)
 
 @login_required()
 @validate('POST', ['id'])

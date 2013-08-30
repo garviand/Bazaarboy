@@ -151,9 +151,14 @@ block content
                         {% for organizer in organizers %}
                         div.organizer
                             div.icon
+                                {% if organizer.profile.image %}
+                                {% else %}
+                                img(src="{{ STATIC_URL }}images/tent.png")
+                                {% endif %}
                             div.name
                                 a(href="{% url profile:index organizer.profile.id %}")
-                                    | {{ organizer.profile.name }}
+                                    b {{ organizer.profile.name }}
+                            div.clear
                         {% endfor %}
                 div.summary.info
                     div.caption
@@ -198,11 +203,11 @@ block content
                         {% endif %}
             div.clear
         div.placeholder
-        div.sponsors
+        div.sponsors.hidden
             div.caption
                 div.text Sponsors
                 div.clear
-        div.others
+        div.others.hidden
             div.similar
             div.nearby
             div.recommendation
@@ -303,7 +308,9 @@ block content
         div.info
             div.header
                 div.title Some details about you
-                div.caption
+                div.caption 
+                    | We treat your privacy seriously, these information will not be shared 
+                    | with any outside parties.
             div.content
                 input(type="text", name="email", placeholder="Email")
                 input(type="text", name="full_name", placeholder="Full Name")
@@ -333,8 +340,8 @@ block content
                             | at {{ event.location }}
                     div.lower
                         p.top
-                            span.ticket Normal Admission
-                            span.price $ 30
+                            span.ticket
+                            span.price
                             span.clear
                         p 
                             | A more detailed confirmation invoice will be emailed to you 
