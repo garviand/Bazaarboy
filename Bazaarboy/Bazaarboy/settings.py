@@ -9,8 +9,12 @@ PROJECT_PATH = os.path.realpath(os.path.dirname(__file__)) + '/../'
 DEBUG = os.getenv('BBOY_DEBUG', 'true') == 'true'
 TEMPLATE_DEBUG = DEBUG
 
-ENFORCE_HTTPS = os.getenv('BBOY_HTTPS', 'false') == 'true'
+# SSL
+
 SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
+ENFORCE_HTTPS = os.getenv('BBOY_HTTPS', 'false') == 'true'
+CSRF_COOKIE_SECURE = ENFORCE_HTTPS
+SESSION_COOKIE_SECURE = ENFORCE_HTTPS
 
 ADMINS = (
     # ('Your Name', 'your_email@example.com'),
