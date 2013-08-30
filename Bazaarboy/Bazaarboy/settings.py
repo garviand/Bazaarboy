@@ -9,6 +9,8 @@ PROJECT_PATH = os.path.realpath(os.path.dirname(__file__)) + '/../'
 DEBUG = os.getenv('BBOY_DEBUG', 'true') == 'true'
 TEMPLATE_DEBUG = DEBUG
 
+ENFORCE_HTTPS = os.getenv('BBOY_HTTPS', 'false') == 'true'
+
 ADMINS = (
     # ('Your Name', 'your_email@example.com'),
 )
@@ -106,6 +108,7 @@ MIDDLEWARE_CLASSES = (
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
     'src.timezone.TimezoneMiddleware',
+    'src.ssl.SecureRequiredMiddleware',
 )
 
 ROOT_URLCONF = 'Bazaarboy.urls'
