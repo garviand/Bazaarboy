@@ -13,11 +13,12 @@ html(lang="en")
             link(rel="stylesheet", href="{{ STATIC_URL }}css/layout.css")
     block vars
     - var bodyClass = collapsed !== undefined && collapsed ? 'collapsed' : ''
+    - bodyClass += whiteBg !== undefined && whiteBg ? ' white' : ''
     body(class="#{bodyClass}")
         block body
             div#wrapper_top
                 block top
-                    include components/top
+                    //include components/top
             div#wrapper_main
                 block main
                     div#wrapper_sidebar

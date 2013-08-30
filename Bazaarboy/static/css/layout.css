@@ -439,6 +439,9 @@ body {
   font-size: 16px;
   color: #000000;
 }
+body.white {
+  background-color: #FFF;
+}
 b {
   font-weight: 500;
 }
@@ -1159,14 +1162,20 @@ div.event_base div.frame div.right div.facebook div.caption div.share {
   float: right;
 }
 div.event_base div.frame div.right div.organizers div.body div.organizer {
+  position: relative;
   width: 172px;
   min-height: 25px;
   padding-top: 4px;
 }
 div.event_base div.frame div.right div.organizers div.body div.organizer div.icon {
+  position: absolute;
   width: 25px;
   height: 25px;
-  float: left;
+  margin: auto;
+  top: 0;
+  bottom: 0;
+  left: -150px;
+  right: 0;
 }
 div.event_base div.frame div.right div.organizers div.body div.organizer div.icon img {
   width: 25px;
@@ -1176,6 +1185,7 @@ div.event_base div.frame div.right div.organizers div.body div.organizer div.nam
   width: 133px;
   min-height: 15px;
   padding: 5px 7px;
+  margin-left: 25px;
   font-size: 15px;
   line-height: 18px;
   float: left;

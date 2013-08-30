@@ -120,6 +120,9 @@ body {
     font-style: @font_style_base;
     font-size: @font_size_base;
     color: @font_color_base;
+    &.white {
+        background-color: #FFF;
+    }
 }
 
 b {
@@ -955,14 +958,20 @@ div.event_base {
             div.organizers {
                 div.body {
                     div.organizer {
+                        position: relative;
                         width: @content_inner_sidebar_width - 20;
                         min-height: 25px;
                         padding-top: 4px;
 
                         div.icon {
+                            position: absolute;
                             width: 25px;
                             height: 25px;
-                            .left;
+                            margin: auto;
+                            top: 0;
+                            bottom: 0;
+                            left: -150px;
+                            right: 0;
 
                             img {
                                 width: 25px;
@@ -974,6 +983,7 @@ div.event_base {
                             width: @content_inner_sidebar_width - 20 - 25 - 14;
                             min-height: 15px;
                             padding: 5px 7px;
+                            margin-left: 25px;
                             font-size: 15px;
                             line-height: 18px;
                             .left;

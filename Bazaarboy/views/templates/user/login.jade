@@ -5,6 +5,9 @@ extends ../layout
 block title
     | Bazaarboy | Login
 
+block vars
+    - var whiteBg = true
+
 append script
     script(type="text/javascript", src="{{ STATIC_URL }}js/user/login.js")
     script(type="text/javascript").

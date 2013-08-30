@@ -10,6 +10,9 @@ append script
     script(type="text/javascript").
         Bazaarboy.user.register.init();
 
+block vars
+    - var whiteBg = true
+
 block body
     include ../components/facebook
     div#register
