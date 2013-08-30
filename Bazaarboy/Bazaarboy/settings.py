@@ -10,6 +10,7 @@ DEBUG = os.getenv('BBOY_DEBUG', 'true') == 'true'
 TEMPLATE_DEBUG = DEBUG
 
 ENFORCE_HTTPS = os.getenv('BBOY_HTTPS', 'false') == 'true'
+SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
 
 ADMINS = (
     # ('Your Name', 'your_email@example.com'),
