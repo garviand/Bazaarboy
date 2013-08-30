@@ -3,7 +3,7 @@ Controller for index
 """
 
 import pytz
-from django.shortcuts import render
+from django.shortcuts import render, redirect
 from src.controllers.request import validate, login_check, json_response
 
 @login_check()
@@ -13,7 +13,8 @@ def index(request, params, user):
     Index page
     """
     if user is None:
-        return render(request, 'index/landing.html', locals())
+        #return render(request, 'index/landing.html', locals())
+        return redirect('http://about.bazaarboy.com/')
     return render(request, 'index/index.html', locals())
 
 def terms(request):
