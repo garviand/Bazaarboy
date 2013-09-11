@@ -51,6 +51,7 @@ sudo apt-get install redis-server
 
 # Setup virtualenv
 
+
 echo -e "\nIn another terminal, append the following lines to ~/.bashrc\n\n"
 echo "export WORKON_HOME=$HOME/.virtualenvs"
 echo "export PROJECT_HOME=$HOME/{{ DEVELOPMENT_DIRECTORY }}"
