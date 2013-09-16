@@ -12,7 +12,6 @@ from celery import task
 from kernel.models import *
 from src.config import *
 from src.controllers.request import *
-from src.controllers.wepay import create_checkout
 from src.sanitizer import sanitize_redactor_input
 from src.serializer import serialize_one
 

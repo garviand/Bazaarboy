@@ -20,27 +20,15 @@ BBOY_EVENT_CATEGORIES = [
     'Nightlife', 'Charity', 'Other'
 ]
 
-# WePay
+# Stripe
 
-WEPAY_PRODUCTION = os.getenv('WEPAY_PRODUCTION', 'false') == 'true'
-WEPAY_CLIENT_ID = os.getenv('WEPAY_CLIENT_ID', '105487')
-WEPAY_CLIENT_SECRET = os.getenv('WEPAY_CLIENT_SECRET', 'db3210d4d3')
-WEPAY_ACCESS_TOKEN = os.getenv('WEPAY_ACCESS_TOKEN', 'STAGE_91ada7d177ac57e37735802f98422ebc35f08278293d6be9da65449e8f07d074')
-WEPAY_APP_FEE_RATIO = 0.04
-WEPAY_SCOPE = [
-    'manage_accounts', 
-    'collect_payments', 
-    'view_balance', 
-    'view_user', 
-    'refund_payments', 
-    'preapprove_payments'
-]
-WEPAY_SUCCESS_STATES = [
-    'authorized',
-    'reserved',
-    'captured',
-    'settled'
-]
+STRIPE_CLIENT_ID = os.getenv('STRIPE_CLIENT_ID', 'ca_2Zvu0dHwuN2dHPaiYc1bwqNRbPfvNwMX')
+STRIPE_SECRET_KEY = os.getenv('STRIPE_SECRET_KEY', 'sk_test_zjWJjkoeZ06r91JDpSWgK80s')
+STRIPE_SCOPE = os.getenv('STRIPE_SCOPE', 'read_write')
+STRIPE_OAUTH_ROOT = 'https://connect.stripe.com/oauth/'
+STRIPE_CONNECT_URL = STRIPE_OAUTH_ROOT + 'authorize'
+STRIPE_TOKEN_URL = STRIPE_OAUTH_ROOT + 'token'
+STRIPE_CURRENCY = 'usd'
 
 # Mandrill
 

@@ -12,7 +12,6 @@ from celery import task
 from kernel.models import *
 from src.config import *
 from src.controllers.request import *
-from src.controllers.wepay import create_checkout
 from src.regex import REGEX_EMAIL
 from src.sanitizer import sanitize_redactor_input
 from src.serializer import serialize_one
@@ -1039,7 +1038,7 @@ def purchase(request, params, user):
         return json_response(response)
     # Check if there is an exisiting purchase
     if Purchase.objects.filter(Q(checkout = None) | 
-                               Q(checkout__is_captured = True, 
+                               Q(checkout__is_charged = True, 
                                  checkout__is_refunded = False), 
                                owner = user, event = event, 
                                is_expired = False).exists():
@@ -1049,21 +1048,16 @@ def purchase(request, params, user):
             'message':'You have already bought a ticket to the event.'
         }
         return json_response(response)
-    # Get the event creator's wepay account
+    # Get the event creator's payemnt account
     creator = Event_organizer.objects.get(event = event, is_creator = True) \
                                      .profile
-    # All checks passed, request a checkout on WePay
-    wepayAccountID = str(creator.wepay_account.id)
+    paymentAccount = creator.payment_account
+    # Create the checkout
     checkoutDescription = '%s - %s' % (event.name, ticket.name)
-    checkoutInfo = create_checkout('event', 
-                                   creator.wepay_account, 
-                                   checkoutDescription, 
-                                   ticket.price, 
-                                   'type=purchase&account=' + wepayAccountID)
-    checkout = Wepay_checkout(payer = user, payee = creator.wepay_account, 
-                              checkout_id = checkoutInfo['checkout_id'],
-                              amount = ticket.price, 
-                              description = checkoutDescription[:127])
+    checkout = Checkout(payer = user, 
+                        payee = paymentAccount, 
+                        amount = int(ticket.price * 100), 
+                        description = checkoutDescription)
     checkout.save()
     # Create the purchase
     code = os.urandom(6).encode('base_64')[:6].upper()
@@ -1083,7 +1077,6 @@ def purchase(request, params, user):
     response = {
         'status':'OK',
         'purchase':serialize_one(purchase),
-        'checkout':serialize_one(checkout),
-        'checkoutUri':checkoutInfo['checkout_uri']
+        'publishable_key':paymentAccount.publishable_key
     }
     return json_response(response)

@@ -46,6 +46,7 @@
         params.full_name = fullName;
       }
       Bazaarboy.post('event/purchase/', params, function(response) {
+        var checkoutDescription;
         if (response.status === 'OK') {
           $('div#rsvp div.tickets').addClass('collapsed');
           $('div#rsvp div.tickets div.ticket').not('div.selected').animate({
@@ -62,10 +63,27 @@
           $('div#rsvp div.action').css('overflow', 'hidden').animate({
             'height': 0
           });
-          $('div#rsvp div.checkout').removeClass('hidden');
-          WePay.iframe_checkout('checkout_frame', response.checkoutUri);
-          WePay.listen('iframe_checkout_complete', function() {
-            return _this.completeCheckout();
+          checkoutDescription = response.purchase.event.name + ' ' + response.purchase.ticket.name;
+          StripeCheckout.open({
+            key: response.publishable_key,
+            address: false,
+            amount: Math.round(response.purchase.price * 100),
+            currency: 'usd',
+            name: response.purchase.event.name,
+            description: checkoutDescription,
+            panelLabel: 'Checkout',
+            token: function(token) {
+              Bazaarboy.post('payment/charge/', {
+                checkout: response.purchase.checkout,
+                stripe_token: token.id
+              }, function(response) {
+                if (response.status === 'OK') {
+                  _this.completeCheckout();
+                } else {
+                  alert(response.message);
+                }
+              });
+            }
           });
         } else {
           alert(response.message);

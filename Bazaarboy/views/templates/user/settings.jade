@@ -1,10 +1,9 @@
 extends ../layout
 
 block content
-    div#wepay
-        {% for account in wepayAccounts %}
+    div#payment
+        {% for account in paymentAccounts %}
         div.account
-            {{ account.account_id }}
-        {% empty %}
-        a(href="{% url wepay:authorize %}") Connect WePay
+            {{ account.user_id }}
         {% endfor %}
+        a(href="{{ stripeConnectUrl|safe }}") Connect a Payment Account

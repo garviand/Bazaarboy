@@ -321,10 +321,6 @@ block content
                 div.title
                     a.confirm(href="javascript:;") Confirm
         div.checkout.hidden
-            div.header
-                div.title Checkout
-            div.content
-                div#checkout_frame
         div.confirmation.hidden
             div.header
                 div.title Confirmation
@@ -333,7 +329,7 @@ block content
                 div.body
                     div.upper
                         h2 You have {% if rsvp %}RSVP'd{% else %}purchased a ticket{% endif %} for
-                        p.name Endless Summer with Bit Funk (21+)
+                        p.name {{ event.name }}
                         p.time 
                             | {{ event.start_time|date:"F jS, Y @ f" }}{{ event.start_time|date:"A"|lower }}
                         p.location
@@ -356,7 +352,7 @@ append script
     script(type="text/javascript", src="{{ STATIC_URL }}jQueryUI/jquery-ui.min.js")
     script(type="text/javascript", src="{{ STATIC_URL }}redactor/redactor.min.js")
     {% else %}
-    script(type="text/javascript", src="https://www.wepay.com/min/js/iframe.wepay.js")
+    script(type="text/javascript", src="https://checkout.stripe.com/v2/checkout.js")
     {% endif %}
     script(type="text/javascript").
         var eventId = {{ event.id }};

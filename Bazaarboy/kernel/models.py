@@ -71,28 +71,27 @@ class User_reset_code(models.Model):
     is_expired = models.BooleanField(default = False)
     expiration_time = models.DateTimeField()
 
-class Wepay_account(models.Model):
+class Payment_account(models.Model):
     """
-    A model to hold information for a wepay account
+    A model to hold information for a payment account
     """
     owner = models.ForeignKey('User')
-    user_id = models.CharField(max_length = 50)
-    account_id = models.CharField(max_length = 50)
-    access_token = models.CharField(max_length = 80)
-    name = models.CharField(max_length = 50)
-    is_expired = models.BooleanField(default = False)
+    user_id = models.CharField(max_length = 255)
+    refresh_token = models.CharField(max_length = 255)
+    access_token = models.CharField(max_length = 255)
+    publishable_key = models.CharField(max_length = 255)
     created_time = models.DateTimeField(auto_now_add = True)
 
-class Wepay_checkout(models.Model):
+class Checkout(models.Model):
     """
     A model for checkouts
     """
     payer = models.ForeignKey('User')
-    payee = models.ForeignKey('Wepay_account')
-    checkout_id = models.CharField(max_length = 50)
-    amount = models.FloatField()
+    payee = models.ForeignKey('Payment_account')
+    checkout_id = models.CharField(max_length = 255)
+    amount = models.IntegerField() # in cents
     description = models.CharField(max_length = 127)
-    is_captured = models.BooleanField(default = False)
+    is_charged = models.BooleanField(default = False)
     is_refunded = models.BooleanField(default = False)
     created_time = models.DateTimeField(auto_now_add = True)
 
@@ -184,8 +183,8 @@ class Profile(models.Model):
     category = models.CharField(max_length = 30)
     latitude = models.FloatField(null = True, default = None)
     longitude = models.FloatField(null = True, default = None)
-    wepay_account = models.ForeignKey('Wepay_account', null = True, 
-                                      default = None)
+    payment_account = models.ForeignKey('Payment_account', null = True, 
+                                        default = None)
     managers = models.ManyToManyField('User', through = 'Profile_manager')
     created_time = models.DateTimeField(auto_now_add = True)
 
@@ -295,7 +294,7 @@ class Purchase(models.Model):
     event = models.ForeignKey('Event')
     price = models.FloatField()
     code = models.CharField(max_length = 6)
-    checkout = models.ForeignKey('Wepay_checkout', null = True, default = None)
+    checkout = models.ForeignKey('Checkout', null = True, default = None)
     is_expired = models.BooleanField(default = False)
     created_time = models.DateTimeField(auto_now_add = True)
 
@@ -346,7 +345,7 @@ class Donation(models.Model):
     reward = models.ForeignKey('Reward')
     fundraiser = models.ForeignKey('Fundraiser')
     amount = models.FloatField()
-    checkout = models.ForeignKey('Wepay_checkout')
+    checkout = models.ForeignKey('Checkout')
     is_expired = models.BooleanField(default = False)
     created_time = models.DateTimeField(auto_now_add = True)
 

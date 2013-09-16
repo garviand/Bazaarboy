@@ -16,10 +16,9 @@ user_urlpatterns = patterns('src.controllers.user',
     url(r'^logout/$', 'logout', name = 'logout'),
 )
 
-wepay_urlpatterns = patterns('src.controllers.wepay', 
-    url(r'^authorize/$', 'authorize', name = 'authorize'),
-    url(r'^create/$', 'create', name = 'create'),
-    url(r'^ipn/$', 'ipn', name = 'ipn'),
+payment_urlpatterns = patterns('src.controllers.payment', 
+    url(r'^connect/$', 'connect', name = 'connect'),
+    url(r'^charge/$', 'charge', name = 'charge'),
 )
 
 city_urlpatterns = patterns('src.controllers.city',
@@ -99,7 +98,7 @@ urlpatterns = patterns('',
     url(r'^$', 'src.controllers.index.index', name = 'index'),
     url(r'^', include(index_urlpatterns, namespace = 'index')),
     url(r'^user/', include(user_urlpatterns, namespace = 'user')),
-    url(r'^wepay/', include(wepay_urlpatterns, namespace = 'wepay')),
+    url(r'^payment/', include(payment_urlpatterns, namespace = 'payment')),
     url(r'^city/', include(city_urlpatterns, namespace = 'city')),
     url(r'^community/', 
         include(community_urlpatterns, namespace = 'community')),

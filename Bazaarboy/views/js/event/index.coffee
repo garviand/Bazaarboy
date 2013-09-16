@@ -43,10 +43,27 @@ Bazaarboy.event.index =
                     'height': 0
                 $('div#rsvp div.action').css('overflow', 'hidden').animate
                     'height': 0
-                $('div#rsvp div.checkout').removeClass('hidden')
-                WePay.iframe_checkout 'checkout_frame', response.checkoutUri
-                WePay.listen 'iframe_checkout_complete', () =>
-                    @completeCheckout()
+                checkoutDescription = response.purchase.event.name + ' ' + 
+                                      response.purchase.ticket.name
+                StripeCheckout.open
+                    key: response.publishable_key
+                    address: false
+                    amount: Math.round(response.purchase.price * 100)
+                    currency: 'usd'
+                    name: response.purchase.event.name
+                    description: checkoutDescription
+                    panelLabel: 'Checkout'
+                    token: (token) =>
+                        Bazaarboy.post 'payment/charge/',
+                            checkout: response.purchase.checkout
+                            stripe_token: token.id
+                        , (response) =>
+                            if response.status is 'OK'
+                                @completeCheckout()
+                            else
+                                alert response.message
+                            return
+                        return
             else
                 alert response.message
             return
