@@ -114,15 +114,11 @@ input[type=file].hidden {
 // Layout
 
 body {
-    background-color: #333;
     font-family: @font_family_base;
     font-weight: @font_weight_base;
     font-style: @font_style_base;
     font-size: @font_size_base;
     color: @font_color_base;
-    &.white {
-        background-color: #FFF;
-    }
 }
 
 b {
@@ -135,23 +131,15 @@ i {
 
 div#wrapper_top {
     position: relative;
-    width: @body_width;
+    width: 100%;
+    min-width: @body_width;
     height: @top_height;
-    background-color: @pale_blue;
-    border-bottom: 1px solid lighten(@bboy_orange, 20%);
+    background-color: #1D1D1D;
     .center;
 
     div.logo {
         position: relative;
-        width: @sidebar_width;
         height: @top_height;
-        background-color: @bboy_orange;
-        //background-color: rgba(25, 25, 25, 0.75);
-        //.linear_gradient(left, rgba(red(@bboy_orange), green(@bboy_orange), blue(@bboy_orange), 0.8), rgba(red(@bboy_orange), green(@bboy_orange), blue(@bboy_orange), 0.6));
-        overflow: hidden;
-        body.collapsed & {
-            width: @sidebar_width_collapsed;
-        }
         .left;
 
         a {
@@ -165,30 +153,32 @@ div#wrapper_top {
 
         div.left {
             position: relative;
-            width: @sidebar_width_collapsed;
+            width: @top_height;
             height: 100%;
 
             img {
+                width: 70%;
+                height: 70%;
                 .absolute_center;
             }
         }
 
         div.right {
-            width: @sidebar_width - @sidebar_width_collapsed;
-            height: 100%;
+            height: @font_size_base + 4;
+            padding: (@top_height - (@font_size_base + 4)) / 2 0;
+            margin-left: 5px;
+            color: #FFF;
+            font-size: @font_size_base + 4;
+            line-height: @font_size_base + 4;
+            text-transform: uppercase;
+            text-decoration: none;
             float: left;
         }
     }
 
-    div.search {
-        width: @content_width;
+    div.controls {
         height: @top_height;
-        background-color: @pale_blue;
-        //.linear_gradient(left, rgba(red(@bboy_orange), green(@bboy_orange), blue(@bboy_orange), 0.6), rgba(red(@bboy_orange), green(@bboy_orange), blue(@bboy_orange), 0.5));
-        body.collapsed & {
-            width: @content_width_expanded;
-        }
-        .left;
+        .right;
     }
 }
 

@@ -10,11 +10,8 @@ html(lang="en")
             script(type="text/javascript", src="//use.typekit.net/gjc0hvy.js")
             script(type="text/javascript").
                 try{Typekit.load();}catch(e){}
-            link(rel="shortcut icon", href="{{ STATIC_URL }}images/tent.png")
+            link(rel="shortcut icon", href="{{ STATIC_URL }}images/logo.png")
             link(rel="stylesheet", href="{{ STATIC_URL }}css/layout.css")
-    block vars
-    - var bodyClass = collapsed !== undefined && collapsed ? 'collapsed' : ''
-    - bodyClass += whiteBg !== undefined && whiteBg ? ' white' : ''
     body(class="#{bodyClass}")
         block body
             div#wrapper_top
@@ -24,7 +21,6 @@ html(lang="en")
                 block main
                     div#wrapper_sidebar
                         block sidebar
-                            include components/sidebar
                     div#wrapper_content
                         block content
                     div.clear

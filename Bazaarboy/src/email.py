@@ -10,8 +10,6 @@ from src.config import *
 class Email(object):
     """
     A wrapper class for all email functions
-
-    The actual send email request is called asynchronously to reduce blocking.
     """
     def __init__(self):
         super(Email, self).__init__()
@@ -41,7 +39,7 @@ class Email(object):
 
     def sendConfirmationEmail(self, user, confirmationCode):
         """
-        Send Confirmation after Registration
+        Email confirming registration
         """
         to = [{
             'email':user.email, 
@@ -62,43 +60,43 @@ class Email(object):
 
     def sendResetRequestEmail(self, resetCode, user):
         """
-        Send Reset Instructions
+        Email containing information to reset password
         """
-        mandrill_client = Mandrill(MANDRILL_API_KEY)
-        template_content = []
-        message = {
-         'from_email': 'build@bazaarboy.com',
-         'from_name': 'Bazaarboy',
-         'headers': {'Reply-To': 'build@bazaarboy.com'},
-         'subject': 'Reset Your Password',
-         'global_merge_vars': [{'name': 'user_name', 'content': user.full_name}, {'name': 'reset_code', 'content': resetCode.code}],
-         'to': [{'email': user.email, 'name': user.full_name}],
-         'track_clicks': True,
-         'track_opens': True}
-
-        result = mandrill_client.messages.send_template(template_name='reset-password', template_content=template_content, message=message, async=False)
-
-        return result
+        to = [{
+            'email':user.email, 
+            'name':user.full_name
+        }]
+        subject = 'Reset Your Password'
+        template = 'reset-password'
+        mergeVars = [
+            {
+                'name':'user_name', 
+                'content':user.full_name
+            }, 
+            {
+                'name': 'reset_code', 
+                'content': resetCode.code
+            }
+        ]
+        return self.sendEmail(to, subject, template, mergeVars)
 
     def sendPasswordChangedEmail(self, user):
         """
-        Send Reset Confirmation
+        Email regarding the change of password
         """
-        mandrill_client = Mandrill(MANDRILL_API_KEY)
-        template_content = []
-        message = {
-         'from_email': 'build@bazaarboy.com',
-         'from_name': 'Bazaarboy',
-         'headers': {'Reply-To': 'build@bazaarboy.com'},
-         'subject': 'Your Password Has Been Changed',
-         'global_merge_vars': [{'name': 'user_name', 'content': user.full_name}],
-         'to': [{'email': user.email, 'name': user.full_name}],
-         'track_clicks': True,
-         'track_opens': True}
-
-        result = mandrill_client.messages.send_template(template_name='password-changed', template_content=template_content, message=message, async=False)
-
-        return result
+        to = [{
+            'email':user.email, 
+            'name':user.full_name
+        }]
+        subject = 'RYour Password Has Been Changed'
+        template = 'password-changed'
+        mergeVars = [
+            {
+                'name':'user_name', 
+                'content':user.full_name
+            }
+        ]
+        return self.sendEmail(to, subject, template, mergeVars)
 
     def sendPurchaseConfirmationEmail(self, purchase):
         """
@@ -126,21 +124,24 @@ class Email(object):
         """
         Send Donation Confirmation
         """
-        mandrill_client = Mandrill(MANDRILL_API_KEY)
-        template_content = []
-        message = {
-         'from_email': 'build@bazaarboy.com',
-         'from_name': 'Bazaarboy',
-         'headers': {'Reply-To': 'build@bazaarboy.com'},
-         'subject': 'Thanks for donating to \''+donation.fundraiser.name+'\'',
-         'global_merge_vars': [{'name': 'fundraiser_name', 'content': donation.fundraiser.name}, {'name': 'user_name', 'content': donation.owner.full_name},  {'name': 'user_profile', 'content': userProfile.profile.id}],
-         'to': [{'email': donation.owner.email, 'name': donation.owner.full_name}],
-         'track_clicks': True,
-         'track_opens': True}
-
-        result = mandrill_client.messages.send_template(template_name='confirm-donation', template_content=template_content, message=message, async=False)
-
-        return result
-
-    def sendWeeklyDigestEmail(self, user):
-        pass
+        to = [{
+            'email':donation.owner.email, 
+            'name':donation.owner.full_name
+        }]
+        subject = 'Confirmation for \'' + donation.fundraiser.name + '\''
+        template = 'confirm-donation'
+        mergeVars = [
+            {
+                'name':'fundraiser_name', 
+                'content':donation.fundraiser.name
+            }, 
+            {
+                'name':'user_name', 
+                'content':donation.owner.full_name
+            }, 
+            {
+                'name':'user_profile', 
+                'content':userProfile.profile.id
+            }
+        ]
+        return self.sendEmail(to, subject, template, mergeVars)
