@@ -21,14 +21,14 @@ prepend body
     {% endif %}
 
 block content
-    div#event.content_divided.event_base(class="{% if event.cover %}big_cover {% if editable %}with_caption{% else %}{% if event.cover and event.cover.caption|length != 0 %}with_caption{% endif %}{% endif %}{% endif %}")
+    div#event.content_divided.event_base(class="{% if event.cover %}with_cover{% endif %}")
         div.cover
             div.image
                 div.bounds
                     {% if event.cover %}
                     img.normal(src="{{ event.cover.source.url }}")
                     {% endif %}
-            div.caption
+            //div.caption
                 div.inner
                     div.text
                         {% if event.cover and event.cover.caption|length != 0 %}
@@ -41,65 +41,21 @@ block content
                     div.editor.hidden
                         input(type="text", name="caption", placeholder="Maximum 100 Characters", value="{{ event.cover.caption }}")
                     {% endif %}
-            {% if editable %}
-            div.controls(class="{% if not event.cover %}stick{% endif %}")
-                span.hidden Drag the image to position you think fit. 
-                a.edit(href="javascript:;") 
-                    | {% if event.cover %}Edit Cover{% else %}Add Cover{% endif %}
-                a.delete(href="javascript:;", class="{% if not event.cover %}hidden{% endif %}") 
-                    | Delete
-                a.hidden.save(href="javascript:;") Save
-                a.hidden.cancel(href="javascript:;") Cancel
-                form.upload_cover
-                    input.hidden(type="file", name="image_file")
-                    {% csrf_token %}
-            {% endif %}
         div.title
             div.inner
-                div.text
-                    {{ event.name }}
-                {% if editable %}
-                div.button Edit
-                div.editor.hidden
-                    input(type="text", name="name", placeholder="Event name", value="{{ event.name }}")
-                {% else %}
-                div.controls
-                {% endif %}
-                div.clear
-        div.frame
-            div.left
-                div.description
-                    div.editor
-                        div.inner
-                            {{ event.description|safe }}
+                div.top
+                    div.text
+                        {{ event.name }}
                     {% if editable %}
+                    div.button Edit
+                    div.editor.hidden
+                        input(type="text", name="name", placeholder="Event name", value="{{ event.name }}")
+                    {% else %}
                     div.controls
-                        a.save(href="javascript:;") Save
-                        a.edit(href="javascript:;") Edit
                     {% endif %}
-            div.right
-                div.action
-                    div.button
-                        b
-                            {% if editable %}
-                            | Edit Tickets
-                            {% else %}
-                            {% if rsvp %}
-                            | RSVP
-                            {% else %}
-                            | Buy Tickets
-                            {% endif %}
-                            {% endif %}
-                    div.price
-                        b
-                            {% if rsvp %}
-                            | Free
-                            {% else %}
-                            | ${{ cheapest|floatformat:-2 }}{% if tickets|length != 1 %}+{% endif %}
-                            {% endif %}
                     div.clear
-                div.details.info
-                    div.time
+                div.bottom
+                    div.details
                         //- Format the times to form something like this
                         //- Jul 9th, 10pm - 11pm
                         //- or
@@ -110,39 +66,68 @@ block content
                         | {% if event.end_time|shouldShortenEndTime:event.start_time %}
                         |  - {{ event.end_time|date:"f" }}{{ event.end_time|date:"A"|lower }}
                         | {% else %}
-                        |  - 
-                        br
-                        | {{ event.end_time|date:"M jS, f" }}{{ event.end_time|date:"A"|lower }}
+                        |  - {{ event.end_time|date:"M jS, f" }}{{ event.end_time|date:"A"|lower }}
                         | {% endif %}
+                        | {% endif %}
+                        | {% if event.location %}
+                        | at 
+                        b {{ event.location }}
                         | {% endif %}
                         | {% endspaceless %}
-                    {% if event.location|length != 0 %}
-                    div.location 
-                        div.text
-                            | at 
-                            b {{ event.location }}
-                        //div.map(data-latitude="{{ event.latitude }}", data-longitude="{{ event.longitude }}")
-                        //    div#map_canvas
-                    {% endif %}
-                div.facebook.info
+                    div.sponsor
+                        a(href="javascript:;")
+                            i Want to sponsor this event?
+                    div.clear
                     {% if editable %}
-                    div.caption
-                        div.text Sync to Facebook
-                        div.clear
-                    div.content
-                    {% else %}
-                    div.caption
-                        div.text Friends Going
-                        {% if user.fb_id %}
-                        div.share
-                            b Share
-                        {% endif %}
-                        div.clear
-                    div.content
-                        {% if user.fb_id %}
-                        {% else %}
-                        {% endif %}
+                    div.controls(class="{% if not event.cover %}stick{% endif %}")
+                        span.hidden Drag the image to position you think fit. 
+                        a.edit(href="javascript:;") 
+                            | {% if event.cover %}Edit Cover{% else %}Add Cover{% endif %}
+                        a.delete(href="javascript:;", class="{% if not event.cover %}hidden{% endif %}") 
+                            | Delete
+                        a.hidden.save(href="javascript:;") Save
+                        a.hidden.cancel(href="javascript:;") Cancel
+                        form.upload_cover
+                            input.hidden(type="file", name="image_file")
+                            {% csrf_token %}
                     {% endif %}
+                    div.action
+                        div.button
+                            b
+                                {% if editable %}
+                                | Edit Tickets
+                                {% else %}
+                                {% if rsvp %}
+                                | RSVP
+                                {% else %}
+                                | Buy Tickets
+                                {% endif %}
+                                {% endif %}
+                        div.price
+                            b
+                                {% if rsvp %}
+                                | Free
+                                {% else %}
+                                | ${{ cheapest|floatformat:-2 }}{% if tickets|length != 1 %}+{% endif %}
+                                {% endif %}
+                        div.clear
+                    div.share
+                        b Share on Facebook
+        div.frame
+            div.left
+                {% if editable %}
+                div.placeholder
+                {% endif %}
+                div.description
+                    div.editor
+                        div.inner
+                            {{ event.description|safe }}
+                    {% if editable %}
+                    div.controls
+                        a.save(href="javascript:;") Save
+                        a.edit(href="javascript:;") Edit
+                    {% endif %}
+            div.right
                 div.organizers.info
                     div.caption
                         div.text Organizer{{ organizers|pluralize }}
@@ -151,10 +136,6 @@ block content
                         {% for organizer in organizers %}
                         div.organizer
                             div.icon
-                                {% if organizer.profile.image %}
-                                {% else %}
-                                img(src="{{ STATIC_URL }}images/logo.png")
-                                {% endif %}
                             div.name
                                 a(href="{% url profile:index organizer.profile.id %}")
                                     b {{ organizer.profile.name }}

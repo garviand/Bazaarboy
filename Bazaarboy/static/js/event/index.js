@@ -709,10 +709,7 @@
       });
     },
     init: function() {
-      var collapseStates,
-        _this = this;
-      collapseStates = [['div#event', [['margin-left', '63px', '96px']]], ['div#event.big_cover div.cover', [['width', '750px', '876px'], ['left', '-63px', '-96px']]], ['div#event div.cover div.image', [['left', '-126px', '0']]], ['div#event > div.title', [['width', '750px', '876px'], ['left', '-63px', '-96px']]], ['div#event.big_cover div.cover div.caption', [['width', '750px', '876px']]], ['div#event.big_cover div.cover div.caption div.inner', [['margin-left', '63px', '96px']]], ['div#event > div.title', [['width', '750px', '876px'], ['left', '-63px', '-96px']]], ['div#event > div.title div.inner', [['left', '63px', '96px']]]];
-      $.merge(Bazaarboy.collapseStates, collapseStates);
+      var _this = this;
       $('div#event div.action').click(function() {
         $('div#wrapper_overlay').fadeIn(200);
         $('div.event_overlay_canvas').fadeIn(200);

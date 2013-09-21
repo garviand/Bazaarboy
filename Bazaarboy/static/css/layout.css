@@ -447,21 +447,18 @@ i {
 div#wrapper_top {
   position: relative;
   width: 100%;
-  min-width: 936px;
+  min-width: 912px;
   height: 44px;
   background-color: #1D1D1D;
   display: block;
   margin: auto;
 }
 div#wrapper_top div.logo {
-  position: relative;
   height: 44px;
   float: left;
 }
 div#wrapper_top div.logo a {
   display: block;
-  position: absolute;
-  width: 186px;
   height: 100%;
   top: 0;
   left: 0;
@@ -497,33 +494,15 @@ div#wrapper_top div.controls {
   height: 44px;
   float: right;
 }
-div#wrapper_main {
-  position: relative;
-  width: 936px;
-  background-color: #B6C4C3;
-  display: block;
-  margin: auto;
-}
-div#wrapper_sidebar {
-  position: relative;
-  width: 186px;
-  float: left;
-}
-body.collapsed div#wrapper_sidebar {
-  width: 60px;
-}
 div#wrapper_content {
   position: relative;
-  width: 750px;
-  background-color: #FFF;
+  width: 100%;
+  min-width: 912px;
   float: right;
-}
-body.collapsed div#wrapper_content {
-  width: 876px;
 }
 div#wrapper_foot {
   position: relative;
-  width: 936px;
+  width: 912px;
   display: block;
   margin: auto;
 }
@@ -540,253 +519,371 @@ div#wrapper_overlay {
 }
 .content_divided {
   position: relative;
-  width: 624px;
-  margin-left: 63px;
-}
-body.collapsed .content_divided {
-  margin-left: 96px;
+  width: 100%;
+  min-width: 912px;
 }
 .content_divided div.frame {
-  width: 624px;
+  width: 912px;
+  display: block;
+  margin: auto;
 }
 .content_divided div.frame div.left {
-  width: 408px;
+  width: 696px;
 }
 .content_divided div.frame div.right {
   width: 192px;
 }
-div#profile div.cover {
-  position: absolute;
-  width: 750px;
-  height: 230px;
-  top: 0;
-  left: -63px;
-  overflow: hidden;
+/*
+div#profile {
+    div.cover {
+        position: absolute;
+        width: @body_width;
+        height: 230px;
+        top: 0;
+        left: 0 - ((@content_width - @content_inner_width) / 2);
+        overflow: hidden;
+        body.collapsed & {
+            width: @content_width_expanded;
+            left: 0 - ((@body_width - @content_inner_width) / 2 - @sidebar_width_collapsed);
+
+            div.image {
+                left: 0;
+            }
+
+            div.controls {
+                left: (@body_width - @content_inner_width) / 2 - @sidebar_width_collapsed;
+            }
+        }
+        &:hover {
+            div.controls {
+                display: block;
+            }
+        }
+
+        div.image {
+            position: relative;
+            width: @content_width_expanded;
+            height: 100%;
+            top: 0;
+            left: @content_width - @content_width_expanded;
+            overflow: hidden;
+
+            div.bounds {
+                position: absolute;
+                width: 100%;
+                height: 100%;
+                top: 0;
+                left: 0;
+
+                img {
+                    &.normal {
+                        width: 100%;
+                        height: 100%;
+                    }
+
+                    &.editing {
+                        cursor: pointer;
+                    }
+                }
+            }
+        }
+
+        div.controls {
+            display: none;
+            position: absolute;
+            top: 60px;
+            left: (@content_width - @content_inner_width) / 2;
+            background: #FFF;
+        }
+    }
+
+    > div.title {
+        position: absolute;
+        width: @content_width;
+        height: @content_title_height_single;
+        left: 0 - ((@content_width - @content_inner_width) / 2);
+        z-index: @above_plain_z_index;
+        background-color: rgba(0, 0, 0, 0.6);
+        body.collapsed & {
+            width: @content_width_expanded;
+            left: 0 - ((@body_width - @content_inner_width) / 2 - @sidebar_width_collapsed);
+
+            div.text {
+                left: (@body_width - @content_inner_width) / 2 - @sidebar_width_collapsed;
+            }
+        }
+
+        div.controls {
+            position: absolute;
+        }
+
+        div.text {
+            position: absolute;
+            width: @content_inner_body_width;
+            height: @font_size_base + 4;
+            left: (@content_width - @content_inner_width) / 2;
+            padding: (@content_title_height_single - (@font_size_base + 4)) / 2 0;
+            color: #FFF;
+            font-size: @font_size_base + 4;
+            font-weight: @font_weight_bold;
+            line-height: @font_size_base + 4;
+        }
+    }
+
+    div.tabs {
+        position: absolute;
+        width: @content_width;
+        height: 30px;
+        top: 230px;
+        left: 0 - ((@content_width - @content_inner_width) / 2);
+        z-index: @above_plain_z_index;
+        background-color: rgba(0, 0, 0, 0.6);
+
+        body.collapsed & {
+            width: @content_width_expanded;
+            left: 0 - ((@body_width - @content_inner_width) / 2 - @sidebar_width_collapsed);
+
+            div.inner {
+                left: (@body_width - @content_inner_width) / 2 - @sidebar_width_collapsed;
+            }
+        }
+
+        div.inner {
+            position: absolute;
+            width: @content_inner_width;
+            height: 100%;
+            left: (@content_width - @content_inner_width) / 2;
+
+            div.tab {
+                height: @font_size_base - 2;
+                padding: (30px - (@font_size_base - 2)) / 2;
+                color: #FFF;
+                font-size: @font_size_base - 2;
+                line-height: @font_size_base - 2;
+                cursor: pointer;
+                .left;
+                &:hover {
+                    background-color: #999;
+                }
+                &.show {
+                    background-color: #000;
+                }
+            }
+        }
+    }
+
+    div.frame {
+        div.left {
+            div.placeholder {
+                width: @content_inner_body_width;
+                height: 260px;
+            }
+
+            div.wrapper {
+                width: @content_inner_body_width;
+
+                > div {
+                    display: none;
+                    width: @content_inner_body_width;
+
+                    &.show {
+                        display: block;
+                    }
+                }
+
+                div.overview {
+                    padding: 20px 0;
+
+                    div.info {
+                        width: 100%;
+                        height: 120px;
+                        padding: 10px 0;
+                        background-color: @pale_blue;
+                    }
+
+                    div.description {
+                        width: 100%;
+                        margin-top: 20px;
+
+                        div.editor {
+                            width: 100%;
+
+                            &.editing {
+                                width: @content_inner_body_width + 22;
+                                margin-left: -11px;
+
+                                div.inner {
+                                    width: @content_inner_body_width - 10;
+                                    padding: 15px;
+                                    background-color: none;
+                                    .center;
+                                }
+                            }
+
+                            div.inner {
+                                width: @content_inner_body_width - 10;
+                                padding: 10px 5px;
+                                background-color: @pale_blue;
+                            }
+
+                            img {
+                                max-width: @content_inner_body_width;
+                            }
+
+                            iframe {
+                                max-width: @content_inner_body_width;
+                            }
+                        }
+
+                        div.controls {
+                            a.save {
+                                
+                            }
+                        }
+                    }
+                }
+
+                div.events {
+
+                }
+
+                div.sponsorships {
+
+                }
+            }
+        }
+
+        div.right {
+            div.image {
+                position: relative;
+                width: @content_inner_sidebar_width;
+                height: 144px;
+                margin-top: (@content_title_height_single - (@font_size_base + 4)) / 2;
+                z-index: @overlay_z_index;
+                background-color: @pale_blue;
+            }
+
+            div.action {
+                position: relative;
+                width: @content_inner_sidebar_width;
+                height: @font_size_base + 2;
+                padding: (48px - (@font_size_base + 2)) / 2 0;
+                z-index: @overlay_z_index;
+                background-color: @event_blue;
+                color: #FFF;
+                line-height: @font_size_base + 2;
+                font-size: @font_size_base + 2;
+                text-align: center;
+                cursor: pointer;
+            }
+        }
+    }
 }
-body.collapsed div#profile div.cover {
-  width: 876px;
-  left: -96px;
-}
-body.collapsed div#profile div.cover div.image {
-  left: 0;
-}
-body.collapsed div#profile div.cover div.controls {
-  left: 96px;
-}
-div#profile div.cover:hover div.controls {
-  display: block;
-}
-div#profile div.cover div.image {
-  position: relative;
-  width: 876px;
-  height: 100%;
-  top: 0;
-  left: -126px;
-  overflow: hidden;
-}
-div#profile div.cover div.image div.bounds {
-  position: absolute;
-  width: 100%;
-  height: 100%;
-  top: 0;
-  left: 0;
-}
-div#profile div.cover div.image div.bounds img.normal {
-  width: 100%;
-  height: 100%;
-}
-div#profile div.cover div.image div.bounds img.editing {
-  cursor: pointer;
-}
-div#profile div.cover div.controls {
-  display: none;
-  position: absolute;
-  top: 60px;
-  left: 63px;
-  background: #FFF;
-}
-div#profile > div.title {
-  position: absolute;
-  width: 750px;
-  height: 48px;
-  left: -63px;
-  z-index: 5;
-  background-color: rgba(0, 0, 0, 0.6);
-}
-body.collapsed div#profile > div.title {
-  width: 876px;
-  left: -96px;
-}
-body.collapsed div#profile > div.title div.text {
-  left: 96px;
-}
-div#profile > div.title div.controls {
-  position: absolute;
-}
-div#profile > div.title div.text {
-  position: absolute;
-  width: 408px;
-  height: 20px;
-  left: 63px;
-  padding: 14px 0;
-  color: #FFF;
-  font-size: 20px;
-  font-weight: 500;
-  line-height: 20px;
-}
-div#profile div.tabs {
-  position: absolute;
-  width: 750px;
-  height: 30px;
-  top: 230px;
-  left: -63px;
-  z-index: 5;
-  background-color: rgba(0, 0, 0, 0.6);
-}
-body.collapsed div#profile div.tabs {
-  width: 876px;
-  left: -96px;
-}
-body.collapsed div#profile div.tabs div.inner {
-  left: 96px;
-}
-div#profile div.tabs div.inner {
-  position: absolute;
-  width: 624px;
-  height: 100%;
-  left: 63px;
-}
-div#profile div.tabs div.inner div.tab {
-  height: 14px;
-  padding: 8px;
-  color: #FFF;
-  font-size: 14px;
-  line-height: 14px;
-  cursor: pointer;
-  float: left;
-}
-div#profile div.tabs div.inner div.tab:hover {
-  background-color: #999;
-}
-div#profile div.tabs div.inner div.tab.show {
-  background-color: #000;
-}
-div#profile div.frame div.left div.placeholder {
-  width: 408px;
-  height: 260px;
-}
-div#profile div.frame div.left div.wrapper {
-  width: 408px;
-}
-div#profile div.frame div.left div.wrapper > div {
-  display: none;
-  width: 408px;
-}
-div#profile div.frame div.left div.wrapper > div.show {
-  display: block;
-}
-div#profile div.frame div.left div.wrapper div.overview {
-  padding: 20px 0;
-}
-div#profile div.frame div.left div.wrapper div.overview div.info {
-  width: 100%;
-  height: 120px;
-  padding: 10px 0;
-  background-color: #f0f5f5;
-}
-div#profile div.frame div.left div.wrapper div.overview div.description {
-  width: 100%;
-  margin-top: 20px;
-}
-div#profile div.frame div.left div.wrapper div.overview div.description div.editor {
-  width: 100%;
-}
-div#profile div.frame div.left div.wrapper div.overview div.description div.editor.editing {
-  width: 430px;
-  margin-left: -11px;
-}
-div#profile div.frame div.left div.wrapper div.overview div.description div.editor.editing div.inner {
-  width: 398px;
-  padding: 15px;
-  background-color: none;
-  display: block;
-  margin: auto;
-}
-div#profile div.frame div.left div.wrapper div.overview div.description div.editor div.inner {
-  width: 398px;
-  padding: 10px 5px;
-  background-color: #f0f5f5;
-}
-div#profile div.frame div.left div.wrapper div.overview div.description div.editor img {
-  max-width: 408px;
-}
-div#profile div.frame div.left div.wrapper div.overview div.description div.editor iframe {
-  max-width: 408px;
-}
-div#profile div.frame div.right div.image {
-  position: relative;
-  width: 192px;
-  height: 144px;
-  margin-top: 14px;
-  z-index: 20;
-  background-color: #f0f5f5;
-}
-div#profile div.frame div.right div.action {
-  position: relative;
-  width: 192px;
-  height: 18px;
-  padding: 15px 0;
-  z-index: 20;
-  background-color: #4795f2;
-  color: #FFF;
-  line-height: 18px;
-  font-size: 18px;
-  text-align: center;
-  cursor: pointer;
-}
-div.event_base.big_cover div.cover {
+*/
+div.event_base.with_cover div.cover {
   height: 320px;
 }
-div.event_base.big_cover div.cover:hover div.controls {
+div.event_base.with_cover div.cover:hover div.controls {
   display: block;
 }
-div.event_base.big_cover div.cover div.image {
+div.event_base.with_cover div.cover div.image {
   left: 0;
   height: 320px;
 }
-div.event_base.big_cover div.cover div.caption {
+div.event_base.with_cover div.cover div.caption {
   height: 30px;
 }
-div.event_base.big_cover div.frame div.left div.description {
+div.event_base.with_cover div.frame div.left div.description {
   margin-top: 370px;
 }
 div.event_base.with_caption div.cover {
   height: 350px;
 }
-body.collapsed div.event_base div.cover {
-  width: 876px;
-  left: -96px;
-}
-body.collapsed div.event_base div.cover div.caption div.inner {
-  margin-left: 96px;
-}
-body.collapsed div.event_base div.cover div.controls {
-  left: 96px;
-}
 div.event_base div.cover {
+  display: none;
   position: absolute;
-  width: 750px;
+  width: 912px;
   height: 88px;
-  left: -63px;
-  top: 0;
   overflow: hidden;
+  /*
+        div.caption {
+            position: relative;
+            width: 100%;
+            height: 0;
+            background: #BBB;
+            overflow: hidden;
+            &:hover {
+                div.inner {
+                    div.button {
+                        display: block;
+                    }
+                }
+            }
+
+            div.inner {
+                position: relative;
+                width: @content_inner_width;
+                height: 100%;
+                margin-left: (@content_width - @content_inner_width) / 2;
+
+                div.text {
+                    width: 100%;
+                    height: @font_size_base;
+                    padding-top: floor((30px - (@font_size_base - 1)) / 2);
+                    padding-bottom: ceil((30px - (@font_size_base - 1)) / 2);
+                    font-size: @font_size_base - 1;
+                    line-height: @font_size_base - 1;
+                }
+
+                div.button {
+                    display: none;
+                    position: absolute;
+                    width: 40px;
+                    height: 80%;
+                    left: -45px;
+                    top: 10%;
+                    background-color: #FFF;
+                    text-align: center;
+                    cursor: pointer;
+                }
+
+                div.editor {
+                    width: 100%;
+                    height: 100%;
+
+                    input {
+                        width: @content_inner_width;
+                        height: @font_size_base - 1;
+                        padding: 0;
+                        padding-top: floor((30px - (@font_size_base - 1)) / 2);
+                        padding-bottom: ceil((30px - (@font_size_base - 1)) / 2);
+                        border: none;
+                        outline: none;
+                        background: none;
+                        font-size: @font_size_base - 1;
+                        line-height: @font_size_base - 1;
+                        .input_placeholder(rgba(0, 0, 0, 0.6));
+                    }
+                }
+            }
+        }
+        */
+
+  /*
+        div.controls {
+            display: none;
+            position: absolute;
+            top: 60px;
+            left: (@content_width - @content_inner_width) / 2;
+            background: #FFF;
+        }
+        */
+
 }
 div.event_base div.cover div.image {
   position: relative;
-  width: 876px;
+  width: 912px;
   height: 0;
-  top: 0;
-  left: -126px;
   overflow: hidden;
 }
 div.event_base div.cover div.image div.bounds {
@@ -803,129 +900,42 @@ div.event_base div.cover div.image div.bounds img.normal {
 div.event_base div.cover div.image div.bounds img.editing {
   cursor: pointer;
 }
-div.event_base div.cover div.caption {
-  position: relative;
-  width: 100%;
-  height: 0;
-  background: #BBB;
-  overflow: hidden;
-}
-div.event_base div.cover div.caption:hover div.inner div.button {
-  display: block;
-}
-div.event_base div.cover div.caption div.inner {
-  position: relative;
-  width: 624px;
-  height: 100%;
-  margin-left: 63px;
-}
-div.event_base div.cover div.caption div.inner div.text {
-  width: 100%;
-  height: 16px;
-  padding-top: 7px;
-  padding-bottom: 8px;
-  font-size: 15px;
-  line-height: 15px;
-}
-div.event_base div.cover div.caption div.inner div.button {
-  display: none;
-  position: absolute;
-  width: 40px;
-  height: 80%;
-  left: -45px;
-  top: 10%;
-  background-color: #FFF;
-  text-align: center;
-  cursor: pointer;
-}
-div.event_base div.cover div.caption div.inner div.editor {
-  width: 100%;
-  height: 100%;
-}
-div.event_base div.cover div.caption div.inner div.editor input {
-  width: 624px;
-  height: 15px;
-  padding: 0;
-  padding-top: 7px;
-  padding-bottom: 8px;
-  border: none;
-  outline: none;
-  background: none;
-  font-size: 15px;
-  line-height: 15px;
-}
-div.event_base div.cover div.caption div.inner div.editor input .placeholder {
-  color: rgba(0, 0, 0, 0.6);
-  font-size: 16px;
-  font-weight: 300;
-}
-div.event_base div.cover div.caption div.inner div.editor input::-webkit-input-placeholder {
-  color: rgba(0, 0, 0, 0.6);
-  font-size: 16px;
-  font-weight: 300;
-}
-div.event_base div.cover div.caption div.inner div.editor input:-moz-placeholder {
-  color: rgba(0, 0, 0, 0.6);
-  font-size: 16px;
-  font-weight: 300;
-}
-div.event_base div.cover div.caption div.inner div.editor input::-moz-placeholder {
-  color: rgba(0, 0, 0, 0.6);
-  font-size: 16px;
-  font-weight: 300;
-}
-div.event_base div.cover div.caption div.inner div.editor input:-ms-input-placeholder {
-  color: rgba(0, 0, 0, 0.6);
-  font-size: 16px;
-  font-weight: 300;
-}
-div.event_base div.cover div.controls {
-  display: none;
-  position: absolute;
-  top: 60px;
-  left: 63px;
-  background: #FFF;
-}
 div.event_base > div.title {
-  position: absolute;
-  width: 750px;
-  height: 48px;
-  left: -63px;
+  width: 100%;
+  min-width: 912px;
   z-index: 5;
-  background-color: rgba(0, 0, 0, 0.6);
 }
 div.event_base > div.title:hover div.inner div.button {
   display: block;
 }
-body.collapsed div.event_base > div.title {
-  width: 876px;
-  left: -96px;
-}
-body.collapsed div.event_base > div.title div.inner {
-  left: 96px;
-}
 div.event_base > div.title div.inner {
-  position: absolute;
-  width: 624px;
-  height: 20px;
-  left: 63px;
-  padding: 14px 0;
+  width: 912px;
+  display: block;
+  margin: auto;
 }
-div.event_base > div.title div.inner .title_text {
-  color: #FFF;
-  font-size: 20px;
+div.event_base > div.title div.inner div.top {
+  width: 912px;
+  border-bottom: 1px solid #7F7F7F;
+}
+div.event_base > div.title div.inner div.top .title_text {
+  width: 912px;
+  min-height: 31px;
+  padding: 20px 0;
+  color: #000;
+  font-size: 25px;
   font-weight: 500;
-  line-height: 20px;
+  line-height: 31px;
 }
-div.event_base > div.title div.inner div.text {
-  width: 100%;
-  height: 100%;
-  color: #FFF;
-  font-size: 20px;
+div.event_base > div.title div.inner div.top div.text {
+  width: 912px;
+  min-height: 31px;
+  padding: 20px 0;
+  color: #000;
+  font-size: 25px;
   font-weight: 500;
-  line-height: 20px;
+  line-height: 31px;
 }
-div.event_base > div.title div.inner div.button {
+div.event_base > div.title div.inner div.top div.button {
   display: none;
   position: absolute;
   width: 40px;
@@ -940,91 +950,123 @@ div.event_base > div.title div.inner div.button {
   line-height: 16px;
   cursor: pointer;
 }
-div.event_base > div.title div.inner div.editor {
-  width: 100%;
-  height: 100%;
+div.event_base > div.title div.inner div.top div.editor {
+  width: 912px;
+  min-height: 31px;
+  padding: 20px 0;
+  color: #000;
+  font-size: 25px;
+  font-weight: 500;
+  line-height: 31px;
 }
-div.event_base > div.title div.inner div.editor input {
-  width: 624px;
+div.event_base > div.title div.inner div.top div.editor input {
   height: 20px;
   margin: 0;
   padding: 0;
   border: none;
   outline: none;
   background: none;
-  color: #FFF;
-  font-size: 20px;
+  width: 912px;
+  min-height: 31px;
+  padding: 20px 0;
+  color: #000;
+  font-size: 25px;
   font-weight: 500;
-  line-height: 20px;
+  line-height: 31px;
 }
-div.event_base > div.title div.inner div.editor input .placeholder {
+div.event_base > div.title div.inner div.top div.editor input .placeholder {
   color: rgba(255, 255, 255, 0.6);
   font-size: 16px;
   font-weight: 300;
 }
-div.event_base > div.title div.inner div.editor input::-webkit-input-placeholder {
+div.event_base > div.title div.inner div.top div.editor input::-webkit-input-placeholder {
   color: rgba(255, 255, 255, 0.6);
   font-size: 16px;
   font-weight: 300;
 }
-div.event_base > div.title div.inner div.editor input:-moz-placeholder {
+div.event_base > div.title div.inner div.top div.editor input:-moz-placeholder {
   color: rgba(255, 255, 255, 0.6);
   font-size: 16px;
   font-weight: 300;
 }
-div.event_base > div.title div.inner div.editor input::-moz-placeholder {
+div.event_base > div.title div.inner div.top div.editor input::-moz-placeholder {
   color: rgba(255, 255, 255, 0.6);
   font-size: 16px;
   font-weight: 300;
 }
-div.event_base > div.title div.inner div.editor input:-ms-input-placeholder {
+div.event_base > div.title div.inner div.top div.editor input:-ms-input-placeholder {
   color: rgba(255, 255, 255, 0.6);
   font-size: 16px;
   font-weight: 300;
 }
-div.event_base > div.title div.inner div.controls {
+div.event_base > div.title div.inner div.top div.controls {
   position: absolute;
 }
-div.event_base div.frame div.left div.description {
-  width: 100%;
-  margin-top: 88px;
+div.event_base > div.title div.inner div.bottom {
+  position: relative;
+  width: 912px;
+  height: 14px;
+  padding-top: 14px;
+  padding-bottom: 18px;
+  font-size: 14px;
+  line-height: 14px;
+}
+div.event_base > div.title div.inner div.bottom div.details {
   float: left;
 }
-div.event_base div.frame div.left div.description div.editor {
-  width: 100%;
+div.event_base > div.title div.inner div.bottom div.sponsor {
+  float: right;
 }
-div.event_base div.frame div.left div.description div.editor.editing {
-  width: 430px;
-  margin-left: -11px;
+div.event_base > div.title div.inner div.bottom div.sponsor a {
+  color: #000;
+  text-decoration: underline;
 }
-div.event_base div.frame div.left div.description div.editor.editing div.inner {
-  width: 408px;
+div.event_base > div.title div.inner div.bottom div.controls {
+  position: absolute;
+  width: 696px;
+  height: 24px;
+  top: 46px;
+  left: 0;
+  background-color: #77b0f5;
+  opacity: 0.5;
+}
+div.event_base > div.title div.inner div.bottom div.controls:hover {
+  opacity: 1;
+}
+div.event_base > div.title div.inner div.bottom div.controls a,
+div.event_base > div.title div.inner div.bottom div.controls span {
   display: block;
-  margin: auto;
+  height: 14px;
+  padding: 5px 5px;
+  color: #FFF;
+  font-size: 14px;
+  font-weight: 500;
+  line-height: 14px;
+  text-decoration: none;
 }
-div.event_base div.frame div.left div.description div.editor div.inner {
-  width: 100%;
+div.event_base > div.title div.inner div.bottom div.controls a.hidden,
+div.event_base > div.title div.inner div.bottom div.controls span.hidden {
+  display: none;
 }
-div.event_base div.frame div.left div.description div.editor img {
-  max-width: 408px;
+div.event_base > div.title div.inner div.bottom div.controls a {
+  text-transform: uppercase;
 }
-div.event_base div.frame div.left div.description div.editor iframe {
-  max-width: 408px;
-}
-div.event_base div.frame div.right div.action {
-  position: relative;
-  width: 192px;
-  height: 48px;
+div.event_base > div.title div.inner div.bottom div.action {
+  position: absolute;
+  width: 190px;
+  height: 46px;
+  top: 46px;
+  right: 0;
   z-index: 20;
-  background-color: #f0f5f5;
+  border: 1px solid #4795f2;
+  background-color: #4795f2;
   overflow: hidden;
   cursor: pointer;
-  border-radius: 2px;
 }
-div.event_base div.frame div.right div.action div.button {
+div.event_base > div.title div.inner div.bottom div.action div.button {
   width: 130px;
   height: 18px;
-  padding: 15px 0;
+  padding: 14px 0;
   background-color: #4795f2;
   color: #FFF;
   line-height: 18px;
@@ -1032,27 +1074,28 @@ div.event_base div.frame div.right div.action div.button {
   text-align: center;
   float: left;
 }
-div.event_base div.frame div.right div.action div.price {
+div.event_base > div.title div.inner div.bottom div.action div.price {
   position: relative;
-  width: 62px;
+  width: 60px;
   height: 100%;
+  background-color: #FFF;
   float: left;
 }
-div.event_base div.frame div.right div.action div.price:before {
+div.event_base > div.title div.inner div.bottom div.action div.price:before {
   content: '';
   position: absolute;
   width: 0;
   height: 0;
   border-style: solid;
   border-width: 10px 10px 10px 0;
-  border-color: transparent #f0f5f5 transparent transparent;
+  border-color: transparent #FFF transparent transparent;
   left: -10px;
   top: 14px;
 }
-div.event_base div.frame div.right div.action div.price b {
+div.event_base > div.title div.inner div.bottom div.action div.price b {
   width: 100%;
   height: 20px;
-  color: #2f4241;
+  color: #4795f2;
   font-size: 20px;
   line-height: 20px;
   text-align: center;
@@ -1064,12 +1107,64 @@ div.event_base div.frame div.right div.action div.price b {
   right: 0;
   bottom: 0;
 }
+div.event_base > div.title div.inner div.bottom div.share {
+  position: absolute;
+  width: 190px;
+  height: 46px;
+  top: 104px;
+  right: 0;
+  border: 1px solid #1B1464;
+  background-color: #2E3192;
+  cursor: pointer;
+}
+div.event_base > div.title div.inner div.bottom div.share b {
+  display: block;
+  width: 100%;
+  height: 18px;
+  padding: 14px 0;
+  color: #FFF;
+  font-size: 18px;
+  line-height: 18px;
+  text-align: center;
+}
+div.event_base div.frame div.left div.placeholder {
+  width: 100%;
+  height: 28px;
+}
+div.event_base div.frame div.left div.description {
+  width: 100%;
+  float: left;
+}
+div.event_base div.frame div.left div.description div.editor {
+  width: 100%;
+}
+div.event_base div.frame div.left div.description div.editor.editing {
+  width: 718px;
+  margin-left: -11px;
+}
+div.event_base div.frame div.left div.description div.editor.editing div.inner {
+  width: 696px;
+  display: block;
+  margin: auto;
+}
+div.event_base div.frame div.left div.description div.editor div.inner {
+  width: 100%;
+}
+div.event_base div.frame div.left div.description div.editor img {
+  max-width: 696px;
+}
+div.event_base div.frame div.left div.description div.editor iframe {
+  max-width: 696px;
+}
+div.event_base div.frame div.right {
+  padding-top: 116px;
+}
 div.event_base div.frame div.right div.info {
   position: relative;
   width: 172px;
-  padding: 10px;
+  padding: 12px 10px;
   z-index: 20;
-  background-color: #f0f5f5;
+  border-top: 1px solid #E9E9E9;
 }
 div.event_base div.frame div.right div.info:hover div.button {
   display: block !important;
@@ -1082,6 +1177,7 @@ div.event_base div.frame div.right div.info div.caption {
 div.event_base div.frame div.right div.info div.caption div.text {
   width: 75%;
   height: 18px;
+  color: #4D4D4D;
   float: left;
 }
 div.event_base div.frame div.right div.info div.caption div.button {
@@ -1099,7 +1195,6 @@ div.event_base div.frame div.right div.info div.caption div.button {
 div.event_base div.frame div.right div.info div.body {
   width: 100%;
   padding-top: 7px;
-  padding-bottom: 5px;
 }
 div.event_base div.frame div.right div.info div.body div.text {
   font-size: 13px;
@@ -1118,42 +1213,6 @@ div.event_base div.frame div.right div.info div.body div.editor textarea {
   resize: none;
   font-size: 13px;
 }
-div.event_base div.frame div.right div.details div.time {
-  width: 100%;
-  min-height: 20px;
-  font-size: 18px;
-  line-height: 20px;
-}
-div.event_base div.frame div.right div.details div.location {
-  width: 100%;
-  margin-top: 8px;
-  font-size: 13px;
-  line-height: 13px;
-}
-div.event_base div.frame div.right div.details div.location div.text {
-  width: 100%;
-  height: 13px;
-}
-div.event_base div.frame div.right div.details div.location div.map {
-  width: 100%;
-}
-div.event_base div.frame div.right div.details div.location div.map div#map_canvas {
-  width: 100%;
-  height: 80px;
-  margin-top: 10px;
-}
-div.event_base div.frame div.right div.facebook {
-  height: 70px;
-}
-div.event_base div.frame div.right div.facebook div.caption div.share {
-  padding: 0 4px;
-  background-color: #ff9c00;
-  color: #FFF;
-  font-size: 12px;
-  text-transform: uppercase;
-  cursor: pointer;
-  float: right;
-}
 div.event_base div.frame div.right div.organizers div.body div.organizer {
   position: relative;
   width: 172px;
@@ -1164,12 +1223,7 @@ div.event_base div.frame div.right div.organizers div.body div.organizer div.ico
   position: absolute;
   width: 25px;
   height: 25px;
-  margin: auto;
-  top: 0;
-  bottom: 0;
-  left: -150px;
-  right: 0;
-  background-color: #77b0f5;
+  background-color: #f0f5f5;
 }
 div.event_base div.frame div.right div.organizers div.body div.organizer div.icon img {
   width: 20px;
@@ -1184,11 +1238,10 @@ div.event_base div.frame div.right div.organizers div.body div.organizer div.ico
 }
 div.event_base div.frame div.right div.organizers div.body div.organizer div.name {
   width: 133px;
-  min-height: 15px;
-  padding: 5px 7px;
+  padding: 0 7px;
   margin-left: 25px;
   font-size: 15px;
-  line-height: 18px;
+  line-height: 25px;
   float: left;
 }
 div.event_base div.frame div.right div.organizers div.body div.organizer div.name a {
@@ -1210,11 +1263,11 @@ div.event_base > div.placeholder {
   height: 20px;
 }
 div.event_base div.sponsors {
-  width: 624px;
+  width: 912px;
   background-color: #f0f5f5;
 }
 div.event_base div.sponsors div.caption {
-  width: 604px;
+  width: 892px;
   height: 18px;
   padding: 10px;
   font-size: 14px;
@@ -1223,12 +1276,12 @@ div.event_base div.sponsors div.caption div.text {
   float: left;
 }
 div.event_base div.others {
-  width: 624px;
+  width: 912px;
   height: 180px;
   margin: 32px 0;
 }
 div.event_base div.others div.similar {
-  width: 192px;
+  width: 288px;
   height: 100%;
   margin-right: 24px;
   background-color: #f0f5f5;
@@ -1236,32 +1289,29 @@ div.event_base div.others div.similar {
 }
 div.event_base div.others div.nearby {
   height: 100%;
-  width: 192px;
+  width: 288px;
   margin-right: 24px;
   background-color: #f0f5f5;
   float: left;
 }
 div.event_base div.others div.recommendation {
   height: 100%;
-  width: 192px;
+  width: 288px;
   background-color: #f0f5f5;
   float: left;
 }
 .event_overlay_canvas {
   display: none;
   position: absolute;
-  width: 388px;
+  width: 676px;
   padding: 0;
   margin-bottom: 20px;
   top: 68px;
-  left: 63px;
+  left: 0;
   z-index: 20;
   background-color: #FFF;
   overflow: hidden;
   border-radius: 2px;
-}
-body.collapsed .event_overlay_canvas {
-  left: 96px;
 }
 .event_overlay_canvas:before {
   content: '';
@@ -1349,7 +1399,7 @@ body.collapsed .event_overlay_canvas {
 }
 .event_overlay_canvas div.action div.header div.title a {
   display: block;
-  width: 356px;
+  width: 644px;
   height: 16px;
   padding: 16px;
   background-color: #4795f2;
@@ -1369,7 +1419,7 @@ body.collapsed .event_overlay_canvas {
   padding: 10px;
 }
 .event_overlay_canvas div.checkout div.content div#checkout_frame > iframe {
-  width: 368px;
+  width: 656px;
   height: 450px;
 }
 div#event.big_cover div.frame div.right div.organizers {
@@ -1401,15 +1451,15 @@ div#tickets div.tickets div.ticket div.editor {
   display: none;
 }
 div#rsvp > div.divider {
-  width: 388px;
+  width: 676px;
   height: 14px;
   text-align: center;
 }
 div#rsvp div.user {
-  width: 388px;
+  width: 676px;
 }
 div#rsvp div.user div.normal {
-  width: 388px;
+  width: 676px;
   height: 100%;
   background-color: #FFF;
 }
@@ -1421,19 +1471,19 @@ div#rsvp div.user div.normal div.divider {
   float: left;
 }
 div#rsvp div.user div.normal div.login {
-  width: 173.5px;
+  width: 317.5px;
   height: 160px;
   padding: 10px;
   float: left;
 }
 div#rsvp div.user div.normal div.register {
-  width: 173.5px;
+  width: 317.5px;
   height: 160px;
   padding: 10px;
   float: left;
 }
 div#rsvp div.info {
-  width: 388px;
+  width: 676px;
   background-color: #FFF;
 }
 div#rsvp div.tickets div.content {
@@ -1477,7 +1527,7 @@ div#rsvp div.tickets div.content div.ticket div.input input {
   bottom: 0;
 }
 div#rsvp div.tickets div.content div.ticket div.body {
-  width: 228px;
+  width: 516px;
   height: 60px;
   padding: 10px 0;
   color: #2f4241;
@@ -1583,31 +1633,45 @@ div#rsvp div.confirmation div.content div.body div.lower p.top span.ticket {
 div#rsvp div.confirmation div.content div.body div.lower p.top span.price {
   float: right;
 }
-div#fundraiser div.frame div.right div.goal {
-  position: relative;
-  width: 172px;
-  padding: 10px;
-  margin-top: 58px;
-  z-index: 20;
-  background-color: #f0f5f5;
+/*
+div#fundraiser {
+    div.frame {
+        div.right {
+            div.goal {
+                position: relative;
+                width: @content_inner_sidebar_width - 20;
+                padding: 10px;
+                margin-top: @content_title_height_single + 10px;
+                z-index: @overlay_z_index;
+                background-color: @pale_blue;
+
+                div.caption {
+                    width: 100%;
+                    height: 18px;
+                    font-size: @font_size_base - 2;
+
+                    div.text {
+                        .left;
+                    }
+                }
+            }
+
+            div.action {
+                margin-top: 10px;
+            }
+
+            div.organizers {
+                margin-top: 10px;
+            }
+
+            div.friends {
+                margin-top: 10px;
+            }
+
+            div.summary {
+                margin-top: 10px;
+            }
+        }
+    }
 }
-div#fundraiser div.frame div.right div.goal div.caption {
-  width: 100%;
-  height: 18px;
-  font-size: 14px;
-}
-div#fundraiser div.frame div.right div.goal div.caption div.text {
-  float: left;
-}
-div#fundraiser div.frame div.right div.action {
-  margin-top: 10px;
-}
-div#fundraiser div.frame div.right div.organizers {
-  margin-top: 10px;
-}
-div#fundraiser div.frame div.right div.friends {
-  margin-top: 10px;
-}
-div#fundraiser div.frame div.right div.summary {
-  margin-top: 10px;
-}
+*/
