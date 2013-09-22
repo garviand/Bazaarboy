@@ -29,6 +29,17 @@
       });
       marker.setMap(this.map);
     },
+    share: function(url, name, caption, description, image) {
+      FB.ui({
+        method: 'feed',
+        link: url,
+        name: name,
+        caption: caption,
+        description: description,
+        picture: image
+      });
+      (function(response) {});
+    },
     purchase: function(ticket, email, fullName) {
       var params,
         _this = this;
@@ -712,6 +723,21 @@
           $('div#wrapper_overlay').fadeOut(200);
           $('div.event_overlay_canvas').fadeOut(200);
         }
+      });
+      $('div.share').click(function() {
+        var event_caption, event_description, event_name, event_url;
+        event_url = window.location.href;
+        event_name = $('.top .text').text();
+        event_caption = $('.details').text();
+        event_description = $('.summary .body .text').text();
+        /*
+        ADD TAGS TO END OF DESCRIPTION
+        
+        $('.tags .tag').each () ->
+            event_description += $(this).html() + ' '
+        */
+
+        _this.share(event_url, event_name, event_caption, event_description, 'http://upsidesounds.com/wp-content/uploads/2013/09/Bodhi1-270x270.jpg');
       });
       /*
       latitude = parseFloat $('div#event div.details div.map').attr('data-latitude')

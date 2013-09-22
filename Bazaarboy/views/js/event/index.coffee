@@ -23,6 +23,17 @@ Bazaarboy.event.index =
         marker = new google.maps.Marker({position: markerPos})
         marker.setMap @map
         return
+    share: (url, name, caption, description, image) ->
+        FB.ui
+            method: 'feed',
+            link: url,
+            name: name,
+            caption: caption,
+            description: description,
+            picture: image,
+        (response) -> 
+            return
+        return
     purchase: (ticket, email=null, fullName=null) ->
         params = 
             ticket: ticket
@@ -660,6 +671,19 @@ Bazaarboy.event.index =
             if not @coverEditInProgress
                 $('div#wrapper_overlay').fadeOut(200)
                 $('div.event_overlay_canvas').fadeOut(200)
+            return
+        $('div.share').click () =>
+            event_url = window.location.href
+            event_name = $('.top .text').text()
+            event_caption = $('.details').text()
+            event_description = $('.summary .body .text').text()
+            ###
+            ADD TAGS TO END OF DESCRIPTION
+
+            $('.tags .tag').each () ->
+                event_description += $(this).html() + ' '
+            ###
+            @share(event_url, event_name, event_caption, event_description, 'http://upsidesounds.com/wp-content/uploads/2013/09/Bodhi1-270x270.jpg')
             return
         # Maps
         ###
