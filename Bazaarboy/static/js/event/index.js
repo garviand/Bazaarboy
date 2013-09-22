@@ -705,6 +705,9 @@
       var _this = this;
       $('div#event div.action').click(function() {
         $('div#wrapper_overlay').fadeIn(200);
+        $('div.event_overlay_canvas').css({
+          'top': $('div#event > div.title').height() + 20
+        });
         $('div.event_overlay_canvas').fadeIn(200);
       });
       $('div#wrapper_overlay').click(function() {

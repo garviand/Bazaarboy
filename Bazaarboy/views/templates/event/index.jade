@@ -68,6 +68,7 @@ block content
                             | Delete
                         a.hidden.save(href="javascript:;") Save
                         a.hidden.cancel(href="javascript:;") Cancel
+                        div.clear
                         form.upload_cover
                             input.hidden(type="file", name="image_file")
                             {% csrf_token %}
@@ -238,7 +239,21 @@ block content
                 i No RSVP options yet.
     {% else %}
     div#rsvp.event_overlay_canvas
-        div.tickets
+        div.navigation
+            div.item.first.ready.on(css="z-index:4;")
+                div.left
+                div.right
+            div.item(css="z-index:3;")
+                div.left
+                div.right
+            div.item(css="z-index:2;")
+                div.left
+                div.right
+            div.item.last(css="z-index:1;")
+                div.left
+                div.right
+            div.clear
+        div.tickets.hidden
             div.header
                 div.title {% if rsvp %}RSVP Options{% else %}Ticket Options{% endif %}
                 div.caption
@@ -287,7 +302,7 @@ block content
                             input(type="submit", value="Register")
                             input(type="hidden", name="city", value="{{ event.city.id }}")
                 div.clear
-        div.info
+        div.info.hidden
             div.header
                 div.title Some details about you
                 div.caption 
