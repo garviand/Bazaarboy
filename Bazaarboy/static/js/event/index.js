@@ -728,11 +728,13 @@
         }
       });
       $('div.share').click(function() {
-        var event_caption, event_description, event_name, event_url;
+        var event_caption, event_description, event_image, event_name, event_url;
         event_url = window.location.href;
         event_name = $('.top .text').text();
         event_caption = $('.details').text();
         event_description = $('.summary .body .text').text();
+        event_image = $('.cover .image img')[0].src;
+        console.log(event_image);
         /*
         ADD TAGS TO END OF DESCRIPTION
         
@@ -740,7 +742,7 @@
             event_description += $(this).html() + ' '
         */
 
-        _this.share(event_url, event_name, event_caption, event_description, 'http://upsidesounds.com/wp-content/uploads/2013/09/Bodhi1-270x270.jpg');
+        _this.share(event_url, event_name, event_caption, event_description, event_image);
       });
       /*
       latitude = parseFloat $('div#event div.details div.map').attr('data-latitude')

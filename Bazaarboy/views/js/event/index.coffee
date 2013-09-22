@@ -679,13 +679,15 @@ Bazaarboy.event.index =
             event_name = $('.top .text').text()
             event_caption = $('.details').text()
             event_description = $('.summary .body .text').text()
+            event_image = $('.cover .image img')[0].src
+            console.log(event_image)
             ###
             ADD TAGS TO END OF DESCRIPTION
 
             $('.tags .tag').each () ->
                 event_description += $(this).html() + ' '
             ###
-            @share(event_url, event_name, event_caption, event_description, 'http://upsidesounds.com/wp-content/uploads/2013/09/Bodhi1-270x270.jpg')
+            @share(event_url, event_name, event_caption, event_description, event_image)
             return
         # Maps
         ###
