@@ -469,67 +469,292 @@ div#profile {
 // Event base
 
 div.event_base {
+    @title_bottom_second_tier_top: 14 + 18 + @font_size_base - 2;
+
+    position: relative;
     &.with_cover {
-        div.cover {
-            height: 320px;
-            &:hover {
-                div.controls {
-                    display: block;
+        > div.title {
+            div.bottom {
+                div.action, div.controls {
+                    top: @title_bottom_second_tier_top + 20 !important;
+                }
+
+                div.share {
+                    top: @title_bottom_second_tier_top + 48 + 10 + 20 !important;   
                 }
             }
+        }
 
-            div.image {
-                left: 0;
+        div.cover {
+            height: 320px;
+
+            div.inner {
                 height: 320px;
-            }
 
-            div.caption {
-                height: 30px;
+                div.image {
+                    left: 0;
+                    height: 320px;
+                }
+
+                div.caption {
+                    height: 30px;
+                }
             }
         }
 
         div.frame {
             div.left {
-                div.description {
-                    margin-top: 370px;
+                div.placeholder {
+                    display: none;
+                }
+            }
+
+            div.right {
+                padding-top: 10px;
+            }
+        }
+    }
+
+    > div.title {
+        width: 100%;
+        min-width: @body_width + @gutter_width * 2;
+        z-index: @above_plain_z_index;
+        &:hover {
+            div.inner {
+                div.button {
+                    display: block;
+                }
+            }
+        }
+
+        div.inner {
+            width: @body_width + @gutter_width * 2;
+            .center;
+
+            div.top {
+                width: @body_width + @gutter_width * 2;
+                border-bottom: 1px solid #7F7F7F;
+                
+                .title_text {
+                    width: @body_width + @gutter_width * 2;
+                    min-height: @font_size_base + 15;
+                    padding: 20px 0;
+                    color: #000;
+                    font-size: @font_size_base + 9;
+                    font-weight: @font_weight_bold;
+                    line-height: @font_size_base + 15;
+                }
+
+                div.text {
+                    .title_text;
+                }
+
+                div.button {
+                    display: none;
+                    position: absolute;
+                    width: 40px;
+                    height: @font_size_base;
+                    left: -55px;
+                    top: (@content_title_height_single - (@font_size_base + 2)) / 2;
+                    padding: 2px 4px;
+                    background-color: #FFF;
+                    color: #000;
+                    font-size: @font_size_base;
+                    font-weight: @font_weight_base;
+                    line-height: @font_size_base;
+                    cursor: pointer;
+                }
+
+                div.editor {
+                    .title_text;
+
+                    input {
+                        width: @body_width + @gutter_width * 2;
+                        height: @font_size_base + 4;
+                        margin: 0;
+                        padding: 0;
+                        border: none;
+                        outline: none;
+                        background: none;
+                        .title_text;
+                        .input_placeholder(rgba(255, 255, 255, 0.6));
+                    }
+                }
+
+                div.controls {
+                    position: absolute;
+                }
+            }
+
+            div.bottom {
+                position: relative;
+                width: @body_width + @gutter_width * 2;
+                height: @font_size_base - 2;
+                padding-top: 14px;
+                padding-bottom: 18px;
+                font-size: @font_size_base - 2;
+                line-height: @font_size_base - 2;
+
+                div.details {
+                    .left;
+                }
+
+                div.sponsor {
+                    .right;
+
+                    a {
+                        color: #000;
+                        text-decoration: underline;
+                    }
+                }
+
+                div.controls {
+                    position: absolute;
+                    width: @content_width;
+                    height: 24px;
+                    top: @title_bottom_second_tier_top;
+                    left: @gutter_width;
+                    z-index: @overlay_z_index;
+                    background-color: lighten(@event_blue, 10%);
+                    opacity: 0.5;
+                    &.stick, &:hover {
+                        opacity: 1;
+                    }
+
+                    a, span {
+                        display: block;
+                        height: @font_size_base - 2;
+                        padding: (24 - (@font_size_base - 2)) / 2 5px;
+                        color: #FFF;
+                        font-size: @font_size_base - 2;
+                        font-weight: @font_weight_bold;
+                        line-height: @font_size_base - 2;
+                        text-decoration: none;
+
+                        &.hidden {
+                            display: none;
+                        }
+                    }
+
+                    a {
+                        text-transform: uppercase;
+                    }
+                }
+
+                div.action {
+                    position: absolute;
+                    width: @sidebar_width - 2;
+                    height: 46px;
+                    top: @title_bottom_second_tier_top;
+                    right: @gutter_width;
+                    z-index: @overlay_z_index;
+                    border: 1px solid @event_blue;
+                    background-color: @event_blue;
+                    overflow: hidden;
+                    cursor: pointer;
+
+                    div.button {
+                        width: 130px;
+                        height: @font_size_base + 2;
+                        padding: (46px - (@font_size_base + 2)) / 2 0;
+                        background-color: @event_blue;
+                        color: #FFF;
+                        line-height: @font_size_base + 2;
+                        font-size: @font_size_base + 2;
+                        text-align: center;
+                        .left;
+                    }
+
+                    div.price {
+                        position: relative;
+                        width: @sidebar_width - 2 - 130;
+                        height: 100%;
+                        background-color: #FFF;
+                        .left;
+
+                        &:before {
+                            content: '';
+                            position: absolute;
+                            width: 0;
+                            height: 0;
+                            border-style: solid;
+                            border-width: 10px 10px 10px 0;
+                            border-color: transparent #FFF transparent transparent;
+                            left: -10px;
+                            top: 14px;
+                        }
+
+                        b {
+                            width: 100%;
+                            height: @font_size_base + 4;
+                            color: @event_blue;
+                            font-size: @font_size_base + 4;
+                            line-height: @font_size_base + 4;
+                            text-align: center;
+                            .absolute_center;
+                        }
+                    }
+                }
+
+                div.share {
+                    position: absolute;
+                    width: @sidebar_width - 2;
+                    height: 46px;
+                    top: @title_bottom_second_tier_top + 48 + 10;
+                    right: @gutter_width;
+                    z-index: @overlay_z_index;
+                    border: 1px solid #1B1464;
+                    background-color: #2E3192;
+                    cursor: pointer;
+
+                    b {
+                        display: block;
+                        width: 100%;
+                        height: @font_size_base + 2;
+                        padding: (46 - (@font_size_base + 2)) / 2 0;
+                        color: #FFF;
+                        font-size: @font_size_base + 2;
+                        line-height: @font_size_base + 2;
+                        text-align: center;
+                    }
                 }
             }
         }
     }
-    &.with_caption {
-        div.cover {
-            height: 350px;
-        }
-    }
 
     div.cover {
-        display: none; //DEBUG
-        position: absolute;
-        width: @body_width;
-        height: 88px;
+        position: relative;
+        width: 100%;
+        min-width: @body_width + @gutter_width * 2;
+        height: 0;
         overflow: hidden;
 
-        div.image {
-            position: relative;
-            width: @body_width;
-            height: 0;
-            overflow: hidden;
+        div.inner {
+            width: @body_width + @gutter_width * 2;
+            margin: 0 auto;
 
-            div.bounds {
-                position: absolute;
-                width: 100%;
-                height: 100%;
-                top: 0;
-                left: 0;
+            div.image {
+                position: relative;
+                width: @body_width + @gutter_width * 2;
+                height: 0;
+                overflow: hidden;
 
-                img {
-                    &.normal {
-                        width: 100%;
-                        height: 100%;
-                    }
+                div.bounds {
+                    position: absolute;
+                    width: 100%;
+                    height: 100%;
+                    top: 0;
+                    left: 0;
 
-                    &.editing {
-                        cursor: pointer;
+                    img {
+                        &.normal {
+                            width: 100%;
+                            height: 100%;
+                        }
+
+                        &.editing {
+                            cursor: pointer;
+                        }
                     }
                 }
             }
@@ -597,223 +822,6 @@ div.event_base {
             }
         }
         */
-        /*
-        div.controls {
-            display: none;
-            position: absolute;
-            top: 60px;
-            left: (@content_width - @content_inner_width) / 2;
-            background: #FFF;
-        }
-        */
-    }
-
-    > div.title {
-        width: 100%;
-        min-width: @body_width;
-        z-index: @above_plain_z_index;
-        &:hover {
-            div.inner {
-                div.button {
-                    display: block;
-                }
-            }
-        }
-
-        div.inner {
-            width: @body_width;
-            .center;
-
-            div.top {
-                width: @body_width;
-                border-bottom: 1px solid #7F7F7F;
-                
-                .title_text {
-                    width: @body_width;
-                    min-height: @font_size_base + 15;
-                    padding: 20px 0;
-                    color: #000;
-                    font-size: @font_size_base + 9;
-                    font-weight: @font_weight_bold;
-                    line-height: @font_size_base + 15;
-                }
-
-                div.text {
-                    .title_text;
-                }
-
-                div.button {
-                    display: none;
-                    position: absolute;
-                    width: 40px;
-                    height: @font_size_base;
-                    left: -55px;
-                    top: (@content_title_height_single - (@font_size_base + 2)) / 2;
-                    padding: 2px 4px;
-                    background-color: #FFF;
-                    color: #000;
-                    font-size: @font_size_base;
-                    font-weight: @font_weight_base;
-                    line-height: @font_size_base;
-                    cursor: pointer;
-                }
-
-                div.editor {
-                    .title_text;
-
-                    input {
-                        width: @body_width;
-                        height: @font_size_base + 4;
-                        margin: 0;
-                        padding: 0;
-                        border: none;
-                        outline: none;
-                        background: none;
-                        .title_text;
-                        .input_placeholder(rgba(255, 255, 255, 0.6));
-                    }
-                }
-
-                div.controls {
-                    position: absolute;
-                }
-            }
-
-            div.bottom {
-                position: relative;
-                width: @body_width;
-                height: @font_size_base - 2;
-                padding-top: 14px;
-                padding-bottom: 18px;
-                font-size: @font_size_base - 2;
-                line-height: @font_size_base - 2;
-
-                div.details {
-                    .left;
-                }
-
-                div.sponsor {
-                    .right;
-
-                    a {
-                        color: #000;
-                        text-decoration: underline;
-                    }
-                }
-
-                @title_bottom_second_tier_top: 14 + 18 + @font_size_base - 2;
-
-                div.controls {
-                    position: absolute;
-                    width: @content_width;
-                    height: 24px;
-                    top: @title_bottom_second_tier_top;
-                    left: 0;
-                    background-color: lighten(@event_blue, 10%);
-                    opacity: 0.5;
-
-                    &:hover {
-                        opacity: 1;
-                    }
-
-                    a, span {
-                        display: block;
-                        height: @font_size_base - 2;
-                        padding: (24 - (@font_size_base - 2)) / 2 5px;
-                        color: #FFF;
-                        font-size: @font_size_base - 2;
-                        font-weight: @font_weight_bold;
-                        line-height: @font_size_base - 2;
-                        text-decoration: none;
-
-                        &.hidden {
-                            display: none;
-                        }
-                    }
-
-                    a {
-                        text-transform: uppercase;
-                    }
-                }
-
-                div.action {
-                    position: absolute;
-                    width: @sidebar_width - 2;
-                    height: 46px;
-                    top: @title_bottom_second_tier_top;
-                    right: 0;
-                    z-index: @overlay_z_index;
-                    border: 1px solid @event_blue;
-                    background-color: @event_blue;
-                    overflow: hidden;
-                    cursor: pointer;
-
-                    div.button {
-                        width: 130px;
-                        height: @font_size_base + 2;
-                        padding: (46px - (@font_size_base + 2)) / 2 0;
-                        background-color: @event_blue;
-                        color: #FFF;
-                        line-height: @font_size_base + 2;
-                        font-size: @font_size_base + 2;
-                        text-align: center;
-                        .left;
-                    }
-
-                    div.price {
-                        position: relative;
-                        width: @sidebar_width - 2 - 130;
-                        height: 100%;
-                        background-color: #FFF;
-                        .left;
-
-                        &:before {
-                            content: '';
-                            position: absolute;
-                            width: 0;
-                            height: 0;
-                            border-style: solid;
-                            border-width: 10px 10px 10px 0;
-                            border-color: transparent #FFF transparent transparent;
-                            left: -10px;
-                            top: 14px;
-                        }
-
-                        b {
-                            width: 100%;
-                            height: @font_size_base + 4;
-                            color: @event_blue;
-                            font-size: @font_size_base + 4;
-                            line-height: @font_size_base + 4;
-                            text-align: center;
-                            .absolute_center;
-                        }
-                    }
-                }
-
-                div.share {
-                    position: absolute;
-                    width: @sidebar_width - 2;
-                    height: 46px;
-                    top: @title_bottom_second_tier_top + 48 + 10;
-                    right: 0;
-                    border: 1px solid #1B1464;
-                    background-color: #2E3192;
-                    cursor: pointer;
-
-                    b {
-                        display: block;
-                        width: 100%;
-                        height: @font_size_base + 2;
-                        padding: (46 - (@font_size_base + 2)) / 2 0;
-                        color: #FFF;
-                        font-size: @font_size_base + 2;
-                        line-height: @font_size_base + 2;
-                        text-align: center;
-                    }
-                }
-            }
-        }
     }
 
     div.frame {

@@ -22,25 +22,6 @@ prepend body
 
 block content
     div#event.content_divided.event_base(class="{% if event.cover %}with_cover{% endif %}")
-        div.cover
-            div.image
-                div.bounds
-                    {% if event.cover %}
-                    img.normal(src="{{ event.cover.source.url }}")
-                    {% endif %}
-            //div.caption
-                div.inner
-                    div.text
-                        {% if event.cover and event.cover.caption|length != 0 %}
-                        {{ event.cover.caption }}
-                        {% else %}
-                        i No caption yet.
-                        {% endif %}
-                    {% if event.cover and editable %}
-                    div.button Edit
-                    div.editor.hidden
-                        input(type="text", name="caption", placeholder="Maximum 100 Characters", value="{{ event.cover.caption }}")
-                    {% endif %}
         div.title
             div.inner
                 div.top
@@ -79,7 +60,7 @@ block content
                             i Want to sponsor this event?
                     div.clear
                     {% if editable %}
-                    div.controls(class="{% if not event.cover %}stick{% endif %}")
+                    div.controls
                         span.hidden Drag the image to position you think fit. 
                         a.edit(href="javascript:;") 
                             | {% if event.cover %}Edit Cover{% else %}Add Cover{% endif %}
@@ -113,6 +94,26 @@ block content
                         div.clear
                     div.share
                         b Share on Facebook
+        div.cover
+            div.inner
+                div.image
+                    div.bounds
+                        {% if event.cover %}
+                        img.normal(src="{{ event.cover.source.url }}")
+                        {% endif %}
+            //div.caption
+                div.inner
+                    div.text
+                        {% if event.cover and event.cover.caption|length != 0 %}
+                        {{ event.cover.caption }}
+                        {% else %}
+                        i No caption yet.
+                        {% endif %}
+                    {% if event.cover and editable %}
+                    div.button Edit
+                    div.editor.hidden
+                        input(type="text", name="caption", placeholder="Maximum 100 Characters", value="{{ event.cover.caption }}")
+                    {% endif %}
         div.frame
             div.left
                 {% if editable %}

@@ -780,30 +780,270 @@ div#profile {
     }
 }
 */
+div.event_base {
+  position: relative;
+}
+div.event_base.with_cover > div.title div.bottom div.action,
+div.event_base.with_cover > div.title div.bottom div.controls {
+  top: 66px !important;
+}
+div.event_base.with_cover > div.title div.bottom div.share {
+  top: 124px !important;
+}
 div.event_base.with_cover div.cover {
   height: 320px;
 }
-div.event_base.with_cover div.cover:hover div.controls {
-  display: block;
+div.event_base.with_cover div.cover div.inner {
+  height: 320px;
 }
-div.event_base.with_cover div.cover div.image {
+div.event_base.with_cover div.cover div.inner div.image {
   left: 0;
   height: 320px;
 }
-div.event_base.with_cover div.cover div.caption {
+div.event_base.with_cover div.cover div.inner div.caption {
   height: 30px;
 }
-div.event_base.with_cover div.frame div.left div.description {
-  margin-top: 370px;
+div.event_base.with_cover div.frame div.left div.placeholder {
+  display: none;
 }
-div.event_base.with_caption div.cover {
-  height: 350px;
+div.event_base.with_cover div.frame div.right {
+  padding-top: 10px;
 }
-div.event_base div.cover {
+div.event_base > div.title {
+  width: 100%;
+  min-width: 960px;
+  z-index: 5;
+}
+div.event_base > div.title:hover div.inner div.button {
+  display: block;
+}
+div.event_base > div.title div.inner {
+  width: 960px;
+  display: block;
+  margin: auto;
+}
+div.event_base > div.title div.inner div.top {
+  width: 960px;
+  border-bottom: 1px solid #7F7F7F;
+}
+div.event_base > div.title div.inner div.top .title_text {
+  width: 960px;
+  min-height: 31px;
+  padding: 20px 0;
+  color: #000;
+  font-size: 25px;
+  font-weight: 500;
+  line-height: 31px;
+}
+div.event_base > div.title div.inner div.top div.text {
+  width: 960px;
+  min-height: 31px;
+  padding: 20px 0;
+  color: #000;
+  font-size: 25px;
+  font-weight: 500;
+  line-height: 31px;
+}
+div.event_base > div.title div.inner div.top div.button {
   display: none;
   position: absolute;
-  width: 912px;
-  height: 88px;
+  width: 40px;
+  height: 16px;
+  left: -55px;
+  top: 15px;
+  padding: 2px 4px;
+  background-color: #FFF;
+  color: #000;
+  font-size: 16px;
+  font-weight: 300;
+  line-height: 16px;
+  cursor: pointer;
+}
+div.event_base > div.title div.inner div.top div.editor {
+  width: 960px;
+  min-height: 31px;
+  padding: 20px 0;
+  color: #000;
+  font-size: 25px;
+  font-weight: 500;
+  line-height: 31px;
+}
+div.event_base > div.title div.inner div.top div.editor input {
+  height: 20px;
+  margin: 0;
+  padding: 0;
+  border: none;
+  outline: none;
+  background: none;
+  width: 960px;
+  min-height: 31px;
+  padding: 20px 0;
+  color: #000;
+  font-size: 25px;
+  font-weight: 500;
+  line-height: 31px;
+}
+div.event_base > div.title div.inner div.top div.editor input .placeholder {
+  color: rgba(255, 255, 255, 0.6);
+  font-size: 16px;
+  font-weight: 300;
+}
+div.event_base > div.title div.inner div.top div.editor input::-webkit-input-placeholder {
+  color: rgba(255, 255, 255, 0.6);
+  font-size: 16px;
+  font-weight: 300;
+}
+div.event_base > div.title div.inner div.top div.editor input:-moz-placeholder {
+  color: rgba(255, 255, 255, 0.6);
+  font-size: 16px;
+  font-weight: 300;
+}
+div.event_base > div.title div.inner div.top div.editor input::-moz-placeholder {
+  color: rgba(255, 255, 255, 0.6);
+  font-size: 16px;
+  font-weight: 300;
+}
+div.event_base > div.title div.inner div.top div.editor input:-ms-input-placeholder {
+  color: rgba(255, 255, 255, 0.6);
+  font-size: 16px;
+  font-weight: 300;
+}
+div.event_base > div.title div.inner div.top div.controls {
+  position: absolute;
+}
+div.event_base > div.title div.inner div.bottom {
+  position: relative;
+  width: 960px;
+  height: 14px;
+  padding-top: 14px;
+  padding-bottom: 18px;
+  font-size: 14px;
+  line-height: 14px;
+}
+div.event_base > div.title div.inner div.bottom div.details {
+  float: left;
+}
+div.event_base > div.title div.inner div.bottom div.sponsor {
+  float: right;
+}
+div.event_base > div.title div.inner div.bottom div.sponsor a {
+  color: #000;
+  text-decoration: underline;
+}
+div.event_base > div.title div.inner div.bottom div.controls {
+  position: absolute;
+  width: 696px;
+  height: 24px;
+  top: 46px;
+  left: 24px;
+  z-index: 20;
+  background-color: #77b0f5;
+  opacity: 0.5;
+}
+div.event_base > div.title div.inner div.bottom div.controls.stick,
+div.event_base > div.title div.inner div.bottom div.controls:hover {
+  opacity: 1;
+}
+div.event_base > div.title div.inner div.bottom div.controls a,
+div.event_base > div.title div.inner div.bottom div.controls span {
+  display: block;
+  height: 14px;
+  padding: 5px 5px;
+  color: #FFF;
+  font-size: 14px;
+  font-weight: 500;
+  line-height: 14px;
+  text-decoration: none;
+}
+div.event_base > div.title div.inner div.bottom div.controls a.hidden,
+div.event_base > div.title div.inner div.bottom div.controls span.hidden {
+  display: none;
+}
+div.event_base > div.title div.inner div.bottom div.controls a {
+  text-transform: uppercase;
+}
+div.event_base > div.title div.inner div.bottom div.action {
+  position: absolute;
+  width: 190px;
+  height: 46px;
+  top: 46px;
+  right: 24px;
+  z-index: 20;
+  border: 1px solid #4795f2;
+  background-color: #4795f2;
+  overflow: hidden;
+  cursor: pointer;
+}
+div.event_base > div.title div.inner div.bottom div.action div.button {
+  width: 130px;
+  height: 18px;
+  padding: 14px 0;
+  background-color: #4795f2;
+  color: #FFF;
+  line-height: 18px;
+  font-size: 18px;
+  text-align: center;
+  float: left;
+}
+div.event_base > div.title div.inner div.bottom div.action div.price {
+  position: relative;
+  width: 60px;
+  height: 100%;
+  background-color: #FFF;
+  float: left;
+}
+div.event_base > div.title div.inner div.bottom div.action div.price:before {
+  content: '';
+  position: absolute;
+  width: 0;
+  height: 0;
+  border-style: solid;
+  border-width: 10px 10px 10px 0;
+  border-color: transparent #FFF transparent transparent;
+  left: -10px;
+  top: 14px;
+}
+div.event_base > div.title div.inner div.bottom div.action div.price b {
+  width: 100%;
+  height: 20px;
+  color: #4795f2;
+  font-size: 20px;
+  line-height: 20px;
+  text-align: center;
+  display: block;
+  position: absolute;
+  margin: auto;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+}
+div.event_base > div.title div.inner div.bottom div.share {
+  position: absolute;
+  width: 190px;
+  height: 46px;
+  top: 104px;
+  right: 24px;
+  z-index: 20;
+  border: 1px solid #1B1464;
+  background-color: #2E3192;
+  cursor: pointer;
+}
+div.event_base > div.title div.inner div.bottom div.share b {
+  display: block;
+  width: 100%;
+  height: 18px;
+  padding: 14px 0;
+  color: #FFF;
+  font-size: 18px;
+  line-height: 18px;
+  text-align: center;
+}
+div.event_base div.cover {
+  position: relative;
+  width: 100%;
+  min-width: 960px;
+  height: 0;
   overflow: hidden;
   /*
         div.caption {
@@ -869,263 +1109,30 @@ div.event_base div.cover {
         }
         */
 
-  /*
-        div.controls {
-            display: none;
-            position: absolute;
-            top: 60px;
-            left: (@content_width - @content_inner_width) / 2;
-            background: #FFF;
-        }
-        */
-
 }
-div.event_base div.cover div.image {
+div.event_base div.cover div.inner {
+  width: 960px;
+  margin: 0 auto;
+}
+div.event_base div.cover div.inner div.image {
   position: relative;
-  width: 912px;
+  width: 960px;
   height: 0;
   overflow: hidden;
 }
-div.event_base div.cover div.image div.bounds {
+div.event_base div.cover div.inner div.image div.bounds {
   position: absolute;
   width: 100%;
   height: 100%;
   top: 0;
   left: 0;
 }
-div.event_base div.cover div.image div.bounds img.normal {
+div.event_base div.cover div.inner div.image div.bounds img.normal {
   width: 100%;
   height: 100%;
 }
-div.event_base div.cover div.image div.bounds img.editing {
+div.event_base div.cover div.inner div.image div.bounds img.editing {
   cursor: pointer;
-}
-div.event_base > div.title {
-  width: 100%;
-  min-width: 912px;
-  z-index: 5;
-}
-div.event_base > div.title:hover div.inner div.button {
-  display: block;
-}
-div.event_base > div.title div.inner {
-  width: 912px;
-  display: block;
-  margin: auto;
-}
-div.event_base > div.title div.inner div.top {
-  width: 912px;
-  border-bottom: 1px solid #7F7F7F;
-}
-div.event_base > div.title div.inner div.top .title_text {
-  width: 912px;
-  min-height: 31px;
-  padding: 20px 0;
-  color: #000;
-  font-size: 25px;
-  font-weight: 500;
-  line-height: 31px;
-}
-div.event_base > div.title div.inner div.top div.text {
-  width: 912px;
-  min-height: 31px;
-  padding: 20px 0;
-  color: #000;
-  font-size: 25px;
-  font-weight: 500;
-  line-height: 31px;
-}
-div.event_base > div.title div.inner div.top div.button {
-  display: none;
-  position: absolute;
-  width: 40px;
-  height: 16px;
-  left: -55px;
-  top: 15px;
-  padding: 2px 4px;
-  background-color: #FFF;
-  color: #000;
-  font-size: 16px;
-  font-weight: 300;
-  line-height: 16px;
-  cursor: pointer;
-}
-div.event_base > div.title div.inner div.top div.editor {
-  width: 912px;
-  min-height: 31px;
-  padding: 20px 0;
-  color: #000;
-  font-size: 25px;
-  font-weight: 500;
-  line-height: 31px;
-}
-div.event_base > div.title div.inner div.top div.editor input {
-  height: 20px;
-  margin: 0;
-  padding: 0;
-  border: none;
-  outline: none;
-  background: none;
-  width: 912px;
-  min-height: 31px;
-  padding: 20px 0;
-  color: #000;
-  font-size: 25px;
-  font-weight: 500;
-  line-height: 31px;
-}
-div.event_base > div.title div.inner div.top div.editor input .placeholder {
-  color: rgba(255, 255, 255, 0.6);
-  font-size: 16px;
-  font-weight: 300;
-}
-div.event_base > div.title div.inner div.top div.editor input::-webkit-input-placeholder {
-  color: rgba(255, 255, 255, 0.6);
-  font-size: 16px;
-  font-weight: 300;
-}
-div.event_base > div.title div.inner div.top div.editor input:-moz-placeholder {
-  color: rgba(255, 255, 255, 0.6);
-  font-size: 16px;
-  font-weight: 300;
-}
-div.event_base > div.title div.inner div.top div.editor input::-moz-placeholder {
-  color: rgba(255, 255, 255, 0.6);
-  font-size: 16px;
-  font-weight: 300;
-}
-div.event_base > div.title div.inner div.top div.editor input:-ms-input-placeholder {
-  color: rgba(255, 255, 255, 0.6);
-  font-size: 16px;
-  font-weight: 300;
-}
-div.event_base > div.title div.inner div.top div.controls {
-  position: absolute;
-}
-div.event_base > div.title div.inner div.bottom {
-  position: relative;
-  width: 912px;
-  height: 14px;
-  padding-top: 14px;
-  padding-bottom: 18px;
-  font-size: 14px;
-  line-height: 14px;
-}
-div.event_base > div.title div.inner div.bottom div.details {
-  float: left;
-}
-div.event_base > div.title div.inner div.bottom div.sponsor {
-  float: right;
-}
-div.event_base > div.title div.inner div.bottom div.sponsor a {
-  color: #000;
-  text-decoration: underline;
-}
-div.event_base > div.title div.inner div.bottom div.controls {
-  position: absolute;
-  width: 696px;
-  height: 24px;
-  top: 46px;
-  left: 0;
-  background-color: #77b0f5;
-  opacity: 0.5;
-}
-div.event_base > div.title div.inner div.bottom div.controls:hover {
-  opacity: 1;
-}
-div.event_base > div.title div.inner div.bottom div.controls a,
-div.event_base > div.title div.inner div.bottom div.controls span {
-  display: block;
-  height: 14px;
-  padding: 5px 5px;
-  color: #FFF;
-  font-size: 14px;
-  font-weight: 500;
-  line-height: 14px;
-  text-decoration: none;
-}
-div.event_base > div.title div.inner div.bottom div.controls a.hidden,
-div.event_base > div.title div.inner div.bottom div.controls span.hidden {
-  display: none;
-}
-div.event_base > div.title div.inner div.bottom div.controls a {
-  text-transform: uppercase;
-}
-div.event_base > div.title div.inner div.bottom div.action {
-  position: absolute;
-  width: 190px;
-  height: 46px;
-  top: 46px;
-  right: 0;
-  z-index: 20;
-  border: 1px solid #4795f2;
-  background-color: #4795f2;
-  overflow: hidden;
-  cursor: pointer;
-}
-div.event_base > div.title div.inner div.bottom div.action div.button {
-  width: 130px;
-  height: 18px;
-  padding: 14px 0;
-  background-color: #4795f2;
-  color: #FFF;
-  line-height: 18px;
-  font-size: 18px;
-  text-align: center;
-  float: left;
-}
-div.event_base > div.title div.inner div.bottom div.action div.price {
-  position: relative;
-  width: 60px;
-  height: 100%;
-  background-color: #FFF;
-  float: left;
-}
-div.event_base > div.title div.inner div.bottom div.action div.price:before {
-  content: '';
-  position: absolute;
-  width: 0;
-  height: 0;
-  border-style: solid;
-  border-width: 10px 10px 10px 0;
-  border-color: transparent #FFF transparent transparent;
-  left: -10px;
-  top: 14px;
-}
-div.event_base > div.title div.inner div.bottom div.action div.price b {
-  width: 100%;
-  height: 20px;
-  color: #4795f2;
-  font-size: 20px;
-  line-height: 20px;
-  text-align: center;
-  display: block;
-  position: absolute;
-  margin: auto;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
-}
-div.event_base > div.title div.inner div.bottom div.share {
-  position: absolute;
-  width: 190px;
-  height: 46px;
-  top: 104px;
-  right: 0;
-  border: 1px solid #1B1464;
-  background-color: #2E3192;
-  cursor: pointer;
-}
-div.event_base > div.title div.inner div.bottom div.share b {
-  display: block;
-  width: 100%;
-  height: 18px;
-  padding: 14px 0;
-  color: #FFF;
-  font-size: 18px;
-  line-height: 18px;
-  text-align: center;
 }
 div.event_base div.frame div.left div.placeholder {
   width: 100%;

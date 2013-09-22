@@ -208,15 +208,8 @@
       });
     },
     prepareUploadedCoverImage: function(coverUrl) {
-      var scope,
-        _this = this;
-      if (!$('body').hasClass('collapsed')) {
-        Bazaarboy.switchCollapsedStates(function() {
-          _this.prepareUploadedCoverImage(coverUrl);
-        });
-        return;
-      }
-      $('div#event').addClass('big_cover').addClass('with_caption');
+      var scope;
+      $('div#event').addClass('with_cover');
       scope = this;
       $('<img>').attr('src', mediaUrl + coverUrl).addClass('editing').load(function() {
         var frame, frameHeight, frameWidth;
@@ -259,11 +252,11 @@
         containment: bounds,
         scroll: false
       });
-      $('div#event div.cover div.controls span').removeClass('hidden');
-      $('div#event div.cover div.controls a.edit').addClass('hidden').html('Edit Cover');
-      $('div#event div.cover div.controls a.delete').addClass('hidden');
-      $('div#event div.cover div.controls a.save').removeClass('hidden');
-      $('div#event div.cover div.controls a.cancel').removeClass('hidden');
+      $('div#event > div.title div.bottom div.controls span').removeClass('hidden');
+      $('div#event > div.title div.bottom div.controls a.edit').addClass('hidden').html('Edit Cover');
+      $('div#event > div.title div.bottom div.controls a.delete').addClass('hidden');
+      $('div#event > div.title div.bottom div.controls a.save').removeClass('hidden');
+      $('div#event > div.title div.bottom div.controls a.cancel').removeClass('hidden');
       maskZ = parseInt($('div#wrapper_overlay').css('z-index'));
       $('div#event div.cover').css({
         'z-index': maskZ + 1
@@ -271,9 +264,9 @@
       $('div#event > div.title').css({
         'z-index': maskZ + parseInt($('div#event > div.title').css('z-index'))
       });
-      $('div#event div.frame div.right div.info').not('div.action').not('div.details').not('div.facebook').css('z-index', maskZ - 1);
+      $('div#event div.frame div.right div.info').css('z-index', maskZ - 1);
       $('div#wrapper_overlay').fadeIn(200);
-      $('div#event div.cover div.controls').addClass('stick');
+      $('div#event > div.title div.bottom div.controls').addClass('stick');
     },
     stopEditingCoverImage: function(cover) {
       if (cover == null) {
@@ -291,20 +284,20 @@
           $('div#event div.cover div.image div.bounds').append(cover);
         } else {
           $('div#event').removeClass('with_caption').removeClass('big_cover');
-          $('div#event div.cover div.controls').addClass('stick');
-          $('div#event div.cover div.controls a.edit').html('Add Cover');
+          $('div#event > div.title div.bottom div.controls').addClass('stick');
+          $('div#event > div.title div.bottom div.controls a.edit').html('Add Cover');
         }
       }
       $('div#event div.cover').css('z-index', '');
       $('div#event > div.title').css('z-index', '');
-      $('div#event div.frame div.right div.info').not('div.action').not('div.details').not('div.facebook').css('z-index', '');
+      $('div#event div.frame div.right div.info').css('z-index', '');
       $('div#wrapper_overlay').fadeOut(200);
-      $('div#event div.cover div.controls span').addClass('hidden');
-      $('div#event div.cover div.controls a.edit').removeClass('hidden');
-      $('div#event div.cover div.controls a.delete').removeClass('hidden');
-      $('div#event div.cover div.controls a.save').addClass('hidden');
-      $('div#event div.cover div.controls a.cancel').addClass('hidden');
-      $('div#event div.cover div.controls').removeClass('stick');
+      $('div#event > div.title div.bottom div.controls span').addClass('hidden');
+      $('div#event > div.title div.bottom div.controls a.edit').removeClass('hidden');
+      $('div#event > div.title div.bottom div.controls a.delete').removeClass('hidden');
+      $('div#event > div.title div.bottom div.controls a.save').addClass('hidden');
+      $('div#event > div.title div.bottom div.controls a.cancel').addClass('hidden');
+      $('div#event > div.title div.bottom div.controls').removeClass('stick');
       this.coverEditInProgress = false;
     },
     saveCoverImage: function() {
@@ -369,10 +362,10 @@
       }, function(err, event) {
         if (!err) {
           $('div#event div.cover div.image div.bounds img').remove();
-          $('div#event div.cover div.controls a.edit').html('Add Cover');
-          $('div#event div.cover div.controls a.delete').addClass('hidden');
-          $('div#event div.cover div.controls').addClass('stick');
-          $('div#event').removeClass('big_cover').removeClass('with_caption');
+          $('div#event > div.title div.bottom div.controls a.edit').html('Add Cover');
+          $('div#event > div.title div.bottom div.controls a.delete').addClass('hidden');
+          $('div#event > div.title div.bottom div.controls').addClass('stick');
+          $('div#event').removeClass('with_cover');
           _this.cover = null;
         } else {
           alert(err.message);
@@ -613,18 +606,18 @@
       if (this.cover.length > 0) {
         this.cover = this.cover.clone();
       }
-      $('div#event div.cover a.edit').click(function() {
-        $('div#event div.cover input[name=image_file]').click();
+      $('div#event > div.title div.bottom div.controls a.edit').click(function() {
+        $('div#event > div.title div.bottom div.controls input[name=image_file]').click();
       });
-      $('div#event div.cover a.delete').click(function() {
+      $('div#event > div.title div.bottom div.controls a.delete').click(function() {
         if (confirm('Are you sure you want to delete the cover image?')) {
           _this.deleteCoverImage();
         }
       });
-      $('div#event div.cover a.save').click(function() {
+      $('div#event > div.title div.bottom div.controls a.save').click(function() {
         _this.saveCoverImage();
       });
-      $('div#event div.cover a.cancel').click(function() {
+      $('div#event > div.title div.bottom div.controls a.cancel').click(function() {
         var original;
         original = _this.cover != null ? _this.cover : false;
         _this.stopEditingCoverImage(original);
@@ -636,7 +629,7 @@
           });
         }
       });
-      $('div#event div.cover input[name=image_file]').fileupload({
+      $('div#event > div.title div.bottom div.controls input[name=image_file]').fileupload({
         url: rootUrl + 'file/image/upload/',
         type: 'POST',
         add: function(event, data) {

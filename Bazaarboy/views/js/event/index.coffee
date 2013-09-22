@@ -178,12 +178,7 @@ Bazaarboy.event.index =
             return
         return
     prepareUploadedCoverImage: (coverUrl) ->
-        if not $('body').hasClass('collapsed')
-            Bazaarboy.switchCollapsedStates () =>
-                @prepareUploadedCoverImage(coverUrl)
-                return
-            return
-        $('div#event').addClass('big_cover').addClass('with_caption')
+        $('div#event').addClass('with_cover')
         scope = this
         $('<img>')
             .attr('src', mediaUrl + coverUrl)
@@ -228,13 +223,17 @@ Bazaarboy.event.index =
             containment: bounds
             scroll: false
         # Adjust the controls
-        $('div#event div.cover div.controls span').removeClass('hidden')
-        $('div#event div.cover div.controls a.edit')
+        $('div#event > div.title div.bottom div.controls span')
+            .removeClass('hidden')
+        $('div#event > div.title div.bottom div.controls a.edit')
             .addClass('hidden')
             .html('Edit Cover')
-            $('div#event div.cover div.controls a.delete').addClass('hidden')
-        $('div#event div.cover div.controls a.save').removeClass('hidden')
-        $('div#event div.cover div.controls a.cancel').removeClass('hidden')
+        $('div#event > div.title div.bottom div.controls a.delete')
+            .addClass('hidden')
+        $('div#event > div.title div.bottom div.controls a.save')
+            .removeClass('hidden')
+        $('div#event > div.title div.bottom div.controls a.cancel')
+            .removeClass('hidden')
         # Create the expose effect
         maskZ = parseInt($('div#wrapper_overlay').css('z-index'))
         $('div#event div.cover').css
@@ -243,10 +242,9 @@ Bazaarboy.event.index =
             'z-index': maskZ + parseInt($('div#event > div.title')
                                         .css('z-index'))
         $('div#event div.frame div.right div.info')
-            .not('div.action').not('div.details').not('div.facebook')
             .css('z-index', maskZ - 1)
         $('div#wrapper_overlay').fadeIn(200)
-        $('div#event div.cover div.controls').addClass('stick')
+        $('div#event > div.title div.bottom div.controls').addClass('stick')
         return
     stopEditingCoverImage: (cover=null) ->
         # Destroy the image and restore the bounds
@@ -262,24 +260,25 @@ Bazaarboy.event.index =
             if cover
                 $('div#event div.cover div.image div.bounds').append(cover)
             else
-                $('div#event').removeClass('with_caption').removeClass('big_cover')
-                $('div#event div.cover div.controls').addClass('stick')
-                $('div#event div.cover div.controls a.edit')
+                $('div#event').removeClass('with_caption')
+                    .removeClass('big_cover')
+                $('div#event > div.title div.bottom div.controls')
+                    .addClass('stick')
+                $('div#event > div.title div.bottom div.controls a.edit')
                     .html('Add Cover')
         # Restore z-indices
         $('div#event div.cover').css 'z-index', ''
         $('div#event > div.title').css 'z-index', ''
         $('div#event div.frame div.right div.info')
-            .not('div.action').not('div.details').not('div.facebook')
             .css('z-index', '')
         $('div#wrapper_overlay').fadeOut(200)
         # Adjust the controls
-        $('div#event div.cover div.controls span').addClass('hidden')
-        $('div#event div.cover div.controls a.edit').removeClass('hidden')
-        $('div#event div.cover div.controls a.delete').removeClass('hidden')
-        $('div#event div.cover div.controls a.save').addClass('hidden')
-        $('div#event div.cover div.controls a.cancel').addClass('hidden')
-        $('div#event div.cover div.controls').removeClass('stick')
+        $('div#event > div.title div.bottom div.controls span').addClass('hidden')
+        $('div#event > div.title div.bottom div.controls a.edit').removeClass('hidden')
+        $('div#event > div.title div.bottom div.controls a.delete').removeClass('hidden')
+        $('div#event > div.title div.bottom div.controls a.save').addClass('hidden')
+        $('div#event > div.title div.bottom div.controls a.cancel').addClass('hidden')
+        $('div#event > div.title div.bottom div.controls').removeClass('stick')
         @coverEditInProgress = false
         return
     saveCoverImage: () ->
@@ -339,10 +338,11 @@ Bazaarboy.event.index =
         @save {cover: 'delete'}, (err, event) =>
             unless err
                 $('div#event div.cover div.image div.bounds img').remove()
-                $('div#event div.cover div.controls a.edit').html('Add Cover')
-                $('div#event div.cover div.controls a.delete').addClass('hidden')
-                $('div#event div.cover div.controls').addClass('stick')
-                $('div#event').removeClass('big_cover').removeClass('with_caption')
+                $('div#event > div.title div.bottom div.controls a.edit').html('Add Cover')
+                $('div#event > div.title div.bottom div.controls a.delete')
+                    .addClass('hidden')
+                $('div#event > div.title div.bottom div.controls').addClass('stick')
+                $('div#event').removeClass('with_cover')
                 @cover = null
             else
                 alert err.message
@@ -565,17 +565,18 @@ Bazaarboy.event.index =
         if @cover.length > 0
             @cover = @cover.clone()
         # Image uploads
-        $('div#event div.cover a.edit').click () ->
-            $('div#event div.cover input[name=image_file]').click()
+        $('div#event > div.title div.bottom div.controls a.edit').click () ->
+            $('div#event > div.title div.bottom div.controls input[name=image_file]')
+                .click()
             return
-        $('div#event div.cover a.delete').click () =>
+        $('div#event > div.title div.bottom div.controls a.delete').click () =>
             if confirm('Are you sure you want to delete the cover image?')
                 @deleteCoverImage()
             return
-        $('div#event div.cover a.save').click () =>
+        $('div#event > div.title div.bottom div.controls a.save').click () =>
             @saveCoverImage()
             return
-        $('div#event div.cover a.cancel').click () =>
+        $('div#event > div.title div.bottom div.controls a.cancel').click () =>
             original = if @cover? then @cover else false
             @stopEditingCoverImage(original)
             if @uploads.cover?
@@ -584,7 +585,7 @@ Bazaarboy.event.index =
                 , (response) =>
                     @uploads.cover = null
             return
-        $('div#event div.cover input[name=image_file]').fileupload 
+        $('div#event > div.title div.bottom div.controls input[name=image_file]').fileupload 
             url: rootUrl + 'file/image/upload/'
             type: 'POST'
             add: (event, data) =>
