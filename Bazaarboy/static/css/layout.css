@@ -428,9 +428,6 @@ input[type=file].hidden {
   right: 0;
   bottom: 0;
 }
-.rounded {
-  border-radius: 2px;
-}
 body {
   font-family: "rooney-sans", Helvetica, sans-serif;
   font-weight: 300;
@@ -447,7 +444,7 @@ i {
 div#wrapper_top {
   position: relative;
   width: 100%;
-  min-width: 912px;
+  min-width: 960px;
   height: 44px;
   background-color: #1D1D1D;
   display: block;
@@ -497,12 +494,13 @@ div#wrapper_top div.controls {
 div#wrapper_content {
   position: relative;
   width: 100%;
-  min-width: 912px;
+  min-width: 960px;
   float: right;
 }
 div#wrapper_foot {
   position: relative;
-  width: 912px;
+  width: 100%;
+  min-width: 912px;
   display: block;
   margin: auto;
 }
@@ -514,13 +512,13 @@ div#wrapper_overlay {
   top: 0;
   left: 0;
   z-index: 10;
-  background-color: rgba(0, 0, 0, 0.7);
+  background-color: rgba(0, 0, 0, 0.8);
   cursor: pointer;
 }
 .content_divided {
   position: relative;
   width: 100%;
-  min-width: 912px;
+  min-width: 960px;
 }
 .content_divided div.frame {
   width: 912px;
@@ -814,17 +812,18 @@ div.event_base > div.title {
   min-width: 960px;
   z-index: 5;
 }
-div.event_base > div.title:hover div.inner div.button {
-  display: block;
-}
 div.event_base > div.title div.inner {
   width: 960px;
   display: block;
   margin: auto;
 }
 div.event_base > div.title div.inner div.top {
+  position: relative;
   width: 960px;
   border-bottom: 1px solid #7F7F7F;
+}
+div.event_base > div.title div.inner div.top:hover div.button {
+  display: block;
 }
 div.event_base > div.title div.inner div.top .title_text {
   width: 960px;
@@ -849,10 +848,8 @@ div.event_base > div.title div.inner div.top div.button {
   position: absolute;
   width: 40px;
   height: 16px;
-  left: -55px;
-  top: 15px;
-  padding: 2px 4px;
-  background-color: #FFF;
+  left: -40px;
+  top: 23px;
   color: #000;
   font-size: 16px;
   font-weight: 300;
@@ -869,16 +866,14 @@ div.event_base > div.title div.inner div.top div.editor {
   line-height: 31px;
 }
 div.event_base > div.title div.inner div.top div.editor input {
-  height: 20px;
+  display: block;
+  width: 960px;
+  min-height: 31px;
   margin: 0;
   padding: 0;
   border: none;
   outline: none;
   background: none;
-  width: 960px;
-  min-height: 31px;
-  padding: 20px 0;
-  color: #000;
   font-size: 25px;
   font-weight: 500;
   line-height: 31px;
@@ -940,7 +935,6 @@ div.event_base > div.title div.inner div.bottom div.controls {
   background-color: #77b0f5;
   opacity: 0.5;
 }
-div.event_base > div.title div.inner div.bottom div.controls.stick,
 div.event_base > div.title div.inner div.bottom div.controls:hover {
   opacity: 1;
 }
@@ -954,6 +948,7 @@ div.event_base > div.title div.inner div.bottom div.controls span {
   font-weight: 500;
   line-height: 14px;
   text-decoration: none;
+  float: left;
 }
 div.event_base > div.title div.inner div.bottom div.controls a.hidden,
 div.event_base > div.title div.inner div.bottom div.controls span.hidden {
@@ -1172,6 +1167,7 @@ div.event_base div.frame div.right div.info {
   padding: 12px 10px;
   z-index: 20;
   border-top: 1px solid #E9E9E9;
+  background-color: #FFF;
 }
 div.event_base div.frame div.right div.info:hover div.button {
   display: block !important;
@@ -1310,15 +1306,113 @@ div.event_base div.others div.recommendation {
 .event_overlay_canvas {
   display: none;
   position: absolute;
-  width: 676px;
+  width: 696px;
+  margin: auto;
   padding: 0;
-  margin-bottom: 20px;
-  top: 68px;
-  left: 0;
+  top: 0;
+  left: -216px;
+  right: 0;
+  bottom: 20px;
   z-index: 20;
   background-color: #FFF;
-  overflow: hidden;
-  border-radius: 2px;
+  /*
+    > div {
+        width: 100%;
+
+        div.header {
+            background-color: @pale_blue;
+            padding: @font_size_base;
+            border-top: 1px solid #E8EBEA;
+            border-bottom: 1px solid #DCE2E2;
+
+            div.title {
+                width: 100%;
+                padding-bottom: 0.125 * @font_size_base;
+                color: @dark_green;
+                font-size: @font_size_base + 2;
+                text-shadow: 0 1px 0 #FFF;
+                text-transform: uppercase;
+            }
+
+            div.caption {
+                font-size: @font_size_base - 4;
+            }
+        }
+
+        div.content {
+            padding-top: 0.5rem;
+            padding-bottom: 3rem;
+            border-bottom: 1px solid #FFF;
+            .linear_gradient(top, #FFF, #FDFAF7);
+
+            input[type=text], input[type=password], textarea {
+                display: block;
+                width: 338px;
+                height: @font_size_base - 1;
+                margin: 0.5rem auto 0;
+                padding: 0.5rem;
+                border-radius: 2px;
+                border: 1px solid #D7E9E9;
+                background-color: transparent;
+                color: @dark_green;
+                font-size: @font_size_base - 1;
+                outline: none;
+                &:disabled {
+                    background-color: #EDF5F5;
+                    font-style: @font_style_italic;
+                }
+                &:focus, &:selected {
+                    border: 1px solid #AEBDBC;
+                    box-shadow: inset 0 0 5px #AEBDBC;
+                }
+                &.required {
+                    border: 1px solid #FFA575;
+                    box-shadow: 0 0 5px #FFA575;
+                }
+            }
+        }
+    }
+
+    div.action {
+        div.header {
+            padding: 0;
+
+            div.title {
+                text-align: center;
+                padding: 0;
+
+                a {
+                    display: block;
+                    width: @overlay_width - @font_size_base * 2;
+                    height: @font_size_base;
+                    padding: @font_size_base;
+                    background-color: @event_blue;
+                    color: #FFF;
+                    text-shadow: 0 1px 0 @dark_green;
+                    line-height: @font_size_base;
+                    text-decoration: none;
+                    &:hover {
+                        .linear_gradient(top, lighten(@event_blue, 5%), @event_blue);
+                    }
+                }
+            }
+        }
+    }
+
+    div.checkout {
+        div.content {
+            padding: 10px;
+
+            div#checkout_frame {
+                > iframe {
+                    width: @overlay_width - 20px;
+                    height: 450px;
+                }
+            }
+        }
+    }
+    */
+
 }
 .event_overlay_canvas:before {
   content: '';
@@ -1329,105 +1423,67 @@ div.event_base div.others div.recommendation {
   border-width: 10px 0 10px 10px;
   border-color: transparent transparent transparent #FFF;
   right: -10px;
-  top: 54px;
+  top: 14px;
 }
-.event_overlay_canvas > div {
-  width: 100%;
-}
-.event_overlay_canvas > div div.header {
-  background-color: #f0f5f5;
-  padding: 16px;
-  border-top: 1px solid #E8EBEA;
-  border-bottom: 1px solid #DCE2E2;
-}
-.event_overlay_canvas > div div.header div.title {
-  width: 100%;
-  padding-bottom: 2px;
-  color: #2f4241;
-  font-size: 18px;
-  text-shadow: 0 1px 0 #FFF;
-  text-transform: uppercase;
-}
-.event_overlay_canvas > div div.header div.caption {
-  font-size: 12px;
-}
-.event_overlay_canvas > div div.content {
-  padding-top: 0.5rem;
-  padding-bottom: 3rem;
-  border-bottom: 1px solid #FFF;
-  background-image: linear-gradient(top, #ffffff, #fdfaf7);
-  background-image: -o-linear-gradient(top, #ffffff, #fdfaf7);
-  background-image: -moz-linear-gradient(top, #ffffff, #fdfaf7);
-  background-image: -webkit-linear-gradient(top, #ffffff, #fdfaf7);
-  background-image: -ms-linear-gradient(top, #ffffff, #fdfaf7);
-}
-.event_overlay_canvas > div div.content input[type=text],
-.event_overlay_canvas > div div.content input[type=password],
-.event_overlay_canvas > div div.content textarea {
-  display: block;
-  width: 338px;
-  height: 15px;
-  margin: 0.5rem auto 0;
-  padding: 0.5rem;
-  border-radius: 2px;
-  border: 1px solid #D7E9E9;
-  background-color: transparent;
-  color: #2f4241;
-  font-size: 15px;
-  outline: none;
-}
-.event_overlay_canvas > div div.content input[type=text]:disabled,
-.event_overlay_canvas > div div.content input[type=password]:disabled,
-.event_overlay_canvas > div div.content textarea:disabled {
-  background-color: #EDF5F5;
-  font-style: oblique;
-}
-.event_overlay_canvas > div div.content input[type=text]:focus,
-.event_overlay_canvas > div div.content input[type=password]:focus,
-.event_overlay_canvas > div div.content textarea:focus,
-.event_overlay_canvas > div div.content input[type=text]:selected,
-.event_overlay_canvas > div div.content input[type=password]:selected,
-.event_overlay_canvas > div div.content textarea:selected {
-  border: 1px solid #AEBDBC;
-  box-shadow: inset 0 0 5px #AEBDBC;
-}
-.event_overlay_canvas > div div.content input[type=text].required,
-.event_overlay_canvas > div div.content input[type=password].required,
-.event_overlay_canvas > div div.content textarea.required {
-  border: 1px solid #FFA575;
-  box-shadow: 0 0 5px #FFA575;
-}
-.event_overlay_canvas div.action div.header {
-  padding: 0;
-}
-.event_overlay_canvas div.action div.header div.title {
-  text-align: center;
-  padding: 0;
-}
-.event_overlay_canvas div.action div.header div.title a {
-  display: block;
-  width: 644px;
-  height: 16px;
-  padding: 16px;
-  background-color: #4795f2;
-  color: #FFF;
-  text-shadow: 0 1px 0 #2f4241;
-  line-height: 16px;
-  text-decoration: none;
-}
-.event_overlay_canvas div.action div.header div.title a:hover {
-  background-image: linear-gradient(top, #5fa3f4, #4795f2);
-  background-image: -o-linear-gradient(top, #5fa3f4, #4795f2);
-  background-image: -moz-linear-gradient(top, #5fa3f4, #4795f2);
-  background-image: -webkit-linear-gradient(top, #5fa3f4, #4795f2);
-  background-image: -ms-linear-gradient(top, #5fa3f4, #4795f2);
-}
-.event_overlay_canvas div.checkout div.content {
+.event_overlay_canvas div.navigation {
+  width: 676px;
+  height: 38px;
   padding: 10px;
 }
-.event_overlay_canvas div.checkout div.content div#checkout_frame > iframe {
-  width: 656px;
-  height: 450px;
+.event_overlay_canvas div.navigation div.item {
+  position: relative;
+  width: 167.75px;
+  height: 36px;
+  border: 1px solid #CCC;
+  border-left: none;
+  border-right: none;
+  float: left;
+}
+.event_overlay_canvas div.navigation div.item.first {
+  border-left: 1px solid #4795f2;
+}
+.event_overlay_canvas div.navigation div.item:after {
+  content: '';
+  position: absolute;
+  width: 0;
+  height: 0;
+  border-style: solid;
+  border-width: 19px 0 19px 19px;
+  border-color: transparent transparent transparent #FFF;
+  right: -19px;
+  top: -1px;
+}
+.event_overlay_canvas div.navigation div.item:before {
+  content: '';
+  position: absolute;
+  width: 0;
+  height: 0;
+  border-style: solid;
+  border-width: 19px 0 19px 19px;
+  border-color: transparent transparent transparent #CCC;
+  right: -20px;
+  top: -1px;
+}
+.event_overlay_canvas div.navigation div.item.last {
+  border-right: 1px solid #CCC;
+}
+.event_overlay_canvas div.navigation div.item.last:after {
+  border: none;
+}
+.event_overlay_canvas div.navigation div.item.last:before {
+  border: none;
+}
+.event_overlay_canvas div.navigation div.item.on {
+  background-color: #4795f2;
+}
+.event_overlay_canvas div.navigation div.item.on:after {
+  border-color: transparent transparent transparent #4795f2;
+}
+.event_overlay_canvas div.navigation div.item.ready {
+  border-color: #4795f2;
+}
+.event_overlay_canvas div.navigation div.item.ready:before {
+  border-color: transparent transparent transparent #0e61c5;
 }
 div#event.big_cover div.frame div.right div.organizers {
   margin-top: 13px;
@@ -1458,15 +1514,15 @@ div#tickets div.tickets div.ticket div.editor {
   display: none;
 }
 div#rsvp > div.divider {
-  width: 676px;
+  width: 696px;
   height: 14px;
   text-align: center;
 }
 div#rsvp div.user {
-  width: 676px;
+  width: 696px;
 }
 div#rsvp div.user div.normal {
-  width: 676px;
+  width: 696px;
   height: 100%;
   background-color: #FFF;
 }
@@ -1478,19 +1534,19 @@ div#rsvp div.user div.normal div.divider {
   float: left;
 }
 div#rsvp div.user div.normal div.login {
-  width: 317.5px;
+  width: 327.5px;
   height: 160px;
   padding: 10px;
   float: left;
 }
 div#rsvp div.user div.normal div.register {
-  width: 317.5px;
+  width: 327.5px;
   height: 160px;
   padding: 10px;
   float: left;
 }
 div#rsvp div.info {
-  width: 676px;
+  width: 696px;
   background-color: #FFF;
 }
 div#rsvp div.tickets div.content {
@@ -1534,7 +1590,7 @@ div#rsvp div.tickets div.content div.ticket div.input input {
   bottom: 0;
 }
 div#rsvp div.tickets div.content div.ticket div.body {
-  width: 516px;
+  width: 536px;
   height: 60px;
   padding: 10px 0;
   color: #2f4241;
