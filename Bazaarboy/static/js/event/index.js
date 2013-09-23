@@ -734,7 +734,6 @@
         event_caption = $('.details').text();
         event_description = $('.summary .body .text').text();
         event_image = $('.cover .image img')[0].src;
-        console.log(event_image);
         /*
         ADD TAGS TO END OF DESCRIPTION
         
