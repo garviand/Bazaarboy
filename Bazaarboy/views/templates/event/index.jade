@@ -239,27 +239,13 @@ block content
                 i No RSVP options yet.
     {% else %}
     div#rsvp.event_overlay_canvas
-        div.navigation
-            div.item.first.ready.on(css="z-index:4;")
-                div.left
-                div.right
-            div.item(css="z-index:3;")
-                div.left
-                div.right
-            div.item(css="z-index:2;")
-                div.left
-                div.right
-            div.item.last(css="z-index:1;")
-                div.left
-                div.right
-            div.clear
-        div.tickets.hidden
+        div.tickets
             div.header
                 div.title {% if rsvp %}RSVP Options{% else %}Ticket Options{% endif %}
                 div.caption
             div.content
                 {% for ticket in tickets %}
-                div.ticket(class="{% if ticket|validateTiming %}valid{% endif %}", data-id="{{ ticket.id }}")
+                div.ticket(class="{% if ticket|validateTiming %}valid{% endif %} {% if forloop.last %}last{% endif %}", data-id="{{ ticket.id }}")
                     div.input
                         input(type="radio")
                     div.body
@@ -302,7 +288,7 @@ block content
                             input(type="submit", value="Register")
                             input(type="hidden", name="city", value="{{ event.city.id }}")
                 div.clear
-        div.info.hidden
+        div.info
             div.header
                 div.title Some details about you
                 div.caption 
@@ -312,12 +298,12 @@ block content
                 input(type="text", name="email", placeholder="Email")
                 input(type="text", name="full_name", placeholder="Full Name")
                 input(type="text", name="phone", placeholder="Phone Number (Optional)")
+                div.clear
         {% endif %}
-        div.action.hidden
+        div.action
             div.header
                 div.title
                     a.confirm(href="javascript:;") Confirm
-        div.checkout.hidden
         div.confirmation.hidden
             div.header
                 div.title Confirmation

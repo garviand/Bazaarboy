@@ -19,6 +19,7 @@
 
 @bboy_orange: #FF9C00;
 @event_blue: #4795F2;
+@event_blue_light: #96D4FF;
 @pale_blue: #F0F5F5;
 @dark_green: #2F4241;
 
@@ -125,6 +126,7 @@ div#wrapper_top {
     width: 100%;
     min-width: @body_width + @gutter_width * 2;
     height: @top_height;
+    z-index: @overlay_z_index + 1;
     background-color: #1D1D1D;
     .center;
 
@@ -502,7 +504,7 @@ div.event_base {
         div.frame {
             div.left {
                 div.placeholder {
-                    display: none;
+                    height: 20px;
                 }
             }
 
@@ -513,9 +515,13 @@ div.event_base {
     }
 
     > div.title {
+        position: relative;
         width: 100%;
         min-width: @body_width + @gutter_width * 2;
-        z-index: @above_plain_z_index;
+        z-index: @overlay_z_index;
+        border-bottom: 1px solid lighten(#B4A297, 20%);
+        background-color: #FFF;
+        box-shadow: 0 -4px 14px #B4A297;
 
         div.inner {
             width: @body_width + @gutter_width * 2;
@@ -607,7 +613,7 @@ div.event_base {
                     position: absolute;
                     width: @content_width;
                     height: 24px;
-                    top: @title_bottom_second_tier_top;
+                    top: @title_bottom_second_tier_top + 20;
                     left: @gutter_width;
                     z-index: @overlay_z_index;
                     background-color: lighten(@event_blue, 10%);
@@ -641,7 +647,7 @@ div.event_base {
                     position: absolute;
                     width: @sidebar_width - 2;
                     height: 46px;
-                    top: @title_bottom_second_tier_top;
+                    top: @title_bottom_second_tier_top + 20;
                     right: @gutter_width;
                     z-index: @overlay_z_index;
                     border: 1px solid @event_blue;
@@ -696,7 +702,7 @@ div.event_base {
                     position: absolute;
                     width: @sidebar_width - 2;
                     height: 46px;
-                    top: @title_bottom_second_tier_top + 48 + 10;
+                    top: @title_bottom_second_tier_top + 20 + 48 + 10;
                     right: @gutter_width;
                     z-index: @overlay_z_index;
                     border: 1px solid #1B1464;
@@ -824,7 +830,7 @@ div.event_base {
         div.left {
             div.placeholder {
                 width: 100%;
-                height: 28px;
+                height: 48px;
             }
 
             div.description {
@@ -1065,136 +1071,25 @@ div.event_base {
         top: 14px;
     }
 
-    div.navigation {
-        width: @overlay_width - 20;
-        height: 38px;
-        padding: 10px;
-
-        div.item {
-            position: relative;
-            width: (@overlay_width - 20 - 5) / 4;
-            height: 36px;
-            border: 1px solid #CCC;
-            border-left: none;
-            border-right: none;
-            .left;
-
-            &.first {
-                border-left: 1px solid @event_blue;
-            }
-
-            @after_border_width: 19px;
-
-            &:after {
-                content: '';
-                position: absolute;
-                width: 0;
-                height: 0;
-                border-style: solid;
-                border-width: @after_border_width 0 @after_border_width @after_border_width;
-                border-color: transparent transparent transparent #FFF;
-                right: 0 - @after_border_width;
-                top: -1px;
-            }
-
-            @before_border_width: 19px;
-
-            &:before {
-                content: '';
-                position: absolute;
-                width: 0;
-                height: 0;
-                border-style: solid;
-                border-width: @before_border_width 0 @before_border_width @before_border_width;
-                border-color: transparent transparent transparent #CCC;
-                right: 0 - (@before_border_width + 1);
-                top: -1px;
-            }
-
-            &.last {
-                border-right: 1px solid #CCC;
-
-                &:after  {
-                    border: none;
-                }
-
-                &:before {
-                    border: none;
-                }
-            }
-
-            &.on {
-                background-color: @event_blue;
-
-                &:after  {
-                    border-color: transparent transparent transparent @event_blue;
-                }
-            }
-
-            &.ready {
-                border-color: @event_blue;
-
-                &:before {
-                    border-color: transparent transparent transparent darken(@event_blue, 20%);
-                }
-            }
-        }
-    }
-
-    /*
     > div {
-        width: 100%;
+        width: @overlay_width - 11 * 2 - 2;
+        margin: 10px;
+        border: 1px solid #E6E6E6;
+        border-radius: 2px;
 
         div.header {
-            background-color: @pale_blue;
-            padding: @font_size_base;
-            border-top: 1px solid #E8EBEA;
-            border-bottom: 1px solid #DCE2E2;
+            width: @overlay_width - 11 * 2 - 2 - 19 * 2;
+            padding: 22px 19px;
 
             div.title {
                 width: 100%;
-                padding-bottom: 0.125 * @font_size_base;
-                color: @dark_green;
-                font-size: @font_size_base + 2;
-                text-shadow: 0 1px 0 #FFF;
+                color: #000;
+                font-size: @font_size_base + 4;
                 text-transform: uppercase;
             }
 
             div.caption {
-                font-size: @font_size_base - 4;
-            }
-        }
-
-        div.content {
-            padding-top: 0.5rem;
-            padding-bottom: 3rem;
-            border-bottom: 1px solid #FFF;
-            .linear_gradient(top, #FFF, #FDFAF7);
-
-            input[type=text], input[type=password], textarea {
-                display: block;
-                width: 338px;
-                height: @font_size_base - 1;
-                margin: 0.5rem auto 0;
-                padding: 0.5rem;
-                border-radius: 2px;
-                border: 1px solid #D7E9E9;
-                background-color: transparent;
-                color: @dark_green;
-                font-size: @font_size_base - 1;
-                outline: none;
-                &:disabled {
-                    background-color: #EDF5F5;
-                    font-style: @font_style_italic;
-                }
-                &:focus, &:selected {
-                    border: 1px solid #AEBDBC;
-                    box-shadow: inset 0 0 5px #AEBDBC;
-                }
-                &.required {
-                    border: 1px solid #FFA575;
-                    box-shadow: 0 0 5px #FFA575;
-                }
+                font-size: @font_size_base - 2;
             }
         }
     }
@@ -1209,9 +1104,9 @@ div.event_base {
 
                 a {
                     display: block;
-                    width: @overlay_width - @font_size_base * 2;
+                    width: @overlay_width - 11 * 2 - 2;
                     height: @font_size_base;
-                    padding: @font_size_base;
+                    padding: @font_size_base 0;
                     background-color: @event_blue;
                     color: #FFF;
                     text-shadow: 0 1px 0 @dark_green;
@@ -1224,20 +1119,6 @@ div.event_base {
             }
         }
     }
-
-    div.checkout {
-        div.content {
-            padding: 10px;
-
-            div#checkout_frame {
-                > iframe {
-                    width: @overlay_width - 20px;
-                    height: 450px;
-                }
-            }
-        }
-    }
-    */
 }
 
 // Event
@@ -1305,12 +1186,6 @@ div#tickets {
 }
 
 div#rsvp {
-    > div.divider {
-        width: @overlay_width;
-        height: 14px;
-        text-align: center;
-    }
-
     div.user {
         width: @overlay_width;
 
@@ -1344,31 +1219,51 @@ div#rsvp {
     }
 
     div.info {
-        width: @overlay_width;
-        background-color: #FFF;
+        div.content {
+            width: @overlay_width - 11 * 2 - 2 - 2 * 2;
+            padding: 10px 2px;
+            background-color: #F2F2F2;
+
+            input[type=text] {
+                width: (@overlay_width - 11 * 2 - 2 - 2 * 2 - 65) / 2;
+                height: @font_size_base - 2;
+                margin: 7px 5px;
+                padding: 10px 10px;
+                border: 1px solid #E2E2E2;
+                border-radius: 3px;
+                outline: none;
+                font-size: @font_size_base - 2;
+                line-height: @font_size_base - 2;
+                float: left;
+
+                &:focus, &:hover {
+                    border-color: @event_blue;
+                    box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075), 0 0 8px rgba(102, 175, 233, 0.6);
+                }
+            }
+        }
     }
 
     div.tickets {
         div.content {
-            padding: 0;
-            background-image: none;
-
             div.ticket {
                 width: 100%;
-                height: 80px;
-                border-bottom: 1px solid @pale_blue;
-                .linear_gradient(top, #FFF, #FDFAF7);
-                overflow: hidden;
+                min-height: 80px;
+                border-top: 1px solid #E6E6E6;
                 cursor: pointer;
-                &.selected {
-                    border-top: 1px solid #AEBDBC;
-                    border-bottom: 1px solid #AEBDBC;
-                    .linear_gradient(top, #FFB769, #FF8F4D);
+                &:hover, &.selected {
+                    border-top: 1px solid @event_blue;
+                    background-color: @event_blue;
+                    color: #FFF;
+                }
+                &.last {
+                    border-bottom-left-radius: 2px;
+                    border-bottom-right-radius: 2px;
                 }
 
                 div.input {
                     position: relative;
-                    width: 40px;
+                    width: 8%;
                     height: 80px;
                     .left;
 
@@ -1378,16 +1273,14 @@ div#rsvp {
                 }
 
                 div.body {
-                    width: @overlay_width - 160px;
+                    width: 70%;
                     height: 60px;
                     padding: 10px 0;
-                    color: @dark_green;
                     .left;
 
                     div.name {
                         width: 100%;
                         height: @font_size_base;
-                        color: #000;
                         font-size: @font_size_base;
                     }
 
@@ -1401,21 +1294,21 @@ div#rsvp {
                 }
 
                 div.detail {
-                    width: 100px;
+                    width: 20%;
                     height: 60px;
-                    margin-left: 20px;
+                    margin-left: 2%;
                     padding: 10px 0;
                     .left;
 
                     div.price {
-                        width: 90px;
+                        width: 100%;
                         height: 25px;
                         font-size: 25px;
                         text-align: center;
                     }
 
                     div.quantity {
-                        width: 90px;
+                        width: 100%;
                         height: @font_size_base - 2;
                         margin-top: 15px;
                         font-size: @font_size_base - 2;

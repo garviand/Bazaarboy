@@ -23,6 +23,14 @@ Bazaarboy.event.index =
         marker = new google.maps.Marker({position: markerPos})
         marker.setMap @map
         return
+    adjustOverlayHeight: () ->
+        overlayHeight = 10
+        for visibleDiv in $('div#rsvp > div').not('div.hidden')
+            overlayHeight += $(visibleDiv).outerHeight() + 10
+        $('div#rsvp').css
+            'margin-top': 0
+        $('div#rsvp').height overlayHeight
+        return
     purchase: (ticket, email=null, fullName=null) ->
         params = 
             ticket: ticket
@@ -652,11 +660,12 @@ Bazaarboy.event.index =
         return
     init: () ->
         # Overlay
-        $('div#event div.action').click () ->
+        $('div#event div.action').click () =>
             $('div#wrapper_overlay').fadeIn(200)
             $('div.event_overlay_canvas').css
                 'top': $('div#event > div.title').height() + 20
             $('div.event_overlay_canvas').fadeIn(200)
+            @adjustOverlayHeight()
             return
         $('div#wrapper_overlay').click () =>
             if not @coverEditInProgress

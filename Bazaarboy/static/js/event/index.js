@@ -29,6 +29,19 @@
       });
       marker.setMap(this.map);
     },
+    adjustOverlayHeight: function() {
+      var overlayHeight, visibleDiv, _i, _len, _ref;
+      overlayHeight = 10;
+      _ref = $('div#rsvp > div').not('div.hidden');
+      for (_i = 0, _len = _ref.length; _i < _len; _i++) {
+        visibleDiv = _ref[_i];
+        overlayHeight += $(visibleDiv).outerHeight() + 10;
+      }
+      $('div#rsvp').css({
+        'margin-top': 0
+      });
+      $('div#rsvp').height(overlayHeight);
+    },
     purchase: function(ticket, email, fullName) {
       var params,
         _this = this;
@@ -709,6 +722,7 @@
           'top': $('div#event > div.title').height() + 20
         });
         $('div.event_overlay_canvas').fadeIn(200);
+        _this.adjustOverlayHeight();
       });
       $('div#wrapper_overlay').click(function() {
         if (!_this.coverEditInProgress) {

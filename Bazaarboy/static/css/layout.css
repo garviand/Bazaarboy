@@ -446,6 +446,7 @@ div#wrapper_top {
   width: 100%;
   min-width: 960px;
   height: 44px;
+  z-index: 21;
   background-color: #1D1D1D;
   display: block;
   margin: auto;
@@ -802,15 +803,19 @@ div.event_base.with_cover div.cover div.inner div.caption {
   height: 30px;
 }
 div.event_base.with_cover div.frame div.left div.placeholder {
-  display: none;
+  height: 20px;
 }
 div.event_base.with_cover div.frame div.right {
   padding-top: 10px;
 }
 div.event_base > div.title {
+  position: relative;
   width: 100%;
   min-width: 960px;
-  z-index: 5;
+  z-index: 20;
+  border-bottom: 1px solid #dfd7d2;
+  background-color: #FFF;
+  box-shadow: 0 -4px 14px #b4a297;
 }
 div.event_base > div.title div.inner {
   width: 960px;
@@ -929,7 +934,7 @@ div.event_base > div.title div.inner div.bottom div.controls {
   position: absolute;
   width: 696px;
   height: 24px;
-  top: 46px;
+  top: 66px;
   left: 24px;
   z-index: 20;
   background-color: #77b0f5;
@@ -961,7 +966,7 @@ div.event_base > div.title div.inner div.bottom div.action {
   position: absolute;
   width: 190px;
   height: 46px;
-  top: 46px;
+  top: 66px;
   right: 24px;
   z-index: 20;
   border: 1px solid #4795f2;
@@ -1017,7 +1022,7 @@ div.event_base > div.title div.inner div.bottom div.share {
   position: absolute;
   width: 190px;
   height: 46px;
-  top: 104px;
+  top: 124px;
   right: 24px;
   z-index: 20;
   border: 1px solid #1B1464;
@@ -1131,7 +1136,7 @@ div.event_base div.cover div.inner div.image div.bounds img.editing {
 }
 div.event_base div.frame div.left div.placeholder {
   width: 100%;
-  height: 28px;
+  height: 48px;
 }
 div.event_base div.frame div.left div.description {
   width: 100%;
@@ -1315,104 +1320,6 @@ div.event_base div.others div.recommendation {
   bottom: 20px;
   z-index: 20;
   background-color: #FFF;
-  /*
-    > div {
-        width: 100%;
-
-        div.header {
-            background-color: @pale_blue;
-            padding: @font_size_base;
-            border-top: 1px solid #E8EBEA;
-            border-bottom: 1px solid #DCE2E2;
-
-            div.title {
-                width: 100%;
-                padding-bottom: 0.125 * @font_size_base;
-                color: @dark_green;
-                font-size: @font_size_base + 2;
-                text-shadow: 0 1px 0 #FFF;
-                text-transform: uppercase;
-            }
-
-            div.caption {
-                font-size: @font_size_base - 4;
-            }
-        }
-
-        div.content {
-            padding-top: 0.5rem;
-            padding-bottom: 3rem;
-            border-bottom: 1px solid #FFF;
-            .linear_gradient(top, #FFF, #FDFAF7);
-
-            input[type=text], input[type=password], textarea {
-                display: block;
-                width: 338px;
-                height: @font_size_base - 1;
-                margin: 0.5rem auto 0;
-                padding: 0.5rem;
-                border-radius: 2px;
-                border: 1px solid #D7E9E9;
-                background-color: transparent;
-                color: @dark_green;
-                font-size: @font_size_base - 1;
-                outline: none;
-                &:disabled {
-                    background-color: #EDF5F5;
-                    font-style: @font_style_italic;
-                }
-                &:focus, &:selected {
-                    border: 1px solid #AEBDBC;
-                    box-shadow: inset 0 0 5px #AEBDBC;
-                }
-                &.required {
-                    border: 1px solid #FFA575;
-                    box-shadow: 0 0 5px #FFA575;
-                }
-            }
-        }
-    }
-
-    div.action {
-        div.header {
-            padding: 0;
-
-            div.title {
-                text-align: center;
-                padding: 0;
-
-                a {
-                    display: block;
-                    width: @overlay_width - @font_size_base * 2;
-                    height: @font_size_base;
-                    padding: @font_size_base;
-                    background-color: @event_blue;
-                    color: #FFF;
-                    text-shadow: 0 1px 0 @dark_green;
-                    line-height: @font_size_base;
-                    text-decoration: none;
-                    &:hover {
-                        .linear_gradient(top, lighten(@event_blue, 5%), @event_blue);
-                    }
-                }
-            }
-        }
-    }
-
-    div.checkout {
-        div.content {
-            padding: 10px;
-
-            div#checkout_frame {
-                > iframe {
-                    width: @overlay_width - 20px;
-                    height: 450px;
-                }
-            }
-        }
-    }
-    */
-
 }
 .event_overlay_canvas:before {
   content: '';
@@ -1425,65 +1332,49 @@ div.event_base div.others div.recommendation {
   right: -10px;
   top: 14px;
 }
-.event_overlay_canvas div.navigation {
-  width: 676px;
-  height: 38px;
-  padding: 10px;
+.event_overlay_canvas > div {
+  width: 672px;
+  margin: 10px;
+  border: 1px solid #E6E6E6;
+  border-radius: 2px;
 }
-.event_overlay_canvas div.navigation div.item {
-  position: relative;
-  width: 167.75px;
-  height: 36px;
-  border: 1px solid #CCC;
-  border-left: none;
-  border-right: none;
-  float: left;
+.event_overlay_canvas > div div.header {
+  width: 634px;
+  padding: 22px 19px;
 }
-.event_overlay_canvas div.navigation div.item.first {
-  border-left: 1px solid #4795f2;
+.event_overlay_canvas > div div.header div.title {
+  width: 100%;
+  color: #000;
+  font-size: 20px;
+  text-transform: uppercase;
 }
-.event_overlay_canvas div.navigation div.item:after {
-  content: '';
-  position: absolute;
-  width: 0;
-  height: 0;
-  border-style: solid;
-  border-width: 19px 0 19px 19px;
-  border-color: transparent transparent transparent #FFF;
-  right: -19px;
-  top: -1px;
+.event_overlay_canvas > div div.header div.caption {
+  font-size: 14px;
 }
-.event_overlay_canvas div.navigation div.item:before {
-  content: '';
-  position: absolute;
-  width: 0;
-  height: 0;
-  border-style: solid;
-  border-width: 19px 0 19px 19px;
-  border-color: transparent transparent transparent #CCC;
-  right: -20px;
-  top: -1px;
+.event_overlay_canvas div.action div.header {
+  padding: 0;
 }
-.event_overlay_canvas div.navigation div.item.last {
-  border-right: 1px solid #CCC;
+.event_overlay_canvas div.action div.header div.title {
+  text-align: center;
+  padding: 0;
 }
-.event_overlay_canvas div.navigation div.item.last:after {
-  border: none;
-}
-.event_overlay_canvas div.navigation div.item.last:before {
-  border: none;
-}
-.event_overlay_canvas div.navigation div.item.on {
+.event_overlay_canvas div.action div.header div.title a {
+  display: block;
+  width: 672px;
+  height: 16px;
+  padding: 16px 0;
   background-color: #4795f2;
+  color: #FFF;
+  text-shadow: 0 1px 0 #2f4241;
+  line-height: 16px;
+  text-decoration: none;
 }
-.event_overlay_canvas div.navigation div.item.on:after {
-  border-color: transparent transparent transparent #4795f2;
-}
-.event_overlay_canvas div.navigation div.item.ready {
-  border-color: #4795f2;
-}
-.event_overlay_canvas div.navigation div.item.ready:before {
-  border-color: transparent transparent transparent #0e61c5;
+.event_overlay_canvas div.action div.header div.title a:hover {
+  background-image: linear-gradient(top, #5fa3f4, #4795f2);
+  background-image: -o-linear-gradient(top, #5fa3f4, #4795f2);
+  background-image: -moz-linear-gradient(top, #5fa3f4, #4795f2);
+  background-image: -webkit-linear-gradient(top, #5fa3f4, #4795f2);
+  background-image: -ms-linear-gradient(top, #5fa3f4, #4795f2);
 }
 div#event.big_cover div.frame div.right div.organizers {
   margin-top: 13px;
@@ -1513,11 +1404,6 @@ div#tickets div.tickets div.ticket div.text {
 div#tickets div.tickets div.ticket div.editor {
   display: none;
 }
-div#rsvp > div.divider {
-  width: 696px;
-  height: 14px;
-  text-align: center;
-}
 div#rsvp div.user {
   width: 696px;
 }
@@ -1545,38 +1431,47 @@ div#rsvp div.user div.normal div.register {
   padding: 10px;
   float: left;
 }
-div#rsvp div.info {
-  width: 696px;
-  background-color: #FFF;
+div#rsvp div.info div.content {
+  width: 668px;
+  padding: 10px 2px;
+  background-color: #F2F2F2;
 }
-div#rsvp div.tickets div.content {
-  padding: 0;
-  background-image: none;
+div#rsvp div.info div.content input[type=text] {
+  width: 301.5px;
+  height: 14px;
+  margin: 7px 5px;
+  padding: 10px 10px;
+  border: 1px solid #E2E2E2;
+  border-radius: 3px;
+  outline: none;
+  font-size: 14px;
+  line-height: 14px;
+  float: left;
+}
+div#rsvp div.info div.content input[type=text]:focus,
+div#rsvp div.info div.content input[type=text]:hover {
+  border-color: #4795f2;
+  box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075), 0 0 8px rgba(102, 175, 233, 0.6);
 }
 div#rsvp div.tickets div.content div.ticket {
   width: 100%;
-  height: 80px;
-  border-bottom: 1px solid #f0f5f5;
-  background-image: linear-gradient(top, #ffffff, #fdfaf7);
-  background-image: -o-linear-gradient(top, #ffffff, #fdfaf7);
-  background-image: -moz-linear-gradient(top, #ffffff, #fdfaf7);
-  background-image: -webkit-linear-gradient(top, #ffffff, #fdfaf7);
-  background-image: -ms-linear-gradient(top, #ffffff, #fdfaf7);
-  overflow: hidden;
+  min-height: 80px;
+  border-top: 1px solid #E6E6E6;
   cursor: pointer;
 }
+div#rsvp div.tickets div.content div.ticket:hover,
 div#rsvp div.tickets div.content div.ticket.selected {
-  border-top: 1px solid #AEBDBC;
-  border-bottom: 1px solid #AEBDBC;
-  background-image: linear-gradient(top, #ffb769, #ff8f4d);
-  background-image: -o-linear-gradient(top, #ffb769, #ff8f4d);
-  background-image: -moz-linear-gradient(top, #ffb769, #ff8f4d);
-  background-image: -webkit-linear-gradient(top, #ffb769, #ff8f4d);
-  background-image: -ms-linear-gradient(top, #ffb769, #ff8f4d);
+  border-top: 1px solid #4795f2;
+  background-color: #4795f2;
+  color: #FFF;
+}
+div#rsvp div.tickets div.content div.ticket.last {
+  border-bottom-left-radius: 2px;
+  border-bottom-right-radius: 2px;
 }
 div#rsvp div.tickets div.content div.ticket div.input {
   position: relative;
-  width: 40px;
+  width: 8%;
   height: 80px;
   float: left;
 }
@@ -1590,16 +1485,14 @@ div#rsvp div.tickets div.content div.ticket div.input input {
   bottom: 0;
 }
 div#rsvp div.tickets div.content div.ticket div.body {
-  width: 536px;
+  width: 70%;
   height: 60px;
   padding: 10px 0;
-  color: #2f4241;
   float: left;
 }
 div#rsvp div.tickets div.content div.ticket div.body div.name {
   width: 100%;
   height: 16px;
-  color: #000;
   font-size: 16px;
 }
 div#rsvp div.tickets div.content div.ticket div.body div.description {
@@ -1610,20 +1503,20 @@ div#rsvp div.tickets div.content div.ticket div.body div.description {
   line-height: 16px;
 }
 div#rsvp div.tickets div.content div.ticket div.detail {
-  width: 100px;
+  width: 20%;
   height: 60px;
-  margin-left: 20px;
+  margin-left: 2%;
   padding: 10px 0;
   float: left;
 }
 div#rsvp div.tickets div.content div.ticket div.detail div.price {
-  width: 90px;
+  width: 100%;
   height: 25px;
   font-size: 25px;
   text-align: center;
 }
 div#rsvp div.tickets div.content div.ticket div.detail div.quantity {
-  width: 90px;
+  width: 100%;
   height: 14px;
   margin-top: 15px;
   font-size: 14px;
