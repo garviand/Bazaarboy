@@ -33,6 +33,13 @@ Bazaarboy.event.index =
             picture: image,
         (response) -> 
             return
+    adjustOverlayHeight: () ->
+        overlayHeight = 10
+        for visibleDiv in $('div#rsvp > div').not('div.hidden')
+            overlayHeight += $(visibleDiv).outerHeight() + 10
+        $('div#rsvp').css
+            'margin-top': 0
+        $('div#rsvp').height overlayHeight
         return
     purchase: (ticket, email=null, fullName=null) ->
         params = 
@@ -42,18 +49,6 @@ Bazaarboy.event.index =
             params.full_name = fullName
         Bazaarboy.post 'event/purchase/', params, (response) =>
             if response.status is 'OK'
-                $('div#rsvp div.tickets').addClass('collapsed')
-                $('div#rsvp div.tickets div.ticket').not('div.selected').animate
-                    'height': 0
-                , () ->
-                    $(this).addClass('hidden')
-                    return
-                $('div#rsvp div.user').css('overflow', 'hidden').animate
-                    'height': 0
-                $('div#rsvp div.info').css('overflow', 'hidden').animate
-                    'height': 0
-                $('div#rsvp div.action').css('overflow', 'hidden').animate
-                    'height': 0
                 checkoutDescription = response.purchase.event.name + ' ' + 
                                       response.purchase.ticket.name
                 StripeCheckout.open
@@ -80,10 +75,24 @@ Bazaarboy.event.index =
             return
         return
     completeCheckout: () ->
-        $('div#rsvp div.tickets').css('overflow', 'hidden').animate
+        scope = this
+        $('div#rsvp div.tickets').addClass('collapsed')
+        $('div#rsvp div.tickets div.ticket').not('div.selected').animate
             'height': 0
-        $('div#rsvp div.checkout').css('overflow', 'hidden').animate
+        , () ->
+            $(this).addClass('hidden')
+            return
+        $('div#rsvp div.action').css('overflow', 'hidden').animate
             'height': 0
+        , () ->
+            $(this).addClass('hidden')
+            return
+        $('div#rsvp div.info').css('overflow', 'hidden').animate
+            'height': 0
+        , () ->
+            $(this).addClass('hidden')
+            scope.adjustOverlayHeight()
+            return
         $('div#rsvp div.confirmation').removeClass('hidden')
         return
     initTransaction: () ->
@@ -663,11 +672,12 @@ Bazaarboy.event.index =
         return
     init: () ->
         # Overlay
-        $('div#event div.action').click () ->
+        $('div#event div.action').click () =>
             $('div#wrapper_overlay').fadeIn(200)
             $('div.event_overlay_canvas').css
                 'top': $('div#event > div.title').height() + 20
             $('div.event_overlay_canvas').fadeIn(200)
+            @adjustOverlayHeight()
             return
         $('div#wrapper_overlay').click () =>
             if not @coverEditInProgress
@@ -682,7 +692,6 @@ Bazaarboy.event.index =
             event_image = $('.cover .image img')[0].src
             ###
             ADD TAGS TO END OF DESCRIPTION
-
             $('.tags .tag').each () ->
                 event_description += $(this).html() + ' '
             ###

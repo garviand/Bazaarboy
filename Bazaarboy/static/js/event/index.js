@@ -38,7 +38,20 @@
         description: description,
         picture: image
       });
-      (function(response) {});
+      return function(response) {};
+    },
+    adjustOverlayHeight: function() {
+      var overlayHeight, visibleDiv, _i, _len, _ref;
+      overlayHeight = 10;
+      _ref = $('div#rsvp > div').not('div.hidden');
+      for (_i = 0, _len = _ref.length; _i < _len; _i++) {
+        visibleDiv = _ref[_i];
+        overlayHeight += $(visibleDiv).outerHeight() + 10;
+      }
+      $('div#rsvp').css({
+        'margin-top': 0
+      });
+      $('div#rsvp').height(overlayHeight);
     },
     purchase: function(ticket, email, fullName) {
       var params,
@@ -59,21 +72,6 @@
       Bazaarboy.post('event/purchase/', params, function(response) {
         var checkoutDescription;
         if (response.status === 'OK') {
-          $('div#rsvp div.tickets').addClass('collapsed');
-          $('div#rsvp div.tickets div.ticket').not('div.selected').animate({
-            'height': 0
-          }, function() {
-            $(this).addClass('hidden');
-          });
-          $('div#rsvp div.user').css('overflow', 'hidden').animate({
-            'height': 0
-          });
-          $('div#rsvp div.info').css('overflow', 'hidden').animate({
-            'height': 0
-          });
-          $('div#rsvp div.action').css('overflow', 'hidden').animate({
-            'height': 0
-          });
           checkoutDescription = response.purchase.event.name + ' ' + response.purchase.ticket.name;
           StripeCheckout.open({
             key: response.publishable_key,
@@ -102,11 +100,24 @@
       });
     },
     completeCheckout: function() {
-      $('div#rsvp div.tickets').css('overflow', 'hidden').animate({
+      var scope;
+      scope = this;
+      $('div#rsvp div.tickets').addClass('collapsed');
+      $('div#rsvp div.tickets div.ticket').not('div.selected').animate({
         'height': 0
+      }, function() {
+        $(this).addClass('hidden');
       });
-      $('div#rsvp div.checkout').css('overflow', 'hidden').animate({
+      $('div#rsvp div.action').css('overflow', 'hidden').animate({
         'height': 0
+      }, function() {
+        $(this).addClass('hidden');
+      });
+      $('div#rsvp div.info').css('overflow', 'hidden').animate({
+        'height': 0
+      }, function() {
+        $(this).addClass('hidden');
+        scope.adjustOverlayHeight();
       });
       $('div#rsvp div.confirmation').removeClass('hidden');
     },
@@ -720,6 +731,7 @@
           'top': $('div#event > div.title').height() + 20
         });
         $('div.event_overlay_canvas').fadeIn(200);
+        _this.adjustOverlayHeight();
       });
       $('div#wrapper_overlay').click(function() {
         if (!_this.coverEditInProgress) {
@@ -736,7 +748,6 @@
         event_image = $('.cover .image img')[0].src;
         /*
         ADD TAGS TO END OF DESCRIPTION
-        
         $('.tags .tag').each () ->
             event_description += $(this).html() + ' '
         */
