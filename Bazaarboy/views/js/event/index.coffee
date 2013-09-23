@@ -689,7 +689,15 @@ Bazaarboy.event.index =
             event_name = $('.top .text').text()
             event_caption = $('.details').text()
             event_description = $('.summary .body .text').text()
-            event_image = $('.cover .image img')[0].src
+            event_image = $('.cover .image img')[0]
+            if typeof event_image == 'undefined'
+                editor_images = $('.editor .inner').find('img')
+                if editor_images.length > 0
+                    event_image = editor_images[0].src
+                else
+                    event_image = 'DEFAULT_IMAGE'
+            else
+                event_image = event_image.src
             ###
             ADD TAGS TO END OF DESCRIPTION
             $('.tags .tag').each () ->
