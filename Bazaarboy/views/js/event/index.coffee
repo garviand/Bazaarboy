@@ -39,18 +39,6 @@ Bazaarboy.event.index =
             params.full_name = fullName
         Bazaarboy.post 'event/purchase/', params, (response) =>
             if response.status is 'OK'
-                $('div#rsvp div.tickets').addClass('collapsed')
-                $('div#rsvp div.tickets div.ticket').not('div.selected').animate
-                    'height': 0
-                , () ->
-                    $(this).addClass('hidden')
-                    return
-                $('div#rsvp div.user').css('overflow', 'hidden').animate
-                    'height': 0
-                $('div#rsvp div.info').css('overflow', 'hidden').animate
-                    'height': 0
-                $('div#rsvp div.action').css('overflow', 'hidden').animate
-                    'height': 0
                 checkoutDescription = response.purchase.event.name + ' ' + 
                                       response.purchase.ticket.name
                 StripeCheckout.open
@@ -77,10 +65,24 @@ Bazaarboy.event.index =
             return
         return
     completeCheckout: () ->
-        $('div#rsvp div.tickets').css('overflow', 'hidden').animate
+        scope = this
+        $('div#rsvp div.tickets').addClass('collapsed')
+        $('div#rsvp div.tickets div.ticket').not('div.selected').animate
             'height': 0
-        $('div#rsvp div.checkout').css('overflow', 'hidden').animate
+        , () ->
+            $(this).addClass('hidden')
+            return
+        $('div#rsvp div.action').css('overflow', 'hidden').animate
             'height': 0
+        , () ->
+            $(this).addClass('hidden')
+            return
+        $('div#rsvp div.info').css('overflow', 'hidden').animate
+            'height': 0
+        , () ->
+            $(this).addClass('hidden')
+            scope.adjustOverlayHeight()
+            return
         $('div#rsvp div.confirmation').removeClass('hidden')
         return
     initTransaction: () ->
