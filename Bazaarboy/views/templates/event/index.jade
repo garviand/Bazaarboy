@@ -61,7 +61,7 @@ block content
                     div.clear
                     {% if editable %}
                     div.controls
-                        span.hidden Drag the image to position you think fit. 
+                        span.hidden Drag the image an appropriate position. 
                         a.edit(href="javascript:;") 
                             | {% if event.cover %}Edit Cover{% else %}Add Cover{% endif %}
                         a.delete(href="javascript:;", class="{% if not event.cover %}hidden{% endif %}") 
