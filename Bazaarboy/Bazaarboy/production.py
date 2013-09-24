@@ -1,5 +1,21 @@
 # Production Settings
 
+# Use RDS as database backend
+
+import os
+
+if 'RDS_HOSTNAME' in os.environ:
+    DATABASES = {
+        'default': {
+            'ENGINE': 'django.db.backends.mysql',
+            'NAME': os.environ['RDS_DB_NAME'],
+            'USER': os.environ['RDS_USERNAME'],
+            'PASSWORD': os.environ['RDS_PASSWORD'],
+            'HOST': os.environ['RDS_HOSTNAME'],
+            'PORT': os.environ['RDS_PORT'],
+        }
+    }
+
 # Use S3 as file storage
 
 AWS_ACCESS_KEY_ID = 'AKIAIX6AKR4TMQL5FSRQ'
