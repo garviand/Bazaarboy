@@ -100,3 +100,4 @@ def charge(request, params, user):
             'message':'The card is declined.'
         }
         return json_response(response)
+        
