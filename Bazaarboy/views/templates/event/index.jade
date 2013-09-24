@@ -253,10 +253,11 @@ block content
                         div.description {{ ticket.description }}
                     div.detail
                         div.price 
-                            b $ {{ ticket.price|floatformat:-2 }}
+                            b 
+                                | {% if ticket.price > 0 %}$ {{ ticket.price|floatformat:-2 }}{% else %}Free{% endif %}
                         div.quantity 
-                            | {% if ticket.quantity == None %}
-                            | Unlimited
+                            | {% if ticket.quantity == None or ticket.quantity > 20 %}
+                            | Available
                             | {% elif ticket.quantity == 0 %}
                             | Sold Out
                             | {% else %}

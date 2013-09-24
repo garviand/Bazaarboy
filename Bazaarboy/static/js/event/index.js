@@ -61,28 +61,32 @@
       Bazaarboy.post('event/purchase/', params, function(response) {
         var checkoutDescription;
         if (response.status === 'OK') {
-          checkoutDescription = response.purchase.event.name + ' ' + response.purchase.ticket.name;
-          StripeCheckout.open({
-            key: response.publishable_key,
-            address: false,
-            amount: Math.round(response.purchase.price * 100),
-            currency: 'usd',
-            name: response.purchase.event.name,
-            description: checkoutDescription,
-            panelLabel: 'Checkout',
-            token: function(token) {
-              Bazaarboy.post('payment/charge/', {
-                checkout: response.purchase.checkout,
-                stripe_token: token.id
-              }, function(response) {
-                if (response.status === 'OK') {
-                  _this.completeCheckout();
-                } else {
-                  alert(response.message);
-                }
-              });
-            }
-          });
+          if (response.publishable_key != null) {
+            checkoutDescription = response.purchase.event.name + ' ' + response.purchase.ticket.name;
+            StripeCheckout.open({
+              key: response.publishable_key,
+              address: false,
+              amount: Math.round(response.purchase.price * 100),
+              currency: 'usd',
+              name: response.purchase.event.name,
+              description: checkoutDescription,
+              panelLabel: 'Checkout',
+              token: function(token) {
+                Bazaarboy.post('payment/charge/', {
+                  checkout: response.purchase.checkout,
+                  stripe_token: token.id
+                }, function(response) {
+                  if (response.status === 'OK') {
+                    _this.completeCheckout();
+                  } else {
+                    alert(response.message);
+                  }
+                });
+              }
+            });
+          } else {
+            _this.completeCheckout();
+          }
         } else {
           alert(response.message);
         }
@@ -195,24 +199,24 @@
     },
     startEditingTitle: function() {
       var title;
-      $('div#event div.title div.text').addClass('hidden');
-      $('div#event div.title div.editor').removeClass('hidden');
-      title = $('div#event div.title div.editor input').val();
-      $('div#event div.title div.editor input').focus().val('').val(title);
-      $('div#event div.title div.button').html('Save').addClass('stick');
+      $('div#event > div.title div.text').addClass('hidden');
+      $('div#event > div.title div.editor').removeClass('hidden');
+      title = $('div#event > div.title div.editor input').val();
+      $('div#event > div.title div.editor input').focus().val('').val(title);
+      $('div#event > div.title div.button').html('Save').addClass('stick');
     },
     stopEditingTitle: function() {
       var title,
         _this = this;
-      title = $('div#event div.title div.editor input').val();
+      title = $('div#event > div.title div.editor input').val();
       this.save({
         name: title
       }, function(err, event) {
         if (!err) {
-          $('div#event div.title div.text').html(title).removeClass('hidden');
-          $('div#event div.title div.editor input').val(title);
-          $('div#event div.title div.editor').addClass('hidden');
-          $('div#event div.title div.button').html('Edit').removeClass('stick');
+          $('div#event > div.title div.text').html(title).removeClass('hidden');
+          $('div#event > div.title div.editor input').val(title);
+          $('div#event > div.title div.editor').addClass('hidden');
+          $('div#event > div.title div.button').html('Edit').removeClass('stick');
         } else {
           alert(err.message);
         }
@@ -606,7 +610,7 @@
       var scope,
         _this = this;
       scope = this;
-      $('div#event div.title div.button').click(function() {
+      $('div#event > div.title div.top div.button').click(function() {
         if ($(this).hasClass('stick')) {
           scope.stopEditingTitle();
         } else {

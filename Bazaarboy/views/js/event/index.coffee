@@ -39,27 +39,30 @@ Bazaarboy.event.index =
             params.full_name = fullName
         Bazaarboy.post 'event/purchase/', params, (response) =>
             if response.status is 'OK'
-                checkoutDescription = response.purchase.event.name + ' ' + 
-                                      response.purchase.ticket.name
-                StripeCheckout.open
-                    key: response.publishable_key
-                    address: false
-                    amount: Math.round(response.purchase.price * 100)
-                    currency: 'usd'
-                    name: response.purchase.event.name
-                    description: checkoutDescription
-                    panelLabel: 'Checkout'
-                    token: (token) =>
-                        Bazaarboy.post 'payment/charge/',
-                            checkout: response.purchase.checkout
-                            stripe_token: token.id
-                        , (response) =>
-                            if response.status is 'OK'
-                                @completeCheckout()
-                            else
-                                alert response.message
+                if response.publishable_key?
+                    checkoutDescription = response.purchase.event.name + ' ' + 
+                                          response.purchase.ticket.name
+                    StripeCheckout.open
+                        key: response.publishable_key
+                        address: false
+                        amount: Math.round(response.purchase.price * 100)
+                        currency: 'usd'
+                        name: response.purchase.event.name
+                        description: checkoutDescription
+                        panelLabel: 'Checkout'
+                        token: (token) =>
+                            Bazaarboy.post 'payment/charge/',
+                                checkout: response.purchase.checkout
+                                stripe_token: token.id
+                            , (response) =>
+                                if response.status is 'OK'
+                                    @completeCheckout()
+                                else
+                                    alert response.message
+                                return
                             return
-                        return
+                else
+                    @completeCheckout()
             else
                 alert response.message
             return
@@ -163,24 +166,24 @@ Bazaarboy.event.index =
             return
         return
     startEditingTitle: () ->
-        $('div#event div.title div.text').addClass('hidden')
-        $('div#event div.title div.editor').removeClass('hidden')
-        title = $('div#event div.title div.editor input').val()
-        $('div#event div.title div.editor input').focus().val('').val(title)
-        $('div#event div.title div.button')
+        $('div#event > div.title div.text').addClass('hidden')
+        $('div#event > div.title div.editor').removeClass('hidden')
+        title = $('div#event > div.title div.editor input').val()
+        $('div#event > div.title div.editor input').focus().val('').val(title)
+        $('div#event > div.title div.button')
             .html('Save')
             .addClass('stick')
         return
     stopEditingTitle: () ->
-        title = $('div#event div.title div.editor input').val()
+        title = $('div#event > div.title div.editor input').val()
         @save {name: title}, (err, event) =>
             unless err
-                $('div#event div.title div.text')
+                $('div#event > div.title div.text')
                     .html(title)
                     .removeClass('hidden')
-                $('div#event div.title div.editor input').val(title)
-                $('div#event div.title div.editor').addClass('hidden')
-                $('div#event div.title div.button')
+                $('div#event > div.title div.editor input').val(title)
+                $('div#event > div.title div.editor').addClass('hidden')
+                $('div#event > div.title div.button')
                     .html('Edit')
                     .removeClass('stick')
             else
@@ -564,7 +567,7 @@ Bazaarboy.event.index =
     initEditing: () ->
         scope = this
         # Edit title
-        $('div#event div.title div.button').click () ->
+        $('div#event > div.title div.top div.button').click () ->
             if $(this).hasClass('stick')
                 scope.stopEditingTitle()
             else
