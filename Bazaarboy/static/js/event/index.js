@@ -29,17 +29,32 @@
       });
       marker.setMap(this.map);
     },
-    share: function(url, name, caption, description, image) {
-      FB.ui({
-        method: 'feed',
-        link: url,
-        name: name,
-        caption: caption,
-        description: description,
-        picture: image
-      });
-      return function(response) {};
-    },
+    /*
+    share: () ->
+        url = window.location.href
+        name = $('div#event > div.title div.top div.text').text()
+        caption = $('div#event > div.title div.top div.details').text()
+        description = $('div#event div.summary div.body div.text').text()
+        image = $('div#event div.cover div.image img')
+        if image.length is 0
+            editor_images = $('.editor .inner').find('img')
+            if editor_images.length > 0
+                event_image = editor_images[0].src
+            else
+                event_image = 'DEFAULT_IMAGE'
+        else
+            event_image = event_image.src
+        FB.ui
+            method: 'feed'
+            link: url
+            name: name
+            caption: caption,
+            description: description,
+            picture: image,
+        (response) -> 
+            return
+    */
+
     adjustOverlayHeight: function() {
       var overlayHeight, visibleDiv, _i, _len, _ref;
       overlayHeight = 10;
@@ -743,31 +758,12 @@
           $('div.event_overlay_canvas').fadeOut(200);
         }
       });
-      $('div.share').click(function() {
-        var editor_images, event_caption, event_description, event_image, event_name, event_url;
-        event_url = window.location.href;
-        event_name = $('.top .text').text();
-        event_caption = $('.details').text();
-        event_description = $('.summary .body .text').text();
-        event_image = $('.cover .image img')[0];
-        if (typeof event_image === 'undefined') {
-          editor_images = $('.editor .inner').find('img');
-          if (editor_images.length > 0) {
-            event_image = editor_images[0].src;
-          } else {
-            event_image = 'DEFAULT_IMAGE';
-          }
-        } else {
-          event_image = event_image.src;
-        }
-        /*
-        ADD TAGS TO END OF DESCRIPTION
-        $('.tags .tag').each () ->
-            event_description += $(this).html() + ' '
-        */
+      /*
+      $('div#event div.share').click () =>
+          @share()
+          return
+      */
 
-        _this.share(event_url, event_name, event_caption, event_description, event_image);
-      });
       /*
       latitude = parseFloat $('div#event div.details div.map').attr('data-latitude')
       longitude = parseFloat $('div#event div.details div.map').attr('data-longitude')
