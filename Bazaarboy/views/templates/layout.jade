@@ -12,7 +12,7 @@ html(lang="en")
                 try{Typekit.load();}catch(e){}
             link(rel="shortcut icon", href="{{ STATIC_URL }}images/logo.png")
             link(rel="stylesheet", href="{{ STATIC_URL }}css/layout.css")
-    body(class="#{bodyClass}")
+    body
         block body
             div#wrapper_top
                 block top
