@@ -23,6 +23,16 @@ Bazaarboy.event.index =
         marker = new google.maps.Marker({position: markerPos})
         marker.setMap @map
         return
+    share: (url, name, caption, description, image) ->
+        FB.ui
+            method: 'feed',
+            link: url,
+            name: name,
+            caption: caption,
+            description: description,
+            picture: image,
+        (response) -> 
+            return
     adjustOverlayHeight: () ->
         overlayHeight = 10
         for visibleDiv in $('div#rsvp > div').not('div.hidden')
@@ -676,6 +686,27 @@ Bazaarboy.event.index =
             if not @coverEditInProgress
                 $('div#wrapper_overlay').fadeOut(200)
                 $('div.event_overlay_canvas').fadeOut(200)
+            return
+        $('div.share').click () =>
+            event_url = window.location.href
+            event_name = $('.top .text').text()
+            event_caption = $('.details').text()
+            event_description = $('.summary .body .text').text()
+            event_image = $('.cover .image img')[0]
+            if typeof event_image == 'undefined'
+                editor_images = $('.editor .inner').find('img')
+                if editor_images.length > 0
+                    event_image = editor_images[0].src
+                else
+                    event_image = 'DEFAULT_IMAGE'
+            else
+                event_image = event_image.src
+            ###
+            ADD TAGS TO END OF DESCRIPTION
+            $('.tags .tag').each () ->
+                event_description += $(this).html() + ' '
+            ###
+            @share(event_url, event_name, event_caption, event_description, event_image)
             return
         # Maps
         ###
