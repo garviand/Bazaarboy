@@ -78,11 +78,13 @@ def charge(request, params, user):
         }
         return json_response(response)
     try:
+        fee = int(checkout.amount * STRIPE_TRANSACTION_RATE)
         charge = stripe.Charge.create(
-            amount = checkout.amount,
+            amount = fee,
             currency = STRIPE_CURRENCY,
             card = params['stripe_token'],
             description = checkout.description,
+            application_fee = fee,
             api_key = checkout.payee.access_token
         )
         checkout.is_charged = True
