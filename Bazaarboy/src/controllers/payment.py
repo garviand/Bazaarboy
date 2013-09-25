@@ -80,7 +80,7 @@ def charge(request, params, user):
     try:
         fee = int(checkout.amount * STRIPE_TRANSACTION_RATE)
         charge = stripe.Charge.create(
-            amount = fee,
+            amount = checkout.amount,
             currency = STRIPE_CURRENCY,
             card = params['stripe_token'],
             description = checkout.description,
@@ -100,4 +100,3 @@ def charge(request, params, user):
             'message':'The card is declined.'
         }
         return json_response(response)
-        
