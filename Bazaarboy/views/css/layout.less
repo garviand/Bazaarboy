@@ -276,8 +276,8 @@ div#landing {
         div.content {
             width: @full_column_width * 7;
             margin: 0 auto;
-            margin-top: 40px;
-            margin-bottom: 40px;
+            margin-top: 30px;
+            margin-bottom: 20px;
             padding-top: 32px;
             padding-bottom: 6px;
             border: 1px solid #FFF;
@@ -340,6 +340,23 @@ div#landing {
                     font-weight: @font_weight_bold;
                     text-align: center;
                     text-shadow: 0 1px 0 rgba(0, 0, 0, 0.125);
+                }
+            }
+        }
+
+        div.footer {
+            width: 100%;
+            height: @font_size_base;
+            margin-bottom: 10px;
+            color: #FFF;
+            font-size: @font_size_base - 2;
+            text-align: center;
+
+            a {
+                color: #FFF;
+                text-decoration: none;
+                &:hover {
+                    text-decoration: underline;
                 }
             }
         }
