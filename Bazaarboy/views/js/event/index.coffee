@@ -23,7 +23,6 @@ Bazaarboy.event.index =
         marker = new google.maps.Marker({position: markerPos})
         marker.setMap @map
         return
-    ###
     share: () ->
         url = window.location.href
         name = $('div#event > div.title div.top div.text').text()
@@ -31,13 +30,13 @@ Bazaarboy.event.index =
         description = $('div#event div.summary div.body div.text').text()
         image = $('div#event div.cover div.image img')
         if image.length is 0
-            editor_images = $('.editor .inner').find('img')
-            if editor_images.length > 0
-                event_image = editor_images[0].src
+            editorImages = $('div#event div.frame div.editor .inner').find('img')
+            if editorImages.length > 0
+                image = editorImages[0].src
             else
                 event_image = 'DEFAULT_IMAGE'
         else
-            event_image = event_image.src
+            image = image.src
         FB.ui
             method: 'feed'
             link: url
@@ -47,7 +46,6 @@ Bazaarboy.event.index =
             picture: image
         , (response) -> 
             return
-    ###
     adjustOverlayHeight: () ->
         overlayHeight = 10
         for visibleDiv in $('div#rsvp > div').not('div.hidden')
@@ -703,11 +701,9 @@ Bazaarboy.event.index =
                 $('div.event_overlay_canvas').fadeOut(200)
             return
         # Share
-        ###
         $('div#event div.share').click () =>
             @share()
             return
-        ###
         # Maps
         ###
         latitude = parseFloat $('div#event div.details div.map').attr('data-latitude')
