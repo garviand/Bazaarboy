@@ -9,6 +9,9 @@ append head
     {% if event.is_private %}
     meta(name="robots", content="noindex,nofollow")
     {% endif %}
+    {% if event.cover %}
+    link(rel="image_src", href="{{ event.cover.source.url }}")
+    {% endif %}
     link(rel="stylesheet", href="{{ STATIC_URL }}jQueryUI/jquery-ui.css")
     link(rel="stylesheet", href="{{ STATIC_URL }}redactor/redactor.css")
 

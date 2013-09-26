@@ -1,5 +1,6 @@
 {% load humanize %}
-{% load layout %}<!DOCTYPE html><html lang="en"><head><title>{{ event.name }}</title><script type="text/javascript" src="//use.typekit.net/gjc0hvy.js"></script><script type="text/javascript">try{Typekit.load();}catch(e){}</script><link rel="shortcut icon" href="{{ STATIC_URL }}images/logo.png"><link rel="stylesheet" href="{{ STATIC_URL }}css/layout.css">{% if event.is_private %}<meta name="robots" content="noindex,nofollow">{% endif %}<link rel="stylesheet" href="{{ STATIC_URL }}jQueryUI/jquery-ui.css"><link rel="stylesheet" href="{{ STATIC_URL }}redactor/redactor.css"></head><body>{% if not user.fb_id %}<div id="fb-root"></div><script>window.fbAsyncInit = function() {
+{% load layout %}<!DOCTYPE html><html lang="en"><head><title>{{ event.name }}</title><script type="text/javascript" src="//use.typekit.net/gjc0hvy.js"></script><script type="text/javascript">try{Typekit.load();}catch(e){}</script><link rel="shortcut icon" href="{{ STATIC_URL }}images/logo.png"><link rel="stylesheet" href="{{ STATIC_URL }}css/layout.css">{% if event.is_private %}<meta name="robots" content="noindex,nofollow">{% endif %}
+{% if event.cover %}<link rel="image_src" href="{{ event.cover.source.url }}">{% endif %}<link rel="stylesheet" href="{{ STATIC_URL }}jQueryUI/jquery-ui.css"><link rel="stylesheet" href="{{ STATIC_URL }}redactor/redactor.css"></head><body>{% if not user.fb_id %}<div id="fb-root"></div><script>window.fbAsyncInit = function() {
     // init the FB JS SDK
     FB.init({
         appId      : '370497763029710', 
