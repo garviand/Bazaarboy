@@ -532,6 +532,120 @@ div#wrapper_overlay {
 .content_divided div.frame div.right {
   width: 192px;
 }
+div#landing div.background {
+  position: fixed;
+  width: 110%;
+  height: 110%;
+  min-height: 600px;
+  min-width: 970px;
+  top: -5%;
+  left: -5%;
+  z-index: -1;
+  background-image: url('../images/landing.jpg');
+  background-size: cover;
+  background-position: center bottom;
+}
+div#landing div.inner {
+  width: 864px;
+  margin: 0 auto;
+}
+div#landing div.inner div.logo {
+  width: 100%;
+  height: 100%;
+  padding-top: 40px;
+}
+div#landing div.inner div.logo div.image {
+  width: 201px;
+  height: 201px;
+  margin: 0 auto;
+}
+div#landing div.inner div.logo .logo_text {
+  color: #FFF;
+  font-size: 54px;
+  text-shadow: 0 1px 0 #000;
+  text-align: center;
+}
+div#landing div.inner div.logo div.text {
+  color: #FFF;
+  font-size: 54px;
+  text-shadow: 0 1px 0 #000;
+  text-align: center;
+}
+div#landing div.inner div.logo div.text b {
+  font-weight: 600;
+}
+div#landing div.inner div.logo div.caption {
+  color: #FFF;
+  font-size: 54px;
+  text-shadow: 0 1px 0 #000;
+  text-align: center;
+}
+div#landing div.inner div.content {
+  width: 504px;
+  margin: 0 auto;
+  margin-top: 40px;
+  margin-bottom: 40px;
+  padding-top: 32px;
+  padding-bottom: 6px;
+  border: 1px solid #FFF;
+  border-radius: 2px;
+  background-color: rgba(255, 255, 255, 0.9);
+}
+div#landing div.inner div.content div.top {
+  width: 432px;
+  margin: 0 36px;
+  border-bottom: 1px solid #AEBDBC;
+}
+div#landing div.inner div.content div.top div.title {
+  color: #2F4241;
+  font-size: 24px;
+  text-align: center;
+  text-shadow: 0 1px 0 #FFF;
+}
+div#landing div.inner div.content div.top div.title b {
+  font-weight: 600;
+}
+div#landing div.inner div.content div.top div.text {
+  padding: 12px 18px;
+  padding-right: 9px;
+  color: #2F4241;
+  font-size: 16px;
+  line-height: 22.4px;
+  letter-spacing: 1px;
+  text-shadow: 0 1px 0 #FFF;
+}
+div#landing div.inner div.content div.top div.organizers {
+  width: 216px;
+  float: left;
+}
+div#landing div.inner div.content div.top div.sponsors {
+  width: 216px;
+  float: left;
+}
+div#landing div.inner div.content div.bottom {
+  width: 432px;
+  margin: 0 36px;
+  padding-top: 16px;
+  padding-bottom: 10px;
+  border-top: 1px solid #FFF;
+}
+div#landing div.inner div.content div.bottom div.request {
+  width: 430px;
+  height: 20px;
+  padding: 10px 0;
+  border: 1px solid #F1803D;
+  background-color: #FFB769;
+  background-image: linear-gradient(top, #ffb769, #ff8f4d);
+  background-image: -o-linear-gradient(top, #ffb769, #ff8f4d);
+  background-image: -moz-linear-gradient(top, #ffb769, #ff8f4d);
+  background-image: -webkit-linear-gradient(top, #ffb769, #ff8f4d);
+  background-image: -ms-linear-gradient(top, #ffb769, #ff8f4d);
+  color: #FFF;
+  font-size: 16px;
+  font-weight: 500;
+  text-align: center;
+  text-shadow: 0 1px 0 rgba(0, 0, 0, 0.125);
+}
 /*
 div#profile {
     div.cover {

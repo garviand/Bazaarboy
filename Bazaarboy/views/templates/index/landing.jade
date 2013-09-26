@@ -2,12 +2,30 @@
 
 extends ../layout
 
-block vars
-    - var whiteBg = true
-
 block body
-    h1 Welcome to Bazaarboy
-    br
-    a(href="{% url user:login %}") Login
-    br
-    a(href="{% url user:register %}") Register
+    div#landing
+        div.background
+        div.inner
+            div.logo
+                div.image
+                    img(src="{{ STATIC_URL }}images/logo-big.png")
+                div.text 
+                    b Bazaarboy
+                div.caption Discover Your Event Potential
+            div.content
+                div.top
+                    div.organizers
+                        div.title 
+                            b Organizer
+                        div.text
+                            | Market events with captivating pages that accept payments 
+                            | and registration.
+                    div.sponsors
+                        div.title
+                            b Sponsors
+                        div.text
+                            | Easily manage donation requests and find relevant 
+                            | local events to sponsor.
+                    div.clear
+                div.bottom
+                    div.request Limited testing in progress. Coming to public soon!

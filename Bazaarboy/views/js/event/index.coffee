@@ -42,10 +42,10 @@ Bazaarboy.event.index =
             method: 'feed'
             link: url
             name: name
-            caption: caption,
-            description: description,
-            picture: image,
-        (response) -> 
+            caption: caption
+            description: description
+            picture: image
+        , (response) -> 
             return
     ###
     adjustOverlayHeight: () ->
