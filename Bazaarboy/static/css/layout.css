@@ -555,9 +555,13 @@ div#landing div.inner div.logo {
   padding-top: 40px;
 }
 div#landing div.inner div.logo div.image {
-  width: 201px;
-  height: 201px;
+  width: 150px;
+  height: 150px;
   margin: 0 auto;
+}
+div#landing div.inner div.logo div.image img {
+  width: 150px;
+  height: 150px;
 }
 div#landing div.inner div.logo .logo_text {
   color: #FFF;
@@ -634,6 +638,7 @@ div#landing div.inner div.content div.bottom div.request {
   height: 20px;
   padding: 10px 0;
   border: 1px solid #F1803D;
+  border-radius: 2px;
   background-color: #FFB769;
   background-image: linear-gradient(top, #ffb769, #ff8f4d);
   background-image: -o-linear-gradient(top, #ffb769, #ff8f4d);
