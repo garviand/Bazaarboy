@@ -10,7 +10,7 @@ append head
     meta(name="robots", content="noindex,nofollow")
     {% endif %}
     {% if event.cover %}
-    link(rel="image_src", href="{{ event.cover.source.url }}")
+    link(rel="image_src", href="{{ event.cover.source.url|sanitizeUrl }}")
     {% endif %}
     link(rel="stylesheet", href="{{ STATIC_URL }}jQueryUI/jquery-ui.css")
     link(rel="stylesheet", href="{{ STATIC_URL }}redactor/redactor.css")
@@ -142,7 +142,8 @@ block content
                         div.organizer
                             div.icon
                             div.name
-                                a(href="{% url profile:index organizer.profile.id %}")
+                                // {% url profile:index organizer.profile.id %}
+                                a(href="javascript:;")
                                     b {{ organizer.profile.name }}
                             div.clear
                         {% endfor %}
