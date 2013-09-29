@@ -9,6 +9,9 @@ append head
     {% if event.is_private %}
     meta(name="robots", content="noindex,nofollow")
     {% endif %}
+    {% if event.cover %}
+    link(rel="image_src", href="{{ event.cover.source.url|sanitizeUrl }}")
+    {% endif %}
     link(rel="stylesheet", href="{{ STATIC_URL }}jQueryUI/jquery-ui.css")
     link(rel="stylesheet", href="{{ STATIC_URL }}redactor/redactor.css")
 
@@ -73,7 +76,8 @@ block content
                             input.hidden(type="file", name="image_file")
                             {% csrf_token %}
                     {% endif %}
-                    div.action
+                    {% if editable or tickets|length != 0 %}
+                    div.action.hanging
                         div.button
                             b
                                 {% if editable %}
@@ -93,8 +97,21 @@ block content
                                 | ${{ cheapest|floatformat:-2 }}{% if tickets|length != 1 %}+{% endif %}
                                 {% endif %}
                         div.clear
-                    div.share
+                    {% endif %}
+                    {% if event.is_launched %}
+                    div.share.hanging
                         b Share on Facebook
+                    {% endif %}
+                    {% if editable %}
+                    div.launch.hanging
+                        b 
+                            {% if event.is_launched %}
+                            | Take Event Offline
+                            {% else %}
+                            | Launch Event
+                            {% endif %}
+                    {% endif %}
+
         div.cover
             div.inner
                 div.image
@@ -139,7 +156,8 @@ block content
                         div.organizer
                             div.icon
                             div.name
-                                a(href="{% url profile:index organizer.profile.id %}")
+                                // {% url profile:index organizer.profile.id %}
+                                a(href="javascript:;")
                                     b {{ organizer.profile.name }}
                             div.clear
                         {% endfor %}

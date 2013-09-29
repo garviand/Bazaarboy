@@ -38,3 +38,10 @@ def validateTiming(obj):
     Validate an object to make sure it has started and hasn't ended
     """
     return obj.start_time <= timezone.now() and obj.end_time > timezone.now()
+
+@register.filter
+def sanitizeUrl(url):
+    """
+    Strip the parameters from the url
+    """
+    return url.split('?')[0]

@@ -23,31 +23,19 @@ Bazaarboy.event.index =
         marker = new google.maps.Marker({position: markerPos})
         marker.setMap @map
         return
-    ###
-    share: () ->
-        url = window.location.href
-        name = $('div#event > div.title div.top div.text').text()
-        caption = $('div#event > div.title div.top div.details').text()
-        description = $('div#event div.summary div.body div.text').text()
-        image = $('div#event div.cover div.image img')
-        if image.length is 0
-            editor_images = $('.editor .inner').find('img')
-            if editor_images.length > 0
-                event_image = editor_images[0].src
-            else
-                event_image = 'DEFAULT_IMAGE'
+    adjustSidebarPosition: () ->
+        hangingButtons = $('div#event > div.title div.bottom div.hanging')
+        count = hangingButtons.length
+        topBase = parseFloat($(hangingButtons[0]).css('top'))
+        for i in [0...count]
+            $(hangingButtons[i]).css 'top', (topBase + (48 + 10) * i) + 'px'
+        if $('div#event').hasClass('with_cover')
+            $('div#event div.frame > div.right').css 'padding-top', ''
         else
-            event_image = event_image.src
-        FB.ui
-            method: 'feed'
-            link: url
-            name: name
-            caption: caption,
-            description: description,
-            picture: image,
-        (response) -> 
-            return
-    ###
+            sidebarPadding = count * (48 + 10) + 10
+            $('div#event div.frame > div.right').css
+                'padding-top': sidebarPadding + 'px'
+        return
     adjustOverlayHeight: () ->
         overlayHeight = 10
         for visibleDiv in $('div#rsvp > div').not('div.hidden')
@@ -56,6 +44,29 @@ Bazaarboy.event.index =
             'margin-top': 0
         $('div#rsvp').height overlayHeight
         return
+    share: () ->
+        url = window.location.href
+        name = $('div#event > div.title div.top div.text').text()
+        caption = $('div#event > div.title div.top div.details').text()
+        description = $('div#event div.summary div.body div.text').text()
+        image = $('div#event div.cover div.image img')
+        if image.length is 0
+            editorImages = $('div#event div.frame div.editor .inner').find('img')
+            if editorImages.length > 0
+                image = editorImages[0].src
+            else
+                event_image = 'DEFAULT_IMAGE'
+        else
+            image = image.src
+        FB.ui
+            method: 'feed'
+            link: url
+            name: name
+            caption: caption
+            description: description
+            picture: image
+        , (response) -> 
+            return
     purchase: (ticket, email=null, fullName=null) ->
         params = 
             ticket: ticket
@@ -702,12 +713,12 @@ Bazaarboy.event.index =
                 $('div#wrapper_overlay').fadeOut(200)
                 $('div.event_overlay_canvas').fadeOut(200)
             return
+        # Adjust sidebar
+        @adjustSidebarPosition()
         # Share
-        ###
         $('div#event div.share').click () =>
             @share()
             return
-        ###
         # Maps
         ###
         latitude = parseFloat $('div#event div.details div.map').attr('data-latitude')

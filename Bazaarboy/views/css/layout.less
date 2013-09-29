@@ -83,6 +83,19 @@ input[type=file].hidden {
     background-image: -ms-linear-gradient(@start, @from, @to);
 }
 
+.orange_gradient {
+    background-color: #FFB769;
+    .linear_gradient(top, #FFB769, #FF8F4D);
+}
+
+.orange_button {
+    border: 1px solid #F1803D;
+    .orange_gradient;
+    color: #FFF;
+    text-align: center;
+    text-shadow: 0 1px 0 rgba(0, 0, 0, 0.125);
+}
+
 .input_placeholder(@color; @font-size: @font_size_base; @font-weight: @font_weight_base) {
     .placeholder {
         color: @color;
@@ -128,7 +141,6 @@ div#wrapper_top {
     height: @top_height;
     z-index: @overlay_z_index + 1;
     background-color: #1D1D1D;
-    .center;
 
     div.logo {
         height: @top_height;
@@ -176,14 +188,38 @@ div#wrapper_content {
     position: relative;
     width: 100%;
     min-width: @body_width + @gutter_width * 2;
-    .right;
 }
 
-div#wrapper_foot {
-    position: relative;
+div#wrapper_bottom {
     width: 100%;
-    min-width: @body_width;
-    .center;
+    min-width: @body_width + @gutter_width * 2;
+    height: @top_height;
+    background-color: #232323;
+
+    div.inner {
+        @inner_height: @font_size_base - 1;
+        width: @body_width;
+        height: @inner_height;
+        padding: (@top_height - @inner_height) / 2 0;
+        color: #999;
+        font-size: @inner_height;
+        line-height: @inner_height;
+        text-align: center;
+        .center;
+
+        span {
+            color: #FFF;
+        }
+
+        a {
+            color: #999;
+            text-decoration: none;
+
+            &:hover {
+                color: #FFF;
+            }
+        }
+    }
 }
 
 div#wrapper_overlay {
@@ -213,6 +249,153 @@ div#wrapper_overlay {
 
         div.right {
             width: @sidebar_width;
+        }
+    }
+}
+
+// Landing
+
+div#landing {
+
+    div.background {
+        position: fixed;
+        width: 110%;
+        height: 110%;
+        min-height: 600px;
+        min-width: 970px;
+        top: -5%;
+        left: -5%;
+        z-index: -1;
+        background-image: url('../images/landing.jpg');
+        background-size: cover;
+        background-position: center bottom;
+    }
+
+    @full_column_width: (@column_width + @column_margin * 2);
+
+    div.inner {
+        width: @full_column_width * 12;
+
+        margin: 0 auto;
+
+        div.logo {
+            width: 100%;
+            height: 100%;
+            padding-top: 40px;
+            
+            div.image {
+                width: 150px;
+                height: 150px;
+                margin: 0 auto;
+
+                img {
+                    width: 150px;
+                    height: 150px;
+                }
+            }
+
+            .logo_text {
+                color:#FFF;
+                font-size: 54px;
+                text-shadow: 0 1px 0 #000;
+                text-align:center;
+            }
+
+            div.text {
+                .logo_text;
+
+                b {
+                    font-weight: @font_weight_bold + 100;
+                }
+            }
+
+            div.caption {
+                .logo_text;
+            }
+        }
+
+        div.content {
+            width: @full_column_width * 7;
+            margin: 0 auto;
+            margin-top: 30px;
+            margin-bottom: 20px;
+            padding-top: 32px;
+            padding-bottom: 6px;
+            border: 1px solid #FFF;
+            border-radius: 2px;
+            background-color: rgba(255, 255, 255, 0.9);
+
+            div.top {
+                width: @full_column_width * 6;
+                margin: 0 @full_column_width / 2;
+                border-bottom: 1px solid #AEBDBC;
+
+                div.title {
+                    color: #2F4241;
+                    font-size: 24px;
+                    text-align: center;
+                    text-shadow: 0 1px 0 #FFF;
+
+                    b {
+                        font-weight: @font_weight_bold + 100;
+                    }
+                }
+
+                div.text {
+                    padding: @column_margin @column_margin * 1.5;
+                    padding-right: @column_margin * 0.75;
+                    color: #2F4241;
+                    font-size: @font_size_base;
+                    line-height: @font_size_base * 1.4;
+                    letter-spacing: 1px;
+                    text-shadow: 0 1px 0 #FFF;
+                }
+
+                div.organizers {
+                    width: @full_column_width * 3;
+                    .left;
+                }
+
+                div.sponsors {
+                    width: @full_column_width * 3;
+                    .left;
+                }
+            }
+
+            div.bottom {
+                width: @full_column_width * 6;
+                margin: 0 @full_column_width / 2;
+                padding-top: 16px;
+                padding-bottom: 10px;
+                border-top: 1px solid #FFF;
+
+                div.request {
+                    width: @full_column_width * 6 - 2;
+                    height: 36 - @font_size_base;
+                    padding: (36 - @font_size_base) / 2 0;
+                    border-radius: 2px;
+                    .orange_button;
+                    font-size: @font_size_base;
+                    font-weight: @font_weight_bold;
+                }
+            }
+        }
+
+        div.footer {
+            width: 100%;
+            height: @font_size_base;
+            margin-bottom: 10px;
+            color: #FFF;
+            font-size: @font_size_base - 2;
+            text-align: center;
+
+            a {
+                color: #FFF;
+                text-decoration: none;
+                &:hover {
+                    text-decoration: underline;
+                }
+            }
         }
     }
 }
@@ -472,17 +655,19 @@ div.event_base {
 
     position: relative;
     &.with_cover {
+        /*
         > div.title {
             div.bottom {
                 div.action, div.controls {
                     top: @title_bottom_second_tier_top + 20 !important;
                 }
 
-                div.share {
+                div.share, div.launch {
                     top: @title_bottom_second_tier_top + 48 + 10 + 20 !important;   
                 }
             }
         }
+        */
 
         div.cover {
             height: 320px;
@@ -702,7 +887,7 @@ div.event_base {
                     position: absolute;
                     width: @sidebar_width - 2;
                     height: 46px;
-                    top: @title_bottom_second_tier_top + 20 + 48 + 10;
+                    top: @title_bottom_second_tier_top + 20;
                     right: @gutter_width;
                     z-index: @overlay_z_index;
                     border: 1px solid #1B1464;
@@ -715,6 +900,27 @@ div.event_base {
                         height: @font_size_base + 2;
                         padding: (46 - (@font_size_base + 2)) / 2 0;
                         color: #FFF;
+                        font-size: @font_size_base + 2;
+                        line-height: @font_size_base + 2;
+                        text-align: center;
+                    }
+                }
+
+                div.launch {
+                    position: absolute;
+                    width: @sidebar_width - 2;
+                    height: 46px;
+                    top: @title_bottom_second_tier_top + 20;
+                    right: @gutter_width;
+                    z-index: @overlay_z_index;
+                    .orange_button;
+                    cursor: pointer;
+
+                    b {
+                        display: block;
+                        width: 100%;
+                        height: @font_size_base + 2;
+                        padding: (46 - (@font_size_base + 2)) / 2 0;
                         font-size: @font_size_base + 2;
                         line-height: @font_size_base + 2;
                         text-align: center;
@@ -827,7 +1033,7 @@ div.event_base {
     }
 
     div.frame {
-        div.left {
+        > div.left {
             div.placeholder {
                 width: 100%;
                 height: 48px;
@@ -871,7 +1077,7 @@ div.event_base {
             }
         }
 
-        div.right {
+        > div.right {
             padding-top: 48px * 2 + 10 * 4;
 
             div.info {

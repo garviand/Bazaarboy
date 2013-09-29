@@ -428,6 +428,26 @@ input[type=file].hidden {
   right: 0;
   bottom: 0;
 }
+.orange_gradient {
+  background-color: #FFB769;
+  background-image: linear-gradient(top, #ffb769, #ff8f4d);
+  background-image: -o-linear-gradient(top, #ffb769, #ff8f4d);
+  background-image: -moz-linear-gradient(top, #ffb769, #ff8f4d);
+  background-image: -webkit-linear-gradient(top, #ffb769, #ff8f4d);
+  background-image: -ms-linear-gradient(top, #ffb769, #ff8f4d);
+}
+.orange_button {
+  border: 1px solid #F1803D;
+  background-color: #FFB769;
+  background-image: linear-gradient(top, #ffb769, #ff8f4d);
+  background-image: -o-linear-gradient(top, #ffb769, #ff8f4d);
+  background-image: -moz-linear-gradient(top, #ffb769, #ff8f4d);
+  background-image: -webkit-linear-gradient(top, #ffb769, #ff8f4d);
+  background-image: -ms-linear-gradient(top, #ffb769, #ff8f4d);
+  color: #FFF;
+  text-align: center;
+  text-shadow: 0 1px 0 rgba(0, 0, 0, 0.125);
+}
 body {
   font-family: "rooney-sans", Helvetica, sans-serif;
   font-weight: 300;
@@ -448,8 +468,6 @@ div#wrapper_top {
   height: 44px;
   z-index: 21;
   background-color: #1D1D1D;
-  display: block;
-  margin: auto;
 }
 div#wrapper_top div.logo {
   height: 44px;
@@ -496,14 +514,33 @@ div#wrapper_content {
   position: relative;
   width: 100%;
   min-width: 960px;
-  float: right;
 }
-div#wrapper_foot {
-  position: relative;
+div#wrapper_bottom {
   width: 100%;
-  min-width: 912px;
+  min-width: 960px;
+  height: 44px;
+  background-color: #232323;
+}
+div#wrapper_bottom div.inner {
+  width: 912px;
+  height: 15px;
+  padding: 14.5px 0;
+  color: #999;
+  font-size: 15px;
+  line-height: 15px;
+  text-align: center;
   display: block;
   margin: auto;
+}
+div#wrapper_bottom div.inner span {
+  color: #FFF;
+}
+div#wrapper_bottom div.inner a {
+  color: #999;
+  text-decoration: none;
+}
+div#wrapper_bottom div.inner a:hover {
+  color: #FFF;
 }
 div#wrapper_overlay {
   display: none;
@@ -531,6 +568,140 @@ div#wrapper_overlay {
 }
 .content_divided div.frame div.right {
   width: 192px;
+}
+div#landing div.background {
+  position: fixed;
+  width: 110%;
+  height: 110%;
+  min-height: 600px;
+  min-width: 970px;
+  top: -5%;
+  left: -5%;
+  z-index: -1;
+  background-image: url('../images/landing.jpg');
+  background-size: cover;
+  background-position: center bottom;
+}
+div#landing div.inner {
+  width: 864px;
+  margin: 0 auto;
+}
+div#landing div.inner div.logo {
+  width: 100%;
+  height: 100%;
+  padding-top: 40px;
+}
+div#landing div.inner div.logo div.image {
+  width: 150px;
+  height: 150px;
+  margin: 0 auto;
+}
+div#landing div.inner div.logo div.image img {
+  width: 150px;
+  height: 150px;
+}
+div#landing div.inner div.logo .logo_text {
+  color: #FFF;
+  font-size: 54px;
+  text-shadow: 0 1px 0 #000;
+  text-align: center;
+}
+div#landing div.inner div.logo div.text {
+  color: #FFF;
+  font-size: 54px;
+  text-shadow: 0 1px 0 #000;
+  text-align: center;
+}
+div#landing div.inner div.logo div.text b {
+  font-weight: 600;
+}
+div#landing div.inner div.logo div.caption {
+  color: #FFF;
+  font-size: 54px;
+  text-shadow: 0 1px 0 #000;
+  text-align: center;
+}
+div#landing div.inner div.content {
+  width: 504px;
+  margin: 0 auto;
+  margin-top: 30px;
+  margin-bottom: 20px;
+  padding-top: 32px;
+  padding-bottom: 6px;
+  border: 1px solid #FFF;
+  border-radius: 2px;
+  background-color: rgba(255, 255, 255, 0.9);
+}
+div#landing div.inner div.content div.top {
+  width: 432px;
+  margin: 0 36px;
+  border-bottom: 1px solid #AEBDBC;
+}
+div#landing div.inner div.content div.top div.title {
+  color: #2F4241;
+  font-size: 24px;
+  text-align: center;
+  text-shadow: 0 1px 0 #FFF;
+}
+div#landing div.inner div.content div.top div.title b {
+  font-weight: 600;
+}
+div#landing div.inner div.content div.top div.text {
+  padding: 12px 18px;
+  padding-right: 9px;
+  color: #2F4241;
+  font-size: 16px;
+  line-height: 22.4px;
+  letter-spacing: 1px;
+  text-shadow: 0 1px 0 #FFF;
+}
+div#landing div.inner div.content div.top div.organizers {
+  width: 216px;
+  float: left;
+}
+div#landing div.inner div.content div.top div.sponsors {
+  width: 216px;
+  float: left;
+}
+div#landing div.inner div.content div.bottom {
+  width: 432px;
+  margin: 0 36px;
+  padding-top: 16px;
+  padding-bottom: 10px;
+  border-top: 1px solid #FFF;
+}
+div#landing div.inner div.content div.bottom div.request {
+  width: 430px;
+  height: 20px;
+  padding: 10px 0;
+  border-radius: 2px;
+  border: 1px solid #F1803D;
+  background-color: #FFB769;
+  background-image: linear-gradient(top, #ffb769, #ff8f4d);
+  background-image: -o-linear-gradient(top, #ffb769, #ff8f4d);
+  background-image: -moz-linear-gradient(top, #ffb769, #ff8f4d);
+  background-image: -webkit-linear-gradient(top, #ffb769, #ff8f4d);
+  background-image: -ms-linear-gradient(top, #ffb769, #ff8f4d);
+  color: #FFF;
+  text-align: center;
+  text-shadow: 0 1px 0 rgba(0, 0, 0, 0.125);
+  font-size: 16px;
+  font-weight: 500;
+}
+div#landing div.inner div.footer {
+  width: 100%;
+  height: 16px;
+  margin-bottom: 10px;
+  color: #FFF;
+  font-size: 14px;
+  text-align: center;
+}
+div#landing div.inner div.footer a {
+  color: #FFF;
+  text-decoration: none;
+}
+div#landing div.inner div.footer a:hover {
+  text-decoration: underline;
 }
 /*
 div#profile {
@@ -782,12 +953,21 @@ div#profile {
 div.event_base {
   position: relative;
 }
-div.event_base.with_cover > div.title div.bottom div.action,
-div.event_base.with_cover > div.title div.bottom div.controls {
-  top: 66px !important;
-}
-div.event_base.with_cover > div.title div.bottom div.share {
-  top: 124px !important;
+div.event_base.with_cover {
+  /*
+        > div.title {
+            div.bottom {
+                div.action, div.controls {
+                    top: @title_bottom_second_tier_top + 20 !important;
+                }
+
+                div.share, div.launch {
+                    top: @title_bottom_second_tier_top + 48 + 10 + 20 !important;   
+                }
+            }
+        }
+        */
+
 }
 div.event_base.with_cover div.cover {
   height: 320px;
@@ -1022,7 +1202,7 @@ div.event_base > div.title div.inner div.bottom div.share {
   position: absolute;
   width: 190px;
   height: 46px;
-  top: 124px;
+  top: 66px;
   right: 24px;
   z-index: 20;
   border: 1px solid #1B1464;
@@ -1035,6 +1215,34 @@ div.event_base > div.title div.inner div.bottom div.share b {
   height: 18px;
   padding: 14px 0;
   color: #FFF;
+  font-size: 18px;
+  line-height: 18px;
+  text-align: center;
+}
+div.event_base > div.title div.inner div.bottom div.launch {
+  position: absolute;
+  width: 190px;
+  height: 46px;
+  top: 66px;
+  right: 24px;
+  z-index: 20;
+  border: 1px solid #F1803D;
+  background-color: #FFB769;
+  background-image: linear-gradient(top, #ffb769, #ff8f4d);
+  background-image: -o-linear-gradient(top, #ffb769, #ff8f4d);
+  background-image: -moz-linear-gradient(top, #ffb769, #ff8f4d);
+  background-image: -webkit-linear-gradient(top, #ffb769, #ff8f4d);
+  background-image: -ms-linear-gradient(top, #ffb769, #ff8f4d);
+  color: #FFF;
+  text-align: center;
+  text-shadow: 0 1px 0 rgba(0, 0, 0, 0.125);
+  cursor: pointer;
+}
+div.event_base > div.title div.inner div.bottom div.launch b {
+  display: block;
+  width: 100%;
+  height: 18px;
+  padding: 14px 0;
   font-size: 18px;
   line-height: 18px;
   text-align: center;
@@ -1134,39 +1342,39 @@ div.event_base div.cover div.inner div.image div.bounds img.normal {
 div.event_base div.cover div.inner div.image div.bounds img.editing {
   cursor: pointer;
 }
-div.event_base div.frame div.left div.placeholder {
+div.event_base div.frame > div.left div.placeholder {
   width: 100%;
   height: 48px;
 }
-div.event_base div.frame div.left div.description {
+div.event_base div.frame > div.left div.description {
   width: 100%;
   float: left;
 }
-div.event_base div.frame div.left div.description div.editor {
+div.event_base div.frame > div.left div.description div.editor {
   width: 100%;
 }
-div.event_base div.frame div.left div.description div.editor.editing {
+div.event_base div.frame > div.left div.description div.editor.editing {
   width: 718px;
   margin-left: -11px;
 }
-div.event_base div.frame div.left div.description div.editor.editing div.inner {
+div.event_base div.frame > div.left div.description div.editor.editing div.inner {
   width: 696px;
   display: block;
   margin: auto;
 }
-div.event_base div.frame div.left div.description div.editor div.inner {
+div.event_base div.frame > div.left div.description div.editor div.inner {
   width: 100%;
 }
-div.event_base div.frame div.left div.description div.editor img {
+div.event_base div.frame > div.left div.description div.editor img {
   max-width: 696px;
 }
-div.event_base div.frame div.left div.description div.editor iframe {
+div.event_base div.frame > div.left div.description div.editor iframe {
   max-width: 696px;
 }
-div.event_base div.frame div.right {
+div.event_base div.frame > div.right {
   padding-top: 136px;
 }
-div.event_base div.frame div.right div.info {
+div.event_base div.frame > div.right div.info {
   position: relative;
   width: 172px;
   padding: 12px 10px;
@@ -1174,21 +1382,21 @@ div.event_base div.frame div.right div.info {
   border-top: 1px solid #E9E9E9;
   background-color: #FFF;
 }
-div.event_base div.frame div.right div.info:hover div.button {
+div.event_base div.frame > div.right div.info:hover div.button {
   display: block !important;
 }
-div.event_base div.frame div.right div.info div.caption {
+div.event_base div.frame > div.right div.info div.caption {
   width: 100%;
   height: 18px;
   font-size: 14px;
 }
-div.event_base div.frame div.right div.info div.caption div.text {
+div.event_base div.frame > div.right div.info div.caption div.text {
   width: 75%;
   height: 18px;
   color: #4D4D4D;
   float: left;
 }
-div.event_base div.frame div.right div.info div.caption div.button {
+div.event_base div.frame > div.right div.info div.caption div.button {
   display: none;
   width: 25%;
   height: 14px;
@@ -1200,20 +1408,20 @@ div.event_base div.frame div.right div.info div.caption div.button {
   cursor: pointer;
   float: right;
 }
-div.event_base div.frame div.right div.info div.body {
+div.event_base div.frame > div.right div.info div.body {
   width: 100%;
   padding-top: 7px;
 }
-div.event_base div.frame div.right div.info div.body div.text {
+div.event_base div.frame > div.right div.info div.body div.text {
   font-size: 13px;
   line-height: 16px;
   font-style: italic;
 }
-div.event_base div.frame div.right div.info div.body div.editor {
+div.event_base div.frame > div.right div.info div.body div.editor {
   width: 100%;
   min-height: 30px;
 }
-div.event_base div.frame div.right div.info div.body div.editor textarea {
+div.event_base div.frame > div.right div.info div.body div.editor textarea {
   width: 162px;
   min-height: 50px;
   padding: 5px;
@@ -1221,19 +1429,19 @@ div.event_base div.frame div.right div.info div.body div.editor textarea {
   resize: none;
   font-size: 13px;
 }
-div.event_base div.frame div.right div.organizers div.body div.organizer {
+div.event_base div.frame > div.right div.organizers div.body div.organizer {
   position: relative;
   width: 172px;
   min-height: 25px;
   padding-top: 4px;
 }
-div.event_base div.frame div.right div.organizers div.body div.organizer div.icon {
+div.event_base div.frame > div.right div.organizers div.body div.organizer div.icon {
   position: absolute;
   width: 25px;
   height: 25px;
   background-color: #f0f5f5;
 }
-div.event_base div.frame div.right div.organizers div.body div.organizer div.icon img {
+div.event_base div.frame > div.right div.organizers div.body div.organizer div.icon img {
   width: 20px;
   height: 20px;
   display: block;
@@ -1244,7 +1452,7 @@ div.event_base div.frame div.right div.organizers div.body div.organizer div.ico
   right: 0;
   bottom: 0;
 }
-div.event_base div.frame div.right div.organizers div.body div.organizer div.name {
+div.event_base div.frame > div.right div.organizers div.body div.organizer div.name {
   width: 133px;
   padding: 0 7px;
   margin-left: 25px;
@@ -1252,11 +1460,11 @@ div.event_base div.frame div.right div.organizers div.body div.organizer div.nam
   line-height: 25px;
   float: left;
 }
-div.event_base div.frame div.right div.organizers div.body div.organizer div.name a {
+div.event_base div.frame > div.right div.organizers div.body div.organizer div.name a {
   color: #000;
   text-decoration: none;
 }
-div.event_base div.frame div.right div.tags div.tag {
+div.event_base div.frame > div.right div.tags div.tag {
   padding: 2px 4px;
   margin: 2px 0;
   margin-right: 4px;

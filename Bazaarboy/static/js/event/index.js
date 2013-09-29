@@ -29,32 +29,23 @@
       });
       marker.setMap(this.map);
     },
-    /*
-    share: () ->
-        url = window.location.href
-        name = $('div#event > div.title div.top div.text').text()
-        caption = $('div#event > div.title div.top div.details').text()
-        description = $('div#event div.summary div.body div.text').text()
-        image = $('div#event div.cover div.image img')
-        if image.length is 0
-            editor_images = $('.editor .inner').find('img')
-            if editor_images.length > 0
-                event_image = editor_images[0].src
-            else
-                event_image = 'DEFAULT_IMAGE'
-        else
-            event_image = event_image.src
-        FB.ui
-            method: 'feed'
-            link: url
-            name: name
-            caption: caption,
-            description: description,
-            picture: image,
-        (response) -> 
-            return
-    */
-
+    adjustSidebarPosition: function() {
+      var count, hangingButtons, i, sidebarPadding, topBase, _i;
+      hangingButtons = $('div#event > div.title div.bottom div.hanging');
+      count = hangingButtons.length;
+      topBase = parseFloat($(hangingButtons[0]).css('top'));
+      for (i = _i = 0; 0 <= count ? _i < count : _i > count; i = 0 <= count ? ++_i : --_i) {
+        $(hangingButtons[i]).css('top', (topBase + (48 + 10) * i) + 'px');
+      }
+      if ($('div#event').hasClass('with_cover')) {
+        $('div#event div.frame > div.right').css('padding-top', '');
+      } else {
+        sidebarPadding = count * (48 + 10) + 10;
+        $('div#event div.frame > div.right').css({
+          'padding-top': sidebarPadding + 'px'
+        });
+      }
+    },
     adjustOverlayHeight: function() {
       var overlayHeight, visibleDiv, _i, _len, _ref;
       overlayHeight = 10;
@@ -67,6 +58,32 @@
         'margin-top': 0
       });
       $('div#rsvp').height(overlayHeight);
+    },
+    share: function() {
+      var caption, description, editorImages, event_image, image, name, url;
+      url = window.location.href;
+      name = $('div#event > div.title div.top div.text').text();
+      caption = $('div#event > div.title div.top div.details').text();
+      description = $('div#event div.summary div.body div.text').text();
+      image = $('div#event div.cover div.image img');
+      if (image.length === 0) {
+        editorImages = $('div#event div.frame div.editor .inner').find('img');
+        if (editorImages.length > 0) {
+          image = editorImages[0].src;
+        } else {
+          event_image = 'DEFAULT_IMAGE';
+        }
+      } else {
+        image = image.src;
+      }
+      return FB.ui({
+        method: 'feed',
+        link: url,
+        name: name,
+        caption: caption,
+        description: description,
+        picture: image
+      }, function(response) {});
     },
     purchase: function(ticket, email, fullName) {
       var params,
@@ -758,12 +775,10 @@
           $('div.event_overlay_canvas').fadeOut(200);
         }
       });
-      /*
-      $('div#event div.share').click () =>
-          @share()
-          return
-      */
-
+      this.adjustSidebarPosition();
+      $('div#event div.share').click(function() {
+        _this.share();
+      });
       /*
       latitude = parseFloat $('div#event div.details div.map').attr('data-latitude')
       longitude = parseFloat $('div#event div.details div.map').attr('data-longitude')

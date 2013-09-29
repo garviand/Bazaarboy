@@ -13,8 +13,7 @@ def index(request, params, user):
     Index page
     """
     if user is None:
-        #return render(request, 'index/landing.html', locals())
-        return redirect('http://about.bazaarboy.com/')
+        return render(request, 'index/landing.html', locals())
     return render(request, 'index/index.html', locals())
 
 def terms(request):
