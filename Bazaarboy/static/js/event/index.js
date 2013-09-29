@@ -30,11 +30,20 @@
       marker.setMap(this.map);
     },
     adjustSidebarPosition: function() {
-      var hangingButtons, i, topBase, _i, _ref;
+      var count, hangingButtons, i, sidebarPadding, topBase, _i;
       hangingButtons = $('div#event > div.title div.bottom div.hanging');
+      count = hangingButtons.length;
       topBase = parseFloat($(hangingButtons[0]).css('top'));
-      for (i = _i = 0, _ref = hangingButtons.length; 0 <= _ref ? _i < _ref : _i > _ref; i = 0 <= _ref ? ++_i : --_i) {
+      for (i = _i = 0; 0 <= count ? _i < count : _i > count; i = 0 <= count ? ++_i : --_i) {
         $(hangingButtons[i]).css('top', (topBase + (48 + 10) * i) + 'px');
+      }
+      if ($('div#event').hasClass('with_cover')) {
+        $('div#event div.frame > div.right').css('padding-top', '');
+      } else {
+        sidebarPadding = count * (48 + 10) + 10;
+        $('div#event div.frame > div.right').css({
+          'padding-top': sidebarPadding + 'px'
+        });
       }
     },
     adjustOverlayHeight: function() {

@@ -102,6 +102,7 @@ block content
                     div.share.hanging
                         b Share on Facebook
                     {% endif %}
+                    {% if editable %}
                     div.launch.hanging
                         b 
                             {% if event.is_launched %}
@@ -109,6 +110,7 @@ block content
                             {% else %}
                             | Launch Event
                             {% endif %}
+                    {% endif %}
 
         div.cover
             div.inner

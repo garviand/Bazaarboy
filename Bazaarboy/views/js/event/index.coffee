@@ -25,9 +25,16 @@ Bazaarboy.event.index =
         return
     adjustSidebarPosition: () ->
         hangingButtons = $('div#event > div.title div.bottom div.hanging')
+        count = hangingButtons.length
         topBase = parseFloat($(hangingButtons[0]).css('top'))
-        for i in [0...hangingButtons.length]
-            $(hangingButtons[i]).css('top', (topBase + (48 + 10) * i) + 'px')
+        for i in [0...count]
+            $(hangingButtons[i]).css 'top', (topBase + (48 + 10) * i) + 'px'
+        if $('div#event').hasClass('with_cover')
+            $('div#event div.frame > div.right').css 'padding-top', ''
+        else
+            sidebarPadding = count * (48 + 10) + 10
+            $('div#event div.frame > div.right').css
+                'padding-top': sidebarPadding + 'px'
         return
     adjustOverlayHeight: () ->
         overlayHeight = 10

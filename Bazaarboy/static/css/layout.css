@@ -428,6 +428,26 @@ input[type=file].hidden {
   right: 0;
   bottom: 0;
 }
+.orange_gradient {
+  background-color: #FFB769;
+  background-image: linear-gradient(top, #ffb769, #ff8f4d);
+  background-image: -o-linear-gradient(top, #ffb769, #ff8f4d);
+  background-image: -moz-linear-gradient(top, #ffb769, #ff8f4d);
+  background-image: -webkit-linear-gradient(top, #ffb769, #ff8f4d);
+  background-image: -ms-linear-gradient(top, #ffb769, #ff8f4d);
+}
+.orange_button {
+  border: 1px solid #F1803D;
+  background-color: #FFB769;
+  background-image: linear-gradient(top, #ffb769, #ff8f4d);
+  background-image: -o-linear-gradient(top, #ffb769, #ff8f4d);
+  background-image: -moz-linear-gradient(top, #ffb769, #ff8f4d);
+  background-image: -webkit-linear-gradient(top, #ffb769, #ff8f4d);
+  background-image: -ms-linear-gradient(top, #ffb769, #ff8f4d);
+  color: #FFF;
+  text-align: center;
+  text-shadow: 0 1px 0 rgba(0, 0, 0, 0.125);
+}
 body {
   font-family: "rooney-sans", Helvetica, sans-serif;
   font-weight: 300;
@@ -448,8 +468,6 @@ div#wrapper_top {
   height: 44px;
   z-index: 21;
   background-color: #1D1D1D;
-  display: block;
-  margin: auto;
 }
 div#wrapper_top div.logo {
   height: 44px;
@@ -496,14 +514,33 @@ div#wrapper_content {
   position: relative;
   width: 100%;
   min-width: 960px;
-  float: right;
 }
-div#wrapper_foot {
-  position: relative;
+div#wrapper_bottom {
   width: 100%;
-  min-width: 912px;
+  min-width: 960px;
+  height: 44px;
+  background-color: #232323;
+}
+div#wrapper_bottom div.inner {
+  width: 912px;
+  height: 15px;
+  padding: 14.5px 0;
+  color: #999;
+  font-size: 15px;
+  line-height: 15px;
+  text-align: center;
   display: block;
   margin: auto;
+}
+div#wrapper_bottom div.inner span {
+  color: #FFF;
+}
+div#wrapper_bottom div.inner a {
+  color: #999;
+  text-decoration: none;
+}
+div#wrapper_bottom div.inner a:hover {
+  color: #FFF;
 }
 div#wrapper_overlay {
   display: none;
@@ -637,8 +674,8 @@ div#landing div.inner div.content div.bottom div.request {
   width: 430px;
   height: 20px;
   padding: 10px 0;
-  border: 1px solid #F1803D;
   border-radius: 2px;
+  border: 1px solid #F1803D;
   background-color: #FFB769;
   background-image: linear-gradient(top, #ffb769, #ff8f4d);
   background-image: -o-linear-gradient(top, #ffb769, #ff8f4d);
@@ -646,10 +683,10 @@ div#landing div.inner div.content div.bottom div.request {
   background-image: -webkit-linear-gradient(top, #ffb769, #ff8f4d);
   background-image: -ms-linear-gradient(top, #ffb769, #ff8f4d);
   color: #FFF;
-  font-size: 16px;
-  font-weight: 500;
   text-align: center;
   text-shadow: 0 1px 0 rgba(0, 0, 0, 0.125);
+  font-size: 16px;
+  font-weight: 500;
 }
 div#landing div.inner div.footer {
   width: 100%;
@@ -1189,8 +1226,16 @@ div.event_base > div.title div.inner div.bottom div.launch {
   top: 66px;
   right: 24px;
   z-index: 20;
-  border: 1px solid #000;
-  background-color: #FFF;
+  border: 1px solid #F1803D;
+  background-color: #FFB769;
+  background-image: linear-gradient(top, #ffb769, #ff8f4d);
+  background-image: -o-linear-gradient(top, #ffb769, #ff8f4d);
+  background-image: -moz-linear-gradient(top, #ffb769, #ff8f4d);
+  background-image: -webkit-linear-gradient(top, #ffb769, #ff8f4d);
+  background-image: -ms-linear-gradient(top, #ffb769, #ff8f4d);
+  color: #FFF;
+  text-align: center;
+  text-shadow: 0 1px 0 rgba(0, 0, 0, 0.125);
   cursor: pointer;
 }
 div.event_base > div.title div.inner div.bottom div.launch b {
@@ -1198,7 +1243,6 @@ div.event_base > div.title div.inner div.bottom div.launch b {
   width: 100%;
   height: 18px;
   padding: 14px 0;
-  color: #000;
   font-size: 18px;
   line-height: 18px;
   text-align: center;
@@ -1298,39 +1342,39 @@ div.event_base div.cover div.inner div.image div.bounds img.normal {
 div.event_base div.cover div.inner div.image div.bounds img.editing {
   cursor: pointer;
 }
-div.event_base div.frame div.left div.placeholder {
+div.event_base div.frame > div.left div.placeholder {
   width: 100%;
   height: 48px;
 }
-div.event_base div.frame div.left div.description {
+div.event_base div.frame > div.left div.description {
   width: 100%;
   float: left;
 }
-div.event_base div.frame div.left div.description div.editor {
+div.event_base div.frame > div.left div.description div.editor {
   width: 100%;
 }
-div.event_base div.frame div.left div.description div.editor.editing {
+div.event_base div.frame > div.left div.description div.editor.editing {
   width: 718px;
   margin-left: -11px;
 }
-div.event_base div.frame div.left div.description div.editor.editing div.inner {
+div.event_base div.frame > div.left div.description div.editor.editing div.inner {
   width: 696px;
   display: block;
   margin: auto;
 }
-div.event_base div.frame div.left div.description div.editor div.inner {
+div.event_base div.frame > div.left div.description div.editor div.inner {
   width: 100%;
 }
-div.event_base div.frame div.left div.description div.editor img {
+div.event_base div.frame > div.left div.description div.editor img {
   max-width: 696px;
 }
-div.event_base div.frame div.left div.description div.editor iframe {
+div.event_base div.frame > div.left div.description div.editor iframe {
   max-width: 696px;
 }
-div.event_base div.frame div.right {
+div.event_base div.frame > div.right {
   padding-top: 136px;
 }
-div.event_base div.frame div.right div.info {
+div.event_base div.frame > div.right div.info {
   position: relative;
   width: 172px;
   padding: 12px 10px;
@@ -1338,21 +1382,21 @@ div.event_base div.frame div.right div.info {
   border-top: 1px solid #E9E9E9;
   background-color: #FFF;
 }
-div.event_base div.frame div.right div.info:hover div.button {
+div.event_base div.frame > div.right div.info:hover div.button {
   display: block !important;
 }
-div.event_base div.frame div.right div.info div.caption {
+div.event_base div.frame > div.right div.info div.caption {
   width: 100%;
   height: 18px;
   font-size: 14px;
 }
-div.event_base div.frame div.right div.info div.caption div.text {
+div.event_base div.frame > div.right div.info div.caption div.text {
   width: 75%;
   height: 18px;
   color: #4D4D4D;
   float: left;
 }
-div.event_base div.frame div.right div.info div.caption div.button {
+div.event_base div.frame > div.right div.info div.caption div.button {
   display: none;
   width: 25%;
   height: 14px;
@@ -1364,20 +1408,20 @@ div.event_base div.frame div.right div.info div.caption div.button {
   cursor: pointer;
   float: right;
 }
-div.event_base div.frame div.right div.info div.body {
+div.event_base div.frame > div.right div.info div.body {
   width: 100%;
   padding-top: 7px;
 }
-div.event_base div.frame div.right div.info div.body div.text {
+div.event_base div.frame > div.right div.info div.body div.text {
   font-size: 13px;
   line-height: 16px;
   font-style: italic;
 }
-div.event_base div.frame div.right div.info div.body div.editor {
+div.event_base div.frame > div.right div.info div.body div.editor {
   width: 100%;
   min-height: 30px;
 }
-div.event_base div.frame div.right div.info div.body div.editor textarea {
+div.event_base div.frame > div.right div.info div.body div.editor textarea {
   width: 162px;
   min-height: 50px;
   padding: 5px;
@@ -1385,19 +1429,19 @@ div.event_base div.frame div.right div.info div.body div.editor textarea {
   resize: none;
   font-size: 13px;
 }
-div.event_base div.frame div.right div.organizers div.body div.organizer {
+div.event_base div.frame > div.right div.organizers div.body div.organizer {
   position: relative;
   width: 172px;
   min-height: 25px;
   padding-top: 4px;
 }
-div.event_base div.frame div.right div.organizers div.body div.organizer div.icon {
+div.event_base div.frame > div.right div.organizers div.body div.organizer div.icon {
   position: absolute;
   width: 25px;
   height: 25px;
   background-color: #f0f5f5;
 }
-div.event_base div.frame div.right div.organizers div.body div.organizer div.icon img {
+div.event_base div.frame > div.right div.organizers div.body div.organizer div.icon img {
   width: 20px;
   height: 20px;
   display: block;
@@ -1408,7 +1452,7 @@ div.event_base div.frame div.right div.organizers div.body div.organizer div.ico
   right: 0;
   bottom: 0;
 }
-div.event_base div.frame div.right div.organizers div.body div.organizer div.name {
+div.event_base div.frame > div.right div.organizers div.body div.organizer div.name {
   width: 133px;
   padding: 0 7px;
   margin-left: 25px;
@@ -1416,11 +1460,11 @@ div.event_base div.frame div.right div.organizers div.body div.organizer div.nam
   line-height: 25px;
   float: left;
 }
-div.event_base div.frame div.right div.organizers div.body div.organizer div.name a {
+div.event_base div.frame > div.right div.organizers div.body div.organizer div.name a {
   color: #000;
   text-decoration: none;
 }
-div.event_base div.frame div.right div.tags div.tag {
+div.event_base div.frame > div.right div.tags div.tag {
   padding: 2px 4px;
   margin: 2px 0;
   margin-right: 4px;
