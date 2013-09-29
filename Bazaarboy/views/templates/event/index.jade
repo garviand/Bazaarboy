@@ -76,7 +76,8 @@ block content
                             input.hidden(type="file", name="image_file")
                             {% csrf_token %}
                     {% endif %}
-                    div.action
+                    {% if editable or tickets|length != 0 %}
+                    div.action.hanging
                         div.button
                             b
                                 {% if editable %}
@@ -96,8 +97,19 @@ block content
                                 | ${{ cheapest|floatformat:-2 }}{% if tickets|length != 1 %}+{% endif %}
                                 {% endif %}
                         div.clear
-                    div.share
+                    {% endif %}
+                    {% if event.is_launched %}
+                    div.share.hanging
                         b Share on Facebook
+                    {% endif %}
+                    div.launch.hanging
+                        b 
+                            {% if event.is_launched %}
+                            | Take Event Offline
+                            {% else %}
+                            | Launch Event
+                            {% endif %}
+
         div.cover
             div.inner
                 div.image

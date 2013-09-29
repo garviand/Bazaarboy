@@ -32,7 +32,8 @@
 at <b>{{ event.location }}</b>{% endif %}
 {% endspaceless %}</div><div class="sponsor"><a href="javascript:;"><i>Want to sponsor this event?</i></a></div><div class="clear"></div>{% if editable %}<div class="controls"><span class="hidden">Drag the image to position you think fit. </span><a href="javascript:;" class="edit"> 
 {% if event.cover %}Edit Cover{% else %}Add Cover{% endif %}</a><a href="javascript:;" class="delete {% if not event.cover %}hidden{% endif %}"> 
-Delete</a><a href="javascript:;" class="hidden save">Save</a><a href="javascript:;" class="hidden cancel">Cancel</a><div class="clear"></div><form class="upload_cover"><input type="file" name="image_file" class="hidden">{% csrf_token %}</form></div>{% endif %}<div class="action"><div class="button"><b>{% if editable %}
+Delete</a><a href="javascript:;" class="hidden save">Save</a><a href="javascript:;" class="hidden cancel">Cancel</a><div class="clear"></div><form class="upload_cover"><input type="file" name="image_file" class="hidden">{% csrf_token %}</form></div>{% endif %}
+{% if editable or tickets|length != 0 %}<div class="action hanging"><div class="button"><b>{% if editable %}
 Edit Tickets
 {% else %}
 {% if rsvp %}
@@ -44,7 +45,13 @@ Buy Tickets
 Free
 {% else %}
 ${{ cheapest|floatformat:-2 }}{% if tickets|length != 1 %}+{% endif %}
-{% endif %}</b></div><div class="clear"></div></div><div class="share"><b>Share on Facebook</b></div></div></div></div><div class="cover"><div class="inner"><div class="image"><div class="bounds">{% if event.cover %}<img src="{{ event.cover.source.url }}" class="normal">{% endif %}</div></div></div><!--div.caption<div class="inner"><div class="text">{% if event.cover and event.cover.caption|length != 0 %}
+{% endif %}</b></div><div class="clear"></div></div>{% endif %}
+{% if event.is_launched %}<div class="share hanging"><b>Share on Facebook</b></div>{% endif %}<div class="launch hanging"><b> 
+{% if event.is_launched %}
+Take Event Offline
+{% else %}
+Launch Event
+{% endif %}</b></div></div></div></div><div class="cover"><div class="inner"><div class="image"><div class="bounds">{% if event.cover %}<img src="{{ event.cover.source.url }}" class="normal">{% endif %}</div></div></div><!--div.caption<div class="inner"><div class="text">{% if event.cover and event.cover.caption|length != 0 %}
 {{ event.cover.caption }}
 {% else %}<i>No caption yet.</i>{% endif %}</div>{% if event.cover and editable %}<div class="button">Edit</div><div class="editor hidden"><input type="text" name="caption" placeholder="Maximum 100 Characters" value="{{ event.cover.caption }}"></div>{% endif %}</div>--></div><div class="frame"><div class="left">{% if editable %}<div class="placeholder"></div>{% endif %}<div class="description"><div class="editor"><div class="inner">{{ event.description|safe }}</div></div>{% if editable %}<div class="controls"><a href="javascript:;" class="save">Save</a><a href="javascript:;" class="edit">Edit</a></div>{% endif %}</div></div><div class="right"><div class="organizers info"><div class="caption"><div class="text">Organizer{{ organizers|pluralize }}</div><div class="clear"></div></div><div class="body">{% for organizer in organizers %}<div class="organizer"><div class="icon"></div><div class="name"><!-- {% url profile:index organizer.profile.id %}--><a href="javascript:;"><b>{{ organizer.profile.name }}</b></a></div><div class="clear"></div></div>{% endfor %}</div></div><div class="summary info"><div class="caption"><div class="text">Summary</div>{% if editable %}<div class="button">Edit</div>{% endif %}<div class="clear"></div></div><div class="body"><div class="text">{% if event.summary|length != 0 %}
 {{ event.summary }}

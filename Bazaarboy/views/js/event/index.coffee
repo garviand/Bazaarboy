@@ -23,6 +23,20 @@ Bazaarboy.event.index =
         marker = new google.maps.Marker({position: markerPos})
         marker.setMap @map
         return
+    adjustSidebarPosition: () ->
+        hangingButtons = $('div#event > div.title div.bottom div.hanging')
+        topBase = parseFloat($(hangingButtons[0]).css('top'))
+        for i in [0...hangingButtons.length]
+            $(hangingButtons[i]).css('top', (topBase + (48 + 10) * i) + 'px')
+        return
+    adjustOverlayHeight: () ->
+        overlayHeight = 10
+        for visibleDiv in $('div#rsvp > div').not('div.hidden')
+            overlayHeight += $(visibleDiv).outerHeight() + 10
+        $('div#rsvp').css
+            'margin-top': 0
+        $('div#rsvp').height overlayHeight
+        return
     share: () ->
         url = window.location.href
         name = $('div#event > div.title div.top div.text').text()
@@ -46,14 +60,6 @@ Bazaarboy.event.index =
             picture: image
         , (response) -> 
             return
-    adjustOverlayHeight: () ->
-        overlayHeight = 10
-        for visibleDiv in $('div#rsvp > div').not('div.hidden')
-            overlayHeight += $(visibleDiv).outerHeight() + 10
-        $('div#rsvp').css
-            'margin-top': 0
-        $('div#rsvp').height overlayHeight
-        return
     purchase: (ticket, email=null, fullName=null) ->
         params = 
             ticket: ticket
@@ -700,6 +706,8 @@ Bazaarboy.event.index =
                 $('div#wrapper_overlay').fadeOut(200)
                 $('div.event_overlay_canvas').fadeOut(200)
             return
+        # Adjust sidebar
+        @adjustSidebarPosition()
         # Share
         $('div#event div.share').click () =>
             @share()

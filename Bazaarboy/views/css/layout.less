@@ -624,17 +624,19 @@ div.event_base {
 
     position: relative;
     &.with_cover {
+        /*
         > div.title {
             div.bottom {
                 div.action, div.controls {
                     top: @title_bottom_second_tier_top + 20 !important;
                 }
 
-                div.share {
+                div.share, div.launch {
                     top: @title_bottom_second_tier_top + 48 + 10 + 20 !important;   
                 }
             }
         }
+        */
 
         div.cover {
             height: 320px;
@@ -854,7 +856,7 @@ div.event_base {
                     position: absolute;
                     width: @sidebar_width - 2;
                     height: 46px;
-                    top: @title_bottom_second_tier_top + 20 + 48 + 10;
+                    top: @title_bottom_second_tier_top + 20;
                     right: @gutter_width;
                     z-index: @overlay_z_index;
                     border: 1px solid #1B1464;
@@ -867,6 +869,29 @@ div.event_base {
                         height: @font_size_base + 2;
                         padding: (46 - (@font_size_base + 2)) / 2 0;
                         color: #FFF;
+                        font-size: @font_size_base + 2;
+                        line-height: @font_size_base + 2;
+                        text-align: center;
+                    }
+                }
+
+                div.launch {
+                    position: absolute;
+                    width: @sidebar_width - 2;
+                    height: 46px;
+                    top: @title_bottom_second_tier_top + 20;
+                    right: @gutter_width;
+                    z-index: @overlay_z_index;
+                    border: 1px solid #000;
+                    background-color: #FFF;
+                    cursor: pointer;
+
+                    b {
+                        display: block;
+                        width: 100%;
+                        height: @font_size_base + 2;
+                        padding: (46 - (@font_size_base + 2)) / 2 0;
+                        color: #000;
                         font-size: @font_size_base + 2;
                         line-height: @font_size_base + 2;
                         text-align: center;

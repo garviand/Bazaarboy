@@ -916,12 +916,21 @@ div#profile {
 div.event_base {
   position: relative;
 }
-div.event_base.with_cover > div.title div.bottom div.action,
-div.event_base.with_cover > div.title div.bottom div.controls {
-  top: 66px !important;
-}
-div.event_base.with_cover > div.title div.bottom div.share {
-  top: 124px !important;
+div.event_base.with_cover {
+  /*
+        > div.title {
+            div.bottom {
+                div.action, div.controls {
+                    top: @title_bottom_second_tier_top + 20 !important;
+                }
+
+                div.share, div.launch {
+                    top: @title_bottom_second_tier_top + 48 + 10 + 20 !important;   
+                }
+            }
+        }
+        */
+
 }
 div.event_base.with_cover div.cover {
   height: 320px;
@@ -1156,7 +1165,7 @@ div.event_base > div.title div.inner div.bottom div.share {
   position: absolute;
   width: 190px;
   height: 46px;
-  top: 124px;
+  top: 66px;
   right: 24px;
   z-index: 20;
   border: 1px solid #1B1464;
@@ -1169,6 +1178,27 @@ div.event_base > div.title div.inner div.bottom div.share b {
   height: 18px;
   padding: 14px 0;
   color: #FFF;
+  font-size: 18px;
+  line-height: 18px;
+  text-align: center;
+}
+div.event_base > div.title div.inner div.bottom div.launch {
+  position: absolute;
+  width: 190px;
+  height: 46px;
+  top: 66px;
+  right: 24px;
+  z-index: 20;
+  border: 1px solid #000;
+  background-color: #FFF;
+  cursor: pointer;
+}
+div.event_base > div.title div.inner div.bottom div.launch b {
+  display: block;
+  width: 100%;
+  height: 18px;
+  padding: 14px 0;
+  color: #000;
   font-size: 18px;
   line-height: 18px;
   text-align: center;
