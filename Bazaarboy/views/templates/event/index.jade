@@ -9,11 +9,16 @@ append head
     {% if event.is_private %}
     meta(name="robots", content="noindex,nofollow")
     {% endif %}
-    {% if event.cover %}
-    link(rel="image_src", href="{{ event.cover.source.url|sanitizeUrl }}")
-    {% endif %}
     link(rel="stylesheet", href="{{ STATIC_URL }}jQueryUI/jquery-ui.css")
     link(rel="stylesheet", href="{{ STATIC_URL }}redactor/redactor.css")
+    //- Facebook
+    meta(property="og:url", content="{{ request.build_absolute_uri }}")
+    meta(property="og:title", content="{{ event.name }}")
+    meta(property="og:description", content="{{ event.summary }}")
+    {% if event.cover %}
+    meta(property="og:image", content="{{ event.cover.source.url|sanitizeUrl }}")
+    link(rel="image_src", href="{{ event.cover.source.url|sanitizeUrl }}")
+    {% endif %}
 
 block vars
     - var collapsed = true
@@ -58,7 +63,7 @@ block content
                         b {{ event.location }}
                         | {% endif %}
                         | {% endspaceless %}
-                    div.sponsor
+                    div.sponsor.hidden
                         a(href="javascript:;")
                             i Want to sponsor this event?
                     div.clear
@@ -153,8 +158,8 @@ block content
                         div.organizer
                             div.icon
                             div.name
-                                // {% url profile:index organizer.profile.id %}
-                                a(href="javascript:;")
+                                // href="{% url profile:index organizer.profile.id %}"
+                                a
                                     b {{ organizer.profile.name }}
                             div.clear
                         {% endfor %}

@@ -46,6 +46,25 @@
         });
       }
     },
+    /*
+    adjustTitlePosition: () ->
+        offset = $(window).scrollTop()
+        topHeight = $('div#wrapper_top').outerHeight()
+        if offset > topHeight
+            $('div#event > div.title').css
+                'position': 'fixed'
+                'top': 0
+            $('div#event div.cover').css
+                'margin-top': $('div#event > div.title').outerHeight() + 'px'
+        else
+            $('div#event > div.title').css
+                'position': ''
+                'top': ''
+            $('div#event div.cover').css
+                'margin-top': ''
+        return
+    */
+
     adjustOverlayHeight: function() {
       var overlayHeight, visibleDiv, _i, _len, _ref;
       overlayHeight = 10;
@@ -811,6 +830,12 @@
         }
       });
       this.adjustSidebarPosition();
+      /*
+      $(window).scroll () =>
+          @adjustTitlePosition()
+          return
+      */
+
       $('div#event div.share').click(function() {
         _this.share();
       });

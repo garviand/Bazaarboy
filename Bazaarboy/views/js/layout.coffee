@@ -28,10 +28,30 @@
             response = $.parseJSON data
             return cb? response
         return
+    # Layout functions
+    adjustBottomPosition: () ->
+        windowHeight = $(window).height()
+        topHeight = $('div#wrapper_top').outerHeight()
+        contentHeight = $('div#wrapper_content').outerHeight()
+        bottomHeight = $('div#wrapper_bottom').outerHeight()
+        if windowHeight - bottomHeight > topHeight + contentHeight
+            $('div#wrapper_bottom').css
+                'position': 'fixed'
+                'bottom': 0
+        else
+            $('div#wrapper_bottom').css
+                'position': ''
+                'bottom': ''
+        return
     # Initialization
     init: () ->
         # Pass the timezone information back to server
         @post 'timezone/', {timezone: getTimezoneName()}
+        # Adjust footer position when window resizes
+        @adjustBottomPosition()
+        $(window).resize () =>
+            @adjustBottomPosition()
+            return
         return
 
 Bazaarboy.init()
