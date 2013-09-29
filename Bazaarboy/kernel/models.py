@@ -212,7 +212,7 @@ class Event_base(models.Model):
     """
     A base model for information shared by the two types of events
     """
-    name = models.CharField(max_length = 50)
+    name = models.CharField(max_length = 150)
     description = models.TextField()
     summary = models.CharField(max_length = 100)
     tags = models.CharField(max_length = 50)

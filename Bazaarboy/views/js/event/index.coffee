@@ -24,7 +24,7 @@ Bazaarboy.event.index =
         marker.setMap @map
         return
     adjustSidebarPosition: () ->
-        hangingButtons = $('div#event > div.title div.bottom div.hanging')
+        hangingButtons = $('div#event > div.title div.bottom div.hanging').not('div.hidden')
         count = hangingButtons.length
         topBase = parseFloat($(hangingButtons[0]).css('top'))
         for i in [0...count]
@@ -38,11 +38,11 @@ Bazaarboy.event.index =
         return
     adjustOverlayHeight: () ->
         overlayHeight = 10
-        for visibleDiv in $('div#rsvp > div').not('div.hidden')
+        for visibleDiv in $('div.event_overlay_canvas > div').not('div.hidden')
             overlayHeight += $(visibleDiv).outerHeight() + 10
-        $('div#rsvp').css
+        $('div.event_overlay_canvas').css
             'margin-top': 0
-        $('div#rsvp').height overlayHeight
+        $('div.event_overlay_canvas').height overlayHeight
         return
     share: () ->
         url = window.location.href
@@ -247,6 +247,7 @@ Bazaarboy.event.index =
                     $(this).height(@height / @width * frameWidth)
                 $(frame).find('div.bounds').children().remove()
                 $(frame).find('div.bounds').append(this)
+                scope.adjustSidebarPosition()
                 scope.startEditingCoverImage()
                 return
         return
@@ -392,6 +393,7 @@ Bazaarboy.event.index =
                     .addClass('hidden')
                 $('div#event > div.title div.bottom div.controls').addClass('stick')
                 $('div#event').removeClass('with_cover')
+                @adjustSidebarPosition()
                 @cover = null
             else
                 alert err.message
@@ -600,8 +602,39 @@ Bazaarboy.event.index =
                 $(ticket).removeClass('editing')
             return
         return
+    switchLaunchState: () ->
+        if $('div#event > div.title div.bottom div.launch').hasClass('launched')
+            if confirm('Are you sure you want to take the event offline?')
+                Bazaarboy.post 'event/delaunch/', {id: eventId}, (response) =>
+                    if response.status is 'OK'
+                        $('div#event > div.title div.bottom div.launch')
+                            .removeClass('launched')
+                            .find('b').html('Launch Event')
+                        $('div#event > div.title div.bottom div.share')
+                            .addClass('hidden')
+                        @adjustSidebarPosition()
+                    else
+                        alert response.message
+                    return
+        else
+            Bazaarboy.post 'event/launch/', {id: eventId}, (response) =>
+                if response.status is 'OK'
+                    $('div#event > div.title div.bottom div.launch')
+                        .addClass('launched')
+                        .find('b').html('Take Event Offline')
+                    $('div#event > div.title div.bottom div.share')
+                        .removeClass('hidden')
+                    @adjustSidebarPosition()
+                else
+                    alert response.message
+                return
+        return
     initEditing: () ->
         scope = this
+        # Switch event launch state
+        $('div#event > div.title div.bottom div.launch').click () =>
+            @switchLaunchState()
+            return
         # Edit title
         $('div#event > div.title div.top div.button').click () ->
             if $(this).hasClass('stick')

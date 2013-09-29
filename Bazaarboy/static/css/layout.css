@@ -500,6 +500,7 @@ div#wrapper_top div.logo div.right {
   padding: 12px 0;
   margin-left: 5px;
   color: #FFF;
+  font-family: Helvetica, Arial, sans-serif;
   font-size: 20px;
   line-height: 20px;
   text-transform: uppercase;
@@ -1439,7 +1440,7 @@ div.event_base div.frame > div.right div.organizers div.body div.organizer div.i
   position: absolute;
   width: 25px;
   height: 25px;
-  background-color: #f0f5f5;
+  background-color: #4795f2;
 }
 div.event_base div.frame > div.right div.organizers div.body div.organizer div.icon img {
   width: 20px;

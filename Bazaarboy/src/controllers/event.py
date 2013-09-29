@@ -90,7 +90,7 @@ def create(request, params, user):
     Create a new event
     """
     # Check if the event name is too long
-    if len(params['name']) > 50:
+    if len(params['name']) > 150:
         response = {
             'status':'FAIL',
             'error':'INVALID_NAME',
@@ -239,7 +239,7 @@ def edit(request, params, user):
             return json_response(response)
     # Go through all the params and edit the event accordingly
     if params['name'] is not None:
-        if not (0 < len(params['name']) <= 50):
+        if not (0 < len(params['name']) <= 150):
             response = {
                 'status':'FAIL',
                 'error':'INVALID_NAME',
