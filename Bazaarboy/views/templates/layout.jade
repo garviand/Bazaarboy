@@ -12,6 +12,7 @@ html(lang="en")
                 try{Typekit.load();}catch(e){}
             link(rel="shortcut icon", href="{{ STATIC_URL }}images/logo.png")
             link(rel="stylesheet", href="{{ STATIC_URL }}css/layout.css")
+            include components/analytics
     body
         block body
             div#wrapper_top
