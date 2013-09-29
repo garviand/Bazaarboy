@@ -31,7 +31,7 @@
     },
     adjustSidebarPosition: function() {
       var count, hangingButtons, i, sidebarPadding, topBase, _i;
-      hangingButtons = $('div#event > div.title div.bottom div.hanging');
+      hangingButtons = $('div#event > div.title div.bottom div.hanging').not('div.hidden');
       count = hangingButtons.length;
       topBase = parseFloat($(hangingButtons[0]).css('top'));
       for (i = _i = 0; 0 <= count ? _i < count : _i > count; i = 0 <= count ? ++_i : --_i) {
@@ -49,15 +49,15 @@
     adjustOverlayHeight: function() {
       var overlayHeight, visibleDiv, _i, _len, _ref;
       overlayHeight = 10;
-      _ref = $('div#rsvp > div').not('div.hidden');
+      _ref = $('div.event_overlay_canvas > div').not('div.hidden');
       for (_i = 0, _len = _ref.length; _i < _len; _i++) {
         visibleDiv = _ref[_i];
         overlayHeight += $(visibleDiv).outerHeight() + 10;
       }
-      $('div#rsvp').css({
+      $('div.event_overlay_canvas').css({
         'margin-top': 0
       });
-      $('div#rsvp').height(overlayHeight);
+      $('div.event_overlay_canvas').height(overlayHeight);
     },
     share: function() {
       var caption, description, editorImages, event_image, image, name, url;
@@ -285,6 +285,7 @@
         }
         $(frame).find('div.bounds').children().remove();
         $(frame).find('div.bounds').append(this);
+        scope.adjustSidebarPosition();
         scope.startEditingCoverImage();
       });
     },
@@ -424,6 +425,7 @@
           $('div#event > div.title div.bottom div.controls a.delete').addClass('hidden');
           $('div#event > div.title div.bottom div.controls').addClass('stick');
           $('div#event').removeClass('with_cover');
+          _this.adjustSidebarPosition();
           _this.cover = null;
         } else {
           alert(err.message);
@@ -649,10 +651,43 @@
         }
       });
     },
+    switchLaunchState: function() {
+      var _this = this;
+      if ($('div#event > div.title div.bottom div.launch').hasClass('launched')) {
+        if (confirm('Are you sure you want to take the event offline?')) {
+          Bazaarboy.post('event/delaunch/', {
+            id: eventId
+          }, function(response) {
+            if (response.status === 'OK') {
+              $('div#event > div.title div.bottom div.launch').removeClass('launched').find('b').html('Launch Event');
+              $('div#event > div.title div.bottom div.share').addClass('hidden');
+              _this.adjustSidebarPosition();
+            } else {
+              alert(response.message);
+            }
+          });
+        }
+      } else {
+        Bazaarboy.post('event/launch/', {
+          id: eventId
+        }, function(response) {
+          if (response.status === 'OK') {
+            $('div#event > div.title div.bottom div.launch').addClass('launched').find('b').html('Take Event Offline');
+            $('div#event > div.title div.bottom div.share').removeClass('hidden');
+            _this.adjustSidebarPosition();
+          } else {
+            alert(response.message);
+          }
+        });
+      }
+    },
     initEditing: function() {
       var scope,
         _this = this;
       scope = this;
+      $('div#event > div.title div.bottom div.launch').click(function() {
+        _this.switchLaunchState();
+      });
       $('div#event > div.title div.top div.button').click(function() {
         if ($(this).hasClass('stick')) {
           scope.stopEditingTitle();

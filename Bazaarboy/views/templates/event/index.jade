@@ -98,12 +98,10 @@ block content
                                 {% endif %}
                         div.clear
                     {% endif %}
-                    {% if event.is_launched %}
-                    div.share.hanging
+                    div.share.hanging(class="{% if not event.is_launched %}hidden{% endif %}")
                         b Share on Facebook
-                    {% endif %}
                     {% if editable %}
-                    div.launch.hanging
+                    div.launch.hanging(class="{% if event.is_launched %}launched{% endif %}")
                         b 
                             {% if event.is_launched %}
                             | Take Event Offline
@@ -111,7 +109,6 @@ block content
                             | Launch Event
                             {% endif %}
                     {% endif %}
-
         div.cover
             div.inner
                 div.image

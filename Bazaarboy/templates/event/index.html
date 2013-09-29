@@ -45,9 +45,7 @@ Buy Tickets
 Free
 {% else %}
 ${{ cheapest|floatformat:-2 }}{% if tickets|length != 1 %}+{% endif %}
-{% endif %}</b></div><div class="clear"></div></div>{% endif %}
-{% if event.is_launched %}<div class="share hanging"><b>Share on Facebook</b></div>{% endif %}
-{% if editable %}<div class="launch hanging"><b> 
+{% endif %}</b></div><div class="clear"></div></div>{% endif %}<div class="share hanging {% if not event.is_launched %}hidden{% endif %}"><b>Share on Facebook</b></div>{% if editable %}<div class="launch hanging {% if event.is_launched %}launched{% endif %}"><b> 
 {% if event.is_launched %}
 Take Event Offline
 {% else %}
