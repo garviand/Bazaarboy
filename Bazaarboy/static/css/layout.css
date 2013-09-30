@@ -740,6 +740,14 @@ div#landing div.inner div.footer a {
 div#landing div.inner div.footer a:hover {
   text-decoration: underline;
 }
+div#terms {
+  width: 912px;
+  display: block;
+  margin: auto;
+}
+div#terms h1 {
+  text-align: center;
+}
 /*
 div#profile {
     div.cover {
