@@ -7,6 +7,12 @@ div.logo
         div.right 
             b Bazaarboy
         div.clear
-div.right
+div.controls
+    {% if user %}
+    div.name
+        a(href="{% url user:settings %}") {{ user.full_name }}
+    div.logout
+        a(href="{% url user:logout %}") Log Out
+    {% endif %}
     div.clear
 div.clear

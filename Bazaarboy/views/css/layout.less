@@ -139,8 +139,9 @@ div#wrapper_top {
     width: 100%;
     min-width: @body_width + @gutter_width * 2;
     height: @top_height;
-    z-index: @overlay_z_index + 1;
+    z-index: @overlay_z_index + 2;
     background-color: #1D1D1D;
+    font-family: Helvetica, Arial, sans-serif;
 
     div.logo {
         height: @top_height;
@@ -170,7 +171,6 @@ div#wrapper_top {
             padding: (@top_height - (@font_size_base + 4)) / 2 0;
             margin-left: 5px;
             color: #FFF;
-            font-family: Helvetica, Arial, sans-serif;
             font-size: @font_size_base + 4;
             line-height: @font_size_base + 4;
             text-transform: uppercase;
@@ -182,6 +182,30 @@ div#wrapper_top {
     div.controls {
         height: @top_height;
         .right;
+
+        @controls_height: @font_size_base;
+
+        .control_div {
+            height: @controls_height;
+            padding: (@top_height - @controls_height) / 2 0;
+            margin-right: 10px;
+            font-size: @controls_height;
+            line-height: @controls_height;
+            .left;
+
+            a {
+                color: #FFF;
+                text-decoration: none;
+            }
+        }
+
+        div.name {
+            .control_div;
+        }
+
+        div.logout {
+            .control_div;
+        }
     }
 }
 
@@ -656,20 +680,6 @@ div.event_base {
 
     position: relative;
     &.with_cover {
-        /*
-        > div.title {
-            div.bottom {
-                div.action, div.controls {
-                    top: @title_bottom_second_tier_top + 20 !important;
-                }
-
-                div.share, div.launch {
-                    top: @title_bottom_second_tier_top + 48 + 10 + 20 !important;   
-                }
-            }
-        }
-        */
-
         div.cover {
             height: 320px;
 
@@ -704,7 +714,7 @@ div.event_base {
         position: relative;
         width: 100%;
         min-width: @body_width + @gutter_width * 2;
-        z-index: @overlay_z_index;
+        z-index: @overlay_z_index + 1;
         border-bottom: 1px solid lighten(#B4A297, 20%);
         background-color: #FFF;
         box-shadow: 0 -4px 14px #B4A297;
@@ -1263,7 +1273,7 @@ div.event_base {
     left: 0 - (@body_width - @overlay_width);
     right: 0;
     bottom: 20px;
-    z-index: @overlay_z_index;
+    z-index: @overlay_z_index + 3;
     background-color: #FFF;
 
     &:before {

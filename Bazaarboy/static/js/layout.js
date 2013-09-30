@@ -35,9 +35,32 @@
         return typeof cb === "function" ? cb(response) : void 0;
       });
     },
+    adjustBottomPosition: function() {
+      var bottomHeight, contentHeight, topHeight, windowHeight;
+      windowHeight = $(window).height();
+      topHeight = $('div#wrapper_top').outerHeight();
+      contentHeight = $('div#wrapper_content').outerHeight();
+      bottomHeight = $('div#wrapper_bottom').outerHeight();
+      if (windowHeight - bottomHeight > topHeight + contentHeight) {
+        $('div#wrapper_bottom').css({
+          'position': 'fixed',
+          'bottom': 0
+        });
+      } else {
+        $('div#wrapper_bottom').css({
+          'position': '',
+          'bottom': ''
+        });
+      }
+    },
     init: function() {
+      var _this = this;
       this.post('timezone/', {
         timezone: getTimezoneName()
+      });
+      this.adjustBottomPosition();
+      $(window).resize(function() {
+        _this.adjustBottomPosition();
       });
     }
   };

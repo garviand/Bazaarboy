@@ -36,6 +36,24 @@ Bazaarboy.event.index =
             $('div#event div.frame > div.right').css
                 'padding-top': sidebarPadding + 'px'
         return
+    ###
+    adjustTitlePosition: () ->
+        offset = $(window).scrollTop()
+        topHeight = $('div#wrapper_top').outerHeight()
+        if offset > topHeight
+            $('div#event > div.title').css
+                'position': 'fixed'
+                'top': 0
+            $('div#event div.cover').css
+                'margin-top': $('div#event > div.title').outerHeight() + 'px'
+        else
+            $('div#event > div.title').css
+                'position': ''
+                'top': ''
+            $('div#event div.cover').css
+                'margin-top': ''
+        return
+    ###
     adjustOverlayHeight: () ->
         overlayHeight = 10
         for visibleDiv in $('div.event_overlay_canvas > div').not('div.hidden')
@@ -748,6 +766,12 @@ Bazaarboy.event.index =
             return
         # Adjust sidebar
         @adjustSidebarPosition()
+        # Listen to page scroll and change title position
+        ###
+        $(window).scroll () =>
+            @adjustTitlePosition()
+            return
+        ###
         # Share
         $('div#event div.share').click () =>
             @share()
