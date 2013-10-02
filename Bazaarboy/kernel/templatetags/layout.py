@@ -40,6 +40,13 @@ def validateTiming(obj):
     return obj.start_time <= timezone.now() and obj.end_time > timezone.now()
 
 @register.filter
+def hasStarted(obj):
+    """
+    Check if an object's start_time is past now
+    """
+    return obj.start_time <= timezone.now()
+
+@register.filter
 def sanitizeUrl(url):
     """
     Strip the parameters from the url

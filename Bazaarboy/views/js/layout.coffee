@@ -48,7 +48,9 @@
         # Pass the timezone information back to server
         @post 'timezone/', {timezone: getTimezoneName()}
         # Adjust footer position when window resizes
-        @adjustBottomPosition()
+        $(document).ready () =>
+            @adjustBottomPosition()
+            return
         $(window).resize () =>
             @adjustBottomPosition()
             return

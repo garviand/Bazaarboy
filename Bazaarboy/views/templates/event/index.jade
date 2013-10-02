@@ -82,6 +82,7 @@ block content
                             {% csrf_token %}
                     {% endif %}
                     {% if editable or tickets|length != 0 %}
+                    {% if editable or not event|hasStarted %}
                     div.action.hanging
                         div.button
                             b
@@ -102,6 +103,7 @@ block content
                                 | {% if cheapest != 0 %}${{ cheapest|floatformat:-2 }}{% else %}Free{% endif %}{% if tickets|length != 1 %}+{% endif %}
                                 {% endif %}
                         div.clear
+                    {% endif %}
                     {% endif %}
                     div.share.hanging(class="{% if not event.is_launched %}hidden{% endif %}")
                         b Share on Facebook

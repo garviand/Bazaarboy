@@ -58,7 +58,9 @@
       this.post('timezone/', {
         timezone: getTimezoneName()
       });
-      this.adjustBottomPosition();
+      $(document).ready(function() {
+        _this.adjustBottomPosition();
+      });
       $(window).resize(function() {
         _this.adjustBottomPosition();
       });
