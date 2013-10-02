@@ -6,6 +6,7 @@ from celery import task
 from mandrill import Mandrill
 from kernel.models import *
 from src.config import *
+from src.timezone import localize
 from datetime import datetime
 import pdb
 
@@ -104,13 +105,15 @@ class Email(object):
         """
         Send Purchase Confirmation
         """
-
-        readable_start_time = purchase.event.start_time.strftime("%H:%M")
-        organizer = purchase.event.organizers
-
+        start_time = localize(purchase.event.start_time)
+        readable_start_time = start_time.strftime("%b %e, ") \
+                                     + start_time.strftime("%I:%M %p").lstrip('0')
+        creator = Event_organizer.objects.get(event = purchase.event, is_creator = True) \
+                                     .profile
+        contact_email = creator.managers.all()[0].email
 
         to = [{
-            'email':purchase.owner.email, 
+            'email':purchase.owner.email,
             'name':purchase.owner.full_name
         }]
         subject = 'Confirmation for \'' + purchase.event.name + '\''
@@ -131,6 +134,10 @@ class Email(object):
             {
                 'name':'location', 
                 'content':purchase.event.location
+            },
+            {
+                'name':'organizer_email', 
+                'content':contact_email
             }
         ]
         return self.sendEmail(to, subject, template, mergeVars)
