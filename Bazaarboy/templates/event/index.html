@@ -36,7 +36,7 @@ _gaq.push(['_trackPageview']);
 {% endif %}
 {% if event.location %}
 at <b>{{ event.location }}</b>{% endif %}
-{% endspaceless %}</div><div class="sponsor hidden"><a href="javascript:;"><i>Want to sponsor this event?</i></a></div><div class="clear"></div>{% if editable %}<div class="controls"><span class="hidden">Drag the image an appropriate position. </span><a href="javascript:;" class="edit"> 
+{% endspaceless %}</div><div class="sponsor hidden"><a href="javascript:;"><i>Want to sponsor this event?</i></a></div><div class="clear"></div>{% if editable %}<div class="controls"><span class="hidden">Drag the image to an appropriate position. </span><a href="javascript:;" class="edit"> 
 {% if event.cover %}Edit Cover{% else %}Add Cover{% endif %}</a><a href="javascript:;" class="delete {% if not event.cover %}hidden{% endif %}"> 
 Delete</a><a href="javascript:;" class="hidden save">Save</a><a href="javascript:;" class="hidden cancel">Cancel</a><div class="clear"></div><form class="upload_cover"><input type="file" name="image_file" class="hidden">{% csrf_token %}</form></div>{% endif %}
 {% if editable or tickets|length != 0 %}

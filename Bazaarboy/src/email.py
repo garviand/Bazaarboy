@@ -2,12 +2,13 @@
 Email utilities
 """
 
+from datetime import datetime
 from celery import task
 from mandrill import Mandrill
 from kernel.models import *
 from src.config import *
 from src.timezone import localize
-from datetime import datetime
+
 import pdb
 
 class Email(object):
@@ -105,15 +106,13 @@ class Email(object):
         """
         Send Purchase Confirmation
         """
-        start_time = localize(purchase.event.start_time)
-        readable_start_time = start_time.strftime("%b %e, ") \
-                                     + start_time.strftime("%I:%M %p").lstrip('0')
+        startTime = localize(purchase.event.start_time)
+        readableStartTime = startTime.strftime('%b %e, %I:%M %p').lstrip('0')
         creator = Event_organizer.objects.get(event = purchase.event, is_creator = True) \
-                                     .profile
-        contact_email = creator.managers.all()[0].email
-
+                                         .profile
+        contactEmail = creator.managers.all()[0].email
         to = [{
-            'email':purchase.owner.email,
+            'email':purchase.owner.email, 
             'name':purchase.owner.full_name
         }]
         subject = 'Confirmation for \'' + purchase.event.name + '\''
@@ -129,7 +128,7 @@ class Email(object):
             },
             {
                 'name':'start_time', 
-                'content':readable_start_time
+                'content':readableStartTime
             }, 
             {
                 'name':'location', 
@@ -137,7 +136,7 @@ class Email(object):
             },
             {
                 'name':'organizer_email', 
-                'content':contact_email
+                'content':contactEmail
             }
         ]
         return self.sendEmail(to, subject, template, mergeVars)
