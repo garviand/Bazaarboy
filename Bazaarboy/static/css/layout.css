@@ -1012,7 +1012,7 @@ div.event_base.with_cover div.cover div.inner div.caption {
   height: 30px;
 }
 div.event_base.with_cover div.frame div.left div.placeholder {
-  height: 20px;
+  height: 0;
 }
 div.event_base.with_cover div.frame div.right {
   padding-top: 10px;
@@ -1377,6 +1377,7 @@ div.event_base div.frame > div.left div.placeholder {
 }
 div.event_base div.frame > div.left div.description {
   width: 100%;
+  margin-top: 20px;
   float: left;
 }
 div.event_base div.frame > div.left div.description div.editor {

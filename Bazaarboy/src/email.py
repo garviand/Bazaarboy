@@ -88,7 +88,7 @@ class Email(object):
             'email':user.email, 
             'name':user.full_name
         }]
-        subject = 'RYour Password Has Been Changed'
+        subject = 'Your Password Has Been Changed'
         template = 'password-changed'
         mergeVars = [
             {
@@ -120,7 +120,7 @@ class Email(object):
         ]
         return self.sendEmail(to, subject, template, mergeVars)
 
-    def sendDonationConfirmationEmail(self, donation, userProfile):
+    def sendDonationConfirmationEmail(self, donation):
         """
         Send Donation Confirmation
         """
@@ -138,10 +138,6 @@ class Email(object):
             {
                 'name':'user_name', 
                 'content':donation.owner.full_name
-            }, 
-            {
-                'name':'user_profile', 
-                'content':userProfile.profile.id
             }
         ]
         return self.sendEmail(to, subject, template, mergeVars)
