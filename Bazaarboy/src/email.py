@@ -6,6 +6,7 @@ from celery import task
 from mandrill import Mandrill
 from kernel.models import *
 from src.config import *
+from src.timezone import localize
 
 class Email(object):
     """
@@ -102,12 +103,21 @@ class Email(object):
         """
         Send Purchase Confirmation
         """
+        start_time = localize(purchase.event.start_time)
+        readable_start_time = start_time.strftime("%b %e, ") + start_time.strftime("%I:%M %p").lstrip('0')
+        organizer = purchase.event.organizers.all()[0]
+        manager = organizer.managers.all()[0]
+        contact_email = manager.email
+
+
+
+
         to = [{
             'email':purchase.owner.email, 
             'name':purchase.owner.full_name
         }]
         subject = 'Confirmation for \'' + purchase.event.name + '\''
-        template = 'confirm-rsvp'
+        template = 'bboy-p-event-template'
         mergeVars = [
             {
                 'name':'event_name', 
@@ -116,6 +126,18 @@ class Email(object):
             {
                 'name':'confirmation_code', 
                 'content':purchase.code
+            },
+            {
+                'name':'start_time', 
+                'content':readable_start_time
+            }, 
+            {
+                'name':'location', 
+                'content':purchase.event.location
+            },
+            {
+                'name':'organizer_email', 
+                'content':contact_email
             }
         ]
         return self.sendEmail(to, subject, template, mergeVars)
