@@ -12,6 +12,7 @@ from celery import task
 from kernel.models import *
 from src.config import *
 from src.controllers.request import *
+from src.email import Email
 from src.regex import REGEX_EMAIL
 from src.sanitizer import sanitize_redactor_input
 from src.serializer import serialize_one
@@ -1031,6 +1032,8 @@ def purchase(request, params, user):
         purchase = Purchase(owner = user, ticket = ticket, event = event, 
                             price = ticket.price)
         purchase.save()
+        email = Email()
+        email.sendPurchaseConfirmationEmail(purchase)
         response = {
             'status':'OK',
             'purchase':serialize_one(purchase)

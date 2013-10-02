@@ -6,6 +6,8 @@ from celery import task
 from mandrill import Mandrill
 from kernel.models import *
 from src.config import *
+from datetime import datetime
+import pdb
 
 class Email(object):
     """
@@ -88,7 +90,7 @@ class Email(object):
             'email':user.email, 
             'name':user.full_name
         }]
-        subject = 'RYour Password Has Been Changed'
+        subject = 'Your Password Has Been Changed'
         template = 'password-changed'
         mergeVars = [
             {
@@ -102,12 +104,17 @@ class Email(object):
         """
         Send Purchase Confirmation
         """
+
+        readable_start_time = purchase.event.start_time.strftime("%H:%M")
+        organizer = purchase.event.organizers
+
+
         to = [{
             'email':purchase.owner.email, 
             'name':purchase.owner.full_name
         }]
         subject = 'Confirmation for \'' + purchase.event.name + '\''
-        template = 'confirm-rsvp'
+        template = 'bboy-p-event-template'
         mergeVars = [
             {
                 'name':'event_name', 
@@ -116,6 +123,14 @@ class Email(object):
             {
                 'name':'confirmation_code', 
                 'content':purchase.code
+            },
+            {
+                'name':'start_time', 
+                'content':readable_start_time
+            }, 
+            {
+                'name':'location', 
+                'content':purchase.event.location
             }
         ]
         return self.sendEmail(to, subject, template, mergeVars)
