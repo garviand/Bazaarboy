@@ -135,7 +135,7 @@ class Email(object):
         ]
         return self.sendEmail(to, subject, template, mergeVars)
 
-    def sendDonationConfirmationEmail(self, donation, userProfile):
+    def sendDonationConfirmationEmail(self, donation):
         """
         Send Donation Confirmation
         """
@@ -153,10 +153,6 @@ class Email(object):
             {
                 'name':'user_name', 
                 'content':donation.owner.full_name
-            }, 
-            {
-                'name':'user_profile', 
-                'content':userProfile.profile.id
             }
         ]
         return self.sendEmail(to, subject, template, mergeVars)

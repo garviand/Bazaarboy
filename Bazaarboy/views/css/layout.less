@@ -281,7 +281,6 @@ div#wrapper_overlay {
 // Landing
 
 div#landing {
-
     div.background {
         position: fixed;
         width: 110%;
@@ -422,6 +421,15 @@ div#landing {
                 }
             }
         }
+    }
+}
+
+div#terms {
+    width: @body_width;
+    .center;
+
+    h1 {
+        text-align: center;
     }
 }
 
@@ -700,7 +708,7 @@ div.event_base {
         div.frame {
             div.left {
                 div.placeholder {
-                    height: 20px;
+                    height: 0;
                 }
             }
 
@@ -1052,6 +1060,7 @@ div.event_base {
 
             div.description {
                 width: 100%;
+                margin-top: 20px;
                 .left;
 
                 div.editor {

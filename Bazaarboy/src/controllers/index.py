@@ -16,10 +16,15 @@ def index(request, params, user):
         return render(request, 'index/landing.html', locals())
     return render(request, 'index/index.html', locals())
 
-def terms(request):
-    pass
+@login_check()
+def terms(request, user):
+    """
+    Terms of services
+    """
+    return render(request, 'index/terms.html', locals())
 
-def about(request):
+@login_check()
+def about(request, user):
     pass
 
 @login_check()

@@ -1016,29 +1016,6 @@ def purchase(request, params, user):
             'message':'This ticket is sold out.'
         }
         return json_response(response)
-    # Check if it's a free ticket
-    if ticket.price == 0:
-        # Check if there ia an existing purchase
-        if Purchase.objects.filter(owner = user, event = event, 
-                                   checkout = None, is_expired = False) \
-                           .exists():
-            response = {
-                'status':'FAIL',
-                'error':'PURCHASED_ALREADY',
-                'message':'You have already bought a ticket to the event.'
-            }
-            return json_response(response)
-        # Make the purchase record
-        purchase = Purchase(owner = user, ticket = ticket, event = event, 
-                            price = ticket.price)
-        purchase.save()
-        email = Email()
-        email.sendPurchaseConfirmationEmail(purchase)
-        response = {
-            'status':'OK',
-            'purchase':serialize_one(purchase)
-        }
-        return json_response(response)
     # Check if there is an exisiting purchase
     if Purchase.objects.filter(Q(checkout = None) | 
                                Q(checkout__is_charged = True, 
@@ -1049,6 +1026,24 @@ def purchase(request, params, user):
             'status':'FAIL',
             'error':'PURCHASED_ALREADY',
             'message':'You have already bought a ticket to the event.'
+        }
+        return json_response(response)
+    # Check if it's a free ticket
+    if ticket.price == 0:
+        # Create the purchase
+        code = os.urandom(6).encode('base_64')[:6].upper()
+        purchase = Purchase(owner = user, ticket = ticket, event = event, 
+                            price = ticket.price, code = code)
+        purchase.save()
+        # Try sending the confirmation email
+        try:
+            email = Email()
+            email.sendPurchaseConfirmationEmail(purchase)
+        except Exception:
+            pass
+        response = {
+            'status':'OK',
+            'purchase':serialize_one(purchase)
         }
         return json_response(response)
     # Get the event creator's payemnt account

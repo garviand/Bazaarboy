@@ -740,6 +740,14 @@ div#landing div.inner div.footer a {
 div#landing div.inner div.footer a:hover {
   text-decoration: underline;
 }
+div#terms {
+  width: 912px;
+  display: block;
+  margin: auto;
+}
+div#terms h1 {
+  text-align: center;
+}
 /*
 div#profile {
     div.cover {
@@ -1004,7 +1012,7 @@ div.event_base.with_cover div.cover div.inner div.caption {
   height: 30px;
 }
 div.event_base.with_cover div.frame div.left div.placeholder {
-  height: 20px;
+  height: 0;
 }
 div.event_base.with_cover div.frame div.right {
   padding-top: 10px;
@@ -1369,6 +1377,7 @@ div.event_base div.frame > div.left div.placeholder {
 }
 div.event_base div.frame > div.left div.description {
   width: 100%;
+  margin-top: 20px;
   float: left;
 }
 div.event_base div.frame > div.left div.description div.editor {

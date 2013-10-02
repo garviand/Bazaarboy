@@ -39,19 +39,21 @@ at <b>{{ event.location }}</b>{% endif %}
 {% endspaceless %}</div><div class="sponsor hidden"><a href="javascript:;"><i>Want to sponsor this event?</i></a></div><div class="clear"></div>{% if editable %}<div class="controls"><span class="hidden">Drag the image an appropriate position. </span><a href="javascript:;" class="edit"> 
 {% if event.cover %}Edit Cover{% else %}Add Cover{% endif %}</a><a href="javascript:;" class="delete {% if not event.cover %}hidden{% endif %}"> 
 Delete</a><a href="javascript:;" class="hidden save">Save</a><a href="javascript:;" class="hidden cancel">Cancel</a><div class="clear"></div><form class="upload_cover"><input type="file" name="image_file" class="hidden">{% csrf_token %}</form></div>{% endif %}
-{% if editable or tickets|length != 0 %}<div class="action hanging"><div class="button"><b>{% if editable %}
+{% if editable or tickets|length != 0 %}
+{% if editable or not event|hasStarted %}<div class="action hanging"><div class="button"><b>{% if editable %}
 Edit Tickets
 {% else %}
 {% if rsvp %}
 RSVP
 {% else %}
-Buy Tickets
+Buy Ticket
 {% endif %}
 {% endif %}</b></div><div class="price"><b>{% if rsvp %}
 Free
 {% else %}
-${{ cheapest|floatformat:-2 }}{% if tickets|length != 1 %}+{% endif %}
-{% endif %}</b></div><div class="clear"></div></div>{% endif %}<div class="share hanging {% if not event.is_launched %}hidden{% endif %}"><b>Share on Facebook</b></div>{% if editable %}<div class="launch hanging {% if event.is_launched %}launched{% endif %}"><b> 
+{% if cheapest != 0 %}${{ cheapest|floatformat:-2 }}{% else %}Free{% endif %}{% if tickets|length != 1 %}+{% endif %}
+{% endif %}</b></div><div class="clear"></div></div>{% endif %}
+{% endif %}<div class="share hanging {% if not event.is_launched %}hidden{% endif %}"><b>Share on Facebook</b></div>{% if editable %}<div class="launch hanging {% if event.is_launched %}launched{% endif %}"><b> 
 {% if event.is_launched %}
 Take Event Offline
 {% else %}
@@ -78,7 +80,7 @@ We treat your privacy seriously, these information will not be shared
 with any outside parties.</div></div><div class="content"><input type="text" name="email" placeholder="Email"><input type="text" name="full_name" placeholder="Full Name"><input type="text" name="phone" placeholder="Phone Number (Optional)"><div class="clear"></div></div></div>{% endif %}<div class="action"><div class="header"><div class="title"><a href="javascript:;" class="confirm">Confirm</a></div></div></div><div class="confirmation hidden"><div class="header"><div class="title">Confirmation</div></div><div class="content"><div class="caption">Thank you!</div><div class="body"><div class="upper"><h2>You have {% if rsvp %}RSVP'd{% else %}purchased a ticket{% endif %} for</h2><p class="name">{{ event.name }}</p><p class="time"> 
 {{ event.start_time|date:"F jS, Y @ f" }}{{ event.start_time|date:"A"|lower }}</p><p class="location">at {{ event.location }}</p></div><div class="lower"><p class="top"><span class="ticket"></span><span class="price"></span><span class="clear"></span></p><p> 
 A more detailed confirmation invoice will be emailed to you 
-at <span class="email"> </span> shortly. Thanks for your purchase!</p></div></div></div></div></div>{% endif %}</div><div id="wrapper_bottom"><div class="inner"><span>&copy; Bazaarboy LLC. All rights reserved.</span>&nbsp;<a href="javascript:;">Terms of Use</a>&nbsp;|&nbsp;<a href="http://blog.bazaarboy.com">Blog</a>&nbsp;|&nbsp;<a href="mailto:build@bazaarboy.com">Contact Us</a></div></div><div id="wrapper_overlay"></div><script type="text/javascript" src="{{ STATIC_URL }}js/libraries.js"></script><script type="text/javascript">var rootUrl = '{% url index %}';
+shortly. Thanks for your purchase!</p></div></div></div></div></div>{% endif %}</div><div id="wrapper_bottom"><div class="inner"><span>&copy; Bazaarboy LLC. All rights reserved.</span>&nbsp;<a href="{% url index:terms %}">Terms of Use</a>&nbsp;|&nbsp;<a href="http://blog.bazaarboy.com">Blog</a>&nbsp;|&nbsp;<a href="mailto:build@bazaarboy.com">Contact Us</a></div></div><div id="wrapper_overlay"></div><script type="text/javascript" src="{{ STATIC_URL }}js/libraries.js"></script><script type="text/javascript">var rootUrl = '{% url index %}';
 var mediaUrl = '{{ MEDIA_URL }}';
 var csrfToken = '{{ csrf_token }}';
 var loggedIn = {% if user %}true{% else %}false{% endif %};</script><script type="text/javascript" src="{{ STATIC_URL }}js/layout.js"></script>{% if editable %}<script type="text/javascript" src="{{ STATIC_URL }}jQueryUI/jquery-ui.min.js"></script><script type="text/javascript" src="{{ STATIC_URL }}redactor/redactor.min.js"></script>{% else %}<script type="text/javascript" src="https://checkout.stripe.com/v2/checkout.js"></script>{% endif %}<script type="text/javascript">var eventId = {{ event.id }};
