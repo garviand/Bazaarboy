@@ -83,7 +83,9 @@ block content
                     div.sponsor.hidden
                         a(href="javascript:;")
                             i Want to sponsor this event?
+                    {% if editable %}
                     div.button Edit
+                    {% endif %}
                     div.clear
                     {% if editable %}
                     div.controls
