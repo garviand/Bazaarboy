@@ -12,6 +12,7 @@ append head
     {% if editable %}
     link(rel="stylesheet", href="{{ STATIC_URL }}jQueryUI/jquery-ui.css")
     link(rel="stylesheet", href="{{ STATIC_URL }}redactor/redactor.css")
+    link(rel="stylesheet", href="{{ STATIC_URL }}pikaday/pikaday.css")
     {% endif %}
     //- Facebook
     meta(property="og:url", content="{{ request.build_absolute_uri }}")
@@ -61,6 +62,7 @@ block content
                             |  - {{ event.end_time|date:"l, M jS, f" }}{{ event.end_time|date:"A"|lower }}
                             | {% endif %}
                             | {% endif %}
+                            | {{ event.start_time|date:"T" }}
                             | {% if event.location %}
                             | at 
                             b {{ event.location }}
@@ -76,6 +78,7 @@ block content
                             input(type="text", name="end_date", value="{{ event.end_time|date:'m/d/Y' }}")
                             | @
                             input(type="text", name="end_time", value="{{ event.end_time|date:'g:i A' }}")
+                            | {{ event.start_time|date:"T" }}
                         {% endif %}
                     div.sponsor.hidden
                         a(href="javascript:;")
@@ -374,6 +377,9 @@ append script
     {% if editable %}
     script(type="text/javascript", src="{{ STATIC_URL }}jQueryUI/jquery-ui.min.js")
     script(type="text/javascript", src="{{ STATIC_URL }}redactor/redactor.min.js")
+    script(type="text/javascript", src="//cdnjs.cloudflare.com/ajax/libs/moment.js/2.0.0/moment.min.js")
+    script(type="text/javascript", src="{{ STATIC_URL }}pikaday/pikaday.js")
+    script(type="text/javascript", src="{{ STATIC_URL }}pikaday/pikaday.jquery.js")
     {% else %}
     script(type="text/javascript", src="https://checkout.stripe.com/v2/checkout.js")
     {% endif %}

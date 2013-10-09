@@ -720,6 +720,12 @@
           scope.startEditingTitle();
         }
       });
+      $('div#event > div.title div.details input[name=start_date]').pikaday({
+        format: 'MM/DD/YYYY'
+      });
+      $('div#event > div.title div.details input[name=end_date]').pikaday({
+        format: 'MM/DD/YYYY'
+      });
       $('div#event > div.title div.bottom > div.button').click(function() {
         if ($(this).hasClass('stick')) {
           scope.stopEditingTimeLocation();

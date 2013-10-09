@@ -671,6 +671,10 @@ Bazaarboy.event.index =
                 scope.startEditingTitle()
             return
         # Edit time and location
+        $('div#event > div.title div.details input[name=start_date]').pikaday
+            format: 'MM/DD/YYYY'
+        $('div#event > div.title div.details input[name=end_date]').pikaday
+            format: 'MM/DD/YYYY'
         $('div#event > div.title div.bottom > div.button').click () ->
             if $(this).hasClass('stick')
                 scope.stopEditingTimeLocation()
