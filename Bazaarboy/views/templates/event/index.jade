@@ -9,8 +9,10 @@ append head
     {% if event.is_private %}
     meta(name="robots", content="noindex,nofollow")
     {% endif %}
+    {% if editable %}
     link(rel="stylesheet", href="{{ STATIC_URL }}jQueryUI/jquery-ui.css")
     link(rel="stylesheet", href="{{ STATIC_URL }}redactor/redactor.css")
+    {% endif %}
     //- Facebook
     meta(property="og:url", content="{{ request.build_absolute_uri }}")
     meta(property="og:title", content="{{ event.name }}")
@@ -38,34 +40,47 @@ block content
                     {% if editable %}
                     div.button Edit
                     div.editor.hidden
-                        input(type="text", name="name", placeholder="Event name", value="{{ event.name }}")
+                        input(type="text", name="name", placeholder="Event name", value="{{ event.name }}", spellcheck="false")
                     {% else %}
                     div.controls
                     {% endif %}
                     div.clear
                 div.bottom
                     div.details
-                        //- Format the times to form something like this
-                        //- Jul 9th, 10pm - 11pm
-                        //- or
-                        //- Jul 9th, 10am - Jul 10th, 11pm
-                        | {% spaceless %}
-                        | {{ event.start_time|date:"M jS, f" }}{{ event.start_time|date:"A"|lower }}
-                        | {% if event.end_time %}
-                        | {% if event.end_time|shouldShortenEndTime:event.start_time %}
-                        |  - {{ event.end_time|date:"f" }}{{ event.end_time|date:"A"|lower }}
-                        | {% else %}
-                        |  - {{ event.end_time|date:"M jS, f" }}{{ event.end_time|date:"A"|lower }}
-                        | {% endif %}
-                        | {% endif %}
-                        | {% if event.location %}
-                        | at 
-                        b {{ event.location }}
-                        | {% endif %}
-                        | {% endspaceless %}
+                        div.text
+                            //- Format the times to form something like this
+                            //- Wednesday, Jul 9th, 10pm - 11pm
+                            //- or
+                            //- Wednesday, Jul 9th, 10am - Thursday, Jul 10th, 11pm
+                            | {% spaceless %}
+                            | {{ event.start_time|date:"l, M jS, f" }}{{ event.start_time|date:"A"|lower }}
+                            | {% if event.end_time %}
+                            | {% if event.end_time|shouldShortenEndTime:event.start_time %}
+                            |  - {{ event.end_time|date:"f" }}{{ event.end_time|date:"A"|lower }}
+                            | {% else %}
+                            |  - {{ event.end_time|date:"l, M jS, f" }}{{ event.end_time|date:"A"|lower }}
+                            | {% endif %}
+                            | {% endif %}
+                            | {% if event.location %}
+                            | at 
+                            b {{ event.location }}
+                            | {% endif %}
+                            | {% endspaceless %}
+                        {% if editable %}
+                        div.editor.hidden
+                            label When
+                            input(type="text", name="start_date", value="{{ event.start_time|date:'m/d/Y' }}")
+                            | @
+                            input(type="text", name="start_time", value="{{ event.start_time|date:'g:i A' }}")
+                            | to
+                            input(type="text", name="end_date", value="{{ event.end_time|date:'m/d/Y' }}")
+                            | @
+                            input(type="text", name="end_time", value="{{ event.end_time|date:'g:i A' }}")
+                        {% endif %}
                     div.sponsor.hidden
                         a(href="javascript:;")
                             i Want to sponsor this event?
+                    div.button Edit
                     div.clear
                     {% if editable %}
                     div.controls
@@ -149,11 +164,15 @@ block content
                     div.controls
                         a.save(href="javascript:;") Save
                         a.edit(href="javascript:;") Edit
+                        div.clear
                     {% endif %}
             div.right
                 div.organizers.info
                     div.caption
                         div.text Organizer{{ organizers|pluralize }}
+                        {% if editable %}
+                        div.button Add
+                        {% endif %}
                         div.clear
                     div.body
                         {% for organizer in organizers %}

@@ -220,29 +220,39 @@ Bazaarboy.event.index =
             return
         return
     startEditingTitle: () ->
-        $('div#event > div.title div.text').addClass('hidden')
-        $('div#event > div.title div.editor').removeClass('hidden')
-        title = $('div#event > div.title div.editor input').val()
-        $('div#event > div.title div.editor input').focus().val('').val(title)
-        $('div#event > div.title div.button')
+        $('div#event > div.title div.top div.text').addClass('hidden')
+        $('div#event > div.title div.top div.editor').removeClass('hidden')
+        title = $('div#event > div.title div.top div.editor input').val()
+        $('div#event > div.title div.top div.editor input')
+            .focus().val('').val(title)
+        $('div#event > div.title div.top div.button')
             .html('Save')
             .addClass('stick')
         return
     stopEditingTitle: () ->
-        title = $('div#event > div.title div.editor input').val()
+        title = $('div#event > div.title div.top div.editor input').val()
         @save {name: title}, (err, event) =>
             unless err
-                $('div#event > div.title div.text')
+                $('div#event > div.title div.top div.text')
                     .html(title)
                     .removeClass('hidden')
-                $('div#event > div.title div.editor input').val(title)
-                $('div#event > div.title div.editor').addClass('hidden')
-                $('div#event > div.title div.button')
+                $('div#event > div.title div.top div.editor input').val(title)
+                $('div#event > div.title div.top div.editor').addClass('hidden')
+                $('div#event > div.title div.top div.button')
                     .html('Edit')
                     .removeClass('stick')
             else
                 alert err.message
             return
+        return
+    startEditingTimeLocation: () ->
+        $('div#event > div.title div.details div.text').addClass('hidden')
+        $('div#event > div.title div.details div.editor').removeClass('hidden')
+        $('div#event > div.title div.bottom > div.button')
+            .html('Save')
+            .addClass('stick')
+        return
+    stopEditingTimeLocation: () ->
         return
     prepareUploadedCoverImage: (coverUrl) ->
         $('div#event').addClass('with_cover')
@@ -659,6 +669,13 @@ Bazaarboy.event.index =
                 scope.stopEditingTitle()
             else
                 scope.startEditingTitle()
+            return
+        # Edit time and location
+        $('div#event > div.title div.bottom > div.button').click () ->
+            if $(this).hasClass('stick')
+                scope.stopEditingTimeLocation()
+            else
+                scope.startEditingTimeLocation()
             return
         # Save original images
         @cover = $('div#event div.cover div.image div.bounds img')

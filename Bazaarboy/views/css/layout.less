@@ -754,16 +754,19 @@ div.event_base {
                 }
 
                 div.button {
-                    display: none;
                     position: absolute;
                     width: 40px;
-                    height: @font_size_base;
-                    left: -40px;
-                    top: 20px + 3px;
-                    color: #000;
-                    font-size: @font_size_base;
+                    height: 12px;
+                    left: -50px;
+                    top: 20px + (@font_size_base + 15px - 12px) / 2 - 2px - 1px;
+                    padding: 2px 0;
+                    border: 1px solid @event_blue;
+                    color: @event_blue;
+                    font-size: 12px;
                     font-weight: @font_weight_base;
-                    line-height: @font_size_base;
+                    line-height: 12px;
+                    text-transform: uppercase;
+                    text-align: center;
                     cursor: pointer;
                 }
 
@@ -777,7 +780,7 @@ div.event_base {
                         margin: 0;
                         padding: 0;
                         border: none;
-                        outline: none;
+                        outline-color: @event_blue;
                         background: none;
                         font-size: @font_size_base + 9;
                         font-weight: @font_weight_bold;
@@ -802,6 +805,10 @@ div.event_base {
 
                 div.details {
                     .left;
+
+                    div.text {
+                        width: 100%;
+                    }
                 }
 
                 div.sponsor {
@@ -811,6 +818,23 @@ div.event_base {
                         color: #000;
                         text-decoration: underline;
                     }
+                }
+
+                > div.button {
+                    position: absolute;
+                    width: 40px;
+                    height: 12px;
+                    left: -50px;
+                    top: 14px - 2px;
+                    padding: 2px 0;
+                    border: 1px solid @event_blue;
+                    color: @event_blue;
+                    font-size: 12px;
+                    font-weight: @font_weight_base;
+                    line-height: 12px;
+                    text-transform: uppercase;
+                    text-align: center;
+                    cursor: pointer;
                 }
 
                 div.controls {
@@ -1067,11 +1091,10 @@ div.event_base {
                     width: 100%;
 
                     &.editing {
-                        width: @content_width + 22;
-                        margin-left: -11px;
+                        width: @content_width;
 
                         div.inner {
-                            width: @content_width;
+                            width: @content_width - 22px;
                             .center;
                         }
                     }
@@ -1090,8 +1113,28 @@ div.event_base {
                 }
 
                 div.controls {
-                    a.save {
-                        
+                    width: 100%;
+                    height: 30px;
+                    padding-top: 10px;
+
+                    a {
+                        display: block;
+                        width: 80px;
+                        height: @font_size_base + 2;
+                        padding: (30px - (@font_size_base + 2)) / 2 0;
+                        border: 1px solid @event_blue;
+                        color: @event_blue;
+                        font-size: @font_size_base + 2;
+                        font-weight: @font_weight_bold;
+                        line-height: @font_size_base + 2;
+                        text-transform: uppercase;
+                        text-decoration: none;
+                        text-align: center;
+                        .left;
+
+                        &.save {
+                            margin-right: 10px;
+                        }
                     }
                 }
             }
@@ -1108,12 +1151,6 @@ div.event_base {
                 border-top: 1px solid #E9E9E9;
                 background-color: #FFF;
 
-                &:hover {
-                    div.button {
-                        display: block !important;
-                    }
-                }
-
                 div.caption {
                     width: 100%;
                     height: 18px;
@@ -1127,14 +1164,16 @@ div.event_base {
                     }
 
                     div.button {
-                        display: none;
-                        width: 25%;
-                        height: 14px;
+                        width: 23%;
+                        height: 12px;
                         padding: 2px 0;
-                        background-color: #CCC;
-                        font-size: @font_size_base - 3;
+                        border: 1px solid @event_blue;
+                        color: @event_blue;
+                        font-size: 12px;
                         font-weight: @font_weight_bold;
+                        line-height: 12px;
                         text-align: center;
+                        text-transform: uppercase;
                         cursor: pointer;
                         .right;
                     }
@@ -1155,10 +1194,11 @@ div.event_base {
                         min-height: 30px;
 
                         textarea {
-                            width: @sidebar_width - 30;
+                            width: @sidebar_width - 28;
                             min-height: 50px;
                             padding: 5px;
-                            border: none;
+                            border: 1px solid @event_blue;
+                            outline-color: @event_blue;
                             resize: none;
                             font-size: @font_size_base - 3;
                         }

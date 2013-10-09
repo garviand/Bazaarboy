@@ -261,29 +261,35 @@
     },
     startEditingTitle: function() {
       var title;
-      $('div#event > div.title div.text').addClass('hidden');
-      $('div#event > div.title div.editor').removeClass('hidden');
-      title = $('div#event > div.title div.editor input').val();
-      $('div#event > div.title div.editor input').focus().val('').val(title);
-      $('div#event > div.title div.button').html('Save').addClass('stick');
+      $('div#event > div.title div.top div.text').addClass('hidden');
+      $('div#event > div.title div.top div.editor').removeClass('hidden');
+      title = $('div#event > div.title div.top div.editor input').val();
+      $('div#event > div.title div.top div.editor input').focus().val('').val(title);
+      $('div#event > div.title div.top div.button').html('Save').addClass('stick');
     },
     stopEditingTitle: function() {
       var title,
         _this = this;
-      title = $('div#event > div.title div.editor input').val();
+      title = $('div#event > div.title div.top div.editor input').val();
       this.save({
         name: title
       }, function(err, event) {
         if (!err) {
-          $('div#event > div.title div.text').html(title).removeClass('hidden');
-          $('div#event > div.title div.editor input').val(title);
-          $('div#event > div.title div.editor').addClass('hidden');
-          $('div#event > div.title div.button').html('Edit').removeClass('stick');
+          $('div#event > div.title div.top div.text').html(title).removeClass('hidden');
+          $('div#event > div.title div.top div.editor input').val(title);
+          $('div#event > div.title div.top div.editor').addClass('hidden');
+          $('div#event > div.title div.top div.button').html('Edit').removeClass('stick');
         } else {
           alert(err.message);
         }
       });
     },
+    startEditingTimeLocation: function() {
+      $('div#event > div.title div.details div.text').addClass('hidden');
+      $('div#event > div.title div.details div.editor').removeClass('hidden');
+      $('div#event > div.title div.bottom > div.button').html('Save').addClass('stick');
+    },
+    stopEditingTimeLocation: function() {},
     prepareUploadedCoverImage: function(coverUrl) {
       var scope;
       $('div#event').addClass('with_cover');
@@ -712,6 +718,13 @@
           scope.stopEditingTitle();
         } else {
           scope.startEditingTitle();
+        }
+      });
+      $('div#event > div.title div.bottom > div.button').click(function() {
+        if ($(this).hasClass('stick')) {
+          scope.stopEditingTimeLocation();
+        } else {
+          scope.startEditingTimeLocation();
         }
       });
       this.cover = $('div#event div.cover div.image div.bounds img');
