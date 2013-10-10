@@ -10,11 +10,11 @@ class SMS(object):
     """
     A wrapper class for all the SMS functions
     """
-    def __init__():
+    def __init__(self):
         super(SMS, self).__init__()
         self.client = TwilioRestClient(TWILIO_ACCOUNT_SID, TWILIO_AUTH_TOKEN)
 
-    def sendSMS(to, body):
+    def sendSMS(self, to, body):
         sms = self.client.sms.messages.create(_from = TWILIO_FROM, to = to, 
                                               body = body)
         return sms
@@ -24,4 +24,5 @@ class SMS(object):
         body += purchase.event.name
         body += '\' and your confirmation code is '
         body += purchase.code
-        return self.sendSMS(purchase.owner.phone)
+        body += '. From Bazaarboy.'
+        return self.sendSMS(purchase.owner.phone, body)

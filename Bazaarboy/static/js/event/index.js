@@ -7,28 +7,27 @@
       cover: void 0
     },
     coverEditInProgress: false,
-    drawMapWithCenter: function(latitude, longitude) {
-      var canvas, center, mapOpts, marker, markerPos;
-      center = new google.maps.LatLng(latitude + 0.0015, longitude);
-      mapOpts = {
-        center: center,
-        zoom: 14,
-        mapTypeId: google.maps.MapTypeId.ROADMAP,
-        draggable: false,
-        mapTypeControl: false,
-        overviewMapControl: false,
-        streetViewControl: false,
-        scaleControl: false,
-        zoomControl: false
-      };
-      canvas = document.getElementById('map_canvas');
-      this.map = new google.maps.Map(canvas, mapOpts);
-      markerPos = new google.maps.LatLng(latitude, longitude);
-      marker = new google.maps.Marker({
-        position: markerPos
-      });
-      marker.setMap(this.map);
-    },
+    /*
+    drawMapWithCenter: (latitude, longitude) ->
+        center = new google.maps.LatLng(latitude + 0.0015, longitude)
+        mapOpts = 
+            center: center
+            zoom: 14
+            mapTypeId: google.maps.MapTypeId.ROADMAP
+            draggable: false
+            mapTypeControl: false
+            overviewMapControl: false
+            streetViewControl: false
+            scaleControl: false
+            zoomControl: false
+        canvas = document.getElementById('map_canvas')
+        @map = new google.maps.Map(canvas, mapOpts)
+        markerPos = new google.maps.LatLng(latitude, longitude)
+        marker = new google.maps.Marker({position: markerPos})
+        marker.setMap @map
+        return
+    */
+
     adjustSidebarPosition: function() {
       var count, hangingButtons, i, sidebarPadding, topBase, _i;
       hangingButtons = $('div#event > div.title div.bottom div.hanging').not('div.hidden');
@@ -104,7 +103,7 @@
         picture: image
       }, function(response) {});
     },
-    purchase: function(ticket, email, fullName) {
+    purchase: function(ticket, email, fullName, phone) {
       var params,
         _this = this;
       if (email == null) {
@@ -113,12 +112,18 @@
       if (fullName == null) {
         fullName = null;
       }
+      if (phone == null) {
+        phone = null;
+      }
       params = {
         ticket: ticket
       };
       if ((email != null) && (fullName != null)) {
         params.email = email;
         params.full_name = fullName;
+      }
+      if (phone != null) {
+        params.phone = phone;
       }
       Bazaarboy.post('event/purchase/', params, function(response) {
         var checkoutDescription;
@@ -217,7 +222,7 @@
         }
       });
       $('div#rsvp div.action a.confirm').click(function() {
-        var email, fullName, ticket;
+        var email, fullName, phone, ticket;
         if ($('div#rsvp div.ticket.valid.selected').length > 0) {
           ticket = $('div#rsvp div.ticket.valid.selected').attr('data-id');
           if ($('div#rsvp div.info').length === 0) {
@@ -225,6 +230,7 @@
           } else {
             email = $('div#rsvp div.info input[name=email]').val();
             fullName = $('div#rsvp div.info input[name=full_name]').val();
+            phone = $('div#rsvp div.info input[name=phone]').val();
             if (email.trim() === '') {
               alert('You must enter a valid email address.');
               return;
@@ -233,7 +239,10 @@
               alert('You must enter your full name,');
               return;
             }
-            _this.purchase(ticket, email, fullName);
+            if (phone.trim() === '') {
+              phone = null;
+            }
+            _this.purchase(ticket, email, fullName, phone);
           }
         }
       });

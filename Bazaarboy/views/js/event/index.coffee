@@ -87,12 +87,14 @@ Bazaarboy.event.index =
             picture: image
         , (response) -> 
             return
-    purchase: (ticket, email=null, fullName=null) ->
+    purchase: (ticket, email=null, fullName=null, phone=null) ->
         params = 
             ticket: ticket
         if email? and fullName?
             params.email = email
             params.full_name = fullName
+        if phone?
+            params.phone = phone
         Bazaarboy.post 'event/purchase/', params, (response) =>
             if response.status is 'OK'
                 if response.publishable_key?
@@ -195,13 +197,16 @@ Bazaarboy.event.index =
                 else
                     email = $('div#rsvp div.info input[name=email]').val()
                     fullName = $('div#rsvp div.info input[name=full_name]').val()
+                    phone = $('div#rsvp div.info input[name=phone]').val()
                     if email.trim() is ''
                         alert 'You must enter a valid email address.'
                         return
                     if fullName.trim() is ''
                         alert 'You must enter your full name,'
                         return
-                    @purchase ticket, email, fullName
+                    if phone.trim() is ''
+                        phone = null
+                    @purchase ticket, email, fullName, phone
             return
         # Check whether to open the RSVP modal
         if window.location.hash? and window.location.hash is '#rsvp' and editable
