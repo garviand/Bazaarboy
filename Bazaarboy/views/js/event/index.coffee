@@ -253,6 +253,62 @@ Bazaarboy.event.index =
             .addClass('stick')
         return
     stopEditingTimeLocation: () ->
+        startDate = $('div#event > div.title input[name=start_date]').val()
+        if not moment(startDate, 'MM/DD/YYYY').isValid()
+            return
+        startTime = $('div#event > div.title input[name=start_time]').val()
+        if not moment(startTime, 'h:mm a').isValid()
+            return
+        startTime = moment(startDate + ' ' + startTime, 'MM/DD/YYYY h:mm A')
+        endDate = $('div#event > div.title input[name=end_date]').val()
+        endTime = $('div#event > div.title input[name=end_time]').val()
+        if endDate.trim().length is 0 and endTime.trim().length is 0
+            endTime = false
+        else
+            if not moment(endDate, 'MM/DD/YYYY').isValid()
+                return
+            if not moment(endTime, 'h:mm a').isValid()
+                return
+            endTime = moment(endDate + ' ' + endTime, 'MM/DD/YYYY h:mm A')
+        location = $('div#event > div.title input[name=location]').val().trim()
+        if location.length is 0
+            location = 'none'
+        @save
+            start_time: startTime.utc().format('YYYY-MM-DD HH:mm:ss')
+            end_time: if endTime then endTime.utc().format('YYYY-MM-DD HH:mm:ss') else 'none'
+            location: location
+        , (err, event) =>
+            unless err
+                timeString = ''
+                startTime = startTime.local()
+                if startTime.format('mm') is '00'
+                    timeString += startTime.format('dddd, MMM Do, ha')
+                else
+                    timeString += startTime.format('dddd, MMM Do, h:mma')
+                if endTime
+                    timeString += ' - '
+                    endTime = endTime.local()
+                    if endTime.format('D') is startTime.format('D')
+                        # Shorten the end time
+                        if endTime.format('mm') is '00'
+                            timeString += endTime.format('ha')
+                        else
+                            timeString += endTime.format('h:mma')
+                    else
+                        if endTime.format('mm') is '00'
+                            timeString += endTime.format('dddd, MMM Do, ha')
+                        else
+                            timeString += endTime.format('dddd, MMM Do, h:mma')
+                timeLocation = timeString + ' at <b>' + event.location + '</b>'
+                $('div#event > div.title div.details div.text').html(timeLocation)
+                $('div#event > div.title div.details div.text').removeClass('hidden')
+                $('div#event > div.title div.details div.editor').addClass('hidden')
+                $('div#event > div.title div.bottom > div.button')
+                    .html('Edit')
+                    .removeClass('stick')
+            else
+                alert err.message
+            return
         return
     prepareUploadedCoverImage: (coverUrl) ->
         $('div#event').addClass('with_cover')

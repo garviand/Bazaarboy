@@ -795,19 +795,40 @@ div.event_base {
             }
 
             div.bottom {
+                @bottom_height: @font_size_base - 2;
+
                 position: relative;
                 width: @body_width + @gutter_width * 2;
-                height: @font_size_base - 2;
+                height: @bottom_height;
                 padding-top: 14px;
                 padding-bottom: 18px;
                 font-size: @font_size_base - 2;
                 line-height: @font_size_base - 2;
 
                 div.details {
+                    height: @bottom_height;
                     .left;
 
                     div.text {
                         width: 100%;
+                    }
+
+                    div.editor {
+                        width: 100%;
+                        height: @bottom_height;
+
+                        input {
+                            width: 80px;
+                            height: @bottom_height;
+                            padding: 3px;
+                            margin-top: -4px;
+                            outline-color: @event_blue;
+                            border: 1px solid #7F7F7F;
+
+                            &[name=location] {
+                                width: 300px;
+                            }
+                        }
                     }
                 }
 

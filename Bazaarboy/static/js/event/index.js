@@ -289,7 +289,76 @@
       $('div#event > div.title div.details div.editor').removeClass('hidden');
       $('div#event > div.title div.bottom > div.button').html('Save').addClass('stick');
     },
-    stopEditingTimeLocation: function() {},
+    stopEditingTimeLocation: function() {
+      var endDate, endTime, location, startDate, startTime,
+        _this = this;
+      startDate = $('div#event > div.title input[name=start_date]').val();
+      if (!moment(startDate, 'MM/DD/YYYY').isValid()) {
+        return;
+      }
+      startTime = $('div#event > div.title input[name=start_time]').val();
+      if (!moment(startTime, 'h:mm a').isValid()) {
+        return;
+      }
+      startTime = moment(startDate + ' ' + startTime, 'MM/DD/YYYY h:mm A');
+      endDate = $('div#event > div.title input[name=end_date]').val();
+      endTime = $('div#event > div.title input[name=end_time]').val();
+      if (endDate.trim().length === 0 && endTime.trim().length === 0) {
+        endTime = false;
+      } else {
+        if (!moment(endDate, 'MM/DD/YYYY').isValid()) {
+          return;
+        }
+        if (!moment(endTime, 'h:mm a').isValid()) {
+          return;
+        }
+        endTime = moment(endDate + ' ' + endTime, 'MM/DD/YYYY h:mm A');
+      }
+      location = $('div#event > div.title input[name=location]').val().trim();
+      if (location.length === 0) {
+        location = 'none';
+      }
+      this.save({
+        start_time: startTime.utc().format('YYYY-MM-DD HH:mm:ss'),
+        end_time: endTime ? endTime.utc().format('YYYY-MM-DD HH:mm:ss') : 'none',
+        location: location
+      }, function(err, event) {
+        var timeLocation, timeString;
+        if (!err) {
+          timeString = '';
+          startTime = startTime.local();
+          if (startTime.format('mm') === '00') {
+            timeString += startTime.format('dddd, MMM Do, ha');
+          } else {
+            timeString += startTime.format('dddd, MMM Do, h:mma');
+          }
+          if (endTime) {
+            timeString += ' - ';
+            endTime = endTime.local();
+            if (endTime.format('D') === startTime.format('D')) {
+              if (endTime.format('mm') === '00') {
+                timeString += endTime.format('ha');
+              } else {
+                timeString += endTime.format('h:mma');
+              }
+            } else {
+              if (endTime.format('mm') === '00') {
+                timeString += endTime.format('dddd, MMM Do, ha');
+              } else {
+                timeString += endTime.format('dddd, MMM Do, h:mma');
+              }
+            }
+          }
+          timeLocation = timeString + ' at <b>' + event.location + '</b>';
+          $('div#event > div.title div.details div.text').html(timeLocation);
+          $('div#event > div.title div.details div.text').removeClass('hidden');
+          $('div#event > div.title div.details div.editor').addClass('hidden');
+          $('div#event > div.title div.bottom > div.button').html('Edit').removeClass('stick');
+        } else {
+          alert(err.message);
+        }
+      });
+    },
     prepareUploadedCoverImage: function(coverUrl) {
       var scope;
       $('div#event').addClass('with_cover');

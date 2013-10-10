@@ -20,13 +20,15 @@ from src.serializer import serialize_one
 import pdb
 
 @login_check()
-@validate('GET', [], ['token'])
+@validate('GET', [], ['token', 'preview'])
 def index(request, id, params, user):
     """
     Event page
     """
     if not Event.objects.filter(id = id).exists():
         raise Http404
+    if params['preview'] is not None:
+        user = None
     event = Event.objects.select_related().get(id = id)
     editable = False
     if Event_organizer.objects.filter(event = event).count() != 0:
@@ -330,7 +332,9 @@ def edit(request, params, user):
         else:
             event.start_time = params['start_time']
     if params['end_time'] is not None:
-        if params['end_time'] < params['start_time']:
+        if params['end_time'] == 'none':
+            event.end_time = None
+        elif params['end_time'] < params['start_time']:
             response = {
                 'status':'FAIL',
                 'error':'INVALID_END_TIME',
@@ -340,7 +344,9 @@ def edit(request, params, user):
         else:
             event.end_time = params['end_time']
     if params['location'] is not None:
-        if len(params['location']) > 100:
+        if params['location'].lower() == 'none':
+            event.location = None
+        elif len(params['location']) > 100:
             response = {
                 'status':'FAIL',
                 'error':'LOCATION_TOO_LONG',
