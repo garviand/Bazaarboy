@@ -7,28 +7,27 @@
       cover: void 0
     },
     coverEditInProgress: false,
-    drawMapWithCenter: function(latitude, longitude) {
-      var canvas, center, mapOpts, marker, markerPos;
-      center = new google.maps.LatLng(latitude + 0.0015, longitude);
-      mapOpts = {
-        center: center,
-        zoom: 14,
-        mapTypeId: google.maps.MapTypeId.ROADMAP,
-        draggable: false,
-        mapTypeControl: false,
-        overviewMapControl: false,
-        streetViewControl: false,
-        scaleControl: false,
-        zoomControl: false
-      };
-      canvas = document.getElementById('map_canvas');
-      this.map = new google.maps.Map(canvas, mapOpts);
-      markerPos = new google.maps.LatLng(latitude, longitude);
-      marker = new google.maps.Marker({
-        position: markerPos
-      });
-      marker.setMap(this.map);
-    },
+    /*
+    drawMapWithCenter: (latitude, longitude) ->
+        center = new google.maps.LatLng(latitude + 0.0015, longitude)
+        mapOpts = 
+            center: center
+            zoom: 14
+            mapTypeId: google.maps.MapTypeId.ROADMAP
+            draggable: false
+            mapTypeControl: false
+            overviewMapControl: false
+            streetViewControl: false
+            scaleControl: false
+            zoomControl: false
+        canvas = document.getElementById('map_canvas')
+        @map = new google.maps.Map(canvas, mapOpts)
+        markerPos = new google.maps.LatLng(latitude, longitude)
+        marker = new google.maps.Marker({position: markerPos})
+        marker.setMap @map
+        return
+    */
+
     adjustSidebarPosition: function() {
       var count, hangingButtons, i, sidebarPadding, topBase, _i;
       hangingButtons = $('div#event > div.title div.bottom div.hanging').not('div.hidden');
@@ -104,7 +103,7 @@
         picture: image
       }, function(response) {});
     },
-    purchase: function(ticket, email, fullName) {
+    purchase: function(ticket, email, fullName, phone) {
       var params,
         _this = this;
       if (email == null) {
@@ -113,12 +112,18 @@
       if (fullName == null) {
         fullName = null;
       }
+      if (phone == null) {
+        phone = null;
+      }
       params = {
         ticket: ticket
       };
       if ((email != null) && (fullName != null)) {
         params.email = email;
         params.full_name = fullName;
+      }
+      if (phone != null) {
+        params.phone = phone;
       }
       Bazaarboy.post('event/purchase/', params, function(response) {
         var checkoutDescription;
@@ -217,7 +222,7 @@
         }
       });
       $('div#rsvp div.action a.confirm').click(function() {
-        var email, fullName, ticket;
+        var email, fullName, phone, ticket;
         if ($('div#rsvp div.ticket.valid.selected').length > 0) {
           ticket = $('div#rsvp div.ticket.valid.selected').attr('data-id');
           if ($('div#rsvp div.info').length === 0) {
@@ -225,6 +230,7 @@
           } else {
             email = $('div#rsvp div.info input[name=email]').val();
             fullName = $('div#rsvp div.info input[name=full_name]').val();
+            phone = $('div#rsvp div.info input[name=phone]').val();
             if (email.trim() === '') {
               alert('You must enter a valid email address.');
               return;
@@ -233,7 +239,10 @@
               alert('You must enter your full name,');
               return;
             }
-            _this.purchase(ticket, email, fullName);
+            if (phone.trim() === '') {
+              phone = null;
+            }
+            _this.purchase(ticket, email, fullName, phone);
           }
         }
       });
@@ -289,7 +298,76 @@
       $('div#event > div.title div.details div.editor').removeClass('hidden');
       $('div#event > div.title div.bottom > div.button').html('Save').addClass('stick');
     },
-    stopEditingTimeLocation: function() {},
+    stopEditingTimeLocation: function() {
+      var endDate, endTime, location, startDate, startTime,
+        _this = this;
+      startDate = $('div#event > div.title input[name=start_date]').val();
+      if (!moment(startDate, 'MM/DD/YYYY').isValid()) {
+        return;
+      }
+      startTime = $('div#event > div.title input[name=start_time]').val();
+      if (!moment(startTime, 'h:mm a').isValid()) {
+        return;
+      }
+      startTime = moment(startDate + ' ' + startTime, 'MM/DD/YYYY h:mm A');
+      endDate = $('div#event > div.title input[name=end_date]').val();
+      endTime = $('div#event > div.title input[name=end_time]').val();
+      if (endDate.trim().length === 0 && endTime.trim().length === 0) {
+        endTime = false;
+      } else {
+        if (!moment(endDate, 'MM/DD/YYYY').isValid()) {
+          return;
+        }
+        if (!moment(endTime, 'h:mm a').isValid()) {
+          return;
+        }
+        endTime = moment(endDate + ' ' + endTime, 'MM/DD/YYYY h:mm A');
+      }
+      location = $('div#event > div.title input[name=location]').val().trim();
+      if (location.length === 0) {
+        location = 'none';
+      }
+      this.save({
+        start_time: startTime.utc().format('YYYY-MM-DD HH:mm:ss'),
+        end_time: endTime ? endTime.utc().format('YYYY-MM-DD HH:mm:ss') : 'none',
+        location: location
+      }, function(err, event) {
+        var timeLocation, timeString;
+        if (!err) {
+          timeString = '';
+          startTime = startTime.local();
+          if (startTime.format('mm') === '00') {
+            timeString += startTime.format('dddd, MMM Do, ha');
+          } else {
+            timeString += startTime.format('dddd, MMM Do, h:mma');
+          }
+          if (endTime) {
+            timeString += ' - ';
+            endTime = endTime.local();
+            if (endTime.format('D') === startTime.format('D')) {
+              if (endTime.format('mm') === '00') {
+                timeString += endTime.format('ha');
+              } else {
+                timeString += endTime.format('h:mma');
+              }
+            } else {
+              if (endTime.format('mm') === '00') {
+                timeString += endTime.format('dddd, MMM Do, ha');
+              } else {
+                timeString += endTime.format('dddd, MMM Do, h:mma');
+              }
+            }
+          }
+          timeLocation = timeString + ' at <b>' + event.location + '</b>';
+          $('div#event > div.title div.details div.text').html(timeLocation);
+          $('div#event > div.title div.details div.text').removeClass('hidden');
+          $('div#event > div.title div.details div.editor').addClass('hidden');
+          $('div#event > div.title div.bottom > div.button').html('Edit').removeClass('stick');
+        } else {
+          alert(err.message);
+        }
+      });
+    },
     prepareUploadedCoverImage: function(coverUrl) {
       var scope;
       $('div#event').addClass('with_cover');

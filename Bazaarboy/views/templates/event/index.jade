@@ -70,19 +70,27 @@ block content
                             | {% endspaceless %}
                         {% if editable %}
                         div.editor.hidden
-                            label When
-                            input(type="text", name="start_date", value="{{ event.start_time|date:'m/d/Y' }}")
-                            | @
-                            input(type="text", name="start_time", value="{{ event.start_time|date:'g:i A' }}")
-                            | to
-                            input(type="text", name="end_date", value="{{ event.end_time|date:'m/d/Y' }}")
-                            | @
-                            input(type="text", name="end_time", value="{{ event.end_time|date:'g:i A' }}")
-                            | {{ event.start_time|date:"T" }}
+                            b When?
+                            | &nbsp;
+                            input(type="text", name="start_date", value="{{ event.start_time|date:'m/d/Y' }}", placeholder="MM/DD/YYYY")
+                            | &nbsp;@&nbsp;
+                            input(type="text", name="start_time", value="{{ event.start_time|date:'g:i A' }}", placeholder="ex. 6:00 PM")
+                            | &nbsp;
+                            label to
+                            | &nbsp;
+                            input(type="text", name="end_date", value="{{ event.end_time|date:'m/d/Y' }}", placeholder="MM/DD/YYYY")
+                            | &nbsp;@&nbsp;
+                            input(type="text", name="end_time", value="{{ event.end_time|date:'g:i A' }}", placeholder="ex. 7:00 PM")
+                            | &nbsp;{{ event.start_time|date:"T" }}&nbsp;&nbsp;
+                            b Where?
+                            | &nbsp;
+                            input(type="text", name="location", value="{{ event.location }}")
                         {% endif %}
+                    {% if not editable %}
                     div.sponsor.hidden
                         a(href="javascript:;")
                             i Want to sponsor this event?
+                    {% endif %}
                     {% if editable %}
                     div.button Edit
                     {% endif %}
@@ -379,7 +387,9 @@ append script
     {% if editable %}
     script(type="text/javascript", src="{{ STATIC_URL }}jQueryUI/jquery-ui.min.js")
     script(type="text/javascript", src="{{ STATIC_URL }}redactor/redactor.min.js")
-    script(type="text/javascript", src="//cdnjs.cloudflare.com/ajax/libs/moment.js/2.0.0/moment.min.js")
+    script(type="text/javascript", src="{{ STATIC_URL }}pikaday/moment.min.js")
+    script(type="text/javascript", src="{{ STATIC_URL }}pikaday/moment.timezone.min.js")
+    script(type="text/javascript", src="{{ STATIC_URL }}pikaday/moment.timezone.data.js")
     script(type="text/javascript", src="{{ STATIC_URL }}pikaday/pikaday.js")
     script(type="text/javascript", src="{{ STATIC_URL }}pikaday/pikaday.jquery.js")
     {% else %}

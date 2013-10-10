@@ -13,4 +13,5 @@ epydoc==3.0.1
 facebook-sdk==0.4.0
 redis==2.7.6
 stripe==1.9.4
+twilio==3.6.2
 mandrill==1.0.46

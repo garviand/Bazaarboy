@@ -3,6 +3,7 @@ Controller for events
 """
 
 import os
+import re
 from datetime import timedelta
 from django.db.models import F, Q
 from django.http import Http404
@@ -16,17 +17,20 @@ from src.email import Email
 from src.regex import REGEX_EMAIL
 from src.sanitizer import sanitize_redactor_input
 from src.serializer import serialize_one
+from src.sms import SMS
 
 import pdb
 
 @login_check()
-@validate('GET', [], ['token'])
+@validate('GET', [], ['token', 'preview'])
 def index(request, id, params, user):
     """
     Event page
     """
     if not Event.objects.filter(id = id).exists():
         raise Http404
+    if params['preview'] is not None:
+        user = None
     event = Event.objects.select_related().get(id = id)
     editable = False
     if Event_organizer.objects.filter(event = event).count() != 0:
@@ -330,7 +334,9 @@ def edit(request, params, user):
         else:
             event.start_time = params['start_time']
     if params['end_time'] is not None:
-        if params['end_time'] < params['start_time']:
+        if params['end_time'] == 'none':
+            event.end_time = None
+        elif params['end_time'] < params['start_time']:
             response = {
                 'status':'FAIL',
                 'error':'INVALID_END_TIME',
@@ -340,7 +346,9 @@ def edit(request, params, user):
         else:
             event.end_time = params['end_time']
     if params['location'] is not None:
-        if len(params['location']) > 100:
+        if params['location'].lower() == 'none':
+            event.location = None
+        elif len(params['location']) > 100:
             response = {
                 'status':'FAIL',
                 'error':'LOCATION_TOO_LONG',
@@ -937,7 +945,7 @@ def mark_purchase_as_expired(purchase):
     return True
 
 @login_check()
-@validate('POST', ['ticket'], ['email', 'full_name'])
+@validate('POST', ['ticket'], ['email', 'full_name', 'phone'])
 def purchase(request, params, user):
     """
     Purchase a ticket
@@ -981,6 +989,16 @@ def purchase(request, params, user):
             }
             return json_response(response)
         user.full_name = params['full_name']
+        if params['phone'] is not None:
+            params['phone'] = re.compile(r'[^\d]+').sub('', params['phone'])
+            if len(params['phone']) != 10:
+                response = {
+                    'status':'FAIL',
+                    'error':'INVALID_PHONE',
+                    'message':'Your phone number is invalid.'
+                }
+                return json_response(response)
+            user.phone = params['phone']
         user.save()
     # Check if the ticket is valid
     if not Ticket.objects.filter(id = params['ticket']).exists():
@@ -1041,6 +1059,13 @@ def purchase(request, params, user):
             email.sendPurchaseConfirmationEmail(purchase)
         except Exception:
             pass
+        if len(user.phone) == 10:
+            # Try sending the confirmation text
+            try:
+                sms = SMS()
+                sms.sendPurchaseConfirmationSMS(purchase)
+            except Exception:
+                pass
         response = {
             'status':'OK',
             'purchase':serialize_one(purchase)
