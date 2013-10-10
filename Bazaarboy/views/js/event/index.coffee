@@ -5,6 +5,7 @@ Bazaarboy.event.index =
     uploads:
         cover: undefined
     coverEditInProgress: false
+    ###
     drawMapWithCenter: (latitude, longitude) ->
         center = new google.maps.LatLng(latitude + 0.0015, longitude)
         mapOpts = 
@@ -23,6 +24,7 @@ Bazaarboy.event.index =
         marker = new google.maps.Marker({position: markerPos})
         marker.setMap @map
         return
+    ###
     adjustSidebarPosition: () ->
         hangingButtons = $('div#event > div.title div.bottom div.hanging').not('div.hidden')
         count = hangingButtons.length
