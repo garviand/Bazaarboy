@@ -106,6 +106,10 @@ class Email(object):
         """
         Send Purchase Confirmation
         """
+        if purchase.event.cover == None:
+            cover_image_url = "https://s3.amazonaws.com/bazaarboy/media/generic_event_header.png"
+        else:
+            cover_image_url = purchase.event.cover.source.url
         startTime = localize(purchase.event.start_time)
         readableStartTime = startTime.strftime('%b %e, %I:%M %p').lstrip('0')
         creator = Event_organizer.objects.get(event = purchase.event, is_creator = True) \
@@ -137,6 +141,10 @@ class Email(object):
             {
                 'name':'organizer_email', 
                 'content':contactEmail
+            },
+            {
+                'name':'cover_image_url', 
+                'content':cover_image_url
             }
         ]
         return self.sendEmail(to, subject, template, mergeVars)
