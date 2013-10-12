@@ -5,6 +5,7 @@ Email utilities
 from datetime import datetime
 from celery import task
 from mandrill import Mandrill
+from django.conf import settings
 from kernel.models import *
 from src.config import *
 from src.timezone import localize
@@ -106,14 +107,13 @@ class Email(object):
         """
         Send Purchase Confirmation
         """
-        if purchase.event.cover == None:
-            cover_image_url = "https://s3.amazonaws.com/bazaarboy/media/generic_event_header.png"
-        else:
-            cover_image_url = purchase.event.cover.source.url
+        coverImageUrl = settings.STATIC_URL + 'images/email-header-event.png'
+        if purchase.event.cover is not None:
+            coverImageUrl = purchase.event.cover.source.url
         startTime = localize(purchase.event.start_time)
         readableStartTime = startTime.strftime('%b %e, %I:%M %p').lstrip('0')
-        creator = Event_organizer.objects.get(event = purchase.event, is_creator = True) \
-                                         .profile
+        creator = Event_organizer.objects.get(event = purchase.event, 
+                                              is_creator = True).profile
         contactEmail = creator.managers.all()[0].email
         to = [{
             'email':purchase.owner.email, 
@@ -144,7 +144,7 @@ class Email(object):
             },
             {
                 'name':'cover_image_url', 
-                'content':cover_image_url
+                'content':coverImageUrl
             }
         ]
         return self.sendEmail(to, subject, template, mergeVars)

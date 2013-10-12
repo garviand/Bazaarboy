@@ -2,12 +2,11 @@
   Bazaarboy.event.create = {
     init: function() {
       $('div#event_create form.create').submit(function(event) {
-        var data, local_time, utc_time;
+        var data, startTime;
         event.preventDefault();
         data = $(this).serializeObject();
-        local_time = moment(data['start_time']);
-        utc_time = moment.utc(local_time);
-        data['start_time'] = utc_time.format("YYYY-MM-DD HH:mm:ss");
+        startTime = moment(data.start_time).utc();
+        data.start_time = startTime.format('YYYY-MM-DD HH:mm:ss');
         Bazaarboy.post('event/create/', data, function(response) {
           var eventUrl;
           if (response.status === 'OK') {
