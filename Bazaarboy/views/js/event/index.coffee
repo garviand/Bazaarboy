@@ -5,6 +5,7 @@ Bazaarboy.event.index =
     uploads:
         cover: undefined
     coverEditInProgress: false
+    purchaseInProgress: false
     ###
     drawMapWithCenter: (latitude, longitude) ->
         center = new google.maps.LatLng(latitude + 0.0015, longitude)
@@ -88,6 +89,9 @@ Bazaarboy.event.index =
         , (response) -> 
             return
     purchase: (ticket, email=null, fullName=null, phone=null) ->
+        @purchaseInProgress = true
+        $('div#rsvp div.action a.confirm').css('display', 'none')
+        $('div#rsvp div.action div.loading').removeClass('hidden')
         params = 
             ticket: ticket
         if email? and fullName?
@@ -96,6 +100,8 @@ Bazaarboy.event.index =
         if phone?
             params.phone = phone
         Bazaarboy.post 'event/purchase/', params, (response) =>
+            $('div#rsvp div.action a.confirm').css('display', '')
+            $('div#rsvp div.action div.loading').addClass('hidden')
             if response.status is 'OK'
                 if response.publishable_key?
                     checkoutDescription = response.purchase.event.name + ' ' + 
@@ -109,10 +115,18 @@ Bazaarboy.event.index =
                         description: checkoutDescription
                         panelLabel: 'Checkout'
                         token: (token) =>
+                            $('div#rsvp div.action a.confirm')
+                                .css('display', 'none')
+                            $('div#rsvp div.action div.loading')
+                                .removeClass('hidden')
                             Bazaarboy.post 'payment/charge/',
                                 checkout: response.purchase.checkout
                                 stripe_token: token.id
                             , (response) =>
+                                $('div#rsvp div.action a.confirm')
+                                    .css('display', '')
+                                $('div#rsvp div.action div.loading')
+                                    .addClass('hidden')
                                 if response.status is 'OK'
                                     @completeCheckout()
                                 else

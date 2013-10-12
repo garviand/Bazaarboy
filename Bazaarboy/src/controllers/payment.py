@@ -90,18 +90,18 @@ def charge(request, params, user):
         )
         checkout.is_charged = True
         checkout.save()
-        #try:
-        email = Email()
-        sms = SMS()
-        if Purchase.objects.filter(checkout = checkout).exists():
-            purchase = Purchase.objects.get(checkout = checkout)
-            email.sendPurchaseConfirmationEmail(purchase)
-            sms.sendPurchaseConfirmationSMS(purchase)
-        elif Donation.objects.filter(checkout = checkout).exists():
-            donation = Donation.objects.get(checkout = checkout)
-            email.sendDonationConfirmationEmail(donation)
-        #except Exception:
-        #    pass
+        try:
+            email = Email()
+            sms = SMS()
+            if Purchase.objects.filter(checkout = checkout).exists():
+                purchase = Purchase.objects.get(checkout = checkout)
+                email.sendPurchaseConfirmationEmail(purchase)
+                sms.sendPurchaseConfirmationSMS(purchase)
+            elif Donation.objects.filter(checkout = checkout).exists():
+                donation = Donation.objects.get(checkout = checkout)
+                email.sendDonationConfirmationEmail(donation)
+        except Exception:
+            pass
         response = {
             'status':'OK'
         }

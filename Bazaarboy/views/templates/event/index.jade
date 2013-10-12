@@ -359,6 +359,10 @@ block content
             div.header
                 div.title
                     a.confirm(href="javascript:;") Confirm
+                    div.loading.hidden
+                        img(src="{{ STATIC_URL }}images/loading.gif")
+                        span Processing...
+                        div.clear
         div.confirmation.hidden
             div.header
                 div.title Confirmation

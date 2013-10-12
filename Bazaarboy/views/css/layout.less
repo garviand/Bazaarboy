@@ -1403,6 +1403,28 @@ div.event_base {
                         .linear_gradient(top, lighten(@event_blue, 5%), @event_blue);
                     }
                 }
+
+                div.loading {
+                    width: @overlay_width - 11 * 2 - 2;
+                    height: @font_size_base + 4;
+                    padding: @font_size_base - 2 0;
+
+                    img {
+                        display: block;
+                        width: @font_size_base + 4;
+                        height: @font_size_base + 4;
+                        margin-left: 270px;
+                        margin-right: @font_size_base / 2;
+                        .left;
+                    }
+
+                    span {
+                        display: block;
+                        font-size: @font_size_base + 4;
+                        line-height: @font_size_base + 4;
+                        .left;
+                    }
+                }
             }
         }
     }

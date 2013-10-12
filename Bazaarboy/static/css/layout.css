@@ -1674,6 +1674,25 @@ div.event_base div.others div.recommendation {
   background-image: -webkit-linear-gradient(top, #5fa3f4, #4795f2);
   background-image: -ms-linear-gradient(top, #5fa3f4, #4795f2);
 }
+.event_overlay_canvas div.action div.header div.title div.loading {
+  width: 672px;
+  height: 20px;
+  padding: 14px 0;
+}
+.event_overlay_canvas div.action div.header div.title div.loading img {
+  display: block;
+  width: 20px;
+  height: 20px;
+  margin-left: 270px;
+  margin-right: 8px;
+  float: left;
+}
+.event_overlay_canvas div.action div.header div.title div.loading span {
+  display: block;
+  font-size: 20px;
+  line-height: 20px;
+  float: left;
+}
 div#event.big_cover div.frame div.right div.organizers {
   margin-top: 13px;
 }

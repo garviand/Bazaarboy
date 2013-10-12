@@ -7,6 +7,7 @@
       cover: void 0
     },
     coverEditInProgress: false,
+    purchaseInProgress: false,
     /*
     drawMapWithCenter: (latitude, longitude) ->
         center = new google.maps.LatLng(latitude + 0.0015, longitude)
@@ -115,6 +116,9 @@
       if (phone == null) {
         phone = null;
       }
+      this.purchaseInProgress = true;
+      $('div#rsvp div.action a.confirm').css('display', 'none');
+      $('div#rsvp div.action div.loading').removeClass('hidden');
       params = {
         ticket: ticket
       };
@@ -127,6 +131,8 @@
       }
       Bazaarboy.post('event/purchase/', params, function(response) {
         var checkoutDescription;
+        $('div#rsvp div.action a.confirm').css('display', '');
+        $('div#rsvp div.action div.loading').addClass('hidden');
         if (response.status === 'OK') {
           if (response.publishable_key != null) {
             checkoutDescription = response.purchase.event.name + ' ' + response.purchase.ticket.name;
@@ -139,10 +145,14 @@
               description: checkoutDescription,
               panelLabel: 'Checkout',
               token: function(token) {
+                $('div#rsvp div.action a.confirm').css('display', 'none');
+                $('div#rsvp div.action div.loading').removeClass('hidden');
                 Bazaarboy.post('payment/charge/', {
                   checkout: response.purchase.checkout,
                   stripe_token: token.id
                 }, function(response) {
+                  $('div#rsvp div.action a.confirm').css('display', '');
+                  $('div#rsvp div.action div.loading').addClass('hidden');
                   if (response.status === 'OK') {
                     _this.completeCheckout();
                   } else {
