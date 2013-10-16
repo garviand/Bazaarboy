@@ -590,6 +590,9 @@ div#wrapper_overlay {
   background-color: rgba(0, 0, 0, 0.8);
   cursor: pointer;
 }
+.overlay_canvas {
+  z-index: 23;
+}
 .content_divided {
   position: relative;
   width: 100%;
@@ -747,6 +750,331 @@ div#terms {
 }
 div#terms h1 {
   text-align: center;
+}
+div#index div.profiles {
+  width: 912px;
+  display: block;
+  margin: auto;
+}
+div#index div.profiles div.profile {
+  width: 912px;
+  margin: 30px 0;
+}
+div#index div.profiles div.profile div.header {
+  width: 912px;
+  height: 38px;
+}
+div#index div.profiles div.profile div.header div.icon {
+  width: 38px;
+  height: 38px;
+  background-color: #4795f2;
+  margin-right: 10px;
+  border-radius: 2px;
+  float: left;
+}
+div#index div.profiles div.profile div.header div.name {
+  height: 18px;
+  padding: 10px 0;
+  font-size: 18px;
+  font-weight: 500;
+  line-height: 16px;
+  float: left;
+}
+div#index div.profiles div.profile div.header div.create {
+  float: right;
+}
+div#index div.profiles div.profile div.header div.create a {
+  display: block;
+  width: 180px;
+  height: 18px;
+  padding: 10px 0;
+  border-radius: 2px;
+  background-color: #ff9c00;
+  color: #FFF;
+  font-size: 18px;
+  font-weight: 500;
+  line-height: 16px;
+  text-align: center;
+  text-decoration: none;
+}
+div#index div.profiles div.profile div.summary {
+  width: 862px;
+  height: 60px;
+  padding: 25px;
+  padding-bottom: 0;
+  margin-top: 10px;
+  background-color: #F2F2F2;
+}
+div#index div.profiles div.profile div.summary div.inner {
+  width: 100%;
+  height: 100%;
+  background-color: #FFF;
+}
+div#index div.profiles div.profile div.summary div.inner div.counts,
+div#index div.profiles div.profile div.summary div.inner div.revenue {
+  width: 215px;
+  height: 20px;
+  padding: 20px 0;
+  border-right: 1px solid #F2F2F2;
+  font-size: 20px;
+  line-height: 20px;
+  text-align: center;
+  float: left;
+}
+div#index div.profiles div.profile div.summary div.inner div.revenue a.connect {
+  display: block;
+  width: 190px;
+  height: 32px;
+  margin: 0 auto;
+  margin-top: -6px;
+  background-image: url(../images/stripe.png);
+}
+div#index div.profiles div.profile div.summary div.inner div.stats {
+  float: left;
+}
+div#index div.profiles div.profile div.events {
+  width: 862px;
+  padding: 25px;
+  padding-top: 10px;
+  background-color: #F2F2F2;
+  /*
+                div.past {
+                    div.event {
+                        opacity: 0.6;
+
+                        &:hover {
+                            opacity: 1;
+                        }
+                    }
+                }
+                */
+
+}
+div#index div.profiles div.profile div.events > div div.title {
+  width: 862px;
+  height: 16px;
+  padding: 10px 0;
+  padding-top: 15px;
+  font-size: 16px;
+  line-height: 16px;
+}
+div#index div.profiles div.profile div.events > div div.canvas {
+  width: 862px;
+}
+div#index div.profiles div.profile div.events > div div.canvas div.empty {
+  font-size: 14px;
+}
+div#index div.profiles div.profile div.events > div div.canvas div.draft {
+  width: 862px;
+  height: 34px;
+  margin: 2px 0;
+  background-color: #FFF;
+}
+div#index div.profiles div.profile div.events > div div.canvas div.draft div.name {
+  width: 402px;
+  height: 20px;
+  padding: 7px 15px;
+  font-size: 18px;
+  line-height: 20px;
+  float: left;
+}
+div#index div.profiles div.profile div.events > div div.canvas div.draft div.name a {
+  color: #000;
+  text-decoration: none;
+}
+div#index div.profiles div.profile div.events > div div.canvas div.draft div.name a:hover {
+  text-decoration: underline;
+}
+div#index div.profiles div.profile div.events > div div.canvas div.draft div.time {
+  width: 288px;
+  height: 14px;
+  padding: 10px 0;
+  font-size: 14px;
+  line-height: 14px;
+  float: left;
+}
+div#index div.profiles div.profile div.events > div div.canvas div.draft div.actions {
+  width: 102px;
+  height: 28px;
+  padding: 3px 20px;
+  float: left;
+}
+div#index div.profiles div.profile div.events > div div.canvas div.draft div.actions a {
+  display: block;
+  width: 102px;
+  height: 12px;
+  padding: 8px 0;
+  border-radius: 2px;
+  background-color: #E6E6E6;
+  color: #808080;
+  font-size: 12px;
+  font-weight: 500;
+  line-height: 12px;
+  text-decoration: none;
+  text-align: center;
+}
+div#index div.profiles div.profile div.events > div div.canvas div.draft div.actions a.edit {
+  background-color: #4795f2;
+  color: #FFF;
+}
+div#index div.profiles div.profile div.events > div div.canvas div.event {
+  width: 862px;
+  height: 125px;
+  margin: 2px 0;
+  background-color: #FFF;
+}
+div#index div.profiles div.profile div.events > div div.canvas div.event div.counts,
+div#index div.profiles div.profile div.events > div div.canvas div.event div.sales {
+  width: 215px;
+  height: 22px;
+  margin: 6px 0;
+  padding: 45.5px 0;
+  border-right: 1px solid #F2F2F2;
+  font-size: 22px;
+  line-height: 22px;
+  text-align: center;
+  float: left;
+}
+div#index div.profiles div.profile div.events > div div.canvas div.event div.info {
+  width: 288px;
+  float: left;
+}
+div#index div.profiles div.profile div.events > div div.canvas div.event div.info div.image {
+  width: 96px;
+  height: 96px;
+  padding: 15px 10px;
+  float: left;
+}
+div#index div.profiles div.profile div.events > div div.canvas div.event div.info div.image div.cover {
+  width: 100%;
+  height: 100%;
+  background-size: cover;
+  background-repeat: no-repeat;
+  background-position: 50% 50%;
+  background-color: #4795f2;
+}
+div#index div.profiles div.profile div.events > div div.canvas div.event div.info div.image div.cover a {
+  display: block;
+  width: 100%;
+  height: 100%;
+}
+div#index div.profiles div.profile div.events > div div.canvas div.event div.info div.details {
+  width: 172px;
+  height: 96px;
+  padding: 15px 0;
+  overflow: hidden;
+  float: left;
+}
+div#index div.profiles div.profile div.events > div div.canvas div.event div.info div.details div.name {
+  width: 100%;
+  font-size: 18px;
+  line-height: 20px;
+}
+div#index div.profiles div.profile div.events > div div.canvas div.event div.info div.details div.name a {
+  color: #000;
+  text-decoration: none;
+}
+div#index div.profiles div.profile div.events > div div.canvas div.event div.info div.details div.name a:hover {
+  text-decoration: underline;
+}
+div#index div.profiles div.profile div.events > div div.canvas div.event div.info div.details div.time,
+div#index div.profiles div.profile div.events > div div.canvas div.event div.info div.details div.location {
+  width: 100%;
+  font-size: 14px;
+  margin-top: 5px;
+}
+div#index div.profiles div.profile div.events > div div.canvas div.event div.actions {
+  width: 102px;
+  height: 104px;
+  padding: 10.5px 20px;
+  float: left;
+}
+div#index div.profiles div.profile div.events > div div.canvas div.event div.actions a {
+  display: block;
+  width: 102px;
+  height: 12px;
+  padding: 8px 0;
+  margin: 5px 0;
+  border-radius: 2px;
+  background-color: #E6E6E6;
+  color: #808080;
+  font-size: 12px;
+  font-weight: 500;
+  line-height: 12px;
+  text-decoration: none;
+  text-align: center;
+}
+div#index div.profiles div.profile div.events > div div.canvas div.event div.actions a.edit {
+  background-color: #4795f2;
+  color: #FFF;
+}
+div#index div.profiles div.profile div.events > div div.canvas div.event div.actions a.manage {
+  background-color: #000;
+  color: #FFF;
+}
+div#connect {
+  display: none;
+  position: absolute;
+  width: 500px;
+  height: 200px;
+  margin: auto;
+  padding: 15px;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: #FFF;
+}
+div#connect div.title {
+  width: 100%;
+  height: 22px;
+  font-size: 22px;
+  line-height: 22px;
+}
+div#connect div.description {
+  width: 100%;
+  margin: 10px 0;
+  font-size: 14px;
+}
+div#connect div.profiles {
+  width: 100%;
+}
+div#connect div.profiles div.profile {
+  width: 100%;
+  height: 40px;
+  background-color: #F2F2F2;
+}
+div#connect div.profiles div.profile div.name {
+  width: 61%;
+  padding: 11px 2%;
+  font-size: 18px;
+  line-height: 18px;
+  float: left;
+}
+div#connect div.profiles div.profile div.account {
+  position: relative;
+  width: 35%;
+  padding-top: 5px;
+  text-align: center;
+  float: left;
+}
+div#connect div.actions {
+  width: 100%;
+  height: 30px;
+  margin-top: 10px;
+}
+div#connect div.actions a {
+  display: block;
+  width: 70px;
+  height: 16px;
+  padding: 7px 0;
+  background-color: #4795f2;
+  color: #FFF;
+  text-align: center;
+  text-transform: uppercase;
+  text-decoration: none;
+  line-height: 16px;
+  float: right;
 }
 /*
 div#profile {
@@ -1616,8 +1944,8 @@ div.event_base div.others div.recommendation {
   left: -216px;
   right: 0;
   bottom: 20px;
-  z-index: 23;
   background-color: #FFF;
+  z-index: 23;
 }
 .event_overlay_canvas:before {
   content: '';

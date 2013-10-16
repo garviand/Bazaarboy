@@ -55,15 +55,21 @@ def index(request, id, params, user):
     organizers = Event_organizer.objects.filter(event = event)
     return render(request, 'event/index.html', locals())
 
-@login_check()
-def new(request, user):
-    """
-    Create event page
-    """
-    categories = BBOY_EVENT_CATEGORIES
-    if user is not None:
-        profiles = Profile.objects.filter(managers = user)
-    return render(request, 'event/create.html', locals())
+@login_required()
+@validate('GET')
+def manage(request, id, params, user):
+    if not Event.objects.filter(id = id).exists():
+        raise Http404
+    event = Event.objects.get(id = id)
+    if not Event_organizer.objects.filter(event = event, 
+                                          profile__managers = user).exists():
+        return redirect('index')
+    purchases = Purchase.objects.filter(Q(checkout = None) | 
+                                        Q(checkout__is_charged = True, 
+                                          checkout__is_refunded = False), 
+                                        event = event, 
+                                        is_expired = False)
+    return render(request, 'event/manage.html', locals())
 
 @login_required()
 @validate('GET', ['id'])
@@ -86,89 +92,23 @@ def event(request, params, user):
     return json_response(response)
 
 @login_check()
-@validate('POST', 
-          ['name', 'description', 'start_time', 'category'], 
-          ['summary', 'tags', 'end_time', 'location', 'latitude', 'longitude', 
-           'is_private', 'profile'])
+@validate('POST', [], ['profile'])
 def create(request, params, user):
     """
     Create a new event
     """
-    # Check if the event name is too long
-    if len(params['name']) > 150:
-        response = {
-            'status':'FAIL',
-            'error':'INVALID_NAME',
-            'message':'Event name cannot be over 50 characters.'
-        }
-        return json_response(response)
-    # Check start and end time
-    if (params['start_time'] < timezone.now() or 
-        (params['end_time'] is not None and 
-         params['end_time'] <= params['start_time'])):
-        response = {
-            'status':'FAIL',
-            'error':'INVALID_TIME',
-            'message':'The timing is invalid.'
-        }
-    # Validated, create the model
-    event = Event(name = params['name'], 
-                  description = sanitize_redactor_input(params['description']), 
-                  start_time = params['start_time'], 
-                  end_time = params['end_time'], 
-                  category = params['category'])
-    # Check if summary and tags are legal
-    if params['summary'] is not None:
-        if len(params['summary']) > 100:
-            response = {
-                'status':'FAIL',
-                'error':'SUMMARY_TOO_LONG',
-                'message':'The summary must be within 150 characters.'
-            }
-            return json_response(response)
-        else:
-            event.summary = params['summary']
-    if params['tags'] is not None:
-        if len(params['tags']) > 50:
-            response = {
-                'status':'FAIL',
-                'error':'TAGS_TOO_LONG',
-                'message':'The tags must be within 150 characters.'
-            }
-            return json_response(response)
-        else:
-            event.tags = params['tags']
-    # Check if the location is specified
-    if params['location'] is not None:
-        if len(params['location']) > 100:
-            response = {
-                'status':'FAIL',
-                'error':'LOCATION_TOO_LONG',
-                'message':'The location must be within 100 characters.'
-            }
-            return json_response(response)
-        else:
-            event.location = params['location']
-    # Check if coordinates are specified, and if so, if they are legal
-    if params['latitude'] is not None and params['longitude'] is not None:
-        if not (-90.0 <= float(params['latitude']) <= 90.0 and 
-                -180.0 <= float(params['longitude']) <= 180.0):
-            response = {
-                'status':'FAIL',
-                'error':'INVALID_COORDINATES',
-                'message':'Latitude/longitude combination is invalid.'
-            }
-            return json_response(response)
-        else:
-            # Valid coordinates, set to event
-            event.latitude = float(params['latitude'])
-            event.longitude = float(params['longitude'])
-    # Check if it's a private event
-    if params['is_private'] is not None:
-        event.is_private = params['is_private']
+    event = Event(name = 'Untitled Event', 
+                  start_time = timezone.now() + timedelta(days = 7))
     # Check if the user has logged in
     if user is not None:
         # If so, check if the profile is valid
+        if params['profile'] is None:
+            response = {
+                'status':'FAIL',
+                'error':'MISSING_PROFILE',
+                'message':'A profile is required to create an event.'
+            }
+            return json_response(response)
         if not Profile.objects.filter(id = params['profile']).exists():
             response = {
                 'status':'FAIL',
@@ -324,11 +264,12 @@ def edit(request, params, user):
         else:
             event.tags = params['tags']
     if params['start_time'] is not None:
-        if params['start_time'] < timezone.now():
+        if (event.end_time is not None and 
+            event.end_time < params['start_time']):
             response = {
                 'status':'FAIL',
                 'error':'INVALID_START_TIME',
-                'message':'The start time is invalid.'
+                'message':'The start time cannot be after the end time.'
             }
             return json_response(response)
         else:
@@ -340,7 +281,7 @@ def edit(request, params, user):
             response = {
                 'status':'FAIL',
                 'error':'INVALID_END_TIME',
-                'message':'The end time is invalid.'
+                'message':'The end time cannot be before the start time.'
             }
             return json_response(response)
         else:
@@ -1049,9 +990,8 @@ def purchase(request, params, user):
     # Check if it's a free ticket
     if ticket.price == 0:
         # Create the purchase
-        code = os.urandom(6).encode('base_64')[:6].upper()
         purchase = Purchase(owner = user, ticket = ticket, event = event, 
-                            price = ticket.price, code = code)
+                            price = ticket.price)
         purchase.save()
         # Try sending the confirmation email
         try:
@@ -1083,9 +1023,8 @@ def purchase(request, params, user):
                         description = checkoutDescription)
     checkout.save()
     # Create the purchase
-    code = os.urandom(6).encode('base_64')[:6].upper()
     purchase = Purchase(owner = user, ticket = ticket, event = event, 
-                        price = ticket.price, code = code, checkout = checkout)
+                        price = ticket.price, checkout = checkout)
     purchase.save()
     # If the ticket has a quantity limit
     if ticket.quantity is not None:

@@ -48,6 +48,7 @@ def connect(request, params, user):
                 publishable_key = response['stripe_publishable_key']
             )
             paymentAccount.save()
+            return redirect(reverse('index') + '#connect')
     return redirect('user:settings')
 
 @login_check()

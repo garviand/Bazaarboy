@@ -256,8 +256,8 @@
           }
         }
       });
-      if ((window.location.hash != null) && window.location.hash === '#rsvp' && editable) {
-        $('div#event div.action').click();
+      if ((window.location.hash != null) && window.location.hash === '#rsvp' && !editable) {
+        $('div#event div.title div.bottom > div.action').click();
       }
     },
     save: function(params, cb) {
@@ -922,7 +922,7 @@
     },
     init: function() {
       var _this = this;
-      $('div#event div.action').click(function() {
+      $('div#event div.title div.bottom > div.action').click(function() {
         $('div#wrapper_overlay').fadeIn(200);
         $('div.event_overlay_canvas').css({
           'top': $('div#event > div.title').height() + 20

@@ -223,8 +223,8 @@ Bazaarboy.event.index =
                     @purchase ticket, email, fullName, phone
             return
         # Check whether to open the RSVP modal
-        if window.location.hash? and window.location.hash is '#rsvp' and editable
-            $('div#event div.action').click()
+        if window.location.hash? and window.location.hash is '#rsvp' and not editable
+            $('div#event div.title div.bottom > div.action').click()
         return
     save: (params, cb) ->
         params.id = eventId
@@ -850,7 +850,7 @@ Bazaarboy.event.index =
         return
     init: () ->
         # Overlay
-        $('div#event div.action').click () =>
+        $('div#event div.title div.bottom > div.action').click () =>
             $('div#wrapper_overlay').fadeIn(200)
             $('div.event_overlay_canvas').css
                 'top': $('div#event > div.title').height() + 20

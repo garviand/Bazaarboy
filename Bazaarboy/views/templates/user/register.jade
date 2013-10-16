@@ -18,8 +18,6 @@ block body
     div#register
         h2 Register
         br
-        a#fb_login(href="javascript:;") Login with Facebook
-        br
         form(name="register")
             label Full name
             input(type="text", name="full_name")
@@ -33,7 +31,7 @@ block body
             label Confirm
             input(type="password", name="confirm")
             br
-            label City
-            input(type="text", name="city")
-            br
+            //label City
+            input(type="hidden", name="city", value="1")
+            //br
             input(type="submit", name="submit", value="Register")

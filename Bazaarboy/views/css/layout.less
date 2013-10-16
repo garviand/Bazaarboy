@@ -259,6 +259,10 @@ div#wrapper_overlay {
     cursor: pointer;
 }
 
+.overlay_canvas {
+    z-index: @overlay_z_index + 3;
+}
+
 .content_divided {
     position: relative;
     width: 100%;
@@ -430,6 +434,382 @@ div#terms {
 
     h1 {
         text-align: center;
+    }
+}
+
+div#index {
+    div.profiles {
+        width: @body_width;
+        .center;
+
+        div.profile {
+            width: @body_width;
+            margin: 30px 0;
+
+            div.header {
+                width: @body_width;
+                height: 38px;
+
+                div.icon {
+                    width: 38px;
+                    height: 38px;
+                    background-color: @event_blue;
+                    margin-right: 10px;
+                    border-radius: 2px;
+                    .left;
+                }
+
+                div.name {
+                    height: @font_size_base + 2;
+                    padding: (38px - (@font_size_base + 2)) / 2 0;
+                    font-size: @font_size_base + 2;
+                    font-weight: @font_weight_bold;
+                    line-height: @font_size_base;
+                    .left;
+                }
+
+                div.create {
+                    .right;
+
+                    a {
+                        display: block;
+                        width: 180px;
+                        height: @font_size_base + 2;
+                        padding: (38px - (@font_size_base + 2)) / 2 0;
+                        border-radius: 2px;
+                        background-color: @bboy_orange;
+                        color: #FFF;
+                        font-size: @font_size_base + 2;
+                        font-weight: @font_weight_bold;
+                        line-height: @font_size_base;
+                        text-align: center;
+                        text-decoration: none;
+                    }
+                }
+            }
+
+            div.summary {
+                width: @body_width - 50;
+                height: 60px;
+                padding: 25px;
+                padding-bottom: 0;
+                margin-top: 10px;
+                background-color: #F2F2F2;
+
+                div.inner {
+                    width: 100%;
+                    height: 100%;
+                    background-color: #FFF;
+
+                    div.counts, div.revenue {
+                        width: 215px;
+                        height: @font_size_base + 4;
+                        padding: (60px - (@font_size_base + 4)) / 2 0;
+                        border-right: 1px solid #F2F2F2;
+                        font-size: @font_size_base + 4;
+                        line-height: @font_size_base + 4;
+                        text-align: center;
+                        .left;
+                    }
+
+                    div.revenue {
+                        a.connect {
+                            display: block;
+                            width: 190px;
+                            height: 32px;
+                            margin: 0 auto;
+                            margin-top: (@font_size_base + 4 - 32px) / 2;
+                            background-image:url(../images/stripe.png);
+                        }
+                    }
+
+                    div.stats {
+                        .left;
+                    }
+                }
+            }
+
+            div.events {
+                @event_canvas_width: @body_width - 50;
+
+                width: @event_canvas_width;
+                padding: 25px;
+                padding-top: 10px;
+                background-color: #F2F2F2;
+
+                > div {
+                    div.title {
+                        width: @event_canvas_width;
+                        height: @font_size_base;
+                        padding: 10px 0;
+                        padding-top: 15px;
+                        font-size: @font_size_base;
+                        line-height: @font_size_base;
+                    }
+
+                    div.canvas {
+                        width: @event_canvas_width;
+
+                        div.empty {
+                            font-size: @font_size_base - 2;
+                        }
+
+                        div.draft {
+                            width: @event_canvas_width;
+                            height: 34px;
+                            margin: 2px 0;
+                            background-color: #FFF;
+
+                            div.name {
+                                width: 402px;
+                                height: @font_size_base + 4;
+                                padding: (34px - (@font_size_base + 4)) / 2 15px;
+                                font-size: @font_size_base + 2;
+                                line-height: @font_size_base + 4;
+                                .left;
+
+                                a {
+                                    color: #000;
+                                    text-decoration: none;
+
+                                    &:hover {
+                                        text-decoration: underline;
+                                    }
+                                }
+                            }
+
+                            div.time {
+                                width: 288px;
+                                height: @font_size_base - 2;
+                                padding: (34px - (@font_size_base - 2)) / 2 0;
+                                font-size: @font_size_base - 2;
+                                line-height: @font_size_base - 2;
+                                .left;
+                            }
+
+                            div.actions {
+                                width: 102px;
+                                height: 28px;
+                                padding: 3px 20px;
+                                .left;
+
+                                a {
+                                    display: block;
+                                    width: 102px;
+                                    height: @font_size_base - 4;
+                                    padding: (28 - (@font_size_base - 4)) / 2 0;
+                                    border-radius: 2px;
+                                    background-color: #E6E6E6;
+                                    color: #808080;
+                                    font-size: @font_size_base - 4;
+                                    font-weight: @font_weight_bold;
+                                    line-height: @font_size_base - 4;
+                                    text-decoration: none;
+                                    text-align: center;
+
+                                    &.edit {
+                                        background-color: @event_blue;
+                                        color: #FFF;
+                                    }
+                                }
+                            }
+                        }
+
+                        div.event {
+                            width: @event_canvas_width;
+                            height: 125px;
+                            margin: 2px 0;
+                            background-color: #FFF;
+
+                            div.counts, div.sales {
+                                width: 215px;
+                                height: @font_size_base + 6;
+                                margin: 6px 0;
+                                padding: ((125px - 6px * 2) - (@font_size_base + 6)) / 2 0;
+                                border-right: 1px solid #F2F2F2;
+                                font-size: @font_size_base + 6;
+                                line-height: @font_size_base + 6;
+                                text-align: center;
+                                .left;
+                            }
+
+                            div.info {
+                                width: 288px;
+                                .left;
+
+                                div.image {
+                                    width: 96px;
+                                    height: 96px;
+                                    padding: 15px 10px;
+                                    .left;
+
+                                    div.cover {
+                                        width: 100%;
+                                        height: 100%;
+                                        background-size: cover;
+                                        background-repeat: no-repeat;
+                                        background-position: 50% 50%;
+                                        background-color: @event_blue;
+
+                                        a {
+                                            display: block;
+                                            width: 100%;
+                                            height: 100%;
+                                        }
+                                    }
+                                }
+
+                                div.details {
+                                    width: 172px;
+                                    height: 96px;
+                                    padding: 15px 0;
+                                    overflow: hidden;
+                                    .left;
+
+                                    div.name {
+                                        width: 100%;
+                                        font-size: @font_size_base + 2;
+                                        line-height: @font_size_base + 4;
+
+                                        a {
+                                            color: #000;
+                                            text-decoration: none;
+
+                                            &:hover {
+                                                text-decoration: underline;
+                                            }
+                                        }
+                                    }
+
+                                    div.time, div.location {
+                                        width: 100%;
+                                        font-size: @font_size_base - 2;
+                                        margin-top: 5px;
+                                    }
+                                }
+                            }
+
+                            div.actions {
+                                width: 102px;
+                                height: 28px * 3 + 5 * 4;
+                                padding: (125px - (28px * 3 + 5 * 4)) / 2 20px;
+                                .left;
+
+                                a {
+                                    display: block;
+                                    width: 102px;
+                                    height: @font_size_base - 4;
+                                    padding: (28 - (@font_size_base - 4)) / 2 0;
+                                    margin: 5px 0;
+                                    border-radius: 2px;
+                                    background-color: #E6E6E6;
+                                    color: #808080;
+                                    font-size: @font_size_base - 4;
+                                    font-weight: @font_weight_bold;
+                                    line-height: @font_size_base - 4;
+                                    text-decoration: none;
+                                    text-align: center;
+
+                                    &.edit {
+                                        background-color: @event_blue;
+                                        color: #FFF;
+                                    }
+
+                                    &.manage {
+                                        background-color: #000;
+                                        color: #FFF;
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+                /*
+                div.past {
+                    div.event {
+                        opacity: 0.6;
+
+                        &:hover {
+                            opacity: 1;
+                        }
+                    }
+                }
+                */
+            }
+        }
+    }
+}
+
+div#connect {
+    display: none;
+    position: absolute;
+    width: 500px;
+    height: 200px;
+    margin: auto;
+    padding: 15px;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: #FFF;
+
+    div.title {
+        width: 100%;
+        height: @font_size_base + 6;
+        font-size: @font_size_base + 6;
+        line-height: @font_size_base + 6;
+    }
+
+    div.description {
+        width: 100%;
+        margin: 10px 0;
+        font-size: @font_size_base - 2;
+    }
+
+    div.profiles {
+        width: 100%;
+
+        div.profile {
+            width: 100%;
+            height: 40px;
+            background-color: #F2F2F2;
+
+            div.name {
+                width: 61%;
+                padding: (40px - (@font_size_base + 2)) / 2 2%;
+                font-size: @font_size_base + 2;
+                line-height: @font_size_base + 2;
+                .left;
+            }
+
+            div.account {
+                position: relative;
+                width: 35%;
+                padding-top: 5px;
+                text-align: center;
+                .left;
+            }
+        }
+    }
+
+    div.actions {
+        width: 100%;
+        height: 30px;
+        margin-top: 10px;
+
+        a {
+            display: block;
+            width: 70px;
+            height: @font_size_base;
+            padding: (30px - @font_size_base) / 2 0;
+            background-color: @event_blue;
+            color: #FFF;
+            text-align: center;
+            text-transform: uppercase;
+            text-decoration: none;
+            line-height: @font_size_base;
+            .right;
+        }
     }
 }
 
@@ -1343,8 +1723,8 @@ div.event_base {
     left: 0 - (@body_width - @overlay_width);
     right: 0;
     bottom: 20px;
-    z-index: @overlay_z_index + 3;
     background-color: #FFF;
+    .overlay_canvas;
 
     &:before {
         content: '';

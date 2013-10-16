@@ -10,7 +10,7 @@ div.logo
 div.controls
     {% if user %}
     div.name
-        a(href="{% url user:settings %}") {{ user.full_name }}
+        a {{ user.full_name }}
     div.logout
         a(href="{% url user:logout %}") Log Out
     {% endif %}

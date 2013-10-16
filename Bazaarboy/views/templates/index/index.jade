@@ -3,4 +3,131 @@
 extends ../layout
 
 block content
-    a(href="{% url user:logout %}") Logout
+    div#index
+        {% if paymentAccounts|length == 0 %}
+        div.notification
+        {% endif %}
+        div.profiles
+            {% for profile in profiles %}
+            div.profile
+                div.header
+                    div.icon
+                    div.name
+                        a {{ profile.name }}
+                    div.create
+                        a(href="javascript:;") Create New Event
+                        span.profile_id.hidden {{ profile.id }}
+                    div.clear
+                div.summary
+                    div.inner
+                        div.counts
+                            | {{ profile.stats.sale_count }} RSVP{{ profile.stats.sale_count|pluralize:"s" }} total
+                        div.revenue
+                            {% if profile.payment_account %}
+                            | ${% if profile.stats.total_sale %}{{ profile.stats.total_sale|floatformat:2 }}{% else %}0{% endif %} total
+                            {% else %}
+                            a.connect(href="javascript:;")
+                            {% endif %}
+                        div.stats
+                        div.clear
+                div.events
+                    div.draft
+                        div.title
+                            b Draft Events
+                        div.canvas
+                            {% for event in profile.draftEvents %}
+                            div.draft
+                                div.name
+                                    a(href="{% url event:index event.id %}")
+                                        b
+                                            i {{ event.name }}
+                                div.time
+                                    | {{ event.start_time|date:"l, M jS, f" }}{{ event.start_time|date:"A"|lower }}
+                                div.actions
+                                    a.edit(href="{% url event:index event.id %}") Edit Event Page
+                                div.clear
+                            {% empty %}
+                            div.empty
+                                i No event drafts. Click the <b>Create New Event</b> button to create an event draft right now!
+                            {% endfor %}
+                    mixin event()
+                        div.event
+                            div.counts
+                                | {{ event.sale_count }} RSVP{{ event.sale_count|pluralize:"s" }}
+                            div.sales
+                                | ${% if event.total_sale %}{{ event.total_sale|floatformat:2 }}{% else %}0{% endif %} sales
+                            div.info
+                                div.image
+                                    div.cover(style="{% if event.cover %}background-image:url({{ event.cover.source.url }}){% endif %}")
+                                        a(href="{% url event:index event.id %}", target="_blank")
+                                div.details
+                                    div.name 
+                                        a(href="{% url event:index event.id %}", target="_blank")
+                                            b {{ event.name|truncatechars:36 }}
+                                    div.time
+                                        | {{ event.start_time|date:"l, M jS, f" }}{{ event.start_time|date:"A"|lower }}
+                                    {% if event.location %}
+                                    div.location 
+                                        | at 
+                                        b {{ event.location|truncatechars:26 }}
+                                    {% endif %}
+                                div.clear
+                            div.actions
+                                a.edit(href="{% url event:index event.id %}", target="_blank") Edit Event Page
+                                a.preview(href="{% url event:index event.id %}?preview", target="_blank") Preview Event
+                                a.manage(href="#") Manage RSVP
+                            div.clear 
+                    div.live
+                        div.title 
+                            b Live Events
+                        div.canvas
+                            {% for event in profile.liveEvents %}
+                            +event()
+                            {% empty %}
+                            div.empty
+                                i No live events.
+                            {% endfor %}
+                    div.past
+                        div.title 
+                            b Past Events
+                        div.canvas
+                            {% for event in profile.pastEvents %}
+                            +event()
+                            {% empty %}
+                            div.empty
+                                i No past events.
+                            {% endfor %}
+            {% empty %}
+            {% endfor %}
+    {% if paymentAccounts|length != 0 %}
+    div#connect.overlay_canvas
+        div.title 
+            b Connect Your Payment Accounts
+        div.description
+            | Now that you have your stripe account connected, you can link it to your 
+            | profile and start accepting payments for ticket sales!
+        div.profiles
+            {% for profile in profiles %}
+            div.profile
+                form
+                    div.name
+                        b {{ profile.name }}
+                    div.account
+                        select(name="payment")
+                            {% for account in paymentAccounts %}
+                            | <option value="{{ account.id }}" {% if account.id == profile.payment_account.id %}selected="selected"{% endif %}>Stripe ({{ account.user_id|slice:"-4:" }})</option>
+                            {% endfor %}
+                    input(type="hidden", name="id", value="{{ profile.id }}")
+                    div.clear
+            {% endfor %}
+        div.connect
+
+        div.actions
+            a.save(href="javascript:;") Save
+            div.clear
+    {% endif %}
+
+append script
+    script(type="text/javascript").
+        var stripeConnectUrl = '{{ stripeConnectUrl|safe }}';
+    script(type="text/javascript", src="{{ STATIC_URL }}js/index/index.js")

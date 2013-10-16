@@ -20,9 +20,11 @@ class SMS(object):
         return sms
 
     def sendPurchaseConfirmationSMS(self, purchase):
-        body = 'You have RSVP\'d for \''
-        body += purchase.event.name
-        body += '\' and your confirmation code is '
-        body += purchase.code
-        body += '. From Bazaarboy.'
-        return self.sendSMS(purchase.owner.phone, body)
+        if len(purchase.owner.phone) == 10:
+            body = 'You have RSVP\'d for \''
+            body += purchase.event.name
+            body += '\' and your confirmation code is '
+            body += purchase.code
+            body += '. From Bazaarboy.'
+            return self.sendSMS(purchase.owner.phone, body)
+        return True
