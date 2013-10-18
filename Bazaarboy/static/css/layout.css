@@ -2049,32 +2049,41 @@ div#tickets div.tickets div.ticket div.text {
 div#tickets div.tickets div.ticket div.editor {
   display: none;
 }
-div#rsvp div.user {
-  width: 696px;
-}
-div#rsvp div.user div.normal {
-  width: 696px;
-  height: 100%;
-  background-color: #FFF;
-}
-div#rsvp div.user div.normal div.divider {
-  width: 1px;
-  height: 160px;
-  margin: 10px 0;
-  background-color: #f0f5f5;
-  float: left;
-}
-div#rsvp div.user div.normal div.login {
-  width: 327.5px;
-  height: 160px;
-  padding: 10px;
-  float: left;
-}
-div#rsvp div.user div.normal div.register {
-  width: 327.5px;
-  height: 160px;
-  padding: 10px;
-  float: left;
+div#rsvp {
+  /*
+    div.user {
+        width: @overlay_width;
+
+        div.normal {
+            width: @overlay_width;
+            height: 100%;
+            background-color: #FFF;
+
+            div.divider {
+                width: 1px;
+                height: 160px;
+                margin: 10px 0;
+                background-color: @pale_blue;
+                .left;
+            }
+
+            div.login {
+                width: (@overlay_width - 1) / 2 - 20;
+                height: 160px;
+                padding: 10px;
+                .left;
+            }
+
+            div.register {
+                width: (@overlay_width - 1) / 2 - 20;
+                height: 160px;
+                padding: 10px;
+                .left;
+            }
+        }
+    }
+    */
+
 }
 div#rsvp div.info div.content {
   width: 668px;
@@ -2167,72 +2176,112 @@ div#rsvp div.tickets div.content div.ticket div.detail div.quantity {
   font-size: 14px;
   text-align: center;
 }
-div#rsvp div.confirmation div.content div.caption {
-  margin-top: 10px;
-  font-size: 20px;
-  text-transform: uppercase;
-  text-align: center;
+div#rsvp div.confirmation div.content {
+  border-top: 1px solid #E6E6E6;
+  padding: 22px 19px;
 }
-div#rsvp div.confirmation div.content div.body {
-  margin: 1rem 2rem;
-  border-top: 3px solid #a6ccf9;
-  box-shadow: 0 2px 5px 0 #DCE2E2;
+div#rsvp div.confirmation div.content div.inner {
+  width: 632px;
+  border: 1px solid #4795f2;
+  border-radius: 2px;
+  box-shadow: 1px 1px 4px #E6E6E6;
 }
-div#rsvp div.confirmation div.content div.body p {
-  padding: 0 1rem;
+div#rsvp div.confirmation div.content div.inner div.caption {
+  width: 632px;
+  height: 38px;
+  background-color: #4795f2;
 }
-div#rsvp div.confirmation div.content div.body div.upper {
-  background-color: #5fa3f4;
-  padding-bottom: 1.5rem;
-  border-left: 2px solid #FFF;
-  border-right: 2px solid #FFF;
-}
-div#rsvp div.confirmation div.content div.body div.upper h2 {
-  padding: 1rem 1rem;
-  margin-top: 0;
-  margin-bottom: 1rem;
-  border-bottom: 1px dotted #FFF;
-  color: #000;
-  font-size: 1rem;
-  font-weight: 300;
-  text-align: left;
-  text-transform: uppercase;
-  text-shadow: 0 1px 0 rgba(255, 255, 255, 0.6);
-}
-div#rsvp div.confirmation div.content div.body div.upper p.name {
-  margin-top: 0.5rem;
-  color: #FFF;
-  font-size: 1.4rem;
-  line-height: 1.8rem;
-  text-align: left;
-  text-shadow: 0 1px 0 #709a97;
-}
-div#rsvp div.confirmation div.content div.body div.upper p.time,
-div#rsvp div.confirmation div.content div.body div.upper p.location {
-  margin: 0.4rem 0;
-  color: #FFF;
-}
-div#rsvp div.confirmation div.content div.body div.lower {
-  padding-top: 0.2rem;
-  padding-bottom: 1rem;
-  border-top: 1px dotted #C2F4FF;
-  border-bottom: 2px solid #C2F4FF;
-  background-color: white;
-  font-size: 0.6rem;
-}
-div#rsvp div.confirmation div.content div.body div.lower p.top {
-  height: 0.8rem;
-  padding-bottom: 0.8rem;
-  border-bottom: 1px dotted #C2F4FF;
-  margin-bottom: 0.5rem;
-  font-size: 0.8rem;
-  line-height: 0.8rem;
-}
-div#rsvp div.confirmation div.content div.body div.lower p.top span.ticket {
+div#rsvp div.confirmation div.content div.inner div.caption div.presents {
+  width: 464px;
+  height: 38px;
+  border-right: 1px dashed #E6E6E6;
   float: left;
 }
-div#rsvp div.confirmation div.content div.body div.lower p.top span.price {
-  float: right;
+div#rsvp div.confirmation div.content div.inner div.caption div.presents div.icon {
+  width: 22px;
+  height: 22px;
+  margin: 7px 12px;
+  margin-right: 0;
+  border: 1px solid #FFF;
+  background: url(../images/logo-small.png) #ff9c00 center center;
+  border-radius: 2px;
+  float: left;
+}
+div#rsvp div.confirmation div.content div.inner div.caption div.presents div.organizers {
+  max-width: 416px;
+  height: 15px;
+  margin-left: 12px;
+  padding: 11.5px 0;
+  color: #FFF;
+  font-size: 15px;
+  line-height: 15px;
+  float: left;
+}
+div#rsvp div.confirmation div.content div.inner div.caption div.code {
+  width: 167px;
+  height: 14px;
+  padding: 12px 0;
+  color: #FFF;
+  font-size: 14px;
+  line-height: 14px;
+  text-align: center;
+  float: left;
+}
+div#rsvp div.confirmation div.content div.inner div.details {
+  width: 632px;
+  height: 193px;
+  border-top: 1px solid #E6E6E6;
+}
+div#rsvp div.confirmation div.content div.inner div.details div.left {
+  position: relative;
+  width: 464px;
+  height: 100%;
+  border-right: 1px dashed #E6E6E6;
+}
+div#rsvp div.confirmation div.content div.inner div.details div.left div.name {
+  width: 440px;
+  padding: 11px 0;
+  margin: 0 12px;
+  border-bottom: 1px solid #4D4D4D;
+  font-size: 22px;
+  line-height: 32px;
+}
+div#rsvp div.confirmation div.content div.inner div.details div.left div.time {
+  width: 440px;
+  padding: 0 12px;
+  margin-top: 12px;
+  font-size: 14px;
+}
+div#rsvp div.confirmation div.content div.inner div.details div.left div.extra {
+  position: absolute;
+  width: 440px;
+  height: 11px;
+  padding: 7px 12px;
+  left: 0;
+  bottom: 0;
+  border-top: 1px dashed #E6E6E6;
+  font-size: 11px;
+  line-height: 11px;
+}
+div#rsvp div.confirmation div.content div.inner div.details div.right {
+  width: 167px;
+  height: 100%;
+  background-color: #F2F2F2;
+}
+div#rsvp div.confirmation div.content div.inner div.details div.right div.price {
+  width: 167px;
+  height: 34px;
+  padding-top: 59.5px;
+  font-size: 34px;
+  line-height: 34px;
+  text-align: center;
+}
+div#rsvp div.confirmation div.content div.inner div.details div.right div.ticket {
+  width: 167px;
+  height: 16px;
+  margin-top: 5px;
+  text-align: center;
+  font-size: 14px;
 }
 /*
 div#fundraiser {

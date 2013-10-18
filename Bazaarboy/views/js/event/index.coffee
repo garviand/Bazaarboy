@@ -103,6 +103,8 @@ Bazaarboy.event.index =
             $('div#rsvp div.action a.confirm').css('display', '')
             $('div#rsvp div.action div.loading').addClass('hidden')
             if response.status is 'OK'
+                $('div#rsvp div.confirmation div.code b')
+                    .html(response.purchase.code)
                 if response.publishable_key?
                     checkoutDescription = response.purchase.event.name + ' ' + 
                                           response.purchase.ticket.name
@@ -141,6 +143,8 @@ Bazaarboy.event.index =
         return
     completeCheckout: () ->
         scope = this
+        $('div#rsvp div.confirmation').removeClass('hidden')
+        @adjustOverlayHeight()
         $('div#rsvp div.tickets').addClass('collapsed')
         $('div#rsvp div.tickets div.ticket').not('div.selected').animate
             'height': 0
@@ -158,7 +162,6 @@ Bazaarboy.event.index =
             $(this).addClass('hidden')
             scope.adjustOverlayHeight()
             return
-        $('div#rsvp div.confirmation').removeClass('hidden')
         return
     initTransaction: () ->
         scope = this
@@ -197,9 +200,9 @@ Bazaarboy.event.index =
                 $(this).addClass('selected')
                 $(this).find('input[type=radio]').prop('checked', true)
                 $('div#rsvp div.action').removeClass('hidden')
-                $('div#rsvp div.confirmation span.ticket')
+                $('div#rsvp div.confirmation div.ticket')
                     .html($(this).find('div.name').html())
-                $('div#rsvp div.confirmation span.price')
+                $('div#rsvp div.confirmation div.price b')
                     .html($(this).find('div.price b').html())
             return
         # Confirm ticket selection

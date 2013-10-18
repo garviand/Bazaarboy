@@ -134,6 +134,7 @@
         $('div#rsvp div.action a.confirm').css('display', '');
         $('div#rsvp div.action div.loading').addClass('hidden');
         if (response.status === 'OK') {
+          $('div#rsvp div.confirmation div.code b').html(response.purchase.code);
           if (response.publishable_key != null) {
             checkoutDescription = response.purchase.event.name + ' ' + response.purchase.ticket.name;
             StripeCheckout.open({
@@ -172,6 +173,8 @@
     completeCheckout: function() {
       var scope;
       scope = this;
+      $('div#rsvp div.confirmation').removeClass('hidden');
+      this.adjustOverlayHeight();
       $('div#rsvp div.tickets').addClass('collapsed');
       $('div#rsvp div.tickets div.ticket').not('div.selected').animate({
         'height': 0
@@ -189,7 +192,6 @@
         $(this).addClass('hidden');
         scope.adjustOverlayHeight();
       });
-      $('div#rsvp div.confirmation').removeClass('hidden');
     },
     initTransaction: function() {
       var scope,
@@ -227,8 +229,8 @@
           $(this).addClass('selected');
           $(this).find('input[type=radio]').prop('checked', true);
           $('div#rsvp div.action').removeClass('hidden');
-          $('div#rsvp div.confirmation span.ticket').html($(this).find('div.name').html());
-          $('div#rsvp div.confirmation span.price').html($(this).find('div.price b').html());
+          $('div#rsvp div.confirmation div.ticket').html($(this).find('div.name').html());
+          $('div#rsvp div.confirmation div.price b').html($(this).find('div.price b').html());
         }
       });
       $('div#rsvp div.action a.confirm').click(function() {

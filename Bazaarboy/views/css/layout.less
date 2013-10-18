@@ -1875,6 +1875,7 @@ div#tickets {
 }
 
 div#rsvp {
+    /*
     div.user {
         width: @overlay_width;
 
@@ -1906,6 +1907,7 @@ div#rsvp {
             }
         }
     }
+    */
 
     div.info {
         div.content {
@@ -2010,78 +2012,123 @@ div#rsvp {
 
     div.confirmation {
         div.content {
-            div.caption {
-                margin-top: 10px;
-                font-size: @font_size_base + 4;
-                text-transform: uppercase;
-                text-align: center;
-            }
+            border-top: 1px solid #E6E6E6;
+            padding: 22px 19px;
 
-            div.body {
-                margin: 1rem 2rem;
-                border-top: 3px solid lighten(@event_blue, 20%);
-                box-shadow: 0 2px 5px 0 #DCE2E2;
+            @overlay_content_inner_width: @overlay_width - 11 * 2 - 2 - 19 * 2 - 2;
 
-                p {
-                    padding: 0 1rem;
-                }
+            div.inner {
+                width: @overlay_content_inner_width;
+                border: 1px solid @event_blue;
+                border-radius: 2px;
+                box-shadow: 1px 1px 4px #E6E6E6;
 
-                div.upper {
-                    background-color: lighten(@event_blue, 5%);
-                    padding-bottom: 1.5rem;
-                    border-left: 2px solid #FFF;
-                    border-right: 2px solid #FFF;
+                div.caption {
+                    width: @overlay_content_inner_width;
+                    height: 38px;
+                    background-color: @event_blue;
 
-                    h2 {
-                        padding: 1rem 1rem;
-                        margin-top: 0;
-                        margin-bottom: 1rem;
-                        border-bottom: 1px dotted #FFF;
-                        color: #000;
-                        font-size: 1rem;
-                        font-weight: 300;
-                        text-align: left;
-                        text-transform: uppercase;
-                        text-shadow: 0 1px 0 rgba(255, 255, 255, 0.6);
-                    }
+                    div.presents {
+                        width: @overlay_content_inner_width - 168;
+                        height: 38px;
+                        border-right: 1px dashed #E6E6E6;
+                        .left;
 
-                    p.name {
-                        margin-top: 0.5rem;
-                        color: #FFF;
-                        font-size: 1.4rem;
-                        line-height: 1.8rem;
-                        text-align: left;
-                        text-shadow: 0 1px 0 lighten(@dark_green, 30%);
-                    }
-
-                    p.time, p.location {
-                        margin: 0.4rem 0;
-                        color: #FFF;
-                    }
-                }
-
-                div.lower {
-                    padding-top: 0.2rem;
-                    padding-bottom: 1rem;
-                    border-top: 1px dotted #C2F4FF;
-                    border-bottom: 2px solid #C2F4FF;
-                    background-color: white;
-                    font-size: 0.6rem;
-
-                    p.top {
-                        height: 0.8rem;
-                        padding-bottom: 0.8rem;
-                        border-bottom: 1px dotted #C2F4FF;
-                        margin-bottom: 0.5rem;
-                        font-size: 0.8rem;
-                        line-height: 0.8rem;
-
-                        span.ticket {
+                        div.icon {
+                            width: 22px;
+                            height: 22px;
+                            margin: (38px - 24px) / 2 12px;
+                            margin-right: 0;
+                            border: 1px solid #FFF;
+                            background: url(../images/logo-small.png) @bboy_orange center center;
+                            border-radius: 2px;
                             .left;
                         }
 
-                        span.price {
-                            .right;
+                        div.organizers {
+                            max-width: @overlay_content_inner_width - 168 - 48;
+                            height: @font_size_base - 1;
+                            margin-left: 12px;
+                            padding: (38px - (@font_size_base - 1)) / 2 0;
+                            color: #FFF;
+                            font-size: @font_size_base - 1;
+                            line-height: @font_size_base - 1;
+                            .left;
+                        }
+                    }
+
+                    div.code {
+                        width: 167px;
+                        height: @font_size_base - 2;
+                        padding: (38px - (@font_size_base - 2)) / 2 0;
+                        color: #FFF;
+                        font-size: @font_size_base - 2;
+                        line-height: @font_size_base - 2;
+                        text-align: center;
+                        .left;
+                    }
+                }
+
+                div.details {
+                    width: @overlay_content_inner_width;
+                    height: 193px;
+                    border-top: 1px solid #E6E6E6;
+
+                    div.left {
+                        position: relative;
+                        width: @overlay_content_inner_width - 168;
+                        height: 100%;
+                        border-right: 1px dashed #E6E6E6;
+
+                        div.name {
+                            width: @overlay_content_inner_width - 168 - 12 * 2;
+                            padding: 11px 0;
+                            margin: 0 12px;
+                            border-bottom: 1px solid #4D4D4D;
+                            font-size: @font_size_base + 6;
+                            line-height: @font_size_base + 16;
+                        }
+
+                        div.time {
+                            width: @overlay_content_inner_width - 168 - 12 * 2;
+                            padding: 0 12px;
+                            margin-top: 12px;
+                            font-size: @font_size_base - 2;
+                        }
+
+                        div.extra {
+                            position: absolute;
+                            width: @overlay_content_inner_width - 168 - 12 * 2;
+                            height: 11px;
+                            padding: 7px 12px;
+                            left: 0;
+                            bottom: 0;
+                            border-top: 1px dashed #E6E6E6;
+                            font-size: 11px;
+                            line-height: 11px;
+                        }
+                    }
+
+                    div.right {
+                        width: 167px;
+                        height: 100%;
+                        background-color: #F2F2F2;
+
+                        div.price {
+                            width: 167px;
+                            height: 34px;
+                            padding-top: (193px - 34px) / 2 - 20;
+                            font-size: 34px;
+                            line-height: 34px;
+                            text-align: center;
+                        }
+
+                        div.ticket {
+                            width: 167px;
+                            height: @font_size_base;
+                            margin-top: 5px;
+                            text-align: center;
+                            font-size: @font_size_base - 2;
                         }
                     }
                 }

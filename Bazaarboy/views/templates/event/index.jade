@@ -23,13 +23,8 @@ append head
     link(rel="image_src", href="{{ event.cover.source.url|sanitizeUrl }}")
     {% endif %}
 
-block vars
-    - var collapsed = true
-
 prepend body
-    {% if not user.fb_id %}
     include ../components/facebook
-    {% endif %}
 
 block content
     div#event.content_divided.event_base(class="{% if event.cover %}with_cover{% endif %}")
@@ -320,7 +315,7 @@ block content
                     div.clear
                 {% endfor %}
         {% if not user %}
-        div.user.hidden
+        //-div.user.hidden
             div.header
                 div.title Continue as a user
                 div.caption Save time with an account on Bazaarboy
@@ -347,7 +342,7 @@ block content
             div.header
                 div.title Some details about you
                 div.caption 
-                    | We treat your privacy seriously, these information will not be shared 
+                    | We treat your privacy seriously, this information will not be shared 
                     | with any outside parties.
             div.content
                 input(type="text", name="email", placeholder="Email")
@@ -365,8 +360,56 @@ block content
                         div.clear
         div.confirmation.hidden
             div.header
-                div.title Confirmation
+                div.title Confirmation - Thank You!
             div.content
+                div.inner
+                    div.caption
+                        div.presents
+                            {% if organizers|length == 1 %}
+                            div.icon
+                            {% endif %}
+                            div.organizers
+                                {% spaceless %}
+                                {% for organizer in organizers %}
+                                b {{ organizer.profile.name }}{% if not forloop.last %}, {% endif %}
+                                {% endfor %}
+                                | presents
+                                {% endspaceless %}
+                            div.clear
+                        div.code
+                            | Confirmation #
+                            b 000000
+                        div.clear
+                    div.details
+                        div.left
+                            div.name 
+                                b {{ event.name }}
+                            div.time
+                                | {% spaceless %}
+                                | {{ event.start_time|date:"l, M jS, f" }}{{ event.start_time|date:"A"|lower }}
+                                | {% if event.end_time %}
+                                | {% if event.end_time|shouldShortenEndTime:event.start_time %}
+                                |  - {{ event.end_time|date:"f" }}{{ event.end_time|date:"A"|lower }}
+                                | {% else %}
+                                |  - {{ event.end_time|date:"l, M jS, f" }}{{ event.end_time|date:"A"|lower }}
+                                | {% endif %}
+                                | {% endif %}
+                                | {{ event.start_time|date:"T" }}
+                                | {% if event.location %}
+                                | at 
+                                b {{ event.location }}
+                                | {% endif %}
+                                | {% endspaceless %}
+                            div.extra
+                                i
+                                    | Thanks for using Bazaarboy. A more detailed confirmation will 
+                                    | be emailed to you shortly.
+                        div.right
+                            div.price
+                                b Free
+                            div.ticket Normal Admission
+                        div.clear
+            //-
                 div.caption Thank you!
                 div.body
                     div.upper
