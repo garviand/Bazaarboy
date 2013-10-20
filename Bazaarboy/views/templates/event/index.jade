@@ -245,46 +245,63 @@ block content
             div.clear
     {% if editable %}
     div#tickets.event_overlay_canvas
-        div.title Edit Ticket Options
-        div.controls
-            a.add(href="javascript:;") Add Ticket/RSVP Option
-        mixin ticket(id, name, description, price, quantity, start_time, end_time)
+        div.title 
+            div.text 
+                b Ticket Options
+            div.controls
+                a.add(href="javascript:;") Add
+                div.clear
+            div.clear
+        mixin ticket(id, name, description, price, quantity, start_time, start_time_date, start_time_time, end_time, end_time_date, end_time_time)
             div.ticket(class=attributes.class, data-id=id)
                 form
-                    div.name
-                        div.text= name
-                        div.editor
-                            input(type="text", name="name", placeholder="Name", value=name)
-                    div.description
-                        div.text= description
-                        div.editor
-                            input(type="text", name="description", placeholder="Short description", value=description)
-                    div.price
-                        div.text= '$ ' + price
-                        div.editor
-                            input(type="text", name="price", placeholder="Price", value=price)
-                    div.quantity
-                        div.text= quantity
-                        div.editor
-                            input(type="text", name="quantity", placeholder="Quantity (Unlimited if left blank)", value=quantity)
-                    div.start_time
-                        div.text= start_time
-                        div.editor
-                            input(type="text", name="start_time", placeholder="Start time", value=start_time)
-                    div.end_time
-                        div.text= end_time
-                        div.editor
-                            input(type="text", name="end_time", placeholder="End time", value=end_time)
-                    div.buttons
-                        a.switch.edit(href="javascript:;") Edit
-                        a.delete(href="javascript:;") Delete
+                    div.top
+                        div.left
+                            div.price
+                                div.text= '$' + price
+                                div.editor
+                                    input(type="text", name="price", placeholder="Price", value=price)
+                            div.quantity
+                                div.text= quantity
+                                div.editor
+                                    input(type="text", name="quantity", placeholder="Quantity (Unlimited if left blank)", value=quantity)
+                        div.right
+                            div.name
+                                div.text= name
+                                div.editor
+                                    input(type="text", name="name", placeholder="Name", value=name)
+                            div.description
+                                div.text= description
+                                div.editor
+                                    input(type="text", name="description", placeholder="Short description", value=description)
+                        div.clear
+                    div.bottom
+                        div.end_time
+                            div.text= end_time
+                            div.editor
+                                input(type="text", name="end_date", value=end_time_date, placeholder="MM/DD/YYYY")
+                                | &nbsp;@&nbsp;
+                                input(type="text", name="end_time", value=end_time_time, placeholder="ex. 7:00 PM")
+                        div.text &nbsp;to&nbsp;
+                        div.start_time
+                            div.text= start_time
+                            div.editor
+                                input(type="text", name="start_date", value=start_time_date, placeholder="MM/DD/YYYY")
+                                | &nbsp;@&nbsp;
+                                input(type="text", name="start_time", value=start_time_time, placeholder="ex. 6:00 PM")
+                        div.text Valid thru
+                        div.clear
+                    div.controls
+                        a.cancel(href="javascript:;") Cancel
+                        a.save(href="javascript:;") Save
+                        div.clear
         +ticket()(class="template hidden")
         div.tickets
             {% for ticket in tickets %}
-            +ticket('{{ ticket.id }}', '{{ ticket.name }}', '{{ ticket.description }}', '{{ ticket.price|floatformat:-2 }}', '{{ ticket.quantity }}', '{{ ticket.start_time|standardTime }}', '{{ ticket.end_time|standardTime }}')
+            +ticket('{{ ticket.id }}', '{{ ticket.name }}', '{{ ticket.description }}', '{{ ticket.price|floatformat:-2 }}', '{% if ticket.quantity %}{{ ticket.quantity }}{% else %}Unlimited{% endif %}', '{{ ticket.start_time|date:\'l, M jS, f\' }}{{ ticket.start_time|date:\'A\'|lower }}', '{{ ticket.start_time|date:\'m/d/Y\' }}', '{{ ticket.start_time|date:\'g:i A\' }}', '{{ ticket.end_time|date:\'l, M jS, f\' }}{{ ticket.end_time|date:\'A\'|lower }}', '{{ ticket.end_time|date:\'m/d/Y\' }}', '{{ ticket.end_time|date:\'g:i A\' }}')
             {% endfor %}
             div.empty(class="{% if tickets|length != 0 %}hidden{% endif %}")
-                i No RSVP options yet.
+                i No ticket options yet.
     {% else %}
     div#rsvp.event_overlay_canvas
         div.tickets

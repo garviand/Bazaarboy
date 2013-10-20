@@ -66,12 +66,13 @@
     */
 
     adjustOverlayHeight: function() {
-      var overlayHeight, visibleDiv, _i, _len, _ref;
-      overlayHeight = 10;
+      var gap, overlayHeight, visibleDiv, _i, _len, _ref;
+      gap = parseInt($('div.event_overlay_canvas > div').css('margin-top'));
+      overlayHeight = gap;
       _ref = $('div.event_overlay_canvas > div').not('div.hidden');
       for (_i = 0, _len = _ref.length; _i < _len; _i++) {
         visibleDiv = _ref[_i];
-        overlayHeight += $(visibleDiv).outerHeight() + 10;
+        overlayHeight += $(visibleDiv).outerHeight() + gap;
       }
       $('div.event_overlay_canvas').css({
         'margin-top': 0
@@ -678,6 +679,7 @@
       }
       ticket = $('div#tickets div.ticket.template').clone(true);
       $(ticket).removeClass('hidden').prependTo($('div#tickets div.tickets'));
+      this.adjustOverlayHeight();
       this.startEditingTicket(ticket);
     },
     deleteTicket: function(ticket) {

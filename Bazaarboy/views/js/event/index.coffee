@@ -58,9 +58,10 @@ Bazaarboy.event.index =
         return
     ###
     adjustOverlayHeight: () ->
-        overlayHeight = 10
+        gap = parseInt($('div.event_overlay_canvas > div').css('margin-top'))
+        overlayHeight = gap
         for visibleDiv in $('div.event_overlay_canvas > div').not('div.hidden')
-            overlayHeight += $(visibleDiv).outerHeight() + 10
+            overlayHeight += $(visibleDiv).outerHeight() + gap
         $('div.event_overlay_canvas').css
             'margin-top': 0
         $('div.event_overlay_canvas').height overlayHeight
@@ -635,6 +636,7 @@ Bazaarboy.event.index =
         $(ticket)
             .removeClass('hidden')
             .prependTo($('div#tickets div.tickets'))
+        @adjustOverlayHeight()
         @startEditingTicket(ticket)
         return
     deleteTicket: (ticket) ->
