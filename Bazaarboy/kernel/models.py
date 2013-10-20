@@ -278,7 +278,7 @@ class Ticket(models.Model):
     Ticket model for normal events
     """
     event = models.ForeignKey('Event')
-    name = models.CharField(max_length = 30)
+    name = models.CharField(max_length = 50)
     description = models.CharField(max_length = 150)
     price = models.FloatField()
     quantity = models.IntegerField(null = True, default = None)

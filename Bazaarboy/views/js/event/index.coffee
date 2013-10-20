@@ -265,6 +265,7 @@ Bazaarboy.event.index =
                 $('div#event > div.title div.top div.button')
                     .html('Edit')
                     .removeClass('stick')
+                document.title = title
             else
                 alert err.message
             return

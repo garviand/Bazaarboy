@@ -2283,6 +2283,11 @@ div#rsvp div.confirmation div.content div.inner div.details div.right div.ticket
   text-align: center;
   font-size: 14px;
 }
+div#event_manage {
+  width: 912px;
+  display: block;
+  margin: auto;
+}
 /*
 div#fundraiser {
     div.frame {

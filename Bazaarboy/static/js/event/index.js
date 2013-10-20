@@ -300,6 +300,7 @@
           $('div#event > div.title div.top div.editor input').val(title);
           $('div#event > div.title div.top div.editor').addClass('hidden');
           $('div#event > div.title div.top div.button').html('Edit').removeClass('stick');
+          document.title = title;
         } else {
           alert(err.message);
         }

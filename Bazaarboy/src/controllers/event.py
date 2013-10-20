@@ -9,6 +9,7 @@ from django.db.models import F, Q
 from django.http import Http404
 from django.shortcuts import render, redirect
 from django.utils import timezone
+from django.views.decorators.cache import cache_page
 from celery import task
 from kernel.models import *
 from src.config import *
@@ -21,6 +22,7 @@ from src.sms import SMS
 
 import pdb
 
+@cache_page(60 * 5)
 @login_check()
 @validate('GET', [], ['token', 'preview'])
 def index(request, id, params, user):

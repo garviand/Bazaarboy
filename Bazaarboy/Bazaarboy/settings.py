@@ -186,6 +186,14 @@ CELERY_IMPORTS = (
     'src.controllers.initiative'
 )
 
+# Cache
+
+CACHES = {
+    'default': {
+        'BACKEND': 'django.core.cache.backends.dummy.DummyCache',
+    }
+}
+
 # Environment-specific settings
 
 if BBOY_ENV == 'production':
