@@ -1364,9 +1364,6 @@ div.event_base > div.title div.inner div.top {
   width: 960px;
   border-bottom: 1px solid #7F7F7F;
 }
-div.event_base > div.title div.inner div.top:hover div.button {
-  display: block;
-}
 div.event_base > div.title div.inner div.top .title_text {
   width: 960px;
   min-height: 31px;
@@ -1648,70 +1645,6 @@ div.event_base div.cover {
   min-width: 960px;
   height: 0;
   overflow: hidden;
-  /*
-        div.caption {
-            position: relative;
-            width: 100%;
-            height: 0;
-            background: #BBB;
-            overflow: hidden;
-            &:hover {
-                div.inner {
-                    div.button {
-                        display: block;
-                    }
-                }
-            }
-
-            div.inner {
-                position: relative;
-                width: @content_inner_width;
-                height: 100%;
-                margin-left: (@content_width - @content_inner_width) / 2;
-
-                div.text {
-                    width: 100%;
-                    height: @font_size_base;
-                    padding-top: floor((30px - (@font_size_base - 1)) / 2);
-                    padding-bottom: ceil((30px - (@font_size_base - 1)) / 2);
-                    font-size: @font_size_base - 1;
-                    line-height: @font_size_base - 1;
-                }
-
-                div.button {
-                    display: none;
-                    position: absolute;
-                    width: 40px;
-                    height: 80%;
-                    left: -45px;
-                    top: 10%;
-                    background-color: #FFF;
-                    text-align: center;
-                    cursor: pointer;
-                }
-
-                div.editor {
-                    width: 100%;
-                    height: 100%;
-
-                    input {
-                        width: @content_inner_width;
-                        height: @font_size_base - 1;
-                        padding: 0;
-                        padding-top: floor((30px - (@font_size_base - 1)) / 2);
-                        padding-bottom: ceil((30px - (@font_size_base - 1)) / 2);
-                        border: none;
-                        outline: none;
-                        background: none;
-                        font-size: @font_size_base - 1;
-                        line-height: @font_size_base - 1;
-                        .input_placeholder(rgba(0, 0, 0, 0.6));
-                    }
-                }
-            }
-        }
-        */
-
 }
 div.event_base div.cover div.inner {
   width: 960px;
@@ -1736,6 +1669,56 @@ div.event_base div.cover div.inner div.image div.bounds img.normal {
 }
 div.event_base div.cover div.inner div.image div.bounds img.editing {
   cursor: pointer;
+}
+div.event_base div.frame > div.left {
+  position: relative;
+}
+div.event_base div.frame > div.left div.caption {
+  position: absolute;
+  width: 696px;
+  height: 26px;
+  top: -15px;
+  left: 0;
+  background-color: #1C1C1C;
+}
+div.event_base div.frame > div.left div.caption div.text {
+  width: 676px;
+  height: 14px;
+  padding: 6px 10px;
+  color: #FFF;
+  font-size: 14px;
+  line-height: 14px;
+}
+div.event_base div.frame > div.left div.caption div.button {
+  position: absolute;
+  width: 40px;
+  height: 12px;
+  right: 5px;
+  top: 4px;
+  padding: 2px 0;
+  border: 1px solid #FFF;
+  color: #FFF;
+  font-size: 12px;
+  font-weight: 300;
+  line-height: 12px;
+  text-transform: uppercase;
+  text-align: center;
+  cursor: pointer;
+}
+div.event_base div.frame > div.left div.caption div.editor {
+  width: 656px;
+  height: 26px;
+}
+div.event_base div.frame > div.left div.caption div.editor input {
+  width: 636px;
+  height: 14px;
+  padding: 6px 10px;
+  border: none;
+  background-color: #000;
+  outline: none;
+  color: #FFF;
+  font-size: 14px;
+  line-height: 14px;
 }
 div.event_base div.frame > div.left div.placeholder {
   width: 100%;

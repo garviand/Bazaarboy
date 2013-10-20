@@ -3,7 +3,7 @@
 extends ../layout
 
 block title
-    | {{ event.name }}
+    | {% if preview %}Preview | {% endif %}{{ event.name }}
 
 append head
     {% if event.is_private %}
@@ -146,8 +146,9 @@ block content
                         {% if event.cover %}
                         img.normal(src="{{ event.cover.source.url }}")
                         {% endif %}
-            //div.caption
-                div.inner
+        div.frame
+            div.left
+                div.caption(class="{% if not event.cover %}hidden{% else %}{% if not editable and event.cover.caption|length == 0 %}hidden{% endif %}{% endif %}")
                     div.text
                         {% if event.cover and event.cover.caption|length != 0 %}
                         {{ event.cover.caption }}
@@ -159,8 +160,6 @@ block content
                     div.editor.hidden
                         input(type="text", name="caption", placeholder="Maximum 100 Characters", value="{{ event.cover.caption }}")
                     {% endif %}
-        div.frame
-            div.left
                 {% if editable %}
                 div.placeholder
                 {% endif %}
@@ -353,7 +352,7 @@ block content
         div.action
             div.header
                 div.title
-                    a.confirm(href="javascript:;") Confirm
+                    a.confirm(class="{% if preview %}preview{% endif %}", href="javascript:;") Confirm
                     div.loading.hidden
                         img(src="{{ STATIC_URL }}images/loading.gif")
                         span Processing...
@@ -409,24 +408,6 @@ block content
                                 b Free
                             div.ticket Normal Admission
                         div.clear
-            //-
-                div.caption Thank you!
-                div.body
-                    div.upper
-                        h2 You have {% if rsvp %}RSVP'd{% else %}purchased a ticket{% endif %} for
-                        p.name {{ event.name }}
-                        p.time 
-                            | {{ event.start_time|date:"F jS, Y @ f" }}{{ event.start_time|date:"A"|lower }}
-                        p.location
-                            | at {{ event.location }}
-                    div.lower
-                        p.top
-                            span.ticket
-                            span.price
-                            span.clear
-                        p 
-                            | A more detailed confirmation invoice will be emailed to you 
-                            | shortly. Thanks for your purchase!
     {% endif %}
 
 append script

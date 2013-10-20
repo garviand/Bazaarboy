@@ -194,8 +194,7 @@
       });
     },
     initTransaction: function() {
-      var scope,
-        _this = this;
+      var scope;
       scope = this;
       $('div#rsvp form.login').submit(function(event) {
         event.preventDefault();
@@ -235,26 +234,28 @@
       });
       $('div#rsvp div.action a.confirm').click(function() {
         var email, fullName, phone, ticket;
-        if ($('div#rsvp div.ticket.valid.selected').length > 0) {
-          ticket = $('div#rsvp div.ticket.valid.selected').attr('data-id');
-          if ($('div#rsvp div.info').length === 0) {
-            _this.purchase(ticket);
-          } else {
-            email = $('div#rsvp div.info input[name=email]').val();
-            fullName = $('div#rsvp div.info input[name=full_name]').val();
-            phone = $('div#rsvp div.info input[name=phone]').val();
-            if (email.trim() === '') {
-              alert('You must enter a valid email address.');
-              return;
+        if (!$(this).hasClass('preview')) {
+          if ($('div#rsvp div.ticket.valid.selected').length > 0) {
+            ticket = $('div#rsvp div.ticket.valid.selected').attr('data-id');
+            if ($('div#rsvp div.info').length === 0) {
+              scope.purchase(ticket);
+            } else {
+              email = $('div#rsvp div.info input[name=email]').val();
+              fullName = $('div#rsvp div.info input[name=full_name]').val();
+              phone = $('div#rsvp div.info input[name=phone]').val();
+              if (email.trim() === '') {
+                alert('You must enter a valid email address.');
+                return;
+              }
+              if (fullName.trim() === '') {
+                alert('You must enter your full name,');
+                return;
+              }
+              if (phone.trim() === '') {
+                phone = null;
+              }
+              scope.purchase(ticket, email, fullName, phone);
             }
-            if (fullName.trim() === '') {
-              alert('You must enter your full name,');
-              return;
-            }
-            if (phone.trim() === '') {
-              phone = null;
-            }
-            _this.purchase(ticket, email, fullName, phone);
           }
         }
       });
@@ -550,16 +551,16 @@
     },
     startEditingCoverCaption: function() {
       var caption;
-      $('div#event div.cover div.caption div.text').addClass('hidden');
-      $('div#event div.cover div.caption div.editor').removeClass('hidden');
-      caption = $('div#event div.cover div.caption div.editor input').val();
-      $('div#event div.cover div.caption div.editor input').focus().val('').val(caption);
-      $('div#event div.cover div.caption div.button').html('Save').addClass('stick');
+      $('div#event div.frame div.left > div.caption div.text').addClass('hidden');
+      $('div#event div.frame div.left > div.caption div.editor').removeClass('hidden');
+      caption = $('div#event div.frame div.left > div.caption div.editor input').val();
+      $('div#event div.frame div.left > div.caption div.editor input').focus().val('').val(caption);
+      $('div#event div.frame div.left > div.caption div.button').html('Save').addClass('stick');
     },
     stopEditingCoverCaption: function() {
       var caption,
         _this = this;
-      caption = $('div#event div.cover div.caption div.editor input').val();
+      caption = $('div#event div.frame div.left > div.caption div.editor input').val();
       this.save({
         caption: caption
       }, function(err, event) {
@@ -569,10 +570,10 @@
           if (caption.length === 0) {
             captionText = '<i>No caption yet.</i>';
           }
-          $('div#event div.cover div.caption div.text').html(captionText).removeClass('hidden');
-          $('div#event div.cover div.caption div.editor input').val(caption);
-          $('div#event div.cover div.caption div.editor').addClass('hidden');
-          $('div#event div.cover div.caption div.button').html('Edit').removeClass('stick');
+          $('div#event div.frame div.left > div.caption div.text').html(captionText).removeClass('hidden');
+          $('div#event div.frame div.left > div.caption div.editor input').val(caption);
+          $('div#event div.frame div.left > div.caption div.editor').addClass('hidden');
+          $('div#event div.frame div.left > div.caption div.button').html('Edit').removeClass('stick');
         } else {
           alert(err.message);
         }
@@ -873,7 +874,7 @@
           }
         }
       });
-      $('div#event div.cover div.caption div.button').click(function() {
+      $('div#event div.frame div.left > div.caption div.button').click(function() {
         if ($(this).hasClass('stick')) {
           scope.stopEditingCoverCaption();
         } else {

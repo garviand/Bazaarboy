@@ -31,8 +31,10 @@ def index(request, id, params, user):
     """
     if not Event.objects.filter(id = id).exists():
         raise Http404
+    preview = False
     if params['preview'] is not None:
         user = None
+        preview = True
     event = Event.objects.select_related().get(id = id)
     editable = False
     if Event_organizer.objects.filter(event = event).count() != 0:
@@ -275,6 +277,11 @@ def edit(request, params, user):
             }
             return json_response(response)
         else:
+            tickets = Ticket.objects.filter(event = event)
+            for ticket in tickets:
+                if ticket.end_time == event.start_time:
+                    ticket.end_time = params['start_time']
+                    ticket.save()
             event.start_time = params['start_time']
     if params['end_time'] is not None:
         if params['end_time'] == 'none':

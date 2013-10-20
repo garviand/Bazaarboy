@@ -206,24 +206,25 @@ Bazaarboy.event.index =
                     .html($(this).find('div.price b').html())
             return
         # Confirm ticket selection
-        $('div#rsvp div.action a.confirm').click () =>
-            if $('div#rsvp div.ticket.valid.selected').length > 0
-                ticket = $('div#rsvp div.ticket.valid.selected').attr('data-id')
-                if $('div#rsvp div.info').length is 0
-                    @purchase ticket
-                else
-                    email = $('div#rsvp div.info input[name=email]').val()
-                    fullName = $('div#rsvp div.info input[name=full_name]').val()
-                    phone = $('div#rsvp div.info input[name=phone]').val()
-                    if email.trim() is ''
-                        alert 'You must enter a valid email address.'
-                        return
-                    if fullName.trim() is ''
-                        alert 'You must enter your full name,'
-                        return
-                    if phone.trim() is ''
-                        phone = null
-                    @purchase ticket, email, fullName, phone
+        $('div#rsvp div.action a.confirm').click () ->
+            if not $(this).hasClass('preview')
+                if $('div#rsvp div.ticket.valid.selected').length > 0
+                    ticket = $('div#rsvp div.ticket.valid.selected').attr('data-id')
+                    if $('div#rsvp div.info').length is 0
+                        scope.purchase ticket
+                    else
+                        email = $('div#rsvp div.info input[name=email]').val()
+                        fullName = $('div#rsvp div.info input[name=full_name]').val()
+                        phone = $('div#rsvp div.info input[name=phone]').val()
+                        if email.trim() is ''
+                            alert 'You must enter a valid email address.'
+                            return
+                        if fullName.trim() is ''
+                            alert 'You must enter your full name,'
+                            return
+                        if phone.trim() is ''
+                            phone = null
+                        scope.purchase ticket, email, fullName, phone
             return
         # Check whether to open the RSVP modal
         if window.location.hash? and window.location.hash is '#rsvp' and not editable
@@ -508,30 +509,31 @@ Bazaarboy.event.index =
                 alert err.message
             return
     startEditingCoverCaption: () ->
-        $('div#event div.cover div.caption div.text').addClass('hidden')
-        $('div#event div.cover div.caption div.editor').removeClass('hidden')
-        caption = $('div#event div.cover div.caption div.editor input').val()
-        $('div#event div.cover div.caption div.editor input')
+        $('div#event div.frame div.left > div.caption div.text').addClass('hidden')
+        $('div#event div.frame div.left > div.caption div.editor')
+            .removeClass('hidden')
+        caption = $('div#event div.frame div.left > div.caption div.editor input').val()
+        $('div#event div.frame div.left > div.caption div.editor input')
             .focus().val('').val(caption)
-        $('div#event div.cover div.caption div.button')
+        $('div#event div.frame div.left > div.caption div.button')
             .html('Save')
             .addClass('stick')
         return
     stopEditingCoverCaption: () ->
-        caption = $('div#event div.cover div.caption div.editor input').val()
+        caption = $('div#event div.frame div.left > div.caption div.editor input').val()
         @save {caption: caption}, (err, event) =>
             unless err
                 captionText = caption
                 if caption.length is 0
                     captionText = '<i>No caption yet.</i>'
-                $('div#event div.cover div.caption div.text')
+                $('div#event div.frame div.left > div.caption div.text')
                     .html(captionText)
                     .removeClass('hidden')
-                $('div#event div.cover div.caption div.editor input')
+                $('div#event div.frame div.left > div.caption div.editor input')
                     .val(caption)
-                $('div#event div.cover div.caption div.editor')
+                $('div#event div.frame div.left > div.caption div.editor')
                     .addClass('hidden')
-                $('div#event div.cover div.caption div.button')
+                $('div#event div.frame div.left > div.caption div.button')
                     .html('Edit')
                     .removeClass('stick')
             else
@@ -806,7 +808,7 @@ Bazaarboy.event.index =
                     alert response.message
                 return
         # Edit cover caption
-        $('div#event div.cover div.caption div.button').click () ->
+        $('div#event div.frame div.left > div.caption div.button').click () ->
             if $(this).hasClass('stick')
                 scope.stopEditingCoverCaption()
             else
