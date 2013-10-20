@@ -94,8 +94,7 @@ def settings(request, user):
     return render(request, 'user/settings.html', locals())
 
 @login_check()
-@validate('POST', 
-          ['email', 'password', 'full_name', 'city'])
+@validate('POST', ['email', 'password', 'full_name', 'city'])
 def create(request, params, user):
     """
     Create a new user using email and password

@@ -48,7 +48,7 @@ profile_urlpatterns = patterns('src.controllers.profile',
 
 event_urlpatterns = patterns('src.controllers.event', 
     url(r'^(?P<id>\d+)/$', 'index', name = 'index'),
-    url(r'^new/$', 'new', name = 'new'),
+    url(r'^(?P<id>\d+)/manage/$', 'manage', name = 'manage'),
     url(r'^$', 'event', name = 'event'),
     url(r'^create/$', 'create', name = 'create'),
     url(r'^edit/$', 'edit', name = 'edit'),

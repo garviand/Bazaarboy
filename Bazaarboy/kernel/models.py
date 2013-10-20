@@ -4,6 +4,8 @@ All the core models for Bazaarboy
 
 import hashlib
 import os
+import random
+import string
 from django.db import models, IntegrityError
 from django.db.models import F
 from django.utils import timezone
@@ -245,6 +247,14 @@ class InsufficientQuantity(Exception):
     """
     pass
 
+def randomConfirmationCode(size=6):
+    """
+    A method for generating confirmation code like 6ABX78
+    """
+    charSet = string.ascii_uppercase + string.digits
+    code = ''.join(random.choice(charSet) for x in range(size))
+    return code
+
 class Event(Event_base):
     """
     Model for normal events
@@ -268,7 +278,7 @@ class Ticket(models.Model):
     Ticket model for normal events
     """
     event = models.ForeignKey('Event')
-    name = models.CharField(max_length = 30)
+    name = models.CharField(max_length = 50)
     description = models.CharField(max_length = 150)
     price = models.FloatField()
     quantity = models.IntegerField(null = True, default = None)
@@ -297,6 +307,14 @@ class Purchase(models.Model):
     checkout = models.ForeignKey('Checkout', null = True, default = None)
     is_expired = models.BooleanField(default = False)
     created_time = models.DateTimeField(auto_now_add = True)
+
+    def save(self, *args, **kwargs):
+        """
+        Overrides save to generate confirmation code
+        """
+        if self.pk is None:
+            self.code = randomConfirmationCode()
+        super(Purchase, self).save(*args, **kwargs)
 
 class Fundraiser(Event_base):
     """

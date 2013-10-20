@@ -5,6 +5,8 @@ Bazaarboy.event.index =
     uploads:
         cover: undefined
     coverEditInProgress: false
+    purchaseInProgress: false
+    ###
     drawMapWithCenter: (latitude, longitude) ->
         center = new google.maps.LatLng(latitude + 0.0015, longitude)
         mapOpts = 
@@ -23,6 +25,7 @@ Bazaarboy.event.index =
         marker = new google.maps.Marker({position: markerPos})
         marker.setMap @map
         return
+    ###
     adjustSidebarPosition: () ->
         hangingButtons = $('div#event > div.title div.bottom div.hanging').not('div.hidden')
         count = hangingButtons.length
@@ -85,14 +88,23 @@ Bazaarboy.event.index =
             picture: image
         , (response) -> 
             return
-    purchase: (ticket, email=null, fullName=null) ->
+    purchase: (ticket, email=null, fullName=null, phone=null) ->
+        @purchaseInProgress = true
+        $('div#rsvp div.action a.confirm').css('display', 'none')
+        $('div#rsvp div.action div.loading').removeClass('hidden')
         params = 
             ticket: ticket
         if email? and fullName?
             params.email = email
             params.full_name = fullName
+        if phone?
+            params.phone = phone
         Bazaarboy.post 'event/purchase/', params, (response) =>
+            $('div#rsvp div.action a.confirm').css('display', '')
+            $('div#rsvp div.action div.loading').addClass('hidden')
             if response.status is 'OK'
+                $('div#rsvp div.confirmation div.code b')
+                    .html(response.purchase.code)
                 if response.publishable_key?
                     checkoutDescription = response.purchase.event.name + ' ' + 
                                           response.purchase.ticket.name
@@ -105,10 +117,18 @@ Bazaarboy.event.index =
                         description: checkoutDescription
                         panelLabel: 'Checkout'
                         token: (token) =>
+                            $('div#rsvp div.action a.confirm')
+                                .css('display', 'none')
+                            $('div#rsvp div.action div.loading')
+                                .removeClass('hidden')
                             Bazaarboy.post 'payment/charge/',
                                 checkout: response.purchase.checkout
                                 stripe_token: token.id
                             , (response) =>
+                                $('div#rsvp div.action a.confirm')
+                                    .css('display', '')
+                                $('div#rsvp div.action div.loading')
+                                    .addClass('hidden')
                                 if response.status is 'OK'
                                     @completeCheckout()
                                 else
@@ -123,6 +143,8 @@ Bazaarboy.event.index =
         return
     completeCheckout: () ->
         scope = this
+        $('div#rsvp div.confirmation').removeClass('hidden')
+        @adjustOverlayHeight()
         $('div#rsvp div.tickets').addClass('collapsed')
         $('div#rsvp div.tickets div.ticket').not('div.selected').animate
             'height': 0
@@ -140,7 +162,6 @@ Bazaarboy.event.index =
             $(this).addClass('hidden')
             scope.adjustOverlayHeight()
             return
-        $('div#rsvp div.confirmation').removeClass('hidden')
         return
     initTransaction: () ->
         scope = this
@@ -179,31 +200,35 @@ Bazaarboy.event.index =
                 $(this).addClass('selected')
                 $(this).find('input[type=radio]').prop('checked', true)
                 $('div#rsvp div.action').removeClass('hidden')
-                $('div#rsvp div.confirmation span.ticket')
+                $('div#rsvp div.confirmation div.ticket')
                     .html($(this).find('div.name').html())
-                $('div#rsvp div.confirmation span.price')
+                $('div#rsvp div.confirmation div.price b')
                     .html($(this).find('div.price b').html())
             return
         # Confirm ticket selection
-        $('div#rsvp div.action a.confirm').click () =>
-            if $('div#rsvp div.ticket.valid.selected').length > 0
-                ticket = $('div#rsvp div.ticket.valid.selected').attr('data-id')
-                if $('div#rsvp div.info').length is 0
-                    @purchase ticket
-                else
-                    email = $('div#rsvp div.info input[name=email]').val()
-                    fullName = $('div#rsvp div.info input[name=full_name]').val()
-                    if email.trim() is ''
-                        alert 'You must enter a valid email address.'
-                        return
-                    if fullName.trim() is ''
-                        alert 'You must enter your full name,'
-                        return
-                    @purchase ticket, email, fullName
+        $('div#rsvp div.action a.confirm').click () ->
+            if not $(this).hasClass('preview')
+                if $('div#rsvp div.ticket.valid.selected').length > 0
+                    ticket = $('div#rsvp div.ticket.valid.selected').attr('data-id')
+                    if $('div#rsvp div.info').length is 0
+                        scope.purchase ticket
+                    else
+                        email = $('div#rsvp div.info input[name=email]').val()
+                        fullName = $('div#rsvp div.info input[name=full_name]').val()
+                        phone = $('div#rsvp div.info input[name=phone]').val()
+                        if email.trim() is ''
+                            alert 'You must enter a valid email address.'
+                            return
+                        if fullName.trim() is ''
+                            alert 'You must enter your full name,'
+                            return
+                        if phone.trim() is ''
+                            phone = null
+                        scope.purchase ticket, email, fullName, phone
             return
         # Check whether to open the RSVP modal
-        if window.location.hash? and window.location.hash is '#rsvp' and editable
-            $('div#event div.action').click()
+        if window.location.hash? and window.location.hash is '#rsvp' and not editable
+            $('div#event div.title div.bottom > div.action').click()
         return
     save: (params, cb) ->
         params.id = eventId
@@ -241,6 +266,7 @@ Bazaarboy.event.index =
                 $('div#event > div.title div.top div.button')
                     .html('Edit')
                     .removeClass('stick')
+                document.title = title
             else
                 alert err.message
             return
@@ -253,6 +279,62 @@ Bazaarboy.event.index =
             .addClass('stick')
         return
     stopEditingTimeLocation: () ->
+        startDate = $('div#event > div.title input[name=start_date]').val()
+        if not moment(startDate, 'MM/DD/YYYY').isValid()
+            return
+        startTime = $('div#event > div.title input[name=start_time]').val()
+        if not moment(startTime, 'h:mm a').isValid()
+            return
+        startTime = moment(startDate + ' ' + startTime, 'MM/DD/YYYY h:mm A')
+        endDate = $('div#event > div.title input[name=end_date]').val()
+        endTime = $('div#event > div.title input[name=end_time]').val()
+        if endDate.trim().length is 0 and endTime.trim().length is 0
+            endTime = false
+        else
+            if not moment(endDate, 'MM/DD/YYYY').isValid()
+                return
+            if not moment(endTime, 'h:mm a').isValid()
+                return
+            endTime = moment(endDate + ' ' + endTime, 'MM/DD/YYYY h:mm A')
+        location = $('div#event > div.title input[name=location]').val().trim()
+        if location.length is 0
+            location = 'none'
+        @save
+            start_time: startTime.utc().format('YYYY-MM-DD HH:mm:ss')
+            end_time: if endTime then endTime.utc().format('YYYY-MM-DD HH:mm:ss') else 'none'
+            location: location
+        , (err, event) =>
+            unless err
+                timeString = ''
+                startTime = startTime.local()
+                if startTime.format('mm') is '00'
+                    timeString += startTime.format('dddd, MMM Do, ha')
+                else
+                    timeString += startTime.format('dddd, MMM Do, h:mma')
+                if endTime
+                    timeString += ' - '
+                    endTime = endTime.local()
+                    if endTime.format('D') is startTime.format('D')
+                        # Shorten the end time
+                        if endTime.format('mm') is '00'
+                            timeString += endTime.format('ha')
+                        else
+                            timeString += endTime.format('h:mma')
+                    else
+                        if endTime.format('mm') is '00'
+                            timeString += endTime.format('dddd, MMM Do, ha')
+                        else
+                            timeString += endTime.format('dddd, MMM Do, h:mma')
+                timeLocation = timeString + ' at <b>' + event.location + '</b>'
+                $('div#event > div.title div.details div.text').html(timeLocation)
+                $('div#event > div.title div.details div.text').removeClass('hidden')
+                $('div#event > div.title div.details div.editor').addClass('hidden')
+                $('div#event > div.title div.bottom > div.button')
+                    .html('Edit')
+                    .removeClass('stick')
+            else
+                alert err.message
+            return
         return
     prepareUploadedCoverImage: (coverUrl) ->
         $('div#event').addClass('with_cover')
@@ -427,30 +509,31 @@ Bazaarboy.event.index =
                 alert err.message
             return
     startEditingCoverCaption: () ->
-        $('div#event div.cover div.caption div.text').addClass('hidden')
-        $('div#event div.cover div.caption div.editor').removeClass('hidden')
-        caption = $('div#event div.cover div.caption div.editor input').val()
-        $('div#event div.cover div.caption div.editor input')
+        $('div#event div.frame div.left > div.caption div.text').addClass('hidden')
+        $('div#event div.frame div.left > div.caption div.editor')
+            .removeClass('hidden')
+        caption = $('div#event div.frame div.left > div.caption div.editor input').val()
+        $('div#event div.frame div.left > div.caption div.editor input')
             .focus().val('').val(caption)
-        $('div#event div.cover div.caption div.button')
+        $('div#event div.frame div.left > div.caption div.button')
             .html('Save')
             .addClass('stick')
         return
     stopEditingCoverCaption: () ->
-        caption = $('div#event div.cover div.caption div.editor input').val()
+        caption = $('div#event div.frame div.left > div.caption div.editor input').val()
         @save {caption: caption}, (err, event) =>
             unless err
                 captionText = caption
                 if caption.length is 0
                     captionText = '<i>No caption yet.</i>'
-                $('div#event div.cover div.caption div.text')
+                $('div#event div.frame div.left > div.caption div.text')
                     .html(captionText)
                     .removeClass('hidden')
-                $('div#event div.cover div.caption div.editor input')
+                $('div#event div.frame div.left > div.caption div.editor input')
                     .val(caption)
-                $('div#event div.cover div.caption div.editor')
+                $('div#event div.frame div.left > div.caption div.editor')
                     .addClass('hidden')
-                $('div#event div.cover div.caption div.button')
+                $('div#event div.frame div.left > div.caption div.button')
                     .html('Edit')
                     .removeClass('stick')
             else
@@ -725,7 +808,7 @@ Bazaarboy.event.index =
                     alert response.message
                 return
         # Edit cover caption
-        $('div#event div.cover div.caption div.button').click () ->
+        $('div#event div.frame div.left > div.caption div.button').click () ->
             if $(this).hasClass('stick')
                 scope.stopEditingCoverCaption()
             else
@@ -773,7 +856,7 @@ Bazaarboy.event.index =
         return
     init: () ->
         # Overlay
-        $('div#event div.action').click () =>
+        $('div#event div.title div.bottom > div.action').click () =>
             $('div#wrapper_overlay').fadeIn(200)
             $('div.event_overlay_canvas').css
                 'top': $('div#event > div.title').height() + 20

@@ -25,7 +25,7 @@ _gaq.push(['_trackPageview']);
     js = d.createElement(s); js.id = id;
     js.src = "//connect.facebook.net/en_US/all.js";
     fjs.parentNode.insertBefore(js, fjs);
-}(document, 'script', 'facebook-jssdk'));</script><div id="login"><h2>Login</h2><br><a id="fb_login" href="javascript:;">Login with Facebook</a><br><form name="login"><label>Email</label><input type="text" name="email"><br><label>Password</label><input type="password" name="password"><br><input type="submit" name="submit" value="Login"></form></div><script type="text/javascript" src="{{ STATIC_URL }}js/libraries.js"></script><script type="text/javascript">var rootUrl = '{% url index %}';
+}(document, 'script', 'facebook-jssdk'));</script><div id="login"><h2>Login</h2><br><form name="login"><label>Email</label><input type="text" name="email"><br><label>Password</label><input type="password" name="password"><br><input type="submit" name="submit" value="Login"></form></div><script type="text/javascript" src="{{ STATIC_URL }}js/libraries.js"></script><script type="text/javascript">var rootUrl = '{% url index %}';
 var mediaUrl = '{{ MEDIA_URL }}';
 var csrfToken = '{{ csrf_token }}';
 var loggedIn = {% if user %}true{% else %}false{% endif %};</script><script type="text/javascript" src="{{ STATIC_URL }}js/layout.js"></script><script type="text/javascript" src="{{ STATIC_URL }}js/user/login.js"></script><script type="text/javascript">Bazaarboy.user.login.init();

@@ -3,7 +3,7 @@
 extends ../layout
 
 block title
-    | {{ event.name }}
+    | {% if preview %}Preview | {% endif %}{{ event.name }}
 
 append head
     {% if event.is_private %}
@@ -23,13 +23,8 @@ append head
     link(rel="image_src", href="{{ event.cover.source.url|sanitizeUrl }}")
     {% endif %}
 
-block vars
-    - var collapsed = true
-
 prepend body
-    {% if not user.fb_id %}
     include ../components/facebook
-    {% endif %}
 
 block content
     div#event.content_divided.event_base(class="{% if event.cover %}with_cover{% endif %}")
@@ -70,19 +65,27 @@ block content
                             | {% endspaceless %}
                         {% if editable %}
                         div.editor.hidden
-                            label When
-                            input(type="text", name="start_date", value="{{ event.start_time|date:'m/d/Y' }}")
-                            | @
-                            input(type="text", name="start_time", value="{{ event.start_time|date:'g:i A' }}")
-                            | to
-                            input(type="text", name="end_date", value="{{ event.end_time|date:'m/d/Y' }}")
-                            | @
-                            input(type="text", name="end_time", value="{{ event.end_time|date:'g:i A' }}")
-                            | {{ event.start_time|date:"T" }}
+                            b When?
+                            | &nbsp;
+                            input(type="text", name="start_date", value="{{ event.start_time|date:'m/d/Y' }}", placeholder="MM/DD/YYYY")
+                            | &nbsp;@&nbsp;
+                            input(type="text", name="start_time", value="{{ event.start_time|date:'g:i A' }}", placeholder="ex. 6:00 PM")
+                            | &nbsp;
+                            label to
+                            | &nbsp;
+                            input(type="text", name="end_date", value="{{ event.end_time|date:'m/d/Y' }}", placeholder="MM/DD/YYYY")
+                            | &nbsp;@&nbsp;
+                            input(type="text", name="end_time", value="{{ event.end_time|date:'g:i A' }}", placeholder="ex. 7:00 PM")
+                            | &nbsp;{{ event.start_time|date:"T" }}&nbsp;&nbsp;
+                            b Where?
+                            | &nbsp;
+                            input(type="text", name="location", value="{{ event.location }}")
                         {% endif %}
+                    {% if not editable %}
                     div.sponsor.hidden
                         a(href="javascript:;")
                             i Want to sponsor this event?
+                    {% endif %}
                     {% if editable %}
                     div.button Edit
                     {% endif %}
@@ -143,8 +146,9 @@ block content
                         {% if event.cover %}
                         img.normal(src="{{ event.cover.source.url }}")
                         {% endif %}
-            //div.caption
-                div.inner
+        div.frame
+            div.left
+                div.caption(class="{% if not event.cover %}hidden{% else %}{% if not editable and event.cover.caption|length == 0 %}hidden{% endif %}{% endif %}")
                     div.text
                         {% if event.cover and event.cover.caption|length != 0 %}
                         {{ event.cover.caption }}
@@ -156,8 +160,6 @@ block content
                     div.editor.hidden
                         input(type="text", name="caption", placeholder="Maximum 100 Characters", value="{{ event.cover.caption }}")
                     {% endif %}
-        div.frame
-            div.left
                 {% if editable %}
                 div.placeholder
                 {% endif %}
@@ -176,7 +178,7 @@ block content
                     div.caption
                         div.text Organizer{{ organizers|pluralize }}
                         {% if editable %}
-                        div.button Add
+                        //div.button Add
                         {% endif %}
                         div.clear
                     div.body
@@ -312,7 +314,7 @@ block content
                     div.clear
                 {% endfor %}
         {% if not user %}
-        div.user.hidden
+        //-div.user.hidden
             div.header
                 div.title Continue as a user
                 div.caption Save time with an account on Bazaarboy
@@ -339,7 +341,7 @@ block content
             div.header
                 div.title Some details about you
                 div.caption 
-                    | We treat your privacy seriously, these information will not be shared 
+                    | We treat your privacy seriously, this information will not be shared 
                     | with any outside parties.
             div.content
                 input(type="text", name="email", placeholder="Email")
@@ -350,28 +352,62 @@ block content
         div.action
             div.header
                 div.title
-                    a.confirm(href="javascript:;") Confirm
+                    a.confirm(class="{% if preview %}preview{% endif %}", href="javascript:;") Confirm
+                    div.loading.hidden
+                        img(src="{{ STATIC_URL }}images/loading.gif")
+                        span Processing...
+                        div.clear
         div.confirmation.hidden
             div.header
-                div.title Confirmation
+                div.title Confirmation - Thank You!
             div.content
-                div.caption Thank you!
-                div.body
-                    div.upper
-                        h2 You have {% if rsvp %}RSVP'd{% else %}purchased a ticket{% endif %} for
-                        p.name {{ event.name }}
-                        p.time 
-                            | {{ event.start_time|date:"F jS, Y @ f" }}{{ event.start_time|date:"A"|lower }}
-                        p.location
-                            | at {{ event.location }}
-                    div.lower
-                        p.top
-                            span.ticket
-                            span.price
-                            span.clear
-                        p 
-                            | A more detailed confirmation invoice will be emailed to you 
-                            | shortly. Thanks for your purchase!
+                div.inner
+                    div.caption
+                        div.presents
+                            {% if organizers|length == 1 %}
+                            div.icon
+                            {% endif %}
+                            div.organizers
+                                {% spaceless %}
+                                {% for organizer in organizers %}
+                                b {{ organizer.profile.name }}{% if not forloop.last %}, {% endif %}
+                                {% endfor %}
+                                | presents
+                                {% endspaceless %}
+                            div.clear
+                        div.code
+                            | Confirmation #
+                            b 000000
+                        div.clear
+                    div.details
+                        div.left
+                            div.name 
+                                b {{ event.name }}
+                            div.time
+                                | {% spaceless %}
+                                | {{ event.start_time|date:"l, M jS, f" }}{{ event.start_time|date:"A"|lower }}
+                                | {% if event.end_time %}
+                                | {% if event.end_time|shouldShortenEndTime:event.start_time %}
+                                |  - {{ event.end_time|date:"f" }}{{ event.end_time|date:"A"|lower }}
+                                | {% else %}
+                                |  - {{ event.end_time|date:"l, M jS, f" }}{{ event.end_time|date:"A"|lower }}
+                                | {% endif %}
+                                | {% endif %}
+                                | {{ event.start_time|date:"T" }}
+                                | {% if event.location %}
+                                | at 
+                                b {{ event.location }}
+                                | {% endif %}
+                                | {% endspaceless %}
+                            div.extra
+                                i
+                                    | Thanks for using Bazaarboy. A more detailed confirmation will 
+                                    | be emailed to you shortly.
+                        div.right
+                            div.price
+                                b Free
+                            div.ticket Normal Admission
+                        div.clear
     {% endif %}
 
 append script
@@ -379,7 +415,9 @@ append script
     {% if editable %}
     script(type="text/javascript", src="{{ STATIC_URL }}jQueryUI/jquery-ui.min.js")
     script(type="text/javascript", src="{{ STATIC_URL }}redactor/redactor.min.js")
-    script(type="text/javascript", src="//cdnjs.cloudflare.com/ajax/libs/moment.js/2.0.0/moment.min.js")
+    script(type="text/javascript", src="{{ STATIC_URL }}moment/moment.min.js")
+    script(type="text/javascript", src="{{ STATIC_URL }}moment/moment.timezone.min.js")
+    script(type="text/javascript", src="{{ STATIC_URL }}moment/moment.timezone.data.js")
     script(type="text/javascript", src="{{ STATIC_URL }}pikaday/pikaday.js")
     script(type="text/javascript", src="{{ STATIC_URL }}pikaday/pikaday.jquery.js")
     {% else %}

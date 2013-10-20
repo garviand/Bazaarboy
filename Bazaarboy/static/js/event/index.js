@@ -7,28 +7,28 @@
       cover: void 0
     },
     coverEditInProgress: false,
-    drawMapWithCenter: function(latitude, longitude) {
-      var canvas, center, mapOpts, marker, markerPos;
-      center = new google.maps.LatLng(latitude + 0.0015, longitude);
-      mapOpts = {
-        center: center,
-        zoom: 14,
-        mapTypeId: google.maps.MapTypeId.ROADMAP,
-        draggable: false,
-        mapTypeControl: false,
-        overviewMapControl: false,
-        streetViewControl: false,
-        scaleControl: false,
-        zoomControl: false
-      };
-      canvas = document.getElementById('map_canvas');
-      this.map = new google.maps.Map(canvas, mapOpts);
-      markerPos = new google.maps.LatLng(latitude, longitude);
-      marker = new google.maps.Marker({
-        position: markerPos
-      });
-      marker.setMap(this.map);
-    },
+    purchaseInProgress: false,
+    /*
+    drawMapWithCenter: (latitude, longitude) ->
+        center = new google.maps.LatLng(latitude + 0.0015, longitude)
+        mapOpts = 
+            center: center
+            zoom: 14
+            mapTypeId: google.maps.MapTypeId.ROADMAP
+            draggable: false
+            mapTypeControl: false
+            overviewMapControl: false
+            streetViewControl: false
+            scaleControl: false
+            zoomControl: false
+        canvas = document.getElementById('map_canvas')
+        @map = new google.maps.Map(canvas, mapOpts)
+        markerPos = new google.maps.LatLng(latitude, longitude)
+        marker = new google.maps.Marker({position: markerPos})
+        marker.setMap @map
+        return
+    */
+
     adjustSidebarPosition: function() {
       var count, hangingButtons, i, sidebarPadding, topBase, _i;
       hangingButtons = $('div#event > div.title div.bottom div.hanging').not('div.hidden');
@@ -104,7 +104,7 @@
         picture: image
       }, function(response) {});
     },
-    purchase: function(ticket, email, fullName) {
+    purchase: function(ticket, email, fullName, phone) {
       var params,
         _this = this;
       if (email == null) {
@@ -113,6 +113,12 @@
       if (fullName == null) {
         fullName = null;
       }
+      if (phone == null) {
+        phone = null;
+      }
+      this.purchaseInProgress = true;
+      $('div#rsvp div.action a.confirm').css('display', 'none');
+      $('div#rsvp div.action div.loading').removeClass('hidden');
       params = {
         ticket: ticket
       };
@@ -120,9 +126,15 @@
         params.email = email;
         params.full_name = fullName;
       }
+      if (phone != null) {
+        params.phone = phone;
+      }
       Bazaarboy.post('event/purchase/', params, function(response) {
         var checkoutDescription;
+        $('div#rsvp div.action a.confirm').css('display', '');
+        $('div#rsvp div.action div.loading').addClass('hidden');
         if (response.status === 'OK') {
+          $('div#rsvp div.confirmation div.code b').html(response.purchase.code);
           if (response.publishable_key != null) {
             checkoutDescription = response.purchase.event.name + ' ' + response.purchase.ticket.name;
             StripeCheckout.open({
@@ -134,10 +146,14 @@
               description: checkoutDescription,
               panelLabel: 'Checkout',
               token: function(token) {
+                $('div#rsvp div.action a.confirm').css('display', 'none');
+                $('div#rsvp div.action div.loading').removeClass('hidden');
                 Bazaarboy.post('payment/charge/', {
                   checkout: response.purchase.checkout,
                   stripe_token: token.id
                 }, function(response) {
+                  $('div#rsvp div.action a.confirm').css('display', '');
+                  $('div#rsvp div.action div.loading').addClass('hidden');
                   if (response.status === 'OK') {
                     _this.completeCheckout();
                   } else {
@@ -157,6 +173,8 @@
     completeCheckout: function() {
       var scope;
       scope = this;
+      $('div#rsvp div.confirmation').removeClass('hidden');
+      this.adjustOverlayHeight();
       $('div#rsvp div.tickets').addClass('collapsed');
       $('div#rsvp div.tickets div.ticket').not('div.selected').animate({
         'height': 0
@@ -174,11 +192,9 @@
         $(this).addClass('hidden');
         scope.adjustOverlayHeight();
       });
-      $('div#rsvp div.confirmation').removeClass('hidden');
     },
     initTransaction: function() {
-      var scope,
-        _this = this;
+      var scope;
       scope = this;
       $('div#rsvp form.login').submit(function(event) {
         event.preventDefault();
@@ -212,33 +228,39 @@
           $(this).addClass('selected');
           $(this).find('input[type=radio]').prop('checked', true);
           $('div#rsvp div.action').removeClass('hidden');
-          $('div#rsvp div.confirmation span.ticket').html($(this).find('div.name').html());
-          $('div#rsvp div.confirmation span.price').html($(this).find('div.price b').html());
+          $('div#rsvp div.confirmation div.ticket').html($(this).find('div.name').html());
+          $('div#rsvp div.confirmation div.price b').html($(this).find('div.price b').html());
         }
       });
       $('div#rsvp div.action a.confirm').click(function() {
-        var email, fullName, ticket;
-        if ($('div#rsvp div.ticket.valid.selected').length > 0) {
-          ticket = $('div#rsvp div.ticket.valid.selected').attr('data-id');
-          if ($('div#rsvp div.info').length === 0) {
-            _this.purchase(ticket);
-          } else {
-            email = $('div#rsvp div.info input[name=email]').val();
-            fullName = $('div#rsvp div.info input[name=full_name]').val();
-            if (email.trim() === '') {
-              alert('You must enter a valid email address.');
-              return;
+        var email, fullName, phone, ticket;
+        if (!$(this).hasClass('preview')) {
+          if ($('div#rsvp div.ticket.valid.selected').length > 0) {
+            ticket = $('div#rsvp div.ticket.valid.selected').attr('data-id');
+            if ($('div#rsvp div.info').length === 0) {
+              scope.purchase(ticket);
+            } else {
+              email = $('div#rsvp div.info input[name=email]').val();
+              fullName = $('div#rsvp div.info input[name=full_name]').val();
+              phone = $('div#rsvp div.info input[name=phone]').val();
+              if (email.trim() === '') {
+                alert('You must enter a valid email address.');
+                return;
+              }
+              if (fullName.trim() === '') {
+                alert('You must enter your full name,');
+                return;
+              }
+              if (phone.trim() === '') {
+                phone = null;
+              }
+              scope.purchase(ticket, email, fullName, phone);
             }
-            if (fullName.trim() === '') {
-              alert('You must enter your full name,');
-              return;
-            }
-            _this.purchase(ticket, email, fullName);
           }
         }
       });
-      if ((window.location.hash != null) && window.location.hash === '#rsvp' && editable) {
-        $('div#event div.action').click();
+      if ((window.location.hash != null) && window.location.hash === '#rsvp' && !editable) {
+        $('div#event div.title div.bottom > div.action').click();
       }
     },
     save: function(params, cb) {
@@ -279,6 +301,7 @@
           $('div#event > div.title div.top div.editor input').val(title);
           $('div#event > div.title div.top div.editor').addClass('hidden');
           $('div#event > div.title div.top div.button').html('Edit').removeClass('stick');
+          document.title = title;
         } else {
           alert(err.message);
         }
@@ -289,7 +312,76 @@
       $('div#event > div.title div.details div.editor').removeClass('hidden');
       $('div#event > div.title div.bottom > div.button').html('Save').addClass('stick');
     },
-    stopEditingTimeLocation: function() {},
+    stopEditingTimeLocation: function() {
+      var endDate, endTime, location, startDate, startTime,
+        _this = this;
+      startDate = $('div#event > div.title input[name=start_date]').val();
+      if (!moment(startDate, 'MM/DD/YYYY').isValid()) {
+        return;
+      }
+      startTime = $('div#event > div.title input[name=start_time]').val();
+      if (!moment(startTime, 'h:mm a').isValid()) {
+        return;
+      }
+      startTime = moment(startDate + ' ' + startTime, 'MM/DD/YYYY h:mm A');
+      endDate = $('div#event > div.title input[name=end_date]').val();
+      endTime = $('div#event > div.title input[name=end_time]').val();
+      if (endDate.trim().length === 0 && endTime.trim().length === 0) {
+        endTime = false;
+      } else {
+        if (!moment(endDate, 'MM/DD/YYYY').isValid()) {
+          return;
+        }
+        if (!moment(endTime, 'h:mm a').isValid()) {
+          return;
+        }
+        endTime = moment(endDate + ' ' + endTime, 'MM/DD/YYYY h:mm A');
+      }
+      location = $('div#event > div.title input[name=location]').val().trim();
+      if (location.length === 0) {
+        location = 'none';
+      }
+      this.save({
+        start_time: startTime.utc().format('YYYY-MM-DD HH:mm:ss'),
+        end_time: endTime ? endTime.utc().format('YYYY-MM-DD HH:mm:ss') : 'none',
+        location: location
+      }, function(err, event) {
+        var timeLocation, timeString;
+        if (!err) {
+          timeString = '';
+          startTime = startTime.local();
+          if (startTime.format('mm') === '00') {
+            timeString += startTime.format('dddd, MMM Do, ha');
+          } else {
+            timeString += startTime.format('dddd, MMM Do, h:mma');
+          }
+          if (endTime) {
+            timeString += ' - ';
+            endTime = endTime.local();
+            if (endTime.format('D') === startTime.format('D')) {
+              if (endTime.format('mm') === '00') {
+                timeString += endTime.format('ha');
+              } else {
+                timeString += endTime.format('h:mma');
+              }
+            } else {
+              if (endTime.format('mm') === '00') {
+                timeString += endTime.format('dddd, MMM Do, ha');
+              } else {
+                timeString += endTime.format('dddd, MMM Do, h:mma');
+              }
+            }
+          }
+          timeLocation = timeString + ' at <b>' + event.location + '</b>';
+          $('div#event > div.title div.details div.text').html(timeLocation);
+          $('div#event > div.title div.details div.text').removeClass('hidden');
+          $('div#event > div.title div.details div.editor').addClass('hidden');
+          $('div#event > div.title div.bottom > div.button').html('Edit').removeClass('stick');
+        } else {
+          alert(err.message);
+        }
+      });
+    },
     prepareUploadedCoverImage: function(coverUrl) {
       var scope;
       $('div#event').addClass('with_cover');
@@ -459,16 +551,16 @@
     },
     startEditingCoverCaption: function() {
       var caption;
-      $('div#event div.cover div.caption div.text').addClass('hidden');
-      $('div#event div.cover div.caption div.editor').removeClass('hidden');
-      caption = $('div#event div.cover div.caption div.editor input').val();
-      $('div#event div.cover div.caption div.editor input').focus().val('').val(caption);
-      $('div#event div.cover div.caption div.button').html('Save').addClass('stick');
+      $('div#event div.frame div.left > div.caption div.text').addClass('hidden');
+      $('div#event div.frame div.left > div.caption div.editor').removeClass('hidden');
+      caption = $('div#event div.frame div.left > div.caption div.editor input').val();
+      $('div#event div.frame div.left > div.caption div.editor input').focus().val('').val(caption);
+      $('div#event div.frame div.left > div.caption div.button').html('Save').addClass('stick');
     },
     stopEditingCoverCaption: function() {
       var caption,
         _this = this;
-      caption = $('div#event div.cover div.caption div.editor input').val();
+      caption = $('div#event div.frame div.left > div.caption div.editor input').val();
       this.save({
         caption: caption
       }, function(err, event) {
@@ -478,10 +570,10 @@
           if (caption.length === 0) {
             captionText = '<i>No caption yet.</i>';
           }
-          $('div#event div.cover div.caption div.text').html(captionText).removeClass('hidden');
-          $('div#event div.cover div.caption div.editor input').val(caption);
-          $('div#event div.cover div.caption div.editor').addClass('hidden');
-          $('div#event div.cover div.caption div.button').html('Edit').removeClass('stick');
+          $('div#event div.frame div.left > div.caption div.text').html(captionText).removeClass('hidden');
+          $('div#event div.frame div.left > div.caption div.editor input').val(caption);
+          $('div#event div.frame div.left > div.caption div.editor').addClass('hidden');
+          $('div#event div.frame div.left > div.caption div.button').html('Edit').removeClass('stick');
         } else {
           alert(err.message);
         }
@@ -782,7 +874,7 @@
           }
         }
       });
-      $('div#event div.cover div.caption div.button').click(function() {
+      $('div#event div.frame div.left > div.caption div.button').click(function() {
         if ($(this).hasClass('stick')) {
           scope.stopEditingCoverCaption();
         } else {
@@ -834,7 +926,7 @@
     },
     init: function() {
       var _this = this;
-      $('div#event div.action').click(function() {
+      $('div#event div.title div.bottom > div.action').click(function() {
         $('div#wrapper_overlay').fadeIn(200);
         $('div.event_overlay_canvas').css({
           'top': $('div#event > div.title').height() + 20

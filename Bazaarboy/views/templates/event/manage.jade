@@ -1,0 +1,12 @@
+// Event.Manage
+
+extends ../layout
+
+block title
+    | Manage | {{ event.name }}
+
+block content
+    div#event_manage
+
+append script
+    script(type="text/javascript", src="{{ STATIC_URL }}js/event/manage.js")

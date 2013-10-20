@@ -12,6 +12,7 @@ from kernel.models import *
 from src.config import *
 from src.controllers.request import *
 from src.email import Email
+from src.sms import SMS
 
 import pdb
 
@@ -47,6 +48,7 @@ def connect(request, params, user):
                 publishable_key = response['stripe_publishable_key']
             )
             paymentAccount.save()
+            return redirect(reverse('index') + '#connect')
     return redirect('user:settings')
 
 @login_check()
@@ -91,9 +93,11 @@ def charge(request, params, user):
         checkout.save()
         try:
             email = Email()
+            sms = SMS()
             if Purchase.objects.filter(checkout = checkout).exists():
                 purchase = Purchase.objects.get(checkout = checkout)
                 email.sendPurchaseConfirmationEmail(purchase)
+                sms.sendPurchaseConfirmationSMS(purchase)
             elif Donation.objects.filter(checkout = checkout).exists():
                 donation = Donation.objects.get(checkout = checkout)
                 email.sendDonationConfirmationEmail(donation)

@@ -590,6 +590,9 @@ div#wrapper_overlay {
   background-color: rgba(0, 0, 0, 0.8);
   cursor: pointer;
 }
+.overlay_canvas {
+  z-index: 23;
+}
 .content_divided {
   position: relative;
   width: 100%;
@@ -747,6 +750,331 @@ div#terms {
 }
 div#terms h1 {
   text-align: center;
+}
+div#index div.profiles {
+  width: 912px;
+  display: block;
+  margin: auto;
+}
+div#index div.profiles div.profile {
+  width: 912px;
+  margin: 30px 0;
+}
+div#index div.profiles div.profile div.header {
+  width: 912px;
+  height: 38px;
+}
+div#index div.profiles div.profile div.header div.icon {
+  width: 38px;
+  height: 38px;
+  background-color: #4795f2;
+  margin-right: 10px;
+  border-radius: 2px;
+  float: left;
+}
+div#index div.profiles div.profile div.header div.name {
+  height: 18px;
+  padding: 10px 0;
+  font-size: 18px;
+  font-weight: 500;
+  line-height: 16px;
+  float: left;
+}
+div#index div.profiles div.profile div.header div.create {
+  float: right;
+}
+div#index div.profiles div.profile div.header div.create a {
+  display: block;
+  width: 180px;
+  height: 18px;
+  padding: 10px 0;
+  border-radius: 2px;
+  background-color: #ff9c00;
+  color: #FFF;
+  font-size: 18px;
+  font-weight: 500;
+  line-height: 16px;
+  text-align: center;
+  text-decoration: none;
+}
+div#index div.profiles div.profile div.summary {
+  width: 862px;
+  height: 60px;
+  padding: 25px;
+  padding-bottom: 0;
+  margin-top: 10px;
+  background-color: #F2F2F2;
+}
+div#index div.profiles div.profile div.summary div.inner {
+  width: 100%;
+  height: 100%;
+  background-color: #FFF;
+}
+div#index div.profiles div.profile div.summary div.inner div.counts,
+div#index div.profiles div.profile div.summary div.inner div.revenue {
+  width: 215px;
+  height: 20px;
+  padding: 20px 0;
+  border-right: 1px solid #F2F2F2;
+  font-size: 20px;
+  line-height: 20px;
+  text-align: center;
+  float: left;
+}
+div#index div.profiles div.profile div.summary div.inner div.revenue a.connect {
+  display: block;
+  width: 190px;
+  height: 32px;
+  margin: 0 auto;
+  margin-top: -6px;
+  background-image: url(../images/stripe.png);
+}
+div#index div.profiles div.profile div.summary div.inner div.stats {
+  float: left;
+}
+div#index div.profiles div.profile div.events {
+  width: 862px;
+  padding: 25px;
+  padding-top: 10px;
+  background-color: #F2F2F2;
+  /*
+                div.past {
+                    div.event {
+                        opacity: 0.6;
+
+                        &:hover {
+                            opacity: 1;
+                        }
+                    }
+                }
+                */
+
+}
+div#index div.profiles div.profile div.events > div div.title {
+  width: 862px;
+  height: 16px;
+  padding: 10px 0;
+  padding-top: 15px;
+  font-size: 16px;
+  line-height: 16px;
+}
+div#index div.profiles div.profile div.events > div div.canvas {
+  width: 862px;
+}
+div#index div.profiles div.profile div.events > div div.canvas div.empty {
+  font-size: 14px;
+}
+div#index div.profiles div.profile div.events > div div.canvas div.draft {
+  width: 862px;
+  height: 34px;
+  margin: 2px 0;
+  background-color: #FFF;
+}
+div#index div.profiles div.profile div.events > div div.canvas div.draft div.name {
+  width: 402px;
+  height: 20px;
+  padding: 7px 15px;
+  font-size: 18px;
+  line-height: 20px;
+  float: left;
+}
+div#index div.profiles div.profile div.events > div div.canvas div.draft div.name a {
+  color: #000;
+  text-decoration: none;
+}
+div#index div.profiles div.profile div.events > div div.canvas div.draft div.name a:hover {
+  text-decoration: underline;
+}
+div#index div.profiles div.profile div.events > div div.canvas div.draft div.time {
+  width: 288px;
+  height: 14px;
+  padding: 10px 0;
+  font-size: 14px;
+  line-height: 14px;
+  float: left;
+}
+div#index div.profiles div.profile div.events > div div.canvas div.draft div.actions {
+  width: 102px;
+  height: 28px;
+  padding: 3px 20px;
+  float: left;
+}
+div#index div.profiles div.profile div.events > div div.canvas div.draft div.actions a {
+  display: block;
+  width: 102px;
+  height: 12px;
+  padding: 8px 0;
+  border-radius: 2px;
+  background-color: #E6E6E6;
+  color: #808080;
+  font-size: 12px;
+  font-weight: 500;
+  line-height: 12px;
+  text-decoration: none;
+  text-align: center;
+}
+div#index div.profiles div.profile div.events > div div.canvas div.draft div.actions a.edit {
+  background-color: #4795f2;
+  color: #FFF;
+}
+div#index div.profiles div.profile div.events > div div.canvas div.event {
+  width: 862px;
+  height: 125px;
+  margin: 2px 0;
+  background-color: #FFF;
+}
+div#index div.profiles div.profile div.events > div div.canvas div.event div.counts,
+div#index div.profiles div.profile div.events > div div.canvas div.event div.sales {
+  width: 215px;
+  height: 22px;
+  margin: 6px 0;
+  padding: 45.5px 0;
+  border-right: 1px solid #F2F2F2;
+  font-size: 22px;
+  line-height: 22px;
+  text-align: center;
+  float: left;
+}
+div#index div.profiles div.profile div.events > div div.canvas div.event div.info {
+  width: 288px;
+  float: left;
+}
+div#index div.profiles div.profile div.events > div div.canvas div.event div.info div.image {
+  width: 96px;
+  height: 96px;
+  padding: 15px 10px;
+  float: left;
+}
+div#index div.profiles div.profile div.events > div div.canvas div.event div.info div.image div.cover {
+  width: 100%;
+  height: 100%;
+  background-size: cover;
+  background-repeat: no-repeat;
+  background-position: 50% 50%;
+  background-color: #4795f2;
+}
+div#index div.profiles div.profile div.events > div div.canvas div.event div.info div.image div.cover a {
+  display: block;
+  width: 100%;
+  height: 100%;
+}
+div#index div.profiles div.profile div.events > div div.canvas div.event div.info div.details {
+  width: 172px;
+  height: 96px;
+  padding: 15px 0;
+  overflow: hidden;
+  float: left;
+}
+div#index div.profiles div.profile div.events > div div.canvas div.event div.info div.details div.name {
+  width: 100%;
+  font-size: 18px;
+  line-height: 20px;
+}
+div#index div.profiles div.profile div.events > div div.canvas div.event div.info div.details div.name a {
+  color: #000;
+  text-decoration: none;
+}
+div#index div.profiles div.profile div.events > div div.canvas div.event div.info div.details div.name a:hover {
+  text-decoration: underline;
+}
+div#index div.profiles div.profile div.events > div div.canvas div.event div.info div.details div.time,
+div#index div.profiles div.profile div.events > div div.canvas div.event div.info div.details div.location {
+  width: 100%;
+  font-size: 14px;
+  margin-top: 5px;
+}
+div#index div.profiles div.profile div.events > div div.canvas div.event div.actions {
+  width: 102px;
+  height: 104px;
+  padding: 10.5px 20px;
+  float: left;
+}
+div#index div.profiles div.profile div.events > div div.canvas div.event div.actions a {
+  display: block;
+  width: 102px;
+  height: 12px;
+  padding: 8px 0;
+  margin: 5px 0;
+  border-radius: 2px;
+  background-color: #E6E6E6;
+  color: #808080;
+  font-size: 12px;
+  font-weight: 500;
+  line-height: 12px;
+  text-decoration: none;
+  text-align: center;
+}
+div#index div.profiles div.profile div.events > div div.canvas div.event div.actions a.edit {
+  background-color: #4795f2;
+  color: #FFF;
+}
+div#index div.profiles div.profile div.events > div div.canvas div.event div.actions a.manage {
+  background-color: #000;
+  color: #FFF;
+}
+div#connect {
+  display: none;
+  position: absolute;
+  width: 500px;
+  height: 200px;
+  margin: auto;
+  padding: 15px;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: #FFF;
+}
+div#connect div.title {
+  width: 100%;
+  height: 22px;
+  font-size: 22px;
+  line-height: 22px;
+}
+div#connect div.description {
+  width: 100%;
+  margin: 10px 0;
+  font-size: 14px;
+}
+div#connect div.profiles {
+  width: 100%;
+}
+div#connect div.profiles div.profile {
+  width: 100%;
+  height: 40px;
+  background-color: #F2F2F2;
+}
+div#connect div.profiles div.profile div.name {
+  width: 61%;
+  padding: 11px 2%;
+  font-size: 18px;
+  line-height: 18px;
+  float: left;
+}
+div#connect div.profiles div.profile div.account {
+  position: relative;
+  width: 35%;
+  padding-top: 5px;
+  text-align: center;
+  float: left;
+}
+div#connect div.actions {
+  width: 100%;
+  height: 30px;
+  margin-top: 10px;
+}
+div#connect div.actions a {
+  display: block;
+  width: 70px;
+  height: 16px;
+  padding: 7px 0;
+  background-color: #4795f2;
+  color: #FFF;
+  text-align: center;
+  text-transform: uppercase;
+  text-decoration: none;
+  line-height: 16px;
+  float: right;
 }
 /*
 div#profile {
@@ -1036,9 +1364,6 @@ div.event_base > div.title div.inner div.top {
   width: 960px;
   border-bottom: 1px solid #7F7F7F;
 }
-div.event_base > div.title div.inner div.top:hover div.button {
-  display: block;
-}
 div.event_base > div.title div.inner div.top .title_text {
   width: 960px;
   min-height: 31px;
@@ -1133,10 +1458,26 @@ div.event_base > div.title div.inner div.bottom {
   line-height: 14px;
 }
 div.event_base > div.title div.inner div.bottom div.details {
+  height: 14px;
   float: left;
 }
 div.event_base > div.title div.inner div.bottom div.details div.text {
   width: 100%;
+}
+div.event_base > div.title div.inner div.bottom div.details div.editor {
+  width: 100%;
+  height: 14px;
+}
+div.event_base > div.title div.inner div.bottom div.details div.editor input {
+  width: 80px;
+  height: 14px;
+  padding: 3px;
+  margin-top: -4px;
+  outline-color: #4795f2;
+  border: 1px solid #7F7F7F;
+}
+div.event_base > div.title div.inner div.bottom div.details div.editor input[name=location] {
+  width: 300px;
 }
 div.event_base > div.title div.inner div.bottom div.sponsor {
   float: right;
@@ -1304,70 +1645,6 @@ div.event_base div.cover {
   min-width: 960px;
   height: 0;
   overflow: hidden;
-  /*
-        div.caption {
-            position: relative;
-            width: 100%;
-            height: 0;
-            background: #BBB;
-            overflow: hidden;
-            &:hover {
-                div.inner {
-                    div.button {
-                        display: block;
-                    }
-                }
-            }
-
-            div.inner {
-                position: relative;
-                width: @content_inner_width;
-                height: 100%;
-                margin-left: (@content_width - @content_inner_width) / 2;
-
-                div.text {
-                    width: 100%;
-                    height: @font_size_base;
-                    padding-top: floor((30px - (@font_size_base - 1)) / 2);
-                    padding-bottom: ceil((30px - (@font_size_base - 1)) / 2);
-                    font-size: @font_size_base - 1;
-                    line-height: @font_size_base - 1;
-                }
-
-                div.button {
-                    display: none;
-                    position: absolute;
-                    width: 40px;
-                    height: 80%;
-                    left: -45px;
-                    top: 10%;
-                    background-color: #FFF;
-                    text-align: center;
-                    cursor: pointer;
-                }
-
-                div.editor {
-                    width: 100%;
-                    height: 100%;
-
-                    input {
-                        width: @content_inner_width;
-                        height: @font_size_base - 1;
-                        padding: 0;
-                        padding-top: floor((30px - (@font_size_base - 1)) / 2);
-                        padding-bottom: ceil((30px - (@font_size_base - 1)) / 2);
-                        border: none;
-                        outline: none;
-                        background: none;
-                        font-size: @font_size_base - 1;
-                        line-height: @font_size_base - 1;
-                        .input_placeholder(rgba(0, 0, 0, 0.6));
-                    }
-                }
-            }
-        }
-        */
-
 }
 div.event_base div.cover div.inner {
   width: 960px;
@@ -1392,6 +1669,56 @@ div.event_base div.cover div.inner div.image div.bounds img.normal {
 }
 div.event_base div.cover div.inner div.image div.bounds img.editing {
   cursor: pointer;
+}
+div.event_base div.frame > div.left {
+  position: relative;
+}
+div.event_base div.frame > div.left div.caption {
+  position: absolute;
+  width: 696px;
+  height: 26px;
+  top: -15px;
+  left: 0;
+  background-color: #1C1C1C;
+}
+div.event_base div.frame > div.left div.caption div.text {
+  width: 676px;
+  height: 14px;
+  padding: 6px 10px;
+  color: #FFF;
+  font-size: 14px;
+  line-height: 14px;
+}
+div.event_base div.frame > div.left div.caption div.button {
+  position: absolute;
+  width: 40px;
+  height: 12px;
+  right: 5px;
+  top: 4px;
+  padding: 2px 0;
+  border: 1px solid #FFF;
+  color: #FFF;
+  font-size: 12px;
+  font-weight: 300;
+  line-height: 12px;
+  text-transform: uppercase;
+  text-align: center;
+  cursor: pointer;
+}
+div.event_base div.frame > div.left div.caption div.editor {
+  width: 656px;
+  height: 26px;
+}
+div.event_base div.frame > div.left div.caption div.editor input {
+  width: 636px;
+  height: 14px;
+  padding: 6px 10px;
+  border: none;
+  background-color: #000;
+  outline: none;
+  color: #FFF;
+  font-size: 14px;
+  line-height: 14px;
 }
 div.event_base div.frame > div.left div.placeholder {
   width: 100%;
@@ -1600,8 +1927,8 @@ div.event_base div.others div.recommendation {
   left: -216px;
   right: 0;
   bottom: 20px;
-  z-index: 23;
   background-color: #FFF;
+  z-index: 23;
 }
 .event_overlay_canvas:before {
   content: '';
@@ -1658,6 +1985,25 @@ div.event_base div.others div.recommendation {
   background-image: -webkit-linear-gradient(top, #5fa3f4, #4795f2);
   background-image: -ms-linear-gradient(top, #5fa3f4, #4795f2);
 }
+.event_overlay_canvas div.action div.header div.title div.loading {
+  width: 672px;
+  height: 20px;
+  padding: 14px 0;
+}
+.event_overlay_canvas div.action div.header div.title div.loading img {
+  display: block;
+  width: 20px;
+  height: 20px;
+  margin-left: 270px;
+  margin-right: 8px;
+  float: left;
+}
+.event_overlay_canvas div.action div.header div.title div.loading span {
+  display: block;
+  font-size: 20px;
+  line-height: 20px;
+  float: left;
+}
 div#event.big_cover div.frame div.right div.organizers {
   margin-top: 13px;
 }
@@ -1686,32 +2032,41 @@ div#tickets div.tickets div.ticket div.text {
 div#tickets div.tickets div.ticket div.editor {
   display: none;
 }
-div#rsvp div.user {
-  width: 696px;
-}
-div#rsvp div.user div.normal {
-  width: 696px;
-  height: 100%;
-  background-color: #FFF;
-}
-div#rsvp div.user div.normal div.divider {
-  width: 1px;
-  height: 160px;
-  margin: 10px 0;
-  background-color: #f0f5f5;
-  float: left;
-}
-div#rsvp div.user div.normal div.login {
-  width: 327.5px;
-  height: 160px;
-  padding: 10px;
-  float: left;
-}
-div#rsvp div.user div.normal div.register {
-  width: 327.5px;
-  height: 160px;
-  padding: 10px;
-  float: left;
+div#rsvp {
+  /*
+    div.user {
+        width: @overlay_width;
+
+        div.normal {
+            width: @overlay_width;
+            height: 100%;
+            background-color: #FFF;
+
+            div.divider {
+                width: 1px;
+                height: 160px;
+                margin: 10px 0;
+                background-color: @pale_blue;
+                .left;
+            }
+
+            div.login {
+                width: (@overlay_width - 1) / 2 - 20;
+                height: 160px;
+                padding: 10px;
+                .left;
+            }
+
+            div.register {
+                width: (@overlay_width - 1) / 2 - 20;
+                height: 160px;
+                padding: 10px;
+                .left;
+            }
+        }
+    }
+    */
+
 }
 div#rsvp div.info div.content {
   width: 668px;
@@ -1804,72 +2159,117 @@ div#rsvp div.tickets div.content div.ticket div.detail div.quantity {
   font-size: 14px;
   text-align: center;
 }
-div#rsvp div.confirmation div.content div.caption {
-  margin-top: 10px;
-  font-size: 20px;
-  text-transform: uppercase;
-  text-align: center;
+div#rsvp div.confirmation div.content {
+  border-top: 1px solid #E6E6E6;
+  padding: 22px 19px;
 }
-div#rsvp div.confirmation div.content div.body {
-  margin: 1rem 2rem;
-  border-top: 3px solid #a6ccf9;
-  box-shadow: 0 2px 5px 0 #DCE2E2;
+div#rsvp div.confirmation div.content div.inner {
+  width: 632px;
+  border: 1px solid #4795f2;
+  border-radius: 2px;
+  box-shadow: 1px 1px 4px #E6E6E6;
 }
-div#rsvp div.confirmation div.content div.body p {
-  padding: 0 1rem;
+div#rsvp div.confirmation div.content div.inner div.caption {
+  width: 632px;
+  height: 38px;
+  background-color: #4795f2;
 }
-div#rsvp div.confirmation div.content div.body div.upper {
-  background-color: #5fa3f4;
-  padding-bottom: 1.5rem;
-  border-left: 2px solid #FFF;
-  border-right: 2px solid #FFF;
-}
-div#rsvp div.confirmation div.content div.body div.upper h2 {
-  padding: 1rem 1rem;
-  margin-top: 0;
-  margin-bottom: 1rem;
-  border-bottom: 1px dotted #FFF;
-  color: #000;
-  font-size: 1rem;
-  font-weight: 300;
-  text-align: left;
-  text-transform: uppercase;
-  text-shadow: 0 1px 0 rgba(255, 255, 255, 0.6);
-}
-div#rsvp div.confirmation div.content div.body div.upper p.name {
-  margin-top: 0.5rem;
-  color: #FFF;
-  font-size: 1.4rem;
-  line-height: 1.8rem;
-  text-align: left;
-  text-shadow: 0 1px 0 #709a97;
-}
-div#rsvp div.confirmation div.content div.body div.upper p.time,
-div#rsvp div.confirmation div.content div.body div.upper p.location {
-  margin: 0.4rem 0;
-  color: #FFF;
-}
-div#rsvp div.confirmation div.content div.body div.lower {
-  padding-top: 0.2rem;
-  padding-bottom: 1rem;
-  border-top: 1px dotted #C2F4FF;
-  border-bottom: 2px solid #C2F4FF;
-  background-color: white;
-  font-size: 0.6rem;
-}
-div#rsvp div.confirmation div.content div.body div.lower p.top {
-  height: 0.8rem;
-  padding-bottom: 0.8rem;
-  border-bottom: 1px dotted #C2F4FF;
-  margin-bottom: 0.5rem;
-  font-size: 0.8rem;
-  line-height: 0.8rem;
-}
-div#rsvp div.confirmation div.content div.body div.lower p.top span.ticket {
+div#rsvp div.confirmation div.content div.inner div.caption div.presents {
+  width: 464px;
+  height: 38px;
+  border-right: 1px dashed #E6E6E6;
   float: left;
 }
-div#rsvp div.confirmation div.content div.body div.lower p.top span.price {
-  float: right;
+div#rsvp div.confirmation div.content div.inner div.caption div.presents div.icon {
+  width: 22px;
+  height: 22px;
+  margin: 7px 12px;
+  margin-right: 0;
+  border: 1px solid #FFF;
+  background: url(../images/logo-small.png) #ff9c00 center center;
+  border-radius: 2px;
+  float: left;
+}
+div#rsvp div.confirmation div.content div.inner div.caption div.presents div.organizers {
+  max-width: 416px;
+  height: 15px;
+  margin-left: 12px;
+  padding: 11.5px 0;
+  color: #FFF;
+  font-size: 15px;
+  line-height: 15px;
+  float: left;
+}
+div#rsvp div.confirmation div.content div.inner div.caption div.code {
+  width: 167px;
+  height: 14px;
+  padding: 12px 0;
+  color: #FFF;
+  font-size: 14px;
+  line-height: 14px;
+  text-align: center;
+  float: left;
+}
+div#rsvp div.confirmation div.content div.inner div.details {
+  width: 632px;
+  height: 193px;
+  border-top: 1px solid #E6E6E6;
+}
+div#rsvp div.confirmation div.content div.inner div.details div.left {
+  position: relative;
+  width: 464px;
+  height: 100%;
+  border-right: 1px dashed #E6E6E6;
+}
+div#rsvp div.confirmation div.content div.inner div.details div.left div.name {
+  width: 440px;
+  padding: 11px 0;
+  margin: 0 12px;
+  border-bottom: 1px solid #4D4D4D;
+  font-size: 22px;
+  line-height: 32px;
+}
+div#rsvp div.confirmation div.content div.inner div.details div.left div.time {
+  width: 440px;
+  padding: 0 12px;
+  margin-top: 12px;
+  font-size: 14px;
+}
+div#rsvp div.confirmation div.content div.inner div.details div.left div.extra {
+  position: absolute;
+  width: 440px;
+  height: 11px;
+  padding: 7px 12px;
+  left: 0;
+  bottom: 0;
+  border-top: 1px dashed #E6E6E6;
+  font-size: 11px;
+  line-height: 11px;
+}
+div#rsvp div.confirmation div.content div.inner div.details div.right {
+  width: 167px;
+  height: 100%;
+  background-color: #F2F2F2;
+}
+div#rsvp div.confirmation div.content div.inner div.details div.right div.price {
+  width: 167px;
+  height: 34px;
+  padding-top: 59.5px;
+  font-size: 34px;
+  line-height: 34px;
+  text-align: center;
+}
+div#rsvp div.confirmation div.content div.inner div.details div.right div.ticket {
+  width: 167px;
+  height: 16px;
+  margin-top: 5px;
+  text-align: center;
+  font-size: 14px;
+}
+div#event_manage {
+  width: 912px;
+  display: block;
+  margin: auto;
 }
 /*
 div#fundraiser {

@@ -263,6 +263,10 @@ div#wrapper_overlay {
     cursor: pointer;
 }
 
+.overlay_canvas {
+    z-index: @overlay_z_index + 3;
+}
+
 .content_divided {
     position: relative;
     width: 100%;
@@ -434,6 +438,382 @@ div#terms {
 
     h1 {
         text-align: center;
+    }
+}
+
+div#index {
+    div.profiles {
+        width: @body_width;
+        .center;
+
+        div.profile {
+            width: @body_width;
+            margin: 30px 0;
+
+            div.header {
+                width: @body_width;
+                height: 38px;
+
+                div.icon {
+                    width: 38px;
+                    height: 38px;
+                    background-color: @event_blue;
+                    margin-right: 10px;
+                    border-radius: 2px;
+                    .left;
+                }
+
+                div.name {
+                    height: @font_size_base + 2;
+                    padding: (38px - (@font_size_base + 2)) / 2 0;
+                    font-size: @font_size_base + 2;
+                    font-weight: @font_weight_bold;
+                    line-height: @font_size_base;
+                    .left;
+                }
+
+                div.create {
+                    .right;
+
+                    a {
+                        display: block;
+                        width: 180px;
+                        height: @font_size_base + 2;
+                        padding: (38px - (@font_size_base + 2)) / 2 0;
+                        border-radius: 2px;
+                        background-color: @bboy_orange;
+                        color: #FFF;
+                        font-size: @font_size_base + 2;
+                        font-weight: @font_weight_bold;
+                        line-height: @font_size_base;
+                        text-align: center;
+                        text-decoration: none;
+                    }
+                }
+            }
+
+            div.summary {
+                width: @body_width - 50;
+                height: 60px;
+                padding: 25px;
+                padding-bottom: 0;
+                margin-top: 10px;
+                background-color: #F2F2F2;
+
+                div.inner {
+                    width: 100%;
+                    height: 100%;
+                    background-color: #FFF;
+
+                    div.counts, div.revenue {
+                        width: 215px;
+                        height: @font_size_base + 4;
+                        padding: (60px - (@font_size_base + 4)) / 2 0;
+                        border-right: 1px solid #F2F2F2;
+                        font-size: @font_size_base + 4;
+                        line-height: @font_size_base + 4;
+                        text-align: center;
+                        .left;
+                    }
+
+                    div.revenue {
+                        a.connect {
+                            display: block;
+                            width: 190px;
+                            height: 32px;
+                            margin: 0 auto;
+                            margin-top: (@font_size_base + 4 - 32px) / 2;
+                            background-image:url(../images/stripe.png);
+                        }
+                    }
+
+                    div.stats {
+                        .left;
+                    }
+                }
+            }
+
+            div.events {
+                @event_canvas_width: @body_width - 50;
+
+                width: @event_canvas_width;
+                padding: 25px;
+                padding-top: 10px;
+                background-color: #F2F2F2;
+
+                > div {
+                    div.title {
+                        width: @event_canvas_width;
+                        height: @font_size_base;
+                        padding: 10px 0;
+                        padding-top: 15px;
+                        font-size: @font_size_base;
+                        line-height: @font_size_base;
+                    }
+
+                    div.canvas {
+                        width: @event_canvas_width;
+
+                        div.empty {
+                            font-size: @font_size_base - 2;
+                        }
+
+                        div.draft {
+                            width: @event_canvas_width;
+                            height: 34px;
+                            margin: 2px 0;
+                            background-color: #FFF;
+
+                            div.name {
+                                width: 402px;
+                                height: @font_size_base + 4;
+                                padding: (34px - (@font_size_base + 4)) / 2 15px;
+                                font-size: @font_size_base + 2;
+                                line-height: @font_size_base + 4;
+                                .left;
+
+                                a {
+                                    color: #000;
+                                    text-decoration: none;
+
+                                    &:hover {
+                                        text-decoration: underline;
+                                    }
+                                }
+                            }
+
+                            div.time {
+                                width: 288px;
+                                height: @font_size_base - 2;
+                                padding: (34px - (@font_size_base - 2)) / 2 0;
+                                font-size: @font_size_base - 2;
+                                line-height: @font_size_base - 2;
+                                .left;
+                            }
+
+                            div.actions {
+                                width: 102px;
+                                height: 28px;
+                                padding: 3px 20px;
+                                .left;
+
+                                a {
+                                    display: block;
+                                    width: 102px;
+                                    height: @font_size_base - 4;
+                                    padding: (28 - (@font_size_base - 4)) / 2 0;
+                                    border-radius: 2px;
+                                    background-color: #E6E6E6;
+                                    color: #808080;
+                                    font-size: @font_size_base - 4;
+                                    font-weight: @font_weight_bold;
+                                    line-height: @font_size_base - 4;
+                                    text-decoration: none;
+                                    text-align: center;
+
+                                    &.edit {
+                                        background-color: @event_blue;
+                                        color: #FFF;
+                                    }
+                                }
+                            }
+                        }
+
+                        div.event {
+                            width: @event_canvas_width;
+                            height: 125px;
+                            margin: 2px 0;
+                            background-color: #FFF;
+
+                            div.counts, div.sales {
+                                width: 215px;
+                                height: @font_size_base + 6;
+                                margin: 6px 0;
+                                padding: ((125px - 6px * 2) - (@font_size_base + 6)) / 2 0;
+                                border-right: 1px solid #F2F2F2;
+                                font-size: @font_size_base + 6;
+                                line-height: @font_size_base + 6;
+                                text-align: center;
+                                .left;
+                            }
+
+                            div.info {
+                                width: 288px;
+                                .left;
+
+                                div.image {
+                                    width: 96px;
+                                    height: 96px;
+                                    padding: 15px 10px;
+                                    .left;
+
+                                    div.cover {
+                                        width: 100%;
+                                        height: 100%;
+                                        background-size: cover;
+                                        background-repeat: no-repeat;
+                                        background-position: 50% 50%;
+                                        background-color: @event_blue;
+
+                                        a {
+                                            display: block;
+                                            width: 100%;
+                                            height: 100%;
+                                        }
+                                    }
+                                }
+
+                                div.details {
+                                    width: 172px;
+                                    height: 96px;
+                                    padding: 15px 0;
+                                    overflow: hidden;
+                                    .left;
+
+                                    div.name {
+                                        width: 100%;
+                                        font-size: @font_size_base + 2;
+                                        line-height: @font_size_base + 4;
+
+                                        a {
+                                            color: #000;
+                                            text-decoration: none;
+
+                                            &:hover {
+                                                text-decoration: underline;
+                                            }
+                                        }
+                                    }
+
+                                    div.time, div.location {
+                                        width: 100%;
+                                        font-size: @font_size_base - 2;
+                                        margin-top: 5px;
+                                    }
+                                }
+                            }
+
+                            div.actions {
+                                width: 102px;
+                                height: 28px * 3 + 5 * 4;
+                                padding: (125px - (28px * 3 + 5 * 4)) / 2 20px;
+                                .left;
+
+                                a {
+                                    display: block;
+                                    width: 102px;
+                                    height: @font_size_base - 4;
+                                    padding: (28 - (@font_size_base - 4)) / 2 0;
+                                    margin: 5px 0;
+                                    border-radius: 2px;
+                                    background-color: #E6E6E6;
+                                    color: #808080;
+                                    font-size: @font_size_base - 4;
+                                    font-weight: @font_weight_bold;
+                                    line-height: @font_size_base - 4;
+                                    text-decoration: none;
+                                    text-align: center;
+
+                                    &.edit {
+                                        background-color: @event_blue;
+                                        color: #FFF;
+                                    }
+
+                                    &.manage {
+                                        background-color: #000;
+                                        color: #FFF;
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+                /*
+                div.past {
+                    div.event {
+                        opacity: 0.6;
+
+                        &:hover {
+                            opacity: 1;
+                        }
+                    }
+                }
+                */
+            }
+        }
+    }
+}
+
+div#connect {
+    display: none;
+    position: absolute;
+    width: 500px;
+    height: 200px;
+    margin: auto;
+    padding: 15px;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: #FFF;
+
+    div.title {
+        width: 100%;
+        height: @font_size_base + 6;
+        font-size: @font_size_base + 6;
+        line-height: @font_size_base + 6;
+    }
+
+    div.description {
+        width: 100%;
+        margin: 10px 0;
+        font-size: @font_size_base - 2;
+    }
+
+    div.profiles {
+        width: 100%;
+
+        div.profile {
+            width: 100%;
+            height: 40px;
+            background-color: #F2F2F2;
+
+            div.name {
+                width: 61%;
+                padding: (40px - (@font_size_base + 2)) / 2 2%;
+                font-size: @font_size_base + 2;
+                line-height: @font_size_base + 2;
+                .left;
+            }
+
+            div.account {
+                position: relative;
+                width: 35%;
+                padding-top: 5px;
+                text-align: center;
+                .left;
+            }
+        }
+    }
+
+    div.actions {
+        width: 100%;
+        height: 30px;
+        margin-top: 10px;
+
+        a {
+            display: block;
+            width: 70px;
+            height: @font_size_base;
+            padding: (30px - @font_size_base) / 2 0;
+            background-color: @event_blue;
+            color: #FFF;
+            text-align: center;
+            text-transform: uppercase;
+            text-decoration: none;
+            line-height: @font_size_base;
+            .right;
+        }
     }
 }
 
@@ -739,9 +1119,6 @@ div.event_base {
                 position: relative;
                 width: @body_width + @gutter_width * 2;
                 border-bottom: 1px solid #7F7F7F;
-                &:hover div.button {
-                    display: block;
-                }
                 
                 .title_text {
                     width: @body_width + @gutter_width * 2;
@@ -799,19 +1176,40 @@ div.event_base {
             }
 
             div.bottom {
+                @bottom_height: @font_size_base - 2;
+
                 position: relative;
                 width: @body_width + @gutter_width * 2;
-                height: @font_size_base - 2;
+                height: @bottom_height;
                 padding-top: 14px;
                 padding-bottom: 18px;
                 font-size: @font_size_base - 2;
                 line-height: @font_size_base - 2;
 
                 div.details {
+                    height: @bottom_height;
                     .left;
 
                     div.text {
                         width: 100%;
+                    }
+
+                    div.editor {
+                        width: 100%;
+                        height: @bottom_height;
+
+                        input {
+                            width: 80px;
+                            height: @bottom_height;
+                            padding: 3px;
+                            margin-top: -4px;
+                            outline-color: @event_blue;
+                            border: 1px solid #7F7F7F;
+
+                            &[name=location] {
+                                width: 300px;
+                            }
+                        }
                     }
                 }
 
@@ -1014,73 +1412,64 @@ div.event_base {
                 }
             }
         }
-        /*
-        div.caption {
-            position: relative;
-            width: 100%;
-            height: 0;
-            background: #BBB;
-            overflow: hidden;
-            &:hover {
-                div.inner {
-                    div.button {
-                        display: block;
-                    }
-                }
-            }
+    }
 
-            div.inner {
-                position: relative;
-                width: @content_inner_width;
-                height: 100%;
-                margin-left: (@content_width - @content_inner_width) / 2;
+    div.frame {
+        > div.left {
+            position: relative;
+
+            div.caption {
+                position: absolute;
+                width: @content_width;
+                height: 26px;
+                top: -15px;
+                left: 0;
+                background-color: #1C1C1C;
 
                 div.text {
-                    width: 100%;
-                    height: @font_size_base;
-                    padding-top: floor((30px - (@font_size_base - 1)) / 2);
-                    padding-bottom: ceil((30px - (@font_size_base - 1)) / 2);
-                    font-size: @font_size_base - 1;
-                    line-height: @font_size_base - 1;
+                    width: @content_width - 20;
+                    height: @font_size_base - 2;
+                    padding: (26px - (@font_size_base - 2)) / 2 10px;
+                    color: #FFF;
+                    font-size: @font_size_base - 2;
+                    line-height: @font_size_base - 2;
                 }
 
                 div.button {
-                    display: none;
                     position: absolute;
                     width: 40px;
-                    height: 80%;
-                    left: -45px;
-                    top: 10%;
-                    background-color: #FFF;
+                    height: 12px;
+                    right: 5px;
+                    top: (26px - 18px) / 2;
+                    padding: 2px 0;
+                    border: 1px solid #FFF;
+                    color: #FFF;
+                    font-size: 12px;
+                    font-weight: @font_weight_base;
+                    line-height: 12px;
+                    text-transform: uppercase;
                     text-align: center;
                     cursor: pointer;
                 }
 
                 div.editor {
-                    width: 100%;
-                    height: 100%;
+                    width: @content_width - 40px;
+                    height: 26px;
 
                     input {
-                        width: @content_inner_width;
-                        height: @font_size_base - 1;
-                        padding: 0;
-                        padding-top: floor((30px - (@font_size_base - 1)) / 2);
-                        padding-bottom: ceil((30px - (@font_size_base - 1)) / 2);
+                        width: @content_width - 60;
+                        height: @font_size_base - 2;
+                        padding: (26px - (@font_size_base - 2)) / 2 10px;
                         border: none;
+                        background-color: #000;
                         outline: none;
-                        background: none;
-                        font-size: @font_size_base - 1;
-                        line-height: @font_size_base - 1;
-                        .input_placeholder(rgba(0, 0, 0, 0.6));
+                        color: #FFF;
+                        font-size: @font_size_base - 2;
+                        line-height: @font_size_base - 2;
                     }
                 }
             }
-        }
-        */
-    }
 
-    div.frame {
-        > div.left {
             div.placeholder {
                 width: 100%;
                 height: 48px;
@@ -1326,8 +1715,8 @@ div.event_base {
     left: 0 - (@body_width - @overlay_width);
     right: 0;
     bottom: 20px;
-    z-index: @overlay_z_index + 3;
     background-color: #FFF;
+    .overlay_canvas;
 
     &:before {
         content: '';
@@ -1384,6 +1773,28 @@ div.event_base {
                     text-decoration: none;
                     &:hover {
                         .linear_gradient(top, lighten(@event_blue, 5%), @event_blue);
+                    }
+                }
+
+                div.loading {
+                    width: @overlay_width - 11 * 2 - 2;
+                    height: @font_size_base + 4;
+                    padding: @font_size_base - 2 0;
+
+                    img {
+                        display: block;
+                        width: @font_size_base + 4;
+                        height: @font_size_base + 4;
+                        margin-left: 270px;
+                        margin-right: @font_size_base / 2;
+                        .left;
+                    }
+
+                    span {
+                        display: block;
+                        font-size: @font_size_base + 4;
+                        line-height: @font_size_base + 4;
+                        .left;
                     }
                 }
             }
@@ -1456,6 +1867,7 @@ div#tickets {
 }
 
 div#rsvp {
+    /*
     div.user {
         width: @overlay_width;
 
@@ -1487,6 +1899,7 @@ div#rsvp {
             }
         }
     }
+    */
 
     div.info {
         div.content {
@@ -1591,84 +2004,134 @@ div#rsvp {
 
     div.confirmation {
         div.content {
-            div.caption {
-                margin-top: 10px;
-                font-size: @font_size_base + 4;
-                text-transform: uppercase;
-                text-align: center;
-            }
+            border-top: 1px solid #E6E6E6;
+            padding: 22px 19px;
 
-            div.body {
-                margin: 1rem 2rem;
-                border-top: 3px solid lighten(@event_blue, 20%);
-                box-shadow: 0 2px 5px 0 #DCE2E2;
+            @overlay_content_inner_width: @overlay_width - 11 * 2 - 2 - 19 * 2 - 2;
 
-                p {
-                    padding: 0 1rem;
-                }
+            div.inner {
+                width: @overlay_content_inner_width;
+                border: 1px solid @event_blue;
+                border-radius: 2px;
+                box-shadow: 1px 1px 4px #E6E6E6;
 
-                div.upper {
-                    background-color: lighten(@event_blue, 5%);
-                    padding-bottom: 1.5rem;
-                    border-left: 2px solid #FFF;
-                    border-right: 2px solid #FFF;
+                div.caption {
+                    width: @overlay_content_inner_width;
+                    height: 38px;
+                    background-color: @event_blue;
 
-                    h2 {
-                        padding: 1rem 1rem;
-                        margin-top: 0;
-                        margin-bottom: 1rem;
-                        border-bottom: 1px dotted #FFF;
-                        color: #000;
-                        font-size: 1rem;
-                        font-weight: 300;
-                        text-align: left;
-                        text-transform: uppercase;
-                        text-shadow: 0 1px 0 rgba(255, 255, 255, 0.6);
-                    }
+                    div.presents {
+                        width: @overlay_content_inner_width - 168;
+                        height: 38px;
+                        border-right: 1px dashed #E6E6E6;
+                        .left;
 
-                    p.name {
-                        margin-top: 0.5rem;
-                        color: #FFF;
-                        font-size: 1.4rem;
-                        line-height: 1.8rem;
-                        text-align: left;
-                        text-shadow: 0 1px 0 lighten(@dark_green, 30%);
-                    }
-
-                    p.time, p.location {
-                        margin: 0.4rem 0;
-                        color: #FFF;
-                    }
-                }
-
-                div.lower {
-                    padding-top: 0.2rem;
-                    padding-bottom: 1rem;
-                    border-top: 1px dotted #C2F4FF;
-                    border-bottom: 2px solid #C2F4FF;
-                    background-color: white;
-                    font-size: 0.6rem;
-
-                    p.top {
-                        height: 0.8rem;
-                        padding-bottom: 0.8rem;
-                        border-bottom: 1px dotted #C2F4FF;
-                        margin-bottom: 0.5rem;
-                        font-size: 0.8rem;
-                        line-height: 0.8rem;
-
-                        span.ticket {
+                        div.icon {
+                            width: 22px;
+                            height: 22px;
+                            margin: (38px - 24px) / 2 12px;
+                            margin-right: 0;
+                            border: 1px solid #FFF;
+                            background: url(../images/logo-small.png) @bboy_orange center center;
+                            border-radius: 2px;
                             .left;
                         }
 
-                        span.price {
-                            .right;
+                        div.organizers {
+                            max-width: @overlay_content_inner_width - 168 - 48;
+                            height: @font_size_base - 1;
+                            margin-left: 12px;
+                            padding: (38px - (@font_size_base - 1)) / 2 0;
+                            color: #FFF;
+                            font-size: @font_size_base - 1;
+                            line-height: @font_size_base - 1;
+                            .left;
+                        }
+                    }
+
+                    div.code {
+                        width: 167px;
+                        height: @font_size_base - 2;
+                        padding: (38px - (@font_size_base - 2)) / 2 0;
+                        color: #FFF;
+                        font-size: @font_size_base - 2;
+                        line-height: @font_size_base - 2;
+                        text-align: center;
+                        .left;
+                    }
+                }
+
+                div.details {
+                    width: @overlay_content_inner_width;
+                    height: 193px;
+                    border-top: 1px solid #E6E6E6;
+
+                    div.left {
+                        position: relative;
+                        width: @overlay_content_inner_width - 168;
+                        height: 100%;
+                        border-right: 1px dashed #E6E6E6;
+
+                        div.name {
+                            width: @overlay_content_inner_width - 168 - 12 * 2;
+                            padding: 11px 0;
+                            margin: 0 12px;
+                            border-bottom: 1px solid #4D4D4D;
+                            font-size: @font_size_base + 6;
+                            line-height: @font_size_base + 16;
+                        }
+
+                        div.time {
+                            width: @overlay_content_inner_width - 168 - 12 * 2;
+                            padding: 0 12px;
+                            margin-top: 12px;
+                            font-size: @font_size_base - 2;
+                        }
+
+                        div.extra {
+                            position: absolute;
+                            width: @overlay_content_inner_width - 168 - 12 * 2;
+                            height: 11px;
+                            padding: 7px 12px;
+                            left: 0;
+                            bottom: 0;
+                            border-top: 1px dashed #E6E6E6;
+                            font-size: 11px;
+                            line-height: 11px;
+                        }
+                    }
+
+                    div.right {
+                        width: 167px;
+                        height: 100%;
+                        background-color: #F2F2F2;
+
+                        div.price {
+                            width: 167px;
+                            height: 34px;
+                            padding-top: (193px - 34px) / 2 - 20;
+                            font-size: 34px;
+                            line-height: 34px;
+                            text-align: center;
+                        }
+
+                        div.ticket {
+                            width: 167px;
+                            height: @font_size_base;
+                            margin-top: 5px;
+                            text-align: center;
+                            font-size: @font_size_base - 2;
                         }
                     }
                 }
             }
         }
     }
+}
+
+div#event_manage {
+    width: @body_width;
+    .center;
 }
 
 // Fundraiser
