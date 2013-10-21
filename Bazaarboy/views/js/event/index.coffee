@@ -742,6 +742,13 @@ Bazaarboy.event.index =
                     alert response.message
                 return
         return
+    fetchCoordinates: (reference) ->
+        places_service = new google.maps.places.PlacesService(document.getElementById('latitude'))
+        places_service.getDetails
+            reference: reference
+            (result, status) ->
+                $('div#event > div.title div.details input[name=latitude]').val result.geometry.location.lb
+                $('div#event > div.title div.details input[name=longitude]').val result.geometry.location.mb
     initEditing: () ->
         scope = this
         # Switch event launch state
@@ -778,11 +785,11 @@ Bazaarboy.event.index =
         # Location Autocomplete
         google_autocomplete = new google.maps.places.AutocompleteService()
         autocomplete_source = new Array()
-        $('div#event .inner .bottom .editor input[name=location]').keyup () ->
+        $('div#event .inner .bottom .editor input[name=location]').keyup () =>
             google_autocomplete.getQueryPredictions
                 types: Array(["establishment"])
-                input: $(this).val()
-                (predictions, status) ->
+                input: $('div#event .inner .bottom .editor input[name=location]').val()
+                (predictions, status) =>
                     i = 0
                     for prediction in predictions
                         if prediction['terms'].length > 2
@@ -790,12 +797,16 @@ Bazaarboy.event.index =
                         else
                             label_extenstion = ""
                         autocomplete_source[i] =
+                            id: prediction['reference']
                             value: prediction['terms'][0]['value']
                             label: prediction['terms'][0]['value'] + label_extenstion
                         i++
                     $('div#event .inner .bottom .editor input[name=location]').autocomplete
                         source:autocomplete_source
                         html: true
+                    $('div#event .inner .bottom .editor input[name=location]').on
+                        "autocompleteselect": (event, ui) =>
+                            @fetchCoordinates(ui.item.id)
         # Save original images
         @cover = $('div#event div.cover div.image div.bounds img')
         if @cover.length > 0

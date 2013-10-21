@@ -800,6 +800,16 @@
         });
       }
     },
+    fetchCoordinates: function(reference) {
+      var places_service;
+      places_service = new google.maps.places.PlacesService(document.getElementById('latitude'));
+      return places_service.getDetails({
+        reference: reference
+      }, function(result, status) {
+        $('div#event > div.title div.details input[name=latitude]').val(result.geometry.location.lb);
+        return $('div#event > div.title div.details input[name=longitude]').val(result.geometry.location.mb);
+      });
+    },
     initEditing: function() {
       var autocomplete_source, google_autocomplete, original_end_time, original_start_time, scope,
         _this = this;
@@ -842,7 +852,7 @@
       $('div#event .inner .bottom .editor input[name=location]').keyup(function() {
         return google_autocomplete.getQueryPredictions({
           types: Array(["establishment"]),
-          input: $(this).val()
+          input: $('div#event .inner .bottom .editor input[name=location]').val()
         }, function(predictions, status) {
           var i, label_extenstion, prediction, _i, _len;
           i = 0;
@@ -854,14 +864,20 @@
               label_extenstion = "";
             }
             autocomplete_source[i] = {
+              id: prediction['reference'],
               value: prediction['terms'][0]['value'],
               label: prediction['terms'][0]['value'] + label_extenstion
             };
             i++;
           }
-          return $('div#event .inner .bottom .editor input[name=location]').autocomplete({
+          $('div#event .inner .bottom .editor input[name=location]').autocomplete({
             source: autocomplete_source,
             html: true
+          });
+          return $('div#event .inner .bottom .editor input[name=location]').on({
+            "autocompleteselect": function(event, ui) {
+              return _this.fetchCoordinates(ui.item.id);
+            }
           });
         });
       });

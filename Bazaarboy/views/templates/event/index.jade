@@ -80,6 +80,8 @@ block content
                             b Where?
                             | &nbsp;
                             input(type="text", name="location", value="{{ event.location }}")
+                            input(type="hidden", name="latitude", id="latitude", value="")
+                            input(type="hidden", name="longitude", value="")
                         {% endif %}
                     {% if not editable %}
                     div.sponsor.hidden
