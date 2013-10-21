@@ -57,7 +57,6 @@ block content
                             |  - {{ event.end_time|date:"l, M jS, f" }}{{ event.end_time|date:"A"|lower }}
                             | {% endif %}
                             | {% endif %}
-                            | {{ event.start_time|date:"T" }}
                             | {% if event.location %}
                             | at 
                             b {{ event.location }}
