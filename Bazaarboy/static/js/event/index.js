@@ -806,8 +806,10 @@
       return places_service.getDetails({
         reference: reference
       }, function(result, status) {
-        $('div#event > div.title div.details input[name=latitude]').val(result.geometry.location.lb);
-        return $('div#event > div.title div.details input[name=longitude]').val(result.geometry.location.mb);
+        if (status === "OK") {
+          $('div#event > div.title div.details input[name=latitude]').val(result.geometry.location.lb);
+          return $('div#event > div.title div.details input[name=longitude]').val(result.geometry.location.mb);
+        }
       });
     },
     initEditing: function() {

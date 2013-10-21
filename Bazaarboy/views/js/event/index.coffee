@@ -747,8 +747,9 @@ Bazaarboy.event.index =
         places_service.getDetails
             reference: reference
             (result, status) ->
-                $('div#event > div.title div.details input[name=latitude]').val result.geometry.location.lb
-                $('div#event > div.title div.details input[name=longitude]').val result.geometry.location.mb
+                if status == "OK"
+                    $('div#event > div.title div.details input[name=latitude]').val result.geometry.location.lb
+                    $('div#event > div.title div.details input[name=longitude]').val result.geometry.location.mb
     initEditing: () ->
         scope = this
         # Switch event launch state
