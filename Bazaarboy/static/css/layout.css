@@ -448,6 +448,32 @@ input[type=file].hidden {
   text-align: center;
   text-shadow: 0 1px 0 rgba(0, 0, 0, 0.125);
 }
+.ui-autocomplete.ui-menu.ui-widget {
+  list-style-type: none;
+  padding: 0;
+  width: 80px;
+  font-family: "rooney-sans", Helvetica, sans-serif;
+  font-weight: 300;
+  font-style: normal;
+  font-size: 16px;
+  color: #000000;
+  border-radius: 0;
+}
+.ui-autocomplete.ui-menu.ui-widget .ui-menu-item {
+  border: none;
+  cursor: pointer;
+}
+.ui-autocomplete.ui-menu.ui-widget .ui-menu-item a {
+  display: block;
+  padding: 3px;
+  width: 80px;
+  border: none;
+  border-radius: 0;
+}
+.ui-autocomplete.ui-menu.ui-widget .ui-menu-item .ui-state-focus {
+  color: #FFF;
+  background: #ff9c00;
+}
 body {
   font-family: "rooney-sans", Helvetica, sans-serif;
   font-weight: 300;

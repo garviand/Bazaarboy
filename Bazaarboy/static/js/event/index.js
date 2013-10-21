@@ -799,7 +799,7 @@
       }
     },
     initEditing: function() {
-      var scope,
+      var original_end_time, original_start_time, scope,
         _this = this;
       scope = this;
       $('div#event > div.title div.bottom div.launch').click(function() {
@@ -825,6 +825,16 @@
           scope.startEditingTimeLocation();
         }
       });
+      original_start_time = $('div#event .inner .bottom .editor input[name=start_time]').val();
+      original_end_time = $('div#event .inner .bottom .editor input[name=end_time]').val();
+      $('div#event .inner .bottom .editor input[name=start_time]').timeAutocomplete({
+        blur_empty_populate: false
+      });
+      $('div#event .inner .bottom .editor input[name=end_time]').timeAutocomplete({
+        blur_empty_populate: false
+      });
+      $('div#event .inner .bottom .editor input[name=start_time]').val(original_start_time);
+      $('div#event .inner .bottom .editor input[name=end_time]').val(original_end_time);
       this.cover = $('div#event div.cover div.image div.bounds img');
       if (this.cover.length > 0) {
         this.cover = this.cover.clone();

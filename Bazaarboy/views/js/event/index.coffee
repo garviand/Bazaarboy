@@ -764,6 +764,15 @@ Bazaarboy.event.index =
             else
                 scope.startEditingTimeLocation()
             return
+        #Time Autocomplete
+        original_start_time = $('div#event .inner .bottom .editor input[name=start_time]').val()
+        original_end_time = $('div#event .inner .bottom .editor input[name=end_time]').val()
+        $('div#event .inner .bottom .editor input[name=start_time]').timeAutocomplete
+            blur_empty_populate:false
+        $('div#event .inner .bottom .editor input[name=end_time]').timeAutocomplete
+            blur_empty_populate:false
+        $('div#event .inner .bottom .editor input[name=start_time]').val(original_start_time)
+        $('div#event .inner .bottom .editor input[name=end_time]').val(original_end_time)
         # Save original images
         @cover = $('div#event div.cover div.image div.bounds img')
         if @cover.length > 0

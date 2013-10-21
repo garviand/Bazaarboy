@@ -117,7 +117,30 @@ input[type=file].hidden {
 }
 
 .ui-autocomplete.ui-menu.ui-widget{
-    
+    list-style-type: none;
+    padding: 0;
+    width: 80px;
+    font-family: @font_family_base;
+    font-weight: @font_weight_base;
+    font-style: @font_style_base;
+    font-size: @font_size_base;
+    color: @font_color_base;
+    border-radius: 0;
+    .ui-menu-item{
+        border: none;
+        cursor: pointer;
+        a{
+            display: block;
+            padding: 3px;
+            width: 80px;
+            border: none;
+            border-radius: 0;
+        }
+        .ui-state-focus{
+            color: #FFF;
+            background: @bboy_orange;
+        }
+    }
 }
 
 // Layout

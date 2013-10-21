@@ -420,6 +420,8 @@ append script
     script(type="text/javascript", src="{{ STATIC_URL }}moment/moment.timezone.data.js")
     script(type="text/javascript", src="{{ STATIC_URL }}pikaday/pikaday.js")
     script(type="text/javascript", src="{{ STATIC_URL }}pikaday/pikaday.jquery.js")
+    script(type="text/javascript", src="{{ STATIC_URL }}timeautocomplete/jquery.timeAutocomplete.js")
+    script(type="text/javascript", src="{{ STATIC_URL }}timeautocomplete/formatters/ampm.js")
     {% else %}
     script(type="text/javascript", src="https://checkout.stripe.com/v2/checkout.js")
     {% endif %}
