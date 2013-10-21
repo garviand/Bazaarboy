@@ -801,7 +801,7 @@
       }
     },
     initEditing: function() {
-      var original_end_time, original_start_time, scope,
+      var autocomplete_source, google_autocomplete, original_end_time, original_start_time, scope,
         _this = this;
       scope = this;
       $('div#event > div.title div.bottom div.launch').click(function() {
@@ -837,6 +837,29 @@
       });
       $('div#event .inner .bottom .editor input[name=start_time]').val(original_start_time);
       $('div#event .inner .bottom .editor input[name=end_time]').val(original_end_time);
+      google_autocomplete = new google.maps.places.AutocompleteService();
+      autocomplete_source = new Array();
+      $('div#event .inner .bottom .editor input[name=location]').keyup(function() {
+        return google_autocomplete.getQueryPredictions({
+          input: $(this).val()
+        }, function(predictions, status) {
+          var i, prediction, _i, _len;
+          console.log(predictions);
+          i = 0;
+          for (_i = 0, _len = predictions.length; _i < _len; _i++) {
+            prediction = predictions[_i];
+            autocomplete_source[i] = {
+              value: prediction['terms'][0]['value'],
+              label: prediction['terms'][0]['value'] + " - <i>" + prediction['terms'][2]['value'] + "</i>"
+            };
+            i++;
+          }
+          return $('div#event .inner .bottom .editor input[name=location]').autocomplete({
+            source: autocomplete_source,
+            html: true
+          });
+        });
+      });
       this.cover = $('div#event div.cover div.image div.bounds img');
       if (this.cover.length > 0) {
         this.cover = this.cover.clone();

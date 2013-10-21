@@ -775,6 +775,24 @@ Bazaarboy.event.index =
             blur_empty_populate:false
         $('div#event .inner .bottom .editor input[name=start_time]').val(original_start_time)
         $('div#event .inner .bottom .editor input[name=end_time]').val(original_end_time)
+        # Location Autocomplete
+        google_autocomplete = new google.maps.places.AutocompleteService()
+        autocomplete_source = new Array()
+        $('div#event .inner .bottom .editor input[name=location]').keyup () ->
+            google_autocomplete.getQueryPredictions
+                types = Array(["establishment"])
+                input: $(this).val()
+                (predictions, status) ->
+                    console.log predictions
+                    i = 0
+                    for prediction in predictions
+                        autocomplete_source[i] =
+                            value: prediction['terms'][0]['value']
+                            label: prediction['terms'][0]['value'] + " - <i>" + prediction['terms'][2]['value'] + "</i>"
+                        i++
+                    $('div#event .inner .bottom .editor input[name=location]').autocomplete
+                        source:autocomplete_source
+                        html: true
         # Save original images
         @cover = $('div#event div.cover div.image div.bounds img')
         if @cover.length > 0

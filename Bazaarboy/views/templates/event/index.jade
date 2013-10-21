@@ -431,6 +431,7 @@ append script
     //-script(type="text/javascript", src="https://maps.googleapis.com/maps/api/js?sensor=false&key=AIzaSyBb4LqJdxCDjVWlgqLsdgtMpiI3fFloTiw")
     {% if editable %}
     script(type="text/javascript", src="{{ STATIC_URL }}jQueryUI/jquery-ui.min.js")
+    script(type="text/javascript", src="{{ STATIC_URL }}jQueryUI/jquery-ui.autocomplete.html.js")
     script(type="text/javascript", src="{{ STATIC_URL }}redactor/redactor.min.js")
     script(type="text/javascript", src="{{ STATIC_URL }}moment/moment.min.js")
     script(type="text/javascript", src="{{ STATIC_URL }}moment/moment.timezone.min.js")
@@ -439,6 +440,8 @@ append script
     script(type="text/javascript", src="{{ STATIC_URL }}pikaday/pikaday.jquery.js")
     script(type="text/javascript", src="{{ STATIC_URL }}timeautocomplete/jquery.timeAutocomplete.js")
     script(type="text/javascript", src="{{ STATIC_URL }}timeautocomplete/formatters/ampm.js")
+    script(type="text/javascript", src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAasW6vqPCn18g6UMaFWV90qGMSo6pErwo&sensor=false&libraries=places")
+    </script>
     {% else %}
     script(type="text/javascript", src="https://checkout.stripe.com/v2/checkout.js")
     {% endif %}

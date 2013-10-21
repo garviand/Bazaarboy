@@ -465,8 +465,7 @@ input[type=file].hidden {
 }
 .ui-autocomplete.ui-menu.ui-widget .ui-menu-item a {
   display: block;
-  padding: 3px;
-  width: 80px;
+  width: 100%;
   border: none;
   border-radius: 0;
 }
