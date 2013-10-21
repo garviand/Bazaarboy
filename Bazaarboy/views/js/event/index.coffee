@@ -780,15 +780,18 @@ Bazaarboy.event.index =
         autocomplete_source = new Array()
         $('div#event .inner .bottom .editor input[name=location]').keyup () ->
             google_autocomplete.getQueryPredictions
-                types = Array(["establishment"])
+                types: Array(["establishment"])
                 input: $(this).val()
                 (predictions, status) ->
-                    console.log predictions
                     i = 0
                     for prediction in predictions
+                        if prediction['terms'].length > 2
+                            label_extenstion = " - <i>" + prediction['terms'][2]['value'] + "</i>"
+                        else
+                            label_extenstion = ""
                         autocomplete_source[i] =
                             value: prediction['terms'][0]['value']
-                            label: prediction['terms'][0]['value'] + " - <i>" + prediction['terms'][2]['value'] + "</i>"
+                            label: prediction['terms'][0]['value'] + label_extenstion
                         i++
                     $('div#event .inner .bottom .editor input[name=location]').autocomplete
                         source:autocomplete_source

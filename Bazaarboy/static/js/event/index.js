@@ -841,16 +841,21 @@
       autocomplete_source = new Array();
       $('div#event .inner .bottom .editor input[name=location]').keyup(function() {
         return google_autocomplete.getQueryPredictions({
+          types: Array(["establishment"]),
           input: $(this).val()
         }, function(predictions, status) {
-          var i, prediction, _i, _len;
-          console.log(predictions);
+          var i, label_extenstion, prediction, _i, _len;
           i = 0;
           for (_i = 0, _len = predictions.length; _i < _len; _i++) {
             prediction = predictions[_i];
+            if (prediction['terms'].length > 2) {
+              label_extenstion = " - <i>" + prediction['terms'][2]['value'] + "</i>";
+            } else {
+              label_extenstion = "";
+            }
             autocomplete_source[i] = {
               value: prediction['terms'][0]['value'],
-              label: prediction['terms'][0]['value'] + " - <i>" + prediction['terms'][2]['value'] + "</i>"
+              label: prediction['terms'][0]['value'] + label_extenstion
             };
             i++;
           }
