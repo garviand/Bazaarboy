@@ -145,6 +145,10 @@ class Email(object):
             {
                 'name':'cover_image_url', 
                 'content':coverImageUrl
+            },
+            {
+                'name':'event_id', 
+                'content':purchase.event.id
             }
         ]
         return self.sendEmail(to, subject, template, mergeVars)
