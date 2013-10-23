@@ -12,11 +12,11 @@ block content
                 div.right
                     div.text
                         div.checkin_count
-                            div.checkin_numbers 35/50
+                            div.checkin_numbers 0/{{ purchases|length }}
                             div.checkin_label Checked-In
                 div.upper_top
                     a#regular_mode.active(href="javascript:;") RSVP Management
-                    a#night_mode(href="javascript:;") Night Mode
+                    a#night_mode.hidden(href="javascript:;") Night Mode
                 div.top
                     div.text
                         {{ event.name }}
@@ -42,7 +42,7 @@ block content
                             | {% endif %}
                             | {% endspaceless %}
                     div.right
-                        a(href="javascript:;") View Event Page
+                        a(href="{% url event:index event.id %}") View Event Page
             div.clear
         div.list_content
             div.inner
