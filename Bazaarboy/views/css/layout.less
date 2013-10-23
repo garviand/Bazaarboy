@@ -2338,8 +2338,154 @@ div#rsvp {
 }
 
 div#event_manage {
-    width: @body_width;
-    .center;
+    .title{
+        .inner{
+            .right{
+                float: right;
+                width: @column_width * 2 + @gutter_width * 2;
+                .checkin_count{
+                    margin-top: 15px;
+                    padding-top: 25px;
+                    width: 100%;
+                    height: 100px;
+                    border: 1px solid @font_color_base;
+                    border-radius: 2px;
+                    text-align: center;
+                    .checkin_numbers{
+                        font-size: @font_size_base + 9;
+                        font-weight: @font_weight_bold;
+                        line-height: @font_size_base + 15;
+                        margin-bottom: 10px;
+                    }
+                } 
+            }
+            .upper_top{
+                @upper_top_height: @font_size_base - 2;
+
+                float: left;
+                position: relative;
+                width: @column_width * 11 + @gutter_width * 10;
+                height: @upper_top_height;
+                padding-top: 14px;
+                padding-bottom: 10px;
+                font-size: @font_size_base - 2;
+                line-height: @font_size_base - 2;
+                border-bottom: 1px solid #7F7F7F;
+                a{
+                    color: @font_color_base;
+                    padding: 3px;
+                    margin-right: 5px;
+                    text-decoration: none;
+                    &.active{
+                        background-color: @bboy_orange;
+                        color: #FFF;
+                    }
+                    &:hover{
+                        background-color: @bboy_orange;
+                        color: #FFF;
+                    }
+                }
+            }
+            .top{
+                float: left;
+                width: @column_width * 11 + @gutter_width * 10;
+            }
+            .bottom{
+                float: left;
+                width: @column_width * 11 + @gutter_width * 10;
+                .right{
+                    float: right;
+                    width: auto;
+                    a{
+                        font-style: italic;
+                        color: @font_color_base;
+                    }
+                }
+            }
+        }
+    }
+    > div.list_content{
+        position: relative;
+        width: 100%;
+        min-width: @body_width + @gutter_width * 2;
+        margin-top: 30px;
+        div.inner {
+            width: @body_width + @gutter_width * 2;
+            .center;
+            div.list_filters{
+                float: left;
+                width: @sidebar_width;
+                form.list_search{
+                    input{
+                        width: 100%;
+                        border: 1px solid @font_color_base;
+                        padding: 5px;
+                        margin-bottom: 10px;
+                        -webkit-box-sizing: border-box;
+                        -moz-box-sizing: border-box;
+                        box-sizing: border-box;
+                    }
+                }
+            }
+            div.list_guests{
+                float: right;
+                width: @content_width;
+                div.name{
+                    width: @column_width * 5;
+                }
+                div.confirmation{
+                    width: @column_width * 5;
+                }
+                div.checkin{
+                    width: @column_width * 2 + @gutter_width;
+                }
+                div.list_headers{
+                    padding: 10px 5px;
+                    > div{
+                        margin-right: @gutter_width;
+                        float: left;
+                        &.clear{
+                            float: none;
+                            height: 0;
+                        }
+                    }
+                }
+                div.guest{
+                    padding: 20px 5px;
+                    border-top: 1px solid #7F7F7F;
+                    font-size: @font_size_base + 3;
+                    div.checkin{
+                        a{
+                            width: 100%;
+                            font-size: @font_size_base;
+                            display: block;
+                            padding: 8px;
+                            background-color: @event_blue;
+                            color: #FFF;
+                            text-shadow: 0 1px 0 @dark_green;
+                            line-height: @font_size_base;
+                            text-decoration: none;
+                            -webkit-box-sizing: border-box;
+                            -moz-box-sizing: border-box;
+                            box-sizing: border-box;
+                            text-align: center;
+                            &:hover {
+                                .linear_gradient(top, lighten(@event_blue, 5%), @event_blue);
+                            }
+                        }
+                    }
+                    > div{
+                        margin-right: @gutter_width;
+                        float: left;
+                        &.clear{
+                            float: none;
+                            height: 0;
+                        }
+                    }
+                }
+            }
+        }
+    }
 }
 
 // Fundraiser

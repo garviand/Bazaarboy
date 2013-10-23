@@ -120,7 +120,7 @@ class Email(object):
             'name':purchase.owner.full_name
         }]
         subject = 'Confirmation for \'' + purchase.event.name + '\''
-        template = 'bboy-p-event-template'
+        template = 'rsvp-confirmation-draft'
         mergeVars = [
             {
                 'name':'event_name', 

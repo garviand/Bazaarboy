@@ -6,7 +6,67 @@ block title
     | Manage | {{ event.name }}
 
 block content
-    div#event_manage
+    div#event_manage.event_base.content_divided
+        div.title
+            div.inner
+                div.right
+                    div.text
+                        div.checkin_count
+                            div.checkin_numbers 35/50
+                            div.checkin_label Checked-In
+                div.upper_top
+                    a#regular_mode.active(href="javascript:;") RSVP Management
+                    a#night_mode(href="javascript:;") Night Mode
+                div.top
+                    div.text
+                        {{ event.name }}
+                div.bottom
+                    div.details
+                        div.text
+                            //- Format the times to form something like this
+                            //- Wednesday, Jul 9th, 10pm - 11pm
+                            //- or
+                            //- Wednesday, Jul 9th, 10am - Thursday, Jul 10th, 11pm
+                            | {% spaceless %}
+                            | {{ event.start_time|date:"l, M jS, f" }}{{ event.start_time|date:"A"|lower }}
+                            | {% if event.end_time %}
+                            | {% if event.end_time|shouldShortenEndTime:event.start_time %}
+                            |  - {{ event.end_time|date:"f" }}{{ event.end_time|date:"A"|lower }}
+                            | {% else %}
+                            |  - {{ event.end_time|date:"l, M jS, f" }}{{ event.end_time|date:"A"|lower }}
+                            | {% endif %}
+                            | {% endif %}
+                            | {% if event.location %}
+                            | at 
+                            b {{ event.location }}
+                            | {% endif %}
+                            | {% endspaceless %}
+                    div.right
+                        a(href="javascript:;") View Event Page
+            div.clear
+        div.list_content
+            div.inner
+                div.list_filters
+                    form.list_search
+                        input(type="text", name="guest_name", placeholder="Search Guest Name")
+                        input(type="text", name="guest_code", placeholder="Search Confirmation #")
+                div.list_guests
+                    div.list_headers
+                        div.name Name
+                        div.confirmation Confirmation #
+                        div.checkin Check In
+                        div.clear
+                    {% for guest in purchases %}
+                    div.guest
+                        div.name
+                            {{ guest.owner.full_name }}
+                        div.confirmation
+                            {{ guest.code }}
+                        div.checkin
+                            a(href="javascript:;") Check In
+                        div.clear
+                    {% endfor %}
+                div.clear
 
 append script
     script(type="text/javascript", src="{{ STATIC_URL }}js/event/manage.js")
