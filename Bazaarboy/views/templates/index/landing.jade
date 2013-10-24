@@ -2,6 +2,9 @@
 
 extends ../layout
 
+append script
+    script(type="text/javascript", src="{{ STATIC_URL }}js/index/landing.js")
+
 block body
     div#landing
         div.background
@@ -12,7 +15,7 @@ block body
                 div.text 
                     b Bazaarboy
                 div.caption Discover Your Event Potential
-            div.content
+            div.starting_content.content
                 div.top
                     div.organizers
                         div.title 
@@ -28,7 +31,20 @@ block body
                             | sponsor.
                     div.clear
                 div.bottom
-                    div.request Public Launch Coming Soon
+                    a.request(href="mailto:build@bazaarboy.com") Contact Us To Get Started
+                    div.login_link_container
+                        | already a member?&nbsp;&nbsp;
+                        a.start_sign_in(href="javascript:;") sign-in
+                    div.clear
+            div.login_content.content.hidden
+                div.top
+                    form.login(name="login")
+                        input.login_input(type="text", name="email", placeholder="email address", autocomplete="off")
+                        input.login_input(type="password", name="password", placeholder="password", autocomplete="off")
+                div.bottom
+                    a.back(href="javascript:;") &lt;&lt; Back
+                    a.login_btn(href="javascript:;") Sign In
+                    div.clear
             div.footer
                 | &copy; 2013 Bazaarboy LLC. All rights reserved. 
                 a(href="http://blog.bazaarboy.com") Blog

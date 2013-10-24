@@ -418,6 +418,28 @@ div#landing {
                     width: @full_column_width * 3;
                     .left;
                 }
+                form.login{
+                    input.login_input{
+                        display: block;
+                        width: 100%;
+                        margin: 0 auto;
+                        margin-bottom: 20px;
+                        padding: 10px 10px;
+                        border-radius: 2px;
+                        font-size: @font_size_base - 2;
+                        background-color: rgba(255, 255, 255, 0.5);
+                        border: 1px solid #FFF;
+                        color: #2f4241;
+                        outline: none;
+                        -webkit-box-sizing: border-box;
+                        -moz-box-sizing: border-box;
+                        box-sizing: border-box;
+                        &:focus{
+                            box-shadow: 0 0 5px #ffb769;
+                            border: 1px solid #ffb769!important;
+                        }
+                    }
+                }
             }
 
             div.bottom {
@@ -427,14 +449,70 @@ div#landing {
                 padding-bottom: 10px;
                 border-top: 1px solid #FFF;
 
-                div.request {
-                    width: @full_column_width * 6 - 2;
+                a.request {
+                    display: block;
+                    float: left;
+                    width: @full_column_width * 3 - 25;
                     height: 36 - @font_size_base;
-                    padding: (36 - @font_size_base) / 2 0;
+                    padding: (36 - @font_size_base) / 2;
                     border-radius: 2px;
                     .orange_button;
                     font-size: @font_size_base;
                     font-weight: @font_weight_bold;
+                    text-decoration: none;
+                    &:hover{
+                        text-shadow: 0 -1px 0 rgba(0, 0, 0, 0.125);
+                        box-shadow: inset 0 0 5px #F1803D;
+                    }
+                }
+                div.login_link_container{
+                    float: right;
+                    width: @full_column_width * 3 - 30;
+                    height: 36 - @font_size_base;
+                    padding: (36 - @font_size_base) / 2;
+                    font-size: @font_size_base - 2;
+                    text-align: right;
+                    text-shadow: 0 1px 0 #FFF;
+                    a{
+                        font-style: oblique;
+                        text-decoration: none;
+                        color: #F1803D;
+                        &:hover{
+                            text-decoration: underline;
+                        }
+                    }
+                }
+            }
+        }
+        div.login_content{
+            .bottom{
+                a{
+                    display: block;
+                    width: @full_column_width * 3 - 35;
+                    height: 36 - @font_size_base;
+                    padding: (36 - @font_size_base) / 2;
+                    border-radius: 2px;
+                    .orange_button;
+                    font-size: @font_size_base;
+                    font-weight: @font_weight_bold;
+                    text-decoration: none;
+                    &:hover{
+                        text-shadow: 0 -1px 0 rgba(0, 0, 0, 0.125);
+                        box-shadow: inset 0 0 5px #F1803D;
+                    }
+                    &.back{
+                        float: left;
+                        border-color: #B2C4C2;
+                        background-color: #D7E9E9;
+                        border: 1px solid #BBC9C8;
+                        background-image: -webkit-linear-gradient(top, #d7e9e9, #c0d1cf);
+                        }
+                        &:hover{
+                            box-shadow: inset 0 0 5px #BBC9C8;
+                    }
+                    &.login_btn{
+                        float: right;
+                    }
                 }
             }
         }
