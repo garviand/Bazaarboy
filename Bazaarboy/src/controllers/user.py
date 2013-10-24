@@ -167,8 +167,8 @@ def create(request, params, user):
     code = os.urandom(128).encode('base_64')[:128]
     confirmationCode = User_confirmation_code(user = user, code = code)
     confirmationCode.save()
-    email = Email()
-    email.sendConfirmationEmail(user, confirmationCode)
+    #email = Email()
+    #email.sendConfirmationEmail(user, confirmationCode)
     # Start the session
     request.session['user'] = user.id
     response = {

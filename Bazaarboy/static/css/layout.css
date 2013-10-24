@@ -2149,6 +2149,25 @@ div#tickets div.tickets div.ticket div.top div.left div.price div.text {
   font-weight: 500;
   line-height: 20px;
 }
+div#tickets div.tickets div.ticket div.top div.left div.price div.editor {
+  width: 118px;
+  height: 20px;
+  padding: 25px 0;
+  border: 1px solid #ff8f4d;
+  border-radius: 2px;
+  color: #FFF;
+  text-align: center;
+  font-size: 20px;
+  font-weight: 500;
+  line-height: 20px;
+}
+div#tickets div.tickets div.ticket div.top div.left div.price div.editor input {
+  width: 118px;
+  height: 20px;
+  border: none;
+  outline: none;
+  text-align: center;
+}
 div#tickets div.tickets div.ticket div.top div.left div.quantity {
   width: 120px;
   height: 24px;
@@ -2611,8 +2630,8 @@ div#event_manage > div.list_content div.inner {
   margin: auto;
 }
 div#event_manage > div.list_content div.inner div.list_filters {
-  float: left;
   width: 192px;
+  float: right;
 }
 div#event_manage > div.list_content div.inner div.list_filters form.list_search input {
   width: 100%;
@@ -2624,7 +2643,7 @@ div#event_manage > div.list_content div.inner div.list_filters form.list_search 
   box-sizing: border-box;
 }
 div#event_manage > div.list_content div.inner div.list_guests {
-  float: right;
+  float: left;
   width: 696px;
 }
 div#event_manage > div.list_content div.inner div.list_guests div.name {
