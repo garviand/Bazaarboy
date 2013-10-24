@@ -79,8 +79,8 @@ block content
                             b Where?
                             | &nbsp;
                             input(type="text", name="location", value="{{ event.location }}")
-                            input(type="hidden", name="latitude", id="latitude", value="")
-                            input(type="hidden", name="longitude", value="")
+                            input(type="hidden", name="latitude", value="{{ event.latitude }}")
+                            input(type="hidden", name="longitude", value="{{ event.longitude }}")
                         {% endif %}
                     {% if not editable %}
                     div.sponsor.hidden
@@ -292,11 +292,11 @@ block content
                                 input(type="text", name="start_time", value=start_time_time, placeholder="ex. 6:00 PM")
                         div.text Valid thru
                         div.clear
-                    div.controls
+                    div.controls.hidden
                         a.cancel(href="javascript:;") Cancel
                         a.save(href="javascript:;") Save
                         div.clear
-        +ticket()(class="template hidden")
+        +ticket()(class="template editing hidden")
         div.tickets
             {% for ticket in tickets %}
             +ticket('{{ ticket.id }}', '{{ ticket.name }}', '{{ ticket.description }}', '{{ ticket.price|floatformat:-2 }}', '{% if ticket.quantity %}{{ ticket.quantity }}{% else %}Unlimited{% endif %}', '{{ ticket.start_time|date:\'l, M jS, f\' }}{{ ticket.start_time|date:\'A\'|lower }}', '{{ ticket.start_time|date:\'m/d/Y\' }}', '{{ ticket.start_time|date:\'g:i A\' }}', '{{ ticket.end_time|date:\'l, M jS, f\' }}{{ ticket.end_time|date:\'A\'|lower }}', '{{ ticket.end_time|date:\'m/d/Y\' }}', '{{ ticket.end_time|date:\'g:i A\' }}')
@@ -429,7 +429,6 @@ block content
     {% endif %}
 
 append script
-    //-script(type="text/javascript", src="https://maps.googleapis.com/maps/api/js?sensor=false&key=AIzaSyBb4LqJdxCDjVWlgqLsdgtMpiI3fFloTiw")
     {% if editable %}
     script(type="text/javascript", src="{{ STATIC_URL }}jQueryUI/jquery-ui.min.js")
     script(type="text/javascript", src="{{ STATIC_URL }}jQueryUI/jquery-ui.autocomplete.html.js")
@@ -442,7 +441,6 @@ append script
     script(type="text/javascript", src="{{ STATIC_URL }}timeautocomplete/jquery.timeAutocomplete.js")
     script(type="text/javascript", src="{{ STATIC_URL }}timeautocomplete/formatters/ampm.js")
     script(type="text/javascript", src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAasW6vqPCn18g6UMaFWV90qGMSo6pErwo&sensor=false&libraries=places")
-    </script>
     {% else %}
     script(type="text/javascript", src="https://checkout.stripe.com/v2/checkout.js")
     {% endif %}

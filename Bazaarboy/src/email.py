@@ -10,8 +10,6 @@ from kernel.models import *
 from src.config import *
 from src.timezone import localize
 
-import pdb
-
 class Email(object):
     """
     A wrapper class for all email functions

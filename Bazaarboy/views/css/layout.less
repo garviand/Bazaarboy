@@ -126,10 +126,12 @@ input[type=file].hidden {
     font-size: @font_size_base;
     color: @font_color_base;
     border-radius: 0;
-    .ui-menu-item{
+
+    .ui-menu-item {
         border: none;
         cursor: pointer;
-        a{
+
+        a {
             display: block;
             width: 100%;
             padding: 3px;
@@ -139,7 +141,8 @@ input[type=file].hidden {
             -moz-box-sizing: border-box;
             box-sizing: border-box;
         }
-        .ui-state-focus{
+
+        .ui-state-focus {
             color: #FFF;
             background: @bboy_orange;
         }
@@ -1890,6 +1893,27 @@ div#tickets {
                             font-weight: @font_weight_bold;
                             line-height: 20px;
                         }
+
+                        div.editor {
+                            width: 118px;
+                            height: 20px;
+                            padding: (70px - 20px) / 2 0;
+                            border: 1px solid @mandarin_orange;
+                            border-radius: 2px;
+                            color: #FFF;
+                            text-align: center;
+                            font-size: 20px;
+                            font-weight: @font_weight_bold;
+                            line-height: 20px;
+
+                            input {
+                                width: 118px;
+                                height: 20px;
+                                border: none;
+                                outline: none;
+                                text-align: center;
+                            }
+                        }
                     }
 
                     div.quantity {
@@ -2413,8 +2437,8 @@ div#event_manage {
             width: @body_width + @gutter_width * 2;
             .center;
             div.list_filters{
-                float: left;
                 width: @sidebar_width;
+                .right;
                 form.list_search{
                     input{
                         width: 100%;
@@ -2428,7 +2452,7 @@ div#event_manage {
                 }
             }
             div.list_guests{
-                float: right;
+                float: left;
                 width: @content_width;
                 div.name{
                     width: @column_width * 5;

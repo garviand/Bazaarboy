@@ -272,6 +272,19 @@ Bazaarboy.event.index =
                 alert err.message
             return
         return
+    fetchCoordinates: (reference) ->
+        location = $('div#event > div.title div.details input[name=location]').get(0)
+        placesService = new google.maps.places.PlacesService(location)
+        placesService.getDetails
+            reference: reference
+        , (result, status) ->
+            if status is 'OK'
+                $('div#event > div.title div.details input[name=latitude]')
+                    .val result.geometry.location.lb
+                $('div#event > div.title div.details input[name=longitude]')
+                    .val result.geometry.location.mb
+            return
+        return
     startEditingTimeLocation: () ->
         $('div#event > div.title div.details div.text').addClass('hidden')
         $('div#event > div.title div.details div.editor').removeClass('hidden')
@@ -298,12 +311,20 @@ Bazaarboy.event.index =
                 return
             endTime = moment(endDate + ' ' + endTime, 'MM/DD/YYYY h:mm A')
         location = $('div#event > div.title input[name=location]').val().trim()
-        if location.length is 0
-            location = 'none'
+        latitude = 'none'
+        longitude = 'none'
+        if location.length isnt 0
+            latitudeVal = parseFloat($('div#event > div.title input[name=latitude]').val())
+            longitudeVal = parseFloat($('div#event > div.title input[name=longitude]').val())
+            if latitudeVal isnt NaN and longitudeVal isnt NaN
+                latitude = latitudeVal
+                longitude = longitudeVal
         @save
             start_time: startTime.utc().format('YYYY-MM-DD HH:mm:ss')
             end_time: if endTime then endTime.utc().format('YYYY-MM-DD HH:mm:ss') else 'none'
             location: location
+            latitude: latitude
+            longitude: longitude
         , (err, event) =>
             unless err
                 timeString = ''
@@ -326,7 +347,9 @@ Bazaarboy.event.index =
                             timeString += endTime.format('dddd, MMM Do, ha')
                         else
                             timeString += endTime.format('dddd, MMM Do, h:mma')
-                timeLocation = timeString + ' at <b>' + event.location + '</b>'
+                timeLocation = timeString
+                if event.location isnt '' 
+                    timeLocation += ' at <b>' + event.location + '</b>'
                 $('div#event > div.title div.details div.text').html(timeLocation)
                 $('div#event > div.title div.details div.text').removeClass('hidden')
                 $('div#event > div.title div.details div.editor').addClass('hidden')
@@ -742,14 +765,6 @@ Bazaarboy.event.index =
                     alert response.message
                 return
         return
-    fetchCoordinates: (reference) ->
-        places_service = new google.maps.places.PlacesService(document.getElementById('latitude'))
-        places_service.getDetails
-            reference: reference
-            (result, status) ->
-                if status == "OK"
-                    $('div#event > div.title div.details input[name=latitude]').val result.geometry.location.lb
-                    $('div#event > div.title div.details input[name=longitude]').val result.geometry.location.mb
     initEditing: () ->
         scope = this
         # Switch event launch state
@@ -774,40 +789,45 @@ Bazaarboy.event.index =
             else
                 scope.startEditingTimeLocation()
             return
-        #Time Autocomplete
-        original_start_time = $('div#event .inner .bottom .editor input[name=start_time]').val()
-        original_end_time = $('div#event .inner .bottom .editor input[name=end_time]').val()
-        $('div#event .inner .bottom .editor input[name=start_time]').timeAutocomplete
-            blur_empty_populate:false
-        $('div#event .inner .bottom .editor input[name=end_time]').timeAutocomplete
-            blur_empty_populate:false
-        $('div#event .inner .bottom .editor input[name=start_time]').val(original_start_time)
-        $('div#event .inner .bottom .editor input[name=end_time]').val(original_end_time)
+        # Time Autocomplete
+        originalStartTime = $('div#event > div.title div.bottom div.details input[name=start_time]').val()
+        originalEndTime = $('div#event > div.title div.bottom div.details input[name=end_time]').val()
+        $('div#event > div.title div.bottom div.details input[name=start_time]').timeAutocomplete
+            blur_empty_populate: false
+        $('div#event > div.title div.bottom div.details input[name=end_time]').timeAutocomplete
+            blur_empty_populate: false
+        $('div#event > div.title div.bottom div.details input[name=start_time]')
+            .val originalStartTime 
+        $('div#event > div.title div.bottom div.details input[name=end_time]')
+            .val originalEndTime
         # Location Autocomplete
-        google_autocomplete = new google.maps.places.AutocompleteService()
-        autocomplete_source = new Array()
-        $('div#event .inner .bottom .editor input[name=location]').keyup () =>
-            google_autocomplete.getQueryPredictions
-                types: Array(["establishment"])
-                input: $('div#event .inner .bottom .editor input[name=location]').val()
-                (predictions, status) =>
-                    i = 0
+        googleAutocomplete = new google.maps.places.AutocompleteService()
+        $('div#event > div.title div.bottom div.details input[name=location]').keyup () =>
+            keyword = $('div#event > div.title div.bottom div.editor input[name=location]').val()
+            if keyword.trim() isnt ''
+                googleAutocomplete.getQueryPredictions
+                    types: ['establishment']
+                    input: keyword
+                , (predictions, status) =>
+                    autocompleteSource = []
                     for prediction in predictions
                         if prediction['terms'].length > 2
-                            label_extenstion = " - <i>" + prediction['terms'][2]['value'] + "</i>"
+                            labelExtenstion = ' - <i>' + prediction['terms'][2]['value'] + '</i>'
                         else
-                            label_extenstion = ""
-                        autocomplete_source[i] =
+                            labelExtenstion = ''
+                        autocompleteSource.push
                             id: prediction['reference']
                             value: prediction['terms'][0]['value']
-                            label: prediction['terms'][0]['value'] + label_extenstion
-                        i++
-                    $('div#event .inner .bottom .editor input[name=location]').autocomplete
-                        source:autocomplete_source
+                            label: prediction['terms'][0]['value'] + labelExtenstion
+                    $('div#event > div.title div.bottom div.details input[name=location]').autocomplete
+                        source: autocompleteSource
                         html: true
-                    $('div#event .inner .bottom .editor input[name=location]').on
-                        "autocompleteselect": (event, ui) =>
-                            @fetchCoordinates(ui.item.id)
+                    $('div#event > div.title div.bottom div.details input[name=location]').on 'autocompleteselect'
+                    , (event, ui) =>
+                        @fetchCoordinates ui.item.id
+                        return
+                    return
+            return
         # Save original images
         @cover = $('div#event div.cover div.image div.bounds img')
         if @cover.length > 0

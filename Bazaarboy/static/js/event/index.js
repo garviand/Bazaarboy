@@ -308,13 +308,26 @@
         }
       });
     },
+    fetchCoordinates: function(reference) {
+      var location, placesService;
+      location = $('div#event > div.title div.details input[name=location]').get(0);
+      placesService = new google.maps.places.PlacesService(location);
+      placesService.getDetails({
+        reference: reference
+      }, function(result, status) {
+        if (status === 'OK') {
+          $('div#event > div.title div.details input[name=latitude]').val(result.geometry.location.lb);
+          $('div#event > div.title div.details input[name=longitude]').val(result.geometry.location.mb);
+        }
+      });
+    },
     startEditingTimeLocation: function() {
       $('div#event > div.title div.details div.text').addClass('hidden');
       $('div#event > div.title div.details div.editor').removeClass('hidden');
       $('div#event > div.title div.bottom > div.button').html('Save').addClass('stick');
     },
     stopEditingTimeLocation: function() {
-      var endDate, endTime, location, startDate, startTime,
+      var endDate, endTime, latitude, latitudeVal, location, longitude, longitudeVal, startDate, startTime,
         _this = this;
       startDate = $('div#event > div.title input[name=start_date]').val();
       if (!moment(startDate, 'MM/DD/YYYY').isValid()) {
@@ -339,13 +352,22 @@
         endTime = moment(endDate + ' ' + endTime, 'MM/DD/YYYY h:mm A');
       }
       location = $('div#event > div.title input[name=location]').val().trim();
-      if (location.length === 0) {
-        location = 'none';
+      latitude = 'none';
+      longitude = 'none';
+      if (location.length !== 0) {
+        latitudeVal = parseFloat($('div#event > div.title input[name=latitude]').val());
+        longitudeVal = parseFloat($('div#event > div.title input[name=longitude]').val());
+        if (latitudeVal !== NaN && longitudeVal !== NaN) {
+          latitude = latitudeVal;
+          longitude = longitudeVal;
+        }
       }
       this.save({
         start_time: startTime.utc().format('YYYY-MM-DD HH:mm:ss'),
         end_time: endTime ? endTime.utc().format('YYYY-MM-DD HH:mm:ss') : 'none',
-        location: location
+        location: location,
+        latitude: latitude,
+        longitude: longitude
       }, function(err, event) {
         var timeLocation, timeString;
         if (!err) {
@@ -373,7 +395,10 @@
               }
             }
           }
-          timeLocation = timeString + ' at <b>' + event.location + '</b>';
+          timeLocation = timeString;
+          if (event.location !== '') {
+            timeLocation += ' at <b>' + event.location + '</b>';
+          }
           $('div#event > div.title div.details div.text').html(timeLocation);
           $('div#event > div.title div.details div.text').removeClass('hidden');
           $('div#event > div.title div.details div.editor').addClass('hidden');
@@ -800,20 +825,8 @@
         });
       }
     },
-    fetchCoordinates: function(reference) {
-      var places_service;
-      places_service = new google.maps.places.PlacesService(document.getElementById('latitude'));
-      return places_service.getDetails({
-        reference: reference
-      }, function(result, status) {
-        if (status === "OK") {
-          $('div#event > div.title div.details input[name=latitude]').val(result.geometry.location.lb);
-          return $('div#event > div.title div.details input[name=longitude]').val(result.geometry.location.mb);
-        }
-      });
-    },
     initEditing: function() {
-      var autocomplete_source, google_autocomplete, original_end_time, original_start_time, scope,
+      var googleAutocomplete, originalEndTime, originalStartTime, scope,
         _this = this;
       scope = this;
       $('div#event > div.title div.bottom div.launch').click(function() {
@@ -839,49 +852,49 @@
           scope.startEditingTimeLocation();
         }
       });
-      original_start_time = $('div#event .inner .bottom .editor input[name=start_time]').val();
-      original_end_time = $('div#event .inner .bottom .editor input[name=end_time]').val();
-      $('div#event .inner .bottom .editor input[name=start_time]').timeAutocomplete({
+      originalStartTime = $('div#event > div.title div.bottom div.details input[name=start_time]').val();
+      originalEndTime = $('div#event > div.title div.bottom div.details input[name=end_time]').val();
+      $('div#event > div.title div.bottom div.details input[name=start_time]').timeAutocomplete({
         blur_empty_populate: false
       });
-      $('div#event .inner .bottom .editor input[name=end_time]').timeAutocomplete({
+      $('div#event > div.title div.bottom div.details input[name=end_time]').timeAutocomplete({
         blur_empty_populate: false
       });
-      $('div#event .inner .bottom .editor input[name=start_time]').val(original_start_time);
-      $('div#event .inner .bottom .editor input[name=end_time]').val(original_end_time);
-      google_autocomplete = new google.maps.places.AutocompleteService();
-      autocomplete_source = new Array();
-      $('div#event .inner .bottom .editor input[name=location]').keyup(function() {
-        return google_autocomplete.getQueryPredictions({
-          types: Array(["establishment"]),
-          input: $('div#event .inner .bottom .editor input[name=location]').val()
-        }, function(predictions, status) {
-          var i, label_extenstion, prediction, _i, _len;
-          i = 0;
-          for (_i = 0, _len = predictions.length; _i < _len; _i++) {
-            prediction = predictions[_i];
-            if (prediction['terms'].length > 2) {
-              label_extenstion = " - <i>" + prediction['terms'][2]['value'] + "</i>";
-            } else {
-              label_extenstion = "";
+      $('div#event > div.title div.bottom div.details input[name=start_time]').val(originalStartTime);
+      $('div#event > div.title div.bottom div.details input[name=end_time]').val(originalEndTime);
+      googleAutocomplete = new google.maps.places.AutocompleteService();
+      $('div#event > div.title div.bottom div.details input[name=location]').keyup(function() {
+        var keyword;
+        keyword = $('div#event > div.title div.bottom div.editor input[name=location]').val();
+        if (keyword.trim() !== '') {
+          googleAutocomplete.getQueryPredictions({
+            types: ['establishment'],
+            input: keyword
+          }, function(predictions, status) {
+            var autocompleteSource, labelExtenstion, prediction, _i, _len;
+            autocompleteSource = [];
+            for (_i = 0, _len = predictions.length; _i < _len; _i++) {
+              prediction = predictions[_i];
+              if (prediction['terms'].length > 2) {
+                labelExtenstion = ' - <i>' + prediction['terms'][2]['value'] + '</i>';
+              } else {
+                labelExtenstion = '';
+              }
+              autocompleteSource.push({
+                id: prediction['reference'],
+                value: prediction['terms'][0]['value'],
+                label: prediction['terms'][0]['value'] + labelExtenstion
+              });
             }
-            autocomplete_source[i] = {
-              id: prediction['reference'],
-              value: prediction['terms'][0]['value'],
-              label: prediction['terms'][0]['value'] + label_extenstion
-            };
-            i++;
-          }
-          $('div#event .inner .bottom .editor input[name=location]').autocomplete({
-            source: autocomplete_source,
-            html: true
+            $('div#event > div.title div.bottom div.details input[name=location]').autocomplete({
+              source: autocompleteSource,
+              html: true
+            });
+            $('div#event > div.title div.bottom div.details input[name=location]').on('autocompleteselect', function(event, ui) {
+              _this.fetchCoordinates(ui.item.id);
+            });
           });
-          return $('div#event .inner .bottom .editor input[name=location]').on({
-            "autocompleteselect": function(event, ui) {
-              return _this.fetchCoordinates(ui.item.id);
-            }
-          });
-        });
+        }
       });
       this.cover = $('div#event div.cover div.image div.bounds img');
       if (this.cover.length > 0) {

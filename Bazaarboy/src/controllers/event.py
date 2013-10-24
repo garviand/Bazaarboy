@@ -296,9 +296,7 @@ def edit(request, params, user):
         else:
             event.end_time = params['end_time']
     if params['location'] is not None:
-        if params['location'].lower() == 'none':
-            event.location = None
-        elif len(params['location']) > 100:
+        if len(params['location']) > 100:
             response = {
                 'status':'FAIL',
                 'error':'LOCATION_TOO_LONG',
