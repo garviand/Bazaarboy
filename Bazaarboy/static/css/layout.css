@@ -2080,9 +2080,37 @@ div#tickets div.tickets div.ticket div.top div.left div.price div.editor {
 div#tickets div.tickets div.ticket div.top div.left div.price div.editor input {
   width: 118px;
   height: 20px;
+  padding: 0;
   border: none;
   outline: none;
   text-align: center;
+  font-size: 20px;
+  line-height: 20px;
+}
+div#tickets div.tickets div.ticket div.top div.left div.price div.editor input .placeholder {
+  color: #ff8f4d;
+  font-size: 20px;
+  font-weight: 300;
+}
+div#tickets div.tickets div.ticket div.top div.left div.price div.editor input::-webkit-input-placeholder {
+  color: #ff8f4d;
+  font-size: 20px;
+  font-weight: 300;
+}
+div#tickets div.tickets div.ticket div.top div.left div.price div.editor input:-moz-placeholder {
+  color: #ff8f4d;
+  font-size: 20px;
+  font-weight: 300;
+}
+div#tickets div.tickets div.ticket div.top div.left div.price div.editor input::-moz-placeholder {
+  color: #ff8f4d;
+  font-size: 20px;
+  font-weight: 300;
+}
+div#tickets div.tickets div.ticket div.top div.left div.price div.editor input:-ms-input-placeholder {
+  color: #ff8f4d;
+  font-size: 20px;
+  font-weight: 300;
 }
 div#tickets div.tickets div.ticket div.top div.left div.quantity {
   width: 120px;
@@ -2091,13 +2119,26 @@ div#tickets div.tickets div.ticket div.top div.left div.quantity {
   border-radius: 2px;
   background-color: #F2F2F2;
 }
-div#tickets div.tickets div.ticket div.top div.left div.quantity div.text {
+div#tickets div.tickets div.ticket div.top div.left div.quantity div.text,
+div#tickets div.tickets div.ticket div.top div.left div.quantity div.editor {
   width: 120px;
   height: 16px;
   padding: 4px 0;
   font-size: 16px;
   line-height: 16px;
   text-align: center;
+}
+div#tickets div.tickets div.ticket div.top div.left div.quantity div.text input,
+div#tickets div.tickets div.ticket div.top div.left div.quantity div.editor input {
+  width: 100px;
+  height: 16px;
+  padding: 0 10px;
+  border: none;
+  outline: none;
+  background-color: #F2F2F2;
+  text-align: center;
+  font-size: 16px;
+  line-height: 16px;
 }
 div#tickets div.tickets div.ticket div.top div.right {
   width: 491px;
@@ -2118,15 +2159,40 @@ div#tickets div.tickets div.ticket div.top div.right div.name div.text {
   font-weight: 500;
   line-height: 16px;
 }
+div#tickets div.tickets div.ticket div.top div.right div.name div.editor {
+  width: 479px;
+  height: 16px;
+  padding: 10px 5px;
+  border: 1px solid #ff8f4d;
+}
+div#tickets div.tickets div.ticket div.top div.right div.name div.editor input {
+  width: 479px;
+  height: 16px;
+  padding: 0;
+  border: none;
+  outline: none;
+  font-size: 16px;
+  line-height: 16px;
+}
 div#tickets div.tickets div.ticket div.top div.right div.description {
   width: 491px;
   margin-top: 5px;
+}
+div#tickets div.tickets div.ticket div.top div.right div.description textarea {
+  width: 479px;
+  height: 50px;
+  padding: 5px;
+  border: 1px solid #CCC;
+  resize: none;
 }
 div#tickets div.tickets div.ticket div.bottom {
   width: 676px;
   height: 20px;
   padding: 8px 10px;
   background-color: #F2F2F2;
+}
+div#tickets div.tickets div.ticket div.bottom div.show {
+  display: block !important;
 }
 div#tickets div.tickets div.ticket div.bottom > div.text {
   height: 16px;
@@ -2147,6 +2213,16 @@ div#tickets div.tickets div.ticket div.bottom div.end_time div.text {
   padding: 3px 5px;
   background-color: #FFF;
   color: #333;
+  font-size: 14px;
+  line-height: 14px;
+}
+div#tickets div.tickets div.ticket div.bottom div.start_time div.editor input,
+div#tickets div.tickets div.ticket div.bottom div.end_time div.editor input {
+  width: 80px;
+  height: 14px;
+  padding: 3px;
+  outline-color: #4795f2;
+  border: 1px solid #7F7F7F;
   font-size: 14px;
   line-height: 14px;
 }
@@ -2173,8 +2249,16 @@ div#tickets div.tickets div.ticket div.controls a {
   text-transform: uppercase;
   float: right;
 }
+div#tickets div.tickets div.ticket div.controls a.hidden {
+  display: none;
+}
+div#tickets div.tickets div.ticket div.controls a.edit,
 div#tickets div.tickets div.ticket div.controls a.save {
-  background-color: #ff8f4d;
+  background-color: #4795f2;
+  color: #FFF;
+}
+div#tickets div.tickets div.ticket div.controls a.delete {
+  background-color: #ff9c00;
   color: #FFF;
 }
 div#rsvp {

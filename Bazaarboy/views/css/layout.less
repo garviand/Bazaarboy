@@ -1909,9 +1909,13 @@ div#tickets {
                             input {
                                 width: 118px;
                                 height: 20px;
+                                padding: 0;
                                 border: none;
                                 outline: none;
                                 text-align: center;
+                                font-size: 20px;
+                                line-height: 20px;
+                                .input_placeholder(@mandarin_orange, 20px);
                             }
                         }
                     }
@@ -1923,13 +1927,25 @@ div#tickets {
                         border-radius: 2px;
                         background-color: #F2F2F2;
 
-                        div.text {
+                        div.text, div.editor {
                             width: 120px;
                             height: 16px;
                             padding: 4px 0;
                             font-size: 16px;
                             line-height: 16px;
                             text-align: center;
+
+                            input {
+                                width: 100px;
+                                height: 16px;
+                                padding: 0 10px;
+                                border: none;
+                                outline: none;
+                                background-color: #F2F2F2;
+                                text-align: center;
+                                font-size: 16px;
+                                line-height: 16px;
+                            }
                         }
                     }
                 }
@@ -1955,11 +1971,36 @@ div#tickets {
                             font-weight: @font_weight_bold;
                             line-height: 16px;
                         }
+
+                        div.editor {
+                            width: @ticket_right_width - 12;
+                            height: 16px;
+                            padding: 10px 5px;
+                            border: 1px solid @mandarin_orange;
+
+                            input {
+                                width: @ticket_right_width - 12;
+                                height: 16px;
+                                padding: 0;
+                                border: none;
+                                outline: none;
+                                font-size: 16px;
+                                line-height: 16px;
+                            }
+                        }
                     }
 
                     div.description {
                         width: @ticket_right_width;
                         margin-top: 5px;
+
+                        textarea {
+                            width: @ticket_right_width - 12;
+                            height: 50px;
+                            padding: 5px;
+                            border: 1px solid #CCC;
+                            resize: none;
+                        }
                     }
                 }
             }
@@ -1969,6 +2010,10 @@ div#tickets {
                 height: 20px;
                 padding: 8px 10px;
                 background-color: #F2F2F2;
+
+                div.show {
+                    display: block !important;
+                }
 
                 > div.text {
                     height: 16px;
@@ -1990,6 +2035,18 @@ div#tickets {
                         color: #333;
                         font-size: 14px;
                         line-height: 14px;
+                    }
+
+                    div.editor {
+                        input {
+                            width: 80px;
+                            height: 14px;
+                            padding: 3px;
+                            outline-color: @event_blue;
+                            border: 1px solid #7F7F7F;
+                            font-size: 14px;
+                            line-height: 14px;
+                        }
                     }
                 }
             }
@@ -2017,8 +2074,17 @@ div#tickets {
                     text-transform: uppercase;
                     .right;
 
-                    &.save {
-                        background-color: @mandarin_orange;
+                    &.hidden {
+                        display: none;
+                    }
+
+                    &.edit, &.save {
+                        background-color: @event_blue;
+                        color: #FFF;
+                    }
+
+                    &.delete {
+                        background-color: @bboy_orange;
                         color: #FFF;
                     }
                 }

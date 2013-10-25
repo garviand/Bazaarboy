@@ -668,6 +668,7 @@ Bazaarboy.event.index =
             $(ticket).remove()
             if $('div#tickets div.tickets div.ticket').length is 0
                 $('div#tickets div.tickets div.empty').removeClass('hidden')
+            @adjustOverlayHeight()
         else
             if confirm('Are you sure you want to delete this ticket?')
                 Bazaarboy.post 'event/ticket/delete/', {id: id}, (response) =>
@@ -676,6 +677,7 @@ Bazaarboy.event.index =
                         if $('div#tickets div.tickets div.ticket').length is 0
                             $('div#tickets div.tickets div.empty')
                                 .removeClass('hidden')
+                        @adjustOverlayHeight()
                     else
                         alert response.message
                     return
@@ -686,9 +688,46 @@ Bazaarboy.event.index =
             .removeClass('edit').addClass('save')
         $(ticket).addClass('editing')
         return
+    formatDateTime: (time) ->
+        time = moment.utc(time, 'YYYY-MM-DD HH:mm:ss').local()
+        formatted = 
+            full: time.format('dddd, MMM Do, H:mmA')
+            date: time.format('MM/DD/YYYY')
+            time: time.format('h:mm A')
+        return formatted
     stopEditingTicket: (ticket) ->
         id = $(ticket).attr('data-id')
         data = $(ticket).find('form').serializeObject()
+        startDate = data.start_date
+        startTime = data.start_time
+        if startDate.trim().length is 0 and startTime.trim().length is 0
+            startTime = false
+        else
+            if not moment(startDate, 'MM/DD/YYYY')?.isValid()
+                return
+            if not moment(startTime, 'h:mm a')?.isValid()
+                return
+            startTime = moment(startDate + ' ' + startTime, 'MM/DD/YYYY h:mm A')
+        if startTime
+            data.start_time = startTime.utc().format('YYYY-MM-DD HH:mm:ss')
+        else
+            data.start_time = ''
+        delete data.start_date
+        endDate = data.end_date
+        endTime = data.end_time
+        if endDate.trim().length is 0 and endTime.trim().length is 0
+            endTime = false
+        else
+            if not moment(endDate, 'MM/DD/YYYY')?.isValid()
+                return
+            if not moment(endTime, 'h:mm a')?.isValid()
+                return
+            endTime = moment(endDate + ' ' + endTime, 'MM/DD/YYYY h:mm A')
+        if endTime
+            data.end_time = endTime.utc().format('YYYY-MM-DD HH:mm:ss')
+        else
+            data.end_time = ''
+        delete data.end_date
         endpoint = ''
         if not id? or id.trim().length is 0
             # Create new ticket
@@ -724,6 +763,31 @@ Bazaarboy.event.index =
                     else if key is 'price'
                         $(ticket).find('div.price div.text')
                             .html("$ #{response.ticket.price}")
+                        $(ticket)
+                            .find("div.#{key} div.editor input")
+                            .val(response.ticket[key])
+                    else if key is 'quantity'
+                        if value?
+                            $(ticket).find('div.quantity div.text')
+                                .html(response.ticket.quantity)
+                        else
+                            $(ticket).find('div.quantity div.text')
+                                .html('Unlimited')
+                        $(ticket)
+                            .find("div.#{key} div.editor input")
+                            .val(response.ticket[key])
+                    else if key.indexOf('_time') != -1
+                        tag = key.split('_')[0]
+                        time = @formatDateTime(value)
+                        $(ticket)
+                            .find("div.#{tag}_time div.text")
+                            .html(time.full)
+                        $(ticket)
+                            .find("div.#{tag}_time div.editor input[name=#{tag}_date]")
+                            .val(time.date)
+                        $(ticket)
+                            .find("div.#{tag}_time div.editor input[name=#{tag}_time]")
+                            .val(time.time)
                     else
                         $(ticket)
                             .find("div.#{key} div.text")
@@ -732,7 +796,7 @@ Bazaarboy.event.index =
                             .find("div.#{key} div.editor input")
                             .val(response.ticket[key])
                 $(ticket)
-                    .find('a.swith').html('Edit')
+                    .find('a.switch').html('Edit')
                     .addClass('edit').removeClass('save')
                 $(ticket).find('a.delete').removeClass('cancel')
                 $(ticket).removeClass('editing')

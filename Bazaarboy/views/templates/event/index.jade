@@ -253,7 +253,7 @@ block content
                 a.add(href="javascript:;") Add
                 div.clear
             div.clear
-        mixin ticket(id, name, description, price, quantity, start_time, start_time_date, start_time_time, end_time, end_time_date, end_time_time)
+        mixin ticket(id, name, description, price, quantity_disp, quantity, start_time, start_time_date, start_time_time, end_time, end_time_date, end_time_time, switchClass)
             div.ticket(class=attributes.class, data-id=id)
                 form
                     div.top
@@ -263,18 +263,19 @@ block content
                                 div.editor
                                     input(type="text", name="price", placeholder="Price", value=price)
                             div.quantity
-                                div.text= quantity
+                                div.text= quantity_disp
                                 div.editor
-                                    input(type="text", name="quantity", placeholder="Quantity (Unlimited if left blank)", value=quantity)
+                                    input(type="text", name="quantity", placeholder="Quantity", value=quantity)
                         div.right
                             div.name
                                 div.text= name
                                 div.editor
-                                    input(type="text", name="name", placeholder="Name", value=name)
+                                    input(type="text", name="name", placeholder="Ticket/RSVP Option Name", value=name)
                             div.description
                                 div.text= description
                                 div.editor
-                                    input(type="text", name="description", placeholder="Short description", value=description)
+                                    textarea(name="description", placeholder="Short description (Maximum 150 characters)")
+                                        =description
                         div.clear
                     div.bottom
                         div.end_time
@@ -283,23 +284,24 @@ block content
                                 input(type="text", name="end_date", value=end_time_date, placeholder="MM/DD/YYYY")
                                 | &nbsp;@&nbsp;
                                 input(type="text", name="end_time", value=end_time_time, placeholder="ex. 7:00 PM")
-                        div.text &nbsp;to&nbsp;
+                        div.text.show &nbsp;to&nbsp;
                         div.start_time
                             div.text= start_time
                             div.editor
                                 input(type="text", name="start_date", value=start_time_date, placeholder="MM/DD/YYYY")
                                 | &nbsp;@&nbsp;
                                 input(type="text", name="start_time", value=start_time_time, placeholder="ex. 6:00 PM")
-                        div.text Valid thru
+                        div.text.show Valid from
                         div.clear
-                    div.controls.hidden
-                        a.cancel(href="javascript:;") Cancel
-                        a.save(href="javascript:;") Save
+                    div.controls
+                        a.delete(href="javascript:;") Delete
+                        - switchClass = switchClass || 'save'
+                        a.switch(class=switchClass, href="javascript:;") Edit
                         div.clear
         +ticket()(class="template editing hidden")
         div.tickets
             {% for ticket in tickets %}
-            +ticket('{{ ticket.id }}', '{{ ticket.name }}', '{{ ticket.description }}', '{{ ticket.price|floatformat:-2 }}', '{% if ticket.quantity %}{{ ticket.quantity }}{% else %}Unlimited{% endif %}', '{{ ticket.start_time|date:\'l, M jS, f\' }}{{ ticket.start_time|date:\'A\'|lower }}', '{{ ticket.start_time|date:\'m/d/Y\' }}', '{{ ticket.start_time|date:\'g:i A\' }}', '{{ ticket.end_time|date:\'l, M jS, f\' }}{{ ticket.end_time|date:\'A\'|lower }}', '{{ ticket.end_time|date:\'m/d/Y\' }}', '{{ ticket.end_time|date:\'g:i A\' }}')
+            +ticket('{{ ticket.id }}', '{{ ticket.name }}', '{{ ticket.description }}', '{{ ticket.price|floatformat:-2 }}', '{% if ticket.quantity %}{{ ticket.quantity }}{% else %}Unlimited{% endif %}', '{% if ticket.quantity %}{{ ticket.quantity }}{% endif %}', '{{ ticket.start_time|date:\'l, M jS, f\' }}{{ ticket.start_time|date:\'A\'|lower }}', '{{ ticket.start_time|date:\'m/d/Y\' }}', '{{ ticket.start_time|date:\'g:i A\' }}', '{{ ticket.end_time|date:\'l, M jS, f\' }}{{ ticket.end_time|date:\'A\'|lower }}', '{{ ticket.end_time|date:\'m/d/Y\' }}', '{{ ticket.end_time|date:\'g:i A\' }}', 'edit')
             {% endfor %}
             div.empty(class="{% if tickets|length != 0 %}hidden{% endif %}")
                 i No ticket options yet.
