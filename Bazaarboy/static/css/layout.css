@@ -732,6 +732,26 @@ div#landing div.inner div.content div.top div.sponsors {
   width: 216px;
   float: left;
 }
+div#landing div.inner div.content div.top form.login input.login_input {
+  display: block;
+  width: 100%;
+  margin: 0 auto;
+  margin-bottom: 20px;
+  padding: 10px 10px;
+  border-radius: 2px;
+  font-size: 14px;
+  background-color: rgba(255, 255, 255, 0.5);
+  border: 1px solid #FFF;
+  color: #2f4241;
+  outline: none;
+  -webkit-box-sizing: border-box;
+  -moz-box-sizing: border-box;
+  box-sizing: border-box;
+}
+div#landing div.inner div.content div.top form.login input.login_input:focus {
+  box-shadow: 0 0 5px #ffb769;
+  border: 1px solid #ffb769!important;
+}
 div#landing div.inner div.content div.bottom {
   width: 432px;
   margin: 0 36px;
@@ -739,10 +759,12 @@ div#landing div.inner div.content div.bottom {
   padding-bottom: 10px;
   border-top: 1px solid #FFF;
 }
-div#landing div.inner div.content div.bottom div.request {
-  width: 430px;
+div#landing div.inner div.content div.bottom a.request {
+  display: block;
+  float: left;
+  width: 191px;
   height: 20px;
-  padding: 10px 0;
+  padding: 10px;
   border-radius: 2px;
   border: 1px solid #F1803D;
   background-color: #FFB769;
@@ -756,6 +778,65 @@ div#landing div.inner div.content div.bottom div.request {
   text-shadow: 0 1px 0 rgba(0, 0, 0, 0.125);
   font-size: 16px;
   font-weight: 500;
+  text-decoration: none;
+}
+div#landing div.inner div.content div.bottom a.request:hover {
+  text-shadow: 0 -1px 0 rgba(0, 0, 0, 0.125);
+  box-shadow: inset 0 0 5px #F1803D;
+}
+div#landing div.inner div.content div.bottom div.login_link_container {
+  float: right;
+  width: 186px;
+  height: 20px;
+  padding: 10px;
+  font-size: 14px;
+  text-align: right;
+  text-shadow: 0 1px 0 #FFF;
+}
+div#landing div.inner div.content div.bottom div.login_link_container a {
+  font-style: oblique;
+  text-decoration: none;
+  color: #F1803D;
+}
+div#landing div.inner div.content div.bottom div.login_link_container a:hover {
+  text-decoration: underline;
+}
+div#landing div.inner div.login_content .bottom a {
+  display: block;
+  width: 181px;
+  height: 20px;
+  padding: 10px;
+  border-radius: 2px;
+  border: 1px solid #F1803D;
+  background-color: #FFB769;
+  background-image: linear-gradient(top, #ffb769, #ff8f4d);
+  background-image: -o-linear-gradient(top, #ffb769, #ff8f4d);
+  background-image: -moz-linear-gradient(top, #ffb769, #ff8f4d);
+  background-image: -webkit-linear-gradient(top, #ffb769, #ff8f4d);
+  background-image: -ms-linear-gradient(top, #ffb769, #ff8f4d);
+  color: #FFF;
+  text-align: center;
+  text-shadow: 0 1px 0 rgba(0, 0, 0, 0.125);
+  font-size: 16px;
+  font-weight: 500;
+  text-decoration: none;
+}
+div#landing div.inner div.login_content .bottom a:hover {
+  text-shadow: 0 -1px 0 rgba(0, 0, 0, 0.125);
+  box-shadow: inset 0 0 5px #F1803D;
+}
+div#landing div.inner div.login_content .bottom a.back {
+  float: left;
+  border-color: #B2C4C2;
+  background-color: #D7E9E9;
+  border: 1px solid #BBC9C8;
+  background-image: -webkit-linear-gradient(top, #d7e9e9, #c0d1cf);
+}
+div#landing div.inner div.login_content .bottom a:hover {
+  box-shadow: inset 0 0 5px #BBC9C8;
+}
+div#landing div.inner div.login_content .bottom a.login_btn {
+  float: right;
 }
 div#landing div.inner div.footer {
   width: 100%;
@@ -1772,6 +1853,9 @@ div.event_base div.frame > div.left div.description div.editor.editing div.inner
 div.event_base div.frame > div.left div.description div.editor div.inner {
   width: 100%;
 }
+div.event_base div.frame > div.left div.description div.editor div.inner > p {
+  -webkit-margin-before: 0em;
+}
 div.event_base div.frame > div.left div.description div.editor img {
   max-width: 696px;
 }
@@ -2630,8 +2714,8 @@ div#event_manage > div.list_content div.inner {
   margin: auto;
 }
 div#event_manage > div.list_content div.inner div.list_filters {
+  float: left;
   width: 192px;
-  float: right;
 }
 div#event_manage > div.list_content div.inner div.list_filters form.list_search input {
   width: 100%;
@@ -2643,7 +2727,7 @@ div#event_manage > div.list_content div.inner div.list_filters form.list_search 
   box-sizing: border-box;
 }
 div#event_manage > div.list_content div.inner div.list_guests {
-  float: left;
+  float: right;
   width: 696px;
 }
 div#event_manage > div.list_content div.inner div.list_guests div.name {

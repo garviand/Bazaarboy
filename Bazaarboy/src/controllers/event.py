@@ -268,8 +268,8 @@ def edit(request, params, user):
         else:
             event.tags = params['tags']
     if params['start_time'] is not None:
-        if (event.end_time is not None and 
-            event.end_time < params['start_time']):
+        if (params['end_time'] is not None and 
+            params['end_time'] < params['start_time']):
             response = {
                 'status':'FAIL',
                 'error':'INVALID_START_TIME',
