@@ -304,7 +304,7 @@ block content
             +ticket('{{ ticket.id }}', '{{ ticket.name }}', '{{ ticket.description }}', '{{ ticket.price|floatformat:-2 }}', '{% if ticket.quantity %}{{ ticket.quantity }}{% else %}Unlimited{% endif %}', '{% if ticket.quantity %}{{ ticket.quantity }}{% endif %}', '{{ ticket.start_time|date:\'l, M jS, f\' }}{{ ticket.start_time|date:\'A\'|lower }}', '{{ ticket.start_time|date:\'m/d/Y\' }}', '{{ ticket.start_time|date:\'g:i A\' }}', '{{ ticket.end_time|date:\'l, M jS, f\' }}{{ ticket.end_time|date:\'A\'|lower }}', '{{ ticket.end_time|date:\'m/d/Y\' }}', '{{ ticket.end_time|date:\'g:i A\' }}', 'edit')
             {% endfor %}
             div.empty(class="{% if tickets|length != 0 %}hidden{% endif %}")
-                i No ticket options yet.
+                i No ticket/RSVP options yet.
     {% else %}
     div#rsvp.event_overlay_canvas
         div.tickets

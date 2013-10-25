@@ -2114,6 +2114,9 @@ div#tickets div.title div.controls a.add {
 div#tickets div.tickets {
   width: 696px;
 }
+div#tickets div.tickets div.empty {
+  padding: 10px;
+}
 div#tickets div.tickets div.ticket {
   width: 696px;
 }

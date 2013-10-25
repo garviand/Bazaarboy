@@ -857,7 +857,7 @@ def delete_ticket(request, params, user):
         response = {
             'status':'FAIL',
             'error':'STARTED_EVENT',
-            'message':'You delete the ticket for a started event.'
+            'message':'You cannot delete the ticket for a started event.'
         }
         return json_response(response)
     # Refund all purchases for the ticket
