@@ -269,6 +269,7 @@ def edit(request, params, user):
             event.tags = params['tags']
     if params['start_time'] is not None:
         if (params['end_time'] is not None and 
+            params['end_time'] != 'none' and
             params['end_time'] < params['start_time']):
             response = {
                 'status':'FAIL',
@@ -738,14 +739,6 @@ def edit_ticket(request, params, user):
                 'message':'You don\'t have permission for the event.'
             }
             return json_response(response)
-    # Check if the event has started
-    if event.start_time <= timezone.now():
-        response = {
-            'status':'FAIL',
-            'error':'STARTED_EVENT',
-            'message':'You cannot make changes to a started event.'
-        }
-        return json_response(response)
     # Go through all params and edit the ticket accordingly
     if params['name'] is not None:
         if not (0 < len(params['name']) <= 15):
@@ -864,7 +857,7 @@ def delete_ticket(request, params, user):
         response = {
             'status':'FAIL',
             'error':'STARTED_EVENT',
-            'message':'You cannot make changes to a started event.'
+            'message':'You cannot delete the ticket for a started event.'
         }
         return json_response(response)
     # Refund all purchases for the ticket

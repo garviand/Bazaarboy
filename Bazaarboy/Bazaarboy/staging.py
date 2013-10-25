@@ -1,5 +1,7 @@
 # Staging Settings
 
+PREPEND_WWW = True
+
 # Use RDS as database backend
 
 import os

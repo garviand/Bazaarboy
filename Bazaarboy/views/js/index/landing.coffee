@@ -5,26 +5,27 @@
                 event.preventDefault()
                 $('form[name=login]').submit()
             return
-        $('#landing .inner .login_content .bottom a.login_btn').click () ->
+        $('#landing div.login_content a.login_btn').click () ->
             $('form[name=login]').submit()
             return
         $('form[name=login]').submit (event) ->
-            console.log "log in now"
             event.preventDefault()
-            params = $('form[name=login]').serialize()
-            Bazaarboy.get 'user/auth/', params, (response) ->
-                if response.status is 'OK'
-                    Bazaarboy.redirect 'index'
-                else
-                    alert response.message
+            params = $('form[name=login]').serializeObject()
+            if params.email.trim().length isnt 0 and params.password.trim().length isnt 0
+                Bazaarboy.get 'user/auth/', params, (response) ->
+                    if response.status is 'OK'
+                        Bazaarboy.redirect 'index'
+                    else
+                        alert response.message
+                    return
             return
-        $('#landing .inner .starting_content .bottom .login_link_container .start_sign_in').click () ->
-            $('#landing .inner .starting_content').addClass 'hidden'
-            $('#landing .inner .login_content').removeClass 'hidden'
+        $('#landing div.starting_content a.start_sign_in').click () ->
+            $('#landing div.starting_content').addClass 'hidden'
+            $('#landing div.login_content').removeClass 'hidden'
             return
-        $('#landing .inner .login_content .bottom a.back').click () ->
-            $('#landing .inner .login_content').addClass 'hidden'
-            $('#landing .inner .starting_content').removeClass 'hidden'
+        $('#landing div.login_content a.back').click () ->
+            $('#landing div.login_content').addClass 'hidden'
+            $('#landing div.starting_content').removeClass 'hidden'
             return
         return
 

@@ -7,29 +7,30 @@
           $('form[name=login]').submit();
         }
       });
-      $('#landing .inner .login_content .bottom a.login_btn').click(function() {
+      $('#landing div.login_content a.login_btn').click(function() {
         $('form[name=login]').submit();
       });
       $('form[name=login]').submit(function(event) {
         var params;
-        console.log("log in now");
         event.preventDefault();
-        params = $('form[name=login]').serialize();
-        Bazaarboy.get('user/auth/', params, function(response) {
-          if (response.status === 'OK') {
-            return Bazaarboy.redirect('index');
-          } else {
-            return alert(response.message);
-          }
-        });
+        params = $('form[name=login]').serializeObject();
+        if (params.email.trim().length !== 0 && params.password.trim().length !== 0) {
+          Bazaarboy.get('user/auth/', params, function(response) {
+            if (response.status === 'OK') {
+              Bazaarboy.redirect('index');
+            } else {
+              alert(response.message);
+            }
+          });
+        }
       });
-      $('#landing .inner .starting_content .bottom .login_link_container .start_sign_in').click(function() {
-        $('#landing .inner .starting_content').addClass('hidden');
-        $('#landing .inner .login_content').removeClass('hidden');
+      $('#landing div.starting_content a.start_sign_in').click(function() {
+        $('#landing div.starting_content').addClass('hidden');
+        $('#landing div.login_content').removeClass('hidden');
       });
-      $('#landing .inner .login_content .bottom a.back').click(function() {
-        $('#landing .inner .login_content').addClass('hidden');
-        $('#landing .inner .starting_content').removeClass('hidden');
+      $('#landing div.login_content a.back').click(function() {
+        $('#landing div.login_content').addClass('hidden');
+        $('#landing div.starting_content').removeClass('hidden');
       });
     }
   };

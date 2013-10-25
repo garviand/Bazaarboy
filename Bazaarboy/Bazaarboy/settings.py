@@ -9,6 +9,10 @@ PROJECT_PATH = os.path.realpath(os.path.dirname(__file__)) + '/../'
 DEBUG = os.getenv('BBOY_DEBUG', 'true') == 'true'
 TEMPLATE_DEBUG = DEBUG
 
+# General
+
+SESSION_EXPIRE_AT_BROWSER_CLOSE = True
+
 # SSL
 
 SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
