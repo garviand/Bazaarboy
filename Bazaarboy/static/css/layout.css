@@ -2272,6 +2272,11 @@ div#tickets div.tickets div.ticket div.top div.right div.description {
   width: 491px;
   margin-top: 5px;
 }
+div#tickets div.tickets div.ticket div.top div.right div.description div.text {
+  width: 491px;
+  height: 70px;
+  word-wrap: break-word;
+}
 div#tickets div.tickets div.ticket div.top div.right div.description textarea {
   width: 479px;
   height: 50px;

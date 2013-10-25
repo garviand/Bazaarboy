@@ -703,7 +703,7 @@
         $('div#tickets div.tickets div.empty').addClass('hidden');
       }
       ticket = $('div#tickets div.ticket.template').clone(true);
-      $(ticket).removeClass('hidden').prependTo($('div#tickets div.tickets'));
+      $(ticket).removeClass('hidden').removeClass('template').prependTo($('div#tickets div.tickets'));
       this.adjustOverlayHeight();
       this.startEditingTicket(ticket);
     },

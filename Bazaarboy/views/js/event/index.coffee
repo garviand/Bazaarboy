@@ -657,7 +657,7 @@ Bazaarboy.event.index =
             $('div#tickets div.tickets div.empty').addClass('hidden')
         ticket = $('div#tickets div.ticket.template').clone(true)
         $(ticket)
-            .removeClass('hidden')
+            .removeClass('hidden').removeClass('template')
             .prependTo($('div#tickets div.tickets'))
         @adjustOverlayHeight()
         @startEditingTicket(ticket)
