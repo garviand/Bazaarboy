@@ -16,20 +16,22 @@ Bazaarboy.index.index =
             return
         return
     savePaymentConnectSettings: () ->
-        $('div#connect div.profiles form').each(() ->
+        promises = []
+        $('div#connect div.profiles form').each () ->
             params = $(this).serializeObject()
             if parseInt(params.payment) > 0
-                Bazaarboy.post 'profile/edit/', params, (response) ->
+                promise = Bazaarboy.post 'profile/edit/', params, (response) ->
                     if response.status isnt 'OK'
                         alert response.message
                     return
+                promises.push promise
             return
-        ).promise().done () ->
+        $.when.apply($, promises).done () ->
             window.location.href = window.location.href.split('#')[0]
             return
         return
     showPaymentConnectOverlay: () ->
-        $('div#wrapper_overlay').fadeIn(200)
+        $('div#wrapper_overlay').addClass('show').fadeIn(200)
         $('div#connect').fadeIn 200, () =>
             @adjustOverlayHeight()
         return
@@ -48,9 +50,10 @@ Bazaarboy.index.index =
                 @showPaymentConnectOverlay()
             return
         # Overlay
-        $('div#wrapper_overlay').click () =>
-            $('div#wrapper_overlay').fadeOut(200)
-            $('div.overlay_canvas').fadeOut(200)
+        $('div#wrapper_overlay').click () ->
+            if not $(this).hasClass('show')
+                $('div#wrapper_overlay').fadeOut(200)
+                $('div.overlay_canvas').fadeOut(200)
             return
         # Connect stripe with profile
         $('div#connect div.actions a.save').click () =>

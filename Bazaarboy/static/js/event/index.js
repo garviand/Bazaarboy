@@ -1062,19 +1062,39 @@
     init: function() {
       var _this = this;
       $('div#event div.title div.bottom > div.action').click(function() {
+        var eventCanvasHeight, overlayHeight;
         $('div#wrapper_overlay').fadeIn(200);
         $('div.event_overlay_canvas').css({
           'top': $('div#event > div.title').height() + 20
         });
         $('div.event_overlay_canvas').fadeIn(200);
         _this.adjustOverlayHeight();
+        overlayHeight = $('div#event > div.title').outerHeight();
+        overlayHeight += 40;
+        overlayHeight += $('div.event_overlay_canvas').outerHeight();
+        eventCanvasHeight = $('div#event').outerHeight();
+        if (overlayHeight > eventCanvasHeight) {
+          $('div#wrapper_content div.content_placeholder').height(overlayHeight - eventCanvasHeight);
+        }
       });
       $('div#wrapper_overlay').click(function() {
         if (!_this.coverEditInProgress) {
           $('div#wrapper_overlay').fadeOut(200);
-          $('div.event_overlay_canvas').fadeOut(200);
+          $('div.event_overlay_canvas').fadeOut(200, function() {
+            $('div#wrapper_content div.content_placeholder').height(0);
+          });
         }
       });
+      Bazaarboy.longestCanvas = function() {
+        var overlayHeight, titleHeight;
+        titleHeight = $('div#event > div.title').outerHeight();
+        overlayHeight = 0;
+        if (parseInt($('div.event_overlay_canvas').css('opacity')) === 1) {
+          overlayHeight = 20;
+          overlayHeight += $('div.event_overlay_canvas').outerHeight();
+        }
+        return titleHeight + overlayHeight;
+      };
       this.adjustSidebarPosition();
       /*
       $(window).scroll () =>

@@ -14,33 +14,38 @@
       window.location.href = redirectUrl;
     },
     get: function(endpoint, params, cb) {
+      var promise;
       if (params == null) {
         params = {};
       }
       params.csrfmiddlewaretoken = csrfToken;
-      $.get(rootUrl + endpoint, params, function(data) {
+      promise = $.get(rootUrl + endpoint, params, function(data) {
         var response;
         response = $.parseJSON(data);
         return typeof cb === "function" ? cb(response) : void 0;
       });
+      return promise;
     },
     post: function(endpoint, params, cb) {
+      var promise;
       if (params == null) {
         params = {};
       }
       params.csrfmiddlewaretoken = csrfToken;
-      $.post(rootUrl + endpoint, params, function(data) {
+      promise = $.post(rootUrl + endpoint, params, function(data) {
         var response;
         response = $.parseJSON(data);
         return typeof cb === "function" ? cb(response) : void 0;
       });
+      return promise;
     },
     adjustBottomPosition: function() {
-      var bottomHeight, contentHeight, topHeight, windowHeight;
+      var bottomHeight, canvasHeight, contentHeight, topHeight, windowHeight;
       windowHeight = $(window).height();
       topHeight = $('div#wrapper_top').outerHeight();
       contentHeight = $('div#wrapper_content').outerHeight();
       bottomHeight = $('div#wrapper_bottom').outerHeight();
+      canvasHeight = this.longestCanvas();
       if (windowHeight - bottomHeight > topHeight + contentHeight) {
         $('div#wrapper_bottom').css({
           'position': 'fixed',

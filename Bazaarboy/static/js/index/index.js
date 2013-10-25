@@ -21,23 +21,27 @@
       });
     },
     savePaymentConnectSettings: function() {
+      var promises;
+      promises = [];
       $('div#connect div.profiles form').each(function() {
-        var params;
+        var params, promise;
         params = $(this).serializeObject();
         if (parseInt(params.payment) > 0) {
-          Bazaarboy.post('profile/edit/', params, function(response) {
+          promise = Bazaarboy.post('profile/edit/', params, function(response) {
             if (response.status !== 'OK') {
               alert(response.message);
             }
           });
+          promises.push(promise);
         }
-      }).promise().done(function() {
+      });
+      $.when.apply($, promises).done(function() {
         window.location.href = window.location.href.split('#')[0];
       });
     },
     showPaymentConnectOverlay: function() {
       var _this = this;
-      $('div#wrapper_overlay').fadeIn(200);
+      $('div#wrapper_overlay').addClass('show').fadeIn(200);
       $('div#connect').fadeIn(200, function() {
         return _this.adjustOverlayHeight();
       });
@@ -59,8 +63,10 @@
         }
       });
       $('div#wrapper_overlay').click(function() {
-        $('div#wrapper_overlay').fadeOut(200);
-        $('div.overlay_canvas').fadeOut(200);
+        if (!$(this).hasClass('show')) {
+          $('div#wrapper_overlay').fadeOut(200);
+          $('div.overlay_canvas').fadeOut(200);
+        }
       });
       $('div#connect div.actions a.save').click(function() {
         _this.savePaymentConnectSettings();

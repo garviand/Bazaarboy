@@ -990,12 +990,29 @@ Bazaarboy.event.index =
                 'top': $('div#event > div.title').height() + 20
             $('div.event_overlay_canvas').fadeIn(200)
             @adjustOverlayHeight()
+            overlayHeight = $('div#event > div.title').outerHeight()
+            overlayHeight += 40
+            overlayHeight += $('div.event_overlay_canvas').outerHeight()
+            eventCanvasHeight = $('div#event').outerHeight()
+            if overlayHeight > eventCanvasHeight
+                $('div#wrapper_content div.content_placeholder')
+                    .height overlayHeight - eventCanvasHeight
             return
         $('div#wrapper_overlay').click () =>
             if not @coverEditInProgress
                 $('div#wrapper_overlay').fadeOut(200)
-                $('div.event_overlay_canvas').fadeOut(200)
+                $('div.event_overlay_canvas').fadeOut 200, () ->
+                    $('div#wrapper_content div.content_placeholder').height(0)
+                    return
             return
+        # Override longest canvas to adjust for bottom position
+        Bazaarboy.longestCanvas = () ->
+            titleHeight = $('div#event > div.title').outerHeight()
+            overlayHeight = 0
+            if parseInt($('div.event_overlay_canvas').css('opacity')) is 1
+                overlayHeight = 20
+                overlayHeight += $('div.event_overlay_canvas').outerHeight()
+            return titleHeight + overlayHeight
         # Adjust sidebar
         @adjustSidebarPosition()
         # Listen to page scroll and change title position
