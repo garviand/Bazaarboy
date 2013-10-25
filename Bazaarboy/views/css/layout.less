@@ -2626,13 +2626,13 @@ div#event_manage {
                 float: right;
                 width: @content_width;
                 div.name{
-                    width: @column_width * 3;
+                    width: @column_width * 4;
                 }
                 div.ticket_name{
                     width: @column_width * 3;
                 }
                 div.confirmation{
-                    width: @column_width * 3;
+                    width: @column_width * 2;
                 }
                 div.checkin{
                     width: @column_width * 2 + @gutter_width;
@@ -2675,6 +2675,10 @@ div#event_manage {
                     > div{
                         margin-right: @gutter_width;
                         float: left;
+                        padding-top: 4px;
+                        &.checkin{
+                            padding-top: 0;
+                        }
                         &.clear{
                             float: none;
                             height: 0;
