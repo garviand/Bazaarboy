@@ -18,9 +18,10 @@ html(lang="en")
         div#wrapper_bottom
             block bottom
         block script
+            script(type="text/javascript", src="{{ STATIC_URL }}js/libraries.js")
             script(type="text/javascript", src="{{ STATIC_URL }}js/libraries/jquery.min.js")
             script(type="text/javascript", src="{{ STATIC_URL }}admin/fui/js/bootstrap.min.js")
             script(type="text/javascript").
                 var rootUrl = '{% url index %}';
                 var csrfToken = '{{ csrf_token }}';
-            script(type="text/javascript", src="{{ STATIC_URL }}js/layout.js")
+            script(type="text/javascript", src="{{ STATIC_URL }}admin/js/layout.js")

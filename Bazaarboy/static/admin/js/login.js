@@ -9,9 +9,9 @@
             return;
           }
           params = $('form[name=login]').serialize();
-          Bazaarboy.get('x/auth/', params, function(response) {
+          Bazaarboy.get('admin/auth/', params, function(response) {
             if (response.status === 'OK') {
-              Bazaarboy.redirect('x/');
+              Bazaarboy.redirect('admin/');
             } else {
               $('form[name=login] a.btn').addClass('btn-danger');
               $('form[name=login] a.btn').html('Access Denied');

@@ -6,7 +6,9 @@ from __future__ import absolute_import
 import hashlib
 from django.shortcuts import render, redirect
 from django.http import HttpResponseForbidden
+from django.db.models import Q, Sum, Count
 from admin.models import *
+from kernel.models import *
 from src.controllers.request import json_response, validate
 from src.serializer import serialize_one
 
@@ -18,6 +20,13 @@ def index(request):
         # No admin session, redirect to login
         return redirect('admin:login')
     admin = request.session['admin']
+    stats = Purchase.objects.filter(Q(checkout = None) | 
+                                        Q(checkout__is_charged = True, 
+                                          checkout__is_refunded = False), 
+                                        ) \
+                                .aggregate(total_sale = Sum('price'), 
+                                           sale_count = Count('id'))
+    profiles = Profile.objects.all()
     return render(request, 'admin/index.html', locals())
 
 def login(request):

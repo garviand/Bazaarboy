@@ -321,6 +321,19 @@
         }
       });
     },
+    initTimeAutocomplete: function(startElement, endElement) {
+      var originalEndTime, originalStartTime;
+      originalStartTime = startElement.val();
+      originalEndTime = endElement.val();
+      startElement.timeAutocomplete({
+        blur_empty_populate: false
+      });
+      endElement.timeAutocomplete({
+        blur_empty_populate: false
+      });
+      startElement.val(originalStartTime);
+      return endElement.val(originalEndTime);
+    },
     startEditingTimeLocation: function() {
       $('div#event > div.title div.details div.text').addClass('hidden');
       $('div#event > div.title div.details div.editor').removeClass('hidden');
@@ -355,11 +368,15 @@
       latitude = 'none';
       longitude = 'none';
       if (location.length !== 0) {
-        latitudeVal = parseFloat($('div#event > div.title input[name=latitude]').val());
-        longitudeVal = parseFloat($('div#event > div.title input[name=longitude]').val());
-        if (latitudeVal !== NaN && longitudeVal !== NaN) {
-          latitude = latitudeVal;
-          longitude = longitudeVal;
+        latitudeVal = $('div#event > div.title input[name=latitude]').val();
+        longitudeVal = $('div#event > div.title input[name=longitude]').val();
+        if (latitudeVal !== 'None' && longitudeVal !== 'None') {
+          latitudeVal = parseFloat(latitudeVal);
+          longitude = parseFloat(longitudeVal);
+          if (latitudeVal !== NaN && longitudeVal !== NaN) {
+            latitude = latitudeVal;
+            longitude = longitudeVal;
+          }
         }
       }
       this.save({
@@ -736,8 +753,18 @@
       }
     },
     startEditingTicket: function(ticket) {
+      var endTimeElement, startTimeElement;
       $(ticket).find('a.switch').html('Save').removeClass('edit').addClass('save');
       $(ticket).addClass('editing');
+      startTimeElement = $(ticket).find('input[name=start_time]');
+      endTimeElement = $(ticket).find('input[name=end_time]');
+      this.initTimeAutocomplete(startTimeElement, endTimeElement);
+      $(ticket).find('input[name=start_date]').pikaday({
+        format: 'MM/DD/YYYY'
+      });
+      $(ticket).find('input[name=end_date]').pikaday({
+        format: 'MM/DD/YYYY'
+      });
     },
     formatDateTime: function(time) {
       var formatted;
@@ -890,7 +917,7 @@
       }
     },
     initEditing: function() {
-      var googleAutocomplete, originalEndTime, originalStartTime, scope,
+      var endTimeElement, googleAutocomplete, scope, startTimeElement,
         _this = this;
       scope = this;
       $('div#event > div.title div.bottom div.launch').click(function() {
@@ -916,16 +943,9 @@
           scope.startEditingTimeLocation();
         }
       });
-      originalStartTime = $('div#event > div.title div.bottom div.details input[name=start_time]').val();
-      originalEndTime = $('div#event > div.title div.bottom div.details input[name=end_time]').val();
-      $('div#event > div.title div.bottom div.details input[name=start_time]').timeAutocomplete({
-        blur_empty_populate: false
-      });
-      $('div#event > div.title div.bottom div.details input[name=end_time]').timeAutocomplete({
-        blur_empty_populate: false
-      });
-      $('div#event > div.title div.bottom div.details input[name=start_time]').val(originalStartTime);
-      $('div#event > div.title div.bottom div.details input[name=end_time]').val(originalEndTime);
+      startTimeElement = $('div#event > div.title div.bottom div.details input[name=start_time]');
+      endTimeElement = $('div#event > div.title div.bottom div.details input[name=end_time]');
+      this.initTimeAutocomplete(startTimeElement, endTimeElement);
       googleAutocomplete = new google.maps.places.AutocompleteService();
       $('div#event > div.title div.bottom div.details input[name=location]').keyup(function() {
         var keyword;
