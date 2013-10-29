@@ -314,11 +314,14 @@ Bazaarboy.event.index =
         latitude = 'none'
         longitude = 'none'
         if location.length isnt 0
-            latitudeVal = parseFloat($('div#event > div.title input[name=latitude]').val())
-            longitudeVal = parseFloat($('div#event > div.title input[name=longitude]').val())
-            if latitudeVal isnt NaN and longitudeVal isnt NaN
-                latitude = latitudeVal
-                longitude = longitudeVal
+            latitudeVal = $('div#event > div.title input[name=latitude]').val()
+            longitudeVal = $('div#event > div.title input[name=longitude]').val()
+            if latitudeVal isnt 'None' and longitudeVal isnt 'None'
+                latitudeVal = parseFloat(latitudeVal)
+                longitude = parseFloat(longitudeVal)
+                if latitudeVal isnt NaN and longitudeVal isnt NaN
+                    latitude = latitudeVal
+                    longitude = longitudeVal
         @save
             start_time: startTime.utc().format('YYYY-MM-DD HH:mm:ss')
             end_time: if endTime then endTime.utc().format('YYYY-MM-DD HH:mm:ss') else 'none'

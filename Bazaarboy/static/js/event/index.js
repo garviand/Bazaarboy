@@ -355,11 +355,15 @@
       latitude = 'none';
       longitude = 'none';
       if (location.length !== 0) {
-        latitudeVal = parseFloat($('div#event > div.title input[name=latitude]').val());
-        longitudeVal = parseFloat($('div#event > div.title input[name=longitude]').val());
-        if (latitudeVal !== NaN && longitudeVal !== NaN) {
-          latitude = latitudeVal;
-          longitude = longitudeVal;
+        latitudeVal = $('div#event > div.title input[name=latitude]').val();
+        longitudeVal = $('div#event > div.title input[name=longitude]').val();
+        if (latitudeVal !== 'None' && longitudeVal !== 'None') {
+          latitudeVal = parseFloat(latitudeVal);
+          longitude = parseFloat(longitudeVal);
+          if (latitudeVal !== NaN && longitudeVal !== NaN) {
+            latitude = latitudeVal;
+            longitude = longitudeVal;
+          }
         }
       }
       this.save({
