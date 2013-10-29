@@ -285,6 +285,17 @@ Bazaarboy.event.index =
                     .val result.geometry.location.mb
             return
         return
+    initTimeAutocomplete: (startElement, endElement) ->
+        originalStartTime = startElement.val()
+        originalEndTime = endElement.val()
+        startElement.timeAutocomplete
+            blur_empty_populate: false
+        endElement.timeAutocomplete
+            blur_empty_populate: false
+        startElement
+            .val originalStartTime 
+        endElement
+            .val originalEndTime
     startEditingTimeLocation: () ->
         $('div#event > div.title div.details div.text').addClass('hidden')
         $('div#event > div.title div.details div.editor').removeClass('hidden')
@@ -690,6 +701,13 @@ Bazaarboy.event.index =
             .find('a.switch').html('Save')
             .removeClass('edit').addClass('save')
         $(ticket).addClass('editing')
+        startTimeElement = $(ticket).find('input[name=start_time]')
+        endTimeElement = $(ticket).find('input[name=end_time]')
+        @initTimeAutocomplete(startTimeElement, endTimeElement)
+        $(ticket).find('input[name=start_date]').pikaday
+            format: 'MM/DD/YYYY'
+        $(ticket).find('input[name=end_date]').pikaday
+            format: 'MM/DD/YYYY'
         return
     formatDateTime: (time) ->
         time = moment.utc(time, 'YYYY-MM-DD HH:mm:ss').local()
@@ -857,16 +875,9 @@ Bazaarboy.event.index =
                 scope.startEditingTimeLocation()
             return
         # Time Autocomplete
-        originalStartTime = $('div#event > div.title div.bottom div.details input[name=start_time]').val()
-        originalEndTime = $('div#event > div.title div.bottom div.details input[name=end_time]').val()
-        $('div#event > div.title div.bottom div.details input[name=start_time]').timeAutocomplete
-            blur_empty_populate: false
-        $('div#event > div.title div.bottom div.details input[name=end_time]').timeAutocomplete
-            blur_empty_populate: false
-        $('div#event > div.title div.bottom div.details input[name=start_time]')
-            .val originalStartTime 
-        $('div#event > div.title div.bottom div.details input[name=end_time]')
-            .val originalEndTime
+        startTimeElement = $('div#event > div.title div.bottom div.details input[name=start_time]')
+        endTimeElement = $('div#event > div.title div.bottom div.details input[name=end_time]')
+        @initTimeAutocomplete(startTimeElement, endTimeElement)
         # Location Autocomplete
         googleAutocomplete = new google.maps.places.AutocompleteService()
         $('div#event > div.title div.bottom div.details input[name=location]').keyup () =>
