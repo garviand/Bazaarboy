@@ -245,6 +245,18 @@ Bazaarboy.event.index =
                 return cb err, null
             return
         return
+    initTimeAutocomplete: (startElement, endElement) ->
+        originalStartTime = startElement.val()
+        originalEndTime = endElement.val()
+        startElement.timeAutocomplete
+            blur_empty_populate: false
+        endElement.timeAutocomplete
+            blur_empty_populate: false
+        startElement
+            .val originalStartTime 
+        endElement
+            .val originalEndTime
+        return
     startEditingTitle: () ->
         $('div#event > div.title div.top div.text').addClass('hidden')
         $('div#event > div.title div.top div.editor').removeClass('hidden')
@@ -285,17 +297,6 @@ Bazaarboy.event.index =
                     .val result.geometry.location.mb
             return
         return
-    initTimeAutocomplete: (startElement, endElement) ->
-        originalStartTime = startElement.val()
-        originalEndTime = endElement.val()
-        startElement.timeAutocomplete
-            blur_empty_populate: false
-        endElement.timeAutocomplete
-            blur_empty_populate: false
-        startElement
-            .val originalStartTime 
-        endElement
-            .val originalEndTime
     startEditingTimeLocation: () ->
         $('div#event > div.title div.details div.text').addClass('hidden')
         $('div#event > div.title div.details div.editor').removeClass('hidden')

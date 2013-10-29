@@ -282,6 +282,19 @@
         }
       });
     },
+    initTimeAutocomplete: function(startElement, endElement) {
+      var originalEndTime, originalStartTime;
+      originalStartTime = startElement.val();
+      originalEndTime = endElement.val();
+      startElement.timeAutocomplete({
+        blur_empty_populate: false
+      });
+      endElement.timeAutocomplete({
+        blur_empty_populate: false
+      });
+      startElement.val(originalStartTime);
+      endElement.val(originalEndTime);
+    },
     startEditingTitle: function() {
       var title;
       $('div#event > div.title div.top div.text').addClass('hidden');
@@ -320,19 +333,6 @@
           $('div#event > div.title div.details input[name=longitude]').val(result.geometry.location.mb);
         }
       });
-    },
-    initTimeAutocomplete: function(startElement, endElement) {
-      var originalEndTime, originalStartTime;
-      originalStartTime = startElement.val();
-      originalEndTime = endElement.val();
-      startElement.timeAutocomplete({
-        blur_empty_populate: false
-      });
-      endElement.timeAutocomplete({
-        blur_empty_populate: false
-      });
-      startElement.val(originalStartTime);
-      return endElement.val(originalEndTime);
     },
     startEditingTimeLocation: function() {
       $('div#event > div.title div.details div.text').addClass('hidden');
