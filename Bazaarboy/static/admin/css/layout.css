@@ -496,6 +496,7 @@ div#wrapper_top div#top_inner div.logout a {
 div#wrapper_main div.summary {
   width: 912px;
   height: 100px;
+  margin-bottom: 20px;
 }
 div#wrapper_main div.summary div.icon {
   width: 100px;
@@ -503,7 +504,19 @@ div#wrapper_main div.summary div.icon {
   float: left;
 }
 div#wrapper_main div.summary div.specs {
-  width: 812px;
+  width: 782px;
   height: 100px;
+  padding-left: 30px;
   float: left;
+}
+div#wrapper_main div.summary div.specs h1.finances {
+  margin-top: 30px;
+}
+div#wrapper_main div.summary div.specs.profile_login .input_container {
+  float: left;
+  width: 320px;
+}
+div#wrapper_main div.summary div.specs.profile_login .profile_choices {
+  float: left;
+  width: 320px;
 }

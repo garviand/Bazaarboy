@@ -7,9 +7,9 @@ Bazaarboy.admin.login =
                     $('form[name=login] input[name=password]').val().length is 0
                    return
                 params = $('form[name=login]').serialize()
-                Bazaarboy.get 'x/auth/', params, (response) ->
+                Bazaarboy.get 'admin/auth/', params, (response) ->
                     if response.status is 'OK'
-                        Bazaarboy.redirect 'x/'
+                        Bazaarboy.redirect 'admin/'
                     else
                         $('form[name=login] a.btn').addClass('btn-danger')
                         $('form[name=login] a.btn').html('Access Denied')

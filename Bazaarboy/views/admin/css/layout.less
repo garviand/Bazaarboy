@@ -146,6 +146,7 @@ div#wrapper_main {
     div.summary {
         width: @body_width - @box_padding * 2;
         height: 100px;
+        margin-bottom: 20px;
 
         div.icon {
             width: 100px;
@@ -154,8 +155,22 @@ div#wrapper_main {
         }
 
         div.specs {
-            width: @body_width - @box_padding * 2 - 100px;
+            width: @body_width - @box_padding * 2 - 130px;
             height: 100px;
+            padding-left: 30px;
+            h1.finances{
+                margin-top: 30px;
+            }
+            &.profile_login{
+                .input_container{
+                    float: left;
+                    width: @body_width / 3;
+                }
+                .profile_choices{
+                    float: left;
+                    width: @body_width / 3;
+                }
+            }
             .left
         }
     }
