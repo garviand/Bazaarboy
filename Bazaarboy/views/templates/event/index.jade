@@ -106,7 +106,7 @@ block content
                             {% csrf_token %}
                     {% endif %}
                     {% if editable or tickets|length != 0 %}
-                    {% if editable or not event|hasStarted %}
+                    {% if editable or not event|hasStartedOrEnded %}
                     div.action.hanging
                         div.button
                             b

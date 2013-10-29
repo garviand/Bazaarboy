@@ -40,11 +40,12 @@ def validateTiming(obj):
     return obj.start_time <= timezone.now() and obj.end_time > timezone.now()
 
 @register.filter
-def hasStarted(obj):
+def hasStartedOrEnded(obj):
     """
-    Check if an object's start_time is past now
+    Check if an event is still valid for ticketing
     """
-    return obj.start_time <= timezone.now()
+    return ((obj.end_time is None and obj.start_time <= timezone.now()) or 
+            (obj.end_time is not None and timezone.now() >= obj.end_time))
 
 @register.filter
 def sanitizeUrl(url):

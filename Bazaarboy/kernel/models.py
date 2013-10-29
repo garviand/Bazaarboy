@@ -292,7 +292,10 @@ class Ticket(models.Model):
         if self.start_time is None:
             self.start_time = timezone.now()
         if self.end_time is None:
-            self.end_time = self.event.start_time
+            if self.event.end_time is not None:
+                self.end_time = self.event.end_time
+            else:
+                self.end_time = self.event.start_time
         super(Ticket, self).save(*args, **kwargs)
 
 class Purchase(models.Model):

@@ -278,11 +278,6 @@ def edit(request, params, user):
             }
             return json_response(response)
         else:
-            tickets = Ticket.objects.filter(event = event)
-            for ticket in tickets:
-                if ticket.end_time == event.start_time:
-                    ticket.end_time = params['start_time']
-                    ticket.save()
             event.start_time = params['start_time']
     if params['end_time'] is not None:
         if params['end_time'] == 'none':
@@ -295,6 +290,11 @@ def edit(request, params, user):
             }
             return json_response(response)
         else:
+            tickets = Ticket.objects.filter(event = event)
+            for ticket in tickets:
+                if ticket.end_time == event.end_time:
+                    ticket.end_time = params['end_time']
+                    ticket.save()
             event.end_time = params['end_time']
     if params['location'] is not None:
         if len(params['location']) > 100:
@@ -796,7 +796,10 @@ def edit_ticket(request, params, user):
         else:
             ticket.start_time = params['start_time']
     if params['end_time'] is not None:
-        if (params['end_time'] > event.start_time or 
+        if ((event.end_time is not None and 
+             params['end_time'] > event.end_time) or 
+            (event.end_time is None and 
+             params['end_time'] > event.start_time) or
             (ticket.start_time is not None and 
              params['end_time'] <= ticket.start_time)):
             response = {
@@ -959,12 +962,12 @@ def purchase(request, params, user):
             'message':'The event is not launched yet.'
         }
         return json_response(response)
-    # Check if the event has started
-    if event.start_time <= timezone.now():
+    # Check if the ticket is up for sale
+    if not (ticket.start_time <= timezone.now() <= ticket.end_time):
         response = {
             'status':'FAIL',
-            'error':'STARTED_EVENT',
-            'message':'You can\'t buy ticket to a started event.'
+            'error':'INVALID_TICKET',
+            'message':'The ticket is not up for sale at this time.'
         }
         return json_response(response)
     # Check if the ticket is sold out
