@@ -158,8 +158,13 @@ div#wrapper_main {
             width: @body_width - @box_padding * 2 - 130px;
             height: 100px;
             padding-left: 30px;
-            h1.finances{
-                margin-top: 30px;
+            div.finances{
+                margin-top: 15px;
+                div{
+                    float: left;
+                    width: @body_width/5;
+                    font-size: @font_size_base + 3;
+                }
             }
             &.profile_login{
                 .input_container{

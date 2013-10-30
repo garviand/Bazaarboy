@@ -509,8 +509,13 @@ div#wrapper_main div.summary div.specs {
   padding-left: 30px;
   float: left;
 }
-div#wrapper_main div.summary div.specs h1.finances {
-  margin-top: 30px;
+div#wrapper_main div.summary div.specs div.finances {
+  margin-top: 15px;
+}
+div#wrapper_main div.summary div.specs div.finances div {
+  float: left;
+  width: 192px;
+  font-size: 19px;
 }
 div#wrapper_main div.summary div.specs.profile_login .input_container {
   float: left;

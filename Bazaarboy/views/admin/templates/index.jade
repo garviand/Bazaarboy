@@ -13,8 +13,17 @@ block main
         div.icon
             img(src="{{ STATIC_URL }}admin/fui/images/icons/Infinity-Loop@2x.png")
         div.specs
-            h1.finances
-                | Total Sales: ${{ stats.total_sale }} | Total RSVPs: {{ stats.sale_count }}
+            div.finances
+                div Total Sales: ${{ total_stats.total_sale }}
+                div Monthly Sales: ${{ monthly_stats.total_sale }}
+                div Weekly Sales: ${{ weekly_stats.total_sale }}
+                div Daily Sales: ${{ daily_stats.total_sale }}
+            div.clear &nbsp;
+            div.finances
+                div Total RSVPs: {{ total_stats.sale_count }}
+                div Monthly RSVPs: {{ monthly_stats.sale_count }}
+                div Weekly RSVPs: {{ weekly_stats.sale_count }}
+                div Daily RSVPs: {{ daily_stats.sale_count }}
         div.clear
     div.summary.box
         div.icon

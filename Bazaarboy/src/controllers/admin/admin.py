@@ -7,6 +7,7 @@ import hashlib
 from django.shortcuts import render, redirect
 from django.http import HttpResponseForbidden
 from django.db.models import Q, Sum, Count
+from datetime import datetime, timedelta
 from admin.models import *
 from kernel.models import *
 from src.controllers.request import json_response, validate
@@ -23,9 +24,14 @@ def index(request):
     stats = Purchase.objects.filter(Q(checkout = None) | 
                                         Q(checkout__is_charged = True, 
                                           checkout__is_refunded = False), 
-                                        ) \
-                                .aggregate(total_sale = Sum('price'), 
-                                           sale_count = Count('id'))
+                                        )
+    total_stats = stats.aggregate(total_sale = Sum('price'), sale_count = Count('id'))
+    monthly_stats = stats.filter(created_time__gte=datetime.now()-timedelta(days=30))
+    monthly_stats = monthly_stats.aggregate(total_sale = Sum('price'), sale_count = Count('id'))
+    weekly_stats = stats.filter(created_time__gte=datetime.now()-timedelta(days=7))
+    weekly_stats = weekly_stats.aggregate(total_sale = Sum('price'), sale_count = Count('id'))
+    daily_stats = stats.filter(created_time__gte=datetime.now()-timedelta(days=1))
+    daily_stats = daily_stats.aggregate(total_sale = Sum('price'), sale_count = Count('id'))
     profiles = Profile.objects.all()
     return render(request, 'admin/index.html', locals())
 
