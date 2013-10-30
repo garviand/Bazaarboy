@@ -48,8 +48,11 @@ def index(request, params, user):
                                    .order_by('-created_time')[:5]
         draftEvents = list(draftEvents)
         # Fetch live events
-        liveEvents = Event.objects.filter(organizers = profile, 
-                                          start_time__gt = tz.now(), 
+        liveEvents = Event.objects.filter(Q(end_time = None, 
+                                            start_time__gt = tz.now()) | 
+                                          Q(end_time__isnull = False, 
+                                            end_time__lt = tz.now()),   
+                                          organizers = profile, 
                                           is_launched = True) \
                                   .order_by('start_time')[:5]
         liveEvents = list(liveEvents)
@@ -64,8 +67,11 @@ def index(request, params, user):
             liveEvents[j].total_sale = stats['total_sale']
             liveEvents[j].sale_count = stats['sale_count']
         # Fetch past events
-        pastEvents = Event.objects.filter(organizers = profile, 
-                                          start_time__lte = tz.now(), 
+        pastEvents = Event.objects.filter(Q(end_time = None, 
+                                            start_time__lt = tz.now()) | 
+                                          Q(end_time__isnull = False, 
+                                            end_time__gt = tz.now()), 
+                                          organizers = profile, 
                                           is_launched = True) \
                                   .order_by('-start_time')[:5]
         pastEvents = list(pastEvents)
