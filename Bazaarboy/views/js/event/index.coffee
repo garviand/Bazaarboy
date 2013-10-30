@@ -707,6 +707,10 @@ Bazaarboy.event.index =
         @initTimeAutocomplete(startTimeElement, endTimeElement)
         $(ticket).find('input[name=start_date]').pikaday
             format: 'MM/DD/YYYY'
+            onSelect: () ->
+                $(ticket).find('input[name=end_date]').pikaday('gotoDate', this.getDate())
+                $(ticket).find('input[name=end_date]').pikaday('setMinDate', this.getDate())
+                return
         $(ticket).find('input[name=end_date]').pikaday
             format: 'MM/DD/YYYY'
         return
@@ -865,9 +869,13 @@ Bazaarboy.event.index =
                 scope.startEditingTitle()
             return
         # Edit time and location
-        $('div#event > div.title div.details input[name=start_date]').pikaday
+        startDateElement = $('div#event > div.title div.details input[name=start_date]').pikaday
             format: 'MM/DD/YYYY'
-        $('div#event > div.title div.details input[name=end_date]').pikaday
+            onSelect: () ->
+                endDateElement.pikaday('gotoDate', this.getDate())
+                endDateElement.pikaday('setMinDate', this.getDate())
+                return
+        endDateElement = $('div#event > div.title div.details input[name=end_date]').pikaday
             format: 'MM/DD/YYYY'
         $('div#event > div.title div.bottom > div.button').click () ->
             if $(this).hasClass('stick')

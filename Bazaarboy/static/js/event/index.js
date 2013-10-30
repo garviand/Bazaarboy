@@ -760,7 +760,11 @@
       endTimeElement = $(ticket).find('input[name=end_time]');
       this.initTimeAutocomplete(startTimeElement, endTimeElement);
       $(ticket).find('input[name=start_date]').pikaday({
-        format: 'MM/DD/YYYY'
+        format: 'MM/DD/YYYY',
+        onSelect: function() {
+          $(ticket).find('input[name=end_date]').pikaday('gotoDate', this.getDate());
+          $(ticket).find('input[name=end_date]').pikaday('setMinDate', this.getDate());
+        }
       });
       $(ticket).find('input[name=end_date]').pikaday({
         format: 'MM/DD/YYYY'
@@ -917,7 +921,7 @@
       }
     },
     initEditing: function() {
-      var endTimeElement, googleAutocomplete, scope, startTimeElement,
+      var endDateElement, endTimeElement, googleAutocomplete, scope, startDateElement, startTimeElement,
         _this = this;
       scope = this;
       $('div#event > div.title div.bottom div.launch').click(function() {
@@ -930,10 +934,14 @@
           scope.startEditingTitle();
         }
       });
-      $('div#event > div.title div.details input[name=start_date]').pikaday({
-        format: 'MM/DD/YYYY'
+      startDateElement = $('div#event > div.title div.details input[name=start_date]').pikaday({
+        format: 'MM/DD/YYYY',
+        onSelect: function() {
+          endDateElement.pikaday('gotoDate', this.getDate());
+          endDateElement.pikaday('setMinDate', this.getDate());
+        }
       });
-      $('div#event > div.title div.details input[name=end_date]').pikaday({
+      endDateElement = $('div#event > div.title div.details input[name=end_date]').pikaday({
         format: 'MM/DD/YYYY'
       });
       $('div#event > div.title div.bottom > div.button').click(function() {
