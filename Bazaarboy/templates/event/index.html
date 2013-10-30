@@ -45,7 +45,7 @@ Delete</a><a href="javascript:;" class="hidden save">Save</a><a href="javascript
 {% if editable or not event|hasStartedOrEnded %}<div class="action hanging"><div class="button"><b>{% if editable %}
 Edit Tickets
 {% else %}
-{% if rsvp %}
+{% if cheapest == 0 %}
 RSVP
 {% else %}
 Buy Ticket

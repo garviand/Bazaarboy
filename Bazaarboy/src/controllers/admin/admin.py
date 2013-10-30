@@ -32,7 +32,6 @@ def index(request):
     weekly_stats = weekly_stats.aggregate(total_sale = Sum('price'), sale_count = Count('id'))
     daily_stats = stats.filter(created_time__gte=datetime.now()-timedelta(days=1))
     daily_stats = daily_stats.aggregate(total_sale = Sum('price'), sale_count = Count('id'))
-    profiles = Profile.objects.all()
     return render(request, 'admin/index.html', locals())
 
 def login(request):

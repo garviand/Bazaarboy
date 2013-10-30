@@ -34,7 +34,8 @@ block main
                 form.profile_login
                     input(type="text", name="profile_name", placeholder="Profile Name")
             div.profile_choices
-                {% for profile in profiles %}
-                a(href="javascript:;") {{ profile.name }}
-                {% endfor %}
+                a(href="javascript:;") profile
         div.clear
+
+append script
+    script(type="text/javascript", src="{{ STATIC_URL }}admin/js/index.js")
