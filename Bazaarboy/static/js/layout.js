@@ -40,12 +40,11 @@
       return promise;
     },
     adjustBottomPosition: function() {
-      var bottomHeight, canvasHeight, contentHeight, topHeight, windowHeight;
+      var bottomHeight, contentHeight, topHeight, windowHeight;
       windowHeight = $(window).height();
       topHeight = $('div#wrapper_top').outerHeight();
       contentHeight = $('div#wrapper_content').outerHeight();
       bottomHeight = $('div#wrapper_bottom').outerHeight();
-      canvasHeight = this.longestCanvas();
       if (windowHeight - bottomHeight > topHeight + contentHeight) {
         $('div#wrapper_bottom').css({
           'position': 'fixed',

@@ -34,7 +34,6 @@
         topHeight = $('div#wrapper_top').outerHeight()
         contentHeight = $('div#wrapper_content').outerHeight()
         bottomHeight = $('div#wrapper_bottom').outerHeight()
-        canvasHeight = @longestCanvas()
         if windowHeight - bottomHeight > topHeight + contentHeight
             $('div#wrapper_bottom').css
                 'position': 'fixed'
