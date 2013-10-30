@@ -94,7 +94,7 @@ def settings(request, user):
     return render(request, 'user/settings.html', locals())
 
 @login_check()
-@validate('POST', ['email', 'password', 'full_name', 'city'])
+@validate('POST', ['email', 'password', 'confirm', 'full_name', 'city'])
 def create(request, params, user):
     """
     Create a new user using email and password
@@ -125,6 +125,14 @@ def create(request, params, user):
             'status':'FAIL',
             'error':'INVALID_PASSWORD',
             'message':'The length of password is invalid.'
+        }
+        return json_response(response)
+    # Check if password and confirm match
+    if not params['password'] == params['confirm']:
+        response = {
+            'status':'FAIL',
+            'error':'PASSWORDS_MISMATCH',
+            'message':'Password and Confirm Password do not match.'
         }
         return json_response(response)
     # Check if the name is valid

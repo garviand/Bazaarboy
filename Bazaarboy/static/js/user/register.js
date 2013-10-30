@@ -13,6 +13,9 @@
           }
         });
       });
+      $('.register_content .bottom .register_btn').click(function(event) {
+        return $('form[name=register]').submit();
+      });
     },
     fbAuth: function(fbAccessToken, email, city) {
       if (email == null) {
