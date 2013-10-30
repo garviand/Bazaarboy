@@ -51,7 +51,7 @@ def index(request, params, user):
         liveEvents = Event.objects.filter(Q(end_time = None, 
                                             start_time__gt = tz.now()) | 
                                           Q(end_time__isnull = False, 
-                                            end_time__lt = tz.now()),   
+                                            end_time__gt = tz.now()),   
                                           organizers = profile, 
                                           is_launched = True) \
                                   .order_by('start_time')[:5]
@@ -70,7 +70,7 @@ def index(request, params, user):
         pastEvents = Event.objects.filter(Q(end_time = None, 
                                             start_time__lt = tz.now()) | 
                                           Q(end_time__isnull = False, 
-                                            end_time__gt = tz.now()), 
+                                            end_time__lt = tz.now()), 
                                           organizers = profile, 
                                           is_launched = True) \
                                   .order_by('-start_time')[:5]
