@@ -10,6 +10,8 @@
                     alert response.message
                 return
             return
+        $('.register_content .bottom .register_btn').click (event) ->
+            $('form[name=register]').submit()
         return
     fbAuth: (fbAccessToken, email='', city='') ->
         console.log city

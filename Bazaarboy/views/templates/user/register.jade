@@ -16,22 +16,27 @@ block vars
 block body
     include ../components/facebook
     div#register
-        h2 Register
-        br
-        form(name="register")
-            label Full name
-            input(type="text", name="full_name")
-            br
-            label Email
-            input(type="text", name="email")
-            br
-            label Password
-            input(type="password", name="password")
-            br
-            label Confirm
-            input(type="password", name="confirm")
-            br
-            //label City
-            input(type="hidden", name="city", value="1")
-            //br
-            input(type="submit", name="submit", value="Register")
+        div.background
+        div.inner
+            div.logo
+                div.image
+                    img(src="{{ STATIC_URL }}images/logo-big.png")
+                div.caption Get Started With Your First Event
+            div.register_content.content
+                div.title 
+                    b Event Organizer Registration
+                div.top
+                    form.register(name="register")
+                        input.register_input(type="text", name="full_name", placeholder="Account Name", autocomplete="off")
+                        input.register_input(type="text", name="email", placeholder="Email", autocomplete="off")
+                        input.register_input(type="password", name="password", placeholder="Password", autocomplete="off")
+                        input.register_input(type="password", name="confirm", placeholder="Confirm Password", autocomplete="off")
+                        input(type="hidden", name="city", value="1")
+                div.bottom
+                    a.register_btn(href="javascript:;") Register
+                    div.clear
+            div.footer
+                | &copy; 2013 Bazaarboy LLC. All rights reserved. 
+                a(href="http://blog.bazaarboy.com") Blog
+                | &nbsp;|&nbsp;
+                a(href="mailto:build@bazaarboy.com") Contact Us
