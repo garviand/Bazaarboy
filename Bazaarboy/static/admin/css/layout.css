@@ -525,3 +525,12 @@ div#wrapper_main div.summary div.specs.profile_login .profile_choices {
   float: left;
   width: 320px;
 }
+div#wrapper_main div.summary div.specs.profile_login .profile_choices a {
+  display: block;
+  float: left;
+  margin-right: 10px;
+  margin-bottom: 10px;
+}
+div#wrapper_main div.summary div.specs.profile_login .profile_choices a.hidden {
+  display: none;
+}

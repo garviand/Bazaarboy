@@ -35,7 +35,7 @@ block main
                     input(type="text", name="profile_name", placeholder="Profile Name")
             div.profile_choices
                 {% for profile in profiles %}
-                a(href="javascript:;", data-id="{{ profile.id }}") {{ profile.name }}
+                a.hidden(href="javascript:;", data-id="{{ profile.id }}") {{ profile.name }}
                 {% endfor %}
         div.clear
 
