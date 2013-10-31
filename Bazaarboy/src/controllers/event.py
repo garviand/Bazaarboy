@@ -681,9 +681,11 @@ def create_ticket(request, params, user):
         else:
             ticket.start_time = params['start_time']
     if params['end_time'] is not None:
-        if (params['end_time'] > event.start_time or 
-            (ticket.start_time is not None and 
-             params['end_time'] <= ticket.start_time)):
+        if ((event.end_time is None and 
+             params['end_time'] > event.start_time) or  
+            (event.end_time is not None and 
+             params['end_time'] > event.end_time) or 
+             params['end_time'] <= ticket.start_time):
             response = {
                 'status':'FAIL',
                 'error':'INVALID_END_TIME',
