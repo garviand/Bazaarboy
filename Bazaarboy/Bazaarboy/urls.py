@@ -92,6 +92,7 @@ admin_urlpatterns = patterns('src.controllers.admin.admin',
     url(r'^login/$', 'login', name = 'login'),
     url(r'^auth/$', 'auth', name = 'auth'),
     url(r'^logout/$', 'logout', name = 'logout'),
+    url(r'^login/profile/$', 'login_profile', name = 'login_profile'),
 )
 
 urlpatterns = patterns('',
