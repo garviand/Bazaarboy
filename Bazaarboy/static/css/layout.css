@@ -2644,10 +2644,12 @@ div#rsvp div.tickets div.content div.ticket {
   width: 100%;
   min-height: 80px;
   border-top: 1px solid #E6E6E6;
+}
+div#rsvp div.tickets div.content div.ticket.valid {
   cursor: pointer;
 }
-div#rsvp div.tickets div.content div.ticket:hover,
-div#rsvp div.tickets div.content div.ticket.selected {
+div#rsvp div.tickets div.content div.ticket.valid:hover,
+div#rsvp div.tickets div.content div.ticket.valid.selected {
   border-top: 1px solid #4795f2;
   background-color: #4795f2;
   color: #FFF;
@@ -2708,6 +2710,10 @@ div#rsvp div.tickets div.content div.ticket div.detail div.quantity {
   margin-top: 15px;
   font-size: 14px;
   text-align: center;
+  color: green;
+}
+div#rsvp div.tickets div.content div.ticket div.detail div.quantity span {
+  color: red;
 }
 div#rsvp div.confirmation div.content {
   border-top: 1px solid #E6E6E6;

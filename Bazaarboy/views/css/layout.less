@@ -2523,11 +2523,14 @@ div#rsvp {
                 width: 100%;
                 min-height: 80px;
                 border-top: 1px solid #E6E6E6;
-                cursor: pointer;
-                &:hover, &.selected {
-                    border-top: 1px solid @event_blue;
-                    background-color: @event_blue;
-                    color: #FFF;
+                &.valid {
+                    cursor: pointer;
+
+                    &:hover, &.selected {
+                        border-top: 1px solid @event_blue;
+                        background-color: @event_blue;
+                        color: #FFF;
+                    }
                 }
                 &.last {
                     border-bottom-left-radius: 2px;
@@ -2586,6 +2589,11 @@ div#rsvp {
                         margin-top: 15px;
                         font-size: @font_size_base - 2;
                         text-align: center;
+                        color: green;
+
+                        span {
+                            color: red;
+                        }
                     }
                 }
             }

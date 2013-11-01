@@ -40,6 +40,13 @@ def validateTiming(obj):
     return obj.start_time <= timezone.now() and obj.end_time > timezone.now()
 
 @register.filter
+def isOnSaleSoon(ticket):
+    """
+    Check if a ticket is on sale soon or its sale period has ended
+    """
+    return ticket.start_time > timezone.now()
+
+@register.filter
 def hasStartedOrEnded(obj):
     """
     Check if an event is still valid for ticketing
