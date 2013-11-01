@@ -54,7 +54,7 @@ block content
                         div.checkin Check In
                         div.clear
                     {% for guest in purchases %}
-                    div.guest
+                    div.guest(data-ticket="{{ guest.ticket.id }}")
                         div.name
                             {{ guest.owner.full_name }}
                         div.ticket_name
@@ -69,6 +69,12 @@ block content
                     form.list_search
                         input(type="text", name="guest_name", placeholder="Search Guest Name")
                         input(type="text", name="guest_code", placeholder="Search Confirmation #")
+                        div.ticket_filter_label Filter Tickets
+                        div.ticket_filters
+                            a.all_tickets.active(href="javascript:;", data-id="all") All Tickets
+                            {% for ticket in tickets %}
+                            a(href="javascript:;", data-id="{{ ticket.id }}") {{ ticket.name }}
+                            {% endfor %}
                 div.clear
 
 append script

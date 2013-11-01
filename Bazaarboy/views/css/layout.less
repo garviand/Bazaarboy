@@ -2807,6 +2807,35 @@ div#event_manage {
                         -moz-box-sizing: border-box;
                         box-sizing: border-box;
                     }
+                    div.ticket_filter_label{
+                        margin: 5px 0;
+                    }
+                    div.ticket_filters{
+                        a{
+                            display: block;
+                            width: 100%;
+                            font-size: @font_size_base;
+                            color: @font_color_base;
+                            border: 1px solid @font_color_base;
+                            text-decoration: none;
+                            border-top: none;
+                            padding: 5px;
+                            text-align: center;
+                            -webkit-box-sizing: border-box;
+                            -moz-box-sizing: border-box;
+                            box-sizing: border-box;
+                            &.all_tickets{
+                                font-weight: bold;
+                            }
+                            &:first-child{
+                                border-top: 1px solid @font_color_base;
+                            }
+                            &:hover, &.active{
+                                color: #FFF;
+                                background: #7F7F7F;
+                            }
+                        }
+                    }
                 }
             }
             div.list_guests{

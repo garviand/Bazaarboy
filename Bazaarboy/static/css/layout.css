@@ -2900,6 +2900,34 @@ div#event_manage > div.list_content div.inner div.list_filters form.list_search 
   -moz-box-sizing: border-box;
   box-sizing: border-box;
 }
+div#event_manage > div.list_content div.inner div.list_filters form.list_search div.ticket_filter_label {
+  margin: 5px 0;
+}
+div#event_manage > div.list_content div.inner div.list_filters form.list_search div.ticket_filters a {
+  display: block;
+  width: 100%;
+  font-size: 16px;
+  color: #000000;
+  border: 1px solid #000000;
+  text-decoration: none;
+  border-top: none;
+  padding: 5px;
+  text-align: center;
+  -webkit-box-sizing: border-box;
+  -moz-box-sizing: border-box;
+  box-sizing: border-box;
+}
+div#event_manage > div.list_content div.inner div.list_filters form.list_search div.ticket_filters a.all_tickets {
+  font-weight: bold;
+}
+div#event_manage > div.list_content div.inner div.list_filters form.list_search div.ticket_filters a:first-child {
+  border-top: 1px solid #000000;
+}
+div#event_manage > div.list_content div.inner div.list_filters form.list_search div.ticket_filters a:hover,
+div#event_manage > div.list_content div.inner div.list_filters form.list_search div.ticket_filters a.active {
+  color: #FFF;
+  background: #7F7F7F;
+}
 div#event_manage > div.list_content div.inner div.list_guests {
   float: right;
   width: 696px;
