@@ -591,7 +591,7 @@ def delete(request, params, user):
     }
     return json_response(response)
 
-@login_required()
+@login_check()
 @validate('POST', 
           ['event', 'name', 'description'], 
           ['price', 'quantity', 'start_time', 'end_time', 'token'])
@@ -712,7 +712,7 @@ def create_ticket(request, params, user):
     }
     return json_response(response)
 
-@login_required()
+@login_check()
 @validate('POST', ['id'], 
           ['name', 'description', 'price', 'quantity', 'start_time', 
            'end_time', 'token'])
@@ -830,7 +830,7 @@ def edit_ticket(request, params, user):
     }
     return json_response(response)
 
-@login_required()
+@login_check()
 @validate('POST', ['id'], ['token'])
 def delete_ticket(request, params, user):
     """
@@ -1055,5 +1055,54 @@ def purchase(request, params, user):
         'status':'OK',
         'purchase':serialize_one(purchase),
         'publishable_key':paymentAccount.publishable_key
+    }
+    return json_response(response)
+
+@login_check()
+@validate('POST', ['id'], ['cancel', 'token'])
+def checkin(request, params, user):
+    # Check if the purchase exists
+    if not Purchase.objects.filter(id = params['id']).exists():
+        response = {
+            'status':'FAIL',
+            'error':'PURCHASE_NOT_FOUND',
+            'message':'The purchase doesn\'t exist.'
+        }
+        return json_response(response)
+    purchase = Purchase.objects.get(id = params['id'])
+    event = purchase.event
+    # Check if user is logged in
+    if user is not None:
+        # If so, check if user has permission for the event
+        if not Event_organizer.objects.filter(event = event, 
+                                              profile__managers = user) \
+                                      .exists():
+            response = {
+                'status':'FAIL',
+                'error':'NOT_A_MANAGER',
+                'message':'You don\'t have permission for the event.'
+            }
+            return json_response(response)
+    else:
+        # Otherwise check if the access token is valid
+        if params['token'] is None or event.access_token != params['token']:
+            response = {
+                'status':'FAIL',
+                'error':'PERMISSION_DENIED',
+                'message':'You don\'t have permission for the event.'
+            }
+            return json_response(response)
+    # Check in or cancel checkin
+    if params['cancel'] is not None:
+        purchase.is_checked_in = False
+        purchase.checked_in_time = None
+    else:
+        if not purchase.is_checked_in:
+            purchase.is_checked_in = True
+            purchase.checked_in_time = timezone.now()
+    purchase.save()
+    response = {
+        'status':'OK',
+        'purchase':serialize_one(purchase)
     }
     return json_response(response)

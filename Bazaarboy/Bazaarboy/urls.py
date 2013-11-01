@@ -61,6 +61,7 @@ event_urlpatterns = patterns('src.controllers.event',
     url(r'^ticket/edit/$', 'edit_ticket', name = 'ticket-edit'),
     url(r'^ticket/delete/$', 'delete_ticket', name = 'ticket-delete'),
     url(r'^purchase/$', 'purchase', name = 'purchase'),
+    url(r'^checkin/$', 'checkin', name = 'checkin'),
 )
 
 fundraiser_urlpatterns = patterns('src.controllers.fundraiser', 
