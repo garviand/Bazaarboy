@@ -309,6 +309,8 @@ class Purchase(models.Model):
     code = models.CharField(max_length = 6)
     checkout = models.ForeignKey('Checkout', null = True, default = None)
     is_expired = models.BooleanField(default = False)
+    is_checked_in = models.BooleanField(default = False)
+    checked_in_time = models.DateTimeField(null = True, default = None)
     created_time = models.DateTimeField(auto_now_add = True)
 
     def save(self, *args, **kwargs):

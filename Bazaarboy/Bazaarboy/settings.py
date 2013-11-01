@@ -137,7 +137,7 @@ INSTALLED_APPS = (
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'django.contrib.humanize',
-    #'south',
+    'south',
     'djcelery',
     'storages',
     #'easy_thumbnails',
