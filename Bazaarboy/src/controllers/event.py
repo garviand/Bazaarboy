@@ -627,6 +627,14 @@ def create_ticket(request, params, user):
                 'message':'You don\'t have permission for the event.'
             }
             return json_response(response)
+    # Check if ticket name is too long
+    if len(params['name']) > 50:
+        response = {
+            'status':'FAIL',
+            'error':'INVALID_NAME',
+            'message':'Ticket name cannot be over 50 characters.'
+        }
+        return json_response(response)
     # Check if the description is too long
     if len(params['description']) > 150:
         response = {
@@ -743,11 +751,11 @@ def edit_ticket(request, params, user):
             return json_response(response)
     # Go through all params and edit the ticket accordingly
     if params['name'] is not None:
-        if not (0 < len(params['name']) <= 15):
+        if not (0 < len(params['name']) <= 50):
             response = {
                 'status':'FAIL',
                 'error':'INVALID_NAME',
-                'message':'Ticket name cannot be blank or over 15 characters.'
+                'message':'Ticket name cannot be blank or over 50 characters.'
             }
             return json_response(response)
         else:

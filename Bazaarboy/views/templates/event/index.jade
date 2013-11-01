@@ -95,7 +95,7 @@ block content
                     div.controls
                         span.hidden Drag the image to an appropriate position. 
                         a.edit(href="javascript:;") 
-                            | {% if event.cover %}Edit Cover{% else %}Add Cover{% endif %}
+                            | {% if event.cover %}Edit Cover Photo{% else %}Add Cover Photo{% endif %}
                         a.delete(href="javascript:;", class="{% if not event.cover %}hidden{% endif %}") 
                             | Delete
                         a.hidden.save(href="javascript:;") Save
@@ -315,7 +315,9 @@ block content
                 {% for ticket in tickets %}
                 div.ticket(class="{% if ticket|validateTiming %}valid{% endif %} {% if forloop.last %}last{% endif %}", data-id="{{ ticket.id }}")
                     div.input
+                        {% if ticket|validateTiming %}
                         input(type="radio")
+                        {% endif %}
                     div.body
                         div.name {{ ticket.name }}
                         div.description {{ ticket.description }}
@@ -324,12 +326,20 @@ block content
                             b 
                                 | {% if ticket.price > 0 %}$ {{ ticket.price|floatformat:-2 }}{% else %}Free{% endif %}
                         div.quantity 
+                            | {% if ticket|validateTiming %}
                             | {% if ticket.quantity == None or ticket.quantity > 20 %}
                             | Available
                             | {% elif ticket.quantity == 0 %}
-                            | Sold Out
+                            span Sold Out
                             | {% else %}
                             | {{ ticket.quantity }} Left
+                            | {% endif %}
+                            | {% else %}
+                            | {% if ticket|isOnSaleSoon %}
+                            span On Sale Soon
+                            | {% else %}
+                            span Sale Ended
+                            | {% endif %}
                             | {% endif %}
                     div.clear
                 {% endfor %}
