@@ -2876,6 +2876,16 @@ div#event_manage {
                     padding: 20px 5px;
                     border-top: 1px solid #7F7F7F;
                     font-size: @font_size_base + 3;
+                    &.checked_in{
+                        div.checkin{
+                            a{
+                                background-color: #7F7F7F;
+                                &:hover{
+                                    .linear_gradient(top, lighten(#7F7F7F, 5%), #7F7F7F);
+                                }
+                            }
+                        }
+                    }
                     div.checkin{
                         a{
                             width: 100%;

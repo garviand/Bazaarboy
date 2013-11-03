@@ -75,6 +75,7 @@ def manage(request, id, params, user):
                                         is_expired = False)
     ticket_list = purchases.values_list('ticket').distinct()
     tickets = Ticket.objects.filter(id__in=ticket_list)
+    checked_in = purchases.exclude(Q(checked_in_time = None)).count()
     return render(request, 'event/manage.html', locals())
 
 @login_required()

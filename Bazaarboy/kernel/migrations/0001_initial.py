@@ -184,6 +184,8 @@ class Migration(SchemaMigration):
             ('code', self.gf('django.db.models.fields.CharField')(max_length=6)),
             ('checkout', self.gf('django.db.models.fields.related.ForeignKey')(default=None, to=orm['kernel.Checkout'], null=True)),
             ('is_expired', self.gf('django.db.models.fields.BooleanField')(default=False)),
+            ('is_checked_in', self.gf('django.db.models.fields.BooleanField')(default=False)),
+            ('checked_in_time', self.gf('django.db.models.fields.DateTimeField')(default=None, null=True)),
             ('created_time', self.gf('django.db.models.fields.DateTimeField')(auto_now_add=True, blank=True)),
         ))
         db.send_create_signal('kernel', ['Purchase'])
@@ -618,11 +620,13 @@ class Migration(SchemaMigration):
         },
         'kernel.purchase': {
             'Meta': {'object_name': 'Purchase'},
+            'checked_in_time': ('django.db.models.fields.DateTimeField', [], {'default': 'None', 'null': 'True'}),
             'checkout': ('django.db.models.fields.related.ForeignKey', [], {'default': 'None', 'to': "orm['kernel.Checkout']", 'null': 'True'}),
             'code': ('django.db.models.fields.CharField', [], {'max_length': '6'}),
             'created_time': ('django.db.models.fields.DateTimeField', [], {'auto_now_add': 'True', 'blank': 'True'}),
             'event': ('django.db.models.fields.related.ForeignKey', [], {'to': "orm['kernel.Event']"}),
             'id': ('django.db.models.fields.AutoField', [], {'primary_key': 'True'}),
+            'is_checked_in': ('django.db.models.fields.BooleanField', [], {'default': 'False'}),
             'is_expired': ('django.db.models.fields.BooleanField', [], {'default': 'False'}),
             'owner': ('django.db.models.fields.related.ForeignKey', [], {'to': "orm['kernel.User']"}),
             'price': ('django.db.models.fields.FloatField', [], {}),

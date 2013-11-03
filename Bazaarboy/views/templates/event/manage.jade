@@ -12,7 +12,10 @@ block content
                 div.right
                     div.text
                         div.checkin_count
-                            div.checkin_numbers 0/{{ purchases|length }}
+                            div.checkin_numbers 
+                                span.checked_in {{ checked_in }}
+                                | /
+                                span.total_guests {{ purchases|length }}
                             div.checkin_label Checked-In
                 div.upper_top
                     a#regular_mode.active(href="javascript:;") RSVP Management
@@ -54,7 +57,7 @@ block content
                         div.checkin Check In
                         div.clear
                     {% for guest in purchases %}
-                    div.guest(data-ticket="{{ guest.ticket.id }}")
+                    div.guest(class="{% if guest.checked_in_time != None %}checked_in{% endif %}", data-ticket="{{ guest.ticket.id }}", data-id="{{ guest.id }}")
                         div.name
                             {{ guest.owner.full_name }}
                         div.ticket_name
@@ -62,7 +65,8 @@ block content
                         div.confirmation
                             {{ guest.code }}
                         div.checkin
-                            a(href="javascript:;") Check In
+                            a(href="javascript:;") 
+                                {% if guest.checked_in_time == None %}Check In{% else %}Arrived{% endif %}
                         div.clear
                     {% endfor %}
                 div.list_filters

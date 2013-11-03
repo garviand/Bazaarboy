@@ -2966,6 +2966,16 @@ div#event_manage > div.list_content div.inner div.list_guests div.guest {
   border-top: 1px solid #7F7F7F;
   font-size: 19px;
 }
+div#event_manage > div.list_content div.inner div.list_guests div.guest.checked_in div.checkin a {
+  background-color: #7F7F7F;
+}
+div#event_manage > div.list_content div.inner div.list_guests div.guest.checked_in div.checkin a:hover {
+  background-image: linear-gradient(top, #8c8c8c, #7f7f7f);
+  background-image: -o-linear-gradient(top, #8c8c8c, #7f7f7f);
+  background-image: -moz-linear-gradient(top, #8c8c8c, #7f7f7f);
+  background-image: -webkit-linear-gradient(top, #8c8c8c, #7f7f7f);
+  background-image: -ms-linear-gradient(top, #8c8c8c, #7f7f7f);
+}
 div#event_manage > div.list_content div.inner div.list_guests div.guest div.checkin a {
   width: 100%;
   font-size: 16px;
