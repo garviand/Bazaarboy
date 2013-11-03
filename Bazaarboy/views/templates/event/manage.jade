@@ -79,6 +79,11 @@ block content
                             {% for ticket in tickets %}
                             a(href="javascript:;", data-id="{{ ticket.id }}") {{ ticket.name }}
                             {% endfor %}
+                        div.checkin_filter_label Filter Checkin Status
+                        div.checkin_filters
+                            a.active(href="javascript:;", data-status="all") All RSVPs
+                            a(href="javascript:;", data-status="not_checked_in") Not Checked In
+                            a(href="javascript:;", data-status="checked_in") Arrived
                 div.clear
 
 append script

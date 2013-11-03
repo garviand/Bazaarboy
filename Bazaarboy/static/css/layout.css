@@ -2909,7 +2909,12 @@ div#event_manage > div.list_content div.inner div.list_filters form.list_search 
 div#event_manage > div.list_content div.inner div.list_filters form.list_search div.ticket_filter_label {
   margin: 5px 0;
 }
-div#event_manage > div.list_content div.inner div.list_filters form.list_search div.ticket_filters a {
+div#event_manage > div.list_content div.inner div.list_filters form.list_search div.checkin_filter_label {
+  margin-top: 20px;
+  margin-bottom: 5px;
+}
+div#event_manage > div.list_content div.inner div.list_filters form.list_search div.ticket_filters a,
+div#event_manage > div.list_content div.inner div.list_filters form.list_search div.checkin_filters a {
   display: block;
   width: 100%;
   font-size: 16px;
@@ -2923,14 +2928,20 @@ div#event_manage > div.list_content div.inner div.list_filters form.list_search 
   -moz-box-sizing: border-box;
   box-sizing: border-box;
 }
-div#event_manage > div.list_content div.inner div.list_filters form.list_search div.ticket_filters a.all_tickets {
+div#event_manage > div.list_content div.inner div.list_filters form.list_search div.ticket_filters a.all_tickets,
+div#event_manage > div.list_content div.inner div.list_filters form.list_search div.checkin_filters a.all_tickets,
+div#event_manage > div.list_content div.inner div.list_filters form.list_search div.ticket_filters a.all_checkins,
+div#event_manage > div.list_content div.inner div.list_filters form.list_search div.checkin_filters a.all_checkins {
   font-weight: bold;
 }
-div#event_manage > div.list_content div.inner div.list_filters form.list_search div.ticket_filters a:first-child {
+div#event_manage > div.list_content div.inner div.list_filters form.list_search div.ticket_filters a:first-child,
+div#event_manage > div.list_content div.inner div.list_filters form.list_search div.checkin_filters a:first-child {
   border-top: 1px solid #000000;
 }
 div#event_manage > div.list_content div.inner div.list_filters form.list_search div.ticket_filters a:hover,
-div#event_manage > div.list_content div.inner div.list_filters form.list_search div.ticket_filters a.active {
+div#event_manage > div.list_content div.inner div.list_filters form.list_search div.checkin_filters a:hover,
+div#event_manage > div.list_content div.inner div.list_filters form.list_search div.ticket_filters a.active,
+div#event_manage > div.list_content div.inner div.list_filters form.list_search div.checkin_filters a.active {
   color: #FFF;
   background: #7F7F7F;
 }

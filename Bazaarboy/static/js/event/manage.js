@@ -3,12 +3,19 @@
 
   Bazaarboy.event.manage = {
     selectionStatus: 'all',
+    checkinStatus: 'all',
     checkin: function(guest_id) {
       Bazaarboy.post('event/checkin/', {
         id: guest_id
       }, function(response) {});
     },
-    filterGuests: function(param, value, ticketType, updateListLength) {
+    checkout: function(guest_id) {
+      Bazaarboy.post('event/checkin/', {
+        id: guest_id,
+        cancel: true
+      }, function(response) {});
+    },
+    filterGuests: function(param, value, ticketType, checkStatus, updateListLength) {
       var i, length, newLength, newLengthChecked, rsvp, targetValue, _i, _ref;
       length = $('div.guest').length;
       for (i = _i = 0, _ref = length - 1; 0 <= _ref ? _i <= _ref : _i >= _ref; i = 0 <= _ref ? ++_i : --_i) {
@@ -17,6 +24,18 @@
         if (targetValue.toLowerCase().indexOf(value.toLowerCase()) !== -1) {
           if (rsvp.data('ticket') === ticketType || ticketType === 'all') {
             $(rsvp).removeClass('hidden');
+          }
+        }
+        if (checkStatus === 'checked_in') {
+          console.log('Arrived Only');
+          if (!$(rsvp).hasClass('checked_in')) {
+            $(rsvp).addClass('hidden');
+          }
+        }
+        if (checkStatus === 'not_checked_in') {
+          console.log('Not Checked In Only');
+          if ($(rsvp).hasClass('checked_in')) {
+            $(rsvp).addClass('hidden');
           }
         }
       }
@@ -38,7 +57,7 @@
           $('div.guest').removeClass('hidden');
         } else {
           $('div.guest').addClass('hidden');
-          _this.filterGuests('name', $('form.list_search input[name=guest_name]').val(), _this.selectionStatus, false);
+          _this.filterGuests('name', $('form.list_search input[name=guest_name]').val(), _this.selectionStatus, _this.checkinStatus, false);
         }
       });
       $('form.list_search input[name=guest_code]').keyup(function(e) {
@@ -47,7 +66,7 @@
           $('div.guest').removeClass('hidden');
         } else {
           $('div.guest').addClass('hidden');
-          _this.filterGuests('confirmation', $('form.list_search input[name=guest_code]').val(), _this.selectionStatus, false);
+          _this.filterGuests('confirmation', $('form.list_search input[name=guest_code]').val(), _this.selectionStatus, _this.checkinStatus, false);
         }
       });
       $('form.list_search div.ticket_filters a').click(function(e) {
@@ -58,10 +77,20 @@
         $('form.list_search input[name=guest_code]').val('');
         $('div.guest').addClass('hidden');
         scope.selectionStatus = $(this).data('id');
-        scope.filterGuests('name', '', scope.selectionStatus, true);
+        scope.filterGuests('name', '', scope.selectionStatus, scope.checkinStatus, true);
+      });
+      $('form.list_search div.checkin_filters a').click(function(e) {
+        e.preventDefault();
+        $('form.list_search div.checkin_filters a').removeClass('active');
+        $(this).addClass('active');
+        $('form.list_search input[name=guest_name]').val('');
+        $('form.list_search input[name=guest_code]').val('');
+        $('div.guest').addClass('hidden');
+        scope.checkinStatus = $(this).data('status');
+        scope.filterGuests('name', '', scope.selectionStatus, scope.checkinStatus, true);
       });
       $('div.list_guests div.guest div.checkin a').click(function(e) {
-        var checkCount, guest, guest_id;
+        var checkCount, guest, guest_id, totalCount;
         e.preventDefault();
         guest = $(this).parents('div.guest');
         guest_id = guest.data('id');
@@ -70,7 +99,27 @@
           $('div.checkin_count div.checkin_numbers span.checked_in').html(checkCount);
           guest.addClass('checked_in');
           $(this).html('Arrived');
-          return scope.checkin(guest_id);
+          scope.checkin(guest_id);
+          if (scope.checkinStatus === 'not_checked_in') {
+            guest.addClass('hidden');
+            totalCount = parseInt($('div.checkin_count div.checkin_numbers span.total_guests').html()) - 1;
+            $('div.checkin_count div.checkin_numbers span.total_guests').html(totalCount);
+            $('div.checkin_count div.checkin_numbers span.checked_in').html('0');
+            return Bazaarboy.adjustBottomPosition();
+          }
+        } else {
+          checkCount = parseInt($('div.checkin_count div.checkin_numbers span.checked_in').html()) - 1;
+          $('div.checkin_count div.checkin_numbers span.checked_in').html(checkCount);
+          guest.removeClass('checked_in');
+          $(this).html('Check In');
+          scope.checkout(guest_id);
+          if (scope.checkinStatus === 'checked_in') {
+            guest.addClass('hidden');
+            totalCount = parseInt($('div.checkin_count div.checkin_numbers span.total_guests').html()) - 1;
+            $('div.checkin_count div.checkin_numbers span.total_guests').html(totalCount);
+            $('div.checkin_count div.checkin_numbers span.checked_in').html(totalCount);
+            return Bazaarboy.adjustBottomPosition();
+          }
         }
       });
     }
