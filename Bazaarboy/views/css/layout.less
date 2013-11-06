@@ -312,6 +312,55 @@ div#wrapper_overlay {
     }
 }
 
+// 404
+
+div#show404 {
+    div.background {
+        position: fixed;
+        width: 110%;
+        height: 110%;
+        min-height: 600px;
+        min-width: 970px;
+        top: -5%;
+        left: -5%;
+        z-index: -1;
+        background-image: url('../images/landing.jpg');
+        background-size: cover;
+        background-position: center bottom;
+    }
+    div.info{
+        margin-top: 50px;
+        color: #FFF;
+        text-align: center;
+        div.title{
+            font-size: @font_size_base * 6;
+        }
+        hr{
+            width: @column_width * 10 + @gutter_width * 10;
+        }
+        div.subtitle{
+            font-size: @font_size_base * 3;
+            &.bold{
+                font-weight: bold;
+            }
+        }
+    }
+    div.controls{
+        text-align: center;
+        a.home{
+            color: #FFF;
+            text-decoration: none;
+            margin: 0 auto;
+            margin-top: 40px;
+            display: block;
+            background-color: #ff9c00;
+            width: @column_width * 7 + @gutter_width * 7;
+            padding: 20px 0;
+            font-size: @font_size_base * 2;
+        }
+    }
+}
+
 // Landing
 
 div#landing {
@@ -2819,7 +2868,7 @@ div#event_manage {
                         margin: 5px 0;
                     }
                     div.checkin_filter_label{
-                        margin-top: 20px;
+                        margin-top: 15px;
                         margin-bottom: 5px;
                     }
                     div.ticket_filters, div.checkin_filters{

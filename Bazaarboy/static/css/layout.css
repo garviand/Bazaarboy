@@ -638,6 +638,50 @@ div#wrapper_overlay {
 .content_divided div.frame div.right {
   width: 192px;
 }
+div#show404 div.background {
+  position: fixed;
+  width: 110%;
+  height: 110%;
+  min-height: 600px;
+  min-width: 970px;
+  top: -5%;
+  left: -5%;
+  z-index: -1;
+  background-image: url('../images/landing.jpg');
+  background-size: cover;
+  background-position: center bottom;
+}
+div#show404 div.info {
+  margin-top: 50px;
+  color: #FFF;
+  text-align: center;
+}
+div#show404 div.info div.title {
+  font-size: 96px;
+}
+div#show404 div.info hr {
+  width: 720px;
+}
+div#show404 div.info div.subtitle {
+  font-size: 48px;
+}
+div#show404 div.info div.subtitle.bold {
+  font-weight: bold;
+}
+div#show404 div.controls {
+  text-align: center;
+}
+div#show404 div.controls a.home {
+  color: #FFF;
+  text-decoration: none;
+  margin: 0 auto;
+  margin-top: 40px;
+  display: block;
+  background-color: #ff9c00;
+  width: 504px;
+  padding: 20px 0;
+  font-size: 32px;
+}
 div#landing div.background {
   position: fixed;
   width: 110%;
@@ -2910,7 +2954,7 @@ div#event_manage > div.list_content div.inner div.list_filters form.list_search 
   margin: 5px 0;
 }
 div#event_manage > div.list_content div.inner div.list_filters form.list_search div.checkin_filter_label {
-  margin-top: 20px;
+  margin-top: 15px;
   margin-bottom: 5px;
 }
 div#event_manage > div.list_content div.inner div.list_filters form.list_search div.ticket_filters a,
