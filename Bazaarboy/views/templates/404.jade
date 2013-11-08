@@ -1,1 +1,19 @@
-p 404 not found.
+// Index.Landing
+
+extends ./layout
+
+block body
+	block content
+		div#show404
+			div.background
+			div.info
+				div.title
+					| 4
+					span
+						img(src="{{ STATIC_URL }}images/404/o_logo.png")
+					| 4
+				hr
+				div.subtitle.bold Well this is bizarre,
+				div.subtitle it looks like there's nothing here!
+			div.controls
+				a.home(href="http://bazaarboy.com") Back to Home

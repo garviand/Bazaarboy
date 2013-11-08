@@ -12,7 +12,10 @@ block content
                 div.right
                     div.text
                         div.checkin_count
-                            div.checkin_numbers 0/{{ purchases|length }}
+                            div.checkin_numbers 
+                                span.checked_in {{ checked_in }}
+                                | /
+                                span.total_guests {{ purchases|length }}
                             div.checkin_label Checked-In
                 div.upper_top
                     a#regular_mode.active(href="javascript:;") RSVP Management
@@ -54,7 +57,7 @@ block content
                         div.checkin Check In
                         div.clear
                     {% for guest in purchases %}
-                    div.guest
+                    div.guest(class="{% if guest.checked_in_time != None %}checked_in{% endif %}", data-ticket="{{ guest.ticket.id }}", data-id="{{ guest.id }}")
                         div.name
                             {{ guest.owner.full_name }}
                         div.ticket_name
@@ -62,13 +65,25 @@ block content
                         div.confirmation
                             {{ guest.code }}
                         div.checkin
-                            a(href="javascript:;") Check In
+                            a(href="javascript:;") 
+                                {% if guest.checked_in_time == None %}Check In{% else %}Arrived{% endif %}
                         div.clear
                     {% endfor %}
                 div.list_filters
                     form.list_search
                         input(type="text", name="guest_name", placeholder="Search Guest Name")
                         input(type="text", name="guest_code", placeholder="Search Confirmation #")
+                        div.ticket_filter_label Filter Tickets
+                        div.ticket_filters
+                            a.all_tickets.active(href="javascript:;", data-id="all") All Tickets
+                            {% for ticket in tickets %}
+                            a(href="javascript:;", data-id="{{ ticket.id }}") {{ ticket.name }}
+                            {% endfor %}
+                        div.checkin_filter_label Filter Checkin Status
+                        div.checkin_filters
+                            a.all_checkins.active(href="javascript:;", data-status="all") All RSVPs
+                            a(href="javascript:;", data-status="not_checked_in") Not Checked In
+                            a(href="javascript:;", data-status="checked_in") Arrived
                 div.clear
 
 append script

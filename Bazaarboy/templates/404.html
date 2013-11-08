@@ -1,1 +1,12 @@
-<p>404 not found.</p>
+{% load humanize %}
+{% load layout %}<!DOCTYPE html><html lang="en"><head><title>Bazaarboy</title><script type="text/javascript" src="//use.typekit.net/gjc0hvy.js"></script><script type="text/javascript">try{Typekit.load();}catch(e){}</script><link rel="shortcut icon" href="{{ STATIC_URL }}images/logo.png"><link rel="stylesheet" href="{{ STATIC_URL }}css/layout.css"><script type="text/javascript">var _gaq = _gaq || [];
+_gaq.push(['_setAccount', 'UA-39060503-1']);
+_gaq.push(['_trackPageview']);
+(function() {
+    var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+    ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+    var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+})();</script></head><body><div id="show404"><div class="background"></div><div class="info"><div class="title">4<span><img src="{{ STATIC_URL }}images/404/o_logo.png"></span>4</div><hr><div class="subtitle bold">Well this is bizarre,</div><div class="subtitle">it looks like there's nothing here!</div></div><div class="controls"><a href="http://bazaarboy.com" class="home">Back to Home</a></div></div><script type="text/javascript" src="{{ STATIC_URL }}js/libraries.js"></script><script type="text/javascript">var rootUrl = '{% url index %}';
+var mediaUrl = '{{ MEDIA_URL }}';
+var csrfToken = '{{ csrf_token }}';
+var loggedIn = {% if user %}true{% else %}false{% endif %};</script><script type="text/javascript" src="{{ STATIC_URL }}js/layout.js"></script></body></html>

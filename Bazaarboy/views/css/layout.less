@@ -312,6 +312,59 @@ div#wrapper_overlay {
     }
 }
 
+// 404
+
+div#show404 {
+    div.background {
+        position: fixed;
+        width: 110%;
+        height: 110%;
+        min-height: 600px;
+        min-width: 970px;
+        top: -5%;
+        left: -5%;
+        z-index: -1;
+        background-image: url('../images/404/bg.jpg');
+        background-size: cover;
+        background-position: center center;
+    }
+    div.info{
+        margin-top: 50px;
+        color: #FFF;
+        text-align: center;
+        div.title{
+            font-size: @font_size_base * 6;
+        }
+        hr{
+            width: @column_width * 10 + @gutter_width * 10;
+        }
+        div.subtitle{
+            font-size: @font_size_base * 3;
+            &.bold{
+                font-weight: bold;
+            }
+        }
+    }
+    div.controls{
+        text-align: center;
+        a.home{
+            color: #FFF;
+            text-decoration: none;
+            margin: 0 auto;
+            margin-top: 40px;
+            display: block;
+            background-color: #ff9c00;
+            width: @column_width * 7 + @gutter_width * 7;
+            padding: 20px 0;
+            font-size: @font_size_base * 2;
+            transition: background-color .2s;
+            &:hover{
+                background-color: lighten(#ff9c00, 5%);
+            }
+        }
+    }
+}
+
 // Landing
 
 div#landing {
@@ -1560,6 +1613,10 @@ div.event_base {
                         font-size: @font_size_base + 2;
                         text-align: center;
                         .left;
+                        transition: background-color .2s;
+                        &:hover{
+                            background-color: lighten(@event_blue, 5%);
+                        }
                     }
 
                     div.price {
@@ -1603,6 +1660,10 @@ div.event_base {
                     border: 1px solid #1B1464;
                     background-color: #2E3192;
                     cursor: pointer;
+                    transition: background-color .2s;
+                        &:hover{
+                            background-color: lighten(#2E3192, 5%);
+                        }
 
                     b {
                         display: block;
@@ -2774,6 +2835,39 @@ div#event_manage {
                         -moz-box-sizing: border-box;
                         box-sizing: border-box;
                     }
+                    div.ticket_filter_label{
+                        margin: 5px 0;
+                    }
+                    div.checkin_filter_label{
+                        margin-top: 15px;
+                        margin-bottom: 5px;
+                    }
+                    div.ticket_filters, div.checkin_filters{
+                        a{
+                            display: block;
+                            width: 100%;
+                            font-size: @font_size_base;
+                            color: @font_color_base;
+                            border: 1px solid @font_color_base;
+                            text-decoration: none;
+                            border-top: none;
+                            padding: 5px;
+                            text-align: center;
+                            -webkit-box-sizing: border-box;
+                            -moz-box-sizing: border-box;
+                            box-sizing: border-box;
+                            &.all_tickets, &.all_checkins{
+                                font-weight: bold;
+                            }
+                            &:first-child{
+                                border-top: 1px solid @font_color_base;
+                            }
+                            &:hover, &.active{
+                                color: #FFF;
+                                background: #7F7F7F;
+                            }
+                        }
+                    }
                 }
             }
             div.list_guests{
@@ -2806,6 +2900,16 @@ div#event_manage {
                     padding: 20px 5px;
                     border-top: 1px solid #7F7F7F;
                     font-size: @font_size_base + 3;
+                    &.checked_in{
+                        div.checkin{
+                            a{
+                                background-color: #7F7F7F;
+                                &:hover{
+                                    .linear_gradient(top, lighten(#7F7F7F, 5%), #7F7F7F);
+                                }
+                            }
+                        }
+                    }
                     div.checkin{
                         a{
                             width: 100%;

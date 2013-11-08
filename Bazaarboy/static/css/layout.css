@@ -638,6 +638,54 @@ div#wrapper_overlay {
 .content_divided div.frame div.right {
   width: 192px;
 }
+div#show404 div.background {
+  position: fixed;
+  width: 110%;
+  height: 110%;
+  min-height: 600px;
+  min-width: 970px;
+  top: -5%;
+  left: -5%;
+  z-index: -1;
+  background-image: url('../images/404/bg.jpg');
+  background-size: cover;
+  background-position: center center;
+}
+div#show404 div.info {
+  margin-top: 50px;
+  color: #FFF;
+  text-align: center;
+}
+div#show404 div.info div.title {
+  font-size: 96px;
+}
+div#show404 div.info hr {
+  width: 720px;
+}
+div#show404 div.info div.subtitle {
+  font-size: 48px;
+}
+div#show404 div.info div.subtitle.bold {
+  font-weight: bold;
+}
+div#show404 div.controls {
+  text-align: center;
+}
+div#show404 div.controls a.home {
+  color: #FFF;
+  text-decoration: none;
+  margin: 0 auto;
+  margin-top: 40px;
+  display: block;
+  background-color: #ff9c00;
+  width: 504px;
+  padding: 20px 0;
+  font-size: 32px;
+  transition: background-color 0.2s;
+}
+div#show404 div.controls a.home:hover {
+  background-color: #ffa61a;
+}
 div#landing div.background {
   position: fixed;
   width: 110%;
@@ -1788,6 +1836,10 @@ div.event_base > div.title div.inner div.bottom div.action div.button {
   font-size: 18px;
   text-align: center;
   float: left;
+  transition: background-color 0.2s;
+}
+div.event_base > div.title div.inner div.bottom div.action div.button:hover {
+  background-color: #5fa3f4;
 }
 div.event_base > div.title div.inner div.bottom div.action div.price {
   position: relative;
@@ -1832,6 +1884,10 @@ div.event_base > div.title div.inner div.bottom div.share {
   border: 1px solid #1B1464;
   background-color: #2E3192;
   cursor: pointer;
+  transition: background-color 0.2s;
+}
+div.event_base > div.title div.inner div.bottom div.share:hover {
+  background-color: #3438a5;
 }
 div.event_base > div.title div.inner div.bottom div.share b {
   display: block;
@@ -2865,6 +2921,45 @@ div#event_manage > div.list_content div.inner div.list_filters form.list_search 
   -moz-box-sizing: border-box;
   box-sizing: border-box;
 }
+div#event_manage > div.list_content div.inner div.list_filters form.list_search div.ticket_filter_label {
+  margin: 5px 0;
+}
+div#event_manage > div.list_content div.inner div.list_filters form.list_search div.checkin_filter_label {
+  margin-top: 15px;
+  margin-bottom: 5px;
+}
+div#event_manage > div.list_content div.inner div.list_filters form.list_search div.ticket_filters a,
+div#event_manage > div.list_content div.inner div.list_filters form.list_search div.checkin_filters a {
+  display: block;
+  width: 100%;
+  font-size: 16px;
+  color: #000000;
+  border: 1px solid #000000;
+  text-decoration: none;
+  border-top: none;
+  padding: 5px;
+  text-align: center;
+  -webkit-box-sizing: border-box;
+  -moz-box-sizing: border-box;
+  box-sizing: border-box;
+}
+div#event_manage > div.list_content div.inner div.list_filters form.list_search div.ticket_filters a.all_tickets,
+div#event_manage > div.list_content div.inner div.list_filters form.list_search div.checkin_filters a.all_tickets,
+div#event_manage > div.list_content div.inner div.list_filters form.list_search div.ticket_filters a.all_checkins,
+div#event_manage > div.list_content div.inner div.list_filters form.list_search div.checkin_filters a.all_checkins {
+  font-weight: bold;
+}
+div#event_manage > div.list_content div.inner div.list_filters form.list_search div.ticket_filters a:first-child,
+div#event_manage > div.list_content div.inner div.list_filters form.list_search div.checkin_filters a:first-child {
+  border-top: 1px solid #000000;
+}
+div#event_manage > div.list_content div.inner div.list_filters form.list_search div.ticket_filters a:hover,
+div#event_manage > div.list_content div.inner div.list_filters form.list_search div.checkin_filters a:hover,
+div#event_manage > div.list_content div.inner div.list_filters form.list_search div.ticket_filters a.active,
+div#event_manage > div.list_content div.inner div.list_filters form.list_search div.checkin_filters a.active {
+  color: #FFF;
+  background: #7F7F7F;
+}
 div#event_manage > div.list_content div.inner div.list_guests {
   float: right;
   width: 696px;
@@ -2896,6 +2991,16 @@ div#event_manage > div.list_content div.inner div.list_guests div.guest {
   padding: 20px 5px;
   border-top: 1px solid #7F7F7F;
   font-size: 19px;
+}
+div#event_manage > div.list_content div.inner div.list_guests div.guest.checked_in div.checkin a {
+  background-color: #7F7F7F;
+}
+div#event_manage > div.list_content div.inner div.list_guests div.guest.checked_in div.checkin a:hover {
+  background-image: linear-gradient(top, #8c8c8c, #7f7f7f);
+  background-image: -o-linear-gradient(top, #8c8c8c, #7f7f7f);
+  background-image: -moz-linear-gradient(top, #8c8c8c, #7f7f7f);
+  background-image: -webkit-linear-gradient(top, #8c8c8c, #7f7f7f);
+  background-image: -ms-linear-gradient(top, #8c8c8c, #7f7f7f);
 }
 div#event_manage > div.list_content div.inner div.list_guests div.guest div.checkin a {
   width: 100%;

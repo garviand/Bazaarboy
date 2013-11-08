@@ -73,6 +73,9 @@ def manage(request, id, params, user):
                                           checkout__is_refunded = False), 
                                         event = event, 
                                         is_expired = False)
+    ticket_list = purchases.values_list('ticket').distinct()
+    tickets = Ticket.objects.filter(id__in=ticket_list)
+    checked_in = purchases.exclude(Q(checked_in_time = None)).count()
     return render(request, 'event/manage.html', locals())
 
 @login_required()
@@ -85,7 +88,7 @@ def event(request, params, user):
         response = {
             'status':'FAIL',
             'error':'EVENT_NOT_FOUND',
-            'message':'The event doesn\'t exist.'   
+            'message':'The event doesn\'t exist.'
         }
         return json_response(response)
     event = Event.objects.get(id = params['id'])
