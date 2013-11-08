@@ -32,11 +32,6 @@ Bazaarboy.profile.index =
             return
         return
     prepareUploadedCoverImage: (coverUrl) ->
-        if not $('body').hasClass('collapsed')
-            Bazaarboy.switchCollapsedStates () =>
-                @prepareUploadedCoverImage(coverUrl)
-                return
-            return
         scope = this
         $('<img>')
             .attr('src', mediaUrl + coverUrl)
@@ -228,6 +223,44 @@ Bazaarboy.profile.index =
                 alert err.message
             return
         return
+    startEditingLogoImage: () ->
+        scope = this
+        $('<img>')
+            .attr('src', mediaUrl + @uploads.image.source)
+            .load () ->
+                $('div#profile div.frame div.right div.logo div.image')
+                    .html('')
+                $('div#profile div.frame div.right div.logo div.image')
+                    .append(this)
+                $('div#profile div.frame div.right div.logo a.upload')
+                    .addClass('hidden')
+                $('div#profile div.frame div.right div.logo a.delete')
+                    .addClass('hidden')
+                $('div#profile div.frame div.right div.logo a.save')
+                    .removeClass('hidden')
+                $('div#profile div.frame div.right div.logo a.cancel')
+                    .removeClass('hidden')
+                return
+        return
+    saveLogoImage: () ->
+        @save {image: @uploads.image.pk}, (err, profile) =>
+            unless err
+                @uploads.image = null
+                @stopEditingLogoImage()
+            else
+                alert err.message
+            return
+        return
+    stopEditingLogoImage: () ->
+        $('div#profile div.frame div.right div.logo a.upload')
+            .removeClass('hidden')
+        $('div#profile div.frame div.right div.logo a.delete')
+            .removeClass('hidden')
+        $('div#profile div.frame div.right div.logo a.save')
+            .addClass('hidden')
+        $('div#profile div.frame div.right div.logo a.cancel')
+            .addClass('hidden')
+        return
     initEditing: () ->
         # Edit description
         @description = $('div.overview div.description div.inner').html()
@@ -240,9 +273,6 @@ Bazaarboy.profile.index =
                 @startEditingDescription()
             return
         # Save original images
-        @image = $('div#profile div.right div.image img')
-        if @image.length > 0
-            @image = @image.clone()
         @cover = $('div#profile div.cover div.image div.bounds img')
         if @cover.length > 0
             @cover = @cover.clone()
@@ -284,28 +314,36 @@ Bazaarboy.profile.index =
                 else
                     alert response.message
                 return
+        $('div#profile div.frame div.right div.logo a.upload').click () ->
+            $('div#profile div.frame div.right input[name=image_file]').click()
+            return
+        $('div#profile div.frame div.right div.logo a.delete').click () ->
+            return
+        $('div#profile div.frame div.right div.logo a.save').click () =>
+            @saveLogoImage()
+            return
+        $('div#profile div.frame div.right div.logo a.cancel').click () ->
+            return
+        $('div#profile div.frame div.right input[name=image_file]').fileupload
+            url: rootUrl + 'file/image/upload/'
+            type: 'POST'
+            add: (event, data) =>
+                data.submit()
+                return
+            done: (event, data) =>
+                response = jQuery.parseJSON data.result
+                if response.status is 'OK'
+                    # Attempt to delete the last uploaded image
+                    if @uploads.image?
+                        Bazaarboy.post 'file/image/delete/', 
+                            id: @uploads.image.pk
+                    @uploads.image = response.image
+                    @startEditingLogoImage()
+                else
+                    alert response.message
+                return
         return
     init: () ->
-        # Extend collapse animations
-        collapseStates = [
-            ['div#profile', [['margin-left', '63px', '96px']]]
-            ['div#profile div.cover', [
-                ['width', '750px', '876px']
-                ['left', '-63px', '-96px']
-            ]]
-            ['div#profile div.cover div.image', [['left', '-126px', '0']]]
-            ['div#profile > div.title', [
-                ['width', '750px', '876px']
-                ['left', '-63px', '-96px']
-            ]]
-            ['div#profile > div.title div.text', [['left', '63px', '96px']]]
-            ['div#profile > div.tabs', [
-                ['width', '750px', '876px']
-                ['left', '-63px', '-96px']
-            ]]
-            ['div#profile > div.tabs div.inner', [['left', '63px', '96px']]]
-        ]
-        $.merge(Bazaarboy.collapseStates, collapseStates)
         # Tabs
         $.each ['overview', 'events', 'sponsorships'], (index, tab) =>
             $('div.tabs div.tab.' + tab).click () =>

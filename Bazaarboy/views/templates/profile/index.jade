@@ -3,18 +3,24 @@
 extends ../layout
 
 block title
-    | {{ profile.title }}
+    | {{ profile.name }}
 
 append head
+    {% if manager %}
     link(rel="stylesheet", href="{{ STATIC_URL }}jQueryUI/jquery-ui.css")
     link(rel="stylesheet", href="{{ STATIC_URL }}redactor/redactor.css")
-
-block vars
-    - var collapsed = true
+    {% endif %}
 
 block content
     div#profile.content_divided
-        div.cover
+        div.title
+            div.text
+                {{ profile.name }}
+            div.button Edit
+            div.editor.hidden
+                input(type="text", name="name", placeholder="Profile name", value="{{ profile.name }}", spellcheck="false")
+            div.clear
+        div.cover.hidden
             div.image
                 div.bounds
                     {% if profile.cover %}
@@ -34,20 +40,14 @@ block content
                     input.hidden(type="file", name="image_file")
                     {% csrf_token %}
             {% endif %}
-        div.title
-            div.controls
-            div.text
-                {{ profile.name }}
-            div.clear
         div.tabs
-            div.inner
-                div.tab.overview.show Overview
-                div.tab.events Events
-                div.tab.sponsorships Sponsorships
-                div.clear
+            div.tab.overview.show Overview
+            div.tab.events Events
+            div.tab.sponsorships Sponsorships
+            div.clear
         div.frame
             div.left
-                div.placeholder
+                div.tagline
                 div.wrapper
                     div.overview.show
                         div.info
@@ -63,12 +63,23 @@ block content
                     div.events
                     div.sponsorships
             div.right
-                div.image
-                div.action
-                    {% if manager %}
-                    {% else %}
-                    b Follow
-                    {% endif %}
+                div.logo
+                    div.image
+                        {% if profile.image %}
+                        img(src="{{ profile.image.source.url }}")
+                        {% endif %}
+                    div.controls
+                        a.upload(href="javascript:;") Upload
+                        a.delete(href="javascript:;") Delete
+                        a.save.hidden(href="javascript:;") Save
+                        a.cancel.hidden(href="javascript:;") Cancel
+                        div.clear
+                        form.upload_logo
+                            input.hidden(type="file", name="image_file")
+                            {% csrf_token %}
+                div.social
+                div.summary
+                div.categories
             div.clear
 
 append script

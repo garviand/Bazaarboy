@@ -1006,6 +1006,11 @@ def purchase(request, params, user):
         purchase = Purchase(owner = user, ticket = ticket, event = event, 
                             price = ticket.price)
         purchase.save()
+        # If the ticket has a quantity limit
+        if ticket.quantity is not None:
+            # Adjust the ticket quantity
+            ticket.quantity = F('quantity') - 1
+            ticket.save()
         # Try sending the confirmation email
         try:
             email = Email()
@@ -1029,10 +1034,11 @@ def purchase(request, params, user):
                                      .profile
     paymentAccount = creator.payment_account
     # Create the checkout
+    price = (ticket.price + 0.3) / (1 - 0.029 - STRIPE_TRANSACTION_RATE)
     checkoutDescription = '%s - %s' % (event.name, ticket.name)
     checkout = Checkout(payer = user, 
                         payee = paymentAccount, 
-                        amount = int(ticket.price * 100), 
+                        amount = int(price * 100), 
                         description = checkoutDescription)
     checkout.save()
     # Create the purchase

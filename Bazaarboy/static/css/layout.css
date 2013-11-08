@@ -1352,253 +1352,209 @@ div#connect div.actions a {
   line-height: 16px;
   float: right;
 }
-/*
-div#profile {
-    div.cover {
-        position: absolute;
-        width: @body_width;
-        height: 230px;
-        top: 0;
-        left: 0 - ((@content_width - @content_inner_width) / 2);
-        overflow: hidden;
-        body.collapsed & {
-            width: @content_width_expanded;
-            left: 0 - ((@body_width - @content_inner_width) / 2 - @sidebar_width_collapsed);
-
-            div.image {
-                left: 0;
-            }
-
-            div.controls {
-                left: (@body_width - @content_inner_width) / 2 - @sidebar_width_collapsed;
-            }
-        }
-        &:hover {
-            div.controls {
-                display: block;
-            }
-        }
-
-        div.image {
-            position: relative;
-            width: @content_width_expanded;
-            height: 100%;
-            top: 0;
-            left: @content_width - @content_width_expanded;
-            overflow: hidden;
-
-            div.bounds {
-                position: absolute;
-                width: 100%;
-                height: 100%;
-                top: 0;
-                left: 0;
-
-                img {
-                    &.normal {
-                        width: 100%;
-                        height: 100%;
-                    }
-
-                    &.editing {
-                        cursor: pointer;
-                    }
-                }
-            }
-        }
-
-        div.controls {
-            display: none;
-            position: absolute;
-            top: 60px;
-            left: (@content_width - @content_inner_width) / 2;
-            background: #FFF;
-        }
-    }
-
-    > div.title {
-        position: absolute;
-        width: @content_width;
-        height: @content_title_height_single;
-        left: 0 - ((@content_width - @content_inner_width) / 2);
-        z-index: @above_plain_z_index;
-        background-color: rgba(0, 0, 0, 0.6);
-        body.collapsed & {
-            width: @content_width_expanded;
-            left: 0 - ((@body_width - @content_inner_width) / 2 - @sidebar_width_collapsed);
-
-            div.text {
-                left: (@body_width - @content_inner_width) / 2 - @sidebar_width_collapsed;
-            }
-        }
-
-        div.controls {
-            position: absolute;
-        }
-
-        div.text {
-            position: absolute;
-            width: @content_inner_body_width;
-            height: @font_size_base + 4;
-            left: (@content_width - @content_inner_width) / 2;
-            padding: (@content_title_height_single - (@font_size_base + 4)) / 2 0;
-            color: #FFF;
-            font-size: @font_size_base + 4;
-            font-weight: @font_weight_bold;
-            line-height: @font_size_base + 4;
-        }
-    }
-
-    div.tabs {
-        position: absolute;
-        width: @content_width;
-        height: 30px;
-        top: 230px;
-        left: 0 - ((@content_width - @content_inner_width) / 2);
-        z-index: @above_plain_z_index;
-        background-color: rgba(0, 0, 0, 0.6);
-
-        body.collapsed & {
-            width: @content_width_expanded;
-            left: 0 - ((@body_width - @content_inner_width) / 2 - @sidebar_width_collapsed);
-
-            div.inner {
-                left: (@body_width - @content_inner_width) / 2 - @sidebar_width_collapsed;
-            }
-        }
-
-        div.inner {
-            position: absolute;
-            width: @content_inner_width;
-            height: 100%;
-            left: (@content_width - @content_inner_width) / 2;
-
-            div.tab {
-                height: @font_size_base - 2;
-                padding: (30px - (@font_size_base - 2)) / 2;
-                color: #FFF;
-                font-size: @font_size_base - 2;
-                line-height: @font_size_base - 2;
-                cursor: pointer;
-                .left;
-                &:hover {
-                    background-color: #999;
-                }
-                &.show {
-                    background-color: #000;
-                }
-            }
-        }
-    }
-
-    div.frame {
-        div.left {
-            div.placeholder {
-                width: @content_inner_body_width;
-                height: 260px;
-            }
-
-            div.wrapper {
-                width: @content_inner_body_width;
-
-                > div {
-                    display: none;
-                    width: @content_inner_body_width;
-
-                    &.show {
-                        display: block;
-                    }
-                }
-
-                div.overview {
-                    padding: 20px 0;
-
-                    div.info {
-                        width: 100%;
-                        height: 120px;
-                        padding: 10px 0;
-                        background-color: @pale_blue;
-                    }
-
-                    div.description {
-                        width: 100%;
-                        margin-top: 20px;
-
-                        div.editor {
-                            width: 100%;
-
-                            &.editing {
-                                width: @content_inner_body_width + 22;
-                                margin-left: -11px;
-
-                                div.inner {
-                                    width: @content_inner_body_width - 10;
-                                    padding: 15px;
-                                    background-color: none;
-                                    .center;
-                                }
-                            }
-
-                            div.inner {
-                                width: @content_inner_body_width - 10;
-                                padding: 10px 5px;
-                                background-color: @pale_blue;
-                            }
-
-                            img {
-                                max-width: @content_inner_body_width;
-                            }
-
-                            iframe {
-                                max-width: @content_inner_body_width;
-                            }
-                        }
-
-                        div.controls {
-                            a.save {
-                                
-                            }
-                        }
-                    }
-                }
-
-                div.events {
-
-                }
-
-                div.sponsorships {
-
-                }
-            }
-        }
-
-        div.right {
-            div.image {
-                position: relative;
-                width: @content_inner_sidebar_width;
-                height: 144px;
-                margin-top: (@content_title_height_single - (@font_size_base + 4)) / 2;
-                z-index: @overlay_z_index;
-                background-color: @pale_blue;
-            }
-
-            div.action {
-                position: relative;
-                width: @content_inner_sidebar_width;
-                height: @font_size_base + 2;
-                padding: (48px - (@font_size_base + 2)) / 2 0;
-                z-index: @overlay_z_index;
-                background-color: @event_blue;
-                color: #FFF;
-                line-height: @font_size_base + 2;
-                font-size: @font_size_base + 2;
-                text-align: center;
-                cursor: pointer;
-            }
-        }
-    }
+div#profile div.title {
+  width: 960px;
+  display: block;
+  margin: auto;
 }
-*/
+div#profile div.title .title_text {
+  width: 960px;
+  min-height: 31px;
+  padding: 20px 0;
+  color: #000;
+  font-size: 25px;
+  font-weight: 500;
+  line-height: 31px;
+}
+div#profile div.title div.text {
+  width: 960px;
+  min-height: 31px;
+  padding: 20px 0;
+  color: #000;
+  font-size: 25px;
+  font-weight: 500;
+  line-height: 31px;
+}
+div#profile div.title div.button {
+  position: absolute;
+  width: 40px;
+  height: 12px;
+  left: -50px;
+  top: 26.5px;
+  padding: 2px 0;
+  border: 1px solid #4795f2;
+  color: #4795f2;
+  font-size: 12px;
+  font-weight: 300;
+  line-height: 12px;
+  text-transform: uppercase;
+  text-align: center;
+  cursor: pointer;
+}
+div#profile div.title div.editor {
+  width: 960px;
+  min-height: 31px;
+  padding: 20px 0;
+  color: #000;
+  font-size: 25px;
+  font-weight: 500;
+  line-height: 31px;
+}
+div#profile div.title div.editor input {
+  display: block;
+  width: 960px;
+  min-height: 31px;
+  margin: 0;
+  padding: 0;
+  border: none;
+  outline-color: #4795f2;
+  background: none;
+  font-size: 25px;
+  font-weight: 500;
+  line-height: 31px;
+}
+div#profile div.title div.editor input .placeholder {
+  color: rgba(255, 255, 255, 0.6);
+  font-size: 16px;
+  font-weight: 300;
+}
+div#profile div.title div.editor input::-webkit-input-placeholder {
+  color: rgba(255, 255, 255, 0.6);
+  font-size: 16px;
+  font-weight: 300;
+}
+div#profile div.title div.editor input:-moz-placeholder {
+  color: rgba(255, 255, 255, 0.6);
+  font-size: 16px;
+  font-weight: 300;
+}
+div#profile div.title div.editor input::-moz-placeholder {
+  color: rgba(255, 255, 255, 0.6);
+  font-size: 16px;
+  font-weight: 300;
+}
+div#profile div.title div.editor input:-ms-input-placeholder {
+  color: rgba(255, 255, 255, 0.6);
+  font-size: 16px;
+  font-weight: 300;
+}
+div#profile div.tabs {
+  width: 960px;
+  height: 40px;
+  background-color: #EAEAEA;
+  display: block;
+  margin: auto;
+}
+div#profile div.tabs div.tab {
+  width: 112px;
+  height: 14px;
+  padding: 13px 0;
+  border-right: 1px solid #FFF;
+  background-color: #EAEAEA;
+  font-size: 14px;
+  font-weight: 500;
+  line-height: 14px;
+  text-align: center;
+  cursor: pointer;
+  float: left;
+}
+div#profile div.tabs div.tab:hover,
+div#profile div.tabs div.tab.show {
+  background-color: #fb913d;
+  color: #FFF;
+}
+div#profile div.frame {
+  margin-top: 20px;
+}
+div#profile div.frame div.left div.wrapper {
+  width: 696px;
+  margin-bottom: 20px;
+}
+div#profile div.frame div.left div.wrapper > div {
+  display: none;
+  width: 696px;
+}
+div#profile div.frame div.left div.wrapper > div.show {
+  display: block;
+}
+div#profile div.frame div.left div.wrapper div.overview div.description div.controls {
+  width: 100%;
+  height: 30px;
+  padding-top: 10px;
+}
+div#profile div.frame div.left div.wrapper div.overview div.description div.controls a {
+  display: block;
+  width: 80px;
+  height: 18px;
+  padding: 6px 0;
+  border: 1px solid #4795f2;
+  color: #4795f2;
+  font-size: 18px;
+  font-weight: 500;
+  line-height: 18px;
+  text-transform: uppercase;
+  text-decoration: none;
+  text-align: center;
+  float: left;
+}
+div#profile div.frame div.left div.wrapper div.overview div.description div.controls a.save {
+  margin-right: 10px;
+}
+div#profile div.frame div.right > div {
+  margin-bottom: 10px;
+}
+div#profile div.frame div.right div.logo {
+  position: relative;
+  width: 192px;
+  height: 192px;
+}
+div#profile div.frame div.right div.logo:hover div.controls {
+  display: block;
+}
+div#profile div.frame div.right div.logo div.image {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  background-color: #fb913d;
+}
+div#profile div.frame div.right div.logo div.image img {
+  position: absolute;
+  max-width: 100%;
+  max-height: 100%;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  margin: auto;
+}
+div#profile div.frame div.right div.logo div.controls {
+  display: none;
+  position: absolute;
+  width: 192px;
+  height: 40px;
+  bottom: 0;
+  background-color: #CCC;
+}
+div#profile div.frame div.right div.logo div.controls > a {
+  display: block;
+  width: 96px;
+  height: 16px;
+  padding: 12px 0;
+  color: #000;
+  font-size: 16px;
+  line-height: 16px;
+  font-weight: 500;
+  text-align: center;
+  text-transform: uppercase;
+  text-decoration: none;
+  float: left;
+}
+div#profile div.frame div.right div.logo div.controls > a:hover {
+  background-color: #AAA;
+}
+div#profile div.frame div.right div.logo div.controls > a.hidden {
+  display: none;
+}
 div.event_base {
   position: relative;
 }
@@ -2018,9 +1974,12 @@ div.event_base div.frame > div.left div.description div.editor.editing div.inner
 }
 div.event_base div.frame > div.left div.description div.editor div.inner {
   width: 100%;
-}
-div.event_base div.frame > div.left div.description div.editor div.inner > p {
-  -webkit-margin-before: 0em;
+  /*
+                        > p {
+                            -webkit-margin-before: 0em;
+                        }
+                        */
+
 }
 div.event_base div.frame > div.left div.description div.editor img {
   max-width: 696px;

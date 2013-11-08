@@ -39,14 +39,7 @@
       });
     },
     prepareUploadedCoverImage: function(coverUrl) {
-      var scope,
-        _this = this;
-      if (!$('body').hasClass('collapsed')) {
-        Bazaarboy.switchCollapsedStates(function() {
-          _this.prepareUploadedCoverImage(coverUrl);
-        });
-        return;
-      }
+      var scope;
       scope = this;
       $('<img>').attr('src', mediaUrl + coverUrl).addClass('editing').load(function() {
         var frame, frameHeight, frameWidth;
@@ -241,6 +234,37 @@
         }
       });
     },
+    startEditingLogoImage: function() {
+      var scope;
+      scope = this;
+      $('<img>').attr('src', mediaUrl + this.uploads.image.source).load(function() {
+        $('div#profile div.frame div.right div.logo div.image').html('');
+        $('div#profile div.frame div.right div.logo div.image').append(this);
+        $('div#profile div.frame div.right div.logo a.upload').addClass('hidden');
+        $('div#profile div.frame div.right div.logo a.delete').addClass('hidden');
+        $('div#profile div.frame div.right div.logo a.save').removeClass('hidden');
+        $('div#profile div.frame div.right div.logo a.cancel').removeClass('hidden');
+      });
+    },
+    saveLogoImage: function() {
+      var _this = this;
+      this.save({
+        image: this.uploads.image.pk
+      }, function(err, profile) {
+        if (!err) {
+          _this.uploads.image = null;
+          _this.stopEditingLogoImage();
+        } else {
+          alert(err.message);
+        }
+      });
+    },
+    stopEditingLogoImage: function() {
+      $('div#profile div.frame div.right div.logo a.upload').removeClass('hidden');
+      $('div#profile div.frame div.right div.logo a.delete').removeClass('hidden');
+      $('div#profile div.frame div.right div.logo a.save').addClass('hidden');
+      $('div#profile div.frame div.right div.logo a.cancel').addClass('hidden');
+    },
     initEditing: function() {
       var _this = this;
       this.description = $('div.overview div.description div.inner').html();
@@ -254,10 +278,6 @@
           _this.startEditingDescription();
         }
       });
-      this.image = $('div#profile div.right div.image img');
-      if (this.image.length > 0) {
-        this.image = this.image.clone();
-      }
       this.cover = $('div#profile div.cover div.image div.bounds img');
       if (this.cover.length > 0) {
         this.cover = this.cover.clone();
@@ -307,12 +327,39 @@
           }
         }
       });
+      $('div#profile div.frame div.right div.logo a.upload').click(function() {
+        $('div#profile div.frame div.right input[name=image_file]').click();
+      });
+      $('div#profile div.frame div.right div.logo a.delete').click(function() {});
+      $('div#profile div.frame div.right div.logo a.save').click(function() {
+        _this.saveLogoImage();
+      });
+      $('div#profile div.frame div.right div.logo a.cancel').click(function() {});
+      $('div#profile div.frame div.right input[name=image_file]').fileupload({
+        url: rootUrl + 'file/image/upload/',
+        type: 'POST',
+        add: function(event, data) {
+          data.submit();
+        },
+        done: function(event, data) {
+          var response;
+          response = jQuery.parseJSON(data.result);
+          if (response.status === 'OK') {
+            if (_this.uploads.image != null) {
+              Bazaarboy.post('file/image/delete/', {
+                id: _this.uploads.image.pk
+              });
+            }
+            _this.uploads.image = response.image;
+            _this.startEditingLogoImage();
+          } else {
+            alert(response.message);
+          }
+        }
+      });
     },
     init: function() {
-      var collapseStates,
-        _this = this;
-      collapseStates = [['div#profile', [['margin-left', '63px', '96px']]], ['div#profile div.cover', [['width', '750px', '876px'], ['left', '-63px', '-96px']]], ['div#profile div.cover div.image', [['left', '-126px', '0']]], ['div#profile > div.title', [['width', '750px', '876px'], ['left', '-63px', '-96px']]], ['div#profile > div.title div.text', [['left', '63px', '96px']]], ['div#profile > div.tabs', [['width', '750px', '876px'], ['left', '-63px', '-96px']]], ['div#profile > div.tabs div.inner', [['left', '63px', '96px']]]];
-      $.merge(Bazaarboy.collapseStates, collapseStates);
+      var _this = this;
       $.each(['overview', 'events', 'sponsorships'], function(index, tab) {
         $('div.tabs div.tab.' + tab).click(function() {
           _this.switchTab(tab);
