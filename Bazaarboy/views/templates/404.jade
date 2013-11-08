@@ -3,19 +3,17 @@
 extends ./layout
 
 block body
-	div#wrapper_top
-		block top
-			include components/top
-	div#wrapper_content
-		block content
-			div#show404
-				div.background
-				div.info
-					div.title 404
-					hr
-					div.subtitle.bold Well this is bizarre,
-					div.subtitle it looks like there's nothing here!
-				div.controls
-					a.home(href="http://bazaarboy.com") Go Home
-	div#wrapper_bottom(style="display:none;")
-		block bottom
+	block content
+		div#show404
+			div.background
+			div.info
+				div.title
+					| 4
+					span
+						img(src="{{ STATIC_URL }}images/404/o_logo.png")
+					| 4
+				hr
+				div.subtitle.bold Well this is bizarre,
+				div.subtitle it looks like there's nothing here!
+			div.controls
+				a.home(href="http://bazaarboy.com") Back to Home

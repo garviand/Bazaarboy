@@ -324,9 +324,9 @@ div#show404 {
         top: -5%;
         left: -5%;
         z-index: -1;
-        background-image: url('../images/landing.jpg');
+        background-image: url('../images/404/bg.jpg');
         background-size: cover;
-        background-position: center bottom;
+        background-position: center center;
     }
     div.info{
         margin-top: 50px;
@@ -357,6 +357,10 @@ div#show404 {
             width: @column_width * 7 + @gutter_width * 7;
             padding: 20px 0;
             font-size: @font_size_base * 2;
+            transition: background-color .2s;
+            &:hover{
+                background-color: lighten(#ff9c00, 5%);
+            }
         }
     }
 }
@@ -1652,6 +1656,10 @@ div.event_base {
                         font-size: @font_size_base + 2;
                         text-align: center;
                         .left;
+                        transition: background-color .2s;
+                        &:hover{
+                            background-color: lighten(@event_blue, 5%);
+                        }
                     }
 
                     div.price {
@@ -1695,6 +1703,10 @@ div.event_base {
                     border: 1px solid #1B1464;
                     background-color: #2E3192;
                     cursor: pointer;
+                    transition: background-color .2s;
+                        &:hover{
+                            background-color: lighten(#2E3192, 5%);
+                        }
 
                     b {
                         display: block;
