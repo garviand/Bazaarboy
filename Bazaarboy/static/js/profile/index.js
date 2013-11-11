@@ -259,6 +259,21 @@
         }
       });
     },
+    deleteLogoImage: function() {
+      var _this = this;
+      if (confirm('Are you sure you want to delete the logo?')) {
+        this.save({
+          image: 'delete'
+        }, function(err, profile) {
+          if (!err) {
+            _this.image = null;
+            $('div#profile div.frame div.right div.logo div.image').html('');
+          } else {
+            alert(err.message);
+          }
+        });
+      }
+    },
     stopEditingLogoImage: function() {
       $('div#profile div.frame div.right div.logo a.upload').removeClass('hidden');
       $('div#profile div.frame div.right div.logo a.delete').removeClass('hidden');
@@ -330,7 +345,9 @@
       $('div#profile div.frame div.right div.logo a.upload').click(function() {
         $('div#profile div.frame div.right input[name=image_file]').click();
       });
-      $('div#profile div.frame div.right div.logo a.delete').click(function() {});
+      $('div#profile div.frame div.right div.logo a.delete').click(function() {
+        _this.deleteLogoImage();
+      });
       $('div#profile div.frame div.right div.logo a.save').click(function() {
         _this.saveLogoImage();
       });

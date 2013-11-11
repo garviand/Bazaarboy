@@ -251,6 +251,16 @@ Bazaarboy.profile.index =
                 alert err.message
             return
         return
+    deleteLogoImage: () ->
+        if confirm('Are you sure you want to delete the logo?')
+            @save {image: 'delete'}, (err, profile) =>
+                unless err
+                    @image = null
+                    $('div#profile div.frame div.right div.logo div.image').html('')
+                else
+                    alert err.message
+                return
+        return
     stopEditingLogoImage: () ->
         $('div#profile div.frame div.right div.logo a.upload')
             .removeClass('hidden')
@@ -317,7 +327,8 @@ Bazaarboy.profile.index =
         $('div#profile div.frame div.right div.logo a.upload').click () ->
             $('div#profile div.frame div.right input[name=image_file]').click()
             return
-        $('div#profile div.frame div.right div.logo a.delete').click () ->
+        $('div#profile div.frame div.right div.logo a.delete').click () =>
+            @deleteLogoImage()
             return
         $('div#profile div.frame div.right div.logo a.save').click () =>
             @saveLogoImage()

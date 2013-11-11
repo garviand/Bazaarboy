@@ -735,7 +735,7 @@
         }
         this.adjustOverlayHeight();
       } else {
-        if (confirm('Are you sure you want to delete this ticket?')) {
+        if (confirm('Are you sure you want to delete this ticket? All associate RSVPs will be lost.')) {
           Bazaarboy.post('event/ticket/delete/', {
             id: id
           }, function(response) {
