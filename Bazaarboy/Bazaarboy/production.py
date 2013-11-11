@@ -18,7 +18,6 @@ if 'RDS_HOSTNAME' in os.environ:
         }
     }
     
-
 # Use S3 as file storage
 
 AWS_ACCESS_KEY_ID = 'AKIAIX6AKR4TMQL5FSRQ'
