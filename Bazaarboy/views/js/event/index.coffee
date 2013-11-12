@@ -291,7 +291,6 @@ Bazaarboy.event.index =
             reference: reference
         , (result, status) ->
             if status is 'OK'
-                console.log result
                 $('div#event > div.title div.details input[name=latitude]')
                     .val result.geometry.location.lat()
                 $('div#event > div.title div.details input[name=longitude]')
