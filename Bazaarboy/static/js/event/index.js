@@ -329,8 +329,9 @@
         reference: reference
       }, function(result, status) {
         if (status === 'OK') {
-          $('div#event > div.title div.details input[name=latitude]').val(result.geometry.location.nb);
-          $('div#event > div.title div.details input[name=longitude]').val(result.geometry.location.ob);
+          console.log(result);
+          $('div#event > div.title div.details input[name=latitude]').val(result.geometry.location.lat());
+          $('div#event > div.title div.details input[name=longitude]').val(result.geometry.location.lng());
         }
       });
     },
