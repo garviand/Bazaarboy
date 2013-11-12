@@ -292,9 +292,9 @@ Bazaarboy.event.index =
         , (result, status) ->
             if status is 'OK'
                 $('div#event > div.title div.details input[name=latitude]')
-                    .val result.geometry.location.nb
+                    .val result.geometry.location.lat()
                 $('div#event > div.title div.details input[name=longitude]')
-                    .val result.geometry.location.ob
+                    .val result.geometry.location.lng()
             return
         return
     startEditingTimeLocation: () ->
