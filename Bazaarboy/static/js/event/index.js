@@ -329,7 +329,6 @@
         reference: reference
       }, function(result, status) {
         if (status === 'OK') {
-          console.log(result);
           $('div#event > div.title div.details input[name=latitude]').val(result.geometry.location.lat());
           $('div#event > div.title div.details input[name=longitude]').val(result.geometry.location.lng());
         }
@@ -736,7 +735,7 @@
         }
         this.adjustOverlayHeight();
       } else {
-        if (confirm('Are you sure you want to delete this ticket? All associate RSVPs will be lost.')) {
+        if (confirm('Are you sure you want to delete this ticket? All registration information for this ticket will be lost forever.')) {
           Bazaarboy.post('event/ticket/delete/', {
             id: id
           }, function(response) {
