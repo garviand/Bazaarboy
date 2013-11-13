@@ -26,6 +26,7 @@ def register(request, params, user):
     if user is not None:
         # Session already exists, redirect to index
         return redirect('index')
+    orgInfo = request.GET.dict()
     return render(request, 'user/register.html', locals())
 
 @login_check()

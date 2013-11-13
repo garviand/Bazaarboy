@@ -99,6 +99,13 @@ def terms(request, user):
     return render(request, 'index/terms.html', locals())
 
 @login_check()
+def pricing(request, user):
+    """
+    Pricing & Info
+    """
+    return render(request, 'index/pricing.html', locals())
+
+@login_check()
 def about(request, user):
     pass
 

@@ -329,7 +329,6 @@
         reference: reference
       }, function(result, status) {
         if (status === 'OK') {
-          console.log(result);
           $('div#event > div.title div.details input[name=latitude]').val(result.geometry.location.lat());
           $('div#event > div.title div.details input[name=longitude]').val(result.geometry.location.lng());
         }
