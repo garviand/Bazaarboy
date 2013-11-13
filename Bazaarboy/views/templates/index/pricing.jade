@@ -11,7 +11,8 @@ block body
 			div.background
 			div.pricing_content
 				div.logo
-					img(src="{{ STATIC_URL }}images/pricing/logo.png")
+					a(href="{% url index %}")
+						img(src="{{ STATIC_URL }}images/pricing/logo.png")
 				div.title
 					div.top Free Events Are Always Free.
 					div.bottom Paid Events Require No Setup Fee
