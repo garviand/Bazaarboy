@@ -685,7 +685,7 @@ Bazaarboy.event.index =
                 $('div#tickets div.tickets div.empty').removeClass('hidden')
             @adjustOverlayHeight()
         else
-            if confirm('Are you sure you want to delete this ticket?')
+            if confirm('Are you sure you want to delete this ticket? All registration information for this ticket will be lost forever.')
                 Bazaarboy.post 'event/ticket/delete/', {id: id}, (response) =>
                     if response.status is 'OK'
                         $(ticket).remove()
