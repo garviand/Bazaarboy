@@ -236,6 +236,10 @@ div#wrapper_top {
         div.logout {
             .control_div;
         }
+
+        div.login {
+            .control_div;
+        }
     }
 }
 
@@ -1699,9 +1703,65 @@ div.event_base {
         width: 100%;
         min-width: @body_width + @gutter_width * 2;
         z-index: @overlay_z_index + 1;
-        border-bottom: 1px solid lighten(#B4A297, 20%);
         background-color: #FFF;
-        box-shadow: 0 -4px 14px #B4A297;
+
+        div.organizers {
+            width: 100%;
+            height: 44px;
+            border-top: 1px solid #FFF;
+            background-color: #EAEAEA;
+
+            div.content {
+                width: @body_width + @gutter_width * 2;
+                height: 44px;
+                .center;
+
+                div.organizer {
+                    height: 28px;
+                    padding: 8px 0;
+                    margin-right: 10px;
+                    .left;
+
+                    div.logo {
+                        width: 28px;
+                        height: 28px;
+                        background-color: #FFF;
+                        .left;
+
+                        img {
+                            max-width: 28px;
+                            max-height: 28px;
+                        }
+                    }
+
+                    div.name {
+                        height: 14px;
+                        padding: 7px 0;
+                        margin-left: 5px;
+                        font-size: 14px;
+                        line-height: 14px;
+                        .left;
+                    }
+                }
+
+                div.and {
+                    height: 14px;
+                    padding: 15px 0;
+                    margin-right: 10px;
+                    font-size: 14px;
+                    line-height: 14px;
+                    .left;
+                }
+
+                div.presents {
+                    height: 14px;
+                    padding: 15px 0;
+                    font-size: 14px;
+                    line-height: 14px;
+                    .left;
+                }
+            }
+        }
 
         div.inner {
             width: @body_width + @gutter_width * 2;
@@ -2209,28 +2269,30 @@ div.event_base {
                     div.organizer {
                         position: relative;
                         width: @sidebar_width - 20;
-                        min-height: 25px;
+                        min-height: 36px;
                         padding-top: 4px;
 
                         div.icon {
                             position: absolute;
-                            width: 25px;
-                            height: 25px;
-                            background-color: @event_blue;
+                            width: 36px;
+                            height: 36px;
+                            &.default {
+                                background-color: @event_blue;
+                            }
 
                             img {
-                                width: 20px;
-                                height: 20px;
+                                max-width: 36px;
+                                max-height: 36px;
                                 .absolute_center;
                             }
                         }
 
                         div.name {
-                            width: @sidebar_width - 20 - 25 - 14;
+                            width: @sidebar_width - 20 - 36 - 14;
                             padding: 0 7px;
-                            margin-left: 25px;
+                            margin-left: 36px;
                             font-size: 15px;
-                            line-height: 25px;
+                            line-height: 36px;
                             .left;
 
                             a {

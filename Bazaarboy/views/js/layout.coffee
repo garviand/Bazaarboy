@@ -32,6 +32,8 @@
     adjustBottomPosition: () ->
         windowHeight = $(window).height()
         topHeight = $('div#wrapper_top').outerHeight()
+        if $('div#wrapper_top').hasClass('hidden')
+            topHeight = 0
         contentHeight = $('div#wrapper_content').outerHeight()
         bottomHeight = $('div#wrapper_bottom').outerHeight()
         if windowHeight - bottomHeight > topHeight + contentHeight

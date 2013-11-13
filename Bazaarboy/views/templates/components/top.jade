@@ -4,7 +4,7 @@ div.logo
     a(href="{% url index %}")
         div.left
             img(src="{{ STATIC_URL }}images/logo.png")
-        div.right 
+        div.right
             b Bazaarboy
         div.clear
 div.controls
@@ -13,6 +13,9 @@ div.controls
         a {{ user.full_name }}
     div.logout
         a(href="{% url user:logout %}") Log Out
+    {% else %}
+    div.login
+        a(href="{% url index %}") Log In
     {% endif %}
     div.clear
 div.clear
