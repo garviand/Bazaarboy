@@ -29,7 +29,7 @@ prepend body
 block content
     div#event.content_divided.event_base(class="{% if event.cover %}with_cover{% endif %}")
         div.title
-            div.organizers
+            div.organizers.hidden
                 div.content
                     {% for organizer in organizers %}
                     div.organizer
