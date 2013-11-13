@@ -3,6 +3,7 @@ from django.conf.urls import patterns, include, url
 index_urlpatterns = patterns('src.controllers.index', 
     url(r'^terms/$', 'terms', name = 'terms'), 
     url(r'^about/$', 'about', name = 'about'),
+    url(r'^pricing/$', 'pricing', name = 'pricing'),
     url(r'^timezone/$', 'timezone', name = 'timezone'),
 )
 

@@ -365,6 +365,280 @@ div#show404 {
     }
 }
 
+// Pricing
+
+div#pricing {
+    div.background {
+        position: fixed;
+        width: 100%;
+        height: 100%;
+        min-height: 600px;
+        min-width: 970px;
+        z-index: -1;
+        background-image: url('../images/pricing/bg.jpg');
+        background-size: cover;
+        background-position: center top;
+    }
+    div.pricing_content{
+        width: @body_width;
+        margin: 0 auto;
+        .logo{
+            padding-top: 55px;
+            margin-bottom: 80px;
+        }
+        .title{
+            color: #FFF;
+            font-size: 2.75em;
+            text-align: center;
+            .top{
+                font-weight: bold;
+                margin-bottom: 10px;
+            }
+            .bottom{
+                margin-bottom: 70px;
+            }
+        }
+        .scrolling_input{
+            margin: 0 auto;
+            margin-bottom: 90px;
+            width: (@column_width * 14) + (@gutter_width * 4);
+            input, a{
+                display: block;
+                float: left;
+                width: (@column_width * 5) + @gutter_width;
+                margin-right: @gutter_width;
+                box-sizing: border-box;
+                padding: 13px 15px;
+                border: none;
+                border-radius: 3px;
+            }
+            a{
+                margin-right: 0;
+                color: #FFF;
+                width: (@column_width * 4);
+                font-weight: bold;
+                background-color: #ff9137;
+                text-align: center;
+                text-decoration: none;
+                transition: background-color .2s;
+                &:hover{
+                    background-color: lighten(#ff9137, 5%)
+                }
+            }
+        }
+    }
+    .fees{
+        background-color: #FFF;
+        width: 100%;
+        .fees_content{
+            width: @body_width;
+            margin: 0 auto;
+            padding: 50px 0;
+            .title{
+                color: #4d4c4d;
+                font-size: 2.25em;
+                padding-bottom: 12px;
+                border-bottom: 1px solid #e6e6e6;
+                margin-bottom: 40px;
+            }
+            .boxes{
+                color: #4d4c4d;
+                .box{
+                    float: left;
+                    text-align: center;
+                    border: 1px solid #e6e6e6;
+                    border-radius: 3px;
+                    .numbers{
+                        margin-top: 40px;
+                        font-size: 3.5em;
+                        font-weight: bold;
+                    }
+                    .subtitle{
+                        margin-top: 8px;
+                        font-size: 2.25em;
+                        margin-bottom: 50px;
+                    }
+                    &.bboy_box{
+                        width: (@column_width * 6) + 40;
+                        img{
+                            margin-top: 30px;
+                        }
+                    }
+                    &.cc_box{
+                        width: (@column_width * 10);
+                        img{
+                            margin-top: 49px;
+                        }
+                    }
+                }
+                .plus{
+                    width: (@column_width * 2);
+                    float: left;
+                    text-align: center;
+                    margin-top: 150px;
+                }
+                .caption{
+                    float: left;
+                    margin-top: 20px;
+                    font-size: 1.4em;
+                    margin-left: 2px;
+                    &.bboy_caption{
+                        width: (@column_width * 6) + 40;
+                        margin-right: (@column_width * 2);
+                    }
+                    &.cc_caption{
+                        width: (@column_width * 10);
+                    }
+                }
+            }
+        }
+    }
+    .stripe{
+        width: 100%;
+        .stripe_content{
+            width: @body_width;
+            margin: 0 auto;
+            padding: 50px 0;
+            .title{
+                color: #FFF;
+                font-size: 2.25em;
+                padding-bottom: 12px;
+                border-bottom: 1px solid #FFF;
+                margin-bottom: 40px;
+            }
+            .stripe_logo{
+                width: 100%;
+                text-align: center;
+                margin: 90px 0;
+            }
+            .pci{
+                color: #FFF;
+                hr, div{
+                    display: block;
+                    float: left;
+                    &.clear{
+                        float: none;
+                    }
+                }
+                div{
+                    text-align: center;
+                    width: (@body_width / 3) + 70;
+                    font-size: 1.1em;
+                }
+                hr{
+                    border: none;
+                    height: 1px;
+                    background-color: #FFF;
+                    position: relative;
+                    top: 4px;
+                    width: (@body_width / 3) - 35;
+                }
+            }
+            .credit_cards{
+                margin-top: 40px;
+                text-align: center;
+                color: #FFF;
+                border: 1px solid #FFF;
+                background: rgba(255, 255, 255, 0.4);
+                > div, > img{
+                    float: left;
+                    font-size: 1.5em;
+                    margin: 20px 0;
+                    &.clear{
+                        float: none;
+                    }
+                }
+                .text{
+                    margin-top: 27px;
+                    margin-left: 100px;
+                    margin-right: 40px;
+                }
+                > img{
+                    margin-right: 12px;
+                }
+            }
+        }
+    }
+    .charges{
+        width:100%;
+        background-color: #FFF;
+        .charges_content{
+            width: @body_width;
+            margin: 0 auto;
+            .top{
+                padding-top: 130px;
+                img{
+                    float: left;
+                }
+                .text{
+                    float: right;
+                }
+            }
+            .bottom{
+                margin-top: 80px;
+                padding-bottom: 80px;
+                img{
+                    float: right;
+                }
+                .text{
+                    float: left;
+                }
+            }
+            .text{
+                color: #4d4c4d;
+                width: 410px;
+                .title{
+                    font-size: 2.25em;
+                    margin-bottom: 30px;
+                }
+                .content{
+                    font-size: 1.3em;
+                }
+            }
+        }
+    }
+    .what_else{
+        margin-top: 210px;
+        width:100%;
+        background-color: rgba(0, 0, 0, 0.3);
+        .what_else_content{
+            width: @body_width;
+            margin: 0 auto;
+            padding-top: 60px;
+            padding-bottom: 100px;
+            .title{
+                color: #FFF;
+                font-size: 2.25em;
+                padding-bottom: 12px;
+                border-bottom: 1px solid #FFF;
+                margin-bottom: 20px;
+            }
+            .content{
+                color: #FFF;
+                font-size: 1.3em;
+                margin-bottom: 60px;
+                line-height: 1.5em;
+            }
+            .contact_us{
+                display: block;
+                color: #FFF;
+                padding: 13px 15px;
+                margin: 0 auto;
+                border-radius: 3px;
+                width: (@column_width * 3);
+                font-weight: bold;
+                background-color: #ff9137;
+                text-align: center;
+                text-decoration: none;
+                transition: background-color .2s;
+                &:hover{
+                    background-color: lighten(#ff9137, 5%)
+                }
+            }
+        }
+    }
+}
+
 // Landing
 
 div#landing {

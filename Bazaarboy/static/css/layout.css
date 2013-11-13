@@ -686,6 +686,280 @@ div#show404 div.controls a.home {
 div#show404 div.controls a.home:hover {
   background-color: #ffa61a;
 }
+div#pricing div.background {
+  position: fixed;
+  width: 100%;
+  height: 100%;
+  min-height: 600px;
+  min-width: 970px;
+  z-index: -1;
+  background-image: url('../images/pricing/bg.jpg');
+  background-size: cover;
+  background-position: center top;
+}
+div#pricing div.pricing_content {
+  width: 912px;
+  margin: 0 auto;
+}
+div#pricing div.pricing_content .logo {
+  padding-top: 55px;
+  margin-bottom: 80px;
+}
+div#pricing div.pricing_content .title {
+  color: #FFF;
+  font-size: 2.75em;
+  text-align: center;
+}
+div#pricing div.pricing_content .title .top {
+  font-weight: bold;
+  margin-bottom: 10px;
+}
+div#pricing div.pricing_content .title .bottom {
+  margin-bottom: 70px;
+}
+div#pricing div.pricing_content .scrolling_input {
+  margin: 0 auto;
+  margin-bottom: 90px;
+  width: 768px;
+}
+div#pricing div.pricing_content .scrolling_input input,
+div#pricing div.pricing_content .scrolling_input a {
+  display: block;
+  float: left;
+  width: 264px;
+  margin-right: 24px;
+  box-sizing: border-box;
+  padding: 13px 15px;
+  border: none;
+  border-radius: 3px;
+}
+div#pricing div.pricing_content .scrolling_input a {
+  margin-right: 0;
+  color: #FFF;
+  width: 192px;
+  font-weight: bold;
+  background-color: #ff9137;
+  text-align: center;
+  text-decoration: none;
+  transition: background-color 0.2s;
+}
+div#pricing div.pricing_content .scrolling_input a:hover {
+  background-color: #ff9f51;
+}
+div#pricing .fees {
+  background-color: #FFF;
+  width: 100%;
+}
+div#pricing .fees .fees_content {
+  width: 912px;
+  margin: 0 auto;
+  padding: 50px 0;
+}
+div#pricing .fees .fees_content .title {
+  color: #4d4c4d;
+  font-size: 2.25em;
+  padding-bottom: 12px;
+  border-bottom: 1px solid #e6e6e6;
+  margin-bottom: 40px;
+}
+div#pricing .fees .fees_content .boxes {
+  color: #4d4c4d;
+}
+div#pricing .fees .fees_content .boxes .box {
+  float: left;
+  text-align: center;
+  border: 1px solid #e6e6e6;
+  border-radius: 3px;
+}
+div#pricing .fees .fees_content .boxes .box .numbers {
+  margin-top: 40px;
+  font-size: 3.5em;
+  font-weight: bold;
+}
+div#pricing .fees .fees_content .boxes .box .subtitle {
+  margin-top: 8px;
+  font-size: 2.25em;
+  margin-bottom: 50px;
+}
+div#pricing .fees .fees_content .boxes .box.bboy_box {
+  width: 328px;
+}
+div#pricing .fees .fees_content .boxes .box.bboy_box img {
+  margin-top: 30px;
+}
+div#pricing .fees .fees_content .boxes .box.cc_box {
+  width: 480px;
+}
+div#pricing .fees .fees_content .boxes .box.cc_box img {
+  margin-top: 49px;
+}
+div#pricing .fees .fees_content .boxes .plus {
+  width: 96px;
+  float: left;
+  text-align: center;
+  margin-top: 150px;
+}
+div#pricing .fees .fees_content .boxes .caption {
+  float: left;
+  margin-top: 20px;
+  font-size: 1.4em;
+  margin-left: 2px;
+}
+div#pricing .fees .fees_content .boxes .caption.bboy_caption {
+  width: 328px;
+  margin-right: 96px;
+}
+div#pricing .fees .fees_content .boxes .caption.cc_caption {
+  width: 480px;
+}
+div#pricing .stripe {
+  width: 100%;
+}
+div#pricing .stripe .stripe_content {
+  width: 912px;
+  margin: 0 auto;
+  padding: 50px 0;
+}
+div#pricing .stripe .stripe_content .title {
+  color: #FFF;
+  font-size: 2.25em;
+  padding-bottom: 12px;
+  border-bottom: 1px solid #FFF;
+  margin-bottom: 40px;
+}
+div#pricing .stripe .stripe_content .stripe_logo {
+  width: 100%;
+  text-align: center;
+  margin: 90px 0;
+}
+div#pricing .stripe .stripe_content .pci {
+  color: #FFF;
+}
+div#pricing .stripe .stripe_content .pci hr,
+div#pricing .stripe .stripe_content .pci div {
+  display: block;
+  float: left;
+}
+div#pricing .stripe .stripe_content .pci hr.clear,
+div#pricing .stripe .stripe_content .pci div.clear {
+  float: none;
+}
+div#pricing .stripe .stripe_content .pci div {
+  text-align: center;
+  width: 374px;
+  font-size: 1.1em;
+}
+div#pricing .stripe .stripe_content .pci hr {
+  border: none;
+  height: 1px;
+  background-color: #FFF;
+  position: relative;
+  top: 4px;
+  width: 269px;
+}
+div#pricing .stripe .stripe_content .credit_cards {
+  margin-top: 40px;
+  text-align: center;
+  color: #FFF;
+  border: 1px solid #FFF;
+  background: rgba(255, 255, 255, 0.4);
+}
+div#pricing .stripe .stripe_content .credit_cards > div,
+div#pricing .stripe .stripe_content .credit_cards > img {
+  float: left;
+  font-size: 1.5em;
+  margin: 20px 0;
+}
+div#pricing .stripe .stripe_content .credit_cards > div.clear,
+div#pricing .stripe .stripe_content .credit_cards > img.clear {
+  float: none;
+}
+div#pricing .stripe .stripe_content .credit_cards .text {
+  margin-top: 27px;
+  margin-left: 100px;
+  margin-right: 40px;
+}
+div#pricing .stripe .stripe_content .credit_cards > img {
+  margin-right: 12px;
+}
+div#pricing .charges {
+  width: 100%;
+  background-color: #FFF;
+}
+div#pricing .charges .charges_content {
+  width: 912px;
+  margin: 0 auto;
+}
+div#pricing .charges .charges_content .top {
+  padding-top: 130px;
+}
+div#pricing .charges .charges_content .top img {
+  float: left;
+}
+div#pricing .charges .charges_content .top .text {
+  float: right;
+}
+div#pricing .charges .charges_content .bottom {
+  margin-top: 80px;
+  padding-bottom: 80px;
+}
+div#pricing .charges .charges_content .bottom img {
+  float: right;
+}
+div#pricing .charges .charges_content .bottom .text {
+  float: left;
+}
+div#pricing .charges .charges_content .text {
+  color: #4d4c4d;
+  width: 410px;
+}
+div#pricing .charges .charges_content .text .title {
+  font-size: 2.25em;
+  margin-bottom: 30px;
+}
+div#pricing .charges .charges_content .text .content {
+  font-size: 1.3em;
+}
+div#pricing .what_else {
+  margin-top: 210px;
+  width: 100%;
+  background-color: rgba(0, 0, 0, 0.3);
+}
+div#pricing .what_else .what_else_content {
+  width: 912px;
+  margin: 0 auto;
+  padding-top: 60px;
+  padding-bottom: 100px;
+}
+div#pricing .what_else .what_else_content .title {
+  color: #FFF;
+  font-size: 2.25em;
+  padding-bottom: 12px;
+  border-bottom: 1px solid #FFF;
+  margin-bottom: 20px;
+}
+div#pricing .what_else .what_else_content .content {
+  color: #FFF;
+  font-size: 1.3em;
+  margin-bottom: 60px;
+  line-height: 1.5em;
+}
+div#pricing .what_else .what_else_content .contact_us {
+  display: block;
+  color: #FFF;
+  padding: 13px 15px;
+  margin: 0 auto;
+  border-radius: 3px;
+  width: 144px;
+  font-weight: bold;
+  background-color: #ff9137;
+  text-align: center;
+  text-decoration: none;
+  transition: background-color 0.2s;
+}
+div#pricing .what_else .what_else_content .contact_us:hover {
+  background-color: #ff9f51;
+}
 div#landing div.background {
   position: fixed;
   width: 110%;
