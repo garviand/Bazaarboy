@@ -576,6 +576,18 @@ div#wrapper_top div.controls div.logout a {
   color: #FFF;
   text-decoration: none;
 }
+div#wrapper_top div.controls div.login {
+  height: 16px;
+  padding: 14px 0;
+  margin-right: 10px;
+  font-size: 16px;
+  line-height: 16px;
+  float: left;
+}
+div#wrapper_top div.controls div.login a {
+  color: #FFF;
+  text-decoration: none;
+}
 div#wrapper_content {
   position: relative;
   width: 100%;
@@ -1937,7 +1949,15 @@ div.event_base > div.title div.organizers div.content div.organizer div.logo img
 div.event_base > div.title div.organizers div.content div.organizer div.name {
   height: 14px;
   padding: 7px 0;
-  margin-left: 10px;
+  margin-left: 5px;
+  font-size: 14px;
+  line-height: 14px;
+  float: left;
+}
+div.event_base > div.title div.organizers div.content div.and {
+  height: 14px;
+  padding: 15px 0;
+  margin-right: 10px;
   font-size: 14px;
   line-height: 14px;
   float: left;

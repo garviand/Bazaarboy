@@ -13,6 +13,9 @@ div.controls
         a {{ user.full_name }}
     div.logout
         a(href="{% url user:logout %}") Log Out
+    {% else %}
+    div.login
+        a(href="{% url index %}") Log In
     {% endif %}
     div.clear
 div.clear

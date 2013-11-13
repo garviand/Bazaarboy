@@ -40,6 +40,9 @@ block content
                         div.name 
                             b {{ organizer.profile.name }}
                         div.clear
+                    {% if forloop.counter != organizers|length %}
+                    div.and and
+                    {% endif %}
                     {% endfor %}
                     div.presents presents
                     div.clear
