@@ -31,7 +31,7 @@ block body
                             | sponsor.
                     div.clear
                 div.bottom
-                    a.request(href="mailto:build@bazaarboy.com") Contact Us To Get Started
+                    a.request(href="{% url user:register %}") Publish Your First Event
                     div.login_link_container
                         | already a member?  
                         a.start_sign_in(href="javascript:;") sign-in
@@ -50,5 +50,7 @@ block body
             div.footer
                 | &copy; 2013 Bazaarboy LLC. All rights reserved. 
                 a(href="http://blog.bazaarboy.com") Blog
+                | &nbsp;|&nbsp;
+                a(href="{% url index:pricing %}") Pricing
                 | &nbsp;|&nbsp;
                 a(href="mailto:build@bazaarboy.com") Contact Us

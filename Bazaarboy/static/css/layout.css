@@ -475,7 +475,7 @@ input[type=file].hidden {
 }
 .ui-autocomplete.ui-menu.ui-widget .ui-menu-item .ui-state-focus {
   color: #FFF;
-  background: #ff9c00;
+  background: #ff8f4d;
 }
 body {
   font-family: "rooney-sans", Helvetica, sans-serif;
@@ -515,8 +515,8 @@ div#wrapper_top div.logo div.left {
   height: 100%;
 }
 div#wrapper_top div.logo div.left img {
-  width: 70%;
-  height: 70%;
+  width: 60%;
+  height: 60%;
   display: block;
   position: absolute;
   margin: auto;
@@ -524,14 +524,15 @@ div#wrapper_top div.logo div.left img {
   left: 0;
   right: 0;
   bottom: 0;
+  margin-left: 12px;
 }
 div#wrapper_top div.logo div.right {
   height: 20px;
   padding: 12px 0;
   margin-left: 5px;
   color: #FFF;
-  font-size: 20px;
-  line-height: 20px;
+  font-size: 18px;
+  line-height: 22px;
   text-transform: uppercase;
   text-decoration: none;
   float: left;
@@ -539,6 +540,7 @@ div#wrapper_top div.logo div.right {
 div#wrapper_top div.controls {
   height: 44px;
   float: right;
+  margin-right: 12px;
 }
 div#wrapper_top div.controls .control_div {
   height: 16px;
@@ -551,6 +553,8 @@ div#wrapper_top div.controls .control_div {
 div#wrapper_top div.controls .control_div a {
   color: #FFF;
   text-decoration: none;
+  font-size: 13px;
+  transition: background-color 0.2s;
 }
 div#wrapper_top div.controls div.name {
   height: 16px;
@@ -563,8 +567,10 @@ div#wrapper_top div.controls div.name {
 div#wrapper_top div.controls div.name a {
   color: #FFF;
   text-decoration: none;
+  font-size: 13px;
+  transition: background-color 0.2s;
 }
-div#wrapper_top div.controls div.logout {
+div#wrapper_top div.controls div.create_event {
   height: 16px;
   padding: 14px 0;
   margin-right: 10px;
@@ -572,10 +578,22 @@ div#wrapper_top div.controls div.logout {
   line-height: 16px;
   float: left;
 }
-div#wrapper_top div.controls div.logout a {
+div#wrapper_top div.controls div.create_event a {
   color: #FFF;
   text-decoration: none;
+  font-size: 13px;
+  transition: background-color 0.2s;
 }
+div#wrapper_top div.controls div.create_event a {
+  background-color: #ff8f4d;
+  font-weight: bold;
+  padding: 5px 5px;
+  border-radius: 2px;
+}
+div#wrapper_top div.controls div.create_event a:hover {
+  background-color: #ff9f67;
+}
+div#wrapper_top div.controls div.logout,
 div#wrapper_top div.controls div.login {
   height: 16px;
   padding: 14px 0;
@@ -584,9 +602,23 @@ div#wrapper_top div.controls div.login {
   line-height: 16px;
   float: left;
 }
+div#wrapper_top div.controls div.logout a,
 div#wrapper_top div.controls div.login a {
   color: #FFF;
   text-decoration: none;
+  font-size: 13px;
+  transition: background-color 0.2s;
+}
+div#wrapper_top div.controls div.logout a,
+div#wrapper_top div.controls div.login a {
+  background-color: #5d5d5d;
+  font-weight: bold;
+  padding: 5px 5px;
+  border-radius: 2px;
+}
+div#wrapper_top div.controls div.logout a:hover,
+div#wrapper_top div.controls div.login a:hover {
+  background-color: #6a6a6a;
 }
 div#wrapper_content {
   position: relative;
@@ -1399,7 +1431,7 @@ div#index div.profiles div.profile div.header div.create a {
   height: 18px;
   padding: 10px 0;
   border-radius: 2px;
-  background-color: #ff9c00;
+  background-color: #ff8f4d;
   color: #FFF;
   font-size: 18px;
   font-weight: 500;
@@ -2868,7 +2900,7 @@ div#tickets div.tickets div.ticket div.controls a.save {
   color: #FFF;
 }
 div#tickets div.tickets div.ticket div.controls a.delete {
-  background-color: #ff9c00;
+  background-color: #ff8f4d;
   color: #FFF;
 }
 div#rsvp {
@@ -3094,7 +3126,7 @@ div#rsvp div.confirmation div.content div.inner div.caption div.presents div.ico
   margin: 7px 12px;
   margin-right: 0;
   border: 1px solid #FFF;
-  background: url(../images/logo-small.png) #ff9c00 center center;
+  background: url(../images/logo-small.png) #ff8f4d center center;
   border-radius: 2px;
   float: left;
 }
@@ -3211,11 +3243,11 @@ div#event_manage .title .inner .upper_top a {
   text-decoration: none;
 }
 div#event_manage .title .inner .upper_top a.active {
-  background-color: #ff9c00;
+  background-color: #ff8f4d;
   color: #FFF;
 }
 div#event_manage .title .inner .upper_top a:hover {
-  background-color: #ff9c00;
+  background-color: #ff8f4d;
   color: #FFF;
 }
 div#event_manage .title .inner .top {

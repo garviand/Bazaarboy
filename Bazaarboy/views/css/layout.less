@@ -17,7 +17,7 @@
 @overlay_mask_z_index: 10;
 @overlay_z_index: 20;
 
-@bboy_orange: #FF9C00;
+@bboy_orange: #FF8F4D;
 @event_blue: #4795F2;
 @event_blue_light: #96D4FF;
 @pale_blue: #F0F5F5;
@@ -190,9 +190,10 @@ div#wrapper_top {
             height: 100%;
 
             img {
-                width: 70%;
-                height: 70%;
+                width: 60%;
+                height: 60%;
                 .absolute_center;
+                margin-left: 12px;
             }
         }
 
@@ -201,8 +202,8 @@ div#wrapper_top {
             padding: (@top_height - (@font_size_base + 4)) / 2 0;
             margin-left: 5px;
             color: #FFF;
-            font-size: @font_size_base + 4;
-            line-height: @font_size_base + 4;
+            font-size: @font_size_base + 2;
+            line-height: @font_size_base + 6;
             text-transform: uppercase;
             text-decoration: none;
             float: left;
@@ -212,6 +213,7 @@ div#wrapper_top {
     div.controls {
         height: @top_height;
         .right;
+        margin-right: 12px;
 
         @controls_height: @font_size_base;
 
@@ -226,6 +228,8 @@ div#wrapper_top {
             a {
                 color: #FFF;
                 text-decoration: none;
+                font-size: @font_size_base - 3;
+                transition: background-color .2s;
             }
         }
 
@@ -233,12 +237,30 @@ div#wrapper_top {
             .control_div;
         }
 
-        div.logout {
+        div.create_event {
             .control_div;
+            a{
+                background-color: @bboy_orange;
+                font-weight: bold;
+                padding: 5px 5px;
+                border-radius: 2px;
+                &:hover{
+                    background-color: lighten(@bboy_orange, 5%)
+                }
+            }
         }
 
-        div.login {
+        div.logout, div.login {
             .control_div;
+            a{
+                background-color: #5d5d5d;
+                font-weight: bold;
+                padding: 5px 5px;
+                border-radius: 2px;
+                &:hover{
+                    background-color: lighten(#5d5d5d, 5%)
+                }
+            }
         }
     }
 }

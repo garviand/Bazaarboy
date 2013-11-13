@@ -60,8 +60,22 @@
         });
       }
     },
-    init: function() {
+    createEvent: function(profileId) {
       var _this = this;
+      Bazaarboy.post('event/create/', {
+        profile: profileId
+      }, function(response) {
+        if (response.status === 'OK') {
+          Bazaarboy.redirect('event/' + response.event.pk + '/');
+        } else {
+          alert(response.message);
+        }
+      });
+    },
+    init: function() {
+      var scope,
+        _this = this;
+      scope = this;
       this.post('timezone/', {
         timezone: getTimezoneName()
       });
@@ -70,6 +84,12 @@
       });
       $(window).resize(function() {
         _this.adjustBottomPosition();
+      });
+      $("#wrapper_top .controls .user_create_event a").click(function(e) {
+        var profileId;
+        e.preventDefault();
+        profileId = $(this).data('id');
+        scope.createEvent(profileId);
       });
     }
   };

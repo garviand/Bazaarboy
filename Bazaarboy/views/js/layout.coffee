@@ -45,8 +45,18 @@
                 'position': ''
                 'bottom': ''
         return
+    # Create Empty Event
+    createEvent: (profileId) ->
+        Bazaarboy.post 'event/create/', {profile: profileId}, (response) =>
+            if response.status is 'OK'
+                Bazaarboy.redirect 'event/' + response.event.pk + '/'
+            else
+                alert response.message
+            return
+        return
     # Initialization
     init: () ->
+        scope = this
         # Pass the timezone information back to server
         @post 'timezone/', {timezone: getTimezoneName()}
         # Adjust footer position when window resizes
@@ -55,6 +65,11 @@
             return
         $(window).resize () =>
             @adjustBottomPosition()
+            return
+        $("#wrapper_top .controls .user_create_event a").click (e) ->
+            e.preventDefault()
+            profileId = $(this).data('id')
+            scope.createEvent profileId
             return
         return
 
