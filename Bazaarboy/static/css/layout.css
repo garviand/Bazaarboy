@@ -429,21 +429,21 @@ input[type=file].hidden {
   bottom: 0;
 }
 .orange_gradient {
-  background-color: #FFB769;
-  background-image: linear-gradient(top, #ffb769, #ff8f4d);
-  background-image: -o-linear-gradient(top, #ffb769, #ff8f4d);
-  background-image: -moz-linear-gradient(top, #ffb769, #ff8f4d);
-  background-image: -webkit-linear-gradient(top, #ffb769, #ff8f4d);
-  background-image: -ms-linear-gradient(top, #ffb769, #ff8f4d);
+  background-color: #ff8f4d;
+  background-image: linear-gradient(top, #ffaf80, #ff8f4d);
+  background-image: -o-linear-gradient(top, #ffaf80, #ff8f4d);
+  background-image: -moz-linear-gradient(top, #ffaf80, #ff8f4d);
+  background-image: -webkit-linear-gradient(top, #ffaf80, #ff8f4d);
+  background-image: -ms-linear-gradient(top, #ffaf80, #ff8f4d);
 }
 .orange_button {
   border: 1px solid #F1803D;
-  background-color: #FFB769;
-  background-image: linear-gradient(top, #ffb769, #ff8f4d);
-  background-image: -o-linear-gradient(top, #ffb769, #ff8f4d);
-  background-image: -moz-linear-gradient(top, #ffb769, #ff8f4d);
-  background-image: -webkit-linear-gradient(top, #ffb769, #ff8f4d);
-  background-image: -ms-linear-gradient(top, #ffb769, #ff8f4d);
+  background-color: #ff8f4d;
+  background-image: linear-gradient(top, #ffaf80, #ff8f4d);
+  background-image: -o-linear-gradient(top, #ffaf80, #ff8f4d);
+  background-image: -moz-linear-gradient(top, #ffaf80, #ff8f4d);
+  background-image: -webkit-linear-gradient(top, #ffaf80, #ff8f4d);
+  background-image: -ms-linear-gradient(top, #ffaf80, #ff8f4d);
   color: #FFF;
   text-align: center;
   text-shadow: 0 1px 0 rgba(0, 0, 0, 0.125);
@@ -508,6 +508,10 @@ div#wrapper_top div.logo a {
   height: 100%;
   top: 0;
   left: 0;
+  transition: opacity .2s;
+}
+div#wrapper_top div.logo a:hover {
+  opacity: 0.9;
 }
 div#wrapper_top div.logo div.left {
   position: relative;
@@ -1113,12 +1117,12 @@ div#landing div.inner div.content div.bottom a.request {
   padding: 10px;
   border-radius: 2px;
   border: 1px solid #F1803D;
-  background-color: #FFB769;
-  background-image: linear-gradient(top, #ffb769, #ff8f4d);
-  background-image: -o-linear-gradient(top, #ffb769, #ff8f4d);
-  background-image: -moz-linear-gradient(top, #ffb769, #ff8f4d);
-  background-image: -webkit-linear-gradient(top, #ffb769, #ff8f4d);
-  background-image: -ms-linear-gradient(top, #ffb769, #ff8f4d);
+  background-color: #ff8f4d;
+  background-image: linear-gradient(top, #ffaf80, #ff8f4d);
+  background-image: -o-linear-gradient(top, #ffaf80, #ff8f4d);
+  background-image: -moz-linear-gradient(top, #ffaf80, #ff8f4d);
+  background-image: -webkit-linear-gradient(top, #ffaf80, #ff8f4d);
+  background-image: -ms-linear-gradient(top, #ffaf80, #ff8f4d);
   color: #FFF;
   text-align: center;
   text-shadow: 0 1px 0 rgba(0, 0, 0, 0.125);
@@ -1142,7 +1146,7 @@ div#landing div.inner div.content div.bottom div.login_link_container {
 div#landing div.inner div.content div.bottom div.login_link_container a {
   font-style: oblique;
   text-decoration: none;
-  color: #F1803D;
+  color: #ff8f4d;
 }
 div#landing div.inner div.content div.bottom div.login_link_container a:hover {
   text-decoration: underline;
@@ -1181,12 +1185,12 @@ div#landing div.inner div.login_content div.bottom a {
   padding: 10px;
   border-radius: 2px;
   border: 1px solid #F1803D;
-  background-color: #FFB769;
-  background-image: linear-gradient(top, #ffb769, #ff8f4d);
-  background-image: -o-linear-gradient(top, #ffb769, #ff8f4d);
-  background-image: -moz-linear-gradient(top, #ffb769, #ff8f4d);
-  background-image: -webkit-linear-gradient(top, #ffb769, #ff8f4d);
-  background-image: -ms-linear-gradient(top, #ffb769, #ff8f4d);
+  background-color: #ff8f4d;
+  background-image: linear-gradient(top, #ffaf80, #ff8f4d);
+  background-image: -o-linear-gradient(top, #ffaf80, #ff8f4d);
+  background-image: -moz-linear-gradient(top, #ffaf80, #ff8f4d);
+  background-image: -webkit-linear-gradient(top, #ffaf80, #ff8f4d);
+  background-image: -ms-linear-gradient(top, #ffaf80, #ff8f4d);
   color: #FFF;
   text-align: center;
   text-shadow: 0 1px 0 rgba(0, 0, 0, 0.125);
@@ -1353,12 +1357,12 @@ div#register div.inner div.register_content div.bottom a {
   padding: 10px;
   border-radius: 2px;
   border: 1px solid #F1803D;
-  background-color: #FFB769;
-  background-image: linear-gradient(top, #ffb769, #ff8f4d);
-  background-image: -o-linear-gradient(top, #ffb769, #ff8f4d);
-  background-image: -moz-linear-gradient(top, #ffb769, #ff8f4d);
-  background-image: -webkit-linear-gradient(top, #ffb769, #ff8f4d);
-  background-image: -ms-linear-gradient(top, #ffb769, #ff8f4d);
+  background-color: #ff8f4d;
+  background-image: linear-gradient(top, #ffaf80, #ff8f4d);
+  background-image: -o-linear-gradient(top, #ffaf80, #ff8f4d);
+  background-image: -moz-linear-gradient(top, #ffaf80, #ff8f4d);
+  background-image: -webkit-linear-gradient(top, #ffaf80, #ff8f4d);
+  background-image: -ms-linear-gradient(top, #ffaf80, #ff8f4d);
   color: #FFF;
   text-align: center;
   text-shadow: 0 1px 0 rgba(0, 0, 0, 0.125);
@@ -1438,6 +1442,10 @@ div#index div.profiles div.profile div.header div.create a {
   line-height: 16px;
   text-align: center;
   text-decoration: none;
+  transition: background-color 0.2s;
+}
+div#index div.profiles div.profile div.header div.create a:hover {
+  background-color: #ff9f67;
 }
 div#index div.profiles div.profile div.summary {
   width: 862px;
@@ -1554,10 +1562,17 @@ div#index div.profiles div.profile div.events > div div.canvas div.draft div.act
   line-height: 12px;
   text-decoration: none;
   text-align: center;
+  transition: background-color 0.2s;
 }
 div#index div.profiles div.profile div.events > div div.canvas div.draft div.actions a.edit {
   background-color: #4795f2;
   color: #FFF;
+}
+div#index div.profiles div.profile div.events > div div.canvas div.draft div.actions a.edit:hover {
+  background-color: #5fa3f4;
+}
+div#index div.profiles div.profile div.events > div div.canvas div.draft div.actions a:hover {
+  background-color: #f3f3f3;
 }
 div#index div.profiles div.profile div.events > div div.canvas div.event {
   width: 862px;
@@ -1645,14 +1660,24 @@ div#index div.profiles div.profile div.events > div div.canvas div.event div.act
   line-height: 12px;
   text-decoration: none;
   text-align: center;
+  transition: background-color 0.2s;
+}
+div#index div.profiles div.profile div.events > div div.canvas div.event div.actions a:hover {
+  background-color: #f3f3f3;
 }
 div#index div.profiles div.profile div.events > div div.canvas div.event div.actions a.edit {
   background-color: #4795f2;
   color: #FFF;
 }
+div#index div.profiles div.profile div.events > div div.canvas div.event div.actions a.edit:hover {
+  background-color: #5fa3f4;
+}
 div#index div.profiles div.profile div.events > div div.canvas div.event div.actions a.manage {
   background-color: #000;
   color: #FFF;
+}
+div#index div.profiles div.profile div.events > div div.canvas div.event div.actions a.manage:hover {
+  background-color: #2f2f2f;
 }
 div#connect {
   display: none;
@@ -2274,12 +2299,12 @@ div.event_base > div.title div.inner div.bottom div.launch {
   right: 24px;
   z-index: 20;
   border: 1px solid #F1803D;
-  background-color: #FFB769;
-  background-image: linear-gradient(top, #ffb769, #ff8f4d);
-  background-image: -o-linear-gradient(top, #ffb769, #ff8f4d);
-  background-image: -moz-linear-gradient(top, #ffb769, #ff8f4d);
-  background-image: -webkit-linear-gradient(top, #ffb769, #ff8f4d);
-  background-image: -ms-linear-gradient(top, #ffb769, #ff8f4d);
+  background-color: #ff8f4d;
+  background-image: linear-gradient(top, #ffaf80, #ff8f4d);
+  background-image: -o-linear-gradient(top, #ffaf80, #ff8f4d);
+  background-image: -moz-linear-gradient(top, #ffaf80, #ff8f4d);
+  background-image: -webkit-linear-gradient(top, #ffaf80, #ff8f4d);
+  background-image: -ms-linear-gradient(top, #ffaf80, #ff8f4d);
   color: #FFF;
   text-align: center;
   text-shadow: 0 1px 0 rgba(0, 0, 0, 0.125);

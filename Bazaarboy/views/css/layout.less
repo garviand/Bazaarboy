@@ -84,8 +84,8 @@ input[type=file].hidden {
 }
 
 .orange_gradient {
-    background-color: #FFB769;
-    .linear_gradient(top, #FFB769, #FF8F4D);
+    background-color: @bboy_orange;
+    .linear_gradient(top, lighten(@bboy_orange, 10%), @bboy_orange);
 }
 
 .orange_button {
@@ -182,6 +182,10 @@ div#wrapper_top {
             height: 100%;
             top: 0;
             left: 0;
+            transition: opacity .2s;
+            &:hover{
+                opacity: 0.9;
+            }
         }
 
         div.left {
@@ -810,7 +814,7 @@ div#landing {
                     a {
                         font-style: oblique;
                         text-decoration: none;
-                        color: #F1803D;
+                        color: @bboy_orange;
 
                         &:hover {
                             text-decoration: underline;
@@ -1149,6 +1153,10 @@ div#index {
                         line-height: @font_size_base;
                         text-align: center;
                         text-decoration: none;
+                        transition: background-color .2s;
+                        &:hover{
+                            background-color: lighten(@bboy_orange, 5%)
+                        }
                     }
                 }
             }
@@ -1271,10 +1279,18 @@ div#index {
                                     line-height: @font_size_base - 4;
                                     text-decoration: none;
                                     text-align: center;
+                                    transition: background-color .2s;
 
                                     &.edit {
                                         background-color: @event_blue;
                                         color: #FFF;
+                                        &:hover{
+                                            background-color: lighten(@event_blue, 5%);
+                                        }
+                                    }
+
+                                    &:hover{
+                                        background-color: lighten(#E6E6E6, 5%);
                                     }
                                 }
                             }
@@ -1374,15 +1390,26 @@ div#index {
                                     line-height: @font_size_base - 4;
                                     text-decoration: none;
                                     text-align: center;
+                                    transition: background-color .2s;
+                                    
+                                    &:hover{
+                                        background-color: lighten(#E6E6E6, 5%);
+                                    }
 
                                     &.edit {
                                         background-color: @event_blue;
                                         color: #FFF;
+                                        &:hover{
+                                            background-color: lighten(@event_blue, 5%);
+                                        }
                                     }
 
                                     &.manage {
                                         background-color: #000;
                                         color: #FFF;
+                                        &:hover{
+                                            background-color: lighten(#222, 5%);
+                                        }
                                     }
                                 }
                             }
