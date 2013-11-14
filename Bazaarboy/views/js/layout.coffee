@@ -66,7 +66,7 @@
         $(window).resize () =>
             @adjustBottomPosition()
             return
-        $("#wrapper_top .controls .user_create_event a").click (e) ->
+        $('#wrapper_top .controls .user_create_event a').click (e) ->
             e.preventDefault()
             profileId = $(this).data('id')
             scope.createEvent profileId

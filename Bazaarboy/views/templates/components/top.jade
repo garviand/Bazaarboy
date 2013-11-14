@@ -12,10 +12,10 @@ div.controls
     div.name
         a {{ user.full_name }}
     div.create_event.user_create_event
-        a(href="javascript:;", data-id="{{ user.id }}") Publish an Event
+        a(href="javascript:;", data-id="{{ user.id }}") Create an Event
     {% else %}
     div.create_event
-        a(href="{% url user:register %}") Publish an Event
+        a(href="{% url user:register %}") Create an Event
     {% endif %}
     {% if user %}
     div.logout

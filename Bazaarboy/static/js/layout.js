@@ -85,7 +85,7 @@
       $(window).resize(function() {
         _this.adjustBottomPosition();
       });
-      $("#wrapper_top .controls .user_create_event a").click(function(e) {
+      $('#wrapper_top .controls .user_create_event a').click(function(e) {
         var profileId;
         e.preventDefault();
         profileId = $(this).data('id');
