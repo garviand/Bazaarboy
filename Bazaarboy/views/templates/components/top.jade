@@ -14,6 +14,8 @@ div.controls
     div.logout
         a(href="{% url user:logout %}") Log Out
     {% else %}
+    div.create_event
+        a(href="{% url user:register %}") Create an Event
     div.login
         a(href="{% url index %}") Log In
     {% endif %}
