@@ -508,10 +508,6 @@ div#wrapper_top div.logo a {
   height: 100%;
   top: 0;
   left: 0;
-  transition: opacity .2s;
-}
-div#wrapper_top div.logo a:hover {
-  opacity: 0.9;
 }
 div#wrapper_top div.logo div.left {
   position: relative;
