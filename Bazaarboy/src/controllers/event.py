@@ -892,7 +892,7 @@ def mark_purchase_as_expired(purchase):
     """
     Expires a purchase after some time and release the ticket
     """
-    if not purchase.checkout.is_captured:
+    if not purchase.checkout.is_charged:
         purchase.is_expired = True
         purchase.save()
         ticket = purchase.ticket
@@ -983,14 +983,6 @@ def purchase(request, params, user):
             'message':'The ticket is not up for sale at this time.'
         }
         return json_response(response)
-    # Check if the ticket is sold out
-    if ticket.quantity is not None and ticket.quantity == 0:
-        response = {
-            'status':'FAIL',
-            'error':'TICKET_SOLD_OUT',
-            'message':'This ticket is sold out.'
-        }
-        return json_response(response)
     # Check if there is an exisiting purchase
     if Purchase.objects.filter(Q(checkout = None) | 
                                Q(checkout__is_charged = True, 
@@ -1003,6 +995,21 @@ def purchase(request, params, user):
             'message':'You have already bought a ticket to the event.'
         }
         return json_response(response)
+    shouldDeductQuantity = True
+    # Check if there is an unfinished purchase
+    if Purchase.objects.filter(Q(checkout__isnull = False, 
+                                 checkout__is_charged = False), 
+                               owner = user, event = event, 
+                               is_expired = False).exists():
+        shouldDeductQuantity = False
+    # Check if the ticket is sold out
+    elif ticket.quantity is not None and ticket.quantity == 0:
+        response = {
+            'status':'FAIL',
+            'error':'TICKET_SOLD_OUT',
+            'message':'This ticket is sold out.'
+        }
+        return json_response(response)
     # Check if it's a free ticket
     if ticket.price == 0:
         # Create the purchase
@@ -1010,7 +1017,7 @@ def purchase(request, params, user):
                             price = ticket.price)
         purchase.save()
         # If the ticket has a quantity limit
-        if ticket.quantity is not None:
+        if ticket.quantity is not None and shouldDeductQuantity:
             # Adjust the ticket quantity
             ticket.quantity = F('quantity') - 1
             ticket.save()
@@ -1049,7 +1056,7 @@ def purchase(request, params, user):
                         price = ticket.price, checkout = checkout)
     purchase.save()
     # If the ticket has a quantity limit
-    if ticket.quantity is not None:
+    if ticket.quantity is not None and shouldDeductQuantity:
         # Schedule the purchase to be expired after some amount of time
         expiration = timezone.now()
         expiration += timedelta(minutes = BBOY_TRANSACTION_EXPIRATION)

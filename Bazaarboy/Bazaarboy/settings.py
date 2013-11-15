@@ -186,8 +186,7 @@ FILE_UPLOAD_PERMISSIONS = 0600
 # Celery
 
 CELERY_IMPORTS = (
-    'src.controllers.event', 
-    'src.controllers.initiative'
+    'src.controllers.event'
 )
 
 # Cache

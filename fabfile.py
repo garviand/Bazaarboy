@@ -57,16 +57,25 @@ def compile():
         local('grunt dev')
 
 def set_env(env='development'):
+    """
+    Set up environment variables
+    """
     if env == 'development':
         os.environ['BBOY_ENV'] = 'development'
         os.environ['BBOY_DEBUG'] = 'true'
-        #os.environ['BBOY_URL_ROOT'] = 'http://localhost:8080'
     elif env == 'staging':
         os.environ['BBOY_ENV'] = 'staging'
         os.environ['BBOY_DEBUG'] = 'true'
     elif env == 'production':
         os.environ['BBOY_ENV'] = 'production'
         os.environ['BBOY_DEBUG'] = 'false'
+
+def celeryWorker():
+    """
+    Start celery worker process
+    """
+    with lcd('./Bazaarboy/'):
+        local('python manage.py celery worker --loglevel=info')
 
 def dev(port=8080):
     """
@@ -88,10 +97,8 @@ def dev(port=8080):
                 # Check to see if models have changed, if so then migrate
                 #local('python manage.py schemamigration kernel --auto')
                 pass
-            # Run the celery worker
-            #celeryWorker = lambda: local('python manage.py celery worker --loglevel=info')
-            #processCelery = Process(target = celeryWorker)
-            #processCelery.start()
+            # Run the celery worker 
+            pool.apply_async(celeryWorker)
             # Run the django development server on specified port
             local('python manage.py runserver 0.0.0.0:%s' % port)
     except KeyboardInterrupt:
