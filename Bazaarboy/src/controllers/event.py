@@ -42,7 +42,7 @@ def index(request, id, params, user):
                     Event_organizer.objects.filter(event = event, 
                                                    profile__managers = user) \
                                            .exists())
-        if not editable and not event.is_launched:
+        if not editable and not event.is_launched and not preview:
             return redirect('index')
     elif params['token'] is not None and event.access_token == params['token']:
         editable = True
