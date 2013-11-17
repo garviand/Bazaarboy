@@ -627,7 +627,7 @@
       $('div.description div.controls a.save').show();
       $('div.description div.editor').addClass('editing');
       $('div.description div.editor div.inner').redactor({
-        buttons: ['formatting', 'bold', 'italic', 'deleted', 'fontcolor', 'alignment', '|', 'unorderedlist', 'orderedlist', 'outdent', 'indent', '|', 'horizontalrule', 'image', 'video', 'link', '|', 'html'],
+        buttons: ['formatting', 'bold', 'italic', 'deleted', 'fontcolor', 'alignment', '|', 'unorderedlist', 'orderedlist', 'outdent', 'indent', '|', 'horizontalrule', 'table', 'image', 'video', 'link', '|', 'html'],
         boldTag: 'b',
         italicTag: 'i',
         imageUpload: rootUrl + 'file/image/upload/'
