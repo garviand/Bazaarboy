@@ -7,7 +7,8 @@
 
 @title_color_white: rgba(255, 255, 255, 0.9);
 
-@font_family_base: Helvetica, sans-serif;
+@font_color_base: #34495e;
+@font_family_base: "rooney-sans", Helvetica, sans-serif;
 @font_style_base: normal;
 @font_size_base: 16px;
 @font_weight_base: 400;
@@ -63,12 +64,24 @@ body {
     font-weight: @font_weight_base;
 }
 
+body > div.background{
+    position: fixed;
+    width: 100%;
+    height: 100%;
+    min-height: 600px;
+    min-width: 970px;
+    z-index: -1;
+    background-image: url('../../images/pricing/bg.jpg');
+    background-size: cover;
+    background-position: center top;
+}
+
 div#wrapper_top {
     position: relative;
     width: 100%;
     min-width: @body_width;
     height: @top_height;
-    color: @title_color_white;
+    background: rgba(237, 239, 241, 0.8);
 
     div#top_inner {
         width: @body_width;
@@ -77,7 +90,7 @@ div#wrapper_top {
 
         div.title {
             width: @body_width;
-            padding-top: floor((@top_height - 30px) / 2);
+            padding-top: 10px;
             font-size: 30px;
             text-align: center;
             .center;
@@ -135,7 +148,7 @@ div#wrapper_top {
 
             a {
                 font-size: @font_size_base;
-                color: #FFF;
+                color: @font_color_base;
                 text-decoration: none;
             }
         }
@@ -156,7 +169,7 @@ div#wrapper_main {
 
         div.specs {
             width: @body_width - @box_padding * 2 - 130px;
-            height: 100px;
+            min-height: 100px;
             padding-left: 30px;
             div.finances{
                 margin-top: 14px;
@@ -182,6 +195,15 @@ div#wrapper_main {
                         &.hidden{
                             display: none;
                         }
+                    }
+                }
+            }
+            table.upcoming, table.past{
+                width: 100%;
+                tr{
+                    td{
+                        text-align: center;
+                        padding: 5px 0;
                     }
                 }
             }

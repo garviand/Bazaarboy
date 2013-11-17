@@ -7,11 +7,14 @@ import hashlib
 from django.shortcuts import render, redirect
 from django.http import HttpResponseForbidden
 from django.db.models import Q, Sum, Count
+from django.utils import timezone
 from datetime import datetime, timedelta
 from admin.models import *
 from kernel.models import *
 from src.controllers.request import json_response, validate
 from src.serializer import serialize_one
+
+import pdb
 
 def index(request):
     """
@@ -21,6 +24,7 @@ def index(request):
         # No admin session, redirect to login
         return redirect('admin:login')
     admin = request.session['admin']
+    # RSVP & Sales Stats
     stats = Purchase.objects.filter(Q(checkout = None) | 
                                         Q(checkout__is_charged = True, 
                                           checkout__is_refunded = False), 
@@ -32,7 +36,11 @@ def index(request):
     weekly_stats = weekly_stats.aggregate(total_sale = Sum('price'), sale_count = Count('id'))
     daily_stats = stats.filter(created_time__gte=datetime.now()-timedelta(days=1))
     daily_stats = daily_stats.aggregate(total_sale = Sum('price'), sale_count = Count('id'))
+    # All Profiles
     profiles = Profile.objects.all()
+    # Upcoming & Past Events
+    upcoming_events = Event.objects.filter(Q(is_launched = True, start_time__gte = timezone.now()))
+    past_events = Event.objects.filter(Q(is_launched = True, start_time__lte = timezone.now()))
     return render(request, 'admin/index.html', locals())
 
 def login(request):
