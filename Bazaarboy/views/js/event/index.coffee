@@ -588,7 +588,7 @@ Bazaarboy.event.index =
                 'formatting','bold', 'italic', 'deleted', 'fontcolor', 
                 'alignment', '|',
                 'unorderedlist', 'orderedlist', 'outdent', 'indent', '|',
-                'image', 'video', 'link', '|',
+                'horizontalrule', 'image', 'video', 'link', '|',
                 'html'
             ]
             boldTag: 'b'
