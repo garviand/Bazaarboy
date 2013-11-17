@@ -2315,6 +2315,34 @@ div.event_base > div.title div.inner div.bottom div.launch b {
   line-height: 18px;
   text-align: center;
 }
+div.event_base > div.title div.inner div.bottom div.preview {
+  display: block;
+  text-decoration: none;
+  position: absolute;
+  width: 190px;
+  height: 46px;
+  top: 66px;
+  right: 24px;
+  z-index: 20;
+  border: 1px solid #505050;
+  background-color: #5d5d5d;
+  cursor: pointer;
+  transition: background-color 0.2s;
+}
+div.event_base > div.title div.inner div.bottom div.preview:hover {
+  background-color: #6a6a6a;
+}
+div.event_base > div.title div.inner div.bottom div.preview a {
+  text-decoration: none;
+  display: block;
+  width: 100%;
+  height: 18px;
+  padding: 14px 0;
+  color: #FFF;
+  font-size: 18px;
+  line-height: 18px;
+  text-align: center;
+}
 div.event_base div.cover {
   position: relative;
   width: 100%;

@@ -144,16 +144,20 @@ block content
                         div.clear
                     {% endif %}
                     {% endif %}
+                    {% if not editable %}
                     div.share.hanging(class="{% if not event.is_launched %}hidden{% endif %}")
                         b Share on Facebook
+                    {% endif %}
                     {% if editable %}
                     div.launch.hanging(class="{% if event.is_launched %}launched{% endif %}")
                         b 
                             {% if event.is_launched %}
                             | Take Event Offline
                             {% else %}
-                            | Launch Event
+                            | Publish Event
                             {% endif %}
+                    div.preview.hanging
+                        a(href="{% url event:index event.id %}?preview", target="_blank") Preview Event
                     {% endif %}
         div.cover
             div.inner

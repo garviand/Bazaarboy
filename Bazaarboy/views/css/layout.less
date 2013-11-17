@@ -2076,6 +2076,35 @@ div.event_base {
                         text-align: center;
                     }
                 }
+                div.preview {
+                    display: block;
+                    text-decoration: none;
+                    position: absolute;
+                    width: @sidebar_width - 2;
+                    height: 46px;
+                    top: @title_bottom_second_tier_top + 20;
+                    right: @gutter_width;
+                    z-index: @overlay_z_index;
+                    border: 1px solid darken(#5d5d5d, 5%);
+                    background-color: #5d5d5d;
+                    cursor: pointer;
+                    transition: background-color .2s;
+                        &:hover{
+                            background-color: lighten(#5d5d5d, 5%);
+                        }
+
+                    a {
+                        text-decoration: none;
+                        display: block;
+                        width: 100%;
+                        height: @font_size_base + 2;
+                        padding: (46 - (@font_size_base + 2)) / 2 0;
+                        color: #FFF;
+                        font-size: @font_size_base + 2;
+                        line-height: @font_size_base + 2;
+                        text-align: center;
+                    }
+                }
             }
         }
     }

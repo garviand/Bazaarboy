@@ -5,11 +5,15 @@ html(lang="en")
             title
                 block title
                     | Bazaarboy Admin
+            script(type="text/javascript", src="//use.typekit.net/gjc0hvy.js")
+            script(type="text/javascript").
+                try{Typekit.load();}catch(e){}
             link(rel="stylesheet", href="{{ STATIC_URL }}admin/fui/bootstrap/css/bootstrap.css")
             link(rel="stylesheet", href="{{ STATIC_URL }}admin/fui/css/flat-ui.css")
             link(rel="stylesheet", href="{{ STATIC_URL }}admin/css/layout.css")
-    body.palette-silver
-        div#wrapper_top.palette-midnight-blue
+    body
+        div.background
+        div#wrapper_top
             div#top_inner
                 block top
                     div.title Bazaarboy Admin

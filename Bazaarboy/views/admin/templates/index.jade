@@ -11,6 +11,43 @@ append top
 block main
     div.summary.box
         div.icon
+            img(src="{{ STATIC_URL }}admin/fui/images/icons/Pensils@2x.png")
+        div.specs.profile_login
+            div.input_container
+                h3.profile_login_title Login as Profile
+                form.profile_login
+                    input(type="text", name="profile_name", placeholder="Profile Name")
+            div.profile_choices
+                {% for profile in profiles %}
+                a.hidden(href="javascript:;", data-id="{{ profile.id }}") {{ profile.name }}
+                {% endfor %}
+        div.clear
+    div.summary.box
+        div.icon
+            img(src="{{ STATIC_URL }}admin/fui/images/icons/Calendar@2x.png")
+        div.specs
+            table.upcoming
+                {% for event in upcoming_events %}
+                {% if forloop.counter0|divisibleby:"4" %}
+                tr
+                {% endif %}
+                td
+                    {{ event.name }}
+                {% endfor %}
+    div.summary.box
+        div.icon
+            img(src="{{ STATIC_URL }}admin/fui/images/icons/Calendar@2x.png")
+        div.specs
+            table.past
+                {% for event in past_events %}
+                {% if forloop.counter0|divisibleby:"4" %}
+                tr
+                {% endif %}
+                td
+                    {{ event.name }}
+                {% endfor %}
+    div.summary.box.hidden
+        div.icon
             img(src="{{ STATIC_URL }}admin/fui/images/icons/Infinity-Loop@2x.png")
         div.specs
             div.finances
@@ -24,19 +61,6 @@ block main
                 div Monthly RSVPs: {{ monthly_stats.sale_count }}
                 div Weekly RSVPs: {{ weekly_stats.sale_count }}
                 div Daily RSVPs: {{ daily_stats.sale_count }}
-        div.clear
-    div.summary.box
-        div.icon
-            img(src="{{ STATIC_URL }}admin/fui/images/icons/Pensils@2x.png")
-        div.specs.profile_login
-            div.input_container
-                h3.profile_login_title Login as Profile
-                form.profile_login
-                    input(type="text", name="profile_name", placeholder="Profile Name")
-            div.profile_choices
-                {% for profile in profiles %}
-                a.hidden(href="javascript:;", data-id="{{ profile.id }}") {{ profile.name }}
-                {% endfor %}
         div.clear
 
 append script

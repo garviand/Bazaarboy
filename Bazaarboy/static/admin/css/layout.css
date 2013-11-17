@@ -421,21 +421,32 @@ table {
   background-color: #EDEFF1;
 }
 b {
-  font-family: Helvetica, sans-serif;
+  font-family: "rooney-sans", Helvetica, sans-serif;
   font-style: normal;
   font-weight: 700;
 }
 body {
-  font-family: Helvetica, sans-serif;
+  font-family: "rooney-sans", Helvetica, sans-serif;
   font-style: normal;
   font-weight: 400;
+}
+body > div.background {
+  position: fixed;
+  width: 100%;
+  height: 100%;
+  min-height: 600px;
+  min-width: 970px;
+  z-index: -1;
+  background-image: url('../../images/pricing/bg.jpg');
+  background-size: cover;
+  background-position: center top;
 }
 div#wrapper_top {
   position: relative;
   width: 100%;
   min-width: 960px;
   height: 60px;
-  color: rgba(255, 255, 255, 0.9);
+  background: rgba(237, 239, 241, 0.8);
 }
 div#wrapper_top div#top_inner {
   width: 960px;
@@ -445,7 +456,7 @@ div#wrapper_top div#top_inner {
 }
 div#wrapper_top div#top_inner div.title {
   width: 960px;
-  padding-top: 15px;
+  padding-top: 10px;
   font-size: 30px;
   text-align: center;
   display: block;
@@ -490,7 +501,7 @@ div#wrapper_top div#top_inner div.logout {
 }
 div#wrapper_top div#top_inner div.logout a {
   font-size: 16px;
-  color: #FFF;
+  color: #34495e;
   text-decoration: none;
 }
 div#wrapper_main div.summary {
@@ -505,7 +516,7 @@ div#wrapper_main div.summary div.icon {
 }
 div#wrapper_main div.summary div.specs {
   width: 782px;
-  height: 100px;
+  min-height: 100px;
   padding-left: 30px;
   float: left;
 }
@@ -533,4 +544,13 @@ div#wrapper_main div.summary div.specs.profile_login .profile_choices a {
 }
 div#wrapper_main div.summary div.specs.profile_login .profile_choices a.hidden {
   display: none;
+}
+div#wrapper_main div.summary div.specs table.upcoming,
+div#wrapper_main div.summary div.specs table.past {
+  width: 100%;
+}
+div#wrapper_main div.summary div.specs table.upcoming tr td,
+div#wrapper_main div.summary div.specs table.past tr td {
+  text-align: center;
+  padding: 5px 0;
 }
