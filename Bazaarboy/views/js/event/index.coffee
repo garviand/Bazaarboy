@@ -593,6 +593,7 @@ Bazaarboy.event.index =
             ]
             boldTag: 'b'
             italicTag: 'i'
+            imageUpload: rootUrl + 'file/image/upload/'
         return
     stopEditingDescription: (description) ->
         $('div.description div.controls a.edit').html('Edit')

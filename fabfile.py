@@ -77,7 +77,7 @@ def celeryWorker():
     with lcd('./Bazaarboy/'):
         local('python manage.py celery worker --loglevel=info')
 
-def dev(port=8080):
+def dev(port=8080, celery=True):
     """
     Start a development environment
     """
@@ -98,7 +98,8 @@ def dev(port=8080):
                 #local('python manage.py schemamigration kernel --auto')
                 pass
             # Run the celery worker 
-            pool.apply_async(celeryWorker)
+            if celery != 'false':
+                pool.apply_async(celeryWorker)
             # Run the django development server on specified port
             local('python manage.py runserver 0.0.0.0:%s' % port)
     except KeyboardInterrupt:

@@ -629,7 +629,8 @@
       $('div.description div.editor div.inner').redactor({
         buttons: ['formatting', 'bold', 'italic', 'deleted', 'fontcolor', 'alignment', '|', 'unorderedlist', 'orderedlist', 'outdent', 'indent', '|', 'image', 'video', 'link', '|', 'html'],
         boldTag: 'b',
-        italicTag: 'i'
+        italicTag: 'i',
+        imageUpload: rootUrl + 'file/image/upload/'
       });
     },
     stopEditingDescription: function(description) {

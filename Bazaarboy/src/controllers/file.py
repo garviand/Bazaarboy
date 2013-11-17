@@ -7,6 +7,7 @@ import uuid
 from StringIO import StringIO
 from django.core.files.uploadedfile import InMemoryUploadedFile
 from django.http import HttpResponseBadRequest
+from django.views.decorators.csrf import csrf_exempt
 from kernel.models import *
 from src.controllers.request import validate, json_response
 from src.serializer import serialize_one
@@ -20,11 +21,17 @@ IMAGE_CONTENT_TYPES = {
 }
 IMAGE_SIZE_LIMIT = 2621440
 
+@csrf_exempt
 @validate('POST')
 def upload_image(request, params):
     """
     Upload a image that is stored temporarily
     """
+    isFromRedactor = False
+    if request.FILES.has_key('file'):
+        request.FILES['image_file'] = request.FILES['file']
+        del request.FILES['file']
+        isFromRedactor = True
     if not request.FILES.has_key('image_file'):
         return HttpResponseBadRequest('Bad request.')
     rawImage = request.FILES['image_file']
@@ -51,6 +58,10 @@ def upload_image(request, params):
         'status':'OK',
         'image':serialize_one(image)
     }
+    if isFromRedactor:
+        response = {
+            'filelink':image.source.url
+        }
     return json_response(response)
 
 @validate('POST', ['id', 'viewport'])
