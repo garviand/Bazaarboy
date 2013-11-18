@@ -6,7 +6,7 @@ from __future__ import absolute_import
 import hashlib
 from django.conf import settings
 from django.shortcuts import render, redirect
-from django.http import HttpResponseForbidden
+from django.http import HttpResponse, HttpResponseForbidden
 from django.db.models import Q, Sum, Count
 from django.db.models.loading import get_model
 from django.utils import timezone
@@ -137,12 +137,11 @@ def guest_list_csv(request, params):
                                     )
     if qs.count() > 0:
         # RSVPs have been made for the event
+        # Create the HttpResponse object with the appropriate CSV header.
+        response = HttpResponse(mimetype='text/csv')
+        response['Content-Disposition'] = 'attachment; filename="event' + params['id'] + '_' + timezone.now().strftime('%s') +'.csv"'
+        writer = csv.writer(response)    
 
-        file_loc = settings.MEDIA_ROOT + 'uploads/' + timezone.now().strftime('%Y-%m-%d') + '/csv'
-        if not os.path.exists(file_loc):
-            os.makedirs(file_loc)
-        writer = csv.writer(open(file_loc + '/event' + params['id'] + '_' + timezone.now().strftime('%s') + '.csv', 'w'))
-        
         headers = ['id', 'name', 'email', 'ticket', 'code']
         writer.writerow(headers)
         
@@ -150,10 +149,7 @@ def guest_list_csv(request, params):
             row = [obj.id, obj.owner.full_name, obj.owner.email, obj.ticket.name, obj.code]
             writer.writerow(row)
 
-        response = {
-            'status':'OK'
-        }
-        return json_response(response)
+        return response
     else:
         # No guests on the list, nothing to export
         response = {
