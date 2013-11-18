@@ -20,6 +20,18 @@
         }
       });
     },
+    deleteEvent: function(eventId) {
+      var _this = this;
+      Bazaarboy.post('event/delete/', {
+        id: eventId
+      }, function(response) {
+        if (response.status === 'OK') {
+          return 'OK';
+        } else {
+          alert(response.message);
+        }
+      });
+    },
     savePaymentConnectSettings: function() {
       var promises;
       promises = [];
@@ -54,6 +66,16 @@
         var profileId;
         profileId = $(this).parent().find('span.profile_id').html();
         scope.createEvent(profileId);
+      });
+      $('div#index div.profiles div.profile div.events div.canvas div.draft div.actions a.delete').click(function(e) {
+        var deleteConfirm, eventId;
+        e.preventDefault();
+        deleteConfirm = confirm("All information (including RSVPs) from this event will be lost. Are you sure you want to delete?");
+        if (deleteConfirm) {
+          eventId = $(this).data('id');
+          scope.deleteEvent(eventId);
+          $(this).parent().parent().fadeOut();
+        }
       });
       $('div#index div.profiles div.profile div.summary a.connect').click(function() {
         if ($('div#connect').length === 0) {

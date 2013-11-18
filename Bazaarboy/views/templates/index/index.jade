@@ -45,6 +45,7 @@ block content
                                     | {{ event.start_time|date:"l, M jS, f" }}{{ event.start_time|date:"A"|lower }}
                                 div.actions
                                     a.edit(href="{% url event:index event.id %}") Edit Event Page
+                                    a.delete(href="javascript:;", data-id="{{ event.id }}") Delete Event
                                 div.clear
                             {% empty %}
                             div.empty
