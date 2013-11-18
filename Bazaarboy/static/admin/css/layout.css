@@ -506,13 +506,20 @@ div#wrapper_top div#top_inner div.logout a {
 }
 div#wrapper_main div.summary {
   width: 912px;
-  height: 100px;
+  min-height: 100px;
   margin-bottom: 20px;
 }
 div#wrapper_main div.summary div.icon {
   width: 100px;
-  height: 100px;
+  min-height: 100px;
   float: left;
+}
+div#wrapper_main div.summary div.icon .icon_title {
+  font-weight: bold;
+  width: 100%;
+  text-align: center;
+  line-height: 1.5em;
+  margin-bottom: 10px;
 }
 div#wrapper_main div.summary div.specs {
   width: 782px;
@@ -551,6 +558,9 @@ div#wrapper_main div.summary div.specs table.past {
 }
 div#wrapper_main div.summary div.specs table.upcoming tr td,
 div#wrapper_main div.summary div.specs table.past tr td {
-  text-align: center;
-  padding: 5px 0;
+  padding: 7px 7px;
+}
+div#wrapper_main div.summary div.specs table.upcoming tr td a,
+div#wrapper_main div.summary div.specs table.past tr td a {
+  text-decoration: none;
 }

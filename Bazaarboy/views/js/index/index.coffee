@@ -15,6 +15,14 @@ Bazaarboy.index.index =
                 alert response.message
             return
         return
+    deleteEvent: (eventId) ->
+        Bazaarboy.post 'event/delete/', {id: eventId}, (response) =>
+            if response.status is 'OK'
+                return 'OK'
+            else
+                alert response.message
+            return
+        return
     savePaymentConnectSettings: () ->
         promises = []
         $('div#connect div.profiles form').each () ->
@@ -43,6 +51,14 @@ Bazaarboy.index.index =
             scope.createEvent profileId
             return
         # Stripe connect
+        $('div#index div.profiles div.profile div.events div.canvas div.draft div.actions a.delete').click (e) ->
+            e.preventDefault()
+            deleteConfirm = confirm("All information (including RSVPs) from this event will be lost. Are you sure you want to delete?")
+            if deleteConfirm
+                eventId = $(this).data('id')
+                scope.deleteEvent(eventId)
+                $(this).parent().parent().fadeOut()
+            return
         $('div#index div.profiles div.profile div.summary a.connect').click () =>
             if $('div#connect').length is 0
                 window.location.href = stripeConnectUrl

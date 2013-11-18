@@ -158,13 +158,20 @@ div#wrapper_top {
 div#wrapper_main {
     div.summary {
         width: @body_width - @box_padding * 2;
-        height: 100px;
+        min-height: 100px;
         margin-bottom: 20px;
 
         div.icon {
             width: 100px;
-            height: 100px;
+            min-height: 100px;
             .left;
+            .icon_title{
+                font-weight: bold;
+                width: 100%;
+                text-align: center;
+                line-height: 1.5em;
+                margin-bottom: 10px;
+            }
         }
 
         div.specs {
@@ -202,8 +209,10 @@ div#wrapper_main {
                 width: 100%;
                 tr{
                     td{
-                        text-align: center;
-                        padding: 5px 0;
+                        padding: 7px 7px;
+                        a{
+                            text-decoration: none;
+                        }
                     }
                 }
             }

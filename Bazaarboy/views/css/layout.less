@@ -1230,11 +1230,12 @@ div#index {
                             background-color: #FFF;
 
                             div.name {
-                                width: 402px;
+                                width: 340px;
                                 height: @font_size_base + 4;
                                 padding: (34px - (@font_size_base + 4)) / 2 15px;
                                 font-size: @font_size_base + 2;
                                 line-height: @font_size_base + 4;
+                                overflow: hidden;
                                 .left;
 
                                 a {
@@ -1248,7 +1249,7 @@ div#index {
                             }
 
                             div.time {
-                                width: 288px;
+                                width: 230px;
                                 height: @font_size_base - 2;
                                 padding: (34px - (@font_size_base - 2)) / 2 0;
                                 font-size: @font_size_base - 2;
@@ -1257,12 +1258,13 @@ div#index {
                             }
 
                             div.actions {
-                                width: 102px;
+                                width: 214px;
                                 height: 28px;
                                 padding: 3px 20px;
-                                .left;
+                                .right;
 
                                 a {
+                                    float: left;
                                     display: block;
                                     width: 102px;
                                     height: @font_size_base - 4;
@@ -1282,6 +1284,14 @@ div#index {
                                         color: #FFF;
                                         &:hover{
                                             background-color: lighten(@event_blue, 5%);
+                                        }
+                                    }
+                                    &.delete {
+                                        margin-left: 10px;
+                                        background-color: #E6E6E6;
+                                        color: #808080;
+                                        &:hover{
+                                            background-color: lighten(#E6E6E6, 5%);
                                         }
                                     }
 
@@ -2507,6 +2517,17 @@ div#event {
 
             div.organizers {
                 margin-top: 10px;
+            }
+        }
+        div.left{
+            div.description{
+                div.editor{
+                    div.inner{
+                        > p{
+                            -webkit-margin-before: 0em;
+                        }
+                    }
+                }
             }
         }
     }

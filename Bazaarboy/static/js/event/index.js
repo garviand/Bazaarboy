@@ -516,6 +516,7 @@
       $('div#event > div.title div.bottom div.controls a.delete').removeClass('hidden');
       $('div#event > div.title div.bottom div.controls a.save').addClass('hidden');
       $('div#event > div.title div.bottom div.controls a.cancel').addClass('hidden');
+      $('div#event > div.frame div.left div.caption').removeClass('hidden');
       $('div#event > div.title div.bottom div.controls').removeClass('stick');
       this.coverEditInProgress = false;
     },
@@ -585,6 +586,7 @@
           $('div#event > div.title div.bottom div.controls a.delete').addClass('hidden');
           $('div#event > div.title div.bottom div.controls').addClass('stick');
           $('div#event').removeClass('with_cover');
+          $('div#event > div.frame div.left div.caption').addClass('hidden');
           _this.adjustSidebarPosition();
           _this.cover = null;
         } else {

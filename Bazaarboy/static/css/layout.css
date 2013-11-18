@@ -1517,11 +1517,12 @@ div#index div.profiles div.profile div.events > div div.canvas div.draft {
   background-color: #FFF;
 }
 div#index div.profiles div.profile div.events > div div.canvas div.draft div.name {
-  width: 402px;
+  width: 340px;
   height: 20px;
   padding: 7px 15px;
   font-size: 18px;
   line-height: 20px;
+  overflow: hidden;
   float: left;
 }
 div#index div.profiles div.profile div.events > div div.canvas div.draft div.name a {
@@ -1532,7 +1533,7 @@ div#index div.profiles div.profile div.events > div div.canvas div.draft div.nam
   text-decoration: underline;
 }
 div#index div.profiles div.profile div.events > div div.canvas div.draft div.time {
-  width: 288px;
+  width: 230px;
   height: 14px;
   padding: 10px 0;
   font-size: 14px;
@@ -1540,12 +1541,13 @@ div#index div.profiles div.profile div.events > div div.canvas div.draft div.tim
   float: left;
 }
 div#index div.profiles div.profile div.events > div div.canvas div.draft div.actions {
-  width: 102px;
+  width: 214px;
   height: 28px;
   padding: 3px 20px;
-  float: left;
+  float: right;
 }
 div#index div.profiles div.profile div.events > div div.canvas div.draft div.actions a {
+  float: left;
   display: block;
   width: 102px;
   height: 12px;
@@ -1566,6 +1568,14 @@ div#index div.profiles div.profile div.events > div div.canvas div.draft div.act
 }
 div#index div.profiles div.profile div.events > div div.canvas div.draft div.actions a.edit:hover {
   background-color: #5fa3f4;
+}
+div#index div.profiles div.profile div.events > div div.canvas div.draft div.actions a.delete {
+  margin-left: 10px;
+  background-color: #E6E6E6;
+  color: #808080;
+}
+div#index div.profiles div.profile div.events > div div.canvas div.draft div.actions a.delete:hover {
+  background-color: #f3f3f3;
 }
 div#index div.profiles div.profile div.events > div div.canvas div.draft div.actions a:hover {
   background-color: #f3f3f3;
@@ -2668,6 +2678,9 @@ div#event div.frame div.right div.info {
 }
 div#event div.frame div.right div.organizers {
   margin-top: 10px;
+}
+div#event div.frame div.left div.description div.editor div.inner > p {
+  -webkit-margin-before: 0em;
 }
 div#tickets div.title {
   width: 676px;
