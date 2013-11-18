@@ -2669,6 +2669,9 @@ div#event div.frame div.right div.info {
 div#event div.frame div.right div.organizers {
   margin-top: 10px;
 }
+div#event div.frame div.left div.description div.editor div.inner > p {
+  -webkit-margin-before: 0em;
+}
 div#tickets div.title {
   width: 676px;
   height: 36px;

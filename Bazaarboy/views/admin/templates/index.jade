@@ -24,7 +24,9 @@ block main
         div.clear
     div.summary.box
         div.icon
+            div.icon_title Live<br>Events
             img(src="{{ STATIC_URL }}admin/fui/images/icons/Calendar@2x.png")
+            div.clear
         div.specs
             table.upcoming
                 {% for event in upcoming_events %}
@@ -32,11 +34,14 @@ block main
                 tr
                 {% endif %}
                 td
-                    {{ event.name }}
+                   a(href="{% url event:index event.id %}?preview"){{ event.name }}
                 {% endfor %}
+        div.clear
     div.summary.box
         div.icon
-            img(src="{{ STATIC_URL }}admin/fui/images/icons/Calendar@2x.png")
+            div.icon_title Past<br>Events
+            img(src="{{ STATIC_URL }}admin/fui/images/icons/Clipboard@2x.png")
+            div.clear
         div.specs
             table.past
                 {% for event in past_events %}
@@ -44,8 +49,9 @@ block main
                 tr
                 {% endif %}
                 td
-                    {{ event.name }}
+                    a(href="{% url event:index event.id %}?preview"){{ event.name }}
                 {% endfor %}
+        div.clear
     div.summary.box.hidden
         div.icon
             img(src="{{ STATIC_URL }}admin/fui/images/icons/Infinity-Loop@2x.png")
