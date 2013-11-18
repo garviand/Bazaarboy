@@ -95,6 +95,7 @@ admin_urlpatterns = patterns('src.controllers.admin.admin',
     url(r'^auth/$', 'auth', name = 'auth'),
     url(r'^logout/$', 'logout', name = 'logout'),
     url(r'^login/profile/$', 'login_profile', name = 'login_profile'),
+    url(r'^event/export/csv/$', 'guest_list_csv', name = 'guest_list_csv'),
 )
 
 urlpatterns = patterns('',
