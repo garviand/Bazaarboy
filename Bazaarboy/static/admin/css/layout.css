@@ -535,21 +535,31 @@ div#wrapper_main div.summary div.specs div.finances div {
   width: 192px;
   font-size: 17px;
 }
-div#wrapper_main div.summary div.specs.profile_login .input_container {
+div#wrapper_main div.summary div.specs.profile_login .input_container,
+div#wrapper_main div.summary div.specs.event_export .input_container {
   float: left;
   width: 320px;
 }
-div#wrapper_main div.summary div.specs.profile_login .profile_choices {
+div#wrapper_main div.summary div.specs.profile_login .profile_choices,
+div#wrapper_main div.summary div.specs.event_export .profile_choices,
+div#wrapper_main div.summary div.specs.profile_login .event_choices,
+div#wrapper_main div.summary div.specs.event_export .event_choices {
   float: left;
   width: 320px;
 }
-div#wrapper_main div.summary div.specs.profile_login .profile_choices a {
+div#wrapper_main div.summary div.specs.profile_login .profile_choices a,
+div#wrapper_main div.summary div.specs.event_export .profile_choices a,
+div#wrapper_main div.summary div.specs.profile_login .event_choices a,
+div#wrapper_main div.summary div.specs.event_export .event_choices a {
   display: block;
   float: left;
   margin-right: 10px;
   margin-bottom: 10px;
 }
-div#wrapper_main div.summary div.specs.profile_login .profile_choices a.hidden {
+div#wrapper_main div.summary div.specs.profile_login .profile_choices a.hidden,
+div#wrapper_main div.summary div.specs.event_export .profile_choices a.hidden,
+div#wrapper_main div.summary div.specs.profile_login .event_choices a.hidden,
+div#wrapper_main div.summary div.specs.event_export .event_choices a.hidden {
   display: none;
 }
 div#wrapper_main div.summary div.specs table.upcoming,

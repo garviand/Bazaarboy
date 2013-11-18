@@ -42,6 +42,7 @@ def index(request):
     # All Profiles
     profiles = Profile.objects.all()
     # Upcoming & Past Events
+    all_events = Event.objects.filter(is_launched = True)
     upcoming_events = Event.objects.filter(Q(is_launched = True, start_time__gte = timezone.now())).order_by('start_time')[:30]
     past_events = Event.objects.filter(Q(is_launched = True, start_time__lte = timezone.now())).order_by('start_time')[:30]
     return render(request, 'admin/index.html', locals())
