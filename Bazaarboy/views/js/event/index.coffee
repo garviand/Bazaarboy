@@ -477,6 +477,7 @@ Bazaarboy.event.index =
         $('div#event > div.title div.bottom div.controls a.delete').removeClass('hidden')
         $('div#event > div.title div.bottom div.controls a.save').addClass('hidden')
         $('div#event > div.title div.bottom div.controls a.cancel').addClass('hidden')
+        $('div#event > div.frame div.left div.caption').removeClass('hidden')
         $('div#event > div.title div.bottom div.controls').removeClass('stick')
         @coverEditInProgress = false
         return
@@ -542,6 +543,7 @@ Bazaarboy.event.index =
                     .addClass('hidden')
                 $('div#event > div.title div.bottom div.controls').addClass('stick')
                 $('div#event').removeClass('with_cover')
+                $('div#event > div.frame div.left div.caption').addClass('hidden')
                 @adjustSidebarPosition()
                 @cover = null
             else

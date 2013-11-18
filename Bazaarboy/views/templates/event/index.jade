@@ -175,7 +175,7 @@ block content
                         {% else %}
                         i No caption yet.
                         {% endif %}
-                    {% if event.cover and editable %}
+                    {% if editable %}
                     div.button Edit
                     div.editor.hidden
                         input(type="text", name="caption", placeholder="Maximum 100 Characters", value="{{ event.cover.caption }}")
