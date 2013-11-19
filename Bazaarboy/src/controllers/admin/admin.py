@@ -16,9 +16,6 @@ from kernel.models import *
 from src.controllers.request import json_response, validate
 from src.serializer import serialize_one
 
-import csv
-import pdb
-
 def index(request):
     """
     Admin index
@@ -39,10 +36,7 @@ def index(request):
     weekly_stats = weekly_stats.aggregate(total_sale = Sum('price'), sale_count = Count('id'))
     daily_stats = stats.filter(created_time__gte=datetime.now()-timedelta(days=1))
     daily_stats = daily_stats.aggregate(total_sale = Sum('price'), sale_count = Count('id'))
-    # All Profiles
-    profiles = Profile.objects.all()
-    # Upcoming & Past Events
-    all_events = Event.objects.filter(is_launched = True)
+    # Events (Upcoming/Past)
     upcoming_events = Event.objects.filter(Q(is_launched = True, start_time__gte = timezone.now())).order_by('start_time')[:30]
     past_events = Event.objects.filter(Q(is_launched = True, start_time__lte = timezone.now())).order_by('start_time')[:30]
     return render(request, 'admin/index.html', locals())
@@ -116,45 +110,5 @@ def login_profile(request, params):
         response = {
             'status':'FAIL',
             'message':'Profile does not exist.'
-        }
-        return json_response(response)
-
-@validate('GET', ['id'])
-def guest_list_csv(request, params):
-    """
-    Takes in an event and spits out a guest list in CSV format.
-    """
-
-    if not request.session.has_key('admin'):
-        # No admin session, block from login
-        response = {
-            'status':'FAIL',
-            'message':'Not an Admin.'
-        }
-        return json_response(response)
-    qs = Purchase.objects.filter(Q(event = params['id']), Q(checkout = None) | 
-                                    Q(checkout__is_charged = True, 
-                                      checkout__is_refunded = False), 
-                                    )
-    if qs.count() > 0:
-        # RSVPs have been made for the event
-        # Create the HttpResponse object with the appropriate CSV header.
-        response = HttpResponse(mimetype='text/csv')
-        response['Content-Disposition'] = 'attachment; filename="event' + params['id'] + '_' + timezone.now().strftime('%s') +'.csv"'
-        writer = csv.writer(response)    
-
-        headers = ['id', 'name', 'email', 'ticket', 'code']
-        writer.writerow(headers)
-        
-        for obj in qs:
-            row = [obj.id, obj.owner.full_name, obj.owner.email, obj.ticket.name, obj.code]
-            writer.writerow(row)
-
-        return response
-    else:
-        # No guests on the list, nothing to export
-        response = {
-            'status':'FAIL',
-            'message':'Empty Guest List.'
         }
         return json_response(response)

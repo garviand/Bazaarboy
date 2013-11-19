@@ -75,7 +75,7 @@ block content
                                 div.clear
                             div.actions
                                 a.edit(href="{% url event:index event.id %}", target="_blank") Edit Event Page
-                                a.preview(href="{% url event:index event.id %}?preview", target="_blank") Preview Event
+                                a.export(href="{% url event:guest_list_csv %}?id={{ event.id }}") Export Guest List
                                 a.manage(href="{% url event:manage event.id %}", target="_blank") Manage RSVP
                             div.clear 
                     div.live

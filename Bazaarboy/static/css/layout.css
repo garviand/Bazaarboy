@@ -2325,7 +2325,7 @@ div.event_base > div.title div.inner div.bottom div.launch b {
   line-height: 18px;
   text-align: center;
 }
-div.event_base > div.title div.inner div.bottom div.preview {
+div.event_base > div.title div.inner div.bottom div.export {
   display: block;
   text-decoration: none;
   position: absolute;
@@ -2339,10 +2339,10 @@ div.event_base > div.title div.inner div.bottom div.preview {
   cursor: pointer;
   transition: background-color 0.2s;
 }
-div.event_base > div.title div.inner div.bottom div.preview:hover {
+div.event_base > div.title div.inner div.bottom div.export:hover {
   background-color: #6a6a6a;
 }
-div.event_base > div.title div.inner div.bottom div.preview a {
+div.event_base > div.title div.inner div.bottom div.export a {
   text-decoration: none;
   display: block;
   width: 100%;

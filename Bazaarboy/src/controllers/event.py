@@ -8,6 +8,7 @@ from datetime import timedelta
 from django.db.models import F, Q
 from django.http import Http404
 from django.shortcuts import render, redirect
+from django.http import HttpResponse
 from django.utils import timezone
 from django.views.decorators.cache import cache_page
 from celery import task
@@ -17,8 +18,10 @@ from src.controllers.request import *
 from src.email import Email
 from src.regex import REGEX_EMAIL
 from src.sanitizer import sanitize_redactor_input
-from src.serializer import serialize_one
+from src.serializer import serialize, serialize_one
 from src.sms import SMS
+
+import csv
 
 import pdb
 
@@ -1118,5 +1121,53 @@ def checkin(request, params, user):
     response = {
         'status':'OK',
         'purchase':serialize_one(purchase)
+    }
+    return json_response(response)
+
+@login_check()
+@validate('GET', ['id'])
+def guest_list_csv(request, params, user):
+    """
+    Takes in an event and spits out a guest list in CSV format.
+    """
+
+    is_manager = Event_organizer.objects.filter(event = params['id'], 
+                                              profile__managers = user) \
+                                      .exists()
+    is_admin = request.session.has_key('admin')
+
+    if is_manager or is_admin:
+        qs = Purchase.objects.filter(Q(event = params['id']), Q(checkout = None) | 
+                                        Q(checkout__is_charged = True, 
+                                          checkout__is_refunded = False), 
+                                        ).order_by('ticket__name')
+        # RSVPs have been made for the event
+        # Create the HttpResponse object with the appropriate CSV header.
+        response = HttpResponse(mimetype='text/csv')
+        response['Content-Disposition'] = 'attachment; filename="event' + params['id'] + '_' + timezone.now().strftime('%s') +'.csv"'
+        writer = csv.writer(response)
+
+        headers = ['name', 'email', 'ticket', 'code']
+        writer.writerow(headers)
+        
+        for obj in qs:
+            row = [obj.owner.full_name, obj.owner.email, obj.ticket.name, obj.code]
+            writer.writerow(row)
+
+        return response
+    else:
+        # Not a Manager or an Admin
+        return redirect('index')
+        
+
+@validate('GET', ['val'])
+def search(request, params):
+    """
+    Search for an event
+    """
+    qs = Event.objects.filter(name__icontains = params['val'])
+    response = {
+        'status': 'OK',
+        'events': serialize(qs)
     }
     return json_response(response)
