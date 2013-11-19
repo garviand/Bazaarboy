@@ -1,8 +1,8 @@
 (function() {
   Bazaarboy.admin.login = {
     searchProfiles: function(value) {
-      Bazaarboy.get('profile/search', {
-        val: value
+      Bazaarboy.get('profile/search/', {
+        keyword: value
       }, function(response) {
         var i, profiles, _i, _ref;
         if (response.status === 'OK') {
@@ -19,8 +19,8 @@
       });
     },
     searchEvents: function(value) {
-      Bazaarboy.get('event/search', {
-        val: value
+      Bazaarboy.get('event/search/', {
+        keyword: value
       }, function(response) {
         var events, i, _i, _ref;
         if (response.status === 'OK') {
@@ -39,7 +39,7 @@
       $('.profile_login').on('click', '.profile_choices a', function(event) {
         var id;
         id = $(this).data('id');
-        Bazaarboy.get('admin/login/profile', {
+        Bazaarboy.get('admin/login/profile/', {
           id: id
         }, function(response) {
           if (response.status === 'OK') {

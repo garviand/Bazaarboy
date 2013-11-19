@@ -51,6 +51,18 @@ def profile(request, params, user):
     }
     return json_response(response)
 
+@validate('GET', ['keyword'])
+def search(request, params):
+    """
+    Search profiles by keyword
+    """
+    profiles = Profile.objects.filter(name__icontains = params['keyword'])
+    response = {
+        'status':'OK',
+        'profiles':serialize(profiles)
+    }
+    return json_response(response)
+
 @login_required()
 @validate('POST', 
           ['name', 'description', 'community', 'category'], 
@@ -381,14 +393,3 @@ def delete_manager(request, params):
             'status':'OK'
         }
         return json_response(response)
-@validate('GET', ['val'])
-def search(request, params):
-    """
-    Search for a profile
-    """
-    qs = Profile.objects.filter(name__icontains = params['val'])
-    response = {
-        'status': 'OK',
-        'profiles': serialize(qs)
-    }
-    return json_response(response)

@@ -2,6 +2,7 @@
 Controller for events
 """
 
+import csv
 import os
 import re
 from datetime import timedelta
@@ -20,8 +21,6 @@ from src.regex import REGEX_EMAIL
 from src.sanitizer import sanitize_redactor_input
 from src.serializer import serialize, serialize_one
 from src.sms import SMS
-
-import csv
 
 import pdb
 
@@ -98,6 +97,18 @@ def event(request, params, user):
     response = {
         'status':'OK',
         'event':serialize_one(event)
+    }
+    return json_response(response)
+
+@validate('GET', ['keyword'])
+def search(request, params):
+    """
+    Search events by keyword
+    """
+    events = Event.objects.filter(name__icontains = params['keyword'])
+    response = {
+        'status':'OK',
+        'events':serialize(events)
     }
     return json_response(response)
 
@@ -1075,7 +1086,7 @@ def purchase(request, params, user):
     }
     return json_response(response)
 
-@login_check()
+@login_required()
 @validate('POST', ['id'], ['cancel', 'token'])
 def checkin(request, params, user):
     # Check if the purchase exists
@@ -1088,27 +1099,16 @@ def checkin(request, params, user):
         return json_response(response)
     purchase = Purchase.objects.get(id = params['id'])
     event = purchase.event
-    # Check if user is logged in
-    if user is not None:
-        # If so, check if user has permission for the event
-        if not Event_organizer.objects.filter(event = event, 
-                                              profile__managers = user) \
-                                      .exists():
-            response = {
-                'status':'FAIL',
-                'error':'NOT_A_MANAGER',
-                'message':'You don\'t have permission for the event.'
-            }
-            return json_response(response)
-    else:
-        # Otherwise check if the access token is valid
-        if params['token'] is None or event.access_token != params['token']:
-            response = {
-                'status':'FAIL',
-                'error':'PERMISSION_DENIED',
-                'message':'You don\'t have permission for the event.'
-            }
-            return json_response(response)
+    # Check if user has permission for the event
+    if not Event_organizer.objects.filter(event = event, 
+                                          profile__managers = user) \
+                                  .exists():
+        response = {
+            'status':'FAIL',
+            'error':'NOT_A_MANAGER',
+            'message':'You don\'t have permission for the event.'
+        }
+        return json_response(response)
     # Check in or cancel checkin
     if params['cancel'] is not None:
         purchase.is_checked_in = False
@@ -1126,48 +1126,48 @@ def checkin(request, params, user):
 
 @login_check()
 @validate('GET', ['id'])
-def guest_list_csv(request, params, user):
+def purchase_csv(request, params, user):
     """
-    Takes in an event and spits out a guest list in CSV format.
+    Output the purchase list in csv format
     """
-
-    is_manager = Event_organizer.objects.filter(event = params['id'], 
-                                              profile__managers = user) \
-                                      .exists()
-    is_admin = request.session.has_key('admin')
-
-    if is_manager or is_admin:
-        qs = Purchase.objects.filter(Q(event = params['id']), Q(checkout = None) | 
+    # Check if the event is valid
+    if not Event.objects.filter(id = params['id']).exists():
+        response = {
+            'status':'FAIL',
+            'error':'EVENT_NOT_FOUND',
+            'message':'The event doesn\'t exist.'
+        }
+        return json_response(response)
+    event = Event.objects.get(id = params['id'])
+    # Check if user has permission for the event
+    if not Event_organizer.objects.filter(event = event, 
+                                          profile__managers = user) \
+                                  .exists():
+        response = {
+            'status':'FAIL',
+            'error':'NOT_A_MANAGER',
+            'message':'You don\'t have permission for the event.'
+        }
+        return json_response(response)
+    # Get all the successful purchases
+    purchases = Purchase.objects.filter(Q(event = params['id']), 
+                                        Q(checkout = None) | 
                                         Q(checkout__is_charged = True, 
-                                          checkout__is_refunded = False), 
-                                        ).order_by('ticket__name')
-        # RSVPs have been made for the event
-        # Create the HttpResponse object with the appropriate CSV header.
-        response = HttpResponse(mimetype='text/csv')
-        response['Content-Disposition'] = 'attachment; filename="event' + params['id'] + '_' + timezone.now().strftime('%s') +'.csv"'
-        writer = csv.writer(response)
-
-        headers = ['name', 'email', 'ticket', 'code']
-        writer.writerow(headers)
-        
-        for obj in qs:
-            row = [obj.owner.full_name, obj.owner.email, obj.ticket.name, obj.code]
-            writer.writerow(row)
-
-        return response
-    else:
-        # Not a Manager or an Admin
-        return redirect('index')
-        
-
-@validate('GET', ['val'])
-def search(request, params):
-    """
-    Search for an event
-    """
-    qs = Event.objects.filter(name__icontains = params['val'])
-    response = {
-        'status': 'OK',
-        'events': serialize(qs)
-    }
-    return json_response(response)
+                                          checkout__is_refunded = False)) \
+                                .order_by('ticket__name')
+    # Output to csv
+    csvName = re.sub(r'\W+', '-', event.name) + '.csv'
+    response = HttpResponse(mimetype = 'text/csv')
+    response['Content-Disposition'] = 'attachment; filename="' + csvName + '"'
+    writer = csv.writer(response)
+    headers = ['name', 'email', 'ticket', 'code']
+    writer.writerow(headers)
+    for purchase in purchases:
+        row = [
+            purchase.owner.full_name, 
+            purchase.owner.email, 
+            purchase.ticket.name, 
+            purchase.code
+        ]
+        writer.writerow(row)
+    return response

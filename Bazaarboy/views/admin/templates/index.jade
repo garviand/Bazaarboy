@@ -65,16 +65,6 @@ block main
                 div Weekly RSVPs: {{ weekly_stats.sale_count }}
                 div Daily RSVPs: {{ daily_stats.sale_count }}
         div.clear
-    div.summary.box
-        div.icon
-            img(src="{{ STATIC_URL }}admin/fui/images/icons/Clipboard@2x.png")
-        div.specs.event_export
-            div.input_container
-                h3.event_export_title Export Guest List (CSV)
-                form.event_export
-                    input(type="text", name="event_name", placeholder="Event Name")
-            div.event_choices &nbsp;
-            div.clear
 
 append script
     script(type="text/javascript", src="{{ STATIC_URL }}admin/js/index.js")

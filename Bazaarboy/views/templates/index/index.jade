@@ -75,7 +75,7 @@ block content
                                 div.clear
                             div.actions
                                 a.edit(href="{% url event:index event.id %}", target="_blank") Edit Event Page
-                                a.export(href="{% url event:guest_list_csv %}?id={{ event.id }}") Export Guest List
+                                a.export(href="{% url event:purchase-csv %}?id={{ event.id }}") Export Guest List
                                 a.manage(href="{% url event:manage event.id %}", target="_blank") Manage RSVP
                             div.clear 
                     div.live
@@ -122,7 +122,6 @@ block content
                     div.clear
             {% endfor %}
         div.connect
-
         div.actions
             a.save(href="javascript:;") Save
             div.clear
