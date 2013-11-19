@@ -7,7 +7,7 @@ from django.shortcuts import render
 from kernel.models import *
 from src.config import BBOY_PROFILE_CATEGORIES
 from src.controllers.request import *
-from src.serializer import serialize_one
+from src.serializer import serialize, serialize_one
 
 @login_check()
 def index(request, id, user):
@@ -381,3 +381,14 @@ def delete_manager(request, params):
             'status':'OK'
         }
         return json_response(response)
+@validate('GET', ['val'])
+def search(request, params):
+    """
+    Search for a profile
+    """
+    qs = Profile.objects.filter(name__icontains = params['val'])
+    response = {
+        'status': 'OK',
+        'profiles': serialize(qs)
+    }
+    return json_response(response)

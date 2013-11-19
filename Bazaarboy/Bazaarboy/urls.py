@@ -45,6 +45,7 @@ profile_urlpatterns = patterns('src.controllers.profile',
     url(r'^create/$', 'create', name = 'create'),
     url(r'^edit/$', 'edit', name = 'edit'),
     url(r'^delete/$', 'delete', name = 'delete'),
+    url(r'^search/$', 'search', name = 'search'),
 )
 
 event_urlpatterns = patterns('src.controllers.event', 
@@ -63,6 +64,8 @@ event_urlpatterns = patterns('src.controllers.event',
     url(r'^ticket/delete/$', 'delete_ticket', name = 'ticket-delete'),
     url(r'^purchase/$', 'purchase', name = 'purchase'),
     url(r'^checkin/$', 'checkin', name = 'checkin'),
+    url(r'^export/csv/$', 'guest_list_csv', name = 'guest_list_csv'),
+    url(r'^search/$', 'search', name = 'search'),
 )
 
 fundraiser_urlpatterns = patterns('src.controllers.fundraiser', 
@@ -95,7 +98,6 @@ admin_urlpatterns = patterns('src.controllers.admin.admin',
     url(r'^auth/$', 'auth', name = 'auth'),
     url(r'^logout/$', 'logout', name = 'logout'),
     url(r'^login/profile/$', 'login_profile', name = 'login_profile'),
-    url(r'^event/export/csv/$', 'guest_list_csv', name = 'guest_list_csv'),
 )
 
 urlpatterns = patterns('',
