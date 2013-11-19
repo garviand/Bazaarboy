@@ -1087,18 +1087,18 @@ def purchase(request, params, user):
     return json_response(response)
 
 @login_required()
-@validate('POST', ['id'], ['cancel', 'token'])
-def checkin(request, params, user):
-    # Check if the purchase exists
-    if not Purchase.objects.filter(id = params['id']).exists():
+@validate('POST', ['ticket', 'email'], ['full_name', 'phone'])
+def add_purchase(request, params, user):
+    # Check if the ticket is valid
+    if not Ticket.objects.filter(id = params['ticket']).exists():
         response = {
             'status':'FAIL',
-            'error':'PURCHASE_NOT_FOUND',
-            'message':'The purchase doesn\'t exist.'
+            'error':'TICKET_NOT_FOUND',
+            'message':'The ticket doesn\'t exist.'
         }
         return json_response(response)
-    purchase = Purchase.objects.get(id = params['id'])
-    event = purchase.event
+    ticket = Ticket.objects.get(id = params['ticket'])
+    event = ticket.event
     # Check if user has permission for the event
     if not Event_organizer.objects.filter(event = event, 
                                           profile__managers = user) \
@@ -1109,22 +1109,98 @@ def checkin(request, params, user):
             'message':'You don\'t have permission for the event.'
         }
         return json_response(response)
-    # Check in or cancel checkin
-    if params['cancel'] is not None:
-        purchase.is_checked_in = False
-        purchase.checked_in_time = None
-    else:
-        if not purchase.is_checked_in:
-            purchase.is_checked_in = True
-            purchase.checked_in_time = timezone.now()
+    # Attempt to get or create the corresponding user
+    if not REGEX_EMAIL.match(params['email']):
+        response = {
+            'status':'FAIL',
+            'error':'INVALID_EMAIL',
+            'message':'Email format is invalid.'
+        }
+        return json_response(response)
+    user, created = User.objects.get_or_create(email = params['email'])
+    if created:
+        if params['full_name'] is None:
+            response = {
+                'status':'FAIL',
+                'error':'MISSING_FULL_NAME',
+                'message':'You need a full name to add a purchase.'
+            }
+            return json_response(response)
+        if not (0 < len(params['full_name']) <= 50):
+            response = {
+                'status':'FAIL',
+                'error':'INVALID_NAME',
+                'message':'The full name cannot be blank or over 50 chars.'
+            }
+            return json_response(response)
+        user.full_name = params['full_name']
+        if params['phone'] is not None:
+            params['phone'] = re.compile(r'[^\d]+').sub('', params['phone'])
+            if len(params['phone']) != 10:
+                response = {
+                    'status':'FAIL',
+                    'error':'INVALID_PHONE',
+                    'message':'The phone number is invalid.'
+                }
+                return json_response(response)
+            user.phone = params['phone']
+        user.save()
+    # Check if there is an exisiting purchase
+    if Purchase.objects.filter(Q(checkout = None) | 
+                               Q(checkout__is_charged = True, 
+                                 checkout__is_refunded = False), 
+                               owner = user, event = event, 
+                               is_expired = False).exists():
+        response = {
+            'status':'FAIL',
+            'error':'PURCHASED_ALREADY',
+            'message':'This email has already bought a ticket to the event.'
+        }
+        return json_response(response)
+    shouldDeductQuantity = True
+    # Check if there is an unfinished purchase
+    if Purchase.objects.filter(Q(checkout__isnull = False, 
+                                 checkout__is_charged = False), 
+                               owner = user, event = event, 
+                               is_expired = False).exists():
+        shouldDeductQuantity = False
+    # Check if the ticket is sold out
+    elif ticket.quantity is not None and ticket.quantity == 0:
+        response = {
+            'status':'FAIL',
+            'error':'TICKET_SOLD_OUT',
+            'message':'This ticket is sold out.'
+        }
+        return json_response(response)
+    # Create the purchase
+    purchase = Purchase(owner = user, ticket = ticket, event = event, 
+                        price = ticket.price)
     purchase.save()
+    # If the ticket has a quantity limit
+    if ticket.quantity is not None:
+        # Adjust the ticket quantity
+        ticket.quantity = F('quantity') - 1
+        ticket.save()
+    # Try sending the confirmation email
+    try:
+        email = Email()
+        email.sendPurchaseConfirmationEmail(purchase)
+    except Exception:
+        pass
+    if len(user.phone) == 10:
+        # Try sending the confirmation text
+        try:
+            sms = SMS()
+            sms.sendPurchaseConfirmationSMS(purchase)
+        except Exception:
+            pass
     response = {
         'status':'OK',
         'purchase':serialize_one(purchase)
     }
     return json_response(response)
 
-@login_check()
+@login_required()
 @validate('GET', ['id'])
 def purchase_csv(request, params, user):
     """
@@ -1171,3 +1247,41 @@ def purchase_csv(request, params, user):
         ]
         writer.writerow(row)
     return response
+
+@login_required()
+@validate('POST', ['id'], ['cancel', 'token'])
+def checkin(request, params, user):
+    # Check if the purchase exists
+    if not Purchase.objects.filter(id = params['id']).exists():
+        response = {
+            'status':'FAIL',
+            'error':'PURCHASE_NOT_FOUND',
+            'message':'The purchase doesn\'t exist.'
+        }
+        return json_response(response)
+    purchase = Purchase.objects.get(id = params['id'])
+    event = purchase.event
+    # Check if user has permission for the event
+    if not Event_organizer.objects.filter(event = event, 
+                                          profile__managers = user) \
+                                  .exists():
+        response = {
+            'status':'FAIL',
+            'error':'NOT_A_MANAGER',
+            'message':'You don\'t have permission for the event.'
+        }
+        return json_response(response)
+    # Check in or cancel checkin
+    if params['cancel'] is not None:
+        purchase.is_checked_in = False
+        purchase.checked_in_time = None
+    else:
+        if not purchase.is_checked_in:
+            purchase.is_checked_in = True
+            purchase.checked_in_time = timezone.now()
+    purchase.save()
+    response = {
+        'status':'OK',
+        'purchase':serialize_one(purchase)
+    }
+    return json_response(response)
