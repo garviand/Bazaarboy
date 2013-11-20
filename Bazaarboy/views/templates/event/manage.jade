@@ -84,6 +84,19 @@ block content
                             a.all_checkins.active(href="javascript:;", data-status="all") All RSVPs
                             a(href="javascript:;", data-status="not_checked_in") Not Checked In
                             a(href="javascript:;", data-status="checked_in") Arrived
+                    a.add_purchase_start(href="javascript:;") Add A Guest
+                    div.add_purchase.hidden
+                        div.add_purchase_label Add A Guest
+                        form.add_purchase_form
+                            input(type="text", name="guest_name", placeholder="Full Name")
+                            input(type="text", name="guest_email", placeholder="Email")
+                            input(type="text", name="guest_phone", placeholder="Phone (optional)")
+                            div.ticket_type_label Choose Ticket Type
+                            div.ticket_types
+                                {% for ticket in tickets %}
+                                a(href="javascript:;", data-id="{{ ticket.id }}") {{ ticket.name }}
+                                {% endfor %}
+                            a.add_purchase_submit(href="javascript:;") Submit Guest
                 div.clear
 
 append script

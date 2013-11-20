@@ -3300,6 +3300,88 @@ div#event_manage {
                         }
                     }
                 }
+                a.add_purchase_start{
+                    display: block;
+                    width: @sidebar_width;
+                    margin-top: 20px;
+                    font-size: @font_size_base;
+                    color: #FFF;
+                    background-color: @event_blue;
+                    padding: 10px;
+                    text-align: center;
+                    text-decoration: none;
+                    -webkit-box-sizing: border-box;
+                    -moz-box-sizing: border-box;
+                    box-sizing: border-box;
+                    transition: background-color .2s;
+                    &:hover{
+                        background-color: lighten(@event_blue, 5%);
+                    }
+                }
+                div.add_purchase{
+                    margin: 20px 0;
+                    width: @sidebar_width;
+                    div.add_purchase_label{
+                        margin: 5px 0;
+                        text-align: center;
+                        font-weight: bold;
+                    }
+                    form.add_purchase_form{
+                        input{
+                            width: 100%;
+                            border: 1px solid @font_color_base;
+                            padding: 5px;
+                            margin-bottom: 10px;
+                            -webkit-box-sizing: border-box;
+                            -moz-box-sizing: border-box;
+                            box-sizing: border-box;
+                        }
+                        div.ticket_type_label{
+                            margin: 5px 0;
+                        }
+                        div.ticket_types{
+                            a{
+                                display: block;
+                                width: 100%;
+                                font-size: @font_size_base;
+                                color: @font_color_base;
+                                border: 1px solid @font_color_base;
+                                text-decoration: none;
+                                border-top: none;
+                                padding: 5px;
+                                text-align: center;
+                                -webkit-box-sizing: border-box;
+                                -moz-box-sizing: border-box;
+                                box-sizing: border-box;
+                                &:first-child{
+                                    border-top: 1px solid @font_color_base;
+                                }
+                                &:hover, &.active{
+                                    color: #FFF;
+                                    background: #7F7F7F;
+                                }
+                            }
+                        }
+                        a.add_purchase_submit{
+                            display: block;
+                            width: 100%;
+                            margin-top: 20px;
+                            font-size: @font_size_base;
+                            color: #FFF;
+                            background-color: @event_blue;
+                            padding: 10px;
+                            text-align: center;
+                            text-decoration: none;
+                            -webkit-box-sizing: border-box;
+                            -moz-box-sizing: border-box;
+                            box-sizing: border-box;
+                            transition: background-color .2s;
+                            &:hover{
+                                background-color: lighten(@event_blue, 5%);
+                            }
+                        }
+                    }
+                }
             }
             div.list_guests{
                 float: right;

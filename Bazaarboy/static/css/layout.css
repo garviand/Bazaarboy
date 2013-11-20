@@ -3391,6 +3391,85 @@ div#event_manage > div.list_content div.inner div.list_filters form.list_search 
   color: #FFF;
   background: #7F7F7F;
 }
+div#event_manage > div.list_content div.inner div.list_filters a.add_purchase_start {
+  display: block;
+  width: 192px;
+  margin-top: 20px;
+  font-size: 16px;
+  color: #FFF;
+  background-color: #4795f2;
+  padding: 10px;
+  text-align: center;
+  text-decoration: none;
+  -webkit-box-sizing: border-box;
+  -moz-box-sizing: border-box;
+  box-sizing: border-box;
+  transition: background-color 0.2s;
+}
+div#event_manage > div.list_content div.inner div.list_filters a.add_purchase_start:hover {
+  background-color: #5fa3f4;
+}
+div#event_manage > div.list_content div.inner div.list_filters div.add_purchase {
+  margin: 20px 0;
+  width: 192px;
+}
+div#event_manage > div.list_content div.inner div.list_filters div.add_purchase div.add_purchase_label {
+  margin: 5px 0;
+  text-align: center;
+  font-weight: bold;
+}
+div#event_manage > div.list_content div.inner div.list_filters div.add_purchase form.add_purchase_form input {
+  width: 100%;
+  border: 1px solid #000000;
+  padding: 5px;
+  margin-bottom: 10px;
+  -webkit-box-sizing: border-box;
+  -moz-box-sizing: border-box;
+  box-sizing: border-box;
+}
+div#event_manage > div.list_content div.inner div.list_filters div.add_purchase form.add_purchase_form div.ticket_type_label {
+  margin: 5px 0;
+}
+div#event_manage > div.list_content div.inner div.list_filters div.add_purchase form.add_purchase_form div.ticket_types a {
+  display: block;
+  width: 100%;
+  font-size: 16px;
+  color: #000000;
+  border: 1px solid #000000;
+  text-decoration: none;
+  border-top: none;
+  padding: 5px;
+  text-align: center;
+  -webkit-box-sizing: border-box;
+  -moz-box-sizing: border-box;
+  box-sizing: border-box;
+}
+div#event_manage > div.list_content div.inner div.list_filters div.add_purchase form.add_purchase_form div.ticket_types a:first-child {
+  border-top: 1px solid #000000;
+}
+div#event_manage > div.list_content div.inner div.list_filters div.add_purchase form.add_purchase_form div.ticket_types a:hover,
+div#event_manage > div.list_content div.inner div.list_filters div.add_purchase form.add_purchase_form div.ticket_types a.active {
+  color: #FFF;
+  background: #7F7F7F;
+}
+div#event_manage > div.list_content div.inner div.list_filters div.add_purchase form.add_purchase_form a.add_purchase_submit {
+  display: block;
+  width: 100%;
+  margin-top: 20px;
+  font-size: 16px;
+  color: #FFF;
+  background-color: #4795f2;
+  padding: 10px;
+  text-align: center;
+  text-decoration: none;
+  -webkit-box-sizing: border-box;
+  -moz-box-sizing: border-box;
+  box-sizing: border-box;
+  transition: background-color 0.2s;
+}
+div#event_manage > div.list_content div.inner div.list_filters div.add_purchase form.add_purchase_form a.add_purchase_submit:hover {
+  background-color: #5fa3f4;
+}
 div#event_manage > div.list_content div.inner div.list_guests {
   float: right;
   width: 696px;
