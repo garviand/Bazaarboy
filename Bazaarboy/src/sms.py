@@ -25,6 +25,6 @@ class SMS(object):
             body += purchase.event.name
             body += '\' and your confirmation code is '
             body += purchase.code
-            body += '. From Bazaarboy.'
+            #body += '. From Bazaarboy.'
             return self.sendSMS(purchase.owner.phone, body)
         return True
