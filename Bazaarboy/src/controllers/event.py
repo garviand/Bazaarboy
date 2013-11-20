@@ -21,6 +21,7 @@ from src.regex import REGEX_EMAIL
 from src.sanitizer import sanitize_redactor_input
 from src.serializer import serialize, serialize_one
 from src.sms import SMS
+from src.csvutils import UnicodeWriter
 
 import pdb
 
@@ -74,9 +75,8 @@ def manage(request, id, params, user):
                                         Q(checkout__is_charged = True, 
                                           checkout__is_refunded = False), 
                                         event = event, 
-                                        is_expired = False)
-    ticket_list = purchases.values_list('ticket').distinct()
-    tickets = Ticket.objects.filter(id__in=ticket_list)
+                                        is_expired = False).order_by('-id')
+    tickets = Ticket.objects.filter(event=event)
     checked_in = purchases.exclude(Q(checked_in_time = None)).count()
     return render(request, 'event/manage.html', locals())
 
@@ -1235,7 +1235,7 @@ def purchase_csv(request, params, user):
     csvName = re.sub(r'\W+', '-', event.name) + '.csv'
     response = HttpResponse(mimetype = 'text/csv')
     response['Content-Disposition'] = 'attachment; filename="' + csvName + '"'
-    writer = csv.writer(response)
+    writer = UnicodeWriter(response)
     headers = ['name', 'email', 'ticket', 'code']
     writer.writerow(headers)
     for purchase in purchases:

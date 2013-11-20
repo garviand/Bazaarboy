@@ -25,7 +25,7 @@ Bazaarboy.event.manage =
                     guest_div.append('<div class="confirmation">' + response.purchase.code + '</div>')
                     guest_div.append('<div class="checkin"><a href="javascript:;">Check In</a></div>')
                     guest_div.append('<div class="clear">&nbsp;</div>')
-                    $('div.list_content div.list_guests').append guest_div
+                    $('div.list_content div.list_guests div.list_headers').after(guest_div)
                     totalCount = parseInt($('div.checkin_count div.checkin_numbers span.total_guests').html()) + 1
                     $('div.checkin_count div.checkin_numbers span.total_guests').html(totalCount)
                     $('div.list_content div.inner div.add_purchase').fadeIn()
