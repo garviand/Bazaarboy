@@ -4,5 +4,4 @@ node_modules/*
 *.swp
 *.log
 *~
-.elasticbeanstalk/
 Bazaarboy/*/migrations/*
