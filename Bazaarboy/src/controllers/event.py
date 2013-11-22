@@ -22,8 +22,6 @@ from src.sanitizer import sanitize_redactor_input
 from src.serializer import serialize, serialize_one
 from src.sms import SMS
 
-import pdb
-
 @cache_page(60 * 5)
 @login_check()
 @validate('GET', [], ['token', 'preview'])

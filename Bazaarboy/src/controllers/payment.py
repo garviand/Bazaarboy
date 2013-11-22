@@ -14,8 +14,6 @@ from src.controllers.request import *
 from src.email import Email
 from src.sms import SMS
 
-import pdb
-
 @login_required('index')
 @validate('GET', [], ['code', 'error', 'error_description'])
 def connect(request, params, user):
