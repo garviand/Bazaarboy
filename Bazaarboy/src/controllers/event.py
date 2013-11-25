@@ -2,7 +2,6 @@
 Controller for events
 """
 
-import csv
 import os
 import re
 from datetime import timedelta
@@ -16,14 +15,12 @@ from celery import task
 from kernel.models import *
 from src.config import *
 from src.controllers.request import *
+from src.csvutils import UnicodeWriter
 from src.email import Email
 from src.regex import REGEX_EMAIL
 from src.sanitizer import sanitize_redactor_input
 from src.serializer import serialize, serialize_one
 from src.sms import SMS
-from src.csvutils import UnicodeWriter
-
-import pdb
 
 @cache_page(60 * 5)
 @login_check()
