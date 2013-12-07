@@ -282,6 +282,7 @@ class Ticket(models.Model):
     description = models.CharField(max_length = 150)
     price = models.FloatField()
     quantity = models.IntegerField(null = True, default = None)
+    seats = models.TextField(null = True, default = None)
     start_time = models.DateTimeField()
     end_time = models.DateTimeField()
 
@@ -300,13 +301,15 @@ class Ticket(models.Model):
 
 class Purchase(models.Model):
     """
-    Purchase model for a ticket
+    Purchase model for tickets
     """
     owner = models.ForeignKey('User')
     ticket = models.ForeignKey('Ticket')
     event = models.ForeignKey('Event')
     price = models.FloatField()
+    quantity = models.IntegerField(default = 1)
     code = models.CharField(max_length = 6)
+    seats = models.TextField(null = True, default = None)
     checkout = models.ForeignKey('Checkout', null = True, default = None)
     is_expired = models.BooleanField(default = False)
     is_checked_in = models.BooleanField(default = False)
