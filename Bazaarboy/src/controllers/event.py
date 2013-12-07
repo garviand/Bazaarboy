@@ -5,7 +5,7 @@ Controller for events
 import os
 import re
 from datetime import timedelta
-from django.db import transaction
+from django.db import transaction, IntegrityError
 from django.db.models import F, Q
 from django.http import Http404
 from django.shortcuts import render, redirect
@@ -921,7 +921,7 @@ def mark_purchase_as_expired(purchase):
 
 def get_seats(seats, quantity, continuous=True):
     """
-    Probe the seats list to get the best continuous seats that fit with
+    Try probing the seats list to get the best continuous seats that fit with 
     the quantity
     """
     def get_seat(seat):
@@ -937,7 +937,7 @@ def get_seats(seats, quantity, continuous=True):
     count = 0
     prev = None
     if len(seats) < quantity:
-        return False
+        return False, False
     if not continuous:
         return seats[:quantity], seats[quantity:]
     for i in range(0, len(seats)):
@@ -946,7 +946,7 @@ def get_seats(seats, quantity, continuous=True):
             currRow, currNum = get_seat(seat)
             prevRow, prevNum = get_seat(prev)
             if currRow == False or prevRow == False:
-                return False
+                return False, False
             else:
                 if currRow != prevRow or prevNum + 1 != currNum:
                     count = 0
@@ -1109,9 +1109,20 @@ def purchase(request, params, user):
                 Ticket.objects \
                       .filter(id = ticket.id) \
                       .update(quantity = F('quantity') - purchase.quantity)
-            # Assign seating
+            # Assign seats
             if ticket.seats is not None:
                 seats = ticket.seats.split(',')
+                assigned, rest = get_seats(seats, purchase.quantity)
+                if assigned:
+                    # Seat assigned
+                    purchase.seats = ','.join(assigned)
+                    purchase.save()
+                    # Update the ticket seats
+                    Ticket.objects.filter(id = ticket.id) \
+                                  .update(seats = ','.join(rest))
+                else:
+                    # Assign seats failed, raise exception to roll back
+                    raise IntegrityError()
             # Try sending the confirmation email
             try:
                 email = Email()

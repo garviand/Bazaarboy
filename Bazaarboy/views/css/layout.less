@@ -2977,6 +2977,14 @@ div#rsvp {
                 &.valid {
                     cursor: pointer;
 
+                    div.body {
+                        width: 55%;
+                    }
+
+                    > div.quantity {
+                        display: block;
+                    }
+
                     &:hover, &.selected {
                         border-top: 1px solid @event_blue;
                         background-color: @event_blue;
@@ -3000,7 +3008,7 @@ div#rsvp {
                 }
 
                 div.body {
-                    width: 55%;
+                    width: 70%;
                     height: 60px;
                     padding: 10px 0;
                     .left;
@@ -3021,6 +3029,7 @@ div#rsvp {
                 }
 
                 > div.quantity {
+                    display: none;
                     width: 10%;
                     height: 60px;
                     margin-left: 5%;

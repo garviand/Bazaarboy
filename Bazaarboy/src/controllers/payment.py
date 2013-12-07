@@ -5,11 +5,13 @@ Controller for payments
 import json
 import requests
 import stripe
+from django.db import transaction
 from django.core.urlresolvers import reverse
 from django.http import Http404
 from django.shortcuts import render, redirect
 from kernel.models import *
 from src.config import *
+from src.controllers.event import get_seats
 from src.controllers.request import *
 from src.email import Email
 from src.sms import SMS
@@ -89,26 +91,51 @@ def charge(request, params, user):
         )
         checkout.is_charged = True
         checkout.save()
-        try:
-            email = Email()
-            sms = SMS()
-            if Purchase.objects.filter(checkout = checkout).exists():
-                purchase = Purchase.objects.get(checkout = checkout)
-                email.sendPurchaseConfirmationEmail(purchase)
-                sms.sendPurchaseConfirmationSMS(purchase)
-            elif Donation.objects.filter(checkout = checkout).exists():
-                donation = Donation.objects.get(checkout = checkout)
-                email.sendDonationConfirmationEmail(donation)
-        except Exception:
-            pass
-        response = {
-            'status':'OK'
-        }
-        return json_response(response)
     except stripe.CardError, e:
         response = {
             'status':'FAIL',
             'error':'CARD_DECLINED',
             'message':'The card is declined.'
+        }
+        return json_response(response)
+    finally:
+        email = Email()
+        sms = SMS()
+        if Purchase.objects.filter(checkout = checkout).exists():
+            purchase = Purchase.objects.get(checkout = checkout)
+            # Start a database transaction
+            with transaction.commit_on_success():
+                # Place a lock on ticket information (seats)
+                ticket = Ticket.objects.select_for_update() \
+                                       .filter(id = purchase.ticket.id)[0]
+                # Assign seats
+                if ticket.seats is not None:
+                    seats = ticket.seats.split(',')
+                    assigned, rest = get_seats(seats, purchase.quantity)
+                    if assigned:
+                        # Seat assigned
+                        purchase.seats = ','.join(assigned)
+                        purchase.save()
+                        # Update the ticket seats
+                        Ticket.objects.filter(id = ticket.id) \
+                                      .update(seats = ','.join(rest))
+                    else:
+                        # Assign seating failed, raise exception to roll back
+                        raise IntegrityError()
+            try:
+                email.sendPurchaseConfirmationEmail(purchase)
+                sms.sendPurchaseConfirmationSMS(purchase)
+            except Exception as e:
+                # Ignore email and sms errors for now
+                pass
+        elif Donation.objects.filter(checkout = checkout).exists():
+            donation = Donation.objects.get(checkout = checkout)
+            try:
+                email.sendDonationConfirmationEmail(donation)
+            except Exception as e:
+                # Ignore email and sms error for now
+                pass
+        response = {
+            'status':'OK'
         }
         return json_response(response)
