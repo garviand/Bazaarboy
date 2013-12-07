@@ -343,6 +343,13 @@ block content
                     div.body
                         div.name {{ ticket.name }}
                         div.description {{ ticket.description }}
+                    div.quantity
+                        div.text Quantity
+                        div.select
+                            select
+                                {% for i in "xxxxxxxxxxxxxxx" %}
+                                option(value="{{ forloop.counter }}") {{ forloop.counter }}
+                                {% endfor %}
                     div.detail
                         div.price 
                             b 

@@ -3120,7 +3120,7 @@ div#rsvp div.tickets div.content div.ticket div.input input {
   bottom: 0;
 }
 div#rsvp div.tickets div.content div.ticket div.body {
-  width: 70%;
+  width: 55%;
   height: 60px;
   padding: 10px 0;
   float: left;
@@ -3136,6 +3136,25 @@ div#rsvp div.tickets div.content div.ticket div.body div.description {
   margin-top: 10px;
   font-size: 14px;
   line-height: 16px;
+}
+div#rsvp div.tickets div.content div.ticket > div.quantity {
+  width: 10%;
+  height: 60px;
+  margin-left: 5%;
+  padding: 10px 0;
+  float: left;
+}
+div#rsvp div.tickets div.content div.ticket > div.quantity div.text {
+  width: 100%;
+  height: 15px;
+  padding-top: 5px;
+  font-size: 15px;
+  text-align: center;
+}
+div#rsvp div.tickets div.content div.ticket > div.quantity div.select {
+  width: 100%;
+  padding-top: 10px;
+  text-align: center;
 }
 div#rsvp div.tickets div.content div.ticket div.detail {
   width: 20%;

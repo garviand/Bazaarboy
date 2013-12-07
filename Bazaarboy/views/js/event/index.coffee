@@ -89,12 +89,20 @@ Bazaarboy.event.index =
             picture: image
         , (response) -> 
             return
-    purchase: (ticket, email=null, fullName=null, phone=null) ->
+    purchase: (ticket, quantity, email=null, fullName=null, phone=null) ->
         @purchaseInProgress = true
         $('div#rsvp div.action a.confirm').css('display', 'none')
         $('div#rsvp div.action div.loading').removeClass('hidden')
+        total = 'Free'
+        price = $('div#rsvp div.ticket.selected div.price b').html()
+        price = price.replace(/\$/g, '')
+        price = parseFloat(price)
+        if price isnt NaN
+            total = '$ ' + (price * quantity).toFixed(2)
+        $('div#rsvp div.confirmation div.price b').html(total)
         params = 
             ticket: ticket
+            quantity: quantity
         if email? and fullName?
             params.email = email
             params.full_name = fullName
@@ -152,6 +160,7 @@ Bazaarboy.event.index =
         , () ->
             $(this).addClass('hidden')
             return
+        $('div#rsvp div.tickets div.selected select').attr('disabled', true)
         $('div#rsvp div.action').css('overflow', 'hidden').animate
             'height': 0
         , () ->
@@ -203,16 +212,15 @@ Bazaarboy.event.index =
                 $('div#rsvp div.action').removeClass('hidden')
                 $('div#rsvp div.confirmation div.ticket')
                     .html($(this).find('div.name').html())
-                $('div#rsvp div.confirmation div.price b')
-                    .html($(this).find('div.price b').html())
             return
         # Confirm ticket selection
         $('div#rsvp div.action a.confirm').click () ->
             if not $(this).hasClass('preview')
                 if $('div#rsvp div.ticket.valid.selected').length > 0
                     ticket = $('div#rsvp div.ticket.valid.selected').attr('data-id')
+                    quantity = $('div#rsvp div.ticket.valid.selected select').val()
                     if $('div#rsvp div.info').length is 0
-                        scope.purchase ticket
+                        scope.purchase ticket, quantity
                     else
                         email = $('div#rsvp div.info input[name=email]').val()
                         fullName = $('div#rsvp div.info input[name=full_name]').val()
@@ -225,7 +233,7 @@ Bazaarboy.event.index =
                             return
                         if phone.trim() is ''
                             phone = null
-                        scope.purchase ticket, email, fullName, phone
+                        scope.purchase ticket, quantity, email, fullName, phone
             return
         # Check whether to open the RSVP modal
         if window.location.hash? and window.location.hash is '#rsvp' and not editable

@@ -1001,6 +1001,15 @@ def purchase(request, params, user):
             'message':'The ticket is not up for sale at this time.'
         }
         return json_response(response)
+    # Check if the quantity is valid
+    params['quantity'] = int(params['quantity'])
+    if params['quantity'] <= 0:
+        response = {
+            'status':'FAIL',
+            'error':'INVALID_QUANTITY',
+            'message':'The quantity must be bigger than zero.'
+        }
+        return json_response(response)
     # Check if there is an exisiting purchase
     if Purchase.objects.filter(Q(checkout = None) | 
                                Q(checkout__is_charged = True, 
@@ -1019,16 +1028,16 @@ def purchase(request, params, user):
                                owner = user, event = event, 
                                is_expired = False).exists():
         # If so, release its holding quantity if necessary
-        if ticket.quantity is not None:
-            purchase = Purchase.objects.get(Q(checkout__isnull = False, 
-                                              checkout__is_charged = False), 
-                                            owner = user, event = event, 
-                                            is_expired = False)
-            # Mark the old purchase as expired
-            purchase.is_expired = True
-            purchase.save()
-            # Restore quantity
-            Ticket.objects.filter(id = ticket.id) \
+        purchase = Purchase.objects.get(Q(checkout__isnull = False, 
+                                          checkout__is_charged = False), 
+                                        owner = user, event = event, 
+                                        is_expired = False)
+        # Mark the old purchase as expired
+        purchase.is_expired = True
+        purchase.save()
+        # Restore quantity
+        if purchase.ticket.quantity is not None:
+            Ticket.objects.filter(id = purchase.ticket.id) \
                           .update(quantity = F('quantity') + purchase.quantity)
     # Start a database transaction
     with transaction.commit_on_success():

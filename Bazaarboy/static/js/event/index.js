@@ -105,8 +105,8 @@
         picture: image
       }, function(response) {});
     },
-    purchase: function(ticket, email, fullName, phone) {
-      var params,
+    purchase: function(ticket, quantity, email, fullName, phone) {
+      var params, price, total,
         _this = this;
       if (email == null) {
         email = null;
@@ -120,8 +120,17 @@
       this.purchaseInProgress = true;
       $('div#rsvp div.action a.confirm').css('display', 'none');
       $('div#rsvp div.action div.loading').removeClass('hidden');
+      total = 'Free';
+      price = $('div#rsvp div.ticket.selected div.price b').html();
+      price = price.replace(/\$/g, '');
+      price = parseFloat(price);
+      if (price !== NaN) {
+        total = '$ ' + (price * quantity).toFixed(2);
+      }
+      $('div#rsvp div.confirmation div.price b').html(total);
       params = {
-        ticket: ticket
+        ticket: ticket,
+        quantity: quantity
       };
       if ((email != null) && (fullName != null)) {
         params.email = email;
@@ -182,6 +191,7 @@
       }, function() {
         $(this).addClass('hidden');
       });
+      $('div#rsvp div.tickets div.selected select').attr('disabled', true);
       $('div#rsvp div.action').css('overflow', 'hidden').animate({
         'height': 0
       }, function() {
@@ -230,16 +240,16 @@
           $(this).find('input[type=radio]').prop('checked', true);
           $('div#rsvp div.action').removeClass('hidden');
           $('div#rsvp div.confirmation div.ticket').html($(this).find('div.name').html());
-          $('div#rsvp div.confirmation div.price b').html($(this).find('div.price b').html());
         }
       });
       $('div#rsvp div.action a.confirm').click(function() {
-        var email, fullName, phone, ticket;
+        var email, fullName, phone, quantity, ticket;
         if (!$(this).hasClass('preview')) {
           if ($('div#rsvp div.ticket.valid.selected').length > 0) {
             ticket = $('div#rsvp div.ticket.valid.selected').attr('data-id');
+            quantity = $('div#rsvp div.ticket.valid.selected select').val();
             if ($('div#rsvp div.info').length === 0) {
-              scope.purchase(ticket);
+              scope.purchase(ticket, quantity);
             } else {
               email = $('div#rsvp div.info input[name=email]').val();
               fullName = $('div#rsvp div.info input[name=full_name]').val();
@@ -255,7 +265,7 @@
               if (phone.trim() === '') {
                 phone = null;
               }
-              scope.purchase(ticket, email, fullName, phone);
+              scope.purchase(ticket, quantity, email, fullName, phone);
             }
           }
         }
