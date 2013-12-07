@@ -919,6 +919,51 @@ def mark_purchase_as_expired(purchase):
                           .update(quantity = F('quantity') + purchase.quantity)
     return True
 
+def get_seats(seats, quantity, continuous=True):
+    """
+    Probe the seats list to get the best continuous seats that fit with
+    the quantity
+    """
+    def get_seat(seat):
+        i = re.search(r'\d', seat)
+        if i:
+            row = seat[:i.start()]
+            number = int(seat[i.start():])
+            return row, number
+        else:
+            return False, False
+    results = []
+    indexes = []
+    count = 0
+    prev = None
+    if len(seats) < quantity:
+        return False
+    if not continuous:
+        return seats[:quantity], seats[quantity:]
+    for i in range(0, len(seats)):
+        seat = seats[i]
+        if prev is not None:
+            currRow, currNum = get_seat(seat)
+            prevRow, prevNum = get_seat(prev)
+            if currRow == False or prevRow == False:
+                return False
+            else:
+                if currRow != prevRow or prevNum + 1 != currNum:
+                    count = 0
+                    results = []
+                    indexes = []
+        count = count + 1
+        prev = seat
+        results.append(seat)
+        indexes.append(i)
+        if count == quantity:
+            rest = []
+            for j in range(0, len(seats)):
+                if not j in indexes:
+                    rest.append(seats[j])
+            return results, rest
+    return get_seats(seats, quantity, False)
+
 @login_check()
 @validate('POST', ['ticket', 'quantity'], ['email', 'full_name', 'phone'])
 def purchase(request, params, user):
@@ -1064,6 +1109,9 @@ def purchase(request, params, user):
                 Ticket.objects \
                       .filter(id = ticket.id) \
                       .update(quantity = F('quantity') - purchase.quantity)
+            # Assign seating
+            if ticket.seats is not None:
+                seats = ticket.seats.split(',')
             # Try sending the confirmation email
             try:
                 email = Email()
