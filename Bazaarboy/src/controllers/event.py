@@ -5,6 +5,7 @@ Controller for events
 import os
 import re
 from datetime import timedelta
+from django.db import transaction, IntegrityError
 from django.db.models import F, Q
 from django.http import Http404
 from django.shortcuts import render, redirect
@@ -903,17 +904,68 @@ def mark_purchase_as_expired(purchase):
     """
     Expires a purchase after some time and release the ticket
     """
-    if not purchase.checkout.is_charged:
+    # Update purchase object
+    purchase = Purchase.objects.get(id = purchase.id)
+    # Make sure the purchase isn't already marked as expired or 
+    # charged
+    if not purchase.is_expired and not purchase.checkout.is_charged:
+        # Mark it as exipred
         purchase.is_expired = True
         purchase.save()
+        # And update the ticket quantity if necessary
         ticket = purchase.ticket
         if ticket.quantity is not None:
-            ticket.quantity = F('quantity') + 1
-            ticket.save()
+            Ticket.objects.filter(id = ticket.id) \
+                          .update(quantity = F('quantity') + purchase.quantity)
     return True
 
+def get_seats(seats, quantity, continuous=True):
+    """
+    Try probing the seats list to get the best continuous seats that fit with 
+    the quantity
+    """
+    def get_seat(seat):
+        i = re.search(r'\d', seat)
+        if i:
+            row = seat[:i.start()]
+            number = int(seat[i.start():])
+            return row, number
+        else:
+            return False, False
+    results = []
+    indexes = []
+    count = 0
+    prev = None
+    if len(seats) < quantity:
+        return False, False
+    if not continuous:
+        return seats[:quantity], seats[quantity:]
+    for i in range(0, len(seats)):
+        seat = seats[i]
+        if prev is not None:
+            currRow, currNum = get_seat(seat)
+            prevRow, prevNum = get_seat(prev)
+            if currRow == False or prevRow == False:
+                return False, False
+            else:
+                if currRow != prevRow or prevNum + 1 != currNum:
+                    count = 0
+                    results = []
+                    indexes = []
+        count = count + 1
+        prev = seat
+        results.append(seat)
+        indexes.append(i)
+        if count == quantity:
+            rest = []
+            for j in range(0, len(seats)):
+                if not j in indexes:
+                    rest.append(seats[j])
+            return results, rest
+    return get_seats(seats, quantity, False)
+
 @login_check()
-@validate('POST', ['ticket'], ['email', 'full_name', 'phone'])
+@validate('POST', ['ticket', 'quantity'], ['email', 'full_name', 'phone'])
 def purchase(request, params, user):
     """
     Purchase a ticket
@@ -994,6 +1046,15 @@ def purchase(request, params, user):
             'message':'The ticket is not up for sale at this time.'
         }
         return json_response(response)
+    # Check if the quantity is valid
+    params['quantity'] = int(params['quantity'])
+    if params['quantity'] <= 0:
+        response = {
+            'status':'FAIL',
+            'error':'INVALID_QUANTITY',
+            'message':'The quantity must be bigger than zero.'
+        }
+        return json_response(response)
     # Check if there is an exisiting purchase
     if Purchase.objects.filter(Q(checkout = None) | 
                                Q(checkout__is_charged = True, 
@@ -1006,80 +1067,126 @@ def purchase(request, params, user):
             'message':'You have already bought a ticket to the event.'
         }
         return json_response(response)
-    shouldDeductQuantity = True
     # Check if there is an unfinished purchase
     if Purchase.objects.filter(Q(checkout__isnull = False, 
                                  checkout__is_charged = False), 
                                owner = user, event = event, 
                                is_expired = False).exists():
-        shouldDeductQuantity = False
-    # Check if the ticket is sold out
-    elif ticket.quantity is not None and ticket.quantity == 0:
-        response = {
-            'status':'FAIL',
-            'error':'TICKET_SOLD_OUT',
-            'message':'This ticket is sold out.'
-        }
-        return json_response(response)
-    # Check if it's a free ticket
-    if ticket.price == 0:
-        # Create the purchase
-        purchase = Purchase(owner = user, ticket = ticket, event = event, 
-                            price = ticket.price)
+        # If so, release its holding quantity if necessary
+        purchase = Purchase.objects.get(Q(checkout__isnull = False, 
+                                          checkout__is_charged = False), 
+                                        owner = user, event = event, 
+                                        is_expired = False)
+        # Mark the old purchase as expired
+        purchase.is_expired = True
         purchase.save()
-        # If the ticket has a quantity limit
-        if ticket.quantity is not None and shouldDeductQuantity:
-            # Adjust the ticket quantity
-            ticket.quantity = F('quantity') - 1
-            ticket.save()
-        # Try sending the confirmation email
-        try:
-            email = Email()
-            email.sendPurchaseConfirmationEmail(purchase)
-        except Exception:
-            pass
-        if len(user.phone) == 10:
-            # Try sending the confirmation text
+        # Restore quantity
+        if purchase.ticket.quantity is not None:
+            Ticket.objects.filter(id = purchase.ticket.id) \
+                          .update(quantity = F('quantity') + purchase.quantity)
+    # Start a database transaction
+    with transaction.commit_on_success():
+        # Place a lock on the ticket information (quantity)
+        ticket = Ticket.objects.select_for_update().filter(id = ticket.id)[0]
+        # Check if the ticket has enough quantity
+        if ticket.quantity is not None and ticket.quantity < params['quantity']:
+            response = {
+                'status':'FAIL',
+                'error':'INSUFFICIENT_QUANTITY',
+                'message':'There aren\'t enough tickets left.'
+            }
+            return json_response(response)
+        # Check if it's a free ticket
+        if ticket.price == 0:
+            # Create the purchase
+            purchase = Purchase(owner = user, ticket = ticket, event = event, 
+                                price = ticket.price, 
+                                quantity = params['quantity'])
+            purchase.save()
+            # If the ticket has a quantity limit
+            if ticket.quantity is not None:
+                # Update the ticket quantity
+                Ticket.objects \
+                      .filter(id = ticket.id) \
+                      .update(quantity = F('quantity') - purchase.quantity)
+            # Assign seats
+            if ticket.seats is not None:
+                seats = ticket.seats.split(',')
+                assigned, rest = get_seats(seats, purchase.quantity)
+                if assigned:
+                    # Seat assigned
+                    purchase.seats = ','.join(assigned)
+                    purchase.save()
+                    # Update the ticket seats
+                    Ticket.objects.filter(id = ticket.id) \
+                                  .update(seats = ','.join(rest))
+                else:
+                    # Assign seats failed, raise exception to roll back
+                    raise IntegrityError()
+            # Try sending the confirmation email
             try:
-                sms = SMS()
-                sms.sendPurchaseConfirmationSMS(purchase)
+                email = Email()
+                email.sendPurchaseConfirmationEmail(purchase)
             except Exception:
                 pass
+            if len(user.phone) == 10:
+                # Try sending the confirmation text
+                try:
+                    sms = SMS()
+                    sms.sendPurchaseConfirmationSMS(purchase)
+                except Exception:
+                    pass
+            response = {
+                'status':'OK',
+                'purchase':serialize_one(purchase)
+            }
+            return json_response(response)
+        # If it's not a free ticket
+        # Get the event creator's payemnt account
+        creator = Event_organizer.objects.get(event = event, 
+                                              is_creator = True) \
+                                         .profile
+        paymentAccount = creator.payment_account
+        # Calculate checkout total
+        # Since Stripe's fee is by default payee-charged, adjust checkout
+        # amount in order to make it payer-charged
+        amount = ticket.price * params['quantity']
+        amount = (amount + 0.3) / (1 - 0.029 - STRIPE_TRANSACTION_RATE)
+        # Create the checkout
+        checkoutDescription = '%s - %s' % (event.name, ticket.name)
+        checkout = Checkout(payer = user, 
+                            payee = paymentAccount, 
+                            amount = int(amount * 100), 
+                            description = checkoutDescription)
+        checkout.save()
+        # Create the purchase
+        purchase = Purchase(owner = user, ticket = ticket, event = event, 
+                            price = ticket.price, 
+                            quantity = params['quantity'], 
+                            checkout = checkout)
+        purchase.save()
+        # If the ticket has a quantity limit
+        if ticket.quantity is not None:
+            # Schedule the purchase to be expired after some amount of time
+            expiration = timezone.now()
+            expiration += timedelta(minutes = BBOY_TRANSACTION_EXPIRATION)
+            mark_purchase_as_expired.apply_async(args = [purchase], 
+                                                 eta = expiration)
+            # Update the ticket quantity
+            Ticket.objects \
+                  .filter(id = ticket.id) \
+                  .update(quantity = F('quantity') - purchase.quantity)
         response = {
             'status':'OK',
-            'purchase':serialize_one(purchase)
+            'purchase':serialize_one(purchase),
+            'publishable_key':paymentAccount.publishable_key
         }
         return json_response(response)
-    # Get the event creator's payemnt account
-    creator = Event_organizer.objects.get(event = event, is_creator = True) \
-                                     .profile
-    paymentAccount = creator.payment_account
-    # Create the checkout
-    price = (ticket.price + 0.3) / (1 - 0.029 - STRIPE_TRANSACTION_RATE)
-    checkoutDescription = '%s - %s' % (event.name, ticket.name)
-    checkout = Checkout(payer = user, 
-                        payee = paymentAccount, 
-                        amount = int(price * 100), 
-                        description = checkoutDescription)
-    checkout.save()
-    # Create the purchase
-    purchase = Purchase(owner = user, ticket = ticket, event = event, 
-                        price = ticket.price, checkout = checkout)
-    purchase.save()
-    # If the ticket has a quantity limit
-    if ticket.quantity is not None and shouldDeductQuantity:
-        # Schedule the purchase to be expired after some amount of time
-        expiration = timezone.now()
-        expiration += timedelta(minutes = BBOY_TRANSACTION_EXPIRATION)
-        mark_purchase_as_expired.apply_async(args = [purchase], 
-                                             eta = expiration)
-        # Adjust the ticket quantity
-        ticket.quantity = F('quantity') - 1
-        ticket.save()
+    # If it gets here, there is a transaction failure
     response = {
-        'status':'OK',
-        'purchase':serialize_one(purchase),
-        'publishable_key':paymentAccount.publishable_key
+        'status':'FAIL',
+        'error':'FAILED_TRANSACTION',
+        'message':'The transaction failed, please try again.'
     }
     return json_response(response)
 

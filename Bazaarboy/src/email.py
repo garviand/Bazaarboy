@@ -20,7 +20,7 @@ class Email(object):
         super(Email, self).__init__()
         self.client = Mandrill(MANDRILL_API_KEY)
 
-    def sendEmail(self, to, subject, template, mergeVars):
+    def sendEmail(self, to, subject, template, mergeVars, attachments=[]):
         """
         Wrapper function for sending an email
         """
@@ -34,7 +34,8 @@ class Email(object):
             'global_merge_vars':mergeVars,
             'to':to,
             'track_clicks':True,
-            'track_opens':True
+            'track_opens':True,
+            'attachments':attachments
         }
         result = self.client.messages.send_template(template_name = template, 
                                                     template_content = [], 
