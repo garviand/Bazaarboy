@@ -5,7 +5,7 @@ echo -e "Prerequisites:\n"
 echo "1. LAMP stack configured with proper credentials (see settings.py)"
 echo "2. An empty database in mysql called Bazaarboy"
 echo "3. Node.js 0.10.10 environment"
-echo -e "3. Do not run this script using sudo\n"
+echo -e "3. Make sure you are running this under sudo\n"
 
 echo "Are these prerequisites satisfied? (If so, type yes):"
 read prompt
@@ -28,7 +28,7 @@ sudo npm install
 
 # Python related
 
-echo -e "\nInstalling gcc/g++ compilers\n" 
+echo -e "\nInstalling gcc/g++ compilers\n"
 sudo apt-get install build-essential
 echo -e "\nInstalling python developer package\n"
 sudo apt-get install python-dev
@@ -54,7 +54,7 @@ sudo apt-get install redis-server
 
 echo -e "\nIn another terminal, append the following lines to ~/.bashrc\n\n"
 echo "export WORKON_HOME=$HOME/.virtualenvs"
-echo "export PROJECT_HOME=$HOME/{{ DEVELOPMENT_DIRECTORY }}"
+echo "export PROJECT_HOME={{ DEVELOPMENT_DIRECTORY }}"
 echo "source /usr/local/bin/virtualenvwrapper.sh"
 echo -e "\n\nReplace {{ DEVELOPMENT_DIRECTORY }} with the path of this repo"
 echo -e "For example, if this repo is under\n"
