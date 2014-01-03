@@ -4,3 +4,11 @@
   03_convert:
     command: "python Bazaarboy/manage.py convert_to_south kernel"
     leader_only: true
+  02_schemamigration:
+    command: "python Bazaarboy/manage.py schemamigration kernel --auto"
+    leader_only: true
+  04_migrate:
+    command: "python Bazaarboy/manage.py migrate kernel --noinput"
+    leader_only: true
+  05_migrate:
+    command: "python Bazaarboy/manage.py migrate kernel --fake --noinput"
