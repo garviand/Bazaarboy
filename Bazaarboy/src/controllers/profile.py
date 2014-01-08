@@ -65,7 +65,7 @@ def search(request, params):
 
 @login_required()
 @validate('POST', 
-          ['name', 'description', 'community', 'category'], 
+          ['name', 'description', 'category'], 
           ['latitude', 'longitude', 'wepay'])
 def create(request, params, user):
     """
@@ -79,16 +79,7 @@ def create(request, params, user):
             'message':'Profile name cannot be over 100 characters.'
         }
         return json_response(response)
-    # Check if community exists
-    if not Community.objects.filter(id = params['community']).exists():
-        response = {
-            'status':'FAIL',
-            'error':'COMMUNITY_NOT_FOUND',
-            'message':'The community doesn\'t exist'
-        }
-        return json_response(response)
     # Create profile object
-    community = Community.objects.get(id = params['community'])
     profile = Profile(name = params['name'], 
                       description = params['description'], 
                       community = community, 

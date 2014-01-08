@@ -142,7 +142,6 @@ INSTALLED_APPS = (
     'storages',
     #'easy_thumbnails',
     'kernel',
-    'analytics',
     'admin',
     # Uncomment the next line to enable the admin:
     # 'django.contrib.admin',

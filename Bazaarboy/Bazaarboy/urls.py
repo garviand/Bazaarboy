@@ -22,22 +22,6 @@ payment_urlpatterns = patterns('src.controllers.payment',
     url(r'^charge/$', 'charge', name = 'charge'),
 )
 
-city_urlpatterns = patterns('src.controllers.city',
-    url(r'^(?P<id>\d+)/$', 'index', name = 'index'),
-    url(r'^$', 'city', name = 'city'),
-    url(r'^create/$', 'create', name = 'create'),
-    url(r'^edit/$', 'edit', name = 'edit'),
-    url(r'^delete/$', 'delete', name = 'delete'),
-)
-
-community_urlpatterns = patterns('src.controllers.community', 
-    url(r'^(?P<id>\d+)/$', 'index', name = 'index'),
-    url(r'^$', 'community', name = 'community'),
-    url(r'^create/$', 'create', name = 'create'),
-    url(r'^edit/$', 'edit', name = 'edit'),
-    url(r'^delete/$', 'delete', name = 'delete'),
-)
-
 profile_urlpatterns = patterns('src.controllers.profile', 
     url(r'^(?P<id>\d+)/$', 'index', name = 'index'),
     url(r'^manage/$', 'manage', name = 'manage'),
@@ -69,20 +53,6 @@ event_urlpatterns = patterns('src.controllers.event',
     url(r'^checkin/$', 'checkin', name = 'checkin'),
 )
 
-fundraiser_urlpatterns = patterns('src.controllers.fundraiser', 
-    url(r'^(?P<id>\d+)/$', 'index', name = 'index'),
-    url(r'^$', 'fundraiser', name = 'fundraiser'),
-    url(r'^create/$', 'create', name = 'create'),
-    url(r'^edit/$', 'edit', name = 'edit'),
-    url(r'^delete/$', 'delete', name = 'delete'),
-    url(r'^launch/$', 'launch', name = 'launch'),
-    url(r'^delaunch/$', 'delaunch', name = 'delaunch'),
-    url(r'^reward/create/$', 'create_reward', name = 'reward-create'),
-    url(r'^reward/edit/$', 'edit_reward', name = 'reward-edit'),
-    url(r'^reward/delete/$', 'delete_reward', name = 'reward-delete'),
-    url(r'^donate/$', 'donate', name = 'donate'),
-)
-
 sponsorship_urlpatterns = patterns('src.controllers.sponsorship', 
     url(r'^create/$', 'create', name = 'create'),
 )
@@ -106,13 +76,8 @@ urlpatterns = patterns('',
     url(r'^', include(index_urlpatterns, namespace = 'index')),
     url(r'^user/', include(user_urlpatterns, namespace = 'user')),
     url(r'^payment/', include(payment_urlpatterns, namespace = 'payment')),
-    url(r'^city/', include(city_urlpatterns, namespace = 'city')),
-    url(r'^community/', 
-        include(community_urlpatterns, namespace = 'community')),
     url(r'^profile/', include(profile_urlpatterns, namespace = 'profile')),
     url(r'^event/', include(event_urlpatterns, namespace = 'event')),
-    url(r'^fundraiser/', 
-        include(fundraiser_urlpatterns, namespace = 'fundraiser')),
     url(r'^sponsorship/', 
         include(sponsorship_urlpatterns, namespace = 'sponsorship')),
     url(r'^file/', include(file_urlpatterns, namespace = 'file')),
