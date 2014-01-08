@@ -82,7 +82,6 @@ def create(request, params, user):
     # Create profile object
     profile = Profile(name = params['name'], 
                       description = params['description'], 
-                      community = community, 
                       category = params['category'])
     # Check if coordinates are specified, and if so, if they are legal
     if params['latitude'] is not None and params['longitude'] is not None:
