@@ -6,8 +6,7 @@ import hashlib
 import os
 import random
 import string
-from django.db import models, IntegrityError
-from django.db.models import F
+from django.db import models
 from django.utils import timezone
 
 class User(models.Model):
@@ -20,11 +19,14 @@ class User(models.Model):
     email = models.CharField(max_length = 50, unique = True)
     password = models.CharField(max_length = 128, null = True, default = None)
     salt = models.CharField(max_length = 128, null = True, default = None)
-    full_name = models.CharField(max_length = 50)
+    first_name = models.CharField(max_length = 50)
+    last_name = models.CharField(max_length = 50)
     phone = models.CharField(max_length = 10)
     is_confirmed = models.BooleanField(default = False)
+    is_active = models.BooleanField(default = True)
     created_time = models.DateTimeField(auto_now_add = True)
 
+    full_name = None
     # A copy of the user's original password
     __original_password = None
 
@@ -33,6 +35,8 @@ class User(models.Model):
         Overrides instantiation to keep track of password changes
         """
         super(User, self).__init__(*args, **kwargs)
+        if self.pk is not None:
+            self.full_name = self.first_name + ' ' + self.last_name
         # Save a copy of the original password
         self.__original_password = self.password
 
@@ -107,17 +111,16 @@ class Profile(models.Model):
                               related_name = '%(class)s_image', 
                               null = True, default = None, 
                               on_delete = models.SET_NULL)
-    cover = models.ForeignKey('Image', 
-                              related_name = '%(class)s_cover', 
-                              null = True, default = None, 
-                              on_delete = models.SET_NULL)
     category = models.CharField(max_length = 30)
     location = models.CharField(max_length = 100)
     latitude = models.FloatField(null = True, default = None)
     longitude = models.FloatField(null = True, default = None)
     email = models.CharField(max_length = 50)
     phone = models.CharField(max_length = 10)
-    links = models.TextField()
+    link_website = models.CharField(max_length = 1024, null = True, 
+                                    default = None)
+    link_facebook = models.CharField(max_length = 1024, null = True, 
+                                     default = None)
     payment_account = models.ForeignKey('Payment_account', 
                                         null = True, default = None)
     created_time = models.DateTimeField(auto_now_add = True)
@@ -139,6 +142,7 @@ class Event(models.Model):
     Event model
     """
     name = models.CharField(max_length = 150)
+    summary = models.CharField(max_length = 250)
     description = models.TextField()
     start_time = models.DateTimeField()
     end_time = models.DateTimeField(null = True, default = None)
@@ -149,10 +153,10 @@ class Event(models.Model):
                               related_name = '%(class)s_image', 
                               null = True, default = None, 
                               on_delete = models.SET_NULL)
-    summary = models.CharField(max_length = 100)
     tags = models.CharField(max_length = 50)
-    is_launched = models.BooleanField(default = False)
     category = models.CharField(max_length = 30)
+    is_launched = models.BooleanField(default = False)
+    launched_time = models.DateTimeField(null = True, default = None)
     created_time = models.DateTimeField(auto_now_add = True)
     organizers = models.ManyToManyField('Profile', through = 'Organizer')
     sponsors = models.ManyToManyField('Profile', through = 'Sponsorship')
@@ -224,7 +228,7 @@ class Criteria(models.Model):
     event = models.ForeignKey('Event')
     name = models.CharField(max_length = 50)
     description = models.TextField()
-    price_lower = models.FloatField()
+    price_lower = models.FloatField(null = True, default = None)
     price_upper = models.FloatField(null = True, default = None)
     quantity = models.IntegerField(null = True, default = None)
 

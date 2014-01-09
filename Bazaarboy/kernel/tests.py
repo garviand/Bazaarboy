@@ -703,15 +703,3 @@ class EventTests(TestCase):
         response = client.post('/event/purchase/', params).content
         response = json.loads(response)
         self.assertEqual(response['status'], 'OK')
-
-class FundraiserTests(TestCase):
-    """
-    Tests for fundraisers
-    """
-    fixtures = ['tests.json']
-
-    def test_create(self):
-        pass
-
-    def test_transact(self):
-        pass

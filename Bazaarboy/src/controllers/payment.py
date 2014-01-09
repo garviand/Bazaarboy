@@ -7,7 +7,7 @@ import requests
 import stripe
 from django.db import transaction
 from django.core.urlresolvers import reverse
-from django.http import Http404
+from django.http import Http404, HttpResponse
 from django.shortcuts import render, redirect
 from kernel.models import *
 from src.config import *
@@ -24,7 +24,7 @@ def connect(request, params, user):
     """
     # Check if there is any error
     if params['error'] is not None:
-        pass
+        return HttpResponse(params['error'] + ':' + params['error_description'])
     # Check if a code is passed
     elif params['code'] is not None:
         # Exchange the code for an access token
@@ -37,7 +37,7 @@ def connect(request, params, user):
         response = json.loads(response.content)
         # Check if there is any error
         if response.has_key('error'):
-            pass
+            return HttpResponse(response['error'])
         else:
             # If not, create the payment account
             paymentAccount = Payment_account(
@@ -72,6 +72,13 @@ def charge(request, params, user):
             'message':'You don\'t have permission for the checkout.'
         }
         return json_response(response)
+    if not Purchase.objects.filter(checkout = checkout).exists():
+        response = {
+            'status':'FAIL',
+            'error':'HEADLESS_CHECKOUT',
+            'message':'This checkout doesn\'t belong to any purchase.'
+        }
+        return json_response(response)
     if checkout.is_charged:
         response = {
             'status':'FAIL',
@@ -99,42 +106,34 @@ def charge(request, params, user):
         }
         return json_response(response)
     finally:
-        email = Email()
-        sms = SMS()
-        if Purchase.objects.filter(checkout = checkout).exists():
-            purchase = Purchase.objects.get(checkout = checkout)
-            # Start a database transaction
-            with transaction.commit_on_success():
-                # Place a lock on ticket information (seats)
-                ticket = Ticket.objects.select_for_update() \
-                                       .filter(id = purchase.ticket.id)[0]
-                # Assign seats
-                if ticket.seats is not None:
-                    seats = ticket.seats.split(',')
-                    assigned, rest = get_seats(seats, purchase.quantity)
-                    if assigned:
-                        # Seat assigned
-                        purchase.seats = ','.join(assigned)
-                        purchase.save()
-                        # Update the ticket seats
-                        Ticket.objects.filter(id = ticket.id) \
-                                      .update(seats = ','.join(rest))
-                    else:
-                        # Assign seating failed, raise exception to roll back
-                        raise IntegrityError()
-            try:
-                email.sendPurchaseConfirmationEmail(purchase)
-                sms.sendPurchaseConfirmationSMS(purchase)
-            except Exception as e:
-                # Ignore email and sms errors for now
-                pass
-        elif Donation.objects.filter(checkout = checkout).exists():
-            donation = Donation.objects.get(checkout = checkout)
-            try:
-                email.sendDonationConfirmationEmail(donation)
-            except Exception as e:
-                # Ignore email and sms error for now
-                pass
+        purchase = Purchase.objects.get(checkout = checkout)
+        # Start a database transaction
+        with transaction.commit_on_success():
+            # Place a lock on ticket information (seats)
+            ticket = Ticket.objects.select_for_update() \
+                                   .filter(id = purchase.ticket.id)[0]
+            # Assign seats
+            if ticket.seats is not None:
+                seats = ticket.seats.split(',')
+                assigned, rest = get_seats(seats, purchase.quantity)
+                if assigned:
+                    # Seat assigned
+                    purchase.seats = ','.join(assigned)
+                    purchase.save()
+                    # Update the ticket seats
+                    Ticket.objects.filter(id = ticket.id) \
+                                  .update(seats = ','.join(rest))
+                else:
+                    # Assign seating failed, raise exception to roll back
+                    raise IntegrityError()
+        try:
+            email = Email()
+            email.sendPurchaseConfirmationEmail(purchase)
+            sms = SMS()
+            sms.sendPurchaseConfirmationSMS(purchase)
+        except Exception as e:
+            # Ignore email and sms errors for now
+            pass
         response = {
             'status':'OK'
         }

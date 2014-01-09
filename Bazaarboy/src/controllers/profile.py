@@ -2,11 +2,14 @@
 Controller for Profile
 """
 
+import cgi
+import re
 from django.http import Http404
 from django.shortcuts import render
 from kernel.models import *
 from src.config import BBOY_PROFILE_CATEGORIES
 from src.controllers.request import *
+from src.regex import REGEX_EMAIL, REGEX_URL
 from src.serializer import serialize, serialize_one
 
 @login_check()
@@ -21,15 +24,6 @@ def index(request, id, user):
     if Profile_manager.objects.filter(user = user, profile = profile).exists():
         manager = Profile_manager.objects.get(user = user, profile = profile)
     return render(request, 'profile/index.html', locals())
-
-@login_required('index')
-def manage(request, user):
-    """
-    Manage profiles page
-    """
-    profiles = Profile.objects.filter(managers = user)
-    categories = BBOY_PROFILE_CATEGORIES
-    return render(request, 'profile/manage.html', locals())
 
 @login_required()
 @validate('GET', ['id'])
@@ -64,14 +58,15 @@ def search(request, params):
     return json_response(response)
 
 @login_required()
-@validate('POST', 
-          ['name', 'description', 'category'], 
-          ['latitude', 'longitude', 'wepay'])
+@validate('POST', ['name', 'description', 'category'], 
+          ['image', 'location', 'latitude', 'longitude', 'email', 'phone', 
+           'link_website', 'link_facebook', 'payment'])
 def create(request, params, user):
     """
     Create a profile and set the creating user as the creator
     """
-    # Check if the name is too long
+    # Check if the name is valid
+    params['name'] = cgi.escape(params['name'])
     if len(params['name']) > 100:
         response = {
             'status':'FAIL',
@@ -79,10 +74,44 @@ def create(request, params, user):
             'message':'Profile name cannot be over 100 characters.'
         }
         return json_response(response)
+    # Check if the category is too long
+    params['category'] = cgi.escape(params['category'])
+    if len(params['category']) > 30:
+        response = {
+            'status':'FAIL',
+            'error':'INVALID_CATEGORY',
+            'message':'Category cannot be over 30 characters.'
+        }
+        return json_response(response)
     # Create profile object
+    params['description'] = cgi.escape(params['description'])
     profile = Profile(name = params['name'], 
                       description = params['description'], 
                       category = params['category'])
+    if params['image'] is not None:
+        if not Image.objects.filter(id = params['image']).exists():
+            response = {
+                'status':'FAIL',
+                'error':'IMAGE_NOT_FOUND',
+                'message':'The image doesn\'t exist.'
+            }
+            return json_response(response)
+        else:
+            image = Image.objects.get(id = params['image'])
+            image.is_archived = True
+            image.save()
+            profile.image = image
+    if params['location'] is not None:
+        params['location'] = cgi.escape(params['location'])
+        if len(params['location']) > 100:
+            response = {
+                'status':'FAIL',
+                'error':'LOCATION_TOO_LONG',
+                'message':'The location must be within 100 characters.'
+            }
+            return json_response(response)
+        else:
+            profile.location = params['location']
     # Check if coordinates are specified, and if so, if they are legal
     if params['latitude'] is not None and params['longitude'] is not None:
         if not (-90.0 <= float(params['latitude']) <= 90.0 and 
@@ -97,24 +126,69 @@ def create(request, params, user):
             # Valid coordinates, set to profile
             profile.latitude = float(params['latitude'])
             profile.longitude = float(params['longitude'])
-    # Check WePay account
-    if params['wepay'] is not None:
-        if not Wepay_account.objects.filter(id = params['wepay']):
+    if params['email'] is not None:
+        # Check email format
+        if not REGEX_EMAIL.match(params['email']):
             response = {
                 'status':'FAIL',
-                'error':'INVALID_WEPAY',
-                'message':'The wepay account is invalid.'
+                'error':'INVALID_EMAIL',
+                'message':'Email format is invalid.'
             }
             return json_response(response)
-        wepayAccount = Wepay_account.objects.get(id = params['wepay'])
-        if user != wepayAccount.owner:
+        else:
+            profile.email = params['email']
+    if params['phone'] is not None:
+        params['phone'] = re.compile(r'[^\d]+').sub('', params['phone'])
+        if len(params['phone']) != 10:
             response = {
                 'status':'FAIL',
-                'error':'NOT_WEPAY_OWNER',
-                'message':'You don\'t have permission for this WePay account.'
+                'error':'INVALID_PHONE',
+                'message':'The phone number is invalid.'
             }
             return json_response(response)
-        profile.wepay_account = wepayAccount
+        else:
+            profile.phone = params['phone']
+    if params['link_website'] is not None:
+        if (len(params['link_website']) != 0) and 
+            not REGEX_URL.match(params['link_website'])):
+            response = {
+                'status':'FAIL',
+                'error':'INVALID_LINK_WEB',
+                'message':'Your website link is invalid.'
+            }
+            return json_response(response)
+        else:
+            profile.link_website = params['link_website']
+    if params['link_facebook'] is not None:
+        if (len(params['link_facebook']) != 0) and 
+            not REGEX_URL.match(params['link_facebook'])):
+            response = {
+                'status':'FAIL',
+                'error':'INVALID_LINK_FB',
+                'message':'Your facebook link is invalid.'
+            }
+            return json_response(response)
+        else:
+            profile.link_facebook = params['link_facebook']
+    # Check if payment account is valid
+    if params['payment'] is not None:
+        if not Payment_account.objects.filter(id = params['payment']).exists():
+            response = {
+                'status':'FAIL',
+                'error':'PAYMENT_ACCOUNT_NOT_FOUND',
+                'message':'The payment account doesn\'t exist.'
+            }
+            return json_response(response)
+        paymentAccount = Payment_account.objects.get(id = params['payment'])
+        if paymentAccount.owner.id != user.id:
+            response = {
+                'status':'FAIL',
+                'error':'PAYMENT_ACCOUNT_PERMISSION_DENIED',
+                'nmessage':'You don\'t have permission for this account.'
+            }
+            return json_response(response)
+        else:
+            profile.payment_account = paymentAccount
     # Save profile and establish manager role
     profile.save()
     profileManager = Profile_manager(user = user,
@@ -155,6 +229,7 @@ def edit(request, params, user):
         return json_response(response)
     # Go through all the params and edit the profile accordingly
     if params['name'] is not None:
+        params['name'] = cgi.escape(params['name'])
         if not (0 < len(params['name']) <= 100):
             response = {
                 'status':'FAIL',
@@ -165,6 +240,7 @@ def edit(request, params, user):
         else:
             profile.name = params['name']
     if params['description'] is not None:
+        params['description'] = cgi.escape(params['description'])
         profile.description = params['description']
     if params['image'] is not None:
         if params['image'].lower() == 'delete':
@@ -187,29 +263,28 @@ def edit(request, params, user):
             image.is_archived = True
             image.save()
             profile.image = image
-    if params['cover'] is not None:
-        if params['cover'].lower() == 'delete':
-            if profile.cover is not None:
-                oldCover = Image.objects.get(id = profile.cover.id)
-                oldCover.delete()
-                profile.cover = None
-        elif not Image.objects.filter(id = params['cover']).exists():
+    if params['category'] is not None:
+        params['category'] = cgi.escape(params['category'])
+        if not (0 < len(params['category']) <= 30):
             response = {
                 'status':'FAIL',
-                'error':'COVER_IMAGE_NOT_FOUND',
-                'message':'The cover image doesn\'t exist.'
+                'error':'INVALID_CATEGORY',
+                'message':'Category cannot be over 30 characters.'
             }
             return json_response(response)
         else:
-            cover = Image.objects.get(id = params['cover'])
-            if profile.cover is not None:
-                oldCover = Image.objects.get(id = profile.cover.id)
-                oldCover.delete()
-            cover.is_archived = True
-            cover.save()
-            profile.cover = cover
-    if params['category'] is not None:
-        profile.category = params['category']
+            profile.category = params['category']
+    if params['location'] is not None:
+        params['location'] = cgi.escape(params['location'])
+        if len(params['location']) > 100:
+            response = {
+                'status':'FAIL',
+                'error':'LOCATION_TOO_LONG',
+                'message':'The location must be within 100 characters.'
+            }
+            return json_response(response)
+        else:
+            profile.location = params['location']
     if params['latitude'] is not None and params['longitude'] is not None: 
         if not (-90.0 <= float(params['latitude']) <= 90.0 and 
                 -180.0 <= float(params['longitude']) <= 180.0):
@@ -222,6 +297,50 @@ def edit(request, params, user):
         else:
             profile.latitude = float(params['latitude'])
             profile.longitude = float(params['longitude'])
+    if params['email'] is not None:
+        # Check email format
+        if not REGEX_EMAIL.match(params['email']):
+            response = {
+                'status':'FAIL',
+                'error':'INVALID_EMAIL',
+                'message':'Email format is invalid.'
+            }
+            return json_response(response)
+        else:
+            profile.email = params['email']
+    if params['phone'] is not None:
+        params['phone'] = re.compile(r'[^\d]+').sub('', params['phone'])
+        if len(params['phone']) != 10:
+            response = {
+                'status':'FAIL',
+                'error':'INVALID_PHONE',
+                'message':'The phone number is invalid.'
+            }
+            return json_response(response)
+        else:
+            profile.phone = params['phone']
+    if params['link_website'] is not None:
+        if (len(params['link_website']) != 0) and 
+            not REGEX_URL.match(params['link_website'])):
+            response = {
+                'status':'FAIL',
+                'error':'INVALID_LINK_WEB',
+                'message':'Your website link is invalid.'
+            }
+            return json_response(response)
+        else:
+            profile.link_website = params['link_website']
+    if params['link_facebook'] is not None:
+        if (len(params['link_facebook']) != 0) and 
+            not REGEX_URL.match(params['link_facebook'])):
+            response = {
+                'status':'FAIL',
+                'error':'INVALID_LINK_FB',
+                'message':'Your facebook link is invalid.'
+            }
+            return json_response(response)
+        else:
+            profile.link_facebook = params['link_facebook']
     if params['payment'] is not None:
         if not Payment_account.objects.filter(id = params['payment']).exists():
             response = {

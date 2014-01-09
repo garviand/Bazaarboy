@@ -179,25 +179,3 @@ class Email(object):
             }
         ]
         return self.sendEmail(to, subject, template, mergeVars)
-
-    def sendDonationConfirmationEmail(self, donation):
-        """
-        Send Donation Confirmation
-        """
-        to = [{
-            'email':donation.owner.email, 
-            'name':donation.owner.full_name
-        }]
-        subject = 'Confirmation for \'' + donation.fundraiser.name + '\''
-        template = 'confirm-donation'
-        mergeVars = [
-            {
-                'name':'fundraiser_name', 
-                'content':donation.fundraiser.name
-            }, 
-            {
-                'name':'user_name', 
-                'content':donation.owner.full_name
-            }
-        ]
-        return self.sendEmail(to, subject, template, mergeVars)

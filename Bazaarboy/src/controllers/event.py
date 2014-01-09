@@ -2,6 +2,7 @@
 Controller for events
 """
 
+import cgi
 import os
 import re
 from datetime import timedelta
@@ -25,7 +26,7 @@ from src.sms import SMS
 
 @cache_page(60 * 5)
 @login_check()
-@validate('GET', [], ['token', 'preview'])
+@validate('GET', [], ['preview'])
 def index(request, id, params, user):
     """
     Event page
@@ -37,17 +38,11 @@ def index(request, id, params, user):
         user = None
         preview = True
     event = Event.objects.select_related().get(id = id)
-    editable = False
-    if Event_organizer.objects.filter(event = event).count() != 0:
-        editable = (user is not None and 
-                    Event_organizer.objects.filter(event = event, 
-                                                   profile__managers = user) \
-                                           .exists())
-        if not editable and not event.is_launched and not preview:
-            return redirect('index')
-    elif params['token'] is not None and event.access_token == params['token']:
-        editable = True
-    else:
+    editable = (user is not None and 
+                Event_organizer.objects.filter(event = event, 
+                                               profile__managers = user) \
+                                       .exists())
+    if not editable and not event.is_launched and not preview:
         return redirect('index')
     tickets = Ticket.objects.filter(event = event)
     rsvp = True
@@ -110,52 +105,102 @@ def search(request, params):
     }
     return json_response(response)
 
-@login_check()
-@validate('POST', [], ['profile'])
+@login_required()
+@validate('POST', ['name', 'summary', 'start_time', 'profile'], 
+          ['end_time', 'location', 'latitude', 'longitude'])
 def create(request, params, user):
     """
     Create a new event
     """
-    event = Event(name = 'Untitled Event', 
-                  start_time = timezone.now() + timedelta(days = 7))
-    # Check if the user has logged in
-    if user is not None:
-        # If so, check if the profile is valid
-        if params['profile'] is None:
+    # Check if the profile is valid
+    if params['profile'] is None:
+        response = {
+            'status':'FAIL',
+            'error':'MISSING_PROFILE',
+            'message':'A profile is required to create an event.'
+        }
+        return json_response(response)
+    if not Profile.objects.filter(id = params['profile']).exists():
+        response = {
+            'status':'FAIL',
+            'error':'PROFILE_NOT_FOUND',
+            'message':'The profile doesn\'t exist.'
+        }
+        return json_response(response)
+    profile = Profile.objects.get(id = params['profile'])
+    # Check if the user is a manager of the profile
+    if not Profile_manager.objects.filter(profile = profile, 
+                                          user = user).exists():
+        response = {
+            'status':'FAIL',
+            'error':'NOT_A_MANAGER',
+            'message':'You don\'t have permission for the profile.'
+        }
+        return json_response(response)
+    # Check the event parameters
+    params['name'] = cgi.escape(params['name'])
+    if len(params['name']) > 150:
+        response = {
+            'status':'FAIL',
+            'error':'INVALID_NAME',
+            'message':'The event title must be within 150 characters.'
+        }
+        return json_response(response)
+    params['summary'] = cgi.escape(params['summary'])
+    if len(params['summary']) > 250:
+        response = {
+            'status':'FAIL',
+            'error':'INVALID_SUMMARY',
+            'message':'The summary must be within 250 characters.'
+        }
+        return json_response(response)
+    event = Event(name = params['name'], 
+                  summary = params['summary'], 
+                  description = params['summary'], 
+                  start_time = params['start_time'])
+    if params['end_time'] is not None:
+        if params['end_time'] < params['start_time']:
             response = {
                 'status':'FAIL',
-                'error':'MISSING_PROFILE',
-                'message':'A profile is required to create an event.'
+                'error':'INVALID_END_TIME',
+                'message':'End time cannot be before start time.'
             }
             return json_response(response)
-        if not Profile.objects.filter(id = params['profile']).exists():
+        else:
+            event.end_time = params['end_time']
+    if params['location'] is not None:
+        params['location'] = cgi.escape(params['location'])
+        if len(params['location']) > 100:
             response = {
                 'status':'FAIL',
-                'error':'PROFILE_NOT_FOUND',
-                'message':'The profile doesn\'t exist.'
+                'error':'LOCATION_TOO_LONG',
+                'message':'The location must be within 100 characters.'
             }
             return json_response(response)
-        profile = Profile.objects.get(id = params['profile'])
-        # Check if the user is a manager of the profile
-        if not Profile_manager.objects.filter(profile = profile, 
-                                              user = user).exists():
+        else:
+            event.location = params['location']
+    if params['latitude'] is not None and params['longitude'] is not None: 
+        if (params['latitude'].lower() == 'none' or 
+            params['longitude'].lower() == 'none'):
+            event.latitude = None
+            event.longitude = None
+        elif not (-90.0 <= float(params['latitude']) <= 90.0 and 
+                -180.0 <= float(params['longitude']) <= 180.0):
             response = {
                 'status':'FAIL',
-                'error':'NOT_A_MANAGER',
-                'message':'You don\'t have permission for the profile.'
+                'error':'INVALID_COORDINATES',
+                'message':'Latitude/longitude combination is invalid.'
             }
             return json_response(response)
-        # Save to database
-        event.save()
-        # Set the profile as the organizer and creator of the event
-        organizer = Event_organizer(event = event, profile = profile, 
-                                    is_creator = True)
-        organizer.save()
-    else:
-        # Otherwise, generate an access token for the anonymous user
-        event.access_token = os.urandom(32).encode('base_64')[:32]
-        # Save to database
-        event.save()
+        else:
+            event.latitude = float(params['latitude'])
+            event.longitude = float(params['longitude'])
+    # Save to database
+    event.save()
+    # Set the profile as the organizer and creator of the event
+    organizer = Event_organizer(event = event, profile = profile, 
+                                is_creator = True)
+    organizer.save()
     response = {
         'status':'OK',
         'event':serialize_one(event)
@@ -164,9 +209,9 @@ def create(request, params, user):
 
 @login_check()
 @validate('POST', ['id'], 
-          ['name', 'description', 'cover', 'caption', 'summary', 'tags', 
-           'start_time', 'end_time', 'location', 'latitude', 'longitude', 
-           'category', 'is_private', 'token'])
+          ['name', 'summary', 'description', 'cover', 'caption', 'tags', 
+           'category', 'start_time', 'end_time', 'location', 'latitude', 
+           'longitude'])
 def edit(request, params, user):
     """
     Edit an existing event
@@ -180,29 +225,19 @@ def edit(request, params, user):
         }
         return json_response(response)
     event = Event.objects.get(id = params['id'])
-    # Check if user has logged in
-    if user is not None:
-        # If so, check if user has permission for the event
-        if not Event_organizer.objects.filter(event = event, 
-                                              profile__managers = user) \
-                                      .exists():
-            response = {
-                'status':'FAIL',
-                'error':'NOT_A_MANAGER',
-                'message':'You don\'t have permission for the event.'
-            }
-            return json_response(response)
-    else:
-        # Otherwise check if the access token is valid
-        if params['token'] is None or event.access_token != params['token']:
-            response = {
-                'status':'FAIL',
-                'error':'PERMISSION_DENIED',
-                'message':'You don\'t have permission for the event.'
-            }
-            return json_response(response)
+    # Check if user has permission for the event
+    if not Event_organizer.objects.filter(event = event, 
+                                          profile__managers = user) \
+                                  .exists():
+        response = {
+            'status':'FAIL',
+            'error':'NOT_A_MANAGER',
+            'message':'You don\'t have permission for the event.'
+        }
+        return json_response(response)
     # Go through all the params and edit the event accordingly
     if params['name'] is not None:
+        params['name'] = cgi.escape(params['name'])
         if not (0 < len(params['name']) <= 150):
             response = {
                 'status':'FAIL',
@@ -212,6 +247,17 @@ def edit(request, params, user):
             return json_response(response)
         else:
             event.name = params['name']
+    if params['summary'] is not None:
+        params['summary'] = cgi.escape(params['summary'])
+        if len(params['summary']) > 100:
+            response = {
+                'status':'FAIL',
+                'error':'SUMMARY_TOO_LONG',
+                'message':'The summary must be within 150 characters.'
+            }
+            return json_response(response)
+        else:
+            event.summary = params['summary']
     if params['description'] is not None:
         params['description'] = sanitize_redactor_input(params['description'])
         if len(params['description']) == 0:
@@ -245,6 +291,7 @@ def edit(request, params, user):
             cover.save()
             event.cover = cover
     if params['caption'] is not None:
+        params['caption'] = cgi.escape(params['caption'])
         if event.cover is None:
             response = {
                 'status':'FAIL',
@@ -262,17 +309,8 @@ def edit(request, params, user):
         else:
             event.cover.caption = params['caption']
             event.cover.save()
-    if params['summary'] is not None:
-        if len(params['summary']) > 100:
-            response = {
-                'status':'FAIL',
-                'error':'SUMMARY_TOO_LONG',
-                'message':'The summary must be within 150 characters.'
-            }
-            return json_response(response)
-        else:
-            event.summary = params['summary']
     if params['tags'] is not None:
+        params['tags'] = cgi.escape(params['tags'])
         if len(params['tags']) > 50:
             response = {
                 'status':'FAIL',
@@ -283,35 +321,34 @@ def edit(request, params, user):
         else:
             event.tags = params['tags']
     if params['start_time'] is not None:
-        if (params['end_time'] is not None and 
-            params['end_time'] != 'none' and
-            params['end_time'] < params['start_time']):
-            response = {
-                'status':'FAIL',
-                'error':'INVALID_START_TIME',
-                'message':'The start time cannot be after the end time.'
-            }
-            return json_response(response)
-        else:
-            event.start_time = params['start_time']
+        event.start_time = params['start_time']
     if params['end_time'] is not None:
         if params['end_time'] == 'none':
             event.end_time = None
         elif params['end_time'] < params['start_time']:
             response = {
                 'status':'FAIL',
-                'error':'INVALID_END_TIME',
-                'message':'The end time cannot be before the start time.'
+                'error':'INVALID_TIMING',
+                'message':'End time cannot be before start time.'
             }
             return json_response(response)
         else:
+            # FIXME
             tickets = Ticket.objects.filter(event = event)
             for ticket in tickets:
                 if ticket.end_time == event.end_time:
                     ticket.end_time = params['end_time']
                     ticket.save()
             event.end_time = params['end_time']
+    if event.start_time > event.end_time:
+        response = {
+            'status':'FAIL',
+            'error':'INVALID_TIMING',
+            'message':'End time cannot be before start time.'
+        }
+        return json_response(response)
     if params['location'] is not None:
+        params['location'] = cgi.escape(params['location'])
         if len(params['location']) > 100:
             response = {
                 'status':'FAIL',
@@ -338,9 +375,16 @@ def edit(request, params, user):
             event.latitude = float(params['latitude'])
             event.longitude = float(params['longitude'])
     if params['category'] is not None:
-        event.category = params['category']
-    if params['is_private'] is not None:
-        event.is_private = params['is_private']
+        params['category'] = cgi.escape(params['category'])
+        if len(params['category']) > 30:
+            response = {
+                'status':'FAIL',
+                'error':'INVALID_CATEGORY',
+                'message':'Category cannot be over 30 characters.'
+            }
+            return json_response(response)
+        else:
+            event.category = params['category']
     # Save the changes
     event.save()
     response = {
@@ -476,16 +520,17 @@ def launch(request, params, user):
             'message':'You don\'t have permission for the event.'
         }
         return json_response(response)
-    # Check if the event has started
-    if event.start_time <= timezone.now():
+    # Check if the event has been launched
+    if event.is_launched:
         response = {
             'status':'FAIL',
-            'error':'STARTED_EVENT',
-            'message':'The start time of the event has passed.'
+            'error':'LAUNCHED_EVENT',
+            'message':'The event has been launched.'
         }
         return json_response(response)
     # Launch the event
     event.is_launched = True
+    event.launched_time = timezone.now()
     event.save()
     response = {
         'status':'OK',
@@ -497,7 +542,7 @@ def launch(request, params, user):
 @validate('POST', ['id'])
 def delaunch(request, params, user):
     """
-    Take an event offline and refund all tickets
+    Take an event offline
     """
     # Check if the event is valid
     if not Event.objects.filter(id = params['id']).exists():
@@ -526,18 +571,6 @@ def delaunch(request, params, user):
             'message':'The event is not yet launched.'
         }
         return json_response(response)
-    # Check if the event has started
-    if event.start_time <= timezone.now():
-        response = {
-            'status':'FAIL',
-            'error':'STARTED_EVENT',
-            'message':'You cannot take a started event offline.'
-        }
-        return json_response(response)
-    # Refund all purchases
-    tickets = Ticket.objects.filter(event = event)
-    for ticket in tickets:
-        pass
     # Mark the event as offline
     event.is_launched = False
     event.save()
