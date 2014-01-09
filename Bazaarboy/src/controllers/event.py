@@ -207,7 +207,7 @@ def create(request, params, user):
     }
     return json_response(response)
 
-@login_check()
+@login_required()
 @validate('POST', ['id'], 
           ['name', 'summary', 'description', 'cover', 'caption', 'tags', 
            'category', 'start_time', 'end_time', 'location', 'latitude', 
@@ -325,20 +325,7 @@ def edit(request, params, user):
     if params['end_time'] is not None:
         if params['end_time'] == 'none':
             event.end_time = None
-        elif params['end_time'] < params['start_time']:
-            response = {
-                'status':'FAIL',
-                'error':'INVALID_TIMING',
-                'message':'End time cannot be before start time.'
-            }
-            return json_response(response)
         else:
-            # FIXME
-            tickets = Ticket.objects.filter(event = event)
-            for ticket in tickets:
-                if ticket.end_time == event.end_time:
-                    ticket.end_time = params['end_time']
-                    ticket.save()
             event.end_time = params['end_time']
     if event.start_time > event.end_time:
         response = {
@@ -585,7 +572,7 @@ def delaunch(request, params, user):
 def syncToFB(request, params, user):
     pass
 
-@login_check()
+@login_required()
 @validate('POST', ['id'], ['token'])
 def delete(request, params, user):
     """
@@ -637,7 +624,7 @@ def delete(request, params, user):
     }
     return json_response(response)
 
-@login_check()
+@login_required()
 @validate('POST', 
           ['event', 'name', 'description'], 
           ['price', 'quantity', 'start_time', 'end_time', 'token'])
@@ -758,7 +745,7 @@ def create_ticket(request, params, user):
     }
     return json_response(response)
 
-@login_check()
+@login_required()
 @validate('POST', ['id'], 
           ['name', 'description', 'price', 'quantity', 'start_time', 
            'end_time', 'token'])
@@ -876,7 +863,7 @@ def edit_ticket(request, params, user):
     }
     return json_response(response)
 
-@login_check()
+@login_required()
 @validate('POST', ['id'], ['token'])
 def delete_ticket(request, params, user):
     """

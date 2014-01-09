@@ -2,91 +2,80 @@
 Controller for sponsorships
 """
 
+import cgi
 from django.utils import timezone
 from kernel.models import *
 from src.controllers.request import *
-from src.controllers.wepay import create_checkout
 from src.serializer import serialize_one
 
-def SponsorshipFactory(eventType):
-    """
-    Return the correct models based on event type
-    """
-    EventModel, CriteriaModel, SponsorshipModel = None, None, None
-    if eventType.lower() == 'event':
-        EventModel = Event
-        CriteriaModel = Event_criteria
-        SponsorshipModel = Event_sponsorship
-    elif eventType.lower() == 'fundraiser':
-        EventModel = Fundraiser
-        CriteriaModel = Fundraiser_criteria
-        SponsorshipModel = Fundraiser_sponsorship
-    return EventModel, CriteriaModel, SponsorshipModel
-
-def isValidEvent(event, eventType):
-    """
-    Check if the event is a past event
-    """
-    if event.is_launched:
-        if eventType.lower() == 'event':
-            return event.start_time > timezone.now()
-        elif eventType.lower() == 'fundraiser':
-            return event.deadline > timezone.now()
-    return True
-
 @login_required()
-@validate('POST', ['type', 'for', 'name', 'description', 'price'], 
-          ['quantity'])
-def create(request, params, user):
+@validate('POST', ['event', 'name', 'description'], 
+          ['price_low', 'price_high', 'quantity'])
+def create_criteria(request, params, user):
     """
     Create a criteria for sponsorship
     """
-    models = SponsorshipFactory(params['type'])
-    if None in models:
-        response = {
-            'status':'FAIL',
-            'error':'INVALID_EVENT_TYPE',
-            'message':'The event type is invalid.'
-        }
-        return json_response(response)
-    EventModel, CriteriaModel, SponsorshipModel = models
-    if not EventModel.objects.filter(id = params['for']).exists():
+    if not Event.objects.filter(id = params['event']).exists():
         response = {
             'status':'FAIL',
             'error':'EVENT_NOT_FOUND',
             'message':'The event doesn\'t exist.'
         }
         return json_response(response)
-    _for = EventModel.objects.get(id = params['for'])
-    if not isValidEvent(_for, params['type']):
+    event = Event.objects.get(id = params['event'])
+    if not Event_organizer.objects.filter(event = event, 
+                                          profile__managers = user) \
+                                  .exists():
         response = {
             'status':'FAIL',
-            'error':'PAST_EVENT',
-            'message':'You cannot modify a past event.'
+            'error':'NOT_A_MANAGER',
+            'message':'You don\'t have permission for the event.'
         }
         return json_response(response)
+    params['name'] = cgi.escape(params['name'])
     if len(params['name']) > 50:
         response = {
             'status':'FAIL',
             'error':'NAME_TOO_LONG',
-            'message':'Criteria name cannot be over 50 characters.'
+            'message':'Criteria name must be within 50 characters.'
         }
         return json_response(response)
-    if len(params['description']) > 150:
-        response = {
-            'status':'FAIL',
-            'error':'DESCRIPTION_TOO_LONG',
-            'message':'Criteria description must be under 150 characters.'
-        }
-        return json_response(response)
-    params['price'] = float(params['price'])
-    if params['price'] <= 0:
-        response = {
-            'status':'FAIL',
-            'error':'INVALID_PRICE',
-            'message':'Price is invalid.'
-        }
-        return json_response(response)
+    params['description'] = cgi.escape(params['description'])
+    criteria = Criteria(event = event, name = params['name'], 
+                        description = params['description'])
+    if params['price_low'] is not None:
+        params['price_low'] = float(params['price_low'])
+        if params['price_low'] < 0:
+            response = {
+                'status':'FAIL',
+                'error':'INVALID_PRICE_RANGE',
+                'message':'Price range is invalid.'
+            }
+            return json_response(response)
+        else:
+            criteria.price_low = params['price_low']
+    if params['price_high'] is not None:
+        params['price_high'] = float(params['price_high'])
+        if params['price_high'] < 0:
+            response = {
+                'status':'FAIL',
+                'error':'INVALID_PRICE_RANGE',
+                'message':'Price range is invalid.'
+            }
+            return json_response(response)
+        else:
+            criteria.price_high = params['price_high']
+    if criteria.price_high is not None:
+        if criteria.price_low is None:
+            criteria.price_low = 0
+        else:
+            if criteria.price_low > criteria.price_high:
+                response = {
+                    'status':'FAIL',
+                    'error':'INVALID_PRICE_RANGE',
+                    'message':'Price range is invalid.'
+                }
+                return json_response(response)
     if params['quantity'] is not None:
         params['quantity'] = int(params['quantity'])
         if params['quantity'] <= 0:
@@ -96,11 +85,6 @@ def create(request, params, user):
                 'message':'Quantity is invalid.'
             }
             return json_response(response)
-    criteria = CriteriaModel(name = params['name'], 
-                             description = params['description'], 
-                             price = params['price'], 
-                             quantity = params['quantity'], 
-                             _for = _for)
     criteria.save()
     response = {
         'status':'OK',
@@ -109,36 +93,32 @@ def create(request, params, user):
     return json_response(response)
 
 @login_required()
-@validate('POST', ['type', 'id'], ['name', 'description', 'price', 'quantity'])
-def edit(request, params, user):
+@validate('POST', ['id'], 
+          ['name', 'description', 'price_low', 'price_high', 'quantity'])
+def edit_criteria(request, params, user):
     """
     Edit a criteria for sponsorship
     """
-    models = SponsorshipFactory(params['type'])
-    if None in models:
-        response = {
-            'status':'FAIL',
-            'error':'INVALID_EVENT_TYPE',
-            'message':'The event type is invalid.'
-        }
-        return json_response(response)
-    EventModel, CriteriaModel, SponsorshipModel = models
-    if not CriteriaModel.objects.filter(id = params['id']).exists():
+    if not Criteria.objects.filter(id = params['id']).exists():
         response = {
             'status':'FAIL',
             'error':'CRITERIA_NOT_FOUND',
             'message':'The criteria doesn\'t exist.'
         }
         return json_response(response)
-    criteria = CriteriaModel.objects.get(id = params['id'])
-    if not isValidEvent(criteria._for, params['type']):
+    criteria = Criteria.objects.get(id = params['id'])
+    event = criteria.event
+    if not Event_organizer.objects.filter(event = event, 
+                                          profile__managers = user) \
+                                  .exists():
         response = {
             'status':'FAIL',
-            'error':'PAST_EVENT',
-            'message':'You cannot modify a past event.'
+            'error':'NOT_A_MANAGER',
+            'message':'You don\'t have permission for the event.'
         }
         return json_response(response)
     if params['name'] is not None:
+        params['name'] = cgi.escape(params['name'])
         if len(params['name']) > 50:
             response = {
                 'status':'FAIL',
@@ -149,6 +129,7 @@ def edit(request, params, user):
         else:
             criteria.name = params['name']
     if params['description'] is not None:
+        params['description'] = cgi.escape(params['description'])
         if len(params['description']) > 150:
             response = {
                 'status':'FAIL',
@@ -158,17 +139,45 @@ def edit(request, params, user):
             return json_response(response)
         else:
             criteria.description = params['description']
-    if params['price'] is not None:
-        params['price'] = float(params['price'])
-        if params['price'] <= 0:
-            response = {
-                'status':'FAIL',
-                'error':'INVALID_PRICE',
-                'message':'Price is invalid.'
-            }
-            return json_response(response)
+    if params['price_low'] is not None:
+        if params['price_low'] == 'none':
+            criteria.price_low = None
         else:
-            criteria.price = params['price']
+            params['price_low'] = float(params['price_low'])
+            if params['price_low'] < 0:
+                response = {
+                    'status':'FAIL',
+                    'error':'INVALID_PRICE_RANGE',
+                    'message':'Price range is invalid.'
+                }
+                return json_response(response)
+            else:
+                criteria.price_low = params['price_low']
+    if params['price_high'] is not None:
+        if params['price_high'] == 'none':
+            criteria.price_high = None
+        else:
+            params['price_high'] = float(params['price_high'])
+            if params['price_high'] < 0:
+                response = {
+                    'status':'FAIL',
+                    'error':'INVALID_PRICE_RANGE',
+                    'message':'Price range is invalid.'
+                }
+                return json_response(response)
+            else:
+                criteria.price_high = params['price_high']
+    if criteria.price_high is not None:
+        if criteria.price_low is None:
+            criteria.price_low = 0
+        else:
+            if criteria.price_low > criteria.price_high:
+                response = {
+                    'status':'FAIL',
+                    'error':'INVALID_PRICE_RANGE',
+                    'message':'Price range is invalid.'
+                }
+                return json_response(response)
     if params['quantity'] is not None:
         if params['quantity'].lower() == 'none':
             criteria.quantity = None
@@ -191,43 +200,27 @@ def edit(request, params, user):
     return json_response(response)
 
 @login_required()
-@validate('POST', ['type', 'id'])
-def delete(request, params, user):
+@validate('POST', ['id'])
+def delete_criteria(request, params, user):
     """
     Delete a criteria for a sponsorship
     """
-    models = SponsorshipFactory(params['type'])
-    if None in models:
-        response = {
-            'status':'FAIL',
-            'error':'INVALID_EVENT_TYPE',
-            'message':'The event type is invalid.'
-        }
-        return json_response(response)
-    EventModel, CriteriaModel, SponsorshipModel = models
-    if not CriteriaModel.objects.filter(id = params['id']).exists():
+    if not Criteria.objects.filter(id = params['id']).exists():
         response = {
             'status':'FAIL',
             'error':'CRITERIA_NOT_FOUND',
             'message':'The criteria doesn\'t exist.'
         }
         return json_response(response)
-    criteria = CriteriaModel.objects.get(id = params['id'])
-    if not isValidEvent(criteria._for, params['type']):
+    criteria = Criteria.objects.get(id = params['id'])
+    event = criteria.event
+    if not Event_organizer.objects.filter(event = event, 
+                                          profile__managers = user) \
+                                  .exists():
         response = {
             'status':'FAIL',
-            'error':'PAST_EVENT',
-            'message':'You cannot modify a past event.'
-        }
-        return json_response(response)
-    if SponsorshipModel.objects.filter(criteria = criteria, 
-                                       checkout__is_captured = True, 
-                                       checkout__is_refunded = False) \
-                               .exists():
-        response = {
-            'status':'FAIL',
-            'error':'EXISTING_SPONSORSHIP',
-            'message':'There is an existing sponsorship with this criteria.'
+            'error':'NOT_A_MANAGER',
+            'message':'You don\'t have permission for the event.'
         }
         return json_response(response)
     criteria.delete()
@@ -237,82 +230,16 @@ def delete(request, params, user):
     return json_response(response)
 
 @login_required()
-@validate('POST', ['type', 'criteria', 'profile', 'amount'])
-def sponsor(request, params, user):
-    """
-    Sponsor for an event
-    """
-    models = SponsorshipFactory(params['type'])
-    if None in models:
-        response = {
-            'status':'FAIL',
-            'error':'INVALID_EVENT_TYPE',
-            'message':'The event type is invalid.'
-        }
-        return json_response(response)
-    EventModel, CriteriaModel, SponsorshipModel = models
-    if not CriteriaModel.objects.filter(id = params['id']).exists():
-        response = {
-            'status':'FAIL',
-            'error':'CRITERIA_NOT_FOUND',
-            'message':'The criteria doesn\'t exist.'
-        }
-        return json_response(response)
-    criteria = CriteriaModel.objects.get(id = params['id'])
-    if not isValidEvent(criteria._for, params['type']):
-        response = {
-            'status':'FAIL',
-            'error':'PAST_EVENT',
-            'message':'You cannot sponsor a past event.'
-        }
-        return json_response(response)
-    params['amount'] = float(params['amount'])
-    if params['amount'] < criteria.price:
-        response = {
-            'status':'FAIL',
-            'error':'NOT_ENOUGH',
-            'message':'Your sponsorship does not meet the criteria price.'
-        }
-        return json_response(response)
-    if criteria.quantity is not None and criteria.quantity == 0:
-        response = {
-            'status':'FAIL',
-            'error':'NO_MORE_SPOTS',
-            'message':'The criteria of sponsorship has run out.'
-        }
-        return json_response(response)
-    if not Profile.objects.filter(id = params['profile']).exists():
-        response = {
-            'status':'FAIL',
-            'error':'PROFILE_NOT_FOUND',
-            'message':'The profile doesn\'t exist.'
-        }
-        return json_response(response)
-    profile = Profile.objects.get(id = params['profile'])
-    if not Profile_manager.objects.filter(profile = profile, 
-                                          user = user).exists():
-        response = {
-            'status':'FAIL',
-            'error':'NOT_A_MANAGER',
-            'message':'You don\'t have permission for the profile.'
-        }
-        return json_response(response)
-    checkoutType = 'event' if params['type'].lower() == 'event' else 'donation'
-    checkoutDescription = '%s - Sponsorship %s' % (criteria._for.name, 
-                                                   criteria.name)
-    # FIXME
-    checkoutInfo = create_checkout(checkoutType, 
-                                   criteria._for.owner.wepay_account.account_id, 
-                                   checkoutDescription, 
-                                   params['amount'], 
-                                   'type=sponsorship')
-    sponsorship = SponsorshipModel(owner = profile, criteria = criteria, 
-                                   _for = criteria._for, 
-                                   amount = params['amount'], 
-                                   checkout_id = checkoutInfo['checkout_id'])
-    sponsorship.save()
-    response = {
-        'status':'OK',
-        'sponsorship':serialize_one(sponsorship)
-    }
-    return json_response(response)
+@validate('POST', ['event'], ['profile', 'name', 'description'])
+def create(request, params, user):
+    pass
+
+@login_required()
+@validate('POST', ['id'], ['name', 'description'])
+def edit(request, params, user):
+    pass
+
+@login_required()
+@validate('POST', ['id'])
+def delete(request, params, user):
+    pass
