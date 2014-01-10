@@ -3,6 +3,7 @@ Controller for events
 """
 
 import cgi
+import json
 import os
 import re
 from datetime import timedelta
@@ -79,7 +80,8 @@ def event(request, params, user):
     """
     Return serialized data for the event
     """
-    if not Event.objects.filter(id = params['id']).exists():
+    if not Event.objects.filter(id = params['id'], 
+                                is_deleted = False).exists():
         response = {
             'status':'FAIL',
             'error':'EVENT_NOT_FOUND',
@@ -98,7 +100,8 @@ def search(request, params):
     """
     Search events by keyword
     """
-    events = Event.objects.filter(name__icontains = params['keyword'])
+    events = Event.objects.filter(name__icontains = params['keyword'], 
+                                  is_deleted = False)
     response = {
         'status':'OK',
         'events':serialize(events)
@@ -106,7 +109,8 @@ def search(request, params):
     return json_response(response)
 
 @login_required()
-@validate('POST', ['name', 'summary', 'start_time', 'profile'], 
+@validate('POST', 
+          ['name', 'summary', 'start_time', 'profile'], 
           ['end_time', 'location', 'latitude', 'longitude'])
 def create(request, params, user):
     """
@@ -208,7 +212,8 @@ def create(request, params, user):
     return json_response(response)
 
 @login_required()
-@validate('POST', ['id'], 
+@validate('POST', 
+          ['id'], 
           ['name', 'summary', 'description', 'cover', 'caption', 'tags', 
            'category', 'start_time', 'end_time', 'location', 'latitude', 
            'longitude'])
@@ -217,7 +222,8 @@ def edit(request, params, user):
     Edit an existing event
     """
     # Check if the event is valid
-    if not Event.objects.filter(id = params['id']).exists():
+    if not Event.objects.filter(id = params['id'], 
+                                is_deleted = False).exists():
         response = {
             'status':'FAIL',
             'error':'EVENT_NOT_FOUND',
@@ -327,13 +333,14 @@ def edit(request, params, user):
             event.end_time = None
         else:
             event.end_time = params['end_time']
-    if event.start_time > event.end_time:
-        response = {
-            'status':'FAIL',
-            'error':'INVALID_TIMING',
-            'message':'End time cannot be before start time.'
-        }
-        return json_response(response)
+    if event.end_time is not None:
+        if event.start_time is not None and event.start_time > event.end_time:
+            response = {
+                'status':'FAIL',
+                'error':'INVALID_TIMING',
+                'message':'End time cannot be before start time.'
+            }
+            return json_response(response)
     if params['location'] is not None:
         params['location'] = cgi.escape(params['location'])
         if len(params['location']) > 100:
@@ -384,7 +391,8 @@ def edit(request, params, user):
 @validate('POST', ['id', 'profile'])
 def add_organizer(request, params, user):
     # Check if the event is valid
-    if not Event.objects.filter(id = params['id']).exists():
+    if not Event.objects.filter(id = params['id'], 
+                                is_deleted = False).exists():
         response = {
             'status':'FAIL',
             'error':'EVENT_NOT_FOUND',
@@ -431,7 +439,8 @@ def add_organizer(request, params, user):
 @validate('POST', ['id', 'profile'])
 def delete_organizer(request, params, user):
     # Check if the event is valid
-    if not Event.objects.filter(id = params['id']).exists():
+    if not Event.objects.filter(id = params['id'], 
+                                is_deleted = False).exists():
         response = {
             'status':'FAIL',
             'error':'EVENT_NOT_FOUND',
@@ -489,7 +498,8 @@ def launch(request, params, user):
     Launch an event
     """
     # Check if the event is valid
-    if not Event.objects.filter(id = params['id']).exists():
+    if not Event.objects.filter(id = params['id'], 
+                                is_deleted = False).exists():
         response = {
             'status':'FAIL',
             'error':'EVENT_NOT_FOUND',
@@ -532,7 +542,8 @@ def delaunch(request, params, user):
     Take an event offline
     """
     # Check if the event is valid
-    if not Event.objects.filter(id = params['id']).exists():
+    if not Event.objects.filter(id = params['id'], 
+                                is_deleted = False).exists():
         response = {
             'status':'FAIL',
             'error':'EVENT_NOT_FOUND',
@@ -573,13 +584,14 @@ def syncToFB(request, params, user):
     pass
 
 @login_required()
-@validate('POST', ['id'], ['token'])
+@validate('POST', ['id'])
 def delete(request, params, user):
     """
     Delete an event
     """
     # Check if the event is valid
-    if not Event.objects.filter(id = params['id']).exists():
+    if not Event.objects.filter(id = params['id'], 
+                                is_deleted = False).exists():
         response = {
             'status':'FAIL',
             'error':'EVENT_NOT_FOUND',
@@ -587,38 +599,20 @@ def delete(request, params, user):
         }
         return json_response(response)
     event = Event.objects.get(id = params['id'])
-    # Check if user is logged in
-    if user is not None:
-        # If so, check if user has permission for the event
-        if not Event_organizer.objects.filter(event = event, 
-                                              profile__managers = user) \
-                                      .exists():
-            response = {
-                'status':'FAIL',
-                'error':'NOT_A_MANAGER',
-                'message':'You don\'t have permission for the event.'
-            }
-            return json_response(response)
-    else:
-        # Otherwise check if the access token is valid
-        if params['token'] is None or event.access_token != params['token']:
-            response = {
-                'status':'FAIL',
-                'error':'PERMISSION_DENIED',
-                'message':'You don\'t have permission for the event.'
-            }
-            return json_response(response)
-    # Check if the event is launched
-    if event.is_launched:
+    # Check if user has permission for the event
+    if not Event_organizer.objects.filter(event = event, 
+                                          profile__managers = user) \
+                                  .exists():
         response = {
             'status':'FAIL',
-            'error':'LAUNCHED_EVENT',
-            'message':'The event is launched, please take it offline first.'
+            'error':'NOT_A_MANAGER',
+            'message':'You don\'t have permission for the event.'
         }
         return json_response(response)
-    # Delete the event and all its tickets
-    Ticket.objects.filter(event = event).delete()
-    event.delete()
+    # Mark the tickets and the event as deleted
+    Ticket.objects.filter(event = event).update(is_deleted = True)
+    event.is_deleted = True
+    event.save()
     response = {
         'status':'OK'
     }
@@ -627,13 +621,14 @@ def delete(request, params, user):
 @login_required()
 @validate('POST', 
           ['event', 'name', 'description'], 
-          ['price', 'quantity', 'start_time', 'end_time', 'token'])
+          ['price', 'quantity', 'start_time', 'end_time'])
 def create_ticket(request, params, user):
     """
     Create a ticket for an event
     """
     # Check if event is valid
-    if not Event.objects.filter(id = params['event']).exists():
+    if not Event.objects.filter(id = params['event'], 
+                                is_deleted = False).exists():
         response = {
             'status':'FAIL',
             'error':'EVENT_NOT_FOUND',
@@ -641,28 +636,18 @@ def create_ticket(request, params, user):
         }
         return json_response(response)
     event = Event.objects.get(id = params['event'])
-    # Check if user is logged in
-    if user is not None:
-        # If so, check if user has permission for the event
-        if not Event_organizer.objects.filter(event = event, 
-                                              profile__managers = user) \
-                                      .exists():
-            response = {
-                'status':'FAIL',
-                'error':'NOT_A_MANAGER',
-                'message':'You don\'t have permission for the event.'
-            }
-            return json_response(response)
-    else:
-        # Otherwise check if the access token is valid
-        if params['token'] is None or event.access_token != params['token']:
-            response = {
-                'status':'FAIL',
-                'error':'PERMISSION_DENIED',
-                'message':'You don\'t have permission for the event.'
-            }
-            return json_response(response)
+    # Check if user has permission for the event
+    if not Event_organizer.objects.filter(event = event, 
+                                          profile__managers = user) \
+                                  .exists():
+        response = {
+            'status':'FAIL',
+            'error':'NOT_A_MANAGER',
+            'message':'You don\'t have permission for the event.'
+        }
+        return json_response(response)
     # Check if ticket name is too long
+    params['name'] = cgi.escape(params['name'])
     if len(params['name']) > 50:
         response = {
             'status':'FAIL',
@@ -671,19 +656,12 @@ def create_ticket(request, params, user):
         }
         return json_response(response)
     # Check if the description is too long
-    if len(params['description']) > 150:
+    params['description'] = cgi.escape(params['description'])
+    if len(params['description']) > 250:
         response = {
             'status':'FAIL',
             'error':'INVALID_DESCRIPTION',
             'message':'Ticket description cannot be over 150 characters.'
-        }
-        return json_response(response)
-    # Check if the event has started
-    if event.start_time <= timezone.now():
-        response = {
-            'status':'FAIL',
-            'error':'STARTED_EVENT',
-            'message':'You cannot add a ticket to a started event.'
         }
         return json_response(response)
     ticket = Ticket(event = event, name = params['name'], 
@@ -714,29 +692,18 @@ def create_ticket(request, params, user):
             ticket.quantity = params['quantity']
     # Check timing
     if params['start_time'] is not None:
-        if params['start_time'] >= event.start_time:
-            response = {
-                'status':'FAIL',
-                'error':'INVALID_START_TIME',
-                'message':'The start time is invalid.'
-            }
-            return json_response(response)
-        else:
-            ticket.start_time = params['start_time']
+        ticket.start_time = params['start_time']
     if params['end_time'] is not None:
-        if ((event.end_time is None and 
-             params['end_time'] > event.start_time) or  
-            (event.end_time is not None and 
-             params['end_time'] > event.end_time) or 
-             params['end_time'] <= ticket.start_time):
+        ticket.end_time = params['end_time']
+    if ticket.end_time is not None:
+        if (ticket.start_time is not None and 
+            ticket.start_time > ticket.end_time):
             response = {
                 'status':'FAIL',
-                'error':'INVALID_END_TIME',
-                'message':'The end time is invalid.'
+                'error':'INVALID_TIMING',
+                'message':'End time cannot be before start time.'
             }
             return json_response(response)
-        else:
-            ticket.end_time = params['end_time']
     # All checks passed, write to database
     ticket.save()
     response = {
@@ -746,15 +713,17 @@ def create_ticket(request, params, user):
     return json_response(response)
 
 @login_required()
-@validate('POST', ['id'], 
+@validate('POST', 
+          ['id'], 
           ['name', 'description', 'price', 'quantity', 'start_time', 
-           'end_time', 'token'])
+           'end_time'])
 def edit_ticket(request, params, user):
     """
     Edit a ticket
     """
     # Check if the ticket is valid
-    if not Ticket.objects.filter(id = params['id']).exists():
+    if not Ticket.objects.filter(id = params['id'], 
+                                 is_deleted = False).exists():
         response = {
             'status':'FAIL',
             'error':'TICKET_NOT_FOUND',
@@ -763,29 +732,19 @@ def edit_ticket(request, params, user):
         return json_response(response)
     ticket = Ticket.objects.get(id = params['id'])
     event = ticket.event
-    # Check if user is logged in
-    if user is not None:
-        # If so, check if user has permission for the event
-        if not Event_organizer.objects.filter(event = event, 
-                                              profile__managers = user) \
-                                      .exists():
-            response = {
-                'status':'FAIL',
-                'error':'NOT_A_MANAGER',
-                'message':'You don\'t have permission for the event.'
-            }
-            return json_response(response)
-    else:
-        # Otherwise check if the access token is valid
-        if params['token'] is None or event.access_token != params['token']:
-            response = {
-                'status':'FAIL',
-                'error':'PERMISSION_DENIED',
-                'message':'You don\'t have permission for the event.'
-            }
-            return json_response(response)
+    # Check if user has permission for the event
+    if not Event_organizer.objects.filter(event = event, 
+                                          profile__managers = user) \
+                                  .exists():
+        response = {
+            'status':'FAIL',
+            'error':'NOT_A_MANAGER',
+            'message':'You don\'t have permission for the event.'
+        }
+        return json_response(response)
     # Go through all params and edit the ticket accordingly
     if params['name'] is not None:
+        params['name'] = cgi.escape(params['name'])
         if not (0 < len(params['name']) <= 50):
             response = {
                 'status':'FAIL',
@@ -796,11 +755,12 @@ def edit_ticket(request, params, user):
         else:
             ticket.name = params['name']
     if params['description'] is not None:
-        if not (0 < len(params['description']) <= 150):
+        params['description'] = cgi.escape(params['description'])
+        if not (0 < len(params['description']) <= 250):
             response = {
                 'status':'FAIL',
                 'error':'INVALID_DESCRIPTION',
-                'message':'Ticket description must be between 0-150 characters.'
+                'message':'Ticket description must be between 0-250 characters.'
             }
             return json_response(response)
         else:
@@ -817,7 +777,7 @@ def edit_ticket(request, params, user):
         else:
             ticket.price = params['price']
     if params['quantity'] is not None:
-        if params['quantity'].lower() == 'none':
+        if params['quantity'] == 'none':
             ticket.quantity = None
         else:
             params['quantity'] = int(params['quantity'])
@@ -831,30 +791,18 @@ def edit_ticket(request, params, user):
             else:
                 ticket.quantity = params['quantity']
     if params['start_time'] is not None:
-        if params['start_time'] >= event.start_time:
-            response = {
-                'status':'FAIL',
-                'error':'INVALID_START_TIME',
-                'message':'The start time is invalid.'
-            }
-            return json_response(response)
-        else:
-            ticket.start_time = params['start_time']
+        ticket.start_time = params['start_time']
     if params['end_time'] is not None:
-        if ((event.end_time is not None and 
-             params['end_time'] > event.end_time) or 
-            (event.end_time is None and 
-             params['end_time'] > event.start_time) or
-            (ticket.start_time is not None and 
-             params['end_time'] <= ticket.start_time)):
+        ticket.end_time = params['end_time']
+    if ticket.end_time is not None:
+        if (ticket.start_time is not None and 
+            ticket.start_time > ticket.end_time):
             response = {
                 'status':'FAIL',
-                'error':'INVALID_END_TIME',
-                'message':'The end time is invalid.'
+                'error':'INVALID_TIMING',
+                'message':'End time cannot be before start time.'
             }
             return json_response(response)
-        else:
-            ticket.end_time = params['end_time']
     # Save the changes
     ticket.save()
     response = {
@@ -864,13 +812,14 @@ def edit_ticket(request, params, user):
     return json_response(response)
 
 @login_required()
-@validate('POST', ['id'], ['token'])
+@validate('POST', ['id'])
 def delete_ticket(request, params, user):
     """
     Delete a ticket
     """
     # Check if the ticket is valid
-    if not Ticket.objects.filter(id = params['id']).exists():
+    if not Ticket.objects.filter(id = params['id'], 
+                                 is_deleted = False).exists():
         response = {
             'status':'FAIL',
             'error':'TICKET_NOT_FOUND',
@@ -879,212 +828,148 @@ def delete_ticket(request, params, user):
         return json_response(response)
     ticket = Ticket.objects.get(id = params['id'])
     event = ticket.event
-    # Check if user is logged in
-    if user is not None:
-        # If so, check if user has permission for the event
-        if not Event_organizer.objects.filter(event = event, 
-                                              profile__managers = user) \
-                                      .exists():
-            response = {
-                'status':'FAIL',
-                'error':'NOT_A_MANAGER',
-                'message':'You don\'t have permission for the event.'
-            }
-            return json_response(response)
-    else:
-        # Otherwise check if the access token is valid
-        if params['token'] is None or event.access_token != params['token']:
-            response = {
-                'status':'FAIL',
-                'error':'PERMISSION_DENIED',
-                'message':'You don\'t have permission for the event.'
-            }
-            return json_response(response)
-    # Check if the event has started
-    if event.is_launched and event.start_time <= timezone.now():
+    # Check if user has permission for the event
+    if not Event_organizer.objects.filter(event = event, 
+                                          profile__managers = user) \
+                                  .exists():
         response = {
             'status':'FAIL',
-            'error':'STARTED_EVENT',
-            'message':'You cannot delete the ticket for a started event.'
+            'error':'NOT_A_MANAGER',
+            'message':'You don\'t have permission for the event.'
         }
         return json_response(response)
-    # Refund all purchases for the ticket
-    purchases = Purchase.objects.filter(ticket = ticket)
-    for purchase in purchases:
-        pass
-    # Delete the ticket
-    ticket.delete()
+    # Mark the ticket as deleted
+    ticket.is_deleted = True
+    ticket.save()
     response = {
         'status':'OK'
     }
     return json_response(response)
 
 @task()
-def mark_purchase_as_expired(purchase):
+def mark_purchase_as_expired(purchase, immediate=False):
     """
-    Expires a purchase after some time and release the ticket
+    Expires a purchase and release the tickets
     """
     # Update purchase object
-    purchase = Purchase.objects.get(id = purchase.id)
-    # Make sure the purchase isn't already marked as expired or 
-    # charged
+    if not immediate:
+        purchase = Purchase.objects.get(id = purchase.id)
+    # Make sure the purchase isn't already marked as expired or charged
     if not purchase.is_expired and not purchase.checkout.is_charged:
         # Mark it as exipred
         purchase.is_expired = True
         purchase.save()
-        # And update the ticket quantity if necessary
-        ticket = purchase.ticket
-        if ticket.quantity is not None:
-            Ticket.objects.filter(id = ticket.id) \
-                          .update(quantity = F('quantity') + purchase.quantity)
+        # And update the ticket quantities if necessary
+        items = Purchase_item.objects.filter(purchase = purchase) \
+                                     .values('ticket')
+                                     .annotate(quantity = Count('id'))
+        for tid, quantity in items.iteritems():
+            ticket = Ticket.objects.get(id = tid)
+            if ticket.quantity is not None:
+                Ticket.objects \
+                      .filter(id = ticket.id) \
+                      .update(quantity = F('quantity') + quantity)
     return True
 
-def get_seats(seats, quantity, continuous=True):
-    """
-    Try probing the seats list to get the best continuous seats that fit with 
-    the quantity
-    """
-    def get_seat(seat):
-        i = re.search(r'\d', seat)
-        if i:
-            row = seat[:i.start()]
-            number = int(seat[i.start():])
-            return row, number
-        else:
-            return False, False
-    results = []
-    indexes = []
-    count = 0
-    prev = None
-    if len(seats) < quantity:
-        return False, False
-    if not continuous:
-        return seats[:quantity], seats[quantity:]
-    for i in range(0, len(seats)):
-        seat = seats[i]
-        if prev is not None:
-            currRow, currNum = get_seat(seat)
-            prevRow, prevNum = get_seat(prev)
-            if currRow == False or prevRow == False:
-                return False, False
-            else:
-                if currRow != prevRow or prevNum + 1 != currNum:
-                    count = 0
-                    results = []
-                    indexes = []
-        count = count + 1
-        prev = seat
-        results.append(seat)
-        indexes.append(i)
-        if count == quantity:
-            rest = []
-            for j in range(0, len(seats)):
-                if not j in indexes:
-                    rest.append(seats[j])
-            return results, rest
-    return get_seats(seats, quantity, False)
-
 @login_check()
-@validate('POST', ['ticket', 'quantity'], ['email', 'full_name', 'phone'])
+@validate('POST', 
+          ['event', 'email', 'first_name', 'last_name', 'details'], ['phone'])
 def purchase(request, params, user):
     """
-    Purchase a ticket
+    Make purchase for an event
+
+    @details: {'#ticket1.id':#quantity, '#ticket2.id':#quantity, ...}
     """
-    # Check login status
-    if user is None:
-        if params['email'] is None:
+    if 
+    _user = user
+    # Check purchaser information
+    if not REGEX_EMAIL.match(params['email']):
+        response = {
+            'status':'FAIL',
+            'error':'INVALID_EMAIL',
+            'message':'Email format is invalid.'
+        }
+        return json_response(response)
+    user, created = User.objects.get_or_create(email = params['email'])
+    if (not REGEX_NAME.match(params['first_name']) or 
+        not REGEX_NAME.match(params['last_name'])):
+        response = {
+            'status':'FAIL',
+            'error':'INVALID_NAME',
+            'message':'Your first or last name contain illegal characters.'
+        }
+        return json_response(response)
+    if len(params['first_name']) > 50 or len(params['last_name']) > 50:
+        response = {
+            'status':'FAIL',
+            'error':'NAME_TOO_LONG',
+            'message':'Your first or last name is too long.'
+        }
+        return json_response(response)
+    if user.password is None or _user.id == user.id:
+        user.first_name = params['first_name']
+        user.last_name = params['last_name']
+    if params['phone'] is not None:
+        params['phone'] = re.compile(r'[^\d]+').sub('', params['phone'])
+        if len(params['phone']) != 10:
             response = {
                 'status':'FAIL',
-                'error':'MISSING_EMAIL',
-                'message':'You need an email to purchase the ticket.'
+                'error':'INVALID_PHONE',
+                'message':'Your phone number is invalid.'
             }
             return json_response(response)
-        if not REGEX_EMAIL.match(params['email']):
-            response = {
-                'status':'FAIL',
-                'error':'INVALID_EMAIL',
-                'message':'Email format is invalid.'
-            }
-            return json_response(response)
-        user, created = User.objects.get_or_create(email = params['email'])
-        if not (user.password is None and user.fb_id is None):
-            response = {
-                'status':'FAIL',
-                'error':'EMAIL_EXISTS',
-                'message':'This email collides with an existing account.'
-            }
-            return json_response(response)
-        if params['full_name'] is None:
-            response = {
-                'status':'FAIL',
-                'error':'MISSING_FULL_NAME',
-                'message':'You need your full name to purchase the ticket.'
-            }
-            return json_response(response)
-        if not (0 < len(params['full_name']) <= 50):
-            response = {
-                'status':'FAIL',
-                'error':'INVALID_NAME',
-                'message':'Your full name cannot be blank or over 50 chars.'
-            }
-            return json_response(response)
-        user.full_name = params['full_name']
-        if params['phone'] is not None:
-            params['phone'] = re.compile(r'[^\d]+').sub('', params['phone'])
-            if len(params['phone']) != 10:
-                response = {
-                    'status':'FAIL',
-                    'error':'INVALID_PHONE',
-                    'message':'Your phone number is invalid.'
-                }
-                return json_response(response)
+        if user.password is None or _user.id == user.id:
             user.phone = params['phone']
-        user.save()
-    # Check if the ticket is valid
-    if not Ticket.objects.filter(id = params['ticket']).exists():
+    # Save the user details after all other checks are done
+    # Check purchase details
+    details = None
+    try:
+        details = json.loads(details)
+    except ValueError:
         response = {
             'status':'FAIL',
-            'error':'TICKET_NOT_FOUND',
-            'message':'The ticket doesn\'t exist.'
+            'error':'INVALID_DETAILS',
+            'message':'The purchase details are not in legal format.'
         }
         return json_response(response)
-    ticket = Ticket.objects.get(id = params['ticket'])
-    event = ticket.event
-    # Check if the event is launched
-    if not event.is_launched:
+    # Check if the event is valid
+    if not Event.objects.filter(id = params['event'], 
+                                is_deleted = False).exists():
         response = {
             'status':'FAIL',
-            'error':'EVENT_NOT_LAUNCHED',
-            'message':'The event is not launched yet.'
+            'error':'EVENT_NOT_FOUND',
+            'message':'The event doesn\'t exist.'
         }
         return json_response(response)
-    # Check if the ticket is up for sale
-    if not (ticket.start_time <= timezone.now() <= ticket.end_time):
+    event = Event.objects.get(id = params['event'])
+    # Check if the tickets are valid
+    _tickets = Ticket.objects.filter(event = event, is_deleted = False)
+    tickets = {}
+    for _ticket in _tickets:
+        tickets[_ticket.id] = _ticket
+    for tid in details:
+        details[tid] = int(details[tid])
+        # Check if the ticket belongs to the event
+        if tickets.has_key(int(tid)):
+            ticket = tickets[tid]
+            now = timezone.now()
+            # Check timing
+            if ((ticket.start_time is None or ticket.start_time <= now) and 
+                (ticket.end_time is None or ticket.end_time >= now)):
+                # Check quantity
+                if details[tid] > 0:
+                    continue
+                else:
+                    response = {
+                        'status':'FAIL',
+                        'error':'INVALID_QUANTITY',
+                        'message':'Quantity must be a positive number.'
+                    }
+                    return json_response(response)
         response = {
             'status':'FAIL',
             'error':'INVALID_TICKET',
-            'message':'The ticket is not up for sale at this time.'
-        }
-        return json_response(response)
-    # Check if the quantity is valid
-    params['quantity'] = int(params['quantity'])
-    if params['quantity'] <= 0:
-        response = {
-            'status':'FAIL',
-            'error':'INVALID_QUANTITY',
-            'message':'The quantity must be bigger than zero.'
-        }
-        return json_response(response)
-    # Check if there is an exisiting purchase
-    if Purchase.objects.filter(Q(checkout = None) | 
-                               Q(checkout__is_charged = True, 
-                                 checkout__is_refunded = False), 
-                               owner = user, event = event, 
-                               is_expired = False).exists():
-        response = {
-            'status':'FAIL',
-            'error':'PURCHASED_ALREADY',
-            'message':'You have already bought a ticket to the event.'
+            'message':'One of the ticket is invalid.'
         }
         return json_response(response)
     # Check if there is an unfinished purchase
@@ -1098,70 +983,67 @@ def purchase(request, params, user):
                                         owner = user, event = event, 
                                         is_expired = False)
         # Mark the old purchase as expired
-        purchase.is_expired = True
-        purchase.save()
-        # Restore quantity
-        if purchase.ticket.quantity is not None:
-            Ticket.objects.filter(id = purchase.ticket.id) \
-                          .update(quantity = F('quantity') + purchase.quantity)
+        mark_purchase_as_expired(purchase, True)
     # Start a database transaction
     with transaction.commit_on_success():
         # Place a lock on the ticket information (quantity)
-        ticket = Ticket.objects.select_for_update().filter(id = ticket.id)[0]
-        # Check if the ticket has enough quantity
-        if ticket.quantity is not None and ticket.quantity < params['quantity']:
-            response = {
-                'status':'FAIL',
-                'error':'INSUFFICIENT_QUANTITY',
-                'message':'There aren\'t enough tickets left.'
-            }
-            return json_response(response)
-        # Check if it's a free ticket
-        if ticket.price == 0:
+        tids = details.keys()
+        tickets = Ticket.objects.select_for_update().filter(id__in = tids)
+        # Calculate the aggregate amount
+        amount = 0
+        for ticket in tickets:
+            # Check if the ticket has enough quantity left
+            if (ticket.quantity is not None and 
+                ticket.quantity < details[ticket.id]):
+                response = {
+                    'status':'FAIL',
+                    'error':'INSUFFICIENT_QUANTITY',
+                    'message':'There aren\'t enough tickets left.'
+                }
+                return json_response(response)
+            amount += ticket.price * ticket.price
+        # All checks done, save user information
+        user.save()
+        # Check if the purchase is in fact an RSVP action (free)
+        if amount == 0:
             # Create the purchase
-            purchase = Purchase(owner = user, ticket = ticket, event = event, 
-                                price = ticket.price, 
-                                quantity = params['quantity'])
+            purchase = Purchase(owner = user, event = event, amount = 0)
             purchase.save()
-            # If the ticket has a quantity limit
-            if ticket.quantity is not None:
-                # Update the ticket quantity
-                Ticket.objects \
-                      .filter(id = ticket.id) \
-                      .update(quantity = F('quantity') - purchase.quantity)
-            # Assign seats
-            if ticket.seats is not None:
-                seats = ticket.seats.split(',')
-                assigned, rest = get_seats(seats, purchase.quantity)
-                if assigned:
-                    # Seat assigned
-                    purchase.seats = ','.join(assigned)
-                    purchase.save()
-                    # Update the ticket seats
-                    Ticket.objects.filter(id = ticket.id) \
-                                  .update(seats = ','.join(rest))
-                else:
-                    # Assign seats failed, raise exception to roll back
-                    raise IntegrityError()
+            for ticket in tickets:
+                for i in range(0, details[ticket.id]):
+                    item = Purchase_item(purchase = purchase, 
+                                         ticket = ticket, 
+                                         price = ticket.price)
+                    item.save()
+                    items.append(item)
+                # If the ticket has a quantity limit
+                if ticket.quantity is not None:
+                    # Update the ticket quantity
+                    Ticket.objects \
+                          .filter(id = ticket.id) \
+                          .update(quantity = F('quantity') - details[ticket.id])
             # Try sending the confirmation email
             try:
                 email = Email()
                 email.sendPurchaseConfirmationEmail(purchase)
             except Exception:
+                # Log error
                 pass
+            # Check if the user has a phone number
             if len(user.phone) == 10:
                 # Try sending the confirmation text
                 try:
                     sms = SMS()
                     sms.sendPurchaseConfirmationSMS(purchase)
                 except Exception:
+                    # Log error
                     pass
             response = {
                 'status':'OK',
                 'purchase':serialize_one(purchase)
             }
             return json_response(response)
-        # If it's not a free ticket
+        # Otherwise
         # Get the event creator's payemnt account
         creator = Event_organizer.objects.get(event = event, 
                                               is_creator = True) \
@@ -1170,32 +1052,33 @@ def purchase(request, params, user):
         # Calculate checkout total
         # Since Stripe's fee is by default payee-charged, adjust checkout
         # amount in order to make it payer-charged
-        amount = ticket.price * params['quantity']
-        amount = (amount + 0.3) / (1 - 0.029 - STRIPE_TRANSACTION_RATE)
+        _amount = (amount + 0.3) / (1 - 0.029 - STRIPE_TRANSACTION_RATE)
         # Create the checkout
-        checkoutDescription = '%s - %s' % (event.name, ticket.name)
         checkout = Checkout(payer = user, 
                             payee = paymentAccount, 
-                            amount = int(amount * 100), 
-                            description = checkoutDescription)
+                            amount = int(_amount * 100), # in cents
+                            description = event.name)
         checkout.save()
         # Create the purchase
-        purchase = Purchase(owner = user, ticket = ticket, event = event, 
-                            price = ticket.price, 
-                            quantity = params['quantity'], 
+        purchase = Purchase(owner = user, event = event, amount = amount, 
                             checkout = checkout)
         purchase.save()
-        # If the ticket has a quantity limit
-        if ticket.quantity is not None:
-            # Schedule the purchase to be expired after some amount of time
-            expiration = timezone.now()
-            expiration += timedelta(minutes = BBOY_TRANSACTION_EXPIRATION)
-            mark_purchase_as_expired.apply_async(args = [purchase], 
-                                                 eta = expiration)
-            # Update the ticket quantity
-            Ticket.objects \
-                  .filter(id = ticket.id) \
-                  .update(quantity = F('quantity') - purchase.quantity)
+        for ticket in tickets:
+            for i in range(0, details[ticket.id]):
+                item = Purchase_item(purchase = purchase, 
+                                     ticket = ticket, 
+                                     price = ticket.price)
+                item.save()
+            # If the ticket has a quantity limit
+            if ticket.quantity is not None:
+                # Update the ticket quantity
+                Ticket.objects \
+                      .filter(id = ticket.id) \
+                      .update(quantity = F('quantity') - details[ticket.id])
+        # Create an async task to restore quantities if necessary
+        expiration = timezone.now() + timedelta(minutes = BBOY_TRANSACTION_EXPIRATION)
+        mark_purchase_as_expired.apply_async(args = [purchase], eta = expiration)
+        # All done, send publishable key to create client checkout
         response = {
             'status':'OK',
             'purchase':serialize_one(purchase),

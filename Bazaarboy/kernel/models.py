@@ -160,6 +160,7 @@ class Event(models.Model):
     created_time = models.DateTimeField(auto_now_add = True)
     organizers = models.ManyToManyField('Profile', through = 'Organizer')
     sponsors = models.ManyToManyField('Profile', through = 'Sponsorship')
+    is_deleted = models.BooleanField(default = False)
 
 def randomConfirmationCode(size=6):
     """
@@ -184,11 +185,12 @@ class Ticket(models.Model):
     """
     event = models.ForeignKey('Event')
     name = models.CharField(max_length = 50)
-    description = models.CharField(max_length = 150)
+    description = models.CharField(max_length = 250)
     price = models.FloatField()
     quantity = models.IntegerField(null = True, default = None)
     start_time = models.DateTimeField(null = True, default = None)
     end_time = models.DateTimeField(null = True, default = None)
+    is_deleted = models.BooleanField(default = False)
 
 class Purchase(models.Model):
     """
@@ -197,7 +199,7 @@ class Purchase(models.Model):
     owner = models.ForeignKey('User')
     event = models.ForeignKey('Event')
     items = models.ManyToManyField('Ticket', through = 'Purchase_item')
-    amount = models.FloatField()
+    amount = models.FloatField(default = 0)
     checkout = models.ForeignKey('Checkout', null = True, default = None)
     is_expired = models.BooleanField(default = False)
     created_time = models.DateTimeField(auto_now_add = True)

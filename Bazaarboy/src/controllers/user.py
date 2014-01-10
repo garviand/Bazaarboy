@@ -14,7 +14,7 @@ from kernel.models import *
 from src.config import *
 from src.controllers.request import *
 from src.email import Email
-from src.regex import REGEX_EMAIL
+from src.regex import REGEX_EMAIL, REGEX_NAME
 from src.serializer import serialize_one
 
 @login_check()
@@ -130,6 +130,14 @@ def create(request, params, user):
         }
         return json_response(response)
     # Check if the name is valid
+    if (not REGEX_NAME.match(params['first_name']) or 
+        not REGEX_NAME.match(params['last_name'])):
+        response = {
+            'status':'FAIL',
+            'error':'INVALID_NAME',
+            'message':'Your first or last name contain illegal characters.'
+        }
+        return json_response(response)
     if len(params['first_name']) > 50 or len(params['last_name']) > 50:
         response = {
             'status':'FAIL',
