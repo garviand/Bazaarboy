@@ -11,7 +11,6 @@ from django.http import Http404, HttpResponse
 from django.shortcuts import render, redirect
 from kernel.models import *
 from src.config import *
-from src.controllers.event import get_seats
 from src.controllers.request import *
 from src.email import Email
 from src.sms import SMS
@@ -107,32 +106,13 @@ def charge(request, params, user):
         return json_response(response)
     finally:
         purchase = Purchase.objects.get(checkout = checkout)
-        # Start a database transaction
-        with transaction.commit_on_success():
-            # Place a lock on ticket information (seats)
-            ticket = Ticket.objects.select_for_update() \
-                                   .filter(id = purchase.ticket.id)[0]
-            # Assign seats
-            if ticket.seats is not None:
-                seats = ticket.seats.split(',')
-                assigned, rest = get_seats(seats, purchase.quantity)
-                if assigned:
-                    # Seat assigned
-                    purchase.seats = ','.join(assigned)
-                    purchase.save()
-                    # Update the ticket seats
-                    Ticket.objects.filter(id = ticket.id) \
-                                  .update(seats = ','.join(rest))
-                else:
-                    # Assign seating failed, raise exception to roll back
-                    raise IntegrityError()
         try:
             email = Email()
             email.sendPurchaseConfirmationEmail(purchase)
             sms = SMS()
             sms.sendPurchaseConfirmationSMS(purchase)
         except Exception as e:
-            # Ignore email and sms errors for now
+            # Log error
             pass
         response = {
             'status':'OK'
