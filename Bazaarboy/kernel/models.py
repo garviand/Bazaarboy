@@ -233,6 +233,7 @@ class Criteria(models.Model):
     price_lower = models.FloatField(null = True, default = None)
     price_upper = models.FloatField(null = True, default = None)
     quantity = models.IntegerField(null = True, default = None)
+    created_time = models.DateTimeField(auto_now_add = True)
 
 class Sponsorship(models.Model):
     """
@@ -243,6 +244,26 @@ class Sponsorship(models.Model):
     name = models.CharField(max_length = 100)
     description = models.CharField(max_length = 500)
     created_time = models.DateTimeField(auto_now_add = True)
+
+class Bonus(models.Model):
+    """
+    Bonus model
+    """
+    event = models.ForeignKey('Event')
+    name = models.CharField(max_length = 50)
+    description = models.CharField(max_length = 100)
+    image = models.ForeignKey('Image', null = True, default = None, 
+                              on_delete = models.SET_NULL)
+    quantity = models.IntegerField(null = True, default = None)
+    code = models.CharField(max_length = 255, null = True, default = None)
+    expiration_time = models.DateTimeField(null = True, default = None)
+    created_time = models.DateTimeField(auto_now_add = True)
+
+class Redemption(models.Model):
+    """
+    Model for redeeming a bonus
+    """
+    bonus = models.ForeignKey('Bonus')
 
 class Image(models.Model):
     """

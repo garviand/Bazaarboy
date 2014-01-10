@@ -368,11 +368,6 @@ def edit(request, params, user):
     return json_response(response)
 
 @login_required()
-@validate('POST', ['id'])
-def delete(request, params, user):
-    pass
-
-@login_required()
 @validate('POST', ['profile', 'user'])
 def create_manager(request, params, user):
     """
