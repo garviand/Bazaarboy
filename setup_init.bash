@@ -44,6 +44,8 @@ sudo apt-get build-dep python-imaging
 sudo ln -s /usr/lib/`uname -i`-linux-gnu/libfreetype.so /usr/lib/
 sudo ln -s /usr/lib/`uname -i`-linux-gnu/libjpeg.so /usr/lib/
 sudo ln -s /usr/lib/`uname -i`-linux-gnu/libz.so /usr/lib/
+echo -e "\nInstalling WeasyPrint requirements\n"
+sudo apt-get install python-lxml libcairo2 libpango1.0-0 libgdk-pixbuf2.0-0 libffi-dev libxml2-dev libxslt-dev 
 
 # Redis
 echo -e "\nInstalling redis\n"

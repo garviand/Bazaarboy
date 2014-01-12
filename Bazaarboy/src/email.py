@@ -2,6 +2,7 @@
 Email utilities
 """
 
+import urllib
 from datetime import datetime
 from celery import task
 from mandrill import Mandrill
@@ -9,8 +10,6 @@ from django.conf import settings
 from kernel.models import *
 from src.config import *
 from src.timezone import localize
-
-import urllib
 
 class Email(object):
     """
