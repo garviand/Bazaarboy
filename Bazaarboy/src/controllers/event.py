@@ -1278,7 +1278,7 @@ def add_purchase(request, params, user):
         return json_response(response)
     # Create the purchase
     purchase = Purchase(owner = user, ticket = ticket, event = event, 
-                        price = ticket.price)
+                        price = 0)
     purchase.save()
     # If the ticket has a quantity limit
     if ticket.quantity is not None:
