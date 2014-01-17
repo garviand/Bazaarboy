@@ -158,8 +158,12 @@ class Event(models.Model):
     is_launched = models.BooleanField(default = False)
     launched_time = models.DateTimeField(null = True, default = None)
     created_time = models.DateTimeField(auto_now_add = True)
-    organizers = models.ManyToManyField('Profile', through = 'Organizer')
-    sponsors = models.ManyToManyField('Profile', through = 'Sponsorship')
+    organizers = models.ManyToManyField('Profile', 
+                                        related_name = '%(class)s_organizer', 
+                                        through = 'Organizer')
+    sponsors = models.ManyToManyField('Profile', 
+                                      related_name = '%(class)s_sponsorship', 
+                                      through = 'Sponsorship')
     is_deleted = models.BooleanField(default = False)
 
 def randomConfirmationCode(size=6):
@@ -239,7 +243,7 @@ class Sponsorship(models.Model):
     """
     Sponsorship model
     """
-    owner = models.ForeignKey('Profile')
+    owner = models.ForeignKey('Profile', null = True, default = None)
     event = models.ForeignKey('Event')
     name = models.CharField(max_length = 100)
     description = models.CharField(max_length = 500)
@@ -258,12 +262,6 @@ class Bonus(models.Model):
     code = models.CharField(max_length = 255, null = True, default = None)
     expiration_time = models.DateTimeField(null = True, default = None)
     created_time = models.DateTimeField(auto_now_add = True)
-
-class Redemption(models.Model):
-    """
-    Model for redeeming a bonus
-    """
-    bonus = models.ForeignKey('Bonus')
 
 class Image(models.Model):
     """

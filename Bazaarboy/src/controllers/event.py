@@ -40,9 +40,8 @@ def index(request, id, params, user):
         preview = True
     event = Event.objects.select_related().get(id = id)
     editable = (user is not None and 
-                Event_organizer.objects.filter(event = event, 
-                                               profile__managers = user) \
-                                       .exists())
+                Organizer.objects.filter(event = event, 
+                                         profile__managers = user).exists())
     if not editable and not event.is_launched and not preview:
         return redirect('index')
     tickets = Ticket.objects.filter(event = event)
@@ -53,7 +52,7 @@ def index(request, id, params, user):
             rsvp = False
         if ticket.price < cheapest:
             cheapest = ticket.price
-    organizers = Event_organizer.objects.filter(event = event)
+    organizers = Organizer.objects.filter(event = event)
     return render(request, 'event/index.html', locals())
 
 @login_required()
@@ -62,8 +61,8 @@ def manage(request, id, params, user):
     if not Event.objects.filter(id = id).exists():
         raise Http404
     event = Event.objects.get(id = id)
-    if not Event_organizer.objects.filter(event = event, 
-                                          profile__managers = user).exists():
+    if not Organizer.objects.filter(event = event, 
+                                    profile__managers = user).exists():
         return redirect('index')
     purchases = Purchase.objects.filter(Q(checkout = None) | 
                                         Q(checkout__is_charged = True, 
@@ -202,8 +201,7 @@ def create(request, params, user):
     # Save to database
     event.save()
     # Set the profile as the organizer and creator of the event
-    organizer = Event_organizer(event = event, profile = profile, 
-                                is_creator = True)
+    organizer = Organizer(event = event, profile = profile, is_creator = True)
     organizer.save()
     response = {
         'status':'OK',
@@ -232,9 +230,8 @@ def edit(request, params, user):
         return json_response(response)
     event = Event.objects.get(id = params['id'])
     # Check if user has permission for the event
-    if not Event_organizer.objects.filter(event = event, 
-                                          profile__managers = user) \
-                                  .exists():
+    if not Organizer.objects.filter(event = event, 
+                                    profile__managers = user).exists():
         response = {
             'status':'FAIL',
             'error':'NOT_A_MANAGER',
@@ -401,9 +398,8 @@ def add_organizer(request, params, user):
         return json_response(response)
     event = Event.objects.get(id = params['id'])
     # Check if user has permission for the event
-    if not Event_organizer.objects.filter(event = event, 
-                                          profile__managers = user) \
-                                  .exists():
+    if not Organizer.objects.filter(event = event, 
+                                    profile__managers = user).exists():
         response = {
             'status':'FAIL',
             'error':'NOT_A_MANAGER',
@@ -420,7 +416,7 @@ def add_organizer(request, params, user):
         return json_response(response)
     profile = Profile.objects.get(id = params['profile'])
     # Check if the profile is an organizer of the event
-    if Event_organizer.objects.filter(event = event, profile = profile).exists():
+    if Organizer.objects.filter(event = event, profile = profile).exists():
         response = {
             'status':'FAIL',
             'error':'ALREADY_AN_ORGANIZER',
@@ -428,7 +424,7 @@ def add_organizer(request, params, user):
         }
         return json_response(response)
     # Add the profile as an organizer
-    organizer = Event_organizer(event = event, profile = profile)
+    organizer = Organizer(event = event, profile = profile)
     organizer.save()
     response = {
         'status':'OK'
@@ -449,9 +445,8 @@ def delete_organizer(request, params, user):
         return json_response(response)
     event = Event.objects.get(id = params['id'])
     # Check if user has permission for the event
-    if not Event_organizer.objects.filter(event = event, 
-                                          profile__managers = user) \
-                                  .exists():
+    if not Organizer.objects.filter(event = event, 
+                                    profile__managers = user).exists():
         response = {
             'status':'FAIL',
             'error':'NOT_A_MANAGER',
@@ -467,15 +462,14 @@ def delete_organizer(request, params, user):
         }
         return json_response(response)
     # Check if the profile is an organizer of the event
-    if not Event_organizer.objects.filter(event = event, profile = profile) \
-                                  .exists():
+    if not Organizer.objects.filter(event = event, profile = profile).exists():
         response = {
             'status':'FAIL',
             'error':'NOT_AN_ORGANIZER',
             'message':'The profile is not an organizer.'
         }
         return json_response(response)
-    organizer = Event_organizer.objects.get(event = event, profile = profile)
+    organizer = Organizer.objects.get(event = event, profile = profile)
     # Check if the profile is the creator of the event
     if organizer.is_creator:
         response = {
@@ -508,9 +502,8 @@ def launch(request, params, user):
         return json_response(response)
     event = Event.objects.get(id = params['id'])
     # Check if user has permission for the event
-    if not Event_organizer.objects.filter(event = event, 
-                                          profile__managers = user) \
-                                  .exists():
+    if not Organizer.objects.filter(event = event, 
+                                    profile__managers = user).exists():
         response = {
             'status':'FAIL',
             'error':'NOT_A_MANAGER',
@@ -552,9 +545,8 @@ def delaunch(request, params, user):
         return json_response(response)
     event = Event.objects.get(id = params['id'])
     # Check if user has permission for the event
-    if not Event_organizer.objects.filter(event = event, 
-                                          profile__managers = user) \
-                                  .exists():
+    if not Organizer.objects.filter(event = event, 
+                                    profile__managers = user).exists():
         response = {
             'status':'FAIL',
             'error':'NOT_A_MANAGER',
@@ -600,9 +592,8 @@ def delete(request, params, user):
         return json_response(response)
     event = Event.objects.get(id = params['id'])
     # Check if user has permission for the event
-    if not Event_organizer.objects.filter(event = event, 
-                                          profile__managers = user) \
-                                  .exists():
+    if not Organizer.objects.filter(event = event, 
+                                    profile__managers = user).exists():
         response = {
             'status':'FAIL',
             'error':'NOT_A_MANAGER',
@@ -637,9 +628,8 @@ def create_ticket(request, params, user):
         return json_response(response)
     event = Event.objects.get(id = params['event'])
     # Check if user has permission for the event
-    if not Event_organizer.objects.filter(event = event, 
-                                          profile__managers = user) \
-                                  .exists():
+    if not Organizer.objects.filter(event = event, 
+                                    profile__managers = user).exists():
         response = {
             'status':'FAIL',
             'error':'NOT_A_MANAGER',
@@ -733,9 +723,8 @@ def edit_ticket(request, params, user):
     ticket = Ticket.objects.get(id = params['id'])
     event = ticket.event
     # Check if user has permission for the event
-    if not Event_organizer.objects.filter(event = event, 
-                                          profile__managers = user) \
-                                  .exists():
+    if not Organizer.objects.filter(event = event, 
+                                    profile__managers = user).exists():
         response = {
             'status':'FAIL',
             'error':'NOT_A_MANAGER',
@@ -829,9 +818,8 @@ def delete_ticket(request, params, user):
     ticket = Ticket.objects.get(id = params['id'])
     event = ticket.event
     # Check if user has permission for the event
-    if not Event_organizer.objects.filter(event = event, 
-                                          profile__managers = user) \
-                                  .exists():
+    if not Organizer.objects.filter(event = event, 
+                                    profile__managers = user).exists():
         response = {
             'status':'FAIL',
             'error':'NOT_A_MANAGER',
@@ -861,7 +849,7 @@ def mark_purchase_as_expired(purchase, immediate=False):
         purchase.save()
         # And update the ticket quantities if necessary
         items = Purchase_item.objects.filter(purchase = purchase) \
-                                     .values('ticket')
+                                     .values('ticket') \
                                      .annotate(quantity = Count('id'))
         for tid, quantity in items.iteritems():
             ticket = Ticket.objects.get(id = tid)
@@ -1045,9 +1033,8 @@ def purchase(request, params, user):
             return json_response(response)
         # Otherwise
         # Get the event creator's payemnt account
-        creator = Event_organizer.objects.get(event = event, 
-                                              is_creator = True) \
-                                         .profile
+        creator = Organizer.objects.get(event = event, 
+                                        is_creator = True).profile
         paymentAccount = creator.payment_account
         # Calculate checkout total
         # Since Stripe's fee is by default payee-charged, adjust checkout
@@ -1118,9 +1105,8 @@ def export(request, params, user):
         return json_response(response)
     event = Event.objects.get(id = params['id'])
     # Check if user has permission for the event
-    if not Event_organizer.objects.filter(event = event, 
-                                          profile__managers = user) \
-                                  .exists():
+    if not Organizer.objects.filter(event = event, 
+                                    profile__managers = user).exists():
         response = {
             'status':'FAIL',
             'error':'NOT_A_MANAGER',
@@ -1174,9 +1160,8 @@ def checkin(request, params, user):
     item = Purchase_item.objects.get(id = params['id'])
     event = item.purchase.event
     # Check if user has permission for the event
-    if not Event_organizer.objects.filter(event = event, 
-                                          profile__managers = user) \
-                                  .exists():
+    if not Organizer.objects.filter(event = event, 
+                                    profile__managers = user).exists():
         response = {
             'status':'FAIL',
             'error':'NOT_A_MANAGER',

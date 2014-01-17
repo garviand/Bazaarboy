@@ -15,7 +15,8 @@ def create_criteria(request, params, user):
     """
     Create a criteria for sponsorship
     """
-    if not Event.objects.filter(id = params['event']).exists():
+    if not Event.objects.filter(id = params['event'], 
+                                is_deleted = False).exists():
         response = {
             'status':'FAIL',
             'error':'EVENT_NOT_FOUND',
@@ -23,9 +24,8 @@ def create_criteria(request, params, user):
         }
         return json_response(response)
     event = Event.objects.get(id = params['event'])
-    if not Event_organizer.objects.filter(event = event, 
-                                          profile__managers = user) \
-                                  .exists():
+    if not Organizer.objects.filter(event = event, 
+                                    profile__managers = user).exists():
         response = {
             'status':'FAIL',
             'error':'NOT_A_MANAGER',
@@ -108,9 +108,8 @@ def edit_criteria(request, params, user):
         return json_response(response)
     criteria = Criteria.objects.get(id = params['id'])
     event = criteria.event
-    if not Event_organizer.objects.filter(event = event, 
-                                          profile__managers = user) \
-                                  .exists():
+    if not Organizer.objects.filter(event = event, 
+                                    profile__managers = user).exists():
         response = {
             'status':'FAIL',
             'error':'NOT_A_MANAGER',
@@ -215,8 +214,7 @@ def delete_criteria(request, params, user):
     criteria = Criteria.objects.get(id = params['id'])
     event = criteria.event
     if not Event_organizer.objects.filter(event = event, 
-                                          profile__managers = user) \
-                                  .exists():
+                                          profile__managers = user).exists():
         response = {
             'status':'FAIL',
             'error':'NOT_A_MANAGER',
@@ -232,7 +230,79 @@ def delete_criteria(request, params, user):
 @login_required()
 @validate('POST', ['event'], ['profile', 'name', 'description'])
 def create(request, params, user):
-    pass
+    """
+    Create a sponsorship
+    """
+    if not Event.objects.filter(id = params['event'], 
+                                is_deleted = False).exists():
+        response = {
+            'status':'FAIL',
+            'error':'EVENT_NOT_FOUND',
+            'message':'The event doesn\'t exist.'
+        }
+        return json_response(response)
+    event = Event.objects.get(id = params['event'])
+    if not Organizer.objects.filter(event = event, 
+                                    profile__managers = user).exists():
+        response = {
+            'status':'FAIL',
+            'error':'NOT_A_MANAGER',
+            'message':'You don\'t have permission for the event.'
+        }
+        return json_response(response)
+    profile = None
+    if params['profile'] is not None:
+        # Existing profile
+        if not Profile.objects.filter(id = params['profile']).exists():
+            response = {
+                'status':'FAIL',
+                'error':'PROFILE_NOT_FOUND',
+                'message':'The profile doesn\'t exist.'
+            }
+            return json_response(response)
+        profile = Profile.objects.get(id = params['profile'])
+    name = None
+    description = None
+    if params['name'] is not None:
+         params['name'] = cgi.escape(params['name'])
+         if not (0 < len(params['name']) <= 100):
+            response = {
+                'status':'FAIL',
+                'error':'INVALID_NAME',
+                'message':'The name must be within 100 characters.'
+            }
+            return json_response(response)
+        name = params['name']
+    if params['description'] is not None:
+         params['description'] = cgi.escape(params['description'])
+         if not (0 < len(params['description']) <= 500):
+            response = {
+                'status':'FAIL',
+                'error':'INVALID_DESCRIPTION',
+                'message':'The description must be within 500 characters.'
+            }
+            return json_response(response)
+        description = params['description']
+    if profile is not None:
+        name = profile.name
+        description = '' if description is None else description
+    if profile is None and name is None:
+        response = {
+            'status':'FAIL',
+            'error':'INCOMPLETE_INFO',
+            'message':'You must provide the name for the sponsor!'
+        }
+        return json_response(response)
+    sponsorship = Sponsorship(owner = profile, event = event, 
+                              name = name, 
+                              description = description)
+    sponsorship.save()
+
+    response = {
+        'status':'OK', 
+        'sponsorship':serialize_one(sponsorship)
+    }
+    return json_response(response)
 
 @login_required()
 @validate('POST', ['id'], ['name', 'description'])
