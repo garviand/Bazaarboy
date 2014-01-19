@@ -28,7 +28,7 @@ block body
 						div.box.bboy_box
 							img(src="{{ STATIC_URL }}images/pricing/icon_person.png")
 							div.numbers 4%
-							div.subtitle Service Fee
+							div.subtitle Service Fee*
 						div.plus
 							img(src="{{ STATIC_URL }}images/pricing/plus.png")
 						div.box.cc_box
@@ -38,12 +38,13 @@ block body
 						div.clear
 						div.caption.bboy_caption
 							| For every ticket you sell using Bazaarboy, we charge 4% of the ticket value per ticket.
+							div.subtext *service fee for 501(c)(3) organizations is 2%
 						div.caption.cc_caption
 							| When you collect money through Stripe's credit card processor, they charge 2.9% + $0.30 of the ticket value.
 						div.clear
 			div.stripe
 				div.stripe_content
-					div.title To process payments a secure third-party platform:
+					div.title We use a secure third-party platform to process payments:
 					div.stripe_logo
 						img(src="{{ STATIC_URL }}images/pricing/stripe.png")
 					div.pci

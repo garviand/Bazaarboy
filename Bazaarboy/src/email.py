@@ -10,6 +10,8 @@ from kernel.models import *
 from src.config import *
 from src.timezone import localize
 
+import urllib
+
 class Email(object):
     """
     A wrapper class for all email functions
@@ -101,11 +103,9 @@ class Email(object):
         """
         Send Purchase Confirmation
         """
-        coverImageUrl = settings.STATIC_URL + 'images/email-header-event.png'
-        if purchase.event.cover is not None:
-            coverImageUrl = purchase.event.cover.source.url
         startTime = localize(purchase.event.start_time)
-        readableStartTime = startTime.strftime('%b %e, %I:%M %p').lstrip('0')
+        readableDate = startTime.strftime('%A, %B %e')
+        readableTime = startTime.strftime('%I:%M %p').lstrip('0')
         creator = Event_organizer.objects.get(event = purchase.event, 
                                               is_creator = True).profile
         contactEmail = creator.managers.all()[0].email
@@ -114,31 +114,59 @@ class Email(object):
             'name':purchase.owner.full_name
         }]
         subject = 'Confirmation for \'' + purchase.event.name + '\''
-        template = 'rsvp-confirmation-draft'
+        template = 'event-rsvp'
         mergeVars = [
+            {
+                'name':'user_name', 
+                'content':purchase.owner.full_name
+            },
             {
                 'name':'event_name', 
                 'content':purchase.event.name
+            },
+            {
+                'name':'event_overview', 
+                'content':purchase.event.summary
             }, 
+            {
+                'name':'ticket_name', 
+                'content':purchase.ticket.name
+            },
             {
                 'name':'confirmation_code', 
                 'content':purchase.code
             },
             {
-                'name':'start_time', 
-                'content':readableStartTime
+                'name':'event_id', 
+                'content':purchase.event.id
+            },
+            {
+                'name':'event_date', 
+                'content':readableDate
+            },
+            {
+                'name':'event_time',
+                'content':readableTime
             }, 
             {
-                'name':'location', 
+                'name':'event_location', 
                 'content':purchase.event.location
+            },
+            {
+                'name':'event_map_location', 
+                'content':urllib.quote_plus(purchase.event.location)
+            },
+            {
+                'name':'event_address', 
+                'content':''
+            },
+            {
+                'name':'organizer_name', 
+                'content':creator.name
             },
             {
                 'name':'organizer_email', 
                 'content':contactEmail
-            },
-            {
-                'name':'cover_image_url', 
-                'content':coverImageUrl
             },
             {
                 'name':'event_id', 

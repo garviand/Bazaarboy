@@ -51,11 +51,9 @@ Bazaarboy.event.manage =
                 if rsvp.data('ticket') == ticketType or ticketType == 'all'
                     $(rsvp).removeClass('hidden')
             if(checkStatus == 'checked_in')
-                console.log('Arrived Only')
                 if not $(rsvp).hasClass('checked_in')
                     $(rsvp).addClass('hidden')
             if(checkStatus == 'not_checked_in')
-                console.log('Not Checked In Only')
                 if $(rsvp).hasClass('checked_in')
                     $(rsvp).addClass('hidden')
         if updateListLength
@@ -64,6 +62,19 @@ Bazaarboy.event.manage =
             $('div.checkin_count div.checkin_numbers span.total_guests').html(newLength)
             $('div.checkin_count div.checkin_numbers span.checked_in').html(newLengthChecked)
         Bazaarboy.adjustBottomPosition()
+        return
+    debounce: (func, threshold, execAsap) ->
+        timeout = null
+        (args...) ->
+            obj = this
+            delayed = ->
+                func.apply(obj, args) unless execAsap
+                timeout = null
+            if timeout
+                clearTimeout(timeout)
+            else if (execAsap)
+                func.apply(obj, args)
+            timeout = setTimeout delayed, threshold || 100
         return
     init: () ->
         scope = this
@@ -99,11 +110,7 @@ Bazaarboy.event.manage =
             return
         $('form.list_search input[name=guest_name]').keyup (e) =>
             e.preventDefault()
-            if $('form.list_search input[name=guest_name]').val() == ''
-                $('div.guest').removeClass('hidden')
-            else
-                $('div.guest').addClass('hidden')
-                @filterGuests('name', $('form.list_search input[name=guest_name]').val(), @selectionStatus, @checkinStatus, false)
+            @debounce(console.log('bouncing herere'), 1000)
             return
         $('form.list_search input[name=guest_code]').keyup (e) =>
             e.preventDefault()

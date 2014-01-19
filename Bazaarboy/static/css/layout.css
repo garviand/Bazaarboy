@@ -853,6 +853,10 @@ div#pricing .fees .fees_content .boxes .caption.bboy_caption {
   width: 328px;
   margin-right: 96px;
 }
+div#pricing .fees .fees_content .boxes .caption.bboy_caption .subtext {
+  margin-top: 10px;
+  font-size: .6em;
+}
 div#pricing .fees .fees_content .boxes .caption.cc_caption {
   width: 480px;
 }
@@ -866,7 +870,7 @@ div#pricing .stripe .stripe_content {
 }
 div#pricing .stripe .stripe_content .title {
   color: #FFF;
-  font-size: 2.25em;
+  font-size: 2.15em;
   padding-bottom: 12px;
   border-bottom: 1px solid #FFF;
   margin-bottom: 40px;
