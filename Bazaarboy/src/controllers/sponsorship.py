@@ -228,7 +228,7 @@ def delete_criteria(request, params, user):
     return json_response(response)
 
 @login_required()
-@validate('POST', ['event'], ['profile', 'name', 'description'])
+@validate('POST', ['event'], ['profile', 'name', 'description', 'image'])
 def create(request, params, user):
     """
     Create a sponsorship
@@ -263,6 +263,7 @@ def create(request, params, user):
         profile = Profile.objects.get(id = params['profile'])
     name = None
     description = None
+    image = None
     if params['name'] is not None:
          params['name'] = cgi.escape(params['name'])
          if not (0 < len(params['name']) <= 100):
@@ -283,9 +284,22 @@ def create(request, params, user):
             }
             return json_response(response)
         description = params['description']
+    if params['image'] is not None:
+        if not Image.objects.filter(id = params['image']).exists():
+            response = {
+                'status':'FAIL',
+                'error':'IMAGE_NOT_FOUND',
+                'message':'The image doesn\'t exist.'
+            }
+            return json_response(response)
+        else:
+            image = Image.objects.get(id = params['image'])
+            image.is_archived = True
+            image.save()
     if profile is not None:
         name = profile.name
         description = '' if description is None else description
+        image = None if image is None else profile.image
     if profile is None and name is None:
         response = {
             'status':'FAIL',
@@ -293,11 +307,9 @@ def create(request, params, user):
             'message':'You must provide the name for the sponsor!'
         }
         return json_response(response)
-    sponsorship = Sponsorship(owner = profile, event = event, 
-                              name = name, 
-                              description = description)
+    sponsorship = Sponsorship(owner = profile, event = event, name = name, 
+                              description = description, image = image)
     sponsorship.save()
-
     response = {
         'status':'OK', 
         'sponsorship':serialize_one(sponsorship)
@@ -312,4 +324,28 @@ def edit(request, params, user):
 @login_required()
 @validate('POST', ['id'])
 def delete(request, params, user):
-    pass
+    """
+    Delete a sponsorship
+    """
+    if not Sponsorship.objects.filter(id = params['id']).exists():
+        response = {
+            'status':'FAIL',
+            'error':'SPONSORSHIP_NOT_FOUND',
+            'message':'The sponsorship doesn\'t exist.'
+        }
+        return json_response(response)
+    sponsorship = Sponsorship.objects.get(id = params['id'])
+    event = sponsorship.event
+    if not Organizer.objects.filter(event = event, 
+                                    profile__managers = user).exists():
+        response = {
+            'status':'FAIL',
+            'error':'NOT_A_MANAGER',
+            'message':'You don\'t have permission for the event.'
+        }
+        return json_response(response)
+    sponsorship.delete()
+    response = {
+        'status':'OK'
+    }
+    return json_response(response)

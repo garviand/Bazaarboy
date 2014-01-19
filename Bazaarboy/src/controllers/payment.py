@@ -86,7 +86,7 @@ def charge(request, params, user):
         }
         return json_response(response)
     try:
-        fee = int(checkout.amount * STRIPE_TRANSACTION_RATE)
+        fee = int(round(STRIPE_FEE(checkout.amount)))
         charge = stripe.Charge.create(
             amount = checkout.amount,
             currency = STRIPE_CURRENCY,

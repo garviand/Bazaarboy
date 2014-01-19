@@ -121,6 +121,8 @@ class Profile(models.Model):
                                     default = None)
     link_facebook = models.CharField(max_length = 1024, null = True, 
                                      default = None)
+    EIN = models.CharField(max_length = 10)
+    is_non_profit = models.BooleanField(default = False)
     payment_account = models.ForeignKey('Payment_account', 
                                         null = True, default = None)
     created_time = models.DateTimeField(auto_now_add = True)
@@ -247,6 +249,7 @@ class Sponsorship(models.Model):
     event = models.ForeignKey('Event')
     name = models.CharField(max_length = 100)
     description = models.CharField(max_length = 500)
+    image = models.ForeignKey('Image', null = True, default = None)
     created_time = models.DateTimeField(auto_now_add = True)
 
 class Bonus(models.Model):
