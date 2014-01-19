@@ -40,7 +40,6 @@ class Email(object):
                                                     message = message, 
                                                     async = False)
         return result
-
     def sendConfirmationEmail(self, user, confirmationCode):
         """
         Email confirming registration
@@ -50,15 +49,11 @@ class Email(object):
             'name':user.full_name
         }]
         subject = 'Welcome to Bazaarboy'
-        template = 'confirm-registration'
+        template = 'welcome-to-bazaarboy'
         mergeVars = [
             {
-                'name':'user_name', 
+                'name':'organizer_name', 
                 'content':user.full_name
-            }, 
-            {
-                'name':'confirmation_code',
-                'content':confirmationCode.code
             }]
         return self.sendEmail(to, subject, template, mergeVars)
 

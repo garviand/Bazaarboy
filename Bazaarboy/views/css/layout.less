@@ -726,7 +726,7 @@ div#landing {
         }
 
         div.content {
-            width: @full_column_width * 7;
+            width: @full_column_width * 8;
             margin: 0 auto;
             margin-top: 30px;
             margin-bottom: 20px;
@@ -736,45 +736,33 @@ div#landing {
             border-radius: 2px;
             background-color: rgba(255, 255, 255, 0.9);
 
-            div.top {
-                width: @full_column_width * 6;
+            div.middle {
+                width: @full_column_width * 7;
                 margin: 0 @full_column_width / 2;
                 border-bottom: 1px solid #AEBDBC;
-
-                div.title {
+                div.title{
+                    width: @full_column_width * 7;
                     color: #2F4241;
                     font-size: 24px;
                     text-align: center;
                     text-shadow: 0 1px 0 #FFF;
-
-                    b {
-                        font-weight: @font_weight_bold + 100;
-                    }
+                    margin-bottom: 20px;
                 }
-
-                div.text {
-                    padding: @column_margin @column_margin * 1.5;
-                    padding-right: @column_margin * 0.75;
+                div.text{
+                    width: @full_column_width * 7;
+                    padding: @column_margin @column_margin * 1;
                     color: #2F4241;
                     font-size: @font_size_base;
                     line-height: @font_size_base * 1.4;
                     letter-spacing: 1px;
                     text-shadow: 0 1px 0 #FFF;
-                }
-
-                div.organizers {
-                    width: @full_column_width * 3;
                     .left;
-                }
-
-                div.sponsors {
-                    width: @full_column_width * 3;
-                    .left;
+                    margin-bottom: 10px;
                 }
             }
 
             div.bottom {
-                width: @full_column_width * 6;
+                width: @full_column_width * 7;
                 margin: 0 @full_column_width / 2;
                 padding-top: 16px;
                 padding-bottom: 10px;
@@ -783,7 +771,7 @@ div#landing {
                 a.request {
                     display: block;
                     float: left;
-                    width: @full_column_width * 3 - 25;
+                    width: @full_column_width * 3;
                     height: 36 - @font_size_base;
                     padding: (36 - @font_size_base) / 2;
                     border-radius: 2px;
@@ -800,11 +788,11 @@ div#landing {
 
                 div.login_link_container {
                     float: right;
-                    width: @full_column_width * 3 - 30;
+                    width: @full_column_width * 3;
                     height: 36 - @font_size_base;
                     padding: (36 - @font_size_base) / 2;
                     font-size: @font_size_base - 2;
-                    text-align: right;
+                    text-align: center;
                     text-shadow: 0 1px 0 #FFF;
 
                     a {
@@ -836,7 +824,7 @@ div#landing {
                 form.login {
                     input.login_input{
                         display: block;
-                        width: 100%;
+                        width: @full_column_width * 7;
                         margin: 0 auto;
                         margin-bottom: 20px;
                         padding: 10px 10px;
