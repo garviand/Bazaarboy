@@ -1061,7 +1061,7 @@ div#landing div.inner div.logo div.caption {
   text-align: center;
 }
 div#landing div.inner div.content {
-  width: 504px;
+  width: 576px;
   margin: 0 auto;
   margin-top: 30px;
   margin-bottom: 20px;
@@ -1071,39 +1071,32 @@ div#landing div.inner div.content {
   border-radius: 2px;
   background-color: rgba(255, 255, 255, 0.9);
 }
-div#landing div.inner div.content div.top {
-  width: 432px;
+div#landing div.inner div.content div.middle {
+  width: 504px;
   margin: 0 36px;
   border-bottom: 1px solid #AEBDBC;
 }
-div#landing div.inner div.content div.top div.title {
+div#landing div.inner div.content div.middle div.title {
+  width: 504px;
   color: #2F4241;
   font-size: 24px;
   text-align: center;
   text-shadow: 0 1px 0 #FFF;
+  margin-bottom: 20px;
 }
-div#landing div.inner div.content div.top div.title b {
-  font-weight: 600;
-}
-div#landing div.inner div.content div.top div.text {
-  padding: 12px 18px;
-  padding-right: 9px;
+div#landing div.inner div.content div.middle div.text {
+  width: 504px;
+  padding: 12px 12px;
   color: #2F4241;
   font-size: 16px;
   line-height: 22.4px;
   letter-spacing: 1px;
   text-shadow: 0 1px 0 #FFF;
-}
-div#landing div.inner div.content div.top div.organizers {
-  width: 216px;
   float: left;
-}
-div#landing div.inner div.content div.top div.sponsors {
-  width: 216px;
-  float: left;
+  margin-bottom: 10px;
 }
 div#landing div.inner div.content div.bottom {
-  width: 432px;
+  width: 504px;
   margin: 0 36px;
   padding-top: 16px;
   padding-bottom: 10px;
@@ -1112,7 +1105,7 @@ div#landing div.inner div.content div.bottom {
 div#landing div.inner div.content div.bottom a.request {
   display: block;
   float: left;
-  width: 191px;
+  width: 216px;
   height: 20px;
   padding: 10px;
   border-radius: 2px;
@@ -1136,11 +1129,11 @@ div#landing div.inner div.content div.bottom a.request:hover {
 }
 div#landing div.inner div.content div.bottom div.login_link_container {
   float: right;
-  width: 186px;
+  width: 216px;
   height: 20px;
   padding: 10px;
   font-size: 14px;
-  text-align: right;
+  text-align: center;
   text-shadow: 0 1px 0 #FFF;
 }
 div#landing div.inner div.content div.bottom div.login_link_container a {
@@ -1162,7 +1155,7 @@ div#landing div.inner div.login_content div.title {
 }
 div#landing div.inner div.login_content div.top form.login input.login_input {
   display: block;
-  width: 100%;
+  width: 504px;
   margin: 0 auto;
   margin-bottom: 20px;
   padding: 10px 10px;
