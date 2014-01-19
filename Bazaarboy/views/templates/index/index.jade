@@ -29,6 +29,9 @@ block content
                             a.connect(href="javascript:;")
                             {% endif %}
                         div.stats
+                            {% if  not profile.payment_account %}
+                            | You cannot accept payments until connected with Stripe
+                            {% endif %}
                         div.clear
                 div.events
                     div.draft

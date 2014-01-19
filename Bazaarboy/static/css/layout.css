@@ -1473,6 +1473,9 @@ div#index div.profiles div.profile div.summary div.inner div.revenue a.connect {
   background-image: url(../images/stripe.png);
 }
 div#index div.profiles div.profile div.summary div.inner div.stats {
+  width: 415px;
+  padding: 20px 0;
+  text-align: center;
   float: left;
 }
 div#index div.profiles div.profile div.events {
