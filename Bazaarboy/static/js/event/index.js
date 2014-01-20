@@ -150,7 +150,7 @@
             StripeCheckout.open({
               key: response.publishable_key,
               address: false,
-              amount: Math.round(response.purchase.price * 100),
+              amount: Math.round((response.purchase.price * (1 + 0.05) + 0.5) * 100),
               currency: 'usd',
               name: response.purchase.event.name,
               description: checkoutDescription,

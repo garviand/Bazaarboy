@@ -1148,15 +1148,14 @@ def purchase(request, params, user):
                                          .profile
         paymentAccount = creator.payment_account
         # Calculate checkout total
-        # Since Stripe's fee is by default payee-charged, adjust checkout
-        # amount in order to make it payer-charged
         amount = ticket.price * params['quantity']
-        amount = (amount + 0.3) / (1 - 0.029 - STRIPE_TRANSACTION_RATE)
+        rate = STRIPE_TRANSACTION_RATE
+        amount = int(round((amount * (1 + rate) + 0.5) * 100))
         # Create the checkout
         checkoutDescription = '%s - %s' % (event.name, ticket.name)
         checkout = Checkout(payer = user, 
                             payee = paymentAccount, 
-                            amount = int(amount * 100), 
+                            amount = amount, 
                             description = checkoutDescription)
         checkout.save()
         # Create the purchase
