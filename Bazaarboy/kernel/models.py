@@ -258,13 +258,36 @@ class Bonus(models.Model):
     """
     event = models.ForeignKey('Event')
     name = models.CharField(max_length = 50)
-    description = models.CharField(max_length = 100)
+    description = models.CharField(max_length = 150)
     image = models.ForeignKey('Image', null = True, default = None, 
                               on_delete = models.SET_NULL)
     quantity = models.IntegerField(null = True, default = None)
     code = models.CharField(max_length = 255, null = True, default = None)
     expiration_time = models.DateTimeField(null = True, default = None)
+    is_sent = models.BooleanField(default = False)
+    sent_time = models.DateTimeField(auto_now_add = True)
     created_time = models.DateTimeField(auto_now_add = True)
+
+class Claim(models.Model):
+    """
+    Claim for a bonus
+    """
+    owner = models.ForeignKey('User')
+    bonus = models.ForeignKey('Bonus')
+    token = models.CharField(max_length = 128)
+    is_claimed = models.BooleanField(default = False)
+    claimed_time = models.DateTimeField(null = True, default = None)
+    is_redeemed = models.BooleanField(default = False)
+    redemption_time = models.DateTimeField(null = True, default = None)
+    created_time = models.DateTimeField(auto_now_add = True)
+
+    def save(self, *args, **kwargs):
+        """
+        Override save to generate token at creation
+        """
+        if self.pk is None:
+            self.token = os.urandom(128).encode('base_64')[:128]
+        super(Claim, self).save(*args, **kwargs)
 
 class Image(models.Model):
     """

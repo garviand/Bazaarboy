@@ -9,7 +9,8 @@ from src.controllers.request import *
 from src.serializer import serialize_one
 
 @login_required()
-@validate('POST', ['event', 'name', 'description'], 
+@validate('POST', 
+          ['event', 'name', 'description'], 
           ['price_low', 'price_high', 'quantity'])
 def create_criteria(request, params, user):
     """
@@ -113,7 +114,7 @@ def edit_criteria(request, params, user):
         response = {
             'status':'FAIL',
             'error':'NOT_A_MANAGER',
-            'message':'You don\'t have permission for the event.'
+            'message':'You don\'t have permission for the criteria.'
         }
         return json_response(response)
     if params['name'] is not None:
