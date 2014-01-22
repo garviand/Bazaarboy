@@ -67,6 +67,7 @@ event_urlpatterns = patterns('src.controllers.event',
     url(r'^purchase/add/$', 'add_purchase', name = 'purchase-add'),
     url(r'^purchase/csv/$', 'purchase_csv', name = 'purchase-csv'),
     url(r'^checkin/$', 'checkin', name = 'checkin'),
+    url(r'^(?P<id>\d+)/invite/$', 'invite', name = 'invite'),
 )
 
 fundraiser_urlpatterns = patterns('src.controllers.fundraiser', 

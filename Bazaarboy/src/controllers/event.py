@@ -1389,3 +1389,14 @@ def checkin(request, params, user):
         'purchase':serialize_one(purchase)
     }
     return json_response(response)
+
+@login_required()
+@validate('GET')
+def invite(request, id, params, user):
+    if not Event.objects.filter(id = id).exists():
+        raise Http404
+    event = Event.objects.get(id = id)
+    if not Event_organizer.objects.filter(event = event, 
+                                          profile__managers = user).exists():
+        return redirect('index')
+    return render(request, 'event/invite.html', locals())

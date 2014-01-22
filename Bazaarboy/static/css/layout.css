@@ -3295,6 +3295,25 @@ div#rsvp div.confirmation div.content div.inner div.details div.right div.ticket
   text-align: center;
   font-size: 14px;
 }
+div#event_invite .container {
+  width: 912px;
+  margin: 30px auto;
+}
+div#event_invite .container .editor {
+  width: 312px;
+  float: left;
+}
+div#event_invite .container .editor .email_form textarea {
+  height: 100px;
+  width: 288px;
+}
+div#event_invite .container .template_container {
+  width: 600px;
+  float: left;
+}
+div#event_invite .container .template_container #event_name {
+  font-weight: bold;
+}
 div#event_manage .title .inner .right {
   float: right;
   width: 144px;

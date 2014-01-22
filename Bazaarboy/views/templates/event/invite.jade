@@ -1,0 +1,110 @@
+// Event.Invite
+
+extends ../layout
+
+block title
+    | Invite Atendees | {{ event.name }}
+
+block content
+    div#event_invite.event_base.content_divided
+        div.container
+            div.editor
+                form.email_form
+                    textarea(name="message")
+                        | Enter the message that you would like to send to your invitees here
+            div.template_container
+                table.body(style='border:#777 thin solid; border-spacing: 0; border-collapse: collapse; vertical-align: top; text-align: left; height: 100%; width: 100%; color: #222222; font-family: \'Helvetica\', \'Arial\', sans-serif; font-weight: normal; line-height: 19px; font-size: 14px; margin: 0; padding: 0;')
+                  tr(style='vertical-align: top; text-align: left; padding: 0;', align='left')
+                    td.center(align='center', valign='top', style='word-break: break-word; -webkit-hyphens: auto; -moz-hyphens: auto; hyphens: auto; border-collapse: collapse !important; vertical-align: top; text-align: center; color: #222222; font-family: \'Helvetica\', \'Arial\', sans-serif; font-weight: normal; line-height: 19px; font-size: 14px; margin: 0; padding: 0;')
+                      center(style='width: 100%; min-width: 580px;')
+                        table.container(style='border-spacing: 0; border-collapse: collapse; vertical-align: top; text-align: inherit; width: 580px; margin: 0 auto; padding: 0;')
+                          tr(style='vertical-align: top; text-align: left; padding: 0;', align='left')
+                            td(style='word-break: break-word; -webkit-hyphens: auto; -moz-hyphens: auto; hyphens: auto; border-collapse: collapse !important; vertical-align: top; text-align: left; color: #222222; font-family: \'Helvetica\', \'Arial\', sans-serif; font-weight: normal; line-height: 19px; font-size: 14px; margin: 0; padding: 0;', align='left', valign='top')
+                              table.row(style='border-spacing: 0; border-collapse: collapse; vertical-align: top; text-align: left; width: 100%; position: relative; display: block; padding: 0px;')
+                                tr(style='vertical-align: top; text-align: left; padding: 0;', align='left')
+                                  td.wrapper.last(style='word-break: break-word; -webkit-hyphens: auto; -moz-hyphens: auto; hyphens: auto; border-collapse: collapse !important; vertical-align: top; text-align: left; position: relative; color: #222222; font-family: \'Helvetica\', \'Arial\', sans-serif; font-weight: normal; line-height: 19px; font-size: 14px; margin: 0; padding: 10px 0px 0px;', align='left', valign='top')
+                                    table.twelve.columns(style='border-spacing: 0; border-collapse: collapse; vertical-align: top; text-align: left; width: 580px; margin: 0 auto; padding: 0;')
+                                      tr(style='vertical-align: top; text-align: left; padding: 0;', align='left')
+                                        td(style='word-break: break-word; -webkit-hyphens: auto; -moz-hyphens: auto; hyphens: auto; border-collapse: collapse !important; vertical-align: top; text-align: left; color: #222222; font-family: \'Helvetica\', \'Arial\', sans-serif; font-weight: normal; line-height: 19px; font-size: 14px; margin: 0; padding: 0px 0px 10px;', align='left', valign='top')
+                                          h1(style='color: #222222; font-family: \'Helvetica\', \'Arial\', sans-serif; font-weight: normal; text-align: left; line-height: 1.3; word-break: normal; font-size: 40px; margin: 0; padding: 0;', align='left') Hey, INVITEE
+                                          p(style='color: #222222; font-family: \'Helvetica\', \'Arial\', sans-serif; font-weight: normal; text-align: left; line-height: 19px; font-size: 14px; margin: 0 0 10px; padding: 0;', align='left')
+                                            | You have been invited to
+                                            b#event_name &nbsp;{{event.name}}
+                                          {% if event.cover %}
+                                          div(style='width: 580px; height: 200px; background: url({{ event.cover.source.url }}); background-size: cover;')
+                                          {% endif %}
+                                        td.expander(style='word-break: break-word; -webkit-hyphens: auto; -moz-hyphens: auto; hyphens: auto; border-collapse: collapse !important; vertical-align: top; text-align: left; visibility: hidden; width: 0px; color: #222222; font-family: \'Helvetica\', \'Arial\', sans-serif; font-weight: normal; line-height: 19px; font-size: 14px; margin: 0; padding: 0;', align='left', valign='top')
+                                    table.twelve.columns(style='border-spacing: 0; border-collapse: collapse; vertical-align: top; text-align: left; width: 580px; margin: 0 auto; padding: 0;')
+                                      tr(style='vertical-align: top; text-align: left; padding: 0;', align='left')
+                                        td.panel(style='word-break: break-word; -webkit-hyphens: auto; -moz-hyphens: auto; hyphens: auto; border-collapse: collapse !important; vertical-align: top; text-align: left; color: #222222; font-family: \'Helvetica\', \'Arial\', sans-serif; font-weight: normal; line-height: 19px; font-size: 14px; background: #f2f2f2; margin: 0; padding: 10px; border: 1px solid #d9d9d9;', align='left', bgcolor='#f2f2f2', valign='top')
+                                          p#event_summary(style='color: #222222; font-family: \'Helvetica\', \'Arial\', sans-serif; font-weight: normal; text-align: left; line-height: 19px; font-size: 14px; margin: 0 0 10px; padding: 0;', align='left')
+                                            | {{event.summary}}
+                                            a(href='#', style='color: #2ba6cb; text-decoration: none;')  Check out the event page! »
+                                        td.expander(style='word-break: break-word; -webkit-hyphens: auto; -moz-hyphens: auto; hyphens: auto; border-collapse: collapse !important; vertical-align: top; text-align: left; visibility: hidden; width: 0px; color: #222222; font-family: \'Helvetica\', \'Arial\', sans-serif; font-weight: normal; line-height: 19px; font-size: 14px; margin: 0; padding: 0;', align='left', valign='top')
+                              br
+                              table.row(style='border-spacing: 0; border-collapse: collapse; vertical-align: top; text-align: left; width: 100%; position: relative; display: block; padding: 0px;')
+                                tr(style='vertical-align: top; text-align: left; padding: 0;', align='left')
+                                  td.wrapper(style='word-break: break-word; -webkit-hyphens: auto; -moz-hyphens: auto; hyphens: auto; border-collapse: collapse !important; vertical-align: top; text-align: left; position: relative; color: #222222; font-family: \'Helvetica\', \'Arial\', sans-serif; font-weight: normal; line-height: 19px; font-size: 14px; margin: 0; padding: 10px 20px 0px 0px;', align='left', valign='top')
+                                    table.six.columns(style='border-spacing: 0; border-collapse: collapse; vertical-align: top; text-align: left; width: 280px; margin: 0 auto; padding: 0;')
+                                      tr(style='vertical-align: top; text-align: left; padding: 0;', align='left')
+                                        td(style='word-break: break-word; -webkit-hyphens: auto; -moz-hyphens: auto; hyphens: auto; border-collapse: collapse !important; vertical-align: top; text-align: left; color: #222222; font-family: \'Helvetica\', \'Arial\', sans-serif; font-weight: normal; line-height: 19px; font-size: 14px; margin: 0; padding: 0px 0px 10px;', align='left', valign='top')
+                                          p#organizer_message(style='min-height: 140px; color: #222222; font-family: \'Helvetica\', \'Arial\', sans-serif; font-weight: normal; text-align: left; line-height: 19px; font-size: 14px; margin: 0 0 10px; padding: 0;', align='left')
+                                            | Enter the message that you would like to send to your invitees here
+                                          table.button(style='border-spacing: 0; border-collapse: collapse; vertical-align: top; text-align: left; width: 100%; overflow: hidden; padding: 0;')
+                                            tr(style='vertical-align: top; text-align: left; padding: 0;', align='left')
+                                              td(style='word-break: break-word; -webkit-hyphens: auto; -moz-hyphens: auto; hyphens: auto; border-collapse: collapse !important; vertical-align: top; text-align: center; color: #ffffff; font-family: \'Helvetica\', \'Arial\', sans-serif; font-weight: normal; line-height: 19px; font-size: 14px; display: block; width: auto !important; background: #2ba6cb; margin: 0; padding: 8px 0; border: 1px solid #2284a1;', align='center', bgcolor='#2ba6cb', valign='top')
+                                                a(href='#', style='color: #ffffff; text-decoration: none; font-weight: bold; font-family: Helvetica, Arial, sans-serif; font-size: 16px;') RSVP / Buy Tickets
+                                        td.expander(style='word-break: break-word; -webkit-hyphens: auto; -moz-hyphens: auto; hyphens: auto; border-collapse: collapse !important; vertical-align: top; text-align: left; visibility: hidden; width: 0px; color: #222222; font-family: \'Helvetica\', \'Arial\', sans-serif; font-weight: normal; line-height: 19px; font-size: 14px; margin: 0; padding: 0;', align='left', valign='top')
+                                  td.wrapper.last(style='word-break: break-word; -webkit-hyphens: auto; -moz-hyphens: auto; hyphens: auto; border-collapse: collapse !important; vertical-align: top; text-align: left; position: relative; color: #222222; font-family: \'Helvetica\', \'Arial\', sans-serif; font-weight: normal; line-height: 19px; font-size: 14px; margin: 0; padding: 10px 0px 0px;', align='left', valign='top')
+                                    table.six.columns(style='border-spacing: 0; border-collapse: collapse; vertical-align: top; text-align: left; width: 280px; margin: 0 auto; padding: 0;')
+                                      tr(style='vertical-align: top; text-align: left; padding: 0;', align='left')
+                                        td.panel(style='word-break: break-word; -webkit-hyphens: auto; -moz-hyphens: auto; hyphens: auto; border-collapse: collapse !important; vertical-align: top; text-align: left; color: #222222; font-family: \'Helvetica\', \'Arial\', sans-serif; font-weight: normal; line-height: 19px; font-size: 14px; background: #f2f2f2; margin: 0; padding: 10px; border: 1px solid #d9d9d9;', align='left', bgcolor='#f2f2f2', valign='top')
+                                          h6(style='color: #222222; font-family: \'Helvetica\', \'Arial\', sans-serif; font-weight: normal; text-align: left; line-height: 1.3; word-break: normal; font-size: 20px; margin: 0 0 5px; padding: 0;', align='left') Event Info:
+                                          p(style='color: #222222; font-family: \'Helvetica\', \'Arial\', sans-serif; font-weight: normal; text-align: left; line-height: 19px; font-size: 14px; margin: 0 0 10px; padding: 0;', align='left')
+                                            | Venue:
+                                            span#venue &nbsp;{{event.location}}
+                                          p(style='color: #222222; font-family: \'Helvetica\', \'Arial\', sans-serif; font-weight: normal; text-align: left; line-height: 19px; font-size: 14px; margin: 0 0 10px; padding: 0;', align='left')
+                                            | Date:
+                                            span#date &nbsp;
+                                                | {{ event.start_time|date:"l, M jS, f" }}{{ event.start_time|date:"A"|lower }}
+                                                | {% if event.end_time %}
+                                                |  - {{ event.end_time|date:"l, M jS, f" }}{{ event.end_time|date:"A"|lower }}
+                                                | {% endif %}
+                                          br
+                                          h6(style='color: #222222; font-family: \'Helvetica\', \'Arial\', sans-serif; font-weight: normal; text-align: left; line-height: 1.3; word-break: normal; font-size: 20px; margin: 0 0 5px; padding: 0;', align='left') Helpful Links:
+                                          table.tiny-button.facebook(style='border-spacing: 0; border-collapse: collapse; vertical-align: top; text-align: left; width: 100%; overflow: hidden; padding: 0;')
+                                            tr(style='vertical-align: top; text-align: left; padding: 0;', align='left')
+                                              td(style='word-break: break-word; -webkit-hyphens: auto; -moz-hyphens: auto; hyphens: auto; border-collapse: collapse !important; vertical-align: top; text-align: center; color: #ffffff; font-family: \'Helvetica\', \'Arial\', sans-serif; font-weight: normal; line-height: 19px; font-size: 14px; display: block; width: auto !important; background: #3b5998; margin: 0; padding: 5px 0 4px; border: 1px solid #2d4473;', align='center', bgcolor='#3b5998', valign='top')
+                                                a(href='#', style='color: #ffffff; text-decoration: none; font-weight: normal; font-family: Helvetica, Arial, sans-serif; font-size: 12px;') Contact Organizer
+                                          hr(style='color: #d9d9d9; height: 1px; background: #d9d9d9; border: none;')
+                                          table.tiny-button.twitter(style='border-spacing: 0; border-collapse: collapse; vertical-align: top; text-align: left; width: 100%; overflow: hidden; padding: 0;')
+                                            tr(style='vertical-align: top; text-align: left; padding: 0;', align='left')
+                                              td(style='word-break: break-word; -webkit-hyphens: auto; -moz-hyphens: auto; hyphens: auto; border-collapse: collapse !important; vertical-align: top; text-align: center; color: #ffffff; font-family: \'Helvetica\', \'Arial\', sans-serif; font-weight: normal; line-height: 19px; font-size: 14px; display: block; width: auto !important; background: #00acee; margin: 0; padding: 5px 0 4px; border: 1px solid #0087bb;', align='center', bgcolor='#00acee', valign='top')
+                                                a(href='#', style='color: #ffffff; text-decoration: none; font-weight: normal; font-family: Helvetica, Arial, sans-serif; font-size: 12px;') View Sponsors
+                                          hr(style='color: #d9d9d9; height: 1px; background: #d9d9d9; border: none;')
+                                          table.tiny-button.google-plus(style='border-spacing: 0; border-collapse: collapse; vertical-align: top; text-align: left; width: 100%; overflow: hidden; padding: 0;')
+                                            tr(style='vertical-align: top; text-align: left; padding: 0;', align='left')
+                                              td(style='word-break: break-word; -webkit-hyphens: auto; -moz-hyphens: auto; hyphens: auto; border-collapse: collapse !important; vertical-align: top; text-align: center; color: #ffffff; font-family: \'Helvetica\', \'Arial\', sans-serif; font-weight: normal; line-height: 19px; font-size: 14px; display: block; width: auto !important; background: #DB4A39; margin: 0; padding: 5px 0 4px; border: 1px solid #cc0000;', align='center', bgcolor='#DB4A39', valign='top')
+                                                a(href='#', style='color: #ffffff; text-decoration: none; font-weight: normal; font-family: Helvetica, Arial, sans-serif; font-size: 12px;') Create an Event
+                                        td.expander(style='word-break: break-word; -webkit-hyphens: auto; -moz-hyphens: auto; hyphens: auto; border-collapse: collapse !important; vertical-align: top; text-align: left; visibility: hidden; width: 0px; color: #222222; font-family: \'Helvetica\', \'Arial\', sans-serif; font-weight: normal; line-height: 19px; font-size: 14px; margin: 0; padding: 0;', align='left', valign='top')
+                              br
+                              br
+                              table.row(style='border-spacing: 0; border-collapse: collapse; vertical-align: top; text-align: left; width: 100%; position: relative; display: block; padding: 0px;')
+                                tr(style='vertical-align: top; text-align: left; padding: 0;', align='left')
+                                  td.wrapper.last(style='word-break: break-word; -webkit-hyphens: auto; -moz-hyphens: auto; hyphens: auto; border-collapse: collapse !important; vertical-align: top; text-align: left; position: relative; color: #222222; font-family: \'Helvetica\', \'Arial\', sans-serif; font-weight: normal; line-height: 19px; font-size: 14px; margin: 0; padding: 10px 0px 0px;', align='left', valign='top')
+                                    table.twelve.columns(style='border-spacing: 0; border-collapse: collapse; vertical-align: top; text-align: left; width: 580px; margin: 0 auto; padding: 0;')
+                                      tr(style='vertical-align: top; text-align: left; padding: 0;', align='left')
+                                        td(align='center', style='word-break: break-word; -webkit-hyphens: auto; -moz-hyphens: auto; hyphens: auto; border-collapse: collapse !important; vertical-align: top; text-align: left; color: #222222; font-family: \'Helvetica\', \'Arial\', sans-serif; font-weight: normal; line-height: 19px; font-size: 14px; margin: 0; padding: 0px 0px 10px;', valign='top')
+                                          center(style='width: 100%; min-width: 580px;')
+                                            p(style='text-align: center; color: #222222; font-family: \'Helvetica\', \'Arial\', sans-serif; font-weight: normal; line-height: 19px; font-size: 14px; margin: 0 0 10px; padding: 0;', align='center')
+                                              a(href='#', style='color: #2ba6cb; text-decoration: none;') Terms
+                                              | &nbsp;|&nbsp;
+                                              a(href='#', style='color: #2ba6cb; text-decoration: none;') Privacy
+                                              | &nbsp;|&nbsp;
+                                              a(href='#', style='color: #2ba6cb; text-decoration: none;') Unsubscribe
+                                        td.expander(style='word-break: break-word; -webkit-hyphens: auto; -moz-hyphens: auto; hyphens: auto; border-collapse: collapse !important; vertical-align: top; text-align: left; visibility: hidden; width: 0px; color: #222222; font-family: \'Helvetica\', \'Arial\', sans-serif; font-weight: normal; line-height: 19px; font-size: 14px; margin: 0; padding: 0;', align='left', valign='top')
+            div.clear &nbsp;
+
+append script
+    script(type="text/javascript", src="{{ STATIC_URL }}typewatch/typewatch.js")
+    script(type="text/javascript", src="{{ STATIC_URL }}js/event/invite.js")
