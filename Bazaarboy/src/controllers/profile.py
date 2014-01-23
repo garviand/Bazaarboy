@@ -9,7 +9,7 @@ from django.shortcuts import render
 from kernel.models import *
 from src.config import BBOY_PROFILE_CATEGORIES
 from src.controllers.request import *
-from src.regex import REGEX_EMAIL, REGEX_URL
+from src.regex import REGEX_EMAIL, REGEX_URL, REGEX_EIN
 from src.serializer import serialize, serialize_one
 
 @login_check()
@@ -60,7 +60,7 @@ def search(request, params):
 @login_required()
 @validate('POST', ['name', 'description', 'category'], 
           ['image', 'location', 'latitude', 'longitude', 'email', 'phone', 
-           'link_website', 'link_facebook', 'payment'])
+           'link_website', 'link_facebook', 'EIN', 'is_non_profit' 'payment'])
 def create(request, params, user):
     """
     Create a profile and set the creating user as the creator
@@ -170,6 +170,26 @@ def create(request, params, user):
             return json_response(response)
         else:
             profile.link_facebook = params['link_facebook']
+    # Check if is declared as non-profit
+    if params['EIN'] is not None:
+        if not REGEX_EIN.match(params['EIN']):
+            response = {
+                'status':'FAIL',
+                'error':'INVALID_EIN',
+                'message':'The EIN is not in correct format (NN-NNNNNNN).'
+            }
+            return json_response(response)
+        else:
+            profile.EIN = params['EIN']
+    if params['is_non_profit'] is not None:
+        if params['is_non_profit'] and profile.EIN == '':
+            response = {
+                'status':'FAIL',
+                'error':'MISSING_EIN',
+                'message':'You need an EIN to prove non-profit status.'
+            }
+            return json_response(response)
+        profile.is_non_profit = params['is_non_profit']
     # Check if payment account is valid
     if params['payment'] is not None:
         if not Payment_account.objects.filter(id = params['payment']).exists():
@@ -341,6 +361,25 @@ def edit(request, params, user):
             return json_response(response)
         else:
             profile.link_facebook = params['link_facebook']
+    if params['EIN'] is not None:
+        if not REGEX_EIN.match(params['EIN']):
+            response = {
+                'status':'FAIL',
+                'error':'INVALID_EIN',
+                'message':'The EIN is not in correct format (NN-NNNNNNN).'
+            }
+            return json_response(response)
+        else:
+            profile.EIN = params['EIN']
+    if params['is_non_profit'] is not None:
+        if params['is_non_profit'] and profile.EIN == '':
+            response = {
+                'status':'FAIL',
+                'error':'MISSING_EIN',
+                'message':'You need an EIN to prove non-profit status.'
+            }
+            return json_response(response)
+        profile.is_non_profit = params['is_non_profit']
     if params['payment'] is not None:
         if not Payment_account.objects.filter(id = params['payment']).exists():
             response = {

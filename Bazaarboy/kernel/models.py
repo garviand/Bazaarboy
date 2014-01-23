@@ -123,6 +123,7 @@ class Profile(models.Model):
                                      default = None)
     EIN = models.CharField(max_length = 10)
     is_non_profit = models.BooleanField(default = False)
+    is_verified = models.BooleanField(default = False)
     payment_account = models.ForeignKey('Payment_account', 
                                         null = True, default = None)
     created_time = models.DateTimeField(auto_now_add = True)
