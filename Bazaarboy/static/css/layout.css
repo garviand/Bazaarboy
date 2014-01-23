@@ -3305,7 +3305,7 @@ div#event_invite .container .editor {
 }
 div#event_invite .container .editor .email_form textarea {
   height: 100px;
-  width: 288px;
+  width: 240px;
 }
 div#event_invite .container .template_container {
   width: 600px;

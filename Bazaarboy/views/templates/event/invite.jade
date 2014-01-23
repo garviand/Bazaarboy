@@ -4,105 +4,81 @@ extends ../layout
 
 block title
     | Invite Atendees | {{ event.name }}
-
 block content
     div#event_invite.event_base.content_divided
         div.container
             div.editor
                 form.email_form
+                    label Include Cover Image&nbsp;
+                    input(type="checkbox", name="include_cover", checked)
+                    br
+                    br
                     textarea(name="message")
                         | Enter the message that you would like to send to your invitees here
             div.template_container
-                table.body(style='border:#777 thin solid; border-spacing: 0; border-collapse: collapse; vertical-align: top; text-align: left; height: 100%; width: 100%; color: #222222; font-family: \'Helvetica\', \'Arial\', sans-serif; font-weight: normal; line-height: 19px; font-size: 14px; margin: 0; padding: 0;')
-                  tr(style='vertical-align: top; text-align: left; padding: 0;', align='left')
-                    td.center(align='center', valign='top', style='word-break: break-word; -webkit-hyphens: auto; -moz-hyphens: auto; hyphens: auto; border-collapse: collapse !important; vertical-align: top; text-align: center; color: #222222; font-family: \'Helvetica\', \'Arial\', sans-serif; font-weight: normal; line-height: 19px; font-size: 14px; margin: 0; padding: 0;')
-                      center(style='width: 100%; min-width: 580px;')
-                        table.container(style='border-spacing: 0; border-collapse: collapse; vertical-align: top; text-align: inherit; width: 580px; margin: 0 auto; padding: 0;')
-                          tr(style='vertical-align: top; text-align: left; padding: 0;', align='left')
-                            td(style='word-break: break-word; -webkit-hyphens: auto; -moz-hyphens: auto; hyphens: auto; border-collapse: collapse !important; vertical-align: top; text-align: left; color: #222222; font-family: \'Helvetica\', \'Arial\', sans-serif; font-weight: normal; line-height: 19px; font-size: 14px; margin: 0; padding: 0;', align='left', valign='top')
-                              table.row(style='border-spacing: 0; border-collapse: collapse; vertical-align: top; text-align: left; width: 100%; position: relative; display: block; padding: 0px;')
-                                tr(style='vertical-align: top; text-align: left; padding: 0;', align='left')
-                                  td.wrapper.last(style='word-break: break-word; -webkit-hyphens: auto; -moz-hyphens: auto; hyphens: auto; border-collapse: collapse !important; vertical-align: top; text-align: left; position: relative; color: #222222; font-family: \'Helvetica\', \'Arial\', sans-serif; font-weight: normal; line-height: 19px; font-size: 14px; margin: 0; padding: 10px 0px 0px;', align='left', valign='top')
-                                    table.twelve.columns(style='border-spacing: 0; border-collapse: collapse; vertical-align: top; text-align: left; width: 580px; margin: 0 auto; padding: 0;')
-                                      tr(style='vertical-align: top; text-align: left; padding: 0;', align='left')
-                                        td(style='word-break: break-word; -webkit-hyphens: auto; -moz-hyphens: auto; hyphens: auto; border-collapse: collapse !important; vertical-align: top; text-align: left; color: #222222; font-family: \'Helvetica\', \'Arial\', sans-serif; font-weight: normal; line-height: 19px; font-size: 14px; margin: 0; padding: 0px 0px 10px;', align='left', valign='top')
-                                          h1(style='color: #222222; font-family: \'Helvetica\', \'Arial\', sans-serif; font-weight: normal; text-align: left; line-height: 1.3; word-break: normal; font-size: 40px; margin: 0; padding: 0;', align='left') Hey, INVITEE
-                                          p(style='color: #222222; font-family: \'Helvetica\', \'Arial\', sans-serif; font-weight: normal; text-align: left; line-height: 19px; font-size: 14px; margin: 0 0 10px; padding: 0;', align='left')
-                                            | You have been invited to
-                                            b#event_name &nbsp;{{event.name}}
-                                          {% if event.cover %}
-                                          div(style='width: 580px; height: 200px; background: url({{ event.cover.source.url }}); background-size: cover;')
-                                          {% endif %}
-                                        td.expander(style='word-break: break-word; -webkit-hyphens: auto; -moz-hyphens: auto; hyphens: auto; border-collapse: collapse !important; vertical-align: top; text-align: left; visibility: hidden; width: 0px; color: #222222; font-family: \'Helvetica\', \'Arial\', sans-serif; font-weight: normal; line-height: 19px; font-size: 14px; margin: 0; padding: 0;', align='left', valign='top')
-                                    table.twelve.columns(style='border-spacing: 0; border-collapse: collapse; vertical-align: top; text-align: left; width: 580px; margin: 0 auto; padding: 0;')
-                                      tr(style='vertical-align: top; text-align: left; padding: 0;', align='left')
-                                        td.panel(style='word-break: break-word; -webkit-hyphens: auto; -moz-hyphens: auto; hyphens: auto; border-collapse: collapse !important; vertical-align: top; text-align: left; color: #222222; font-family: \'Helvetica\', \'Arial\', sans-serif; font-weight: normal; line-height: 19px; font-size: 14px; background: #f2f2f2; margin: 0; padding: 10px; border: 1px solid #d9d9d9;', align='left', bgcolor='#f2f2f2', valign='top')
-                                          p#event_summary(style='color: #222222; font-family: \'Helvetica\', \'Arial\', sans-serif; font-weight: normal; text-align: left; line-height: 19px; font-size: 14px; margin: 0 0 10px; padding: 0;', align='left')
-                                            | {{event.summary}}
-                                            a(href='#', style='color: #2ba6cb; text-decoration: none;')  Check out the event page! »
-                                        td.expander(style='word-break: break-word; -webkit-hyphens: auto; -moz-hyphens: auto; hyphens: auto; border-collapse: collapse !important; vertical-align: top; text-align: left; visibility: hidden; width: 0px; color: #222222; font-family: \'Helvetica\', \'Arial\', sans-serif; font-weight: normal; line-height: 19px; font-size: 14px; margin: 0; padding: 0;', align='left', valign='top')
-                              br
-                              table.row(style='border-spacing: 0; border-collapse: collapse; vertical-align: top; text-align: left; width: 100%; position: relative; display: block; padding: 0px;')
-                                tr(style='vertical-align: top; text-align: left; padding: 0;', align='left')
-                                  td.wrapper(style='word-break: break-word; -webkit-hyphens: auto; -moz-hyphens: auto; hyphens: auto; border-collapse: collapse !important; vertical-align: top; text-align: left; position: relative; color: #222222; font-family: \'Helvetica\', \'Arial\', sans-serif; font-weight: normal; line-height: 19px; font-size: 14px; margin: 0; padding: 10px 20px 0px 0px;', align='left', valign='top')
-                                    table.six.columns(style='border-spacing: 0; border-collapse: collapse; vertical-align: top; text-align: left; width: 280px; margin: 0 auto; padding: 0;')
-                                      tr(style='vertical-align: top; text-align: left; padding: 0;', align='left')
-                                        td(style='word-break: break-word; -webkit-hyphens: auto; -moz-hyphens: auto; hyphens: auto; border-collapse: collapse !important; vertical-align: top; text-align: left; color: #222222; font-family: \'Helvetica\', \'Arial\', sans-serif; font-weight: normal; line-height: 19px; font-size: 14px; margin: 0; padding: 0px 0px 10px;', align='left', valign='top')
-                                          p#organizer_message(style='min-height: 140px; color: #222222; font-family: \'Helvetica\', \'Arial\', sans-serif; font-weight: normal; text-align: left; line-height: 19px; font-size: 14px; margin: 0 0 10px; padding: 0;', align='left')
-                                            | Enter the message that you would like to send to your invitees here
-                                          table.button(style='border-spacing: 0; border-collapse: collapse; vertical-align: top; text-align: left; width: 100%; overflow: hidden; padding: 0;')
-                                            tr(style='vertical-align: top; text-align: left; padding: 0;', align='left')
-                                              td(style='word-break: break-word; -webkit-hyphens: auto; -moz-hyphens: auto; hyphens: auto; border-collapse: collapse !important; vertical-align: top; text-align: center; color: #ffffff; font-family: \'Helvetica\', \'Arial\', sans-serif; font-weight: normal; line-height: 19px; font-size: 14px; display: block; width: auto !important; background: #2ba6cb; margin: 0; padding: 8px 0; border: 1px solid #2284a1;', align='center', bgcolor='#2ba6cb', valign='top')
-                                                a(href='#', style='color: #ffffff; text-decoration: none; font-weight: bold; font-family: Helvetica, Arial, sans-serif; font-size: 16px;') RSVP / Buy Tickets
-                                        td.expander(style='word-break: break-word; -webkit-hyphens: auto; -moz-hyphens: auto; hyphens: auto; border-collapse: collapse !important; vertical-align: top; text-align: left; visibility: hidden; width: 0px; color: #222222; font-family: \'Helvetica\', \'Arial\', sans-serif; font-weight: normal; line-height: 19px; font-size: 14px; margin: 0; padding: 0;', align='left', valign='top')
-                                  td.wrapper.last(style='word-break: break-word; -webkit-hyphens: auto; -moz-hyphens: auto; hyphens: auto; border-collapse: collapse !important; vertical-align: top; text-align: left; position: relative; color: #222222; font-family: \'Helvetica\', \'Arial\', sans-serif; font-weight: normal; line-height: 19px; font-size: 14px; margin: 0; padding: 10px 0px 0px;', align='left', valign='top')
-                                    table.six.columns(style='border-spacing: 0; border-collapse: collapse; vertical-align: top; text-align: left; width: 280px; margin: 0 auto; padding: 0;')
-                                      tr(style='vertical-align: top; text-align: left; padding: 0;', align='left')
-                                        td.panel(style='word-break: break-word; -webkit-hyphens: auto; -moz-hyphens: auto; hyphens: auto; border-collapse: collapse !important; vertical-align: top; text-align: left; color: #222222; font-family: \'Helvetica\', \'Arial\', sans-serif; font-weight: normal; line-height: 19px; font-size: 14px; background: #f2f2f2; margin: 0; padding: 10px; border: 1px solid #d9d9d9;', align='left', bgcolor='#f2f2f2', valign='top')
-                                          h6(style='color: #222222; font-family: \'Helvetica\', \'Arial\', sans-serif; font-weight: normal; text-align: left; line-height: 1.3; word-break: normal; font-size: 20px; margin: 0 0 5px; padding: 0;', align='left') Event Info:
-                                          p(style='color: #222222; font-family: \'Helvetica\', \'Arial\', sans-serif; font-weight: normal; text-align: left; line-height: 19px; font-size: 14px; margin: 0 0 10px; padding: 0;', align='left')
-                                            | Venue:
-                                            span#venue &nbsp;{{event.location}}
-                                          p(style='color: #222222; font-family: \'Helvetica\', \'Arial\', sans-serif; font-weight: normal; text-align: left; line-height: 19px; font-size: 14px; margin: 0 0 10px; padding: 0;', align='left')
-                                            | Date:
-                                            span#date &nbsp;
-                                                | {{ event.start_time|date:"l, M jS, f" }}{{ event.start_time|date:"A"|lower }}
-                                                | {% if event.end_time %}
-                                                |  - {{ event.end_time|date:"l, M jS, f" }}{{ event.end_time|date:"A"|lower }}
-                                                | {% endif %}
+                center
+                  table#bodyTable(border='0', cellpadding='0', cellspacing='0', height='100%', width='100%', style='height: 100% !important; width: 100% !important; background: #DEE0E2; margin: 0; padding: 0;', bgcolor='#DEE0E2')
+                    tr
+                      td(align='center', valign='top', style='padding-bottom: 40px; border-collapse: collapse;')
+                        table#templateContainer(border='0', cellpadding='0', cellspacing='0', width='600')
+                          tr
+                            td(align='center', valign='top', style='border-collapse: collapse;')
+                              table#templateHeader(border='0', cellpadding='0', cellspacing='0', width='600', style='border-top-width: 10px; border-top-color: #A6BFC9; border-top-style: solid; background: #F8F8F8;', bgcolor='#F8F8F8')
+                                tr
+                                  td(align='center', valign='top', style='padding-top: 20px; padding-bottom: 20px; border-collapse: collapse;')
+                                    table(border='0', cellpadding='0', cellspacing='0', width='100%')
+                                      tr
+                                        td.headerContent(mc:edit='header_content', style='border-collapse: collapse; color: #505050; font-family: Helvetica; font-size: 18px; font-weight: bold; line-height: 100%; text-align: left; vertical-align: middle; padding: 20px 40px;', align='left', valign='middle')
+                                          h1(style='color: #3F3A38; display: block; font-family: Georgia; font-size: 40px; font-weight: normal; line-height: 100%; letter-spacing: normal; text-align: left; margin: 0 0 10px;', align='left') {{event.name}}
+                                          h3(style='color: #ED5E29; display: block; font-family: Georgia; font-size: 16px; font-weight: normal; line-height: 100%; letter-spacing: normal; text-align: left; margin: 0 0 10px;', align='left')
+                                            em
+                                              | {{ event.start_time|date:"l, M jS, f" }}{{ event.start_time|date:"A"|lower }}
+                                              | {% if event.end_time %}
+                                              |  - {{ event.end_time|date:"l, M jS, f" }}{{ event.end_time|date:"A"|lower }}
+                                              | {% endif %}
+                                tr
+                                  td.borderBar(background='http://gallery.mailchimp.com/27aac8a65e64c994c4416d6b8/images/diagborder.png', style='border-collapse: collapse; height: 5px !important; background: url(\'http://gallery.mailchimp.com/27aac8a65e64c994c4416d6b8/images/diagborder.png\') repeat top left;')
+                                    img(src='http://gallery.mailchimp.com/2425ea8ad3/images/blank.gif', height='5', width='5', style='display: block; height: auto; line-height: 100%; outline: none; text-decoration: none; border: 0;')
+                                tr
+                                  td(style='border-collapse: collapse;')
+                                    {% if event.cover %}
+                                    div#cover_image(style='width: 600px; height: 200px; background: url({{ event.cover.source.url }}); background-size: cover;')
+                                    {% endif %}
+                                tr
+                                  td.borderBar(background='http://gallery.mailchimp.com/27aac8a65e64c994c4416d6b8/images/diagborder.png', style='border-collapse: collapse; height: 5px !important; background: url(\'http://gallery.mailchimp.com/27aac8a65e64c994c4416d6b8/images/diagborder.png\') repeat top left;')
+                                    img(src='http://gallery.mailchimp.com/2425ea8ad3/images/blank.gif', height='5', width='5', style='display: block; height: auto; line-height: 100%; outline: none; text-decoration: none; border: 0;')
+                          tr
+                            td(align='center', valign='top', style='border-collapse: collapse;')
+                              table#templateBody(border='0', cellpadding='40', cellspacing='0', width='600', style='background: #F8F8F8;', bgcolor='#F8F8F8')
+                                tr
+                                  td(align='center', valign='top', style='padding-bottom: 20px; border-collapse: collapse;')
+                                    table(border='0', cellpadding='0', cellspacing='0', width='100%')
+                                      tr
+                                        td.bodyContent(valign='top', width='240', mc:edit='body_content00', style='border-collapse: collapse; color: #43404D; font-family: Georgia; font-size: 16px; line-height: 150%; text-align: left;', align='left')
+                                          h4(style='color: #3F3A38; display: block; font-family: Georgia; font-size: 12px; font-weight: normal; line-height: 100%; letter-spacing: normal; text-align: left; margin: 0 0 10px;', align='left') VENUE
+                                          h2(style='color: #3F3A38; display: block; font-family: Georgia; font-size: 24px; font-weight: normal; line-height: 100%; letter-spacing: normal; text-align: left; margin: 0 0 10px;', align='left') {{event.location}}
+                                        td(width='40', style='border-collapse: collapse;')
                                           br
-                                          h6(style='color: #222222; font-family: \'Helvetica\', \'Arial\', sans-serif; font-weight: normal; text-align: left; line-height: 1.3; word-break: normal; font-size: 20px; margin: 0 0 5px; padding: 0;', align='left') Helpful Links:
-                                          table.tiny-button.facebook(style='border-spacing: 0; border-collapse: collapse; vertical-align: top; text-align: left; width: 100%; overflow: hidden; padding: 0;')
-                                            tr(style='vertical-align: top; text-align: left; padding: 0;', align='left')
-                                              td(style='word-break: break-word; -webkit-hyphens: auto; -moz-hyphens: auto; hyphens: auto; border-collapse: collapse !important; vertical-align: top; text-align: center; color: #ffffff; font-family: \'Helvetica\', \'Arial\', sans-serif; font-weight: normal; line-height: 19px; font-size: 14px; display: block; width: auto !important; background: #3b5998; margin: 0; padding: 5px 0 4px; border: 1px solid #2d4473;', align='center', bgcolor='#3b5998', valign='top')
-                                                a(href='#', style='color: #ffffff; text-decoration: none; font-weight: normal; font-family: Helvetica, Arial, sans-serif; font-size: 12px;') Contact Organizer
-                                          hr(style='color: #d9d9d9; height: 1px; background: #d9d9d9; border: none;')
-                                          table.tiny-button.twitter(style='border-spacing: 0; border-collapse: collapse; vertical-align: top; text-align: left; width: 100%; overflow: hidden; padding: 0;')
-                                            tr(style='vertical-align: top; text-align: left; padding: 0;', align='left')
-                                              td(style='word-break: break-word; -webkit-hyphens: auto; -moz-hyphens: auto; hyphens: auto; border-collapse: collapse !important; vertical-align: top; text-align: center; color: #ffffff; font-family: \'Helvetica\', \'Arial\', sans-serif; font-weight: normal; line-height: 19px; font-size: 14px; display: block; width: auto !important; background: #00acee; margin: 0; padding: 5px 0 4px; border: 1px solid #0087bb;', align='center', bgcolor='#00acee', valign='top')
-                                                a(href='#', style='color: #ffffff; text-decoration: none; font-weight: normal; font-family: Helvetica, Arial, sans-serif; font-size: 12px;') View Sponsors
-                                          hr(style='color: #d9d9d9; height: 1px; background: #d9d9d9; border: none;')
-                                          table.tiny-button.google-plus(style='border-spacing: 0; border-collapse: collapse; vertical-align: top; text-align: left; width: 100%; overflow: hidden; padding: 0;')
-                                            tr(style='vertical-align: top; text-align: left; padding: 0;', align='left')
-                                              td(style='word-break: break-word; -webkit-hyphens: auto; -moz-hyphens: auto; hyphens: auto; border-collapse: collapse !important; vertical-align: top; text-align: center; color: #ffffff; font-family: \'Helvetica\', \'Arial\', sans-serif; font-weight: normal; line-height: 19px; font-size: 14px; display: block; width: auto !important; background: #DB4A39; margin: 0; padding: 5px 0 4px; border: 1px solid #cc0000;', align='center', bgcolor='#DB4A39', valign='top')
-                                                a(href='#', style='color: #ffffff; text-decoration: none; font-weight: normal; font-family: Helvetica, Arial, sans-serif; font-size: 12px;') Create an Event
-                                        td.expander(style='word-break: break-word; -webkit-hyphens: auto; -moz-hyphens: auto; hyphens: auto; border-collapse: collapse !important; vertical-align: top; text-align: left; visibility: hidden; width: 0px; color: #222222; font-family: \'Helvetica\', \'Arial\', sans-serif; font-weight: normal; line-height: 19px; font-size: 14px; margin: 0; padding: 0;', align='left', valign='top')
-                              br
-                              br
-                              table.row(style='border-spacing: 0; border-collapse: collapse; vertical-align: top; text-align: left; width: 100%; position: relative; display: block; padding: 0px;')
-                                tr(style='vertical-align: top; text-align: left; padding: 0;', align='left')
-                                  td.wrapper.last(style='word-break: break-word; -webkit-hyphens: auto; -moz-hyphens: auto; hyphens: auto; border-collapse: collapse !important; vertical-align: top; text-align: left; position: relative; color: #222222; font-family: \'Helvetica\', \'Arial\', sans-serif; font-weight: normal; line-height: 19px; font-size: 14px; margin: 0; padding: 10px 0px 0px;', align='left', valign='top')
-                                    table.twelve.columns(style='border-spacing: 0; border-collapse: collapse; vertical-align: top; text-align: left; width: 580px; margin: 0 auto; padding: 0;')
-                                      tr(style='vertical-align: top; text-align: left; padding: 0;', align='left')
-                                        td(align='center', style='word-break: break-word; -webkit-hyphens: auto; -moz-hyphens: auto; hyphens: auto; border-collapse: collapse !important; vertical-align: top; text-align: left; color: #222222; font-family: \'Helvetica\', \'Arial\', sans-serif; font-weight: normal; line-height: 19px; font-size: 14px; margin: 0; padding: 0px 0px 10px;', valign='top')
-                                          center(style='width: 100%; min-width: 580px;')
-                                            p(style='text-align: center; color: #222222; font-family: \'Helvetica\', \'Arial\', sans-serif; font-weight: normal; line-height: 19px; font-size: 14px; margin: 0 0 10px; padding: 0;', align='center')
-                                              a(href='#', style='color: #2ba6cb; text-decoration: none;') Terms
-                                              | &nbsp;|&nbsp;
-                                              a(href='#', style='color: #2ba6cb; text-decoration: none;') Privacy
-                                              | &nbsp;|&nbsp;
-                                              a(href='#', style='color: #2ba6cb; text-decoration: none;') Unsubscribe
-                                        td.expander(style='word-break: break-word; -webkit-hyphens: auto; -moz-hyphens: auto; hyphens: auto; border-collapse: collapse !important; vertical-align: top; text-align: left; visibility: hidden; width: 0px; color: #222222; font-family: \'Helvetica\', \'Arial\', sans-serif; font-weight: normal; line-height: 19px; font-size: 14px; margin: 0; padding: 0;', align='left', valign='top')
+                                        td(valign='top', width='240', style='border-collapse: collapse;')
+                                          table.templateButton(border='0', cellpadding='0', cellspacing='0', style='-moz-border-radius: 5px; -webkit-border-radius: 5px; border-radius: 5px; background: #ED5E29;', bgcolor='#ED5E29')
+                                            tr
+                                              td.templateButtonContent(align='center', valign='middle', style='border-collapse: collapse; color: #FFFFFF; font-family: Georgia; font-size: 31px; font-weight: normal; text-align: center; text-decoration: none; padding: 15px 20px;', mc:edit='button_content')
+                                                a(href='http://www.mailchimp.com/', target='_blank', style='color: #FFFFFF; font-family: Georgia; font-size: 31px; font-weight: normal; text-align: center; text-decoration: none;')
+                                                  em RSVP HERE
+                                      tr
+                                        td#organizer_message(colspan='3', valign='top', style='padding-top: 40px; border-collapse: collapse; color: #43404D; font-family: Georgia; font-size: 16px; line-height: 150%; text-align: left;', mc:edit='body_content01', align='left')
+                                          | Enter the message that you would like to send to your invitees here
+                          tr
+                            td(align='center', valign='top', style='border-collapse: collapse;')
+                              table#templateFooter(border='0', cellpadding='20', cellspacing='0', width='600', style='border-bottom-width: 10px; border-bottom-color: #A6BFC9; border-bottom-style: solid; background: #F8F8F8;', bgcolor='#F8F8F8')
+                                tr
+                                  td(align='center', valign='top', style='padding-right: 40px; padding-left: 40px; border-collapse: collapse;')
+                                    table(border='0', cellpadding='0', cellspacing='0', width='100%')
+                                      tr
+                                        td.footerContent(valign='top', style='padding-top: 20px; border-collapse: collapse; color: #3F3A38; font-family: Georgia; font-size: 12px; line-height: 150%; text-align: center;', mc:edit='footer_utility', align='center')
+                                          a(href='*|UNSUB|*', style='color: #EB4102; font-weight: normal; text-decoration: underline;') unsubscribe from this list
+                                          | &nbsp;|&nbsp;
+                                          a(href='*|UPDATE_PROFILE|*', style='color: #EB4102; font-weight: normal; text-decoration: underline;') update subscription preferences
             div.clear &nbsp;
 
 append script
