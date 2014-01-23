@@ -42,6 +42,7 @@ def sendEmails(self, to, subject, template, mergeVars, attachments=[]):
                                                     async = True)
     except Exception, e:
         logging.error(str(e))
+        return False
     else:
         return result
 
