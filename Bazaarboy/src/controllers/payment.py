@@ -12,8 +12,8 @@ from django.shortcuts import render, redirect
 from kernel.models import *
 from src.config import *
 from src.controllers.request import *
-from src.email import Email
-from src.sms import SMS
+from src.email import sendEventConfirmationEmail
+from src.sms import sendEventConfirmationSMS
 
 @login_required('index')
 @validate('GET', [], ['code', 'error', 'error_description'])
@@ -104,16 +104,10 @@ def charge(request, params, user):
             'message':'The card is declined.'
         }
         return json_response(response)
-    finally:
+    else:
         purchase = Purchase.objects.get(checkout = checkout)
-        try:
-            email = Email()
-            email.sendPurchaseConfirmationEmail(purchase)
-            sms = SMS()
-            sms.sendPurchaseConfirmationSMS(purchase)
-        except Exception as e:
-            # Log error
-            pass
+        sendEventConfirmationEmail(purchase)
+        sendEventConfirmationSMS(purchase)
         response = {
             'status':'OK'
         }

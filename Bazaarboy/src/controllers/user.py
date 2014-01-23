@@ -13,7 +13,7 @@ from facebook import GraphAPI, GraphAPIError
 from kernel.models import *
 from src.config import *
 from src.controllers.request import *
-from src.email import Email
+from src.email import sendConfirmationEmail, sendResetRequestEmail
 from src.regex import REGEX_EMAIL, REGEX_NAME
 from src.serializer import serialize_one
 
@@ -158,8 +158,7 @@ def create(request, params, user):
     code = os.urandom(128).encode('base_64')[:128]
     confirmationCode = User_confirmation_code(user = user, code = code)
     confirmationCode.save()
-    #email = Email()
-    #email.sendConfirmationEmail(user, confirmationCode)
+    sendConfirmationEmail(confirmationCode)
     # Start the session
     request.session['user'] = user.id
     response = {
@@ -230,8 +229,7 @@ def create_reset(request, params, user):
                                 code = os.urandom(128).encode('base_64')[:128], 
                                 expiration_time = expirationTime)
     resetCode.save()
-    email = Email()
-    email.sendResetRequestEmail(resetCode)
+    sendResetRequestEmail(resetCode)
     response = {
         'status':'OK'
     }
@@ -286,9 +284,6 @@ def change_password(request, params, user):
     # Checks passed, change the password
     user.password = params['password']
     user.save()
-    # Send a notification email to the user
-    email = Email()
-    email.sendPasswordChangedEmail(user)
     response = {
         'status':'OK'
     }

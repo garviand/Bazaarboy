@@ -19,11 +19,11 @@ from kernel.models import *
 from src.config import *
 from src.controllers.request import *
 from src.csvutils import UnicodeWriter
-from src.email import Email
+from src.email import sendEventConfirmationEmail
 from src.regex import REGEX_EMAIL
 from src.sanitizer import sanitize_redactor_input
 from src.serializer import serialize, serialize_one
-from src.sms import SMS
+from src.sms import sendEventConfirmationSMS
 
 @cache_page(60 * 5)
 @login_check()
@@ -1010,22 +1010,10 @@ def purchase(request, params, user):
                     Ticket.objects \
                           .filter(id = ticket.id) \
                           .update(quantity = F('quantity') - details[ticket.id])
-            # Try sending the confirmation email
-            try:
-                email = Email()
-                email.sendPurchaseConfirmationEmail(purchase)
-            except Exception:
-                # Log error
-                pass
-            # Check if the user has a phone number
-            if len(user.phone) == 10:
-                # Try sending the confirmation text
-                try:
-                    sms = SMS()
-                    sms.sendPurchaseConfirmationSMS(purchase)
-                except Exception:
-                    # Log error
-                    pass
+            # Send confirmation email and sms
+            sendEventConfirmationEmail(purchase)
+            sendEventConfirmationSMS(purchase)
+            # Success
             response = {
                 'status':'OK',
                 'purchase':serialize_one(purchase)

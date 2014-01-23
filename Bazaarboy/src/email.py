@@ -2,27 +2,27 @@
 Email utilities
 """
 
+import cStringIO
+import base64
+import qrcode
 import urllib
+import weasyprint
 from datetime import datetime
 from celery import task
 from mandrill import Mandrill
 from django.conf import settings
+from django.template import Context
+from django.template.loader import *
 from kernel.models import *
 from src.config import *
 from src.timezone import localize
 
-class Email(object):
+def sendEmails(self, to, subject, template, mergeVars, attachments=[]):
     """
-    A wrapper class for all email functions
+    Send an email
     """
-    def __init__(self):
-        super(Email, self).__init__()
-        self.client = Mandrill(MANDRILL_API_KEY)
-
-    def sendEmail(self, to, subject, template, mergeVars, attachments=[]):
-        """
-        Wrapper function for sending an email
-        """
+    try:
+        client = Mandrill(MANDRILL_API_KEY)
         message = {
             'from_email':MANDRILL_FROM_EMAIL,
             'from_name':MANDRILL_FROM_NAME,
@@ -30,7 +30,7 @@ class Email(object):
                 'Reply-To': MANDRILL_FROM_EMAIL
             },
             'subject':subject,
-            'global_merge_vars':mergeVars,
+            'merge_vars':mergeVars,
             'to':to,
             'track_clicks':True,
             'track_opens':True,
@@ -39,20 +39,26 @@ class Email(object):
         result = self.client.messages.send_template(template_name = template, 
                                                     template_content = [], 
                                                     message = message, 
-                                                    async = False)
+                                                    async = True)
+    except Exception, e:
+        logging.error(str(e))
+    else:
         return result
 
-    def sendConfirmationEmail(self, user, confirmationCode):
-        """
-        Email confirming registration
-        """
-        to = [{
-            'email':user.email, 
-            'name':user.full_name
-        }]
-        subject = 'Welcome to Bazaarboy'
-        template = 'confirm-registration'
-        mergeVars = [
+def sendConfirmationEmail(confirmationCode):
+    """
+    Email to confirm registration
+    """
+    user = confirmationCode.user
+    to = [{
+        'email':user.email, 
+        'name':user.full_name
+    }]
+    subject = 'Welcome to Bazaarboy'
+    template = EMAIL_T_ACC_CONFIRMATION
+    mergeVars = [{
+        rcpt: user.email,
+        vars: [
             {
                 'name':'user_name', 
                 'content':user.full_name
@@ -60,20 +66,25 @@ class Email(object):
             {
                 'name':'confirmation_code',
                 'content':confirmationCode.code
-            }]
-        return self.sendEmail(to, subject, template, mergeVars)
+            }
+        ]
+    }]
+    return Email.sendEmails(to, subject, template, mergeVars)
 
-    def sendResetRequestEmail(self, resetCode, user):
-        """
-        Email containing information to reset password
-        """
-        to = [{
-            'email':user.email, 
-            'name':user.full_name
-        }]
-        subject = 'Reset Your Password'
-        template = 'reset-password'
-        mergeVars = [
+def sendResetRequestEmail(resetCode):
+    """
+    Email containing information to reset password
+    """
+    user = resetCode.user
+    to = [{
+        'email':user.email, 
+        'name':user.full_name
+    }]
+    subject = 'Reset Your Password'
+    template = 'reset-password'
+    mergeVars = [{
+        rcpt: user.email,
+        vars: [
             {
                 'name':'user_name', 
                 'content':user.full_name
@@ -83,98 +94,101 @@ class Email(object):
                 'content': resetCode.code
             }
         ]
-        return self.sendEmail(to, subject, template, mergeVars)
+    }]
+    return self.sendEmail(to, subject, template, mergeVars)
 
-    def sendPasswordChangedEmail(self, user):
-        """
-        Email regarding the change of password
-        """
-        to = [{
-            'email':user.email, 
-            'name':user.full_name
-        }]
-        subject = 'Your Password Has Been Changed'
-        template = 'password-changed'
-        mergeVars = [
-            {
-                'name':'user_name', 
-                'content':user.full_name
-            }
-        ]
-        return self.sendEmail(to, subject, template, mergeVars)
+def sendEventConfirmationEmail(purchase):
+    """
+    Send event confirmation
+    """
+    return
 
-    def sendPurchaseConfirmationEmail(self, purchase):
+def sendBonusEmails():
+    """
+    Send emails about the bonus to attendees
+    """
+    return
+
+def sendRedemptionEmail():
+    """
+    Send email for the redemption of a bonus
+    """
+    return
+
+class Attachment(object):
+    """
+    An abstract attachment object for email
+    """
+    def getQRCode(self, message):
         """
-        Send Purchase Confirmation
+        Generate qrCode for a message
         """
-        startTime = localize(purchase.event.start_time)
-        readableDate = startTime.strftime('%A, %B %e')
-        readableTime = startTime.strftime('%I:%M %p').lstrip('0')
-        creator = Event_organizer.objects.get(event = purchase.event, 
-                                              is_creator = True).profile
-        contactEmail = creator.managers.all()[0].email
-        to = [{
-            'email':purchase.owner.email, 
-            'name':purchase.owner.full_name
-        }]
-        subject = 'Confirmation for \'' + purchase.event.name + '\''
-        template = 'event-rsvp'
-        mergeVars = [
-            {
-                'name':'user_name', 
-                'content':purchase.owner.full_name
-            },
-            {
-                'name':'event_name', 
-                'content':purchase.event.name
-            },
-            {
-                'name':'event_overview', 
-                'content':purchase.event.summary
-            }, 
-            {
-                'name':'ticket_name', 
-                'content':purchase.ticket.name
-            },
-            {
-                'name':'confirmation_code', 
-                'content':purchase.code
-            },
-            {
-                'name':'event_id', 
-                'content':purchase.event.id
-            },
-            {
-                'name':'event_date', 
-                'content':readableDate
-            },
-            {
-                'name':'event_time',
-                'content':readableTime
-            }, 
-            {
-                'name':'event_location', 
-                'content':purchase.event.location
-            },
-            {
-                'name':'event_map_location', 
-                'content':urllib.quote_plus(purchase.event.location)
-            },
-            {
-                'name':'event_address', 
-                'content':''
-            },
-            {
-                'name':'organizer_name', 
-                'content':creator.name
-            },
-            {
-                'name':'organizer_email', 
-                'content':contactEmail
-            },
-            {
-                'name':'event_id', 
-                'content':purchase.event.id
-            }
-        ]
-        return self.sendEmail(to, subject, template, mergeVars)
+        qr = qrcode.QRCode(version = 2, box_size = 10, border = 3)
+        qr.add_data(message)
+        qr.make(fit = True)
+        image = qr.make_image()
+        buf = cStringIO.StringIO()
+        image.save(buf, 'PNG')
+        buf.seek(0)
+        bufString = buf.read()
+        qrString = base64.b64encode(bufString)
+        return qrString
+
+    def getPDF(self, params, template):
+        """
+        Generate PDF from HTML template
+        """
+        output = template.render(Context(params))
+        byteString = weasyprint.HTML(string = output).write_pdf()
+        pdfString = base64.b64encode(byteString)
+        return pdfString
+
+    def toBase64(self):
+        """
+        Generate a base64 encoded string for the attachment
+
+        (Abstact, must override)
+        """
+        return NotImplementedError()
+
+class Ticket_attachment(Attachment):
+    """
+    A ticket attachment object
+    """
+    template = get_template('email/ticket.html')
+
+    def __init__(self, opts):
+        super(Ticket_attachment, self).__init__()
+        self.opts = opts
+
+    def toBase64(self):
+        message = 'bboy::%s::%s::%s'
+        message = message % (self.opts.event, self.opts.purchase, self.opts.item)
+        opts['qrcode'] = self.getQRCode(message)
+        output = self.getPDF(params, Ticket_attachment.template)
+        return output
+
+    @staticmethod
+    def getTicketAttachments(self, purchase, items):
+        """
+        Generate ticket confirmations from purchase items
+        """
+        attachments = []
+        event = purchase.event
+        globalOpts = {
+            'event':event.id,
+            'title':event.name,
+            'start_time':event.start_time,
+            'end_time':event.end_time,
+            'location':event.location,
+            'purchase':purchase.id,
+            'code':purchase.code
+        }
+        for item in items:
+            opts = globalOpts
+            opts['item'] = item.id
+            opts['ticket'] = item.ticket.name
+            opts['seat'] = ''
+            ticketAttachment = Ticket_attachment(opts)
+            attachments.append(ticketAttachment.toBase64())
+        return attachments

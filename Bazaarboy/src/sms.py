@@ -2,29 +2,33 @@
 SMS utilities
 """
 
+import logging
 from twilio import TwilioRestException
 from twilio.rest import TwilioRestClient
 from src.config import *
 
-class SMS(object):
+def sendSMS(to, body):
     """
-    A wrapper class for all the SMS functions
+    Send an SMS
     """
-    def __init__(self):
-        super(SMS, self).__init__()
-        self.client = TwilioRestClient(TWILIO_ACCOUNT_SID, TWILIO_AUTH_TOKEN)
-
-    def sendSMS(self, to, body):
-        sms = self.client.sms.messages.create(_from = TWILIO_FROM, to = to, 
-                                              body = body)
+    try:
+        client = TwilioRestClient(TWILIO_ACCOUNT_SID, TWILIO_AUTH_TOKEN)
+        sms = client.sms.messages.create(_from = TWILIO_FROM, to = to, body = body)
+    except Exception, e:
+        logging.error(str(e))
+        return False
+    else:
         return sms
 
-    def sendPurchaseConfirmationSMS(self, purchase):
-        if len(purchase.owner.phone) == 10:
-            body = 'You have RSVP\'d for \''
-            body += purchase.event.name
-            body += '\' and your confirmation code is '
-            body += purchase.code
-            body += '. Thanks!'
-            return self.sendSMS(purchase.owner.phone, body)
-        return True
+def sendEventConfirmationSMS(purchase):
+    """
+    Send out event confirmation SMS
+    """
+    if len(purchase.owner.phone) == 10:
+        body = 'You have RSVP\'d for \''
+        body += purchase.event.name
+        body += '\' and your confirmation code is '
+        body += purchase.code
+        body += '. Thanks!'
+        return sendSMS(purchase.owner.phone, body)
+    return True

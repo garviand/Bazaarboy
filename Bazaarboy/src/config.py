@@ -51,6 +51,8 @@ MANDRILL_API_KEY = 'EJmj_TdbdCy6Xda_9hREKA'
 MANDRILL_FROM_EMAIL = 'build@bazaarboy.com'
 MANDRILL_FROM_NAME = 'Bazaarboy'
 
+EMAIL_T_ACC_CONFIRMATION = 'confirm_registration'
+
 # Twilio
 
 TWILIO_ACCOUNT_SID = 'ACd8c0aecc8dd23856924ac80483cc8de7'

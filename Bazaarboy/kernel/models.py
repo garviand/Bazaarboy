@@ -205,11 +205,20 @@ class Purchase(models.Model):
     """
     owner = models.ForeignKey('User')
     event = models.ForeignKey('Event')
+    code = models.CharField(max_length = 6)
     items = models.ManyToManyField('Ticket', through = 'Purchase_item')
     amount = models.FloatField(default = 0)
     checkout = models.ForeignKey('Checkout', null = True, default = None)
     is_expired = models.BooleanField(default = False)
     created_time = models.DateTimeField(auto_now_add = True)
+
+    def save(self, *args, **kwargs):
+        """
+        Overrides save to generate confirmation code
+        """
+        if self.pk is None:
+            self.code = randomConfirmationCode()
+        super(Purchase, self).save(*args, **kwargs)
 
 class Purchase_item(models.Model):
     """
@@ -218,17 +227,8 @@ class Purchase_item(models.Model):
     purchase = models.ForeignKey('Purchase')
     ticket = models.ForeignKey('Ticket')
     price = models.FloatField()
-    code = models.CharField(max_length = 6)
     is_checked_in = models.BooleanField(default = False)
     checked_in_time = models.DateTimeField(null = True, default = None)
-
-    def save(self, *args, **kwargs):
-        """
-        Overrides save to generate confirmation code
-        """
-        if self.pk is None:
-            self.code = randomConfirmationCode()
-        super(Purchase_item, self).save(*args, **kwargs)
 
 class Criteria(models.Model):
     """
