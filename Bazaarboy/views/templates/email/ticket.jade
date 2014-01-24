@@ -147,6 +147,7 @@ html(lang="en")
                         |  - {{ end_time|date:"l, M jS, f" }}{{ end_time|date:"A"|lower }}
                         | {% endif %}
                         | {% endif %}
+                        | {% endspaceless %}
                     div#location
                         | {{ location }}
                     div.lower

@@ -137,7 +137,7 @@ INSTALLED_APPS = (
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'django.contrib.humanize',
-    'south',
+    #'south',
     'djcelery',
     'storages',
     #'easy_thumbnails',
@@ -187,6 +187,8 @@ FILE_UPLOAD_PERMISSIONS = 0600
 CELERY_IMPORTS = (
     'src.controllers.event'
 )
+
+BROKER_URL = os.getenv('CELERY_BROKER_URL', 'redis://localhost:6379/0')
 
 # Cache
 
