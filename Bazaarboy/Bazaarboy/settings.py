@@ -140,7 +140,6 @@ INSTALLED_APPS = (
     #'south',
     'djcelery',
     'storages',
-    #'easy_thumbnails',
     'kernel',
     'admin',
     # Uncomment the next line to enable the admin:
