@@ -2,15 +2,20 @@
 Email utilities
 """
 
+import cStringIO
+import base64
+import qrcode
+import urllib
+import weasyprint
 from datetime import datetime
 from celery import task
 from mandrill import Mandrill
 from django.conf import settings
+from django.template import Context
+from django.template.loader import *
 from kernel.models import *
 from src.config import *
 from src.timezone import localize
-
-import urllib
 
 class Email(object):
     """
@@ -40,8 +45,9 @@ class Email(object):
         result = self.client.messages.send_template(template_name = template, 
                                                     template_content = [], 
                                                     message = message, 
-                                                    async = False)
+                                                    async = True)
         return result
+
     def sendConfirmationEmail(self, user, confirmationCode):
         """
         Email confirming registration
@@ -103,6 +109,28 @@ class Email(object):
         """
         Send Purchase Confirmation
         """
+        attachments = []
+        event = purchase.event
+        globalOpts = {
+            'event':event.id,
+            'title':event.name,
+            'start_time':event.start_time,
+            'end_time':event.end_time,
+            'location':event.location,
+            'purchase':purchase.id,
+            'tid':purchase.ticket.id,
+            'ticket':purchase.ticket.name,
+            'seat':'',
+        }
+        for i in range(0, purchase.quantity):
+            opts = globalOpts
+            opts['code'] = purchase.code + '-' + str(i + 1)
+            ticketAttachment = Ticket_attachment(opts)
+            attachments.append({
+                'type':'application/pdf',
+                'name':opts['code'],
+                'content':ticketAttachment.toBase64()
+            })
         startTime = localize(purchase.event.start_time)
         readableDate = startTime.strftime('%A, %B %e')
         readableTime = startTime.strftime('%I:%M %p').lstrip('0')
@@ -173,7 +201,7 @@ class Email(object):
                 'content':purchase.event.id
             }
         ]
-        return self.sendEmail(to, subject, template, mergeVars)
+        return self.sendEmail(to, subject, template, mergeVars, attachments)
 
     def sendDonationConfirmationEmail(self, donation):
         """
@@ -196,3 +224,56 @@ class Email(object):
             }
         ]
         return self.sendEmail(to, subject, template, mergeVars)
+
+class Attachment(object):
+    """
+    An abstract attachment object for email
+    """
+    def getQRCode(self, message):
+        """
+        Generate qrCode for a message
+        """
+        qr = qrcode.QRCode(version = 2, box_size = 10, border = 3)
+        qr.add_data(message)
+        qr.make(fit = True)
+        image = qr.make_image()
+        buf = cStringIO.StringIO()
+        image.save(buf, 'PNG')
+        buf.seek(0)
+        bufString = buf.read()
+        qrString = base64.b64encode(bufString)
+        return qrString
+
+    def getPDF(self, params, template):
+        """
+        Generate PDF from HTML template
+        """
+        output = template.render(Context(params))
+        byteString = weasyprint.HTML(string = output).write_pdf()
+        pdfString = base64.b64encode(byteString)
+        return pdfString
+
+    def toBase64(self):
+        """
+        Generate a base64 encoded string for the attachment
+
+        (Abstact, must override)
+        """
+        return NotImplementedError()
+
+class Ticket_attachment(Attachment):
+    """
+    A ticket attachment object
+    """
+    template = get_template('email/ticket.html')
+
+    def __init__(self, opts):
+        super(Ticket_attachment, self).__init__()
+        self.opts = opts
+
+    def toBase64(self):
+        message = 'bboy::%s::%s::%s'
+        message = message % (self.opts['event'], self.opts['purchase'], self.opts['tid'])
+        self.opts['qrcode'] = self.getQRCode(message)
+        output = self.getPDF(self.opts, Ticket_attachment.template)
+        return output

@@ -29,8 +29,19 @@ STRIPE_OAUTH_ROOT = 'https://connect.stripe.com/oauth/'
 STRIPE_CONNECT_URL = STRIPE_OAUTH_ROOT + 'authorize'
 STRIPE_TOKEN_URL = STRIPE_OAUTH_ROOT + 'token'
 STRIPE_CURRENCY = 'usd'
-STRIPE_TRANSACTION_RATE = 0.04
 STRIPE_SPONSORSHIP_RATE = 0.01
+STRIPE_TRANSACTION_RATE = 0.05
+STRIPE_TRANSACTION_BASE = 50 # in cents
+
+def STRIPE_FEE(amount):
+    """
+    Calculate the transaction fee (in cents)
+    """
+    rate = STRIPE_TRANSACTION_RATE
+    base = STRIPE_TRANSACTION_BASE
+    fee = (1 - 0.029) * amount - 30
+    fee -= (amount - base) / (1 + rate)
+    return fee
 
 # Mandrill
 

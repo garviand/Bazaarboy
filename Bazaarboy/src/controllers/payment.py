@@ -80,7 +80,7 @@ def charge(request, params, user):
         }
         return json_response(response)
     try:
-        fee = int(checkout.amount * STRIPE_TRANSACTION_RATE)
+        fee = int(round(STRIPE_FEE(checkout.amount)))
         charge = stripe.Charge.create(
             amount = checkout.amount,
             currency = STRIPE_CURRENCY,
@@ -123,7 +123,7 @@ def charge(request, params, user):
                         # Assign seating failed, raise exception to roll back
                         raise IntegrityError()
             try:
-                email.sendPurchaseConfirmationEmail(purchase)
+                #email.sendPurchaseConfirmationEmail(purchase)
                 sms.sendPurchaseConfirmationSMS(purchase)
             except Exception as e:
                 # Ignore email and sms errors for now
