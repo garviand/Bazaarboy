@@ -31,6 +31,8 @@ block content
                         div.stats
                             {% if  not profile.payment_account %}
                             | You cannot accept payments until connected with Stripe
+                            {% else %}
+                            a(class="view_stripe", href="https://manage.stripe.com/", target="_blank") View Stripe Account
                             {% endif %}
                         div.clear
                 div.events

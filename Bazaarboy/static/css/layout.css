@@ -1478,6 +1478,18 @@ div#index div.profiles div.profile div.summary div.inner div.stats {
   text-align: center;
   float: left;
 }
+div#index div.profiles div.profile div.summary div.inner div.stats .view_stripe {
+  background: -webkit-linear-gradient(top, #5db6e8 0, #168eda 85%, #168eda 90%, #1d93dd 100%);
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.4);
+  border: 0;
+  color: #fff;
+  text-shadow: 0 -1px 0 rgba(0, 0, 0, 0.1);
+  text-decoration: none;
+  line-height: 1.5em;
+  text-align: center;
+  border-radius: 2px;
+  padding: 8px 12px;
+}
 div#index div.profiles div.profile div.events {
   width: 862px;
   padding: 25px;

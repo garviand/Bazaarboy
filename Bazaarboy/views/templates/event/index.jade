@@ -158,6 +158,8 @@ block content
                             {% endif %}
                     div.preview.hanging
                         a(href="{% url event:index event.id %}?preview", target="_blank") Preview Event
+                    div.preview.hanging
+                        a(href="{% url event:invite event.id %}") Email Invitations
                     {% endif %}
         div.cover
             div.inner
