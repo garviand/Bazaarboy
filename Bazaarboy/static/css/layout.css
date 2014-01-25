@@ -1487,7 +1487,7 @@ div#index div.profiles div.profile div.summary div.inner div.stats .view_stripe 
   text-decoration: none;
   line-height: 1.5em;
   text-align: center;
-  border-radius: 2px;
+  border-radius: 6px;
   padding: 8px 12px;
 }
 div#index div.profiles div.profile div.events {
