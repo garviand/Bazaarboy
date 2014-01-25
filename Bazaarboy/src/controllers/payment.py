@@ -123,7 +123,7 @@ def charge(request, params, user):
                         # Assign seating failed, raise exception to roll back
                         raise IntegrityError()
             try:
-                email.sendPurchaseConfirmationEmail(purchase)
+                #email.sendPurchaseConfirmationEmail(purchase)
                 sms.sendPurchaseConfirmationSMS(purchase)
             except Exception as e:
                 # Ignore email and sms errors for now
