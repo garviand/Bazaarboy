@@ -1124,11 +1124,8 @@ def purchase(request, params, user):
                     # Assign seats failed, raise exception to roll back
                     raise IntegrityError()
             # Try sending the confirmation email
-            try:
-                email = Email()
-                email.sendPurchaseConfirmationEmail(purchase)
-            except Exception:
-                pass
+            email = Email()
+            email.sendPurchaseConfirmationEmail(purchase)
             if len(user.phone) == 10:
                 # Try sending the confirmation text
                 try:
