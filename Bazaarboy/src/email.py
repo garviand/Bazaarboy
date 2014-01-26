@@ -137,6 +137,7 @@ class Email(object):
         creator = Event_organizer.objects.get(event = purchase.event, 
                                               is_creator = True).profile
         contactEmail = creator.managers.all()[0].email
+        
         to = [{
             'email':purchase.owner.email, 
             'name':purchase.owner.full_name
