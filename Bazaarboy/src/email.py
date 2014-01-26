@@ -58,8 +58,8 @@ def sendConfirmationEmail(confirmationCode):
     subject = 'Welcome to Bazaarboy'
     template = EMAIL_T_ACC_CONFIRMATION
     mergeVars = [{
-        rcpt: user.email,
-        vars: [
+        'rcpt': user.email,
+        'vars': [
             {
                 'name':'user_name', 
                 'content':user.full_name
@@ -84,8 +84,8 @@ def sendResetRequestEmail(resetCode):
     subject = 'Reset Your Password'
     template = 'reset-password'
     mergeVars = [{
-        rcpt: user.email,
-        vars: [
+        'rcpt': user.email,
+        'vars': [
             {
                 'name':'user_name', 
                 'content':user.full_name
@@ -203,5 +203,5 @@ class Ticket_attachment(Attachment):
                 'name':'Ticket confirmation - %s.pdf' % (opts['code']), 
                 'content':ticketAttachment.toBase64()
             })
-            i++
+            i += 1
         return attachments

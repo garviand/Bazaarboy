@@ -28,6 +28,15 @@
             response = $.parseJSON data
             return cb? response
         return promise
+    # Other useful functions
+    trim: (params, required=null) ->
+        opts = {}
+        output = {}
+        for key,value of params
+            if not required? or required.indexOf(key) > 1
+                value = value.trim()
+            output[key] = value
+        return output
     # Layout functions
     adjustBottomPosition: () ->
         windowHeight = $(window).height()
@@ -45,32 +54,22 @@
                 'position': ''
                 'bottom': ''
         return
-    # Create Empty Event
-    createEvent: (profileId) ->
-        Bazaarboy.post 'event/create/', {profile: profileId}, (response) =>
-            if response.status is 'OK'
-                Bazaarboy.redirect 'event/' + response.event.pk + '/'
-            else
-                alert response.message
-            return
-        return
     # Initialization
     init: () ->
         scope = this
         # Pass the timezone information back to server
         @post 'timezone/', {timezone: getTimezoneName()}
+        # Initialize Foundation
+        $(document).foundation()
         # Adjust footer position when window resizes
+        ###
         $(document).ready () =>
             @adjustBottomPosition()
             return
         $(window).resize () =>
             @adjustBottomPosition()
             return
-        $('#wrapper_top .controls .user_create_event a').click (e) ->
-            e.preventDefault()
-            profileId = $(this).data('id')
-            scope.createEvent profileId
-            return
+        ###
         return
 
 Bazaarboy.init()

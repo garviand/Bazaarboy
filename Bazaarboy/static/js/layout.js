@@ -39,6 +39,22 @@
       });
       return promise;
     },
+    trim: function(params, required) {
+      var key, opts, output, value;
+      if (required == null) {
+        required = null;
+      }
+      opts = {};
+      output = {};
+      for (key in params) {
+        value = params[key];
+        if ((required == null) || required.indexOf(key) > 1) {
+          value = value.trim();
+        }
+        output[key] = value;
+      }
+      return output;
+    },
     adjustBottomPosition: function() {
       var bottomHeight, contentHeight, topHeight, windowHeight;
       windowHeight = $(window).height();
@@ -60,37 +76,22 @@
         });
       }
     },
-    createEvent: function(profileId) {
-      var _this = this;
-      Bazaarboy.post('event/create/', {
-        profile: profileId
-      }, function(response) {
-        if (response.status === 'OK') {
-          Bazaarboy.redirect('event/' + response.event.pk + '/');
-        } else {
-          alert(response.message);
-        }
-      });
-    },
     init: function() {
-      var scope,
-        _this = this;
+      var scope;
       scope = this;
       this.post('timezone/', {
         timezone: getTimezoneName()
       });
-      $(document).ready(function() {
-        _this.adjustBottomPosition();
-      });
-      $(window).resize(function() {
-        _this.adjustBottomPosition();
-      });
-      $('#wrapper_top .controls .user_create_event a').click(function(e) {
-        var profileId;
-        e.preventDefault();
-        profileId = $(this).data('id');
-        scope.createEvent(profileId);
-      });
+      $(document).foundation();
+      /*
+      $(document).ready () =>
+          @adjustBottomPosition()
+          return
+      $(window).resize () =>
+          @adjustBottomPosition()
+          return
+      */
+
     }
   };
 

@@ -6,14 +6,15 @@ html(lang="en")
                 block title
                     | Bazaarboy
                 link(rel="shortcut icon", href="{{ STATIC_URL }}images/logo.png")
-                link(rel="stylesheet", href="{{ STATIC_URL }}")
-                link(rel="stylesheet", href="{{ STATIC_URL }}css/layout.css")
+                link(rel="stylesheet", href="{{ STATIC_URL }}css/styles.css")
                 include components/analytics
     body
         block body
+            div#wrapper-top.row
+                block top
+                    include components/top
         block script
             script(src="{{ STATIC_URL }}js/libraries.js")
-            script(src="{{ STATIC_URL }}foundation/js/foundation.min.js")
             script.
                 var rootUrl = '{% url index %}';
                 var mediaUrl = '{{ MEDIA_URL }}';

@@ -10,10 +10,10 @@ module.exports = (grunt) ->
             css:
                 src: [
                     'Bazaarboy/static/css/normalize.css'
-                    'Bazaarboy/static/css/foundation.min.css'
-                    'Bazaarboy/static/css/layout.css'
+                    'Bazaarboy/static/css/foundation.css'
+                    'Bazaarboy/static/css/styles.css'
                 ]
-                dest: 'Bazaarboy/static/css/layout.css'
+                dest: 'Bazaarboy/static/css/styles.css'
             css_admin:
                 src: [
                     'Bazaarboy/static/css/normalize.css'
@@ -28,6 +28,7 @@ module.exports = (grunt) ->
                     'Bazaarboy/static/js/libraries/jquery.ui.widget.min.js'
                     'Bazaarboy/static/js/libraries/jquery.iframe-transport.min.js'
                     'Bazaarboy/static/js/libraries/jquery.fileupload.min.js'
+                    'Bazaarboy/static/js/libraries/foundation.min.js'
                     'Bazaarboy/static/js/libraries/misc.js'
                 ]
                 dest: 'Bazaarboy/static/js/libraries.js'
@@ -91,7 +92,7 @@ module.exports = (grunt) ->
                 files: [
                     expand: true
                     cwd: 'Bazaarboy/views/css/'
-                    src: ['**/*.less']
+                    src: ['*.less', '!vars.less', '!layout.less']
                     dest: 'Bazaarboy/static/css/'
                     ext: '.css'
                 ,

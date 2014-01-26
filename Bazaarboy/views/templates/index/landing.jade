@@ -7,50 +7,13 @@ append script
 
 block body
     div#landing
-        div.background
-        div.inner
-            div.logo
-                div.image
-                    img(src="{{ STATIC_URL }}images/logo-big.png")
-                div.text 
-                    b Bazaarboy
-                div.caption Discover Your Event Potential
-            div.starting_content.content
-                div.top
-                    div.organizers
-                        div.title 
-                            b Organizers
-                        div.text
-                            | Market events with captivating pages that accept payments 
-                            | and registration.
-                    div.sponsors
-                        div.title
-                            b Sponsors
-                        div.text
-                            | Easily manage donation requests and find local events to 
-                            | sponsor.
-                    div.clear
-                div.bottom
-                    a.request(href="{% url user:register %}") Publish Your First Event
-                    div.login_link_container
-                        | already a member?  
-                        a.start_sign_in(href="javascript:;") sign-in
-                    div.clear
-            div.login_content.content.hidden
-                div.title 
-                    b Log in to Bazaarboy
-                div.top
-                    form.login(name="login")
-                        input.login_input(type="text", name="email", placeholder="Email", autocomplete="off")
-                        input.login_input(type="password", name="password", placeholder="Password", autocomplete="off")
-                div.bottom
-                    a.back(href="javascript:;") &lt;&lt; Back
-                    a.login_btn(href="javascript:;") Log In
-                    div.clear
-            div.footer
-                | &copy; 2013 Bazaarboy LLC. All rights reserved. 
-                a(href="http://blog.bazaarboy.com") Blog
-                | &nbsp;|&nbsp;
-                a(href="{% url index:pricing %}") Pricing
-                | &nbsp;|&nbsp;
-                a(href="mailto:build@bazaarboy.com") Contact Us
+        form.login
+            input(type="text", name="email", placeholder="Email")
+            input(type="password", name="password", placeholder="Password", autocomplete="off")
+        form.register
+            input(type="text", name="first_name", placeholder="First Name")
+            input(type="text", name="last_name", placeholder="Last Name")
+            input(type="text", name="email", placeholder="Email")
+            input(type="password", name="password", placeholder="Password", autocomplete="off")
+            input(type="password", name="confirm", placeholder="Confirm Password", autocomplete="off")
+

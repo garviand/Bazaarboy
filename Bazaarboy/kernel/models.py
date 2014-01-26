@@ -304,9 +304,9 @@ class List_item(models.Model):
     Item in a contact list
     """
     _list = models.ForeignKey('List')
-    email = CharField(max_length = 50)
-    first_name = CharField(max_length = 50)
-    last_name = CharField(max_length = 50)
+    email = models.CharField(max_length = 50)
+    first_name = models.CharField(max_length = 50)
+    last_name = models.CharField(max_length = 50)
 
     class Meta:
         unique_together = ('_list', 'email')

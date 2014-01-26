@@ -1,23 +1,15 @@
 //- Components.Top
 
-div.logo
+div.logo.small-3.columns.clearfix
     a(href="{% url index %}")
         div.left
             img(src="{{ STATIC_URL }}images/logo.png")
         div.right
             b Bazaarboy
-        div.clear
-div.controls
+div.controls.small-9.columns.clearfix
     {% if user %}
-    div.name
-        a {{ user.full_name }}
-    div.logout
+    div.logout.right
         a(href="{% url user:logout %}") Log Out
-    {% else %}
-    div.create_event
-        a(href="{% url user:register %}") Create an Event
-    div.login
-        a(href="{% url index %}") Log In
+    div.name.right
+        a {{ user.full_name }}
     {% endif %}
-    div.clear
-div.clear
