@@ -4,6 +4,7 @@ Email utilities
 
 import cStringIO
 import base64
+import logging
 import qrcode
 import urllib
 import weasyprint
@@ -42,11 +43,16 @@ class Email(object):
             'track_opens':True,
             'attachments':attachments
         }
-        result = self.client.messages.send_template(template_name = template, 
-                                                    template_content = [], 
-                                                    message = message, 
-                                                    async = True)
-        return result
+        try:
+            result = self.client.messages.send_template(template_name = template, 
+                                                        template_content = [], 
+                                                        message = message, 
+                                                        async = True)
+        except Exception, e:
+            logging.error(str(e))
+            return False
+        else:
+            return result
 
     def sendConfirmationEmail(self, user, confirmationCode):
         """
