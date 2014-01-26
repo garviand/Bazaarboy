@@ -24,7 +24,7 @@ def sanitize_redactor_input(string):
     string = unicode(string)
     string = string.replace('<br>', '<br />')
     while True:
-        soup = BeautifulSoup(string)
+        soup = BeautifulSoup(string, 'html.parser')
         removed = False
         for tag in soup.findAll(True):
             if tag.name not in redactorAllowedTags:

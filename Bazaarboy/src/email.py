@@ -27,7 +27,7 @@ def sendEmails(self, to, subject, template, mergeVars, attachments=[]):
             'from_email':MANDRILL_FROM_EMAIL,
             'from_name':MANDRILL_FROM_NAME,
             'headers':{
-                'Reply-To': MANDRILL_FROM_EMAIL
+                'Reply-To':MANDRILL_FROM_EMAIL
             },
             'subject':subject,
             'merge_vars':mergeVars,
@@ -98,10 +98,14 @@ def sendResetRequestEmail(resetCode):
     }]
     return self.sendEmail(to, subject, template, mergeVars)
 
+@task()
 def sendEventConfirmationEmail(purchase):
     """
     Send event confirmation
     """
+    items = Purchase_item.objects.filter(purchase = purchase) \
+                                 .prefetch_related('ticket')
+    attachments = Ticket_attachment.getTicketAttachments(purchase, items)
     return
 
 def sendBonusEmails():
@@ -164,15 +168,17 @@ class Ticket_attachment(Attachment):
 
     def toBase64(self):
         message = 'bboy::%s::%s::%s'
-        message = message % (self.opts.event, self.opts.purchase, self.opts.item)
-        opts['qrcode'] = self.getQRCode(message)
-        output = self.getPDF(params, Ticket_attachment.template)
+        message = message % (self.opts['event'], self.opts['purchase'], 
+                             self.opts['item'])
+        self.opts['qrcode'] = self.getQRCode(message)
+        output = self.getPDF(self.opts, Ticket_attachment.template)
         return output
 
     @staticmethod
     def getTicketAttachments(self, purchase, items):
         """
-        Generate ticket confirmations from purchase items
+        Generate ticket confirmations from purchase items and pack them in 
+        the mandrill format dictionary
         """
         attachments = []
         event = purchase.event
@@ -182,14 +188,20 @@ class Ticket_attachment(Attachment):
             'start_time':event.start_time,
             'end_time':event.end_time,
             'location':event.location,
-            'purchase':purchase.id,
-            'code':purchase.code
+            'purchase':purchase.id
         }
+        i = 1
         for item in items:
             opts = globalOpts
+            opts['code'] = '%s-%i' % (purchase.code, i)
             opts['item'] = item.id
             opts['ticket'] = item.ticket.name
             opts['seat'] = ''
             ticketAttachment = Ticket_attachment(opts)
-            attachments.append(ticketAttachment.toBase64())
+            attachments.append({
+                'type':'application/pdf', 
+                'name':'Ticket confirmation - %s.pdf' % (opts['code']), 
+                'content':ticketAttachment.toBase64()
+            })
+            i++
         return attachments

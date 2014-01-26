@@ -10,6 +10,7 @@ module.exports = (grunt) ->
             css:
                 src: [
                     'Bazaarboy/static/css/normalize.css'
+                    'Bazaarboy/static/css/foundation.min.css'
                     'Bazaarboy/static/css/layout.css'
                 ]
                 dest: 'Bazaarboy/static/css/layout.css'

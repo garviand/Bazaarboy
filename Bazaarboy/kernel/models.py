@@ -290,6 +290,27 @@ class Claim(models.Model):
             self.token = os.urandom(128).encode('base_64')[:128]
         super(Claim, self).save(*args, **kwargs)
 
+class List(models.Model):
+    """
+    Contact list model
+    """
+    owner = models.ForeignKey('Profile')
+    name = models.CharField(max_length = 50)
+    is_hidden = models.BooleanField(default = True)
+    created_time = models.DateTimeField(auto_now_add = True)
+
+class List_item(models.Model):
+    """
+    Item in a contact list
+    """
+    _list = models.ForeignKey('List')
+    email = CharField(max_length = 50)
+    first_name = CharField(max_length = 50)
+    last_name = CharField(max_length = 50)
+
+    class Meta:
+        unique_together = ('_list', 'email')
+
 class Image(models.Model):
     """
     Image model

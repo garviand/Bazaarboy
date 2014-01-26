@@ -53,7 +53,19 @@ event_urlpatterns = patterns('src.controllers.event',
 )
 
 sponsorship_urlpatterns = patterns('src.controllers.sponsorship', 
+    url(r'^criteria/create/$', 'create_criteria', name = 'criteria-create'), 
+    url(r'^criteria/edit/$', 'edit_criteria', name = 'criteria-edit'), 
+    url(r'^criteria/delete/$', 'delete_criteria', name = 'criteria-delete'), 
     url(r'^create/$', 'create', name = 'create'),
+    url(r'^delete/$', 'delete', name = 'delete'), 
+)
+
+bonus_urlpatterns = patterns('src.controllers.bonus', 
+    url(r'^create/$', 'create', name = 'create'),
+    url(r'^edit/$', 'edit', name = 'edit'), 
+    url(r'^delete/$', 'delete', name = 'delete'), 
+    url(r'^send/$', 'send', name = 'send'), 
+    url(r'^claim/$', 'claim', name = 'claim'), 
 )
 
 file_urlpatterns = patterns('src.controllers.file', 
@@ -79,6 +91,7 @@ urlpatterns = patterns('',
     url(r'^event/', include(event_urlpatterns, namespace = 'event')),
     url(r'^sponsorship/', 
         include(sponsorship_urlpatterns, namespace = 'sponsorship')),
+    url(r'^bonus/', include(bonus_urlpatterns, namespace = 'bonus')), 
     url(r'^file/', include(file_urlpatterns, namespace = 'file')),
     url(r'^admin/', include(admin_urlpatterns, namespace = 'admin')),
 )

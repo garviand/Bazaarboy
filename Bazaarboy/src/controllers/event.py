@@ -115,14 +115,6 @@ def create(request, params, user):
     """
     Create a new event
     """
-    # Check if the profile is valid
-    if params['profile'] is None:
-        response = {
-            'status':'FAIL',
-            'error':'MISSING_PROFILE',
-            'message':'A profile is required to create an event.'
-        }
-        return json_response(response)
     if not Profile.objects.filter(id = params['profile']).exists():
         response = {
             'status':'FAIL',
