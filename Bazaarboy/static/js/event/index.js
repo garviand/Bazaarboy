@@ -125,7 +125,7 @@
       price = price.replace(/\$/g, '');
       price = parseFloat(price);
       if (!isNaN(price)) {
-        total = '$ ' + (price * quantity).toFixed(2);
+        total = '$ ' + (price * quantity * (1 + 0.05) + 0.5).toFixed(2);
       }
       $('div#rsvp div.confirmation div.price b').html(total);
       params = {
