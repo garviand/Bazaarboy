@@ -97,6 +97,7 @@ Bazaarboy.event.index =
         price = $('div#rsvp div.ticket.selected div.price b').html()
         price = price.replace(/\$/g, '')
         price = parseFloat(price)
+        console.log(price)
         if not isNaN(price)
             total = '$ ' + (price * quantity * (1 + 0.05) + 0.5).toFixed(2)
         $('div#rsvp div.confirmation div.price b').html(total)
