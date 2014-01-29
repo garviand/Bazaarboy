@@ -144,10 +144,13 @@ class Email(object):
                                               is_creator = True).profile
         contactEmail = creator.managers.all()[0].email
 
-        amount = purchase.ticket.price * purchase.quantity
-        rate = STRIPE_TRANSACTION_RATE
-        amount = int(round((amount * (1 + rate) + 0.5) * 100))
-        amount = "{0:.2f}".format(amount/100.0)
+        if purchase.ticket.price == 0:
+            amount = 0
+        else:
+            amount = purchase.ticket.price * purchase.quantity
+            rate = STRIPE_TRANSACTION_RATE
+            amount = int(round((amount * (1 + rate) + 0.5) * 100))
+            amount = "{0:.2f}".format(amount/100.0)
         
         to = [{
             'email':purchase.owner.email, 

@@ -124,6 +124,7 @@
       price = $('div#rsvp div.ticket.selected div.price b').html();
       price = price.replace(/\$/g, '');
       price = parseFloat(price);
+      console.log(price);
       if (!isNaN(price)) {
         total = '$ ' + (price * quantity * (1 + 0.05) + 0.5).toFixed(2);
       }
