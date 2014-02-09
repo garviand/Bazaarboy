@@ -1,15 +1,4 @@
 //- Components.Top
 
-div.logo.small-3.columns.clearfix
-    a(href="{% url index %}")
-        div.left
-            img(src="{{ STATIC_URL }}images/logo.png")
-        div.right
-            b Bazaarboy
-div.controls.small-9.columns.clearfix
-    {% if user %}
-    div.logout.right
-        a(href="{% url user:logout %}") Log Out
-    div.name.right
-        a {{ user.full_name }}
-    {% endif %}
+div.top-icon
+  | Open menu

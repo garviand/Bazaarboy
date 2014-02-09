@@ -95,7 +95,9 @@ module.exports = (grunt) ->
                     src: ['*.less', '!vars.less', '!layout.less']
                     dest: 'Bazaarboy/static/css/'
                     ext: '.css'
-                ,
+                ]
+            compile_admin:
+                files: [
                     expand: true
                     cwd: 'Bazaarboy/views/admin/css/'
                     src: ['**/*.less']
@@ -132,14 +134,14 @@ module.exports = (grunt) ->
                 files: [
                     'Bazaarboy/views/css/**/*.less'
                 ]
-                tasks: ['less', 'concat:css']
+                tasks: ['less:compile', 'concat:css']
             less_admin:
                 options:
                     nospawn: true
                 files: [
                     'Bazaarboy/views/admin/css/**/*.less'
                 ]
-                tasks: ['less', 'concat:css_admin']
+                tasks: ['less:compile_admin', 'concat:css_admin']
             libraries:
                 options:
                     nospawn: true
@@ -182,11 +184,13 @@ module.exports = (grunt) ->
             uglifyOpts[output] = output
             grunt.config(['coffee', 'compile', 'files'], opts)
             grunt.config(['uglify', 'compile', 'files'], uglifyOpts)
+        ###
         else if ext is 'less'
             output = filepath.replace(/Bazaarboy\/views/, 'Bazaarboy/static')
                              .replace(/\.less/, '.css')
             opts = {}
             opts[output] = filepath
             grunt.config(['less', 'compile', 'files'], opts)
+        ###
     grunt.registerTask('dev', ['jade', 'coffee', 'less', 'concat', 'watch'])
     return

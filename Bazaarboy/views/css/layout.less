@@ -1,3 +1,45 @@
 /* Layout */
 
 @import (reference) "vars.less";
+
+html, body {
+    height: 100%;
+}
+
+div#wrapper-top {
+    position: relative;
+    height: @top-height;
+    z-index: 1;
+    background: @dark;
+}
+
+div#wrapper-sidebar, div#wrapper-main {
+    position: absolute;
+    top: 0;
+    left: 0;
+}
+
+div#wrapper-main {
+    @media only screen and (max-width: 40em) {
+        top: @top-height;
+    }
+}
+
+div#wrapper-sidebar {
+    min-height: 100%;
+    z-index: 0;
+    background: @dark;
+}
+
+div#sidebar-frame {
+}
+
+div#wrapper-main {
+    min-height: 100%;
+    z-index: 2;
+    background: @white;
+}
+
+div#main-frame {
+}
+

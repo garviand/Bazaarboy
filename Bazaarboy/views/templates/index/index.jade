@@ -1,3 +1,81 @@
 // Index
 
 extends ../layout
+
+block sidebar
+    mixin sidebarItem(sub)
+        - sub = sub || ''
+        div.sidebar-item.row.action-btn(class="#{sub}")
+            div.sidebar-item-icon.large-2.small-2.medium-12.columns
+                | Icon
+            div.sidebar-item-text.large-10.small-10.columns.hide-for-medium-only
+                block
+    div.sidebar-item.row.action-btn
+        | Create Event
+    +sidebarItem()
+        | Events
+    +sidebarItem('sub')
+        | Current Events
+    +sidebarItem('sub')
+        | Past Events
+    +sidebarItem('sub')
+        | Event Drafts
+    +sidebarItem()
+        | Lists
+    +sidebarItem()
+        | Account Settings
+    +sidebarItem()
+        a(href="{% url user:logout %}") Log Out
+    
+block content
+    mixin currentEvent()
+        div.current-event.row
+            div.medium-12.columns.tile
+                div
+                    div.current-event-date
+                    div.current-event-title
+                        | {{ event.name }}
+                    div.current-event-view
+                    div.current-event-collapse.end
+                div
+                    div.current-event-stats.medium-8.columns
+                        div.medium-4.columns
+                        div.medium-8.columns
+                    div.current-event-actions.medium-4.columns
+                        div.current-event-action.clearfix
+                            div.left
+                                | Icon
+                            div.left
+                                | Edit/Add Features
+                        div.current-event-action.clearfix
+                            div.left
+                                | Icon
+                            div.left
+                                | Basic Information
+                        div.current-event-action.clearfix
+                            div.left
+                                | Icon
+                            div.left
+                                | Design
+                        div.current-event-action.clearfix
+                            div.left
+                                | Icon
+                            div.left
+                                | Ticket Options
+                        div.current-event-action.clearfix
+                            div.left
+                                | Icon
+                            div.left
+                                | Bonuses
+                div
+                    div.medium-12.columns
+                        | Communications
+                    div.current-event-add-communication
+                div
+                    div.current-event-communication-stat.medium-6.columns
+                    div.medium-6.columns
+                div
+                    div.medium-12.columns
+                        | Bonus
+    div#wrapper-dashboard.medium-9.columns.small-centered
+        +currentEvent()
