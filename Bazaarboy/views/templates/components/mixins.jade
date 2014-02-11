@@ -1,0 +1,9 @@
+//- Mixins
+
+mixin sidebarItem(sub)
+    - sub = sub || ''
+    div.sidebar-item.row(class="#{sub}")
+        div.sidebar-item-icon.large-2.small-2.medium-12.columns
+            | Icon
+        div.sidebar-item-text.large-10.small-10.columns.hide-for-medium-only
+            block

@@ -3,28 +3,21 @@
 extends ../layout
 
 block sidebar
-    mixin sidebarItem(sub)
-        - sub = sub || ''
-        div.sidebar-item.row.action-btn(class="#{sub}")
-            div.sidebar-item-icon.large-2.small-2.medium-12.columns
-                | Icon
-            div.sidebar-item-text.large-10.small-10.columns.hide-for-medium-only
-                block
-    div.sidebar-item.row.action-btn
+    div.sidebar-item.row.action-btn.create-event(data-profile-id="{{ profile.0.id }}")
         | Create Event
-    +sidebarItem()
+    +sidebarItem()(class="action-btn")
         | Events
-    +sidebarItem('sub')
+    +sidebarItem('sub')(class="action-btn")
         | Current Events
-    +sidebarItem('sub')
+    +sidebarItem('sub')(class="action-btn")
         | Past Events
-    +sidebarItem('sub')
+    +sidebarItem('sub')(class="action-btn")
         | Event Drafts
-    +sidebarItem()
+    +sidebarItem()(class="action-btn")
         | Lists
-    +sidebarItem()
+    +sidebarItem()(class="action-btn")
         | Account Settings
-    +sidebarItem()
+    +sidebarItem()(class="action-btn")
         a(href="{% url user:logout %}") Log Out
     
 block content
@@ -79,3 +72,6 @@ block content
                         | Bonus
     div#wrapper-dashboard.medium-9.columns.small-centered
         +currentEvent()
+
+append script
+    script(src="{{ STATIC_URL }}js/index/index.js")

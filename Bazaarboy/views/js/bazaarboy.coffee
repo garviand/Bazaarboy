@@ -37,6 +37,12 @@
                 value = value.trim()
             output[key] = value
         return output
+    stripEmpty: (params, keys) ->
+        output = {}
+        for key,value of params
+            if keys.indexOf(key) == -1 or value.trim().length isnt 0
+                output[key] = value.trim()
+        return output
     # Layout functions
     adjustBottomPosition: () ->
         windowHeight = $(window).height()

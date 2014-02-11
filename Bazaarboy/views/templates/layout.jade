@@ -9,6 +9,7 @@ html(lang="en")
             link(rel="stylesheet", href="{{ STATIC_URL }}css/styles.css")
             include components/analytics
     body
+        include components/mixins
         block body
             include components/facebook
             div#wrapper-top.small-12.columns.show-for-small.only

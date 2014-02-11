@@ -26,6 +26,14 @@ def index(request, id, user):
     return render(request, 'profile/index.html', locals())
 
 @login_required()
+def new(request, user):
+    """
+    Create profile page
+    """
+    categories = BBOY_PROFILE_CATEGORIES
+    return render(request, 'profile/new.html', locals())
+
+@login_required()
 @validate('GET', ['id'])
 def profile(request, params, user):
     """
@@ -60,7 +68,7 @@ def search(request, params):
 @login_required()
 @validate('POST', ['name', 'description', 'category'], 
           ['image', 'location', 'latitude', 'longitude', 'email', 'phone', 
-           'link_website', 'link_facebook', 'EIN', 'is_non_profit' 'payment'])
+           'link_website', 'link_facebook', 'EIN', 'is_non_profit', 'payment'])
 def create(request, params, user):
     """
     Create a profile and set the creating user as the creator
@@ -149,7 +157,7 @@ def create(request, params, user):
         else:
             profile.phone = params['phone']
     if params['link_website'] is not None:
-        if (len(params['link_website']) != 0) and 
+        if ((len(params['link_website']) != 0) and 
             not REGEX_URL.match(params['link_website'])):
             response = {
                 'status':'FAIL',
@@ -160,7 +168,7 @@ def create(request, params, user):
         else:
             profile.link_website = params['link_website']
     if params['link_facebook'] is not None:
-        if (len(params['link_facebook']) != 0) and 
+        if ((len(params['link_facebook']) != 0) and 
             not REGEX_URL.match(params['link_facebook'])):
             response = {
                 'status':'FAIL',
@@ -340,7 +348,7 @@ def edit(request, params, user):
         else:
             profile.phone = params['phone']
     if params['link_website'] is not None:
-        if (len(params['link_website']) != 0) and 
+        if ((len(params['link_website']) != 0) and 
             not REGEX_URL.match(params['link_website'])):
             response = {
                 'status':'FAIL',
@@ -351,7 +359,7 @@ def edit(request, params, user):
         else:
             profile.link_website = params['link_website']
     if params['link_facebook'] is not None:
-        if (len(params['link_facebook']) != 0) and 
+        if ((len(params['link_facebook']) != 0) and 
             not REGEX_URL.match(params['link_facebook'])):
             response = {
                 'status':'FAIL',

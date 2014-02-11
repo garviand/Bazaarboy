@@ -32,7 +32,7 @@ def index(request, id, params, user):
     """
     Event page
     """
-    if not Event.objects.filter(id = id).exists():
+    if not Event.objects.filter(id = id, is_deleted = False).exists():
         raise Http404
     preview = False
     if params['preview'] is not None:
@@ -54,6 +54,20 @@ def index(request, id, params, user):
             cheapest = ticket.price
     organizers = Organizer.objects.filter(event = event)
     return render(request, 'event/index.html', locals())
+
+@login_required()
+@validate('GET', [], ['create'])
+def modify(request, id, step, params, user):
+    """
+    Modify/create event flow
+    """
+    if not Event.objects.filter(id = id, is_deleted = False).exists():
+        raise Http404
+    event = Event.objects.select_related().get(id = id)
+    if not Profile_manager.objects.filter(profile = event.profile, 
+                                          user = user).exists():
+        return redirect('index')
+    return render(request, 'event/flow-' + step + '.html', locals())
 
 @login_required()
 @validate('GET')
@@ -108,9 +122,7 @@ def search(request, params):
     return json_response(response)
 
 @login_required()
-@validate('POST', 
-          ['name', 'summary', 'start_time', 'profile'], 
-          ['end_time', 'location', 'latitude', 'longitude'])
+@validate('POST', ['profile'])
 def create(request, params, user):
     """
     Create a new event
@@ -132,65 +144,8 @@ def create(request, params, user):
             'message':'You don\'t have permission for the profile.'
         }
         return json_response(response)
-    # Check the event parameters
-    params['name'] = cgi.escape(params['name'])
-    if len(params['name']) > 150:
-        response = {
-            'status':'FAIL',
-            'error':'INVALID_NAME',
-            'message':'The event title must be within 150 characters.'
-        }
-        return json_response(response)
-    params['summary'] = cgi.escape(params['summary'])
-    if len(params['summary']) > 250:
-        response = {
-            'status':'FAIL',
-            'error':'INVALID_SUMMARY',
-            'message':'The summary must be within 250 characters.'
-        }
-        return json_response(response)
-    event = Event(name = params['name'], 
-                  summary = params['summary'], 
-                  description = params['summary'], 
-                  start_time = params['start_time'])
-    if params['end_time'] is not None:
-        if params['end_time'] < params['start_time']:
-            response = {
-                'status':'FAIL',
-                'error':'INVALID_END_TIME',
-                'message':'End time cannot be before start time.'
-            }
-            return json_response(response)
-        else:
-            event.end_time = params['end_time']
-    if params['location'] is not None:
-        params['location'] = cgi.escape(params['location'])
-        if len(params['location']) > 100:
-            response = {
-                'status':'FAIL',
-                'error':'LOCATION_TOO_LONG',
-                'message':'The location must be within 100 characters.'
-            }
-            return json_response(response)
-        else:
-            event.location = params['location']
-    if params['latitude'] is not None and params['longitude'] is not None: 
-        if (params['latitude'].lower() == 'none' or 
-            params['longitude'].lower() == 'none'):
-            event.latitude = None
-            event.longitude = None
-        elif not (-90.0 <= float(params['latitude']) <= 90.0 and 
-                -180.0 <= float(params['longitude']) <= 180.0):
-            response = {
-                'status':'FAIL',
-                'error':'INVALID_COORDINATES',
-                'message':'Latitude/longitude combination is invalid.'
-            }
-            return json_response(response)
-        else:
-            event.latitude = float(params['latitude'])
-            event.longitude = float(params['longitude'])
-    # Save to database
+    # Create event
+    event = Event()
     event.save()
     # Set the profile as the organizer and creator of the event
     organizer = Organizer(event = event, profile = profile, is_creator = True)

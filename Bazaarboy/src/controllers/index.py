@@ -23,72 +23,11 @@ def index(request, params, user):
     # Check if logged in
     if user is None:
         return render(request, 'index/landing.html', locals())
-    # Fetch stripe accounts linked to the user
-    paymentAccounts = user.payment_account_set.all()
-    stripeConnectUrl = r'%s?response_type=code&client_id=%s&scope=%s'
-    stripeConnectUrl = stripeConnectUrl % (STRIPE_CONNECT_URL, 
-                                           STRIPE_CLIENT_ID, 
-                                           STRIPE_SCOPE)
     # Fetch profiles managed by the user
     profiles = Profile.objects.filter(managers = user)
-    profiles = list(profiles)
-    for i in range(0, len(profiles)):
-        profile = profiles[i]
-        # Fetch the stats for the profile
-        stats = Purchase.objects.filter(Q(checkout = None) | 
-                                        Q(checkout__is_charged = True, 
-                                          checkout__is_refunded = False), 
-                                        event__organizers = profile) \
-                                .aggregate(total_sale = Sum('price'), 
-                                           sale_count = Count('id'))
-        profile.stats = stats
-        # Fetch draft events
-        draftEvents = Event.objects.filter(organizers = profile, 
-                                           is_launched = False) \
-                                   .order_by('-created_time')[:5]
-        draftEvents = list(draftEvents)
-        # Fetch live events
-        liveEvents = Event.objects.filter(Q(end_time = None, 
-                                            start_time__gt = tz.now()) | 
-                                          Q(end_time__isnull = False, 
-                                            end_time__gt = tz.now()),   
-                                          organizers = profile, 
-                                          is_launched = True) \
-                                  .order_by('start_time')[:5]
-        liveEvents = list(liveEvents)
-        for j in range(0, len(liveEvents)):
-            # Fetch the stats for the event
-            stats = Purchase.objects.filter(Q(checkout = None) | 
-                                            Q(checkout__is_charged = True, 
-                                              checkout__is_refunded = False), 
-                                            event = liveEvents[j]) \
-                                    .aggregate(total_sale = Sum('price'), 
-                                               sale_count = Count('id'))
-            liveEvents[j].total_sale = stats['total_sale']
-            liveEvents[j].sale_count = stats['sale_count']
-        # Fetch past events
-        pastEvents = Event.objects.filter(Q(end_time = None, 
-                                            start_time__lt = tz.now()) | 
-                                          Q(end_time__isnull = False, 
-                                            end_time__lt = tz.now()), 
-                                          organizers = profile, 
-                                          is_launched = True) \
-                                  .order_by('-start_time')[:5]
-        pastEvents = list(pastEvents)
-        for j in range(0, len(pastEvents)):
-            # Fetch the stats for the event
-            stats = Purchase.objects.filter(Q(checkout = None) | 
-                                            Q(checkout__is_charged = True, 
-                                              checkout__is_refunded = False), 
-                                            event = pastEvents[j]) \
-                                    .aggregate(total_sale = Sum('price'), 
-                                               sale_count = Count('id'))
-            pastEvents[j].total_sale = stats['total_sale']
-            pastEvents[j].sale_count = stats['sale_count']
-        # Attached the data to profile
-        profile.draftEvents = draftEvents
-        profile.liveEvents = liveEvents
-        profile.pastEvents = pastEvents
+    # If user doesn't have a profile, redirect to profile creation
+    if profiles.count() is 0:
+        return redirect('profile:new')
     return render(request, 'index/index.html', locals())
 
 @login_check()

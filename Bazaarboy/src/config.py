@@ -14,7 +14,7 @@ BBOY_STATES = [
     'TX', 'UT', 'VA', 'VI', 'VT', 'WA', 'WI', 'WV', 'WY'
 ]
 BBOY_PROFILE_CATEGORIES = [
-    'Personal', 'Non-profit', 'Business', 'Other'
+    'Personal', 'Restaurant/Food', 'Club', 'Other'
 ]
 BBOY_EVENT_CATEGORIES = [
     'Nightlife', 'Charity', 'Other'

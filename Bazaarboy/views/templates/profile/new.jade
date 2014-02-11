@@ -1,0 +1,47 @@
+extends ../layout
+
+block sidebar
+    +sidebarItem()
+        | Create Profile
+
+block content
+    div#wrapper-profile-new.medium-9.columns.small-centered
+        form.profile-new
+            label Name
+            input(type="text", name="name", placeholder="Profile Name")
+            br
+            label Description
+            textarea(name="description")
+            br
+            label Category
+            select(name="category")
+                option(value="false") --Select A Category--
+                {% for category in categories %}
+                option(value="{{ category }}") {{ category }}
+                {% endfor %}
+            br
+            label Location
+            input(type="text", name="location", placeholder="Location (Optional)")
+            br
+            label Email
+            input(type="text", name="email", placeholder="Profile Email (Optional)")
+            br
+            label Phone
+            input(type="text", name="phone", placeholder="Profile Phone (Optional)")
+            br
+            label Profile Website
+            input(type="text", name="link_website", placeholder="Link to the associated website")
+            br
+            label Facebook
+            input(type="text", name="link_facebook", placeholder="Link to the associated facebook")
+            br
+            label Is this a non-profit/501c(3) organization?
+            input(type="checkbox", name="is_non_profit", value="1")
+            br
+            label EIN
+            input(type="text", name="EIN", placeholder="Required if non-profit")
+            br
+            input(type="submit", value="Create")
+
+append script
+    script(src="{{ STATIC_URL }}js/profile/new.js")

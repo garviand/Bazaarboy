@@ -5547,9 +5547,11 @@ div#wrapper-top {
 }
 div#wrapper-sidebar,
 div#wrapper-main {
-  position: absolute;
   top: 0;
   left: 0;
+}
+div#wrapper-main {
+  position: absolute;
 }
 @media only screen and (max-width: 40em) {
   div#wrapper-main {
@@ -5557,6 +5559,7 @@ div#wrapper-main {
   }
 }
 div#wrapper-sidebar {
+  position: fixed;
   min-height: 100%;
   z-index: 0;
   background: #3c3c3c;
@@ -5565,4 +5568,8 @@ div#wrapper-main {
   min-height: 100%;
   z-index: 2;
   background: #ffffff;
+}
+/* Sidebar */
+div.sidebar-item {
+  color: #ffffff;
 }

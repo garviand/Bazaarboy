@@ -14,24 +14,23 @@ div#wrapper-top {
 }
 
 div#wrapper-sidebar, div#wrapper-main {
-    position: absolute;
     top: 0;
     left: 0;
 }
 
 div#wrapper-main {
+    position: absolute;
+    
     @media only screen and (max-width: 40em) {
         top: @top-height;
     }
 }
 
 div#wrapper-sidebar {
+    position: fixed;
     min-height: 100%;
     z-index: 0;
     background: @dark;
-}
-
-div#sidebar-frame {
 }
 
 div#wrapper-main {
@@ -40,6 +39,8 @@ div#wrapper-main {
     background: @white;
 }
 
-div#main-frame {
-}
+/* Sidebar */
 
+div.sidebar-item {
+    color: @white;
+}
