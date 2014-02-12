@@ -60,6 +60,10 @@ def index(request, id, params, user):
     organizers = Event_organizer.objects.filter(event = event)
     return render(request, 'event/index.html', locals())
 
+@task
+def add_nums(x,y):
+    return x + y
+
 @login_required()
 @validate('GET')
 def manage(request, id, params, user):
