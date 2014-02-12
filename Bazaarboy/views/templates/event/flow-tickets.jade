@@ -1,0 +1,42 @@
+extends ../layout
+
+block sidebar
+    +sidebarItem('ss-file')(href="{% url event:modify id 'basics' %}")
+        | Basic information
+    +sidebarItem('ss-picture')(href="{% url event:modify id 'design' %}")
+        | Page design
+    +sidebarItem('ss-tag')(href="{% url event:modify id 'tickets' %}", class="selected")
+        | Ticket options
+    +sidebarItem('ss-star')(href="{% url event:modify id 'bonus' %}")
+        | Bonus
+    +sidebarItem('ss-mail')(href="{% url event:modify id 'emails' %}")
+        | Emails
+
+block content
+    div#wrapper-event-modify.medium-9.columns.small-centered
+        div#ticket-canvas
+        div#add-ticket
+            div.step-1
+                div.title Add Ticket Option
+                div.type
+                    a(href="javascript:;") Free/RSVP
+                    a(href="javascript:;") Priced Ticket
+            div.step-2
+                div.title
+                    div New Ticket
+                    div.action-btn Back to Select Type
+                div.info
+                    form.add-ticket
+                        input(type="text", name="name", placeholder="Ticket Name")
+                        br
+                        input(type="text", name="price", placeholder="Price")
+                        input(type="text", name="quantity", placeholder="Quantity (leave blank if unlimited)")
+                        br
+                        label Start Time
+                        input(type="text", name="start_date", value="{{ event.start_time|date:'m/d/Y' }}", placeholder="MM/DD/YYYY")
+                        input(type="text", name="start_time", value="{{ event.start_time|date:'g:i A' }}", placeholder="ex. 6:00 PM")
+                        label End Time
+                        input(type="text", name="end_date", value="{{ event.end_time|date:'m/d/Y' }}", placeholder="MM/DD/YYYY")
+                        input(type="text", name="end_time", value="{{ event.end_time|date:'g:i A' }}", placeholder="ex. 7:00 PM")
+                        br
+                        input(type="submit", value="Add")

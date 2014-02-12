@@ -25,9 +25,35 @@ def index(request, params, user):
         return render(request, 'index/landing.html', locals())
     # Fetch profiles managed by the user
     profiles = Profile.objects.filter(managers = user)
+    pids = []
+    for profile in profiles:
+        pids.append(profile.id)
     # If user doesn't have a profile, redirect to profile creation
     if profiles.count() is 0:
         return redirect('profile:new')
+    # Fetch events
+    currentEvents = Event.objects.filter(Q(end_time = None, 
+                                           start_time__gt = tz.now()) | 
+                                         Q(end_time__isnull = False, 
+                                           end_time__gt = tz.now()),   
+                                         is_launched = True, 
+                                         organizers__in = pids) \
+                                 .order_by('start_time')
+    currentEventsCount = currentEvents.count()
+    currentEvents = currentEvents[:5]
+    pastEvents = Event.objects.filter(Q(end_time = None, 
+                                        start_time__lt = tz.now()) | 
+                                      Q(end_time__isnull = False, 
+                                        end_time__lt = tz.now()), 
+                                      is_launched = True, 
+                                      organizers__in = pids) \
+                              .order_by('-start_time')[:5]
+    pastEventsCount = pastEvents.count()
+    pastEvents = currentEvents[:5]
+    draftEvents = Event.objects.filter(is_launched = False, 
+                                       organizers__in = pids)
+    draftEventsCount = draftEvents.count()
+    draftEvents = draftEvents[:5]
     return render(request, 'index/index.html', locals())
 
 @login_check()
@@ -48,8 +74,7 @@ def pricing(request, user):
 def about(request, user):
     pass
 
-@login_check()
-def pageNotFound(request, user):
+def pageNotFound(request):
     return render(request, '404.html', locals())
 
 def serverError(request):

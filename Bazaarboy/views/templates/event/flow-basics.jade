@@ -1,1 +1,35 @@
-extends flow
+extends ../layout
+
+block sidebar
+    +sidebarItem('ss-file')(href="{% url event:modify id 'basics' %}", class="selected")
+        | Basic information
+    +sidebarItem('ss-picture')(href="{% url event:modify id 'design' %}")
+        | Page design
+    +sidebarItem('ss-tag')(href="{% url event:modify id 'tickets' %}")
+        | Ticket options
+    +sidebarItem('ss-star')(href="{% url event:modify id 'bonus' %}")
+        | Bonus
+    +sidebarItem('ss-mail')(href="{% url event:modify id 'emails' %}")
+        | Emails
+
+block content
+    div#wrapper-event-modify.medium-9.columns.small-centered
+        form.event-modify
+            label Event Name
+            input(type="text", name="name", value="{{ event.name }}", placeholder="Event name")
+            br
+            label Event Summary
+            input(type="text", name="summary", value="{{ event.summary }}", placeholder="Short summary")
+            br
+            label Start Time
+            input(type="text", name="start_date", value="{{ event.start_time|date:'m/d/Y' }}", placeholder="MM/DD/YYYY")
+            input(type="text", name="start_time", value="{{ event.start_time|date:'g:i A' }}", placeholder="ex. 6:00 PM")
+            br
+            label End Time
+            input(type="text", name="end_date", value="{{ event.end_time|date:'m/d/Y' }}", placeholder="MM/DD/YYYY")
+            input(type="text", name="end_time", value="{{ event.end_time|date:'g:i A' }}", placeholder="ex. 7:00 PM")
+            br
+            label Location
+            input(type="text", name="location", value="{{ event.location }}", placeholder="Event location")
+            br
+            input(type="submit", value="Next")

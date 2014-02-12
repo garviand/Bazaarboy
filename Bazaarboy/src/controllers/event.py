@@ -64,8 +64,8 @@ def modify(request, id, step, params, user):
     if not Event.objects.filter(id = id, is_deleted = False).exists():
         raise Http404
     event = Event.objects.select_related().get(id = id)
-    if not Profile_manager.objects.filter(profile = event.profile, 
-                                          user = user).exists():
+    if not Organizer.objects.filter(event = event, 
+                                    profile__managers = user).exists():
         return redirect('index')
     return render(request, 'event/flow-' + step + '.html', locals())
 
@@ -145,7 +145,7 @@ def create(request, params, user):
         }
         return json_response(response)
     # Create event
-    event = Event()
+    event = Event(start_time = timezone.now() + timedelta(days = 7))
     event.save()
     # Set the profile as the organizer and creator of the event
     organizer = Organizer(event = event, profile = profile, is_creator = True)

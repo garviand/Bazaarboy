@@ -5528,6 +5528,14 @@ th.hide-for-touch {
 /* Colors */
 /* Sizes */
 /* Styles */
+.absolute-center {
+  position: absolute;
+  margin: auto;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+}
 .tile {
   background-color: #f6f6f6;
 }
@@ -5550,26 +5558,91 @@ div#wrapper-main {
   top: 0;
   left: 0;
 }
+div#wrapper-sidebar {
+  position: fixed;
+  min-height: 100%;
+  z-index: 0;
+  background: #2e2e2e;
+}
 div#wrapper-main {
   position: absolute;
+  min-height: 100%;
+  z-index: 2;
+  background: #ffffff;
 }
 @media only screen and (max-width: 40em) {
   div#wrapper-main {
     top: 30px;
   }
 }
-div#wrapper-sidebar {
-  position: fixed;
-  min-height: 100%;
-  z-index: 0;
-  background: #3c3c3c;
-}
-div#wrapper-main {
-  min-height: 100%;
-  z-index: 2;
-  background: #ffffff;
-}
 /* Sidebar */
-div.sidebar-item {
+a.sidebar-item {
+  display: block;
+  position: relative;
+  height: 64px;
+  background: #3c3c3c;
+  margin-top: 2px !important;
+  margin-bottom: 2px !important;
   color: #ffffff;
+}
+a.sidebar-item.selected:after {
+  position: absolute;
+  content: '';
+  width: 0;
+  height: 0;
+  top: 20px;
+  right: 0;
+  border-style: solid;
+  border-width: 12px 12px 12px 0;
+  border-color: transparent #ffffff transparent transparent;
+  -webkit-transform: rotate(360deg);
+}
+a.sidebar-item.sub {
+  margin-top: 0 !important;
+  margin-bottom: 0 !important;
+  border-top: 1px solid #3c3c3c;
+  border-bottom: 1px solid #3c3c3c;
+  background: #2e2e2e;
+}
+a.sidebar-item.sub.first {
+  border-top: 0;
+  margin-top: -2px !important;
+}
+a.sidebar-item.sub.last {
+  border-bottom: 0;
+  margin-bottom: -2px !important;
+}
+a.sidebar-item.sub div.sidebar-item-icon div {
+  border-radius: 3px;
+  background: #9C9C9C;
+}
+a.sidebar-item:hover {
+  background: #faa638;
+}
+div.sidebar-item-icon {
+  height: 100%;
+}
+div.sidebar-item-icon div {
+  width: 22px;
+  height: 22px;
+  font-size: 22px;
+  line-height: 30px;
+  text-align: center;
+}
+div.sidebar-item-icon div.text {
+  font-size: 16px;
+  line-height: 22px;
+}
+div.sidebar-item-text {
+  height: 100%;
+}
+div.sidebar-item-text > div {
+  width: 100%;
+  height: 100%;
+  display: table;
+}
+div.sidebar-item-text > div > div {
+  display: table-cell;
+  font-size: 16px;
+  vertical-align: middle;
 }

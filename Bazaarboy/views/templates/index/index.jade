@@ -3,22 +3,20 @@
 extends ../layout
 
 block sidebar
-    div.sidebar-item.row.action-btn.create-event(data-profile-id="{{ profile.0.id }}")
+    div.row.action-btn.create-event(data-profile-id="{{ profiles.0.id }}")
         | Create Event
-    +sidebarItem()(class="action-btn")
+    +sidebarItem('ss-newspaper')(class="selected")
         | Events
-    +sidebarItem('sub')(class="action-btn")
+    +sidebarItemSub('{{ currentEventsCount }}')(class="first")
         | Current Events
-    +sidebarItem('sub')(class="action-btn")
-        | Past Events
-    +sidebarItem('sub')(class="action-btn")
+    +sidebarItemSub('{{ draftEventsCount }}')
         | Event Drafts
-    +sidebarItem()(class="action-btn")
+    +sidebarItemSub('{{ pastEventsCount }}')(class="last")
+        | Past Events
+    +sidebarItem('ss-database')
         | Lists
-    +sidebarItem()(class="action-btn")
-        | Account Settings
-    +sidebarItem()(class="action-btn")
-        a(href="{% url user:logout %}") Log Out
+    +sidebarItem('ss-share')
+        | Settings
     
 block content
     mixin currentEvent()

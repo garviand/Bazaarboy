@@ -1,9 +1,20 @@
 //- Mixins
 
-mixin sidebarItem(sub)
-    - sub = sub || ''
-    div.sidebar-item.row(class="#{sub}")
-        div.sidebar-item-icon.large-2.small-2.medium-12.columns
-            | Icon
-        div.sidebar-item-text.large-10.small-10.columns.hide-for-medium-only
-            block
+mixin sidebarItem(icon)
+    - icon = icon || ''
+    a.sidebar-item.row(class!=attributes.class, href!=attributes.href)
+        div.sidebar-item-icon.large-offset-1.large-2.small-2.small-offset-1.medium-12.medium-offset-0.columns
+            div.absolute-center(class="#{icon}")
+        div.sidebar-item-text.large-9.small-9.columns.hide-for-medium-only
+            div
+                div
+                    block
+
+mixin sidebarItemSub(count)
+    a.sidebar-item.sub.row(class!=attributes.class, href!=attributes.href)
+        div.sidebar-item-icon.large-offset-1.large-2.small-2.small-offset-1.medium-12.medium-offset-0.columns
+            div.text.absolute-center= count
+        div.sidebar-item-text.large-9.small-9.columns.hide-for-medium-only
+            div
+                div
+                    block

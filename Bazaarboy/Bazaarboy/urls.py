@@ -32,7 +32,7 @@ profile_urlpatterns = patterns('src.controllers.profile',
 
 event_urlpatterns = patterns('src.controllers.event', 
     url(r'^(?P<id>\d+)/$', 'index', name = 'index'),
-    url(r'^(?p<id>\d+)/(?p<step>(basics)|(design)|(tickets)|(bonus))/$', 
+    url(r'^(?P<id>\d+)/(?P<step>(basics)|(design)|(tickets)|(bonus)|(emails))/$', 
         'modify', name = 'modify'),
     url(r'^(?P<id>\d+)/manage/$', 'manage', name = 'manage'),
     url(r'^$', 'event', name = 'event'),
@@ -49,7 +49,7 @@ event_urlpatterns = patterns('src.controllers.event',
     url(r'^ticket/delete/$', 'delete_ticket', name = 'ticket-delete'),
     url(r'^purchase/$', 'purchase', name = 'purchase'),
     url(r'^purchase/add/$', 'add_purchase', name = 'purchase-add'),
-    url(r'^purchase/csv/$', 'purchase_csv', name = 'purchase-csv'),
+    url(r'^export/$', 'export', name = 'export'),
     url(r'^checkin/$', 'checkin', name = 'checkin'),
 )
 

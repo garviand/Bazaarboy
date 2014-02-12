@@ -18,29 +18,111 @@ div#wrapper-sidebar, div#wrapper-main {
     left: 0;
 }
 
+div#wrapper-sidebar {
+    position: fixed;
+    min-height: 100%;
+    z-index: 0;
+    background: @darker;
+}
+
 div#wrapper-main {
     position: absolute;
-    
+    min-height: 100%;
+    z-index: 2;
+    background: @white;
+
     @media only screen and (max-width: 40em) {
         top: @top-height;
     }
 }
 
-div#wrapper-sidebar {
-    position: fixed;
-    min-height: 100%;
-    z-index: 0;
-    background: @dark;
-}
-
-div#wrapper-main {
-    min-height: 100%;
-    z-index: 2;
-    background: @white;
-}
-
 /* Sidebar */
 
-div.sidebar-item {
+a.sidebar-item {
+    display: block;
+    position: relative;
+    height: 64px;
+    background: @dark;
+    margin-top: 2px !important;
+    margin-bottom: 2px !important;
     color: @white;
+
+    &.selected:after {
+        position: absolute;
+        content: '';
+        width: 0;
+        height: 0;
+        top: 20px;
+        right: 0;
+        border-style: solid;
+        border-width: 12px 12px 12px 0;
+        border-color: transparent @white transparent transparent;
+        -webkit-transform: rotate(360deg);
+    }
+
+    &.sub {
+        margin-top: 0 !important;
+        margin-bottom: 0 !important;
+        border-top: 1px solid @dark;
+        border-bottom: 1px solid @dark;
+        background: @darker;
+
+        &.first {
+            border-top: 0;
+            margin-top: -2px !important;
+        }
+
+        &.last {
+            border-bottom: 0;
+            margin-bottom: -2px !important;
+        }
+
+        div.sidebar-item-icon {
+            div {
+                border-radius: 3px;
+                background: #9C9C9C;
+            }
+        }
+    }
+
+    &:hover {
+        background: @orange;
+
+        div.sidebar-item-icon {
+            //color: @orange;
+        }
+    }
+}
+
+div.sidebar-item-icon {
+    height: 100%;
+
+    div {
+        width: 22px;
+        height: 22px;
+        font-size: 22px;
+        line-height: 30px;
+        text-align: center;
+
+        &.text {
+            font-size: 16px;
+            line-height: 22px;
+        }
+    }
+}
+
+div.sidebar-item-text {
+    height: 100%;
+
+    > div{
+        width: 100%;
+        height: 100%;
+        display: table;
+
+        > div {
+            display: table-cell;
+            font-size: 16px;
+            vertical-align: middle;
+        }
+    }
 }
