@@ -5,4 +5,4 @@ node_modules/*
 *.log
 *~
 Bazaarboy/*/migrations/*
-sublime-project
+.DS_STORE
