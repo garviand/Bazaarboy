@@ -67,7 +67,7 @@ def modify(request, id, step, params, user):
     if not Organizer.objects.filter(event = event, 
                                     profile__managers = user).exists():
         return redirect('index')
-    return render(request, 'event/flow-' + step + '.html', locals())
+    return render(request, 'event/modify-' + step + '.html', locals())
 
 @login_required()
 @validate('GET')
