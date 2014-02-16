@@ -23,10 +23,6 @@ from src.sanitizer import sanitize_redactor_input
 from src.serializer import serialize, serialize_one
 from src.sms import SMS
 
-@task
-def add(x, y):
-    return x + y
-
 @cache_page(60 * 5)
 @login_check()
 @validate('GET', [], ['token', 'preview'])
@@ -63,10 +59,6 @@ def index(request, id, params, user):
             cheapest = ticket.price
     organizers = Event_organizer.objects.filter(event = event)
     return render(request, 'event/index.html', locals())
-
-@task
-def add_nums(x,y):
-    return x + y
 
 @login_required()
 @validate('GET')
