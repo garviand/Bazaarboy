@@ -15,7 +15,7 @@ redactorAllowedAttrs = [
 ]
 iframeAllowedDomains = [
     'www.youtube.com', 'player.vimeo.com', 'w.soundcloud.com', 
-    'manage.bazaarboy.com'
+    'cloud.bazaarboy.com'
 ]
 
 def sanitize_redactor_input(string):
