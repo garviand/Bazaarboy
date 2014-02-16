@@ -106,7 +106,7 @@
       }, function(response) {});
     },
     purchase: function(ticket, quantity, email, fullName, phone) {
-      var params, price, total,
+      var a, b, params, price, total,
         _this = this;
       if (email == null) {
         email = null;
@@ -124,9 +124,12 @@
       price = $('div#rsvp div.ticket.selected div.price b').html();
       price = price.replace(/\$/g, '');
       price = parseFloat(price);
-      console.log(price);
       if (!isNaN(price)) {
-        total = '$ ' + (price * quantity * (1 + 0.05) + 0.5).toFixed(2);
+        total = price * quantity * 100;
+        a = (1 + 0.05) * total + 50;
+        b = (1 + 0.029) * total + 30 + 1000;
+        total = Math.round(Math.min(a, b));
+        total = '$ ' + ((total / 100).toFixed(2));
       }
       $('div#rsvp div.confirmation div.price b').html(total);
       params = {
@@ -148,10 +151,14 @@
           $('div#rsvp div.confirmation div.code b').html(response.purchase.code);
           if (response.publishable_key != null) {
             checkoutDescription = response.purchase.event.name + ' ' + response.purchase.ticket.name;
+            total = response.purchase.price * response.purchase.quantity * 100;
+            a = (1 + 0.05) * total + 50;
+            b = (1 + 0.029) * total + 30 + 1000;
+            total = Math.round(Math.min(a, b));
             StripeCheckout.open({
               key: response.publishable_key,
               address: false,
-              amount: Math.round((response.purchase.price * response.purchase.quantity * (1 + 0.05) + 0.5) * 100),
+              amount: total,
               currency: 'usd',
               name: response.purchase.event.name,
               description: checkoutDescription,

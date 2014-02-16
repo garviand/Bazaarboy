@@ -32,16 +32,20 @@ STRIPE_CURRENCY = 'usd'
 STRIPE_SPONSORSHIP_RATE = 0.01
 STRIPE_TRANSACTION_RATE = 0.05
 STRIPE_TRANSACTION_BASE = 50 # in cents
+STRIPE_TRANSACTION_FEE_MAX= 1000 # in cents
 
-def STRIPE_FEE(amount):
+def STRIPE_TRANSACTION(amount):
     """
-    Calculate the transaction fee (in cents)
+    Calculate the transaction total and fee (in cents)
     """
     rate = STRIPE_TRANSACTION_RATE
     base = STRIPE_TRANSACTION_BASE
-    fee = (1 - 0.029) * amount - 30
-    fee -= (amount - base) / (1 + rate)
-    return fee
+    fMax = STRIPE_TRANSACTION_FEE_MAX
+    a = (1 + rate) * amount + base
+    b = (1 + 0.029) * amount + 30 + fMax
+    total = min(a, b)
+    fee = (1 - 0.029) * total - 30 - amount
+    return int(round(total)), int(round(fee))
 
 # Mandrill
 

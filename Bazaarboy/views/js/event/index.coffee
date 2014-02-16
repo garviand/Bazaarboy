@@ -97,9 +97,12 @@ Bazaarboy.event.index =
         price = $('div#rsvp div.ticket.selected div.price b').html()
         price = price.replace(/\$/g, '')
         price = parseFloat(price)
-        console.log(price)
-        if not isNaN(price)
-            total = '$ ' + (price * quantity * (1 + 0.05) + 0.5).toFixed(2)
+        if not isNaN price
+            total = price * quantity * 100
+            a = (1 + 0.05) * total + 50
+            b = (1 + 0.029) * total + 30 + 1000
+            total = Math.round(Math.min(a, b))
+            total = '$ ' + ((total / 100).toFixed(2))
         $('div#rsvp div.confirmation div.price b').html(total)
         params = 
             ticket: ticket
@@ -118,10 +121,14 @@ Bazaarboy.event.index =
                 if response.publishable_key?
                     checkoutDescription = response.purchase.event.name + ' ' + 
                                           response.purchase.ticket.name
+                    total = response.purchase.price * response.purchase.quantity * 100
+                    a = (1 + 0.05) * total + 50
+                    b = (1 + 0.029) * total + 30 + 1000
+                    total = Math.round(Math.min(a, b))
                     StripeCheckout.open
                         key: response.publishable_key
                         address: false
-                        amount: Math.round((response.purchase.price * response.purchase.quantity * (1 + 0.05) + 0.5) * 100)
+                        amount: total
                         currency: 'usd'
                         name: response.purchase.event.name
                         description: checkoutDescription

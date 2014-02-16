@@ -1146,8 +1146,6 @@ def purchase(request, params, user):
         paymentAccount = creator.payment_account
         # Calculate checkout total
         amount = ticket.price * params['quantity']
-        rate = STRIPE_TRANSACTION_RATE
-        amount = int(round((amount * (1 + rate) + 0.5) * 100))
         # Create the checkout
         checkoutDescription = '%s - %s' % (event.name, ticket.name)
         checkout = Checkout(payer = user, 
