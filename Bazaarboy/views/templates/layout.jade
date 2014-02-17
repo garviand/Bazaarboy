@@ -20,8 +20,12 @@ html(lang="en")
             div#wrapper-sidebar.large-2.medium-1.columns
                 div#sidebar-frame.row
                     div#sidebar-logo.row
-                        a(href="{% url index %}")
-                            img(src="{{ STATIC_URL }}images/logo.png")
+                        div.small-12.columns
+                            a(href="{% url index %}")
+                                div.logo.small-2.columns
+                                    img(src="{{ STATIC_URL }}images/logo.png")
+                                div.text.small-10.columns
+                                    | Bazaarboy
                     block sidebar
                     +sidebarItem('ss-login')(href="{% url user:logout %}")
                         | Log Out

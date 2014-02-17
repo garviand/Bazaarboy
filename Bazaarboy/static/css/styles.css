@@ -5542,6 +5542,27 @@ th.hide-for-touch {
 .action-btn {
   cursor: pointer;
 }
+.primary-btn {
+  border-radius: 4px;
+  -moz-box-shadow: inset 0px -3px 0px 0px #f39700;
+  -webkit-box-shadow: inset 0px -3px 0px 0px #f39700;
+  box-shadow: inset 0px -3px 0px 0px #f39700;
+  background: #FFFFFF;
+  background-image: -o-linear-gradient(-90deg, #ffefd5 0%, #faca7a 100%);
+  background-image: -moz-linear-gradient(-90deg, #ffefd5 0%, #faca7a 100%);
+  background-image: -webkit-linear-gradient(-90deg, #ffefd5 0%, #faca7a 100%);
+  background-image: -ms-linear-gradient(-90deg, #ffefd5 0%, #faca7a 100%);
+  background-image: linear-gradient(-180deg, #ffefd5 0%, #faca7a 100%);
+  background-image: -o-linear-gradient(-86deg, rgba(255, 207, 45, 0.75) 19%, #ffcf2d 56%);
+  background-image: -moz-linear-gradient(-86deg, rgba(255, 207, 45, 0.75) 19%, #ffcf2d 56%);
+  background-image: -webkit-linear-gradient(-86deg, rgba(255, 207, 45, 0.75) 19%, #ffcf2d 56%);
+  background-image: -ms-linear-gradient(-86deg, rgba(255, 207, 45, 0.75) 19%, #ffcf2d 56%);
+  background-image: linear-gradient(-176deg, rgba(255, 207, 45, 0.75) 19%, #ffcf2d 56%);
+  color: #FFFFFF;
+  font-weight: 700;
+  text-shadow: 1px 2px 0px #ED9400;
+  cursor: pointer;
+}
 /* Layout */
 html,
 body {
@@ -5549,6 +5570,7 @@ body {
   font-family: "Gotham SSm A", "Gotham SSm B", sans-serif;
   font-weight: 400;
   font-style: normal;
+  -webkit-font-smoothing: antialiased;
 }
 div#wrapper-top {
   position: relative;
@@ -5579,6 +5601,31 @@ div#wrapper-main {
   }
 }
 /* Sidebar */
+div#wrapper-sidebar div#sidebar-logo > div > a {
+  display: block;
+  height: 40px;
+  margin-top: 24px;
+  margin-bottom: 12px;
+  border: 4px solid #F5A623;
+}
+div#wrapper-sidebar div#sidebar-logo > div > a div.text {
+  color: #F5A623;
+  font-weight: 700;
+  text-align: center;
+  text-transform: uppercase;
+}
+div#wrapper-sidebar div.create-event div.primary-btn {
+  margin: 12px 0;
+  padding-top: 11px;
+  padding-bottom: 14px;
+  font-size: 15px;
+  text-align: center;
+  text-transform: uppercase;
+}
+div#wrapper-sidebar div.create-event div.primary-btn span.plus {
+  font-size: 18px;
+  line-height: 12px;
+}
 a.sidebar-item {
   display: block;
   position: relative;

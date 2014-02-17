@@ -3,8 +3,12 @@
 extends ../layout
 
 block sidebar
-    div.row.action-btn.create-event(data-profile-id="{{ profiles.0.id }}")
-        | Create Event
+    div.row.create-event(data-profile-id="{{ profiles.0.id }}")
+        div.small-12.columns
+            div.primary-btn.hide-for-medium-only
+                | <span class="plus">+</span> Create Event
+            div.primary-btn.show-for-medium-only
+                | <span class="plus">+</span>
     +sidebarItem('ss-newspaper')(class="selected")
         | Events
     +sidebarItemSub('{{ currentEventsCount }}')(class="first")
