@@ -5632,6 +5632,9 @@ div#wrapper-main {
   }
 }
 /* Sidebar */
+div#wrapper-sidebar div#sidebar-logo {
+  margin-bottom: 20px;
+}
 div#wrapper-sidebar div#sidebar-logo a {
   display: block;
   width: 200px;
@@ -5669,6 +5672,7 @@ div#wrapper-sidebar div#sidebar-logo a div.text {
 }
 div#wrapper-sidebar div.create-event {
   padding: 6px 16px;
+  padding-top: 0;
 }
 @media only screen and (min-width: 40.063em) and (max-width: 64em) {
   div#wrapper-sidebar div.create-event {
