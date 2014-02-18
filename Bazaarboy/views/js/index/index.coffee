@@ -10,7 +10,7 @@ Bazaarboy.index.index =
     init: () ->
         scope = this
         # Create event
-        $('div.action-btn.create-event').click () ->
+        $('div.create-event').click () ->
             profileId = $(this).attr('data-profile-id')
             scope.createEvent profileId
             return
