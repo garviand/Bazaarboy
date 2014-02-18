@@ -33,3 +33,6 @@ block content
             input(type="text", name="location", value="{{ event.location }}", placeholder="Event location")
             br
             input(type="submit", value="Next")
+
+append scripts
+    script(src="{{ STATIC_URL }}js/event/flow-basics.js")

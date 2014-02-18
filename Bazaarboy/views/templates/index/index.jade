@@ -3,15 +3,18 @@
 extends ../layout
 
 block sidebar
-    div.row.action-btn.create-event(data-profile-id="{{ profiles.0.id }}")
-        | Create Event
+    div.create-event(data-profile-id="{{ profiles.0.id }}")
+        div.primary-btn.hide-for-medium-only
+            | <span class="plus">+</span> Create Event
+        div.primary-btn.show-for-medium-only
+            | <span class="plus">+</span>
     +sidebarItem('ss-newspaper')(class="selected")
         | Events
     +sidebarItemSub('{{ currentEventsCount }}')(class="first")
         | Current Events
     +sidebarItemSub('{{ draftEventsCount }}')
         | Event Drafts
-    +sidebarItemSub('{{ pastEventsCount }}')(class="last")
+    +sidebarItemSub('{{ pastEventsCount }}')
         | Past Events
     +sidebarItem('ss-database')
         | Lists
@@ -21,13 +24,15 @@ block sidebar
 block content
     mixin currentEvent()
         div.current-event.row
-            div.medium-12.columns.tile
-                div
-                    div.current-event-date
-                    div.current-event-title
+            div.small-12.columns.tile
+                div.header
+                    div.current-event-collapse.large-1.medium-1.columns
+                        span.ss-navigateup
+                    div.current-event-title.large-9.medium-8.columns
                         | {{ event.name }}
-                    div.current-event-view
-                    div.current-event-collapse.end
+                    div.current-event-view.large-2.medium-3.columns
+                        a.secondary-btn(href="{% url event:index event.id %}?preview") 
+                            | View Event
                 div
                     div.current-event-stats.medium-8.columns
                         div.medium-4.columns
@@ -68,8 +73,12 @@ block content
                 div
                     div.medium-12.columns
                         | Bonus
+    div.page-header.tile
+        div.icon.ss-newpaper
     div#wrapper-dashboard.medium-9.columns.small-centered
+        {% for event in currentEvents %}
         +currentEvent()
+        {% endfor %}
 
 append script
     script(src="{{ STATIC_URL }}js/index/index.js")

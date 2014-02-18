@@ -78,6 +78,10 @@ def charge(request, params, user):
             'message':'This checkout doesn\'t belong to any purchase.'
         }
         return json_response(response)
+    purchase = Purchase.objects.get(checkout = checkout)
+    creator = Organizer.objects.get(event = purchase.event, 
+                                    is_creator = True).profile
+    isNonProfit = creator.is_non_profit and creator.is_verified
     if checkout.is_charged:
         response = {
             'status':'FAIL',
@@ -86,9 +90,9 @@ def charge(request, params, user):
         }
         return json_response(response)
     try:
-        fee = int(round(STRIPE_FEE(checkout.amount)))
+        total, fee = STRIPE_TRANSACTION(checkout.amount * 100, isNonProfit)
         charge = stripe.Charge.create(
-            amount = checkout.amount,
+            amount = total,
             currency = STRIPE_CURRENCY,
             card = params['stripe_token'],
             description = checkout.description,
@@ -105,7 +109,6 @@ def charge(request, params, user):
         }
         return json_response(response)
     else:
-        purchase = Purchase.objects.get(checkout = checkout)
         sendEventConfirmationEmail(purchase)
         sendEventConfirmationSMS(purchase)
         response = {

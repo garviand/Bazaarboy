@@ -67,7 +67,7 @@ def modify(request, id, step, params, user):
     if not Organizer.objects.filter(event = event, 
                                     profile__managers = user).exists():
         return redirect('index')
-    return render(request, 'event/flow-' + step + '.html', locals())
+    return render(request, 'event/modify-' + step + '.html', locals())
 
 @login_required()
 @validate('GET')
@@ -936,7 +936,7 @@ def purchase(request, params, user):
                     'message':'There aren\'t enough tickets left.'
                 }
                 return json_response(response)
-            amount += ticket.price * ticket.price
+            amount += ticket.price * details[ticket.id]
         # All checks done, save user information
         user.save()
         # Check if the purchase is in fact an RSVP action (free)
@@ -971,15 +971,10 @@ def purchase(request, params, user):
         creator = Organizer.objects.get(event = event, 
                                         is_creator = True).profile
         paymentAccount = creator.payment_account
-        # Calculate checkout total
-        rate = STRIPE_TRANSACTION_RATE
-        if creator.is_non_profit:
-            rate = STRIPE_TRANSACTION_RATE_NP
-        _amount = int(round((amount * (1 + rate) + 0.5) * 100)) # in cents
         # Create the checkout
         checkout = Checkout(payer = user, 
                             payee = paymentAccount, 
-                            amount = _amount, 
+                            amount = amount, 
                             description = event.name)
         checkout.save()
         # Create the purchase

@@ -6,6 +6,7 @@ html(lang="en")
                 block title
                     | Bazaarboy
             link(rel="shortcut icon", href="{{ STATIC_URL }}images/logo.png")
+            line(rel="stylesheet", href="//cloud.typography.com/7993072/806564/css/fonts.css")
             link(rel="stylesheet", href="{{ STATIC_URL }}css/styles.css")
             link(rel="stylesheet", href="{{ STATIC_URL }}gizmo/ss-gizmo.css")
             include components/analytics
@@ -16,21 +17,27 @@ html(lang="en")
             div#wrapper-top.small-12.columns.show-for-small.only
                 block top
                     include components/top
-            div#wrapper-sidebar.large-2.medium-1.columns
-                div#sidebar-frame.row
-                    div#sidebar-logo.row
-                        a(href="{% url index %}")
-                            img(src="{{ STATIC_URL }}images/logo.png")
+            div#wrapper-sidebar
+                div#sidebar-frame
+                    div#sidebar-logo
+                        a(href="{% url index %}").clearfix
+                            div.logo.left
+                                img.absolute-center(src="{{ STATIC_URL }}images/logo.png")
+                            div.text.left.hide-for-medium-only
+                                | Bazaarboy
                     block sidebar
                     +sidebarItem('ss-login')(href="{% url user:logout %}")
                         | Log Out
-            div#wrapper-main.large-10.large-offset-2.medium-11.medium-offset-1.columns
-                div#main-frame.small-12
-                    div#wrapper-content.row
-                        block content
-                    div#wrapper-bottom.row
-                        block bottom
-                            include components/bottom
+            div#wrapper-main
+                div#main-header
+                    block header
+                div.row
+                    div#main-frame.small-12
+                        div#wrapper-content.row
+                            block content
+                        div#wrapper-bottom.row
+                            block bottom
+                                include components/bottom
         div#scripts
             block script
                 script(src="{{ STATIC_URL }}js/libraries.js")

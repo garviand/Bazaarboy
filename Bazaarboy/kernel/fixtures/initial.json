@@ -1,1 +1,0 @@
-[{"pk": 1, "model": "kernel.city", "fields": {"latitude": 38.627222, "state": "MO", "pseudo": 1, "name": "St. Louis", "longitude": -90.197778}}, {"pk": 1, "model": "kernel.community", "fields": {"latitude": 38.627222, "city": 1, "name": "St. Louis", "longitude": -90.197778, "description": ""}}]
