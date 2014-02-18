@@ -860,6 +860,24 @@ div#pricing .fees .fees_content .boxes .caption.bboy_caption .subtext {
 div#pricing .fees .fees_content .boxes .caption.cc_caption {
   width: 480px;
 }
+div#pricing .fees .fees_content .boxes .caption.cc_caption .fees_calculator {
+  line-height: 1.75em;
+}
+div#pricing .fees .fees_content .boxes .caption.cc_caption .fees_calculator .calculator_left {
+  float: left;
+  width: 192px;
+}
+div#pricing .fees .fees_content .boxes .caption.cc_caption .fees_calculator .calculator_left input[name=ticket_price] {
+  font-size: 14px;
+  width: 144px;
+}
+div#pricing .fees .fees_content .boxes .caption.cc_caption .fees_calculator .calculator_left .non_prof_label {
+  font-size: 14px;
+}
+div#pricing .fees .fees_content .boxes .caption.cc_caption .fees_calculator .calculator_right {
+  float: right;
+  width: 240px;
+}
 div#pricing .stripe {
   width: 100%;
 }

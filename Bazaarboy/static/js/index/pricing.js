@@ -1,6 +1,59 @@
 (function() {
   this.Bazaarboy.pricing = {
+    fees: {
+      bazaarboy: {
+        service: .02,
+        non_prof: .01,
+        cc: .03,
+        extra: .5,
+        max: 10
+      },
+      eventbrite: {
+        service: .025,
+        non_prof: .02,
+        cc: .03,
+        extra: .99,
+        max: 9.95
+      },
+      ticketleap: {
+        service: .02,
+        non_prof: .02,
+        cc: .03,
+        extra: 1,
+        max: 10
+      }
+    },
+    calculate_fee: function(amount, company) {
+      var total;
+      if ($('.fees_calculator input[name=nonprofit]').is(':checked')) {
+        total = Math.min(company.max, (amount * company.non_prof) + company.extra) + (amount * company.cc);
+      } else {
+        total = Math.min(company.max, (amount * company.service) + company.extra) + (amount * company.cc);
+      }
+      return total;
+    },
+    print_fees: function() {
+      var price, raw_price;
+      raw_price = $(".fees_calculator input[name=ticket_price]").val();
+      price = parseFloat(raw_price);
+      if (!isNaN(price)) {
+        $(".calculator_price.bazaarboy").html('&nbsp;-&nbsp;$' + this.calculate_fee(price, this.fees.bazaarboy).toFixed(2) + '<br />');
+        $(".calculator_price.eventbrite").html('&nbsp;-&nbsp;$' + this.calculate_fee(price, this.fees.eventbrite).toFixed(2) + '<br />');
+        $(".calculator_price.ticketleap").html('&nbsp;-&nbsp;$' + this.calculate_fee(price, this.fees.ticketleap).toFixed(2) + '<br />');
+      } else {
+        $(".calculator_price.bazaarboy").html('&nbsp;-&nbsp;$0<br />');
+        $(".calculator_price.eventbrite").html('&nbsp;-&nbsp;$0<br />');
+        $(".calculator_price.ticketleap").html('&nbsp;-&nbsp;$0<br />');
+      }
+    },
     init: function() {
+      var _this = this;
+      $(".fees_calculator input[name=ticket_price]").keyup(function() {
+        return _this.print_fees();
+      });
+      $(".fees_calculator input[name=nonprofit]").click(function() {
+        return _this.print_fees();
+      });
       $(".pricing_content .scrolling_input a").click(function() {
         var orgEmail, orgName;
         orgName = $(".pricing_content .scrolling_input input[name=name]").val();
