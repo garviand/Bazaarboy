@@ -4,7 +4,9 @@
     index: {}
     user: {}
     profile: {}
-    event: {}
+    event: {
+        modify: {}
+    }
     admin: {}
     # Shortcut for endpoint redirect
     redirect: (endpoint) ->
