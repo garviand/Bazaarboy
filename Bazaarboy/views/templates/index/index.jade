@@ -3,19 +3,18 @@
 extends ../layout
 
 block sidebar
-    div.row.create-event(data-profile-id="{{ profiles.0.id }}")
-        div.small-12.columns
-            div.primary-btn.hide-for-medium-only
-                | <span class="plus">+</span> Create Event
-            div.primary-btn.show-for-medium-only
-                | <span class="plus">+</span>
+    div.create-event(data-profile-id="{{ profiles.0.id }}")
+        div.primary-btn.hide-for-medium-only
+            | <span class="plus">+</span> Create Event
+        div.primary-btn.show-for-medium-only
+            | <span class="plus">+</span>
     +sidebarItem('ss-newspaper')(class="selected")
         | Events
     +sidebarItemSub('{{ currentEventsCount }}')(class="first")
         | Current Events
     +sidebarItemSub('{{ draftEventsCount }}')
         | Event Drafts
-    +sidebarItemSub('{{ pastEventsCount }}')(class="last")
+    +sidebarItemSub('{{ pastEventsCount }}')
         | Past Events
     +sidebarItem('ss-database')
         | Lists
