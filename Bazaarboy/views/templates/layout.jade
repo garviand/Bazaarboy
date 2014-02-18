@@ -29,6 +29,8 @@ html(lang="en")
                     +sidebarItem('ss-login')(href="{% url user:logout %}")
                         | Log Out
             div#wrapper-main
+                div#main-header
+                    block header
                 div.row
                     div#main-frame.small-12
                         div#wrapper-content.row

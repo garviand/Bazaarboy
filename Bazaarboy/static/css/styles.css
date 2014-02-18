@@ -5564,6 +5564,20 @@ th.hide-for-touch {
   text-shadow: 1px 2px 0px #ED9400;
   cursor: pointer;
 }
+.secondary-btn {
+  border-radius: 8px;
+  -moz-box-shadow: inset 0px -5px 0px 0px #00bd84;
+  -webkit-box-shadow: inset 0px -5px 0px 0px #00bd84;
+  box-shadow: inset 0px -5px 0px 0px #00bd84;
+  background: #5AE8BE;
+  background-image: -o-linear-gradient(-90deg, #5ae8be 0%, #00bd84 100%);
+  background-image: -moz-linear-gradient(-90deg, #5ae8be 0%, #00bd84 100%);
+  background-image: -webkit-linear-gradient(-90deg, #5ae8be 0%, #00bd84 100%);
+  background-image: -ms-linear-gradient(-90deg, #5ae8be 0%, #00bd84 100%);
+  background-image: linear-gradient(-180deg, #5ae8be 0%, #00bd84 100%);
+  color: #FFFFFF;
+  text-shadow: 1px 2px 0px #00BD84;
+}
 /* Layout */
 html,
 body {
@@ -5575,8 +5589,8 @@ body {
 }
 div#wrapper-top {
   position: relative;
-  height: 30px;
-  z-index: 2;
+  height: 48px;
+  z-index: 3;
   background: #3c3c3c;
 }
 div#wrapper-sidebar,
@@ -5608,7 +5622,8 @@ div#wrapper-main {
 @media only screen and (max-width: 40em) {
   div#wrapper-main {
     padding-left: 0;
-    top: 30px;
+    top: 48px;
+    z-index: 2;
   }
 }
 @media only screen and (min-width: 40.063em) and (max-width: 64em) {
@@ -5621,7 +5636,7 @@ div#wrapper-sidebar div#sidebar-logo a {
   display: block;
   width: 200px;
   height: 48px;
-  border: 4px solid #F5A623;
+  border: 3px solid #F5A623;
 }
 @media only screen and (min-width: 40.063em) and (max-width: 64em) {
   div#wrapper-sidebar div#sidebar-logo a {
@@ -5630,12 +5645,12 @@ div#wrapper-sidebar div#sidebar-logo a {
 }
 div#wrapper-sidebar div#sidebar-logo a div.logo {
   position: relative;
-  width: 40px;
-  height: 40px;
+  width: 42px;
+  height: 42px;
 }
 @media only screen and (min-width: 40.063em) and (max-width: 64em) {
   div#wrapper-sidebar div#sidebar-logo a div.logo {
-    width: 56px;
+    width: 58px;
   }
 }
 div#wrapper-sidebar div#sidebar-logo a div.logo img {
@@ -5645,10 +5660,9 @@ div#wrapper-sidebar div#sidebar-logo a div.logo img {
 div#wrapper-sidebar div#sidebar-logo a div.text {
   width: 152px;
   height: 18px;
-  padding: 11px 0;
+  padding: 12px 0;
   color: #F5A623;
   font-size: 18px;
-  font-weight: 700;
   line-height: 18px;
   text-align: center;
   text-transform: uppercase;
@@ -5770,4 +5784,19 @@ div.sidebar-item-text > div > div {
   display: table-cell;
   font-size: 16px;
   vertical-align: middle;
+}
+/* Main */
+div#main-header {
+  width: 100%;
+  height: 48px;
+  background: #f6f6f6;
+}
+div.current-event {
+  margin-top: 40px !important;
+}
+div.current-event > div.tile {
+  border-radius: 4px;
+}
+div.current-event > div.tile div.header {
+  height: 64px;
 }

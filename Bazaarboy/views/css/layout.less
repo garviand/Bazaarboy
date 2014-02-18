@@ -13,7 +13,7 @@ html, body {
 div#wrapper-top {
     position: relative;
     height: @top-height;
-    z-index: 2;
+    z-index: 3;
     background: @dark;
 }
 
@@ -28,6 +28,7 @@ div#wrapper-sidebar {
     min-height: 100%;
     z-index: 1;
     background: @darker;
+    //transition: width 0.5s;
 
     @media @media_medium {
         width: @sidebar-width-collapsed;
@@ -46,6 +47,7 @@ div#wrapper-main {
     @media @media_small {
         padding-left: 0;
         top: @top-height;
+        z-index: 2;
     }
 
     @media @media_medium {
@@ -61,7 +63,7 @@ div#wrapper-sidebar {
             display: block;
             width: @sidebar-width;
             height: 48px;
-            border: 4px solid #F5A623;
+            border: 3px solid #F5A623;
 
             @media @media_medium {
                 width: @sidebar-width-collapsed;
@@ -69,11 +71,11 @@ div#wrapper-sidebar {
 
             div.logo {
                 position: relative;
-                width: 40px;
-                height: 40px;
+                width: 42px;
+                height: 42px;
 
                 @media @media_medium {
-                    width: @sidebar-width-collapsed - 4px * 2;
+                    width: @sidebar-width-collapsed - 3px * 2;
                 }
 
                 img {
@@ -83,12 +85,11 @@ div#wrapper-sidebar {
             }
 
             div.text {
-                width: @sidebar-width - 4px * 2 - 40px;
+                width: @sidebar-width - 3px * 2 - 42px;
                 height: 18px;
-                padding: 11px 0;
+                padding: 12px 0;
                 color: #F5A623;
                 font-size: 18px;
-                font-weight: 700;
                 line-height: 18px;
                 text-align: center;
                 text-transform: uppercase;
@@ -233,4 +234,12 @@ div.sidebar-item-text {
             vertical-align: middle;
         }
     }
+}
+
+/* Main */
+
+div#main-header {
+    width: 100%;
+    height: @top-height;
+    background: @grey;
 }
