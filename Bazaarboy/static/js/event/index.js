@@ -106,7 +106,7 @@
       }, function(response) {});
     },
     purchase: function(ticket, quantity, email, fullName, phone) {
-      var a, b, params, price, total,
+      var a, b, bboy_fee, params, price, total,
         _this = this;
       if (email == null) {
         email = null;
@@ -120,6 +120,7 @@
       this.purchaseInProgress = true;
       $('div#rsvp div.action a.confirm').css('display', 'none');
       $('div#rsvp div.action div.loading').removeClass('hidden');
+      bboy_fee = Math.min();
       total = 'Free';
       price = $('div#rsvp div.ticket.selected div.price b').html();
       price = price.replace(/\$/g, '');

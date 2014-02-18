@@ -518,6 +518,24 @@ div#pricing {
                     }
                     &.cc_caption{
                         width: (@column_width * 10);
+                        .fees_calculator{
+                            line-height: 1.75em;
+                            .calculator_left{
+                                float: left;
+                                width: (@column_width * 4);
+                                input[name=ticket_price]{
+                                    font-size: @font_size_base - 2;
+                                    width: (@column_width * 3);
+                                }
+                                .non_prof_label{
+                                    font-size: @font_size_base - 2;
+                                }
+                            }
+                            .calculator_right{
+                                float: right;
+                                width: (@column_width * 5);
+                            }
+                        }
                     }
                 }
             }

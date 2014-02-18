@@ -75,7 +75,8 @@ def celeryWorker():
     Start celery worker process
     """
     with lcd('./Bazaarboy/'):
-        local('python manage.py celery worker --loglevel=info')
+        pass
+        #local('python manage.py celery worker --loglevel=info')
 
 def dev(port=8080, celery=True):
     """

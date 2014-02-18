@@ -39,7 +39,25 @@ block body
 						div.caption.bboy_caption
 							| For every ticket you sell using Bazaarboy, we charge 2% + $0.50 of the ticket value.
 							div.subtext *service fee for 501(c)(3) organizations is 1% + $0.50
-						div.caption.cc_caption &nbsp;
+						div.caption.cc_caption
+							div.fees_calculator
+								form(name="calculator")
+									div.calculator_left
+										label Compare Fees
+										input(name="ticket_price", type="text", placeholder="Enter Ticket Price")
+										br
+										input(type="checkbox", name="nonprofit")
+										label.non_prof_label &nbsp;non profit fee
+									div.calculator_right
+										label Bazaarboy
+										span.calculator_price.bazaarboy  - $0
+											br
+										label Eventbrite
+										span.calculator_price.eventbrite  - $0
+											br
+										label Ticketleap
+										span.calculator_price.ticketleap  - $0
+											br
 						div.clear
 			div.stripe
 				div.stripe_content
