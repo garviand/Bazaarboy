@@ -15,7 +15,7 @@
     init: function() {
       var scope;
       scope = this;
-      $('div.action-btn.create-event').click(function() {
+      $('div.create-event').click(function() {
         var profileId;
         profileId = $(this).attr('data-profile-id');
         scope.createEvent(profileId);
