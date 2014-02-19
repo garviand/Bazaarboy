@@ -3,7 +3,9 @@
     index: {},
     user: {},
     profile: {},
-    event: {},
+    event: {
+      modify: {}
+    },
     admin: {},
     redirect: function(endpoint) {
       var redirectUrl;
