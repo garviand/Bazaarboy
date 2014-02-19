@@ -1,5 +1,9 @@
 extends ../layout
 
+append head
+    link(rel="stylesheet", href="{{ STATIC_URL }}jQueryUI/jquery-ui.css")
+    link(rel="stylesheet", href="{{ STATIC_URL }}pikaday/pikaday.css")
+
 block sidebar
     +sidebarItem('ss-file')(href="{% url event:modify id 'basics' %}", class="selected")
         | Basic information
@@ -34,5 +38,12 @@ block content
             br
             input(type="submit", value="Next")
 
-append scripts
+append script
+    script(src="{{ STATIC_URL }}jQueryUI/jquery-ui.min.js")
+    script(src="{{ STATIC_URL }}jQueryUI/jquery-ui.autocomplete.html.js")
+    script(src="{{ STATIC_URL }}timeautocomplete/jquery.timeAutocomplete.js")
+    script(src="{{ STATIC_URL }}timeautocomplete/formatters/ampm.js")
+    script(src="{{ STATIC_URL }}moment/moment.min.js")
+    script(src="{{ STATIC_URL }}pikaday/pikaday.js")
+    script(src="{{ STATIC_URL }}pikaday/pikaday.jquery.js")
     script(src="{{ STATIC_URL }}js/event/modify-basics.js")
