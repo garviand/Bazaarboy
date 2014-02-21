@@ -1,5 +1,5 @@
 Bazaarboy.event.modify.basics =
-    save: (params, cb) ->=
+    save: (params, cb) ->
         if token?
             params.token = token
         Bazaarboy.post 'event/edit/', params, (response) ->
@@ -35,7 +35,7 @@ Bazaarboy.event.modify.basics =
                 return
             endTime = moment(endDate + ' ' + endTime, 'MM/DD/YYYY h:mm A')
         Bazaarboy.event.modify.basics.save
-            id: id
+            id: eventId
             start_time: startTime.utc().format('YYYY-MM-DD HH:mm:ss')
             end_time: if endTime then endTime.utc().format('YYYY-MM-DD HH:mm:ss') else 'none'
             name: name
@@ -71,7 +71,7 @@ Bazaarboy.event.modify.basics =
         originalEndTime = $("form.event-modify input[name=end_time]").val()
         $("form.event-modify input[name=start_time], form.event-modify input[name=end_time]").timeAutocomplete
             blur_empty_populate: false
-        $("form.event-modify input[name=start_time]").val(originalStartTime) 
+        $("form.event-modify input[name=start_time]").val(originalStartTime)
         $("form.event-modify input[name=end_time]").val(originalEndTime)
         # DATE AUTOCOMPLETE
         $('form.event-modify input[name=start_date]').pikaday

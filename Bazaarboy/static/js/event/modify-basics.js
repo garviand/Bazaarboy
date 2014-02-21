@@ -1,7 +1,6 @@
 (function() {
   Bazaarboy.event.modify.basics = {
     save: function(params, cb) {
-      params.id = eventId;
       if (typeof token !== "undefined" && token !== null) {
         params.token = token;
       }
@@ -47,6 +46,7 @@
         endTime = moment(endDate + ' ' + endTime, 'MM/DD/YYYY h:mm A');
       }
       Bazaarboy.event.modify.basics.save({
+        id: eventId,
         start_time: startTime.utc().format('YYYY-MM-DD HH:mm:ss'),
         end_time: endTime ? endTime.utc().format('YYYY-MM-DD HH:mm:ss') : 'none',
         name: name,
