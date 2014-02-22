@@ -17,7 +17,7 @@
         }
       });
     },
-    auto_save: function() {
+    autoSave: function() {
       var endDate, endTime, latitude, location, longitude, name, startDate, startTime, summary,
         _this = this;
       name = $("form.event-modify input[name=name]").val();
@@ -45,7 +45,7 @@
         }
         endTime = moment(endDate + ' ' + endTime, 'MM/DD/YYYY h:mm A');
       }
-      Bazaarboy.event.modify.basics.save({
+      this.save({
         id: eventId,
         start_time: startTime.utc().format('YYYY-MM-DD HH:mm:ss'),
         end_time: endTime ? endTime.utc().format('YYYY-MM-DD HH:mm:ss') : 'none',
@@ -56,7 +56,7 @@
         longitude: longitude
       }, function(err, event) {
         if (!err) {
-          console.log(event);
+          console.log('Saved.');
         } else {
           console.log(err);
         }
@@ -64,7 +64,7 @@
     },
     fetchCoordinates: function(reference) {
       var location, placesService;
-      location = $('form.event-modify input[name=location]').get(0);
+      location = $('form.event-modify input[name=location]').val();
       placesService = new google.maps.places.PlacesService(location);
       placesService.getDetails({
         reference: reference
@@ -78,7 +78,9 @@
     init: function() {
       var googleAutocomplete, originalEndTime, originalStartTime,
         _this = this;
-      setInterval(this.auto_save, 10000);
+      setInterval((function() {
+        _this.autoSave();
+      }), 5000);
       originalStartTime = $("form.event-modify input[name=start_time]").val();
       originalEndTime = $("form.event-modify input[name=end_time]").val();
       $("form.event-modify input[name=start_time], form.event-modify input[name=end_time]").timeAutocomplete({

@@ -6,7 +6,7 @@ append head
 
 block sidebar
     +sidebarItem('ss-file')(href="{% url event:modify id 'basics' %}", class="selected")
-        | Basic information
+        | Basics
     +sidebarItem('ss-picture')(href="{% url event:modify id 'design' %}")
         | Page design
     +sidebarItem('ss-tag')(href="{% url event:modify id 'tickets' %}")
@@ -41,7 +41,6 @@ block content
             input(type="hidden", name="longitude", value="{{ event.longitude }}")
 
 append script
-    script(src="{{ STATIC_URL }}JSON-js/json2.js")
     script(src="{{ STATIC_URL }}jQueryUI/jquery-ui.min.js")
     script(src="{{ STATIC_URL }}jQueryUI/jquery-ui.autocomplete.html.js")
     script(src="{{ STATIC_URL }}timeautocomplete/jquery.timeAutocomplete.js")

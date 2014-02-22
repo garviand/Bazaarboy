@@ -61,38 +61,56 @@ div#wrapper-sidebar {
     div#sidebar-logo {
         margin-bottom: 20px;
 
+        @media @media_medium {
+            margin-bottom: 0;
+        }
+
         a {
             display: block;
-            width: @sidebar-width;
-            height: 48px;
+            width: @sidebar-width - 10px * 2;
+            height: @top-height - 10px * 2;
+            margin: 10px;
             border: 3px solid #F5A623;
 
             @media @media_medium {
                 width: @sidebar-width-collapsed;
+                height: @top-height;
+                margin: 0;
+                border: none;
             }
+
+            @logo-size: @top-height - 10px * 2 - 3px * 2;
 
             div.logo {
                 position: relative;
-                width: 42px;
-                height: 42px;
+                width: @logo-size;
+                height: @logo-size;
 
                 @media @media_medium {
-                    width: @sidebar-width-collapsed - 3px * 2;
+                    width: @sidebar-width-collapsed;
+                    height: @top-height;
                 }
 
                 img {
-                    width: 34px;
-                    height: 34px;
+                    width: 24px;
+                    height: 24px;
+
+                    @media @media_medium {
+                        width: 30px;
+                        height: 30px;
+                    }
                 }
             }
 
+            @text-size: @sidebar-width - 10px * 2 - 3px * 2 - @logo-size;
+
             div.text {
-                width: @sidebar-width - 3px * 2 - 42px;
-                height: 18px;
-                padding: 12px 0;
+                width: @text-size;
+                height: 16px;
+                padding: (@logo-size - 16px) / 2 0;
                 color: #F5A623;
-                font-size: 18px;
-                line-height: 18px;
+                font-size: 16px;
+                line-height: 16px;
                 text-align: center;
                 text-transform: uppercase;
             }
@@ -109,10 +127,17 @@ div#wrapper-sidebar {
 
         div.primary-btn {
             margin: 12px 0;
+            margin-top: 22px;
             padding-top: 11px;
             padding-bottom: 14px;
             font-size: 15px;
             text-transform: uppercase;
+
+            @media @media_medium {
+                margin-top: 0;
+                padding-top: 6px;
+                padding-bottom: 9px;
+            }
 
             span.plus {
                 font-size: 18px;
@@ -126,7 +151,7 @@ a.sidebar-item {
     display: block;
     position: relative;
     width: @sidebar-width;
-    height: 64px;
+    height: @sidebar-item-height;
     background: @dark;
     margin-top: 2px;
     margin-bottom: 2px;
@@ -151,7 +176,7 @@ a.sidebar-item {
         content: '';
         width: 0;
         height: 0;
-        top: 20px;
+        top: (@sidebar-item-height - 24px) / 2;
         right: 0;
         border-style: solid;
         border-width: 12px 12px 12px 0;
@@ -160,14 +185,14 @@ a.sidebar-item {
     }
 
     &.sub {
-        height: 66px;
+        height: @sidebar-item-height + 2px;
         margin-top: 0;
         margin-bottom: 0;
         border-top: 2px solid @dark;
         background: @darker;
 
         &.first {
-            height: 64px;
+            height: @sidebar-item-height;
             border-top: 0;
         }
 
@@ -194,8 +219,8 @@ a.sidebar-item {
 
 div.sidebar-item-icon {
     position: absolute;
-    width: 64px;
-    height: 64px;
+    width: @sidebar-item-height;
+    height: @sidebar-item-height;
     top: 0;
     left: 0;
 
@@ -215,10 +240,10 @@ div.sidebar-item-icon {
 
 div.sidebar-item-text {
     position: absolute;
-    width: @sidebar-width - 64px;
-    height: 64px;
+    width: @sidebar-width - @sidebar-item-height;
+    height: @sidebar-item-height;
     top: 0;
-    left: 64px;
+    left: @sidebar-item-height;
     background: @dark;
 
     @media @media_medium {

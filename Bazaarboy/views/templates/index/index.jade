@@ -38,31 +38,31 @@ block content
                         div.medium-4.columns
                         div.medium-8.columns
                     div.current-event-actions.medium-4.columns
-                        div.current-event-action.clearfix
-                            div.left
-                                | Icon
-                            div.left
-                                | Edit/Add Features
-                        div.current-event-action.clearfix
+                        a.current-event-action.clearfix(href="{% url event:modify event.id 'basics' %}")
                             div.left
                                 | Icon
                             div.left
                                 | Basic Information
-                        div.current-event-action.clearfix
+                        a.current-event-action.clearfix(href="{% url event:modify event.id 'design' %}")
                             div.left
                                 | Icon
                             div.left
                                 | Design
-                        div.current-event-action.clearfix
+                        a.current-event-action.clearfix(href="{% url event:modify event.id 'tickets' %}")
                             div.left
                                 | Icon
                             div.left
                                 | Ticket Options
-                        div.current-event-action.clearfix
+                        a.current-event-action.clearfix(href="{% url event:modify event.id 'bonus' %}")
                             div.left
                                 | Icon
                             div.left
                                 | Bonuses
+                        a.current-event-action.clearfix(href="{% url event:modify event.id 'emails' %}")
+                            div.left
+                                | Icon
+                            div.left
+                                | Emails
                 div
                     div.medium-12.columns
                         | Communications

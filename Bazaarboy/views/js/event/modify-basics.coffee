@@ -12,7 +12,7 @@ Bazaarboy.event.modify.basics =
                 return cb err, null
             return
         return
-    auto_save: () ->
+    autoSave: () ->
         name = $("form.event-modify input[name=name]").val()
         summary = $("form.event-modify input[name=summary]").val()
         location = $("form.event-modify input[name=location]").val()
@@ -34,7 +34,7 @@ Bazaarboy.event.modify.basics =
             if not moment(endTime, 'h:mm a').isValid()
                 return
             endTime = moment(endDate + ' ' + endTime, 'MM/DD/YYYY h:mm A')
-        Bazaarboy.event.modify.basics.save
+        @save
             id: eventId
             start_time: startTime.utc().format('YYYY-MM-DD HH:mm:ss')
             end_time: if endTime then endTime.utc().format('YYYY-MM-DD HH:mm:ss') else 'none'
@@ -45,14 +45,14 @@ Bazaarboy.event.modify.basics =
             longitude: longitude
         , (err, event) =>
             unless err
-                console.log(event)
+                console.log 'Saved.'
             else
-                console.log(err)
+                console.log err
             return
         return
     fetchCoordinates: (reference) ->
-        location = $('form.event-modify input[name=location]').get(0)
-        placesService = new google.maps.places.PlacesService(location)
+        location = $('form.event-modify input[name=location]').val()
+        placesService = new google.maps.places.PlacesService location
         placesService.getDetails
             reference: reference
         , (result, status) ->
@@ -64,25 +64,28 @@ Bazaarboy.event.modify.basics =
             return
         return
     init: () ->
-        # AUTO-SAVE TIMER
-        setInterval(@auto_save, 10000)
-        # TIME AUTOCOMPLETE
+        # Auto-save timer
+        setInterval (() =>
+            @autoSave()
+            return
+        ), 5000
+        # Time auto-complete
         originalStartTime = $("form.event-modify input[name=start_time]").val()
         originalEndTime = $("form.event-modify input[name=end_time]").val()
         $("form.event-modify input[name=start_time], form.event-modify input[name=end_time]").timeAutocomplete
             blur_empty_populate: false
-        $("form.event-modify input[name=start_time]").val(originalStartTime)
-        $("form.event-modify input[name=end_time]").val(originalEndTime)
-        # DATE AUTOCOMPLETE
+        $("form.event-modify input[name=start_time]").val originalStartTime
+        $("form.event-modify input[name=end_time]").val originalEndTime
+        # Date auto-complete
         $('form.event-modify input[name=start_date]').pikaday
             format: 'MM/DD/YYYY'
             onSelect: () ->
-                $('form.event-modify input[name=end_date]').pikaday('gotoDate', this.getDate())
-                $('form.event-modify input[name=end_date]').pikaday('setMinDate', this.getDate())
+                $('form.event-modify input[name=end_date]').pikaday 'gotoDate', this.getDate()
+                $('form.event-modify input[name=end_date]').pikaday 'setMinDate', this.getDate()
                 return
         $('form.event-modify input[name=end_date]').pikaday
             format: 'MM/DD/YYYY'
-        # Location Autocomplete
+        # Location Auto-complete
         googleAutocomplete = new google.maps.places.AutocompleteService()
         $('form.event-modify input[name=location]').keyup () =>
             keyword = $('form.event-modify input[name=location]').val()
@@ -104,8 +107,7 @@ Bazaarboy.event.modify.basics =
                     $('form.event-modify input[name=location]').autocomplete
                         source: autocompleteSource
                         html: true
-                    $('form.event-modify input[name=location]').on 'autocompleteselect'
-                    , (event, ui) =>
+                    $('form.event-modify input[name=location]').on 'autocompleteselect', (event, ui) =>
                         @fetchCoordinates ui.item.id
                         return
                     return
