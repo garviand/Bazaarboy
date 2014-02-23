@@ -5528,6 +5528,35 @@ th.hide-for-touch {
 /* Media queries */
 /* Colors */
 /* Sizes */
+/* Reset */
+.pika-single {
+  box-sizing: content-box;
+}
+.pika-single .pika-title button:hover {
+  background-color: transparent;
+}
+.pika-single table {
+  box-sizing: content-box;
+  margin-bottom: 0;
+}
+.pika-single table thead {
+  background: transparent;
+}
+.pika-single table th {
+  padding: 0;
+}
+.pika-single table th abbr {
+  border-bottom: none;
+  font-size: 12px;
+  color: inherit;
+  cursor: default;
+}
+.pika-single table td {
+  padding: 0;
+}
+ul.ui-autocomplete {
+  list-style: none;
+}
 /* Styles */
 .absolute-center {
   position: absolute;
@@ -5577,6 +5606,28 @@ th.hide-for-touch {
   text-align: center;
   text-shadow: 1px 2px 0px #00BD84;
   cursor: pointer;
+}
+.field {
+  border: 1px solid #9B9B9B;
+  border-radius: 4px;
+  background: #FFFFFF;
+  color: #4A4A4A;
+  font-size: 14px;
+  line-height: 16px;
+}
+.field:focus {
+  color: #000;
+}
+.field {
+  border: 1px solid #9B9B9B !important;
+  border-radius: 4px !important;
+  background: #FFFFFF !important;
+  color: #4A4A4A !important;
+  font-size: 14px !important;
+  line-height: 16px !important;
+}
+.field:focus {
+  color: #000 !important;
 }
 /* Layout */
 html,
@@ -5735,6 +5786,9 @@ a.sidebar-item {
     display: block;
   }
 }
+a.sidebar-item.selected div.sidebar-item-text {
+  color: #ffffff;
+}
 a.sidebar-item.selected:after {
   position: absolute;
   content: '';
@@ -5770,6 +5824,7 @@ a.sidebar-item:hover {
 }
 a.sidebar-item:hover div.sidebar-item-text {
   background: #faa638;
+  color: #ffffff;
 }
 div.sidebar-item-icon {
   position: absolute;
@@ -5796,6 +5851,7 @@ div.sidebar-item-text {
   top: 0;
   left: 54px;
   background: #3c3c3c;
+  color: #7A7A7A;
 }
 @media only screen and (min-width: 40.063em) and (max-width: 64em) {
   div.sidebar-item-text {
@@ -5839,6 +5895,7 @@ div#main-header div.header-title div.text span.sub {
 }
 div.current-event {
   margin-top: 40px !important;
+  margin-bottom: 40px !important;
 }
 div.current-event > div.tile {
   border-radius: 4px;
@@ -5972,7 +6029,42 @@ div.current-event > div.tile div.stats > div.row div.current-event-stats div.inn
 }
 div.current-event > div.tile div.stats > div.row div.current-event-stats div.inner > div div.numbers {
   height: 100%;
+  padding: 0;
   border-right: 2px solid #f6f6f6;
+}
+div.current-event > div.tile div.stats > div.row div.current-event-stats div.inner > div div.numbers div.title {
+  color: #a1a1a1;
+  font-size: 14px;
+  font-weight: 700;
+  text-transform: uppercase;
+}
+div.current-event > div.tile div.stats > div.row div.current-event-stats div.inner > div div.numbers div.number {
+  margin-top: 10px;
+  color: #4A4A4A;
+  font-size: 26px;
+  font-weight: 700;
+}
+div.current-event > div.tile div.stats > div.row div.current-event-stats div.inner > div div.numbers > div {
+  height: 76px;
+  padding: 5px 10px;
+  padding-top: 15px;
+  border-bottom: 2px solid #f6f6f6;
+}
+div.current-event > div.tile div.stats > div.row div.current-event-stats div.inner > div div.numbers > div.last {
+  border-bottom: none;
+}
+div.current-event > div.tile div.stats > div.row div.current-event-stats div.inner > div div.graph {
+  height: 100%;
+  padding-left: 0;
+}
+div.current-event > div.tile div.stats > div.row div.current-event-stats div.inner > div div.graph div.graph-frame {
+  width: 100%;
+  height: 100%;
+  padding: 5px 0;
+}
+div.current-event > div.tile div.stats > div.row div.current-event-stats div.inner > div div.graph div.graph-frame div.graph-canvas {
+  width: 100%;
+  height: 100%;
 }
 div.current-event > div.tile div.stats > div.row div.current-event-actions {
   padding: 0;
@@ -6044,4 +6136,21 @@ div.current-event > div.tile div.section-title {
   font-weight: 700;
   line-height: 50px;
   text-transform: uppercase;
+}
+div#event-modify-basics {
+  padding-top: 40px;
+  padding-bottom: 40px;
+}
+div#event-modify-basics textarea {
+  resize: none;
+}
+div#event-modify-basics div.name {
+  padding: 0;
+  padding-top: 10px;
+  font-size: 18px;
+}
+div#event-modify-basics div.text p {
+  color: #666;
+  font-size: 14px;
+  line-height: 18px;
 }

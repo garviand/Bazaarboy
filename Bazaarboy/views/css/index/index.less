@@ -2,7 +2,7 @@
 
 div.current-event {
     margin-top: 40px !important;
-    margin-top: 40px !important;
+    margin-bottom: 40px !important;
 
     > div.tile {
         border-radius: 4px;
@@ -123,12 +123,14 @@ div.current-event {
         div.stats {
             margin-top: 15px;
 
+            @stat-height: 44px * 5 + 2px * 4;
+
             > div.row {
-                height: 44px * 5 + 2px * 4;
+                height: @stat-height;
 
                 div.current-event-stats {
                     position: relative;
-                    height: 44px * 5 + 2px * 4;
+                    height: @stat-height;
 
                     div.bg {
                         position: relative;
@@ -147,7 +149,7 @@ div.current-event {
                         position: relative;
                         height: 100%;
                         z-index: 1;
-                        top: -(44px * 5 + 2px * 4);
+                        top: -@stat-height;
 
                         > div {
                             width: 100%;
@@ -155,11 +157,49 @@ div.current-event {
 
                             div.numbers {
                                 height: 100%;
+                                padding: 0;
                                 border-right: 2px solid @grey;
+
+                                div.title {
+                                    color: darken(#D4D4D4, 20%);
+                                    font-size: 14px;
+                                    font-weight: 700;
+                                    text-transform: uppercase;
+                                }
+
+                                div.number {
+                                    margin-top: 10px;
+                                    color: #4A4A4A;
+                                    font-size: 26px;
+                                    font-weight: 700;
+                                }
+
+                                > div {
+                                    height: @stat-height / 3;
+                                    padding: 5px 10px;
+                                    padding-top: 15px;
+                                    border-bottom: 2px solid @grey;
+
+                                    &.last {
+                                        border-bottom: none;
+                                    }
+                                }
                             }
 
                             div.graph {
+                                height: 100%;
+                                padding-left: 0;
 
+                                div.graph-frame {
+                                    width: 100%;
+                                    height: 100%;
+                                    padding: 5px 0;
+
+                                    div.graph-canvas {
+                                        width: 100%;
+                                        height: 100%;
+                                    }
+                                }
                             }
                         }
                     }

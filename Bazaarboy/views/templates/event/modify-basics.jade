@@ -6,7 +6,7 @@ append head
 
 block sidebar
     +sidebarItem('ss-file')(href="{% url event:modify id 'basics' %}", class="selected")
-        | Basics
+        | Edit Event
     +sidebarItem('ss-picture')(href="{% url event:modify id 'design' %}")
         | Page design
     +sidebarItem('ss-tag')(href="{% url event:modify id 'tickets' %}")
@@ -16,36 +16,67 @@ block sidebar
     +sidebarItem('ss-mail')(href="{% url event:modify id 'emails' %}")
         | Emails
 
+block header
+    div.header-title.large-9.medium-10.columns.small-centered
+        div.row.clearfix
+            div.icon.left
+                span.ss-file
+            div.text.left
+                | Edit Event | 
+                span.sub Modify Basic Event Information
+
 block content
     div#wrapper-event-modify.medium-9.columns.small-centered
-        form.event-modify
-            label Event Name
-            input(type="text", name="name", value="{{ event.name }}", placeholder="Event name")
-            br
-            label Event Summary
-            input(type="text", name="summary", value="{{ event.summary }}", placeholder="Short summary")
-            br
-            label Start Time
-            input(type="text", name="start_date", value="{{ event.start_time|date:'m/d/Y' }}", placeholder="MM/DD/YYYY")
-            input(type="text", name="start_time", value="{{ event.start_time|date:'g:i A' }}", placeholder="ex. 6:00 PM")
-            br
-            label End Time
-            input(type="text", name="end_date", value="{{ event.end_time|date:'m/d/Y' }}", placeholder="MM/DD/YYYY")
-            input(type="text", name="end_time", value="{{ event.end_time|date:'g:i A' }}", placeholder="ex. 7:00 PM")
-            br
-            label Location
-            input(type="text", name="location", value="{{ event.location }}", placeholder="Event location")
-            br
-            input(type="submit", value="Next")
-            input(type="hidden", name="latitude", value="{{ event.latitude }}")
-            input(type="hidden", name="longitude", value="{{ event.longitude }}")
+        div#event-modify-basics
+            form.event-modify
+                div
+                    div.name.medium-2.columns 
+                        | Name
+                    div.medium-10.columns
+                        input.field(type="text", name="name", value="{{ event.name }}", placeholder="Event name")
+                    div.text.medium-10.medium-offset-2.columns
+                        p The name of your event, maximum 150 characters.
+                div
+                    div.name.medium-2.columns
+                        | Summary
+                    div.medium-10.columns
+                        textarea.field(type="text", name="summary", value="{{ event.summary }}", placeholder="Short summary")
+                    div.text.medium-10.medium-offset-2.columns
+                        p A summary of your event - it will be used for email communications. Maximum 250 characters.
+                div
+                    div.name.medium-2.columns
+                        | Start Time
+                    div.medium-5.columns
+                        input.field(type="text", name="start_date", value="{{ event.start_time|date:'m/d/Y' }}", placeholder="MM/DD/YYYY")
+                    div.medium-5.columns
+                        input.field(type="text", name="start_time", value="{{ event.start_time|date:'g:i A' }}", placeholder="ex. 6:00 PM")
+                    div.text.medium-10.medium-offset-2.columns
+                        p The start time of your event (Required)
+                div
+                    div.name.medium-2.columns
+                        | End Time
+                    div.medium-5.columns
+                        input.field(type="text", name="end_date", value="{{ event.end_time|date:'m/d/Y' }}", placeholder="MM/DD/YYYY")
+                    div.medium-5.columns
+                        input.field(type="text", name="end_time", value="{{ event.end_time|date:'g:i A' }}", placeholder="ex. 7:00 PM")
+                    div.text.medium-10.medium-offset-2.columns
+                        p The end time of your event (Optional, leave it blank if the event doesn't have a end time)
+                div
+                    div.name.medium-2.columns
+                        | Location
+                    div.medium-10.columns
+                        input.field(type="text", name="location", value="{{ event.location }}", placeholder="Event location")
+                    div.text.medium-10.medium-offset-2.columns
+                        p The location of your event.
+                input(type="submit", value="Next")
+                input(type="hidden", name="latitude", value="{{ event.latitude }}")
+                input(type="hidden", name="longitude", value="{{ event.longitude }}")
 
 append script
     script(src="{{ STATIC_URL }}jQueryUI/jquery-ui.min.js")
     script(src="{{ STATIC_URL }}jQueryUI/jquery-ui.autocomplete.html.js")
     script(src="{{ STATIC_URL }}timeautocomplete/jquery.timeAutocomplete.js")
     script(src="{{ STATIC_URL }}timeautocomplete/formatters/ampm.js")
-    script(src="{{ STATIC_URL }}moment/moment.min.js")
     script(src="{{ STATIC_URL }}pikaday/pikaday.js")
     script(src="{{ STATIC_URL }}pikaday/pikaday.jquery.js")
     script(type="text/javascript", src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAasW6vqPCn18g6UMaFWV90qGMSo6pErwo&sensor=false&libraries=places")

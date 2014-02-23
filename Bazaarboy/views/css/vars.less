@@ -24,6 +24,48 @@
 @sidebar-width-collapsed: 54px;
 @sidebar-item-height: @sidebar-width-collapsed;
 
+/* Reset */
+
+.pika-single {
+    box-sizing: content-box;
+
+    .pika-title {
+        button {
+            &:hover {
+                background-color: transparent;
+            }
+        }
+    }
+
+    table {
+        box-sizing: content-box;
+        margin-bottom: 0;
+
+        thead {
+            background: transparent;
+        }
+
+        th {
+            padding: 0;
+
+            abbr {
+                border-bottom: none;
+                font-size: 12px;
+                color: inherit;
+                cursor: default;
+            }
+        }
+
+        td {
+            padding: 0;
+        }
+    }
+}
+
+ul.ui-autocomplete {
+    list-style: none;
+}
+
 /* Styles */
 
 .absolute-center {
@@ -78,4 +120,29 @@
     text-align: center;
     text-shadow: 1px 2px 0px #00BD84;
     .action-btn;
+}
+
+.field {
+    border: 1px solid #9B9B9B;
+    border-radius: 4px;
+    background: #FFFFFF;
+    color: #4A4A4A;
+    font-size: 14px;
+    line-height: 16px;
+
+    &:focus {
+        color: #000;
+    }
+}
+
+.field {
+    .field !important;
+}
+
+.field-error {
+
+}
+
+.field-finished {
+
 }

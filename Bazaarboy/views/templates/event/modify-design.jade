@@ -2,7 +2,7 @@ extends ../layout
 
 block sidebar
     +sidebarItem('ss-file')(href="{% url event:modify id 'basics' %}")
-        | Basics
+        | Edit Event
     +sidebarItem('ss-picture')(href="{% url event:modify id 'design' %}", class="selected")
         | Page design
     +sidebarItem('ss-tag')(href="{% url event:modify id 'tickets' %}")

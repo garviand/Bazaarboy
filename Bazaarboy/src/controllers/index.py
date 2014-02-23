@@ -38,9 +38,33 @@ def index(request, params, user):
                                            end_time__gt = tz.now()),   
                                          is_launched = True, 
                                          organizers__in = pids) \
-                                 .order_by('start_time')
+                                 .order_by('start_time')[:5]
     currentEventsCount = currentEvents.count()
-    currentEvents = currentEvents[:5]
+    currentEvents = list(currentEvents)
+    for i in range(0, len(currentEvents)):
+        stats = Purchase.objects.filter(Q(checkout = None) | 
+                                        Q(checkout__is_charged = True, 
+                                          checkout__is_refunded = False), 
+                                        event = currentEvents[i]) \
+                                .aggregate(total_sale = Sum('amount'), 
+                                           rsvp_count = Count('id'))
+        currentEvents[i].totalSale = stats['total_sale']
+        if currentEvents[i].totalSale is None:
+            currentEvents[i].totalSale = 0
+        currentEvents[i].rsvpCount = stats['rsvp_count']
+        tickets = Ticket.objects.filter(event = currentEvents[i], 
+                                        is_deleted = False)
+        potentialQuantity = 0
+        potentialSale = 0
+        for ticket in tickets:
+            if ticket.quantity is not None:
+                if potentialQuantity is not None:
+                  potentialQuantity += ticket.quantity
+                potentialSale += ticket.price * ticket.quantity
+            else:
+                potentialQuantity = None
+        currentEvents[i].potentialQuantity = potentialQuantity
+        currentEvents[i].potentialSale = potentialSale
     pastEvents = Event.objects.filter(Q(end_time = None, 
                                         start_time__lt = tz.now()) | 
                                       Q(end_time__isnull = False, 
@@ -49,11 +73,33 @@ def index(request, params, user):
                                       organizers__in = pids) \
                               .order_by('-start_time')[:5]
     pastEventsCount = pastEvents.count()
-    pastEvents = currentEvents[:5]
+    pastEvents = list(pastEvents)
+    for i in range(0, len(pastEvents)):
+        stats = Purchase.objects.filter(Q(checkout = None) | 
+                                        Q(checkout__is_charged = True, 
+                                          checkout__is_refunded = False), 
+                                        event = pastEvents[i]) \
+                                .aggregate(total_sale = Sum('amount'), 
+                                           rsvp_count = Count('id'))
+        pastEvents[i].totalSale = stats['total_sale']
+        pastEvents[i].rsvpCount = stats['rsvp_count']
+        tickets = Ticket.objects.filter(event = pastEvents[i], 
+                                        is_deleted = False)
+        potentialQuantity = 0
+        potentialSale = 0
+        for ticket in tickets:
+            if ticket.quantity is not None:
+                if potentialQuantity is not None:
+                  potentialQuantity += ticket.quantity
+                potentialSale += ticket.price * ticket.quantity
+            else:
+                potentialQuantity = None
+        pastEvents[i].potentialQuantity = potentialQuantity
+        pastEvents[i].potentialSale = potentialSale
     draftEvents = Event.objects.filter(is_launched = False, 
-                                       organizers__in = pids)
+                                       organizers__in = pids)[:5]
     draftEventsCount = draftEvents.count()
-    draftEvents = draftEvents[:5]
+    draftEvents = draftEvents
     return render(request, 'index/index.html', locals())
 
 @login_check()

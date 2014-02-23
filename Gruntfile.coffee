@@ -29,6 +29,10 @@ module.exports = (grunt) ->
                     'Bazaarboy/static/js/libraries/jquery.iframe-transport.min.js'
                     'Bazaarboy/static/js/libraries/jquery.fileupload.min.js'
                     'Bazaarboy/static/js/libraries/foundation.min.js'
+                    'Bazaarboy/static/js/libraries/highcharts.js'
+                    'Bazaarboy/static/js/libraries/moment.min.js'
+                    'Bazaarboy/static/js/libraries/moment.timezone.min.js'
+                    'Bazaarboy/static/js/libraries/moment.timezone.data.js'
                     'Bazaarboy/static/js/libraries/misc.js'
                 ]
                 dest: 'Bazaarboy/static/js/libraries.js'

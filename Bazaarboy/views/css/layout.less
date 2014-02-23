@@ -171,6 +171,12 @@ a.sidebar-item {
         }
     }
 
+    &.selected {
+        div.sidebar-item-text {
+            color: @white;
+        }
+    }
+
     &.selected:after {
         position: absolute;
         content: '';
@@ -213,6 +219,7 @@ a.sidebar-item {
 
         div.sidebar-item-text {
             background: @orange;
+            color: @white;
         }
     }
 }
@@ -245,6 +252,7 @@ div.sidebar-item-text {
     top: 0;
     left: @sidebar-item-height;
     background: @dark;
+    color: #7A7A7A;
 
     @media @media_medium {
         display: none;
