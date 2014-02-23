@@ -35,6 +35,8 @@ block content
             br
             label Location
             input(type="text", name="location", value="{{ event.location }}", placeholder="Event location")
+            div#location_map(style="height:150px;")
+            div#fake_map(style="display:none;")
             br
             input(type="submit", value="Next")
             input(type="hidden", name="latitude", value="{{ event.latitude }}")

@@ -192,7 +192,7 @@ def edit(request, params, user):
             response = {
                 'status':'FAIL',
                 'error':'INVALID_NAME',
-                'message':'Event name cannot be blank or over 50 characters.'
+                'message':'Event name cannot be blank or over 150 characters.'
             }
             return json_response(response)
         else:
@@ -203,7 +203,7 @@ def edit(request, params, user):
             response = {
                 'status':'FAIL',
                 'error':'SUMMARY_TOO_LONG',
-                'message':'The summary must be within 150 characters.'
+                'message':'The summary must be within 250 characters.'
             }
             return json_response(response)
         else:
