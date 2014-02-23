@@ -20,49 +20,68 @@ block sidebar
         | Lists
     +sidebarItem('ss-share')
         | Settings
+
+block header
+    div.header-title.large-9.medium-10.columns.small-centered
+        div.row.clearfix
+            div.icon.left
+                span.ss-newspaper
+            div.text.left
+                | Events | 
+                span.sub Current Events
     
 block content
     mixin currentEvent()
         div.current-event.row
             div.small-12.columns.tile
-                div.header
-                    div.current-event-collapse.large-1.medium-1.columns
-                        span.ss-navigateup
-                    div.current-event-title.large-9.medium-8.columns
+                div.header.row
+                    div.current-event-collapse.large-1.medium-1.columns.action-btn
+                        span.ss-contract
+                    div.current-event-title.large-8.medium-7.columns
                         | {{ event.name }}
-                    div.current-event-view.large-2.medium-3.columns
-                        a.secondary-btn(href="{% url event:index event.id %}?preview") 
-                            | View Event
-                div
-                    div.current-event-stats.medium-8.columns
-                        div.medium-4.columns
-                        div.medium-8.columns
-                    div.current-event-actions.medium-4.columns
-                        a.current-event-action.clearfix(href="{% url event:modify event.id 'basics' %}")
-                            div.left
-                                | Icon
-                            div.left
-                                | Basic Information
-                        a.current-event-action.clearfix(href="{% url event:modify event.id 'design' %}")
-                            div.left
-                                | Icon
-                            div.left
-                                | Design
-                        a.current-event-action.clearfix(href="{% url event:modify event.id 'tickets' %}")
-                            div.left
-                                | Icon
-                            div.left
-                                | Ticket Options
-                        a.current-event-action.clearfix(href="{% url event:modify event.id 'bonus' %}")
-                            div.left
-                                | Icon
-                            div.left
-                                | Bonuses
-                        a.current-event-action.clearfix(href="{% url event:modify event.id 'emails' %}")
-                            div.left
-                                | Icon
-                            div.left
-                                | Emails
+                    div.current-event-view.large-3.medium-4.columns
+                        div.row
+                            div.medium-10.medium-offset-2.columns
+                                a.secondary-btn(href="{% url event:index event.id %}?preview") 
+                                    | View Event
+                div.info.small-12.columns
+                    div.inner.row
+                        div.current-event-time.medium-3.small-2.columns
+                        div.current-event-location.medium-9.small-10.columns
+                            | {{ event.location }}
+                div.stats.small-12.columns
+                    div.row
+                        div.current-event-stats.medium-9.columns
+                            div.inner.row
+                                div
+                                    div.medium-4.columns
+                                    div.medium-8.columns
+                        div.current-event-actions.medium-3.columns
+                            a.current-event-action.first(href="{% url event:modify event.id 'basics' %}")
+                                div.icon
+                                    span.ss-info
+                                div.text
+                                    span Basics
+                            a.current-event-action(href="{% url event:modify event.id 'design' %}")
+                                div.icon
+                                    span.ss-picture
+                                div.text
+                                    span Design
+                            a.current-event-action(href="{% url event:modify event.id 'tickets' %}")
+                                div.icon
+                                    span.ss-creditcard
+                                div.text
+                                    span Ticket Options
+                            a.current-event-action(href="{% url event:modify event.id 'bonus' %}")
+                                div.icon
+                                    span.ss-box
+                                div.text
+                                    span Bonus
+                            a.current-event-action.last(href="{% url event:modify event.id 'emails' %}")
+                                div.icon
+                                    span.ss-mail
+                                div.text
+                                    span Emails
                 div
                     div.medium-12.columns
                         | Communications
@@ -73,9 +92,7 @@ block content
                 div
                     div.medium-12.columns
                         | Bonus
-    div.page-header.tile
-        div.icon.ss-newpaper
-    div#wrapper-dashboard.medium-9.columns.small-centered
+    div#wrapper-dashboard.large-9.medium-10.columns.small-centered
         {% for event in currentEvents %}
         +currentEvent()
         {% endfor %}

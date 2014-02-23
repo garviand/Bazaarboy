@@ -269,4 +269,28 @@ div#main-header {
     width: 100%;
     height: @top-height;
     background: @grey;
+
+    div.header-title {
+        div.icon {
+            width: 44px;
+            height: @top-height;
+            padding-top: (@top-height - 26px) / 2 + 3px;
+            padding-bottom: (@top-height - 26px) / 2 - 3px;
+            color: @orange;
+            font-size: 26px;
+            text-align: center;
+        }
+
+        div.text {
+            height: @top-height;
+            padding: (@top-height - 18px) / 2 0;
+            font-size: 18px;
+            font-weight: 600;
+            text-transform: uppercase;
+
+            span.sub {
+                color: #999;
+            }
+        }
+    }
 }

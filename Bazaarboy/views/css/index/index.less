@@ -10,12 +10,19 @@ div.current-event {
         div.header {
             height: 64px;
 
+            div.current-event-collapse {
+                padding: 20px 0;
+                font-size: 24px;
+                line-height: 24px;
+                text-align: center;
+            }
+
             div.current-event-title {
                 height: 64px;
-                padding: 21px 0;
-                font-size: 22px;
+                padding: 22px 0;
+                font-size: 20px;
                 font-weight: 500;
-                line-height: 22px;
+                line-height: 20px;
             }
 
             div.current-event-view {
@@ -24,11 +31,130 @@ div.current-event {
                     width: 100%;
                     height: 39px;
                     margin: 12px 0;
-                    padding-top: 11px;
-                    padding-bottom: 14px;
+                    padding-top: 10px;
+                    padding-bottom: 15px;
+                    color: #FFFFFF;
                     font-size: 14px;
                     font-weight: 700;
                     text-transform: uppercase;
+                }
+            }
+        }
+
+        div.info {
+            height: 54px;
+
+            div.inner {
+                height: 100%;
+                background: #FFFFFF;
+                border-radius: 4px;
+
+                div.current-event-time {
+                    height: 100%;
+                    border-right: 2px solid @grey;
+                }
+
+                div.current-event-location {
+                    @height: 15px;
+                    height: @height;
+                    padding-top: (54px - @height) / 2;
+                    padding-bottom: (54px - @height) / 2;
+                    font-size: @height;
+                    line-height: @height;
+                }
+            }
+        }
+
+        div.stats {
+            margin-top: 15px;
+
+            > div.row {
+                height: 44px * 5 + 2px * 4;
+
+                div.current-event-stats {
+                    height: 44px * 5 + 2px * 4;
+
+                    div.inner {
+                        height: 100%;
+                        padding-right: 15px;
+
+                        > div {
+                            width: 100%;
+                            height: 100%;
+                            border-radius: 4px;
+                            background: #FFF;
+                        }
+                    }
+                }
+
+                div.current-event-actions {
+                    padding: 0;
+                    border-radius: 4px;
+                    background: #FFF;
+
+                    a.current-event-action {
+                        display: block;
+                        position: relative;
+                        width: 100%;
+                        height: 46px;
+                        border-bottom: 2px solid @grey;
+                        color: #000;
+
+                        &:hover {
+                            background: @green;
+
+                            div.icon {
+                                color: #FFFFFF;
+                            }
+
+                            div.text {
+                                color: #FFFFFF;
+                            }
+                        }
+
+                        &.first {
+                            border-top-left-radius: 4px;
+                            border-top-right-radius: 4px;
+                        }
+
+                        &.last {
+                            height: 44px;
+                            border-bottom: none;
+                            border-bottom-left-radius: 4px;
+                            border-bottom-right-radius: 4px;
+                        }
+
+                        div.icon {
+                            position: absolute;
+                            top: 0;
+                            left: 0;
+                            width: 44px;
+                            height: 44px;
+                            padding-top: 13px;
+                            padding-bottom: 9px;
+                            font-size: 22px;
+                            text-align: center;
+                            color: @green;
+                        }
+
+                        div.text {
+                            display: table;
+                            position: absolute;
+                            top: 0;
+                            left: 0;
+                            width: 100%;
+                            height: 44px;
+                            padding-left: 44px;
+                            font-size: 14px;
+                            font-weight: 500;
+                            line-height: 18px;
+
+                            span {
+                                display: table-cell;
+                                vertical-align: middle;
+                            }
+                        }
+                    }
                 }
             }
         }

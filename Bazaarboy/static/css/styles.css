@@ -5566,19 +5566,17 @@ th.hide-for-touch {
   cursor: pointer;
 }
 .secondary-btn {
+  border: 1px solid #00BD84;
   border-radius: 4px;
+  background: #5AE8BE;
   -moz-box-shadow: inset 0px -3px 0px 0px #00bd84;
   -webkit-box-shadow: inset 0px -3px 0px 0px #00bd84;
   box-shadow: inset 0px -3px 0px 0px #00bd84;
-  background: #5AE8BE;
-  background-image: -o-linear-gradient(-90deg, #5ae8be 0%, #00bd84 100%);
-  background-image: -moz-linear-gradient(-90deg, #5ae8be 0%, #00bd84 100%);
-  background-image: -webkit-linear-gradient(-90deg, #5ae8be 0%, #00bd84 100%);
-  background-image: -ms-linear-gradient(-90deg, #5ae8be 0%, #00bd84 100%);
-  background-image: linear-gradient(-180deg, #5ae8be 0%, #00bd84 100%);
   color: #FFFFFF;
+  font-weight: 700;
   text-align: center;
   text-shadow: 1px 2px 0px #00BD84;
+  cursor: pointer;
 }
 /* Layout */
 html,
@@ -5820,6 +5818,25 @@ div#main-header {
   height: 64px;
   background: #f6f6f6;
 }
+div#main-header div.header-title div.icon {
+  width: 44px;
+  height: 64px;
+  padding-top: 22px;
+  padding-bottom: 16px;
+  color: #faa638;
+  font-size: 26px;
+  text-align: center;
+}
+div#main-header div.header-title div.text {
+  height: 64px;
+  padding: 23px 0;
+  font-size: 18px;
+  font-weight: 600;
+  text-transform: uppercase;
+}
+div#main-header div.header-title div.text span.sub {
+  color: #999;
+}
 div.current-event {
   margin-top: 40px !important;
 }
@@ -5829,21 +5846,126 @@ div.current-event > div.tile {
 div.current-event > div.tile div.header {
   height: 64px;
 }
+div.current-event > div.tile div.header div.current-event-collapse {
+  padding: 20px 0;
+  font-size: 24px;
+  line-height: 24px;
+  text-align: center;
+}
 div.current-event > div.tile div.header div.current-event-title {
   height: 64px;
-  padding: 21px 0;
-  font-size: 22px;
+  padding: 22px 0;
+  font-size: 20px;
   font-weight: 500;
-  line-height: 22px;
+  line-height: 20px;
 }
 div.current-event > div.tile div.header div.current-event-view a {
   display: block;
   width: 100%;
   height: 39px;
   margin: 12px 0;
-  padding-top: 11px;
-  padding-bottom: 14px;
+  padding-top: 10px;
+  padding-bottom: 15px;
+  color: #FFFFFF;
   font-size: 14px;
   font-weight: 700;
   text-transform: uppercase;
+}
+div.current-event > div.tile div.info {
+  height: 54px;
+}
+div.current-event > div.tile div.info div.inner {
+  height: 100%;
+  background: #FFFFFF;
+  border-radius: 4px;
+}
+div.current-event > div.tile div.info div.inner div.current-event-time {
+  height: 100%;
+  border-right: 2px solid #f6f6f6;
+}
+div.current-event > div.tile div.info div.inner div.current-event-location {
+  height: 15px;
+  padding-top: 19.5px;
+  padding-bottom: 19.5px;
+  font-size: 15px;
+  line-height: 15px;
+}
+div.current-event > div.tile div.stats {
+  margin-top: 15px;
+}
+div.current-event > div.tile div.stats > div.row {
+  height: 228px;
+}
+div.current-event > div.tile div.stats > div.row div.current-event-stats {
+  height: 228px;
+}
+div.current-event > div.tile div.stats > div.row div.current-event-stats div.inner {
+  height: 100%;
+  padding-right: 15px;
+}
+div.current-event > div.tile div.stats > div.row div.current-event-stats div.inner > div {
+  width: 100%;
+  height: 100%;
+  border-radius: 4px;
+  background: #FFF;
+}
+div.current-event > div.tile div.stats > div.row div.current-event-actions {
+  padding: 0;
+  border-radius: 4px;
+  background: #FFF;
+}
+div.current-event > div.tile div.stats > div.row div.current-event-actions a.current-event-action {
+  display: block;
+  position: relative;
+  width: 100%;
+  height: 46px;
+  border-bottom: 2px solid #f6f6f6;
+  color: #000;
+}
+div.current-event > div.tile div.stats > div.row div.current-event-actions a.current-event-action:hover {
+  background: #5ae8be;
+}
+div.current-event > div.tile div.stats > div.row div.current-event-actions a.current-event-action:hover div.icon {
+  color: #FFFFFF;
+}
+div.current-event > div.tile div.stats > div.row div.current-event-actions a.current-event-action:hover div.text {
+  color: #FFFFFF;
+}
+div.current-event > div.tile div.stats > div.row div.current-event-actions a.current-event-action.first {
+  border-top-left-radius: 4px;
+  border-top-right-radius: 4px;
+}
+div.current-event > div.tile div.stats > div.row div.current-event-actions a.current-event-action.last {
+  height: 44px;
+  border-bottom: none;
+  border-bottom-left-radius: 4px;
+  border-bottom-right-radius: 4px;
+}
+div.current-event > div.tile div.stats > div.row div.current-event-actions a.current-event-action div.icon {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 44px;
+  height: 44px;
+  padding-top: 13px;
+  padding-bottom: 9px;
+  font-size: 22px;
+  text-align: center;
+  color: #5ae8be;
+}
+div.current-event > div.tile div.stats > div.row div.current-event-actions a.current-event-action div.text {
+  display: table;
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 44px;
+  padding-left: 44px;
+  font-size: 14px;
+  font-weight: 500;
+  line-height: 18px;
+}
+div.current-event > div.tile div.stats > div.row div.current-event-actions a.current-event-action div.text span {
+  display: table-cell;
+  vertical-align: middle;
 }
