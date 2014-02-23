@@ -36,7 +36,7 @@ block content
             div.small-12.columns.tile
                 div.header.row
                     div.current-event-collapse.large-1.medium-1.columns.action-btn
-                        span.ss-contract
+                        div.absolute-center
                     div.current-event-title.large-8.medium-7.columns
                         | {{ event.name }}
                     div.current-event-view.large-3.medium-4.columns
@@ -46,16 +46,24 @@ block content
                                     | View Event
                 div.info.small-12.columns
                     div.inner.row
-                        div.current-event-time.medium-3.small-2.columns
-                        div.current-event-location.medium-9.small-10.columns
+                        div.current-event-datetime.small-3.columns
+                            div.current-event-date
+                                div.month {{ event.start_time|date:'M' }}
+                                div.day {{ event.start_time|date:'j' }}
+                            div.current-event-time
+                                span
+                                    {{ event.start_time|date:'g:iA' }}{% if event.end_time %}-{{ event.end_time|date:'g:iA' }}{% endif %}
+                        div.current-event-location.small-9.columns
                             | {{ event.location }}
                 div.stats.small-12.columns
                     div.row
                         div.current-event-stats.medium-9.columns
+                            div.bg.row
+                                div
                             div.inner.row
                                 div
-                                    div.medium-4.columns
-                                    div.medium-8.columns
+                                    div.numbers.medium-4.columns
+                                    div.graph.medium-8.columns
                         div.current-event-actions.medium-3.columns
                             a.current-event-action.first(href="{% url event:modify event.id 'basics' %}")
                                 div.icon
@@ -83,14 +91,14 @@ block content
                                 div.text
                                     span Emails
                 div
-                    div.medium-12.columns
+                    div.section-title.medium-12.columns
                         | Communications
                     div.current-event-add-communication
                 div
                     div.current-event-communication-stat.medium-6.columns
                     div.medium-6.columns
                 div
-                    div.medium-12.columns
+                    div.section-title.medium-12.columns
                         | Bonus
     div#wrapper-dashboard.large-9.medium-10.columns.small-centered
         {% for event in currentEvents %}
