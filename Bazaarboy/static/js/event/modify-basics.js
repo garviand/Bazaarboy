@@ -24,6 +24,7 @@
       var end_time, save_data, start_time,
         _this = this;
       save_data = $('form.event-modify').serializeObject();
+      console.log(save_data);
       if (save_data.name.length > 150) {
         console.log('Name is too long.');
       }

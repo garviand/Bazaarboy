@@ -199,7 +199,7 @@ def edit(request, params, user):
             event.name = params['name']
     if params['summary'] is not None:
         params['summary'] = cgi.escape(params['summary'])
-        if len(params['summary']) > 100:
+        if len(params['summary']) > 250:
             response = {
                 'status':'FAIL',
                 'error':'SUMMARY_TOO_LONG',

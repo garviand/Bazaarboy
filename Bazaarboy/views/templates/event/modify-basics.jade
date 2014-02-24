@@ -40,7 +40,8 @@ block content
                     div.name.medium-2.columns
                         | Summary
                     div.medium-10.columns
-                        textarea.field(type="text", name="summary", value="{{ event.summary }}", placeholder="Short summary")
+                        textarea.field(type="text", name="summary", placeholder="Short summary")
+                            {{ event.summary }}
                     div.text.medium-10.medium-offset-2.columns
                         p A summary of your event - it will be used for email communications. Maximum 250 characters.
                 div

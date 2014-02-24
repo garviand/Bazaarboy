@@ -17,6 +17,7 @@ Bazaarboy.event.modify.basics =
         return
     saveBasics: (auto_save) ->
         save_data = $('form.event-modify').serializeObject()
+        console.log save_data
         if save_data.name.length > 150
             console.log('Name is too long.')
         if save_data.summary.length > 250
