@@ -6158,3 +6158,10 @@ div#event-modify-basics div.text p {
   font-size: 14px;
   line-height: 18px;
 }
+div#event-modify-basics div#map-canvas {
+  height: 200px;
+  border: 1px solid #000;
+}
+div#event-modify-basics div#map-canvas img {
+  max-width: none;
+}

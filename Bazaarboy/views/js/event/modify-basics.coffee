@@ -1,5 +1,5 @@
 Bazaarboy.event.modify.basics =
-    is_editing: false
+    isEditing: false
     map: undefined
     marker: undefined
     save: (params, cb) ->
@@ -16,7 +16,7 @@ Bazaarboy.event.modify.basics =
             return
         return
     saveBasics: (auto_save) ->
-        save_data = $("form.event-modify").serializeObject()
+        save_data = $('form.event-modify').serializeObject()
         if save_data.name.length > 150
             console.log('Name is too long.')
         if save_data.summary.length > 250
@@ -46,17 +46,17 @@ Bazaarboy.event.modify.basics =
             unless err
                 console.log 'Saved'
                 if not auto_save
-                    window.location = '/event/'+eventId+'/design'
+                    window.location = '/event/' + eventId + '/design'
             else
                 console.log err
             return
         return
     autoSave: () ->
-        if not @is_editing
+        if not @isEditing
             @saveBasics(true)
         return
     fetchCoordinates: (reference) ->
-        gmap = $('form.event-modify #fake_map').get(0)
+        gmap = $('div#map-canvas-hidden').get(0)
         location = $('form.event-modify input[name=location]').val()
         placesService = new google.maps.places.PlacesService gmap
         placesService.getDetails
@@ -81,28 +81,28 @@ Bazaarboy.event.modify.basics =
         # Initialize Map
         initial_lat = $('form.event-modify input[name=latitude]').val()
         initial_lng = $('form.event-modify input[name=longitude]').val()
-        if initial_lat != "None" and initial_lng != "None"
+        if initial_lat != 'None' and initial_lng != 'None'
             map_center = new google.maps.LatLng(initial_lat, initial_lng)
         else
             map_center = new google.maps.LatLng(38.650068, -90.259904)
         mapOptions =
             zoom: 15
             center: map_center
-        @map = new google.maps.Map document.getElementById('location_map'), mapOptions
+        @map = new google.maps.Map document.getElementById('map-canvas'), mapOptions
         @marker = new google.maps.Marker(
             position: map_center
             map: @map
             draggable: true
         )
-        google.maps.event.addListener @marker, "drag", () =>
+        google.maps.event.addListener @marker, 'drag', () =>
             $('form.event-modify input[name=latitude]').val(@marker.position.lat())
             $('form.event-modify input[name=longitude]').val(@marker.position.lng())
             return
         # Is User Editing Info
-        $("form.event-modify").find("input, textarea").keyup () =>
-            @is_editing = true
+        $('form.event-modify').find('input, textarea').keyup () =>
+            @isEditing = true
             setTimeout (() =>
-                @is_editing = false
+                @isEditing = false
                 return
             ), 5000
             return
@@ -112,12 +112,12 @@ Bazaarboy.event.modify.basics =
             return
         ), 5000
         # Time auto-complete
-        originalStartTime = $("form.event-modify input[name=start_time]").val()
-        originalEndTime = $("form.event-modify input[name=end_time]").val()
-        $("form.event-modify input[name=start_time], form.event-modify input[name=end_time]").timeAutocomplete
+        originalStartTime = $('form.event-modify input[name=start_time]').val()
+        originalEndTime = $('form.event-modify input[name=end_time]').val()
+        $('form.event-modify input[name=start_time], form.event-modify input[name=end_time]').timeAutocomplete
             blur_empty_populate: false
-        $("form.event-modify input[name=start_time]").val originalStartTime
-        $("form.event-modify input[name=end_time]").val originalEndTime
+        $('form.event-modify input[name=start_time]').val originalStartTime
+        $('form.event-modify input[name=end_time]').val originalEndTime
         # Date auto-complete
         $('form.event-modify input[name=start_date]').pikaday
             format: 'MM/DD/YYYY'

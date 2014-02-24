@@ -1,6 +1,6 @@
 (function() {
   Bazaarboy.event.modify.basics = {
-    is_editing: false,
+    isEditing: false,
     map: void 0,
     marker: void 0,
     save: function(params, cb) {
@@ -23,7 +23,7 @@
     saveBasics: function(auto_save) {
       var end_time, save_data, start_time,
         _this = this;
-      save_data = $("form.event-modify").serializeObject();
+      save_data = $('form.event-modify').serializeObject();
       if (save_data.name.length > 150) {
         console.log('Name is too long.');
       }
@@ -67,14 +67,14 @@
       });
     },
     autoSave: function() {
-      if (!this.is_editing) {
+      if (!this.isEditing) {
         this.saveBasics(true);
       }
     },
     fetchCoordinates: function(reference) {
       var gmap, location, placesService,
         _this = this;
-      gmap = $('form.event-modify #fake_map').get(0);
+      gmap = $('div#map-canvas-hidden').get(0);
       location = $('form.event-modify input[name=location]').val();
       placesService = new google.maps.places.PlacesService(gmap);
       placesService.getDetails({
@@ -99,7 +99,7 @@
       });
       initial_lat = $('form.event-modify input[name=latitude]').val();
       initial_lng = $('form.event-modify input[name=longitude]').val();
-      if (initial_lat !== "None" && initial_lng !== "None") {
+      if (initial_lat !== 'None' && initial_lng !== 'None') {
         map_center = new google.maps.LatLng(initial_lat, initial_lng);
       } else {
         map_center = new google.maps.LatLng(38.650068, -90.259904);
@@ -108,32 +108,32 @@
         zoom: 15,
         center: map_center
       };
-      this.map = new google.maps.Map(document.getElementById('location_map'), mapOptions);
+      this.map = new google.maps.Map(document.getElementById('map-canvas'), mapOptions);
       this.marker = new google.maps.Marker({
         position: map_center,
         map: this.map,
         draggable: true
       });
-      google.maps.event.addListener(this.marker, "drag", function() {
+      google.maps.event.addListener(this.marker, 'drag', function() {
         $('form.event-modify input[name=latitude]').val(_this.marker.position.lat());
         $('form.event-modify input[name=longitude]').val(_this.marker.position.lng());
       });
-      $("form.event-modify").find("input, textarea").keyup(function() {
-        _this.is_editing = true;
+      $('form.event-modify').find('input, textarea').keyup(function() {
+        _this.isEditing = true;
         setTimeout((function() {
-          _this.is_editing = false;
+          _this.isEditing = false;
         }), 5000);
       });
       setInterval((function() {
         _this.autoSave();
       }), 5000);
-      originalStartTime = $("form.event-modify input[name=start_time]").val();
-      originalEndTime = $("form.event-modify input[name=end_time]").val();
-      $("form.event-modify input[name=start_time], form.event-modify input[name=end_time]").timeAutocomplete({
+      originalStartTime = $('form.event-modify input[name=start_time]').val();
+      originalEndTime = $('form.event-modify input[name=end_time]').val();
+      $('form.event-modify input[name=start_time], form.event-modify input[name=end_time]').timeAutocomplete({
         blur_empty_populate: false
       });
-      $("form.event-modify input[name=start_time]").val(originalStartTime);
-      $("form.event-modify input[name=end_time]").val(originalEndTime);
+      $('form.event-modify input[name=start_time]').val(originalStartTime);
+      $('form.event-modify input[name=end_time]').val(originalEndTime);
       $('form.event-modify input[name=start_date]').pikaday({
         format: 'MM/DD/YYYY',
         onSelect: function() {
