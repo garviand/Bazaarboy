@@ -68,6 +68,8 @@ block content
                         input.field(type="text", name="location", value="{{ event.location }}", placeholder="Event location")
                     div.text.medium-10.medium-offset-2.columns
                         p The location of your event.
+                div#location_map(style="height:150px;")
+                div#fake_map(style="display:none;")
                 input(type="submit", value="Next")
                 input(type="hidden", name="latitude", value="{{ event.latitude }}")
                 input(type="hidden", name="longitude", value="{{ event.longitude }}")

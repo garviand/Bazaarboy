@@ -1,4 +1,7 @@
 Bazaarboy.event.modify.basics =
+    is_editing: false
+    map: undefined
+    marker: undefined
     save: (params, cb) ->
         if token?
             params.token = token
@@ -12,58 +15,97 @@ Bazaarboy.event.modify.basics =
                 return cb err, null
             return
         return
-    autoSave: () ->
-        name = $("form.event-modify input[name=name]").val()
-        summary = $("form.event-modify input[name=summary]").val()
-        location = $("form.event-modify input[name=location]").val()
-        latitude = $("form.event-modify input[name=latitude]").val()
-        longitude = $("form.event-modify input[name=longitude]").val()
-        startDate = $("form.event-modify input[name=start_date]").val()
-        startTime = $("form.event-modify input[name=start_time]").val()
-        if moment(startDate, 'MM/DD/YYYY').isValid() and moment(startTime, 'h:mm a').isValid()
-            startTime = moment(startDate + ' ' + startTime, 'MM/DD/YYYY h:mm A')
+    saveBasics: (auto_save) ->
+        save_data = $("form.event-modify").serializeObject()
+        if save_data.name.length > 150
+            console.log('Name is too long.')
+        if save_data.summary.length > 250
+            console.log('Summary is too long.')
+        if save_data.start_date.trim().length != 0 and save_data.start_time.trim().length != 0 and moment(save_data.start_date, 'MM/DD/YYYY').isValid() and moment(save_data.start_time, 'h:mm a').isValid()
+            start_time = moment(save_data.start_date + ' ' + save_data.start_time, 'MM/DD/YYYY h:mm A').utc().format('YYYY-MM-DD HH:mm:ss')
         else
-            startTime = ''
-        endDate = $("form.event-modify input[name=end_date]").val()
-        endTime = $("form.event-modify input[name=end_time]").val()
-        if endDate.trim().length is 0 and endTime.trim().length is 0
-            endTime = false
+            start_time = ''
+        if save_data.end_date.trim().length is 0 or save_data.end_time.trim().length is 0
+            end_time = false
         else
-            if not moment(endDate, 'MM/DD/YYYY').isValid()
+            if not moment(save_data.end_date, 'MM/DD/YYYY').isValid()
                 return
-            if not moment(endTime, 'h:mm a').isValid()
+            if not moment(save_data.end_time, 'h:mm a').isValid()
                 return
-            endTime = moment(endDate + ' ' + endTime, 'MM/DD/YYYY h:mm A')
+            end_time = moment(save_data.end_date + ' ' + save_data.end_time, 'MM/DD/YYYY h:mm A').utc().format('YYYY-MM-DD HH:mm:ss')
         @save
             id: eventId
-            start_time: startTime.utc().format('YYYY-MM-DD HH:mm:ss')
-            end_time: if endTime then endTime.utc().format('YYYY-MM-DD HH:mm:ss') else 'none'
-            name: name
-            summary: summary
-            location: location
-            latitude: latitude
-            longitude: longitude
+            start_time: start_time
+            end_time: if end_time then end_time else 'none'
+            name: save_data.name
+            summary: save_data.summary
+            location: save_data.location
+            latitude: save_data.latitude
+            longitude: save_data.longitude
         , (err, event) =>
             unless err
-                console.log 'Saved.'
+                console.log 'Saved'
+                if not auto_save
+                    window.location = '/event/'+eventId+'/design'
             else
                 console.log err
             return
         return
+    autoSave: () ->
+        if not @is_editing
+            @saveBasics(true)
+        return
     fetchCoordinates: (reference) ->
+        gmap = $('form.event-modify #fake_map').get(0)
         location = $('form.event-modify input[name=location]').val()
-        placesService = new google.maps.places.PlacesService location
+        placesService = new google.maps.places.PlacesService gmap
         placesService.getDetails
             reference: reference
-        , (result, status) ->
+        , (result, status) =>
             if status is 'OK'
                 $('form.event-modify input[name=latitude]')
                     .val result.geometry.location.lat()
                 $('form.event-modify input[name=longitude]')
                     .val result.geometry.location.lng()
+                center = new google.maps.LatLng(result.geometry.location.lat(), result.geometry.location.lng())
+                @map.panTo(center)
+                @marker.setPosition(center)
             return
         return
     init: () ->
+        # Submit Form
+        $('form.event-modify').submit (e) =>
+            e.preventDefault()
+            @saveBasics(false)
+            return
+        # Initialize Map
+        initial_lat = $('form.event-modify input[name=latitude]').val()
+        initial_lng = $('form.event-modify input[name=longitude]').val()
+        if initial_lat != "None" and initial_lng != "None"
+            map_center = new google.maps.LatLng(initial_lat, initial_lng)
+        else
+            map_center = new google.maps.LatLng(38.650068, -90.259904)
+        mapOptions =
+            zoom: 15
+            center: map_center
+        @map = new google.maps.Map document.getElementById('location_map'), mapOptions
+        @marker = new google.maps.Marker(
+            position: map_center
+            map: @map
+            draggable: true
+        )
+        google.maps.event.addListener @marker, "drag", () =>
+            $('form.event-modify input[name=latitude]').val(@marker.position.lat())
+            $('form.event-modify input[name=longitude]').val(@marker.position.lng())
+            return
+        # Is User Editing Info
+        $("form.event-modify").find("input, textarea").keyup () =>
+            @is_editing = true
+            setTimeout (() =>
+                @is_editing = false
+                return
+            ), 5000
+            return
         # Auto-save timer
         setInterval (() =>
             @autoSave()
@@ -95,22 +137,23 @@ Bazaarboy.event.modify.basics =
                     input: keyword
                 , (predictions, status) =>
                     autocompleteSource = []
-                    for prediction in predictions
-                        if prediction['terms'].length > 2
-                            labelExtenstion = ' - <i>' + prediction['terms'][2]['value'] + '</i>'
-                        else
-                            labelExtenstion = ''
-                        autocompleteSource.push
-                            id: prediction['reference']
-                            value: prediction['terms'][0]['value']
-                            label: prediction['terms'][0]['value'] + labelExtenstion
-                    $('form.event-modify input[name=location]').autocomplete
-                        source: autocompleteSource
-                        html: true
-                    $('form.event-modify input[name=location]').on 'autocompleteselect', (event, ui) =>
-                        @fetchCoordinates ui.item.id
+                    if predictions and predictions.length > 0
+                        for prediction in predictions
+                            if prediction['terms'].length > 2
+                                labelExtenstion = ' - <i>' + prediction['terms'][2]['value'] + '</i>'
+                            else
+                                labelExtenstion = ''
+                            autocompleteSource.push
+                                id: prediction['reference']
+                                value: prediction['terms'][0]['value']
+                                label: prediction['terms'][0]['value'] + labelExtenstion
+                        $('form.event-modify input[name=location]').autocomplete
+                            source: autocompleteSource
+                            html: true
+                        $('form.event-modify input[name=location]').on 'autocompleteselect', (event, ui) =>
+                            @fetchCoordinates ui.item.id
+                            return
                         return
-                    return
             return
         return
 
