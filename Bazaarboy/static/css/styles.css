@@ -5556,6 +5556,7 @@ th.hide-for-touch {
 }
 ul.ui-autocomplete {
   list-style: none;
+  position: absolute !important;
 }
 /* Styles */
 .absolute-center {
