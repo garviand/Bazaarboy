@@ -11,7 +11,6 @@ Bazaarboy.index.index =
         launchedTime = $(eventFrame).attr('data-launched-time')
         launchedTime = moment launchedTime, 'YYYY-MM-DD HH:mm:ss'
         now = moment()
-
         canvas = $(eventFrame).find('div.graph-canvas')
         $(canvas).highcharts
             title:

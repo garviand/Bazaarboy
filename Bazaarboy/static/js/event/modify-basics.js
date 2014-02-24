@@ -20,11 +20,10 @@
         }
       });
     },
-    saveBasics: function(auto_save) {
+    saveBasics: function(autoSave) {
       var end_time, save_data, start_time,
         _this = this;
       save_data = $('form.event-modify').serializeObject();
-      console.log(save_data);
       if (save_data.name.length > 150) {
         console.log('Name is too long.');
       }
@@ -47,6 +46,7 @@
         }
         end_time = moment(save_data.end_date + ' ' + save_data.end_time, 'MM/DD/YYYY h:mm A').utc().format('YYYY-MM-DD HH:mm:ss');
       }
+      $('div#event-modify-basics div.status').html('Saving...');
       this.save({
         id: eventId,
         start_time: start_time,
@@ -58,11 +58,14 @@
         longitude: save_data.longitude
       }, function(err, event) {
         if (!err) {
-          console.log('Saved');
-          if (!auto_save) {
+          setTimeout((function() {
+            $('div#event-modify-basics div.status').html('Saved');
+          }), 1000);
+          if (!autoSave) {
             window.location = '/event/' + eventId + '/design';
           }
         } else {
+          $('div#event-modify-basics div.status').html('Failed to save');
           console.log(err);
         }
       });
@@ -127,7 +130,7 @@
       });
       setInterval((function() {
         _this.autoSave();
-      }), 5000);
+      }), 10000);
       originalStartTime = $('form.event-modify input[name=start_time]').val();
       originalEndTime = $('form.event-modify input[name=end_time]').val();
       $('form.event-modify input[name=start_time], form.event-modify input[name=end_time]').timeAutocomplete({

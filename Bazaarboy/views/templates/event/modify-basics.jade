@@ -26,17 +26,17 @@ block header
                 span.sub Modify Basic Event Information
 
 block content
-    div#wrapper-event-modify.medium-9.columns.small-centered
-        div#event-modify-basics
+    div#wrapper-event-modify.large-9.medium-10.columns.small-centered
+        div#event-modify-basics.small-12.columns
             form.event-modify
-                div
+                div.row
                     div.name.medium-2.columns 
                         | Name
                     div.medium-10.columns
                         input.field(type="text", name="name", value="{{ event.name }}", placeholder="Event name")
                     div.text.medium-10.medium-offset-2.columns
                         p The name of your event, maximum 150 characters.
-                div
+                div.row
                     div.name.medium-2.columns
                         | Summary
                     div.medium-10.columns
@@ -44,7 +44,7 @@ block content
                             {{ event.summary }}
                     div.text.medium-10.medium-offset-2.columns
                         p A summary of your event - it will be used for email communications. Maximum 250 characters.
-                div
+                div.row
                     div.name.medium-2.columns
                         | Start Time
                     div.medium-5.columns
@@ -53,7 +53,7 @@ block content
                         input.field(type="text", name="start_time", value="{{ event.start_time|date:'g:i A' }}", placeholder="ex. 6:00 PM")
                     div.text.medium-10.medium-offset-2.columns
                         p The start time of your event (Required)
-                div
+                div.row
                     div.name.medium-2.columns
                         | End Time
                     div.medium-5.columns
@@ -62,7 +62,7 @@ block content
                         input.field(type="text", name="end_time", value="{{ event.end_time|date:'g:i A' }}", placeholder="ex. 7:00 PM")
                     div.text.medium-10.medium-offset-2.columns
                         p The end time of your event (Optional, leave it blank if the event doesn't have a end time)
-                div
+                div.row
                     div.name.medium-2.columns
                         | Location
                     div.medium-10.columns
@@ -73,7 +73,11 @@ block content
                         div#map-canvas
                     div.hide
                         div#map-canvas-hidden
-                input(type="submit", value="Next")
+                div.row
+                    div.status.medium-3.medium-offset-1.columns
+                        | Saved
+                    div.medium-4.columns.end
+                        input.primary-btn(type="submit", value="Next")
                 input(type="hidden", name="latitude", value="{{ event.latitude }}")
                 input(type="hidden", name="longitude", value="{{ event.longitude }}")
 

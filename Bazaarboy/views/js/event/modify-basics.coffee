@@ -15,9 +15,8 @@ Bazaarboy.event.modify.basics =
                 return cb err, null
             return
         return
-    saveBasics: (auto_save) ->
+    saveBasics: (autoSave) ->
         save_data = $('form.event-modify').serializeObject()
-        console.log save_data
         if save_data.name.length > 150
             console.log('Name is too long.')
         if save_data.summary.length > 250
@@ -34,6 +33,7 @@ Bazaarboy.event.modify.basics =
             if not moment(save_data.end_time, 'h:mm a').isValid()
                 return
             end_time = moment(save_data.end_date + ' ' + save_data.end_time, 'MM/DD/YYYY h:mm A').utc().format('YYYY-MM-DD HH:mm:ss')
+        $('div#event-modify-basics div.status').html 'Saving...'
         @save
             id: eventId
             start_time: start_time
@@ -45,10 +45,14 @@ Bazaarboy.event.modify.basics =
             longitude: save_data.longitude
         , (err, event) =>
             unless err
-                console.log 'Saved'
-                if not auto_save
-                    window.location = '/event/' + eventId + '/design'
+                setTimeout (() ->
+                    $('div#event-modify-basics div.status').html 'Saved'
+                    return
+                ), 1000
+                if not autoSave
+                    window.location = '/event/' + eventId + '/design/'
             else
+                $('div#event-modify-basics div.status').html 'Failed to save'
                 console.log err
             return
         return
@@ -111,7 +115,7 @@ Bazaarboy.event.modify.basics =
         setInterval (() =>
             @autoSave()
             return
-        ), 5000
+        ), 10000
         # Time auto-complete
         originalStartTime = $('form.event-modify input[name=start_time]').val()
         originalEndTime = $('form.event-modify input[name=end_time]').val()

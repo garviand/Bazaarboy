@@ -494,9 +494,6 @@ img {
 .start {
   float: left !important; }
 
-.end {
-  float: right !important; }
-
 .text-start {
   text-align: left !important; }
 
@@ -6143,7 +6140,6 @@ div.current-event > div.tile div.section-title {
 }
 div#event-modify-basics {
   padding-top: 40px;
-  padding-bottom: 40px;
 }
 div#event-modify-basics textarea {
   resize: none;
@@ -6164,4 +6160,20 @@ div#event-modify-basics div#map-canvas {
 }
 div#event-modify-basics div#map-canvas img {
   max-width: none;
+}
+div#event-modify-basics div.status {
+  padding-top: 53px;
+  color: #9B9B9B;
+  text-transform: uppercase;
+  text-align: right;
+}
+div#event-modify-basics input.primary-btn {
+  width: 100%;
+  margin-top: 40px;
+  margin-bottom: 40px;
+  padding-top: 11px;
+  padding-bottom: 14px;
+  border: none;
+  font-size: 15px;
+  text-transform: uppercase;
 }
