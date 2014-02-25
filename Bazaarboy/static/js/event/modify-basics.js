@@ -30,7 +30,7 @@
       if (save_data.summary.length > 250) {
         console.log('Summary is too long.');
       }
-      if (save_data.start_date.trim().length !== 0 && save_data.start_time.trim().length !== 0 && moment(save_data.start_date, 'MM/DD/YYYY').isValid() && moment(save_data.start_time, 'h:mm a').isValid()) {
+      if (save_data.start_date.trim().length !== 0 && save_data.start_time.trim().length !== 0 && moment(save_data.start_date, 'MM/DD/YYYY').isValid() && moment(save_data.start_time, 'h:mm A').isValid()) {
         start_time = moment(save_data.start_date + ' ' + save_data.start_time, 'MM/DD/YYYY h:mm A').utc().format('YYYY-MM-DD HH:mm:ss');
       } else {
         start_time = '';
@@ -41,7 +41,7 @@
         if (!moment(save_data.end_date, 'MM/DD/YYYY').isValid()) {
           return;
         }
-        if (!moment(save_data.end_time, 'h:mm a').isValid()) {
+        if (!moment(save_data.end_time, 'h:mm A').isValid()) {
           return;
         }
         end_time = moment(save_data.end_date + ' ' + save_data.end_time, 'MM/DD/YYYY h:mm A').utc().format('YYYY-MM-DD HH:mm:ss');

@@ -5605,6 +5605,9 @@ ul.ui-autocomplete {
   text-shadow: 1px 2px 0px #00BD84;
   cursor: pointer;
 }
+textarea {
+  resize: none;
+}
 .field {
   border: 1px solid #9B9B9B;
   border-radius: 4px;
@@ -6143,9 +6146,6 @@ div.current-event > div.tile div.section-title {
 div#wrapper-event-modify > div {
   padding-top: 40px;
 }
-div#event-modify-basics textarea {
-  resize: none;
-}
 div#event-modify-basics div.name {
   padding: 0;
   padding-top: 10px;
@@ -6180,18 +6180,104 @@ div#event-modify-basics input.primary-btn {
   text-transform: uppercase;
 }
 div#event-modify-tickets div#add-ticket {
-  height: 330px;
+  position: relative;
   border: 9px solid #FEC84D;
   border-radius: 4px;
 }
-div#event-modify-tickets div#add-ticket div.title {
-  height: 46px;
+div#event-modify-tickets div#add-ticket div.step-1,
+div#event-modify-tickets div#add-ticket div.step-2 {
+  position: relative;
+  width: 100%;
 }
-div#event-modify-tickets div#add-ticket div.title div {
+div#event-modify-tickets div#add-ticket div.title {
+  position: relative;
+  height: 66px;
+}
+div#event-modify-tickets div#add-ticket div.title div.text {
   width: 100%;
   height: 100%;
-  padding: 13px 0;
+  padding: 23px 0;
   border-bottom: 1px solid #979797;
   font-size: 20px;
   text-align: center;
+}
+div#event-modify-tickets div#add-ticket div.title div.text span.ss-tag {
+  color: #faa638;
+}
+div#event-modify-tickets div#add-ticket div.title div.secondary-btn {
+  position: absolute;
+  height: 35px;
+  top: 15px;
+  right: 15px;
+  padding: 0 5px;
+  padding-top: 8px;
+  padding-bottom: 13px;
+  color: #ffffff;
+  font-size: 14px;
+  font-weight: 700;
+  text-transform: uppercase;
+}
+div#event-modify-tickets div#add-ticket div.type div.clearfix {
+  width: 547px;
+  margin: 0 auto;
+}
+div#event-modify-tickets div#add-ticket div.type div.clearfix > div {
+  width: 266px;
+  height: 266px;
+  margin-top: 15px;
+  margin-bottom: 15px;
+  margin-right: 15px;
+}
+div#event-modify-tickets div#add-ticket div.type div.clearfix > div.right {
+  margin-right: 0;
+}
+div#event-modify-tickets div#add-ticket div.type div.clearfix > div a {
+  display: block;
+  position: relative;
+  width: 100%;
+  height: 100%;
+  border-radius: 4px;
+  background-color: #F5A623;
+}
+div#event-modify-tickets div#add-ticket div.type div.clearfix > div a:hover {
+  background-color: #FEC84D;
+}
+div#event-modify-tickets div#add-ticket div.type div.clearfix > div a div.text {
+  width: 100%;
+  height: 18px;
+  color: #ffffff;
+  font-size: 18px;
+  font-weight: 500;
+  text-align: center;
+}
+div#event-modify-tickets div#add-ticket form input[name="name"] {
+  margin-top: 24px;
+}
+div#event-modify-tickets div#add-ticket form div.price {
+  position: relative;
+}
+div#event-modify-tickets div#add-ticket form div.price div.dollar-sign {
+  position: absolute;
+  width: 10px;
+  height: 14px;
+  top: 11px;
+  left: 23px;
+  font-size: 16px;
+  font-weight: 500;
+  line-height: 16px;
+}
+div#event-modify-tickets div#add-ticket form div.price input {
+  padding-left: 20px;
+}
+div#event-modify-tickets div#add-ticket form p {
+  margin-bottom: 0.5rem;
+}
+div#event-modify-tickets div#add-ticket form input.primary-btn {
+  width: 100%;
+  margin-top: -3px;
+  padding-top: 9px;
+  padding-bottom: 12px;
+  border: none;
+  font-size: 15px;
+  text-transform: uppercase;
 }
