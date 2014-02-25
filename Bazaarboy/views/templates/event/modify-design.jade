@@ -2,11 +2,11 @@ extends ../layout
 
 block sidebar
     +sidebarItem('ss-file')(href="{% url event:modify id 'basics' %}")
-        | Edit Event
+        | Basic Info
     +sidebarItem('ss-picture')(href="{% url event:modify id 'design' %}", class="selected")
-        | Page design
+        | Page Design
     +sidebarItem('ss-tag')(href="{% url event:modify id 'tickets' %}")
-        | Ticket options
+        | Ticket Options
     +sidebarItem('ss-star')(href="{% url event:modify id 'bonus' %}")
         | Bonus
     +sidebarItem('ss-mail')(href="{% url event:modify id 'emails' %}")

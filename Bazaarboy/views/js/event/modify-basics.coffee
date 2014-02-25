@@ -119,7 +119,7 @@ Bazaarboy.event.modify.basics =
         # Time auto-complete
         originalStartTime = $('form.event-modify input[name=start_time]').val()
         originalEndTime = $('form.event-modify input[name=end_time]').val()
-        console.log $('form.event-modify input[name=start_time], form.event-modify input[name=end_time]').timeAutocomplete
+        $('form.event-modify input[name=start_time], form.event-modify input[name=end_time]').timeAutocomplete
             blur_empty_populate: false
             appendTo: '#menu-container'
         $('form.event-modify input[name=start_time]').val originalStartTime

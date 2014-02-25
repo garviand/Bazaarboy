@@ -1,8 +1,12 @@
 @import (reference) "vars.less";
 
-div#event-modify-basics {
-    padding-top: 40px;
+div#wrapper-event-modify {
+    > div {
+        padding-top: 40px;
+    }
+}
 
+div#event-modify-basics {
     textarea {
         resize: none;
     }
@@ -46,5 +50,26 @@ div#event-modify-basics {
         border: none;
         font-size: 15px;
         text-transform: uppercase;
+    }
+}
+
+div#event-modify-tickets {
+    div#add-ticket {
+        height: 330px;
+        border: 9px solid #FEC84D;
+        border-radius: 4px;
+
+        div.title {
+            height: 46px;
+
+            div {
+                width: 100%;
+                height: 100%;
+                padding: (46px - 20px) / 2 0;
+                border-bottom: 1px solid #979797;
+                font-size: 20px;
+                text-align: center;
+            }
+        }
     }
 }

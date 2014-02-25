@@ -2,41 +2,52 @@ extends ../layout
 
 block sidebar
     +sidebarItem('ss-file')(href="{% url event:modify id 'basics' %}")
-        | Edit Event
+        | Basic Info
     +sidebarItem('ss-picture')(href="{% url event:modify id 'design' %}")
-        | Page design
+        | Page Design
     +sidebarItem('ss-tag')(href="{% url event:modify id 'tickets' %}", class="selected")
-        | Ticket options
+        | Ticket Options
     +sidebarItem('ss-star')(href="{% url event:modify id 'bonus' %}")
         | Bonus
     +sidebarItem('ss-mail')(href="{% url event:modify id 'emails' %}")
         | Emails
 
+block header
+    div.header-title.large-9.medium-10.columns.small-centered
+        div.row.clearfix
+            div.icon.left
+                span.ss-tag
+            div.text.left
+                | Edit Event | 
+                span.sub Ticket Options
+
 block content
-    div#wrapper-event-modify.medium-9.columns.small-centered
-        div#ticket-canvas
-        div#add-ticket
-            div.step-1
-                div.title Add Ticket Option
-                div.type
-                    a(href="javascript:;") Free/RSVP
-                    a(href="javascript:;") Priced Ticket
-            div.step-2
-                div.title
-                    div New Ticket
-                    div.action-btn Back to Select Type
-                div.info
-                    form.add-ticket
-                        input(type="text", name="name", placeholder="Ticket Name")
-                        br
-                        input(type="text", name="price", placeholder="Price")
-                        input(type="text", name="quantity", placeholder="Quantity (leave blank if unlimited)")
-                        br
-                        label Start Time
-                        input(type="text", name="start_date", value="{{ event.start_time|date:'m/d/Y' }}", placeholder="MM/DD/YYYY")
-                        input(type="text", name="start_time", value="{{ event.start_time|date:'g:i A' }}", placeholder="ex. 6:00 PM")
-                        label End Time
-                        input(type="text", name="end_date", value="{{ event.end_time|date:'m/d/Y' }}", placeholder="MM/DD/YYYY")
-                        input(type="text", name="end_time", value="{{ event.end_time|date:'g:i A' }}", placeholder="ex. 7:00 PM")
-                        br
-                        input(type="submit", value="Add")
+    div#wrapper-event-modify.large-9.medium-10.columns.small-centered
+        div#event-modify-tickets.small-12.columns
+            div#ticket-canvas
+            div#add-ticket.row
+                div.step-1
+                    div.title.small-12.columns
+                        div First, Choose a Ticket Type
+                    div.type
+                        a(href="javascript:;") Free/RSVP
+                        a(href="javascript:;") Priced Ticket
+                div.step-2.hide
+                    div.title
+                        div New Ticket
+                        div.action-btn Back to Select Type
+                    div.info
+                        form.add-ticket
+                            input(type="text", name="name", placeholder="Ticket Name")
+                            br
+                            input(type="text", name="price", placeholder="Price")
+                            input(type="text", name="quantity", placeholder="Quantity (leave blank if unlimited)")
+                            br
+                            label Start Time
+                            input(type="text", name="start_date", value="{{ event.start_time|date:'m/d/Y' }}", placeholder="MM/DD/YYYY")
+                            input(type="text", name="start_time", value="{{ event.start_time|date:'g:i A' }}", placeholder="ex. 6:00 PM")
+                            label End Time
+                            input(type="text", name="end_date", value="{{ event.end_time|date:'m/d/Y' }}", placeholder="MM/DD/YYYY")
+                            input(type="text", name="end_time", value="{{ event.end_time|date:'g:i A' }}", placeholder="ex. 7:00 PM")
+                            br
+                            input(type="submit", value="Add")

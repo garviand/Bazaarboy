@@ -6,81 +6,80 @@ append script
 	script(type="text/javascript", src="{{ STATIC_URL }}js/index/pricing.js")
 
 block body
-	block content
-		div#pricing
-			div.background
-			div.pricing_content
-				div.logo
-					a(href="{% url index %}")
-						img(src="{{ STATIC_URL }}images/pricing/logo.png")
-				div.title
-					div.top Free Events Are Always Free.
-					div.bottom Paid Events Require No Setup Fee
-				div.scrolling_input
-					input(type="text", name="name", placeholder="Organization Name")
-					input(type="text", name="email", placeholder="Organization Email")
-					a(href="javascript:;") Sign Up for Free
+	div#wrapper-pricing
+		div.background
+		div.pricing_content
+			div.logo
+				a(href="{% url index %}")
+					img(src="{{ STATIC_URL }}images/pricing/logo.png")
+			div.title
+				div.top Free Events Are Always Free.
+				div.bottom Paid Events Require No Setup Fee
+			div.scrolling_input
+				input(type="text", name="name", placeholder="Organization Name")
+				input(type="text", name="email", placeholder="Organization Email")
+				a(href="javascript:;") Sign Up for Free
+				div.clear
+		div.fees
+			div.fees_content
+				div.title How Fees Work for Paid Events
+				div.boxes
+					div.box.bboy_box
+						img(src="{{ STATIC_URL }}images/pricing/icon_person.png")
+						div.numbers 4%
+						div.subtitle Service Fee*
+					div.plus
+						img(src="{{ STATIC_URL }}images/pricing/plus.png")
+					div.box.cc_box
+						img(src="{{ STATIC_URL }}images/pricing/icon_cc.png")
+						div.numbers 2.9% + $0.30
+						div.subtitle Credit Card Processing Fee
 					div.clear
-			div.fees
-				div.fees_content
-					div.title How Fees Work for Paid Events
-					div.boxes
-						div.box.bboy_box
-							img(src="{{ STATIC_URL }}images/pricing/icon_person.png")
-							div.numbers 4%
-							div.subtitle Service Fee*
-						div.plus
-							img(src="{{ STATIC_URL }}images/pricing/plus.png")
-						div.box.cc_box
-							img(src="{{ STATIC_URL }}images/pricing/icon_cc.png")
-							div.numbers 2.9% + $0.30
-							div.subtitle Credit Card Processing Fee
-						div.clear
-						div.caption.bboy_caption
-							| For every ticket you sell using Bazaarboy, we charge 4% of the ticket value per ticket.
-							div.subtext *service fee for 501(c)(3) organizations is 2%
-						div.caption.cc_caption
-							| When you collect money through Stripe's credit card processor, they charge 2.9% + $0.30 of the ticket value.
-						div.clear
-			div.stripe
-				div.stripe_content
-					div.title We use a secure third-party platform to process payments:
-					div.stripe_logo
-						img(src="{{ STATIC_URL }}images/pricing/stripe.png")
-					div.pci
-						hr
-						div.pci Bazaarboy and Stripe are PCI Compliant
-						hr
-						div.clear
-					div.credit_cards
-						div.text We accept all major credit cards
-						img(src="{{ STATIC_URL }}images/pricing/credit-04.png")
-						img(src="{{ STATIC_URL }}images/pricing/credit-05.png")
-						img(src="{{ STATIC_URL }}images/pricing/credit-06.png")
-						img(src="{{ STATIC_URL }}images/pricing/credit-07.png")
-						div.clear
-			div.charges
-				div.charges_content
-					div.top
-						img(src="{{ STATIC_URL }}images/pricing/eat_charges.png")
-						div.text
-							div.title Eat the charges or pass them to your customer
-							div.content
-								| It's your choice to either assume the cost of the service and credit card processing fees, or to pass them to your customer.
-						div.clear
-					div.bottom
-						div.text
-							div.title How You Get Paid
-							div.content
-								| As you sell tickets, Stripe begins processing your payments and creates a deposit schedule. This information is accessible from your Bazaarboy dashboard.
-						img(src="{{ STATIC_URL }}images/pricing/get_paid.png")
-						div.clear
-			div.what_else
-				div.what_else_content
-					div.title What else?
-					div.content
-						| We understand that selling tickets is just one hurdle for event organizers. 
-						| Our team can also provide strategic reccomendations to help your marketing and communication efforts. 
-						| Whether it's sourcing event-based local products and services, 
-						| or connecting with other members of our organizer community, we are here to help.
-					a.contact_us(href="mailto:build@bazaarboy.com") Contact Us
+					div.caption.bboy_caption
+						| For every ticket you sell using Bazaarboy, we charge 4% of the ticket value per ticket.
+						div.subtext *service fee for 501(c)(3) organizations is 2%
+					div.caption.cc_caption
+						| When you collect money through Stripe's credit card processor, they charge 2.9% + $0.30 of the ticket value.
+					div.clear
+		div.stripe
+			div.stripe_content
+				div.title We use a secure third-party platform to process payments:
+				div.stripe_logo
+					img(src="{{ STATIC_URL }}images/pricing/stripe.png")
+				div.pci
+					hr
+					div.pci Bazaarboy and Stripe are PCI Compliant
+					hr
+					div.clear
+				div.credit_cards
+					div.text We accept all major credit cards
+					img(src="{{ STATIC_URL }}images/pricing/credit-04.png")
+					img(src="{{ STATIC_URL }}images/pricing/credit-05.png")
+					img(src="{{ STATIC_URL }}images/pricing/credit-06.png")
+					img(src="{{ STATIC_URL }}images/pricing/credit-07.png")
+					div.clear
+		div.charges
+			div.charges_content
+				div.top
+					img(src="{{ STATIC_URL }}images/pricing/eat_charges.png")
+					div.text
+						div.title Eat the charges or pass them to your customer
+						div.content
+							| It's your choice to either assume the cost of the service and credit card processing fees, or to pass them to your customer.
+					div.clear
+				div.bottom
+					div.text
+						div.title How You Get Paid
+						div.content
+							| As you sell tickets, Stripe begins processing your payments and creates a deposit schedule. This information is accessible from your Bazaarboy dashboard.
+					img(src="{{ STATIC_URL }}images/pricing/get_paid.png")
+					div.clear
+		div.what_else
+			div.what_else_content
+				div.title What else?
+				div.content
+					| We understand that selling tickets is just one hurdle for event organizers. 
+					| Our team can also provide strategic reccomendations to help your marketing and communication efforts. 
+					| Whether it's sourcing event-based local products and services, 
+					| or connecting with other members of our organizer community, we are here to help.
+				a.contact_us(href="mailto:build@bazaarboy.com") Contact Us

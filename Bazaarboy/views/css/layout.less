@@ -28,7 +28,6 @@ div#wrapper-sidebar {
     min-height: 100%;
     z-index: 1;
     background: @darker;
-    //transition: width 0.5s;
 
     @media @media_medium {
         width: @sidebar-width-collapsed;
@@ -102,11 +101,12 @@ div#wrapper-sidebar {
                 }
             }
 
-            @text-size: @sidebar-width - 10px * 2 - 3px * 2 - @logo-size;
+            @text-size: @sidebar-width - 10px * 2 - 3px * 2 - @logo-size + 5px;
 
             div.text {
                 width: @text-size;
                 height: 16px;
+                margin-left: -5px;
                 padding: (@logo-size - 16px) / 2 0;
                 color: #F5A623;
                 font-size: 16px;
