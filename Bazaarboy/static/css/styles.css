@@ -6140,6 +6140,106 @@ div.current-event > div.tile div.section-title {
   line-height: 50px;
   text-transform: uppercase;
 }
+div#wrapper-pricing {
+  min-height: 100%;
+}
+div#wrapper-pricing div#background {
+  position: fixed;
+  width: 100%;
+  height: 100%;
+  background: url('../images/pricing/bg.jpg');
+  background-size: cover;
+  background-position: center top;
+  z-index: -10000;
+}
+div#wrapper-pricing div#pricing {
+  position: relative;
+}
+div#wrapper-pricing div#pricing div#header {
+  padding-top: 50px;
+}
+div#wrapper-pricing div#pricing div#title {
+  margin-top: 75px;
+  color: #FFF;
+  font-size: 2.75em;
+  text-align: center;
+}
+div#wrapper-pricing div#pricing div#title .title {
+  font-weight: bold;
+}
+div#wrapper-pricing div#pricing div#title .subtitle {
+  margin-top: 25px;
+}
+div#wrapper-pricing div#pricing div#signup {
+  margin-top: 75px;
+}
+div#wrapper-pricing div#pricing div#signup input[type=text] {
+  border-radius: 4px;
+  border: none;
+  padding-top: 22px;
+  padding-bottom: 22px;
+}
+div#wrapper-pricing div#pricing div#signup .primary-btn {
+  display: block;
+  width: 100%;
+  padding-top: 13px;
+  padding-bottom: 17px;
+}
+div#wrapper-pricing div#pricing div#signup .primary-btn:hover {
+  color: #ffffff;
+}
+div#wrapper-pricing div#pricing div#fees {
+  margin-top: 75px;
+  background: #ffffff;
+  width: 100%;
+}
+div#wrapper-pricing div#pricing div#fees .title {
+  color: #4d4c4d;
+  font-size: 2.25em;
+  padding-bottom: 25px;
+  padding-top: 50px;
+  border-bottom: 1px solid #e6e6e6;
+}
+div#wrapper-pricing div#pricing div#fees .boxes {
+  color: #4d4c4d;
+  margin-top: 50px;
+}
+div#wrapper-pricing div#pricing div#fees .boxes .box {
+  padding-top: 25px;
+  padding-bottom: 25px;
+  text-align: center;
+  border: 1px solid #e6e6e6;
+  border-radius: 3px;
+}
+div#wrapper-pricing div#pricing div#fees .boxes .box.cc img {
+  padding-top: 10px;
+  padding-bottom: 9px;
+}
+div#wrapper-pricing div#pricing div#fees .boxes .box .numbers {
+  margin-top: 50px;
+  font-size: 3em;
+  font-weight: bold;
+}
+div#wrapper-pricing div#pricing div#fees .boxes .box .subtitle {
+  margin-top: 25px;
+  font-size: 2em;
+  min-height: 70px;
+}
+div#wrapper-pricing div#pricing div#fees .boxes .plus {
+  text-align: center;
+}
+div#wrapper-pricing div#pricing div#fees .boxes .plus img {
+  position: relative;
+}
+div#wrapper-pricing div#pricing div#fees .captions {
+  margin-top: 25px;
+  font-size: 1.25em;
+  line-height: 1.3em;
+}
+div#wrapper-pricing div#pricing div#fees .captions .subtext {
+  margin-top: 12px;
+  font-size: .6em;
+}
 div#wrapper-event-modify > div {
   padding-top: 40px;
 }

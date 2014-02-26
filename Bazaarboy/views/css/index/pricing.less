@@ -1,5 +1,107 @@
 @import (reference) "vars.less";
 
 div#wrapper-pricing {
-  
+    min-height: 100%;
+    
+    div#background{
+        position: fixed;
+        width: 100%;
+        height: 100%;
+        background: url('../images/pricing/bg.jpg');
+        background-size: cover;
+        background-position: center top;
+        z-index: -10000;
+    }
+
+    div#pricing{
+        position: relative;
+        div#header{
+            padding-top: 50px
+        }
+        div#title{
+            margin-top: 75px;
+            color: #FFF;
+            font-size: 2.75em;
+            text-align: center;
+            .title{
+                font-weight: bold;
+            }
+            .subtitle{
+                margin-top: 25px;
+            }
+        }
+        div#signup{
+            margin-top: 75px;
+            input[type=text]{
+                border-radius: 4px;
+                border: none;
+                padding-top: 22px;
+                padding-bottom: 22px;
+            }
+            .primary-btn{
+                display: block;
+                width: 100%;
+                padding-top: 13px;
+                padding-bottom: 17px;
+                &:hover{
+                    color: @white;
+                }
+            }
+        }
+        div#fees{
+            margin-top: 75px;
+            background: @white;
+            width: 100%;
+            .title{
+                color: #4d4c4d;
+                font-size: 2.25em;
+                padding-bottom: 25px;
+                padding-top: 50px;
+                border-bottom: 1px solid #e6e6e6;
+            }
+            .boxes{
+                color: #4d4c4d;
+                margin-top: 50px;
+                .box{
+                    padding-top: 25px;
+                    padding-bottom: 25px;
+                    text-align: center;
+                    border: 1px solid #e6e6e6;
+                    border-radius: 3px;
+                    &.cc{
+                        img{
+                            padding-top: 10px;
+                            padding-bottom: 9px;
+                        }
+                    }
+                    .numbers{
+                        margin-top: 50px;
+                        font-size: 3em;
+                        font-weight: bold;
+                    }
+                    .subtitle{
+                        margin-top: 25px;
+                        font-size: 2em;
+                        min-height: 70px;
+                    }
+                }
+                .plus{
+                    text-align: center;
+                    img{
+                        position: relative;
+                    }
+                }
+            }
+            .captions{
+                margin-top: 25px;
+                font-size: 1.25em;
+                line-height: 1.3em;
+                .subtext{
+                    margin-top: 12px;
+                    font-size: .6em;
+                }
+            }
+        }
+    }
+
 }
