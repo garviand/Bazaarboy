@@ -66,3 +66,68 @@ block body
                                                     input(name="ticket_price", type="text", placeholder="Enter Ticket Price")
                                                     input(type="checkbox", id="checkbox1", name="nonprofit")
                                                     label(for="checkbox1") non profit fee
+                                                div.small-6.small-offset-1.columns.calculator_prices
+                                                    span Bazaarboy
+                                                    span.calculator_price.bazaarboy - $0
+                                                    br
+                                                    span Eventbrite
+                                                    span.calculator_price.eventbrite - $0
+                                                    br
+                                                    span Ticketleap
+                                                    span.calculator_price.ticketleap - $0
+                                                    br
+            div#stripe
+                div.row
+                    div.title.small-12.columns
+                        | We use a secure third-party platform to process payments:
+                div.row
+                    div.stripe_logo.small-12.columns
+                        img(src="{{STATIC_URL}}images/pricing/stripe.png")
+                div.row.stripe_info
+                    div.small-3.columns.line
+                        hr
+                    div.small-6.columns.text
+                        | Bazaarboy and Stripe are PCI Compliant
+                    div.small-3.columns.line
+                        hr
+                div.row.cc_info
+                    div.small-6.columns.text
+                        | We accept all major credit cards
+                    div.small-6.columns
+                        div.row.cards
+                            div.small-3.columns
+                                img(src="{{STATIC_URL}}images/pricing/credit-04.png")
+                            div.small-3.columns
+                                img(src="{{STATIC_URL}}images/pricing/credit-05.png")
+                            div.small-3.columns
+                                img(src="{{STATIC_URL}}images/pricing/credit-06.png")
+                            div.small-3.columns
+                                img(src="{{STATIC_URL}}images/pricing/credit-07.png")
+            div#charges
+                div.row
+                    div.small-6.columns
+                        img(src="{{STATIC_URL}}images/pricing/eat_charges.png")
+                    div.small-6.columns
+                        div.text
+                            | Eat the charges or pass them to your customer
+                        div.subtext
+                            | It's your choice to either assume the cost of the service and credit card processing fees, or to pass them to your customer.
+                div.row.second_row
+                    div.small-6.columns
+                        div.text
+                            | How You Get Paid
+                        div.subtext
+                            | As you sell tickets, Stripe begins processing your payments and creates a deposit schedule. This information is accessible from your Bazaarboy dashboard.
+                    div.small-6.columns
+                        img(src="{{STATIC_URL}}images/pricing/get_paid.png")
+            div#what_else
+                div.row
+                    div.title.small-12.columns
+                        | What else?
+                div.row.text
+                    div.small-12.columns
+                        | We understand that selling tickets is just one hurdle for event organizers. Our team can also provide strategic reccomendations to help your marketing and communication efforts. Whether it's sourcing event-based local products and services, or connecting with other members of our organizer community, we are here to help.
+                div.row.contact
+                    div.small-4.small-offset-4.columns
+                        a.primary-btn(href="https://www.bazaarboy.com/pricing/mailto:build@bazaarboy.com") Contact Us
+

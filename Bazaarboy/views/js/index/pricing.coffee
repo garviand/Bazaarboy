@@ -28,13 +28,13 @@
         raw_price = $(".fees_calculator input[name=ticket_price]").val()
         price = parseFloat(raw_price)
         if(!isNaN(price))
-            $(".calculator_price.bazaarboy").html('&nbsp;-&nbsp;$'+@calculate_fee(price, @fees.bazaarboy).toFixed(2)+'<br />')
-            $(".calculator_price.eventbrite").html('&nbsp;-&nbsp;$'+@calculate_fee(price, @fees.eventbrite).toFixed(2)+'<br />')
-            $(".calculator_price.ticketleap").html('&nbsp;-&nbsp;$'+@calculate_fee(price, @fees.ticketleap).toFixed(2)+'<br />')
+            $(".calculator_price.bazaarboy").html('&nbsp;-&nbsp;$'+@calculate_fee(price, @fees.bazaarboy).toFixed(2))
+            $(".calculator_price.eventbrite").html('&nbsp;-&nbsp;$'+@calculate_fee(price, @fees.eventbrite).toFixed(2))
+            $(".calculator_price.ticketleap").html('&nbsp;-&nbsp;$'+@calculate_fee(price, @fees.ticketleap).toFixed(2))
         else
-            $(".calculator_price.bazaarboy").html('&nbsp;-&nbsp;$0<br />')
-            $(".calculator_price.eventbrite").html('&nbsp;-&nbsp;$0<br />')
-            $(".calculator_price.ticketleap").html('&nbsp;-&nbsp;$0<br />')
+            $(".calculator_price.bazaarboy").html('&nbsp;-&nbsp;$0')
+            $(".calculator_price.eventbrite").html('&nbsp;-&nbsp;$0')
+            $(".calculator_price.ticketleap").html('&nbsp;-&nbsp;$0')
         return
     adjust_plus_sign: () ->
         full_height = $("#fees .box.service").height()

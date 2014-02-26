@@ -37,13 +37,13 @@
       raw_price = $(".fees_calculator input[name=ticket_price]").val();
       price = parseFloat(raw_price);
       if (!isNaN(price)) {
-        $(".calculator_price.bazaarboy").html('&nbsp;-&nbsp;$' + this.calculate_fee(price, this.fees.bazaarboy).toFixed(2) + '<br />');
-        $(".calculator_price.eventbrite").html('&nbsp;-&nbsp;$' + this.calculate_fee(price, this.fees.eventbrite).toFixed(2) + '<br />');
-        $(".calculator_price.ticketleap").html('&nbsp;-&nbsp;$' + this.calculate_fee(price, this.fees.ticketleap).toFixed(2) + '<br />');
+        $(".calculator_price.bazaarboy").html('&nbsp;-&nbsp;$' + this.calculate_fee(price, this.fees.bazaarboy).toFixed(2));
+        $(".calculator_price.eventbrite").html('&nbsp;-&nbsp;$' + this.calculate_fee(price, this.fees.eventbrite).toFixed(2));
+        $(".calculator_price.ticketleap").html('&nbsp;-&nbsp;$' + this.calculate_fee(price, this.fees.ticketleap).toFixed(2));
       } else {
-        $(".calculator_price.bazaarboy").html('&nbsp;-&nbsp;$0<br />');
-        $(".calculator_price.eventbrite").html('&nbsp;-&nbsp;$0<br />');
-        $(".calculator_price.ticketleap").html('&nbsp;-&nbsp;$0<br />');
+        $(".calculator_price.bazaarboy").html('&nbsp;-&nbsp;$0');
+        $(".calculator_price.eventbrite").html('&nbsp;-&nbsp;$0');
+        $(".calculator_price.ticketleap").html('&nbsp;-&nbsp;$0');
       }
     },
     adjust_plus_sign: function() {
