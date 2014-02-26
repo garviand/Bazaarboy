@@ -89,8 +89,7 @@ append script
     script(src="{{ STATIC_URL }}pikaday/pikaday.js")
     script(src="{{ STATIC_URL }}pikaday/pikaday.jquery.js")
     script(type="text/javascript", src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAasW6vqPCn18g6UMaFWV90qGMSo6pErwo&sensor=false&libraries=places")
-    script(type="text/javascript").
+    script.
         var eventId = {{ event.id }};
-        var token{% if params.token %} = '{{ params.token }}'{% endif %};   
     script(src="{{ STATIC_URL }}js/event/modify-basics.js")
 

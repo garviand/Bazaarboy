@@ -727,9 +727,15 @@ def edit_ticket(request, params, user):
             else:
                 ticket.quantity = params['quantity']
     if params['start_time'] is not None:
-        ticket.start_time = params['start_time']
+        if params['start_time'] == 'none':
+            ticket.start_time = None
+        else:
+            ticket.start_time = params['start_time']
     if params['end_time'] is not None:
-        ticket.end_time = params['end_time']
+        if params['end_time'] == 'none':
+            ticket.end_time = None
+        else:
+            ticket.end_time = params['end_time']
     if ticket.end_time is not None:
         if (ticket.start_time is not None and 
             ticket.start_time > ticket.end_time):
