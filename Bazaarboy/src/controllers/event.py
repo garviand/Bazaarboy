@@ -78,11 +78,11 @@ def manage(request, id, params, user):
     if not Organizer.objects.filter(event = event, 
                                     profile__managers = user).exists():
         return redirect('index')
-    purchases = Purchase.objects.filter(Q(checkout = None) | 
-                                        Q(checkout__is_charged = True, 
-                                          checkout__is_refunded = False), 
-                                        event = event, 
-                                        is_expired = False).order_by('-id')
+    purchases = Purchase_item.objects.filter(Q(purchase__checkout = None) | 
+                                        Q(purchase__checkout__is_charged = True, 
+                                          purchase__checkout__is_refunded = False), 
+                                        purchase__event = event, 
+                                        purchase__is_expired = False).order_by('-id')
     tickets = Ticket.objects.filter(event=event)
     checked_in = purchases.exclude(Q(checked_in_time = None)).count()
     return render(request, 'event/manage.html', locals())
