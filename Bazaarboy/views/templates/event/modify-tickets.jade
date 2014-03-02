@@ -28,11 +28,81 @@ block header
 block content
     div#wrapper-event-modify.large-9.medium-10.columns.small-centered
         div#event-modify-tickets.small-12.columns
-            div#ticket-canvas
-            div#add-ticket.row
+            div#action-canvas.small-12.columns
+                div.medium-3.columns
+                    a.new-ticket.primary-btn(href="javascript:;") + New Ticket
+                div.medium-3.columns.end
+                    a.new-promo.primary-btn(href="javascript:;") + New Promo
+            div#ticket-canvas.small-12.columns
+                {% for ticket in tickets %}
+                div.ticket-option.row(data-id="{{ ticket.id }}")
+                    div.top.small-12.columns
+                        div.inner.small-12.columns
+                            div.price.medium-2.columns
+                                | {% if ticket.price == 0 %}Free{% else %}${{ ticket.price|floatformat:2 }}{% endif %}
+                            div.name.medium-7.columns
+                                | {{ ticket.name }}
+                            div.action.medium-3.columns
+                                div.secondary-btn Edit/Delete
+                    div.middle.small-12.columns
+                        div.inner.small-12.columns
+                            div.stats.medium-8.columns
+                                span.quantities
+                                    span.sold {{ ticket.sold }}
+                                    span.quantity {% if ticket.quantity %}/{{ ticket.quantity }}{% endif %}
+                                    | &nbsp;
+                                    span.wording {% if ticket.price == 0 %}RSVP'd{% else %}Sold{% endif %}
+                                span.dates
+                                    {% if ticket.start_time or ticket.end_time %}
+                                    | &nbsp;|&nbsp;
+                                    {% if ticket.start_time %}
+                                    {{ ticket.start_time|date:'n/j/Y' }}
+                                    {% endif %}
+                                    {% if ticket.end_time %}
+                                    | - {{ ticket.end_time|date:'n/j/Y' }}
+                                    {% endif %}
+                                    {% endif %}
+                            div.action.medium-4.columns
+                                a(href="{% url event:manage event.id %}") 
+                                    | View&nbsp;
+                                    span.wording-object {% if ticket.price == 0 %}RSVPs{% else %}Ticket Holders{% endif %}
+                    div.bottom.small-12.columns
+                        div.inner.small-12.columns
+                            div.description.small-12.columns
+                                {{ ticket.description }}
+                {% endfor %}
+            div.hide
+                div.ticket-option-template.row
+                    div.top.small-12.columns
+                        div.inner.small-12.columns
+                            div.price.medium-2.columns
+                            div.name.medium-7.columns
+                            div.action.medium-3.columns
+                                div.secondary-btn Edit/Delete
+                    div.middle.small-12.columns
+                        div.inner.small-12.columns
+                            div.stats.medium-8.columns
+                                span.quantities
+                                    span.sold
+                                    span.quantity
+                                    | &nbsp;
+                                    span.wording
+                                span.dates
+                            div.action.medium-4.columns
+                                a(href="{% url event:manage event.id %}") 
+                                    | View&nbsp;
+                                    span.wording-object
+                    div.bottom.small-12.columns
+                        div.inner.small-12.columns
+                            div.description.small-12.columns
+            div#edit-ticket.small-12.columns.hide
+                div.cancel-btn
+                    span.ss-delete
                 div.step-1
                     div.title.small-12.columns
-                        div.text First, Choose a Ticket Type
+                        div.text 
+                            span.type First, Choose a
+                            | &nbsp;Ticket Type
                     div.type.small-12.columns
                         div.clearfix
                             div.left
@@ -47,7 +117,7 @@ block content
                             span.ss-tag
                             | &nbsp;
                             span.type New
-                            | &nbsp;Ticket
+                            | &nbsp;Ticket Option
                         div.change-type.secondary-btn Change Type
                     div.info.small-12.columns
                         form.add-ticket
@@ -75,6 +145,8 @@ block content
                                 div.medium-3.columns
                                     input.field(type="text", name="end_time", placeholder="End Time")
                             div.row
+                                div.medium-3.medium-offset-3.small-12.columns.hide
+                                    a.blue-btn(href="javascript:;") Delete
                                 div.medium-3.medium-centered.small-12.columns
                                     input.primary-btn(type="submit", value="Add")
 
