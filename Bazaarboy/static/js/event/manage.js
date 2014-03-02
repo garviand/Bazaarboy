@@ -120,11 +120,10 @@
       var scope,
         _this = this;
       scope = this;
-      $("div.list_content div.inner a.add_purchase_start").click(function(e) {
+      $("div.list_filters a.add_purchase_start").click(function(e) {
         e.preventDefault();
         $(this).fadeOut(300, function(e) {
-          $("div.list_content div.inner div.add_purchase").removeClass('hidden');
-          Bazaarboy.adjustBottomPosition();
+          $("div.list_filters div.add_purchase").removeClass('hide');
         });
       });
       $('form.add_purchase_form a.add_purchase_submit').click(function(e) {

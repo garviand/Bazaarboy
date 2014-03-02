@@ -5605,6 +5605,9 @@ ul.ui-autocomplete {
   text-shadow: 1px 2px 0px #00BD84;
   cursor: pointer;
 }
+.secondary-btn:hover {
+  color: #FFFFFF;
+}
 textarea {
   resize: none;
 }
@@ -6342,6 +6345,60 @@ div#wrapper-pricing div#pricing div#what_else .contact .primary-btn {
 }
 div#wrapper-pricing div#pricing div#what_else .contact .primary-btn:hover {
   color: #ffffff;
+}
+div#wrapper-event-manage {
+  padding-top: 40px;
+}
+div#event-manage {
+  padding-left: 0;
+}
+div#event-manage .controls .checkin_numbers {
+  font-weight: bold;
+  text-align: center;
+}
+div#event-manage .controls .list_filters .add_purchase_start,
+div#event-manage .controls .list_filters .add_purchase_submit {
+  display: block;
+  width: 100%;
+  padding-top: 10px;
+  padding-bottom: 13px;
+}
+div#event-manage .controls .list_filters .add_purchase_submit {
+  margin-top: 10px;
+}
+div#event-manage .controls .list_filters div.ticket_filters a,
+div#event-manage .controls .list_filters div.checkin_filters a,
+div#event-manage .controls .list_filters div.ticket_types a {
+  color: #222222;
+  display: block;
+  width: 100%;
+  border: 1px solid #f6f6f6;
+  text-decoration: none;
+  border-top: none;
+  padding: 5px;
+  text-align: center;
+}
+div#event-manage .controls .list_filters div.ticket_filters a.all_tickets,
+div#event-manage .controls .list_filters div.checkin_filters a.all_tickets,
+div#event-manage .controls .list_filters div.ticket_types a.all_tickets,
+div#event-manage .controls .list_filters div.ticket_filters a.all_checkins,
+div#event-manage .controls .list_filters div.checkin_filters a.all_checkins,
+div#event-manage .controls .list_filters div.ticket_types a.all_checkins {
+  font-weight: bold;
+}
+div#event-manage .controls .list_filters div.ticket_filters a:first-child,
+div#event-manage .controls .list_filters div.checkin_filters a:first-child,
+div#event-manage .controls .list_filters div.ticket_types a:first-child {
+  border-top: 1px solid #f6f6f6;
+}
+div#event-manage .controls .list_filters div.ticket_filters a:hover,
+div#event-manage .controls .list_filters div.checkin_filters a:hover,
+div#event-manage .controls .list_filters div.ticket_types a:hover,
+div#event-manage .controls .list_filters div.ticket_filters a.active,
+div#event-manage .controls .list_filters div.checkin_filters a.active,
+div#event-manage .controls .list_filters div.ticket_types a.active {
+  color: #FFF;
+  background: #7F7F7F;
 }
 div#wrapper-event-modify > div {
   padding-top: 40px;

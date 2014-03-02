@@ -1,0 +1,48 @@
+@import (reference) "vars.less";
+
+div#wrapper-event-manage{
+    padding-top: 40px;
+}
+
+div#event-manage {
+    padding-left: 0;
+    .controls{
+        .checkin_numbers{
+            font-weight: bold;
+            text-align: center;
+        }
+        .list_filters{
+            .add_purchase_start, .add_purchase_submit{
+                display: block; 
+                width: 100%;
+                padding-top: 10px;
+                padding-bottom: 13px;
+            }
+            .add_purchase_submit{
+                margin-top: 10px;
+            }
+            div.ticket_filters, div.checkin_filters, div.ticket_types{
+                a{
+                    color: #222222;
+                    display: block;
+                    width: 100%;
+                    border: 1px solid @grey;
+                    text-decoration: none;
+                    border-top: none;
+                    padding: 5px;
+                    text-align: center;
+                    &.all_tickets, &.all_checkins{
+                        font-weight: bold;
+                    }
+                    &:first-child{
+                        border-top: 1px solid @grey;
+                    }
+                    &:hover, &.active{
+                        color: #FFF;
+                        background: #7F7F7F;
+                    }
+                }
+            }
+        }
+    }
+}
