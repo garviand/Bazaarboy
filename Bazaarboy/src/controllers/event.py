@@ -67,6 +67,15 @@ def modify(request, id, step, params, user):
     if not Organizer.objects.filter(event = event, 
                                     profile__managers = user).exists():
         return redirect('index')
+    if step == 'tickets':
+        tickets = Ticket.objects.filter(event = event, is_deleted = False)
+        tickets = list(tickets)
+        for i in range(0, len(tickets)):
+            sold = Purchase_item.objects.filter(Q(purchase__checkout = None) | 
+                                                Q(purchase__checkout__is_charged = True, 
+                                                  purchase__checkout__is_refunded = False), 
+                                                ticket = tickets[i]).count()
+            tickets[i].sold = sold
     return render(request, 'event/modify-' + step + '.html', locals())
 
 @login_required()
@@ -519,11 +528,6 @@ def delaunch(request, params, user):
 
 @login_required()
 @validate('POST', ['id'])
-def syncToFB(request, params, user):
-    pass
-
-@login_required()
-@validate('POST', ['id'])
 def delete(request, params, user):
     """
     Delete an event
@@ -553,6 +557,32 @@ def delete(request, params, user):
     event.save()
     response = {
         'status':'OK'
+    }
+    return json_response(response)
+
+@login_required()
+@validate('GET', ['id'])
+def ticket(request, params, user):
+    """
+    Returns serialized data about the ticket
+    """
+    if not Ticket.objects.filter(id = params['id']).exists():
+        response = {
+            'status':'FAIL',
+            'error':'TICKET_NOT_FOUND',
+            'message':'The ticket does not exist.'
+        }
+        return json_response(response)
+    ticket = Ticket.objects.get(id = params['id'])
+    sold = Purchase_item.objects.filter(Q(purchase__checkout = None) | 
+                                        Q(purchase__checkout__is_charged = True, 
+                                          purchase__checkout__is_refunded = False), 
+                                        ticket = ticket).count()
+    serialized = serialize_one(ticket)
+    serialized['sold'] = sold
+    response = {
+        'status':'OK',
+        'ticket':serialized
     }
     return json_response(response)
 
