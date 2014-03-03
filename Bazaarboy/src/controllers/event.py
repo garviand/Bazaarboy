@@ -8,12 +8,13 @@ import os
 import re
 from datetime import timedelta
 from django.db import transaction, IntegrityError
-from django.db.models import F, Q
+from django.db.models import F, Q, Count
 from django.http import Http404
 from django.shortcuts import render, redirect
 from django.http import HttpResponse
 from django.utils import timezone
 from django.views.decorators.cache import cache_page
+from django.core.serializers.json import DjangoJSONEncoder
 from celery import task
 from kernel.models import *
 from src.config import *
@@ -116,6 +117,41 @@ def event(request, params, user):
         'event':serialize_one(event)
     }
     return json_response(response)
+
+@login_required()
+@validate('GET', ['id'])
+def graph_data(request, params, user):
+    """
+    Return data for the event's dashboard graph
+    """
+    if not Event.objects.filter(id = params['id']).exists():
+        raise Http404
+    event = Event.objects.get(id = params['id'])
+    if not Organizer.objects.filter(event = event, 
+                                    profile__managers = user).exists():
+        response = {
+            'status':'FAIL',
+            'events':'NOT_A_MANAGER'
+        }
+    else:
+        purchases = Purchase.objects.filter(Q(checkout = None) | 
+                                        Q(checkout__is_charged = True, 
+                                          checkout__is_refunded = False), 
+                                        event = event, 
+                                        is_expired = False).annotate(rsvps=Count('items'))
+        
+        purchase_data = []
+        for purchase in purchases:
+            purchase_data.append({
+                'amount': purchase.amount,
+                'rsvps': purchase.rsvps,
+                'date': purchase.created_time.strftime('%Y-%m-%d %H:%M:%S')
+            })
+        response = {
+            'status':'OK',
+            'purchases': purchase_data
+        }
+        return json_response(response)
 
 @validate('GET', ['keyword'])
 def search(request, params):
