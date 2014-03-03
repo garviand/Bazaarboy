@@ -6411,6 +6411,179 @@ div#event-manage .controls .list_filters div.ticket_types a.active {
   color: #FFF;
   background: #7F7F7F;
 }
+div#event {
+  min-width: 100%;
+  min-height: 100%;
+  background: #F6F6F6;
+}
+div#event-header {
+  width: 100%;
+  height: 66px;
+  background: #ffffff;
+}
+div#event-header div.event-header-body {
+  position: relative;
+  height: 66px;
+}
+div#event-header div.event-header-body div.profile-icon {
+  position: absolute;
+  top: 11px;
+  left: 11px;
+  width: 44px;
+  height: 44px;
+  border-radius: 22px;
+  background: #F5A623;
+}
+div#event-header div.event-header-body div.event-name {
+  display: table;
+  width: 100%;
+  height: 66px;
+  padding-left: 66px;
+  color: #4A4A4A;
+  font-size: 18px;
+  line-height: 20px;
+}
+div#event-header div.event-header-body div.event-name span {
+  display: table-cell;
+  vertical-align: middle;
+}
+div#event-header div.event-rsvp {
+  height: 66px;
+  padding: 15px 0;
+  padding-right: 10px;
+}
+div#event-header div.event-rsvp a.primary-btn {
+  display: block;
+  width: 100px;
+  padding-top: 9px;
+  padding-bottom: 11px;
+  color: #ffffff;
+}
+div#event-body {
+  margin-top: 24px;
+  margin-bottom: 48px;
+  padding-top: 40px;
+  padding-bottom: 40px;
+  background: #ffffff;
+}
+div#event-info {
+  position: relative;
+}
+div#event-date {
+  position: absolute;
+  top: 0;
+  left: 15px;
+  width: 40px;
+  height: 40px;
+  border-radius: 4px;
+  box-shadow: inset 0px -2px 0px 0px #f5a623;
+  background: #FEC84D;
+}
+div#event-date div.month {
+  width: 100%;
+  height: 12px;
+  margin-top: 3px;
+  color: #ffffff;
+  font-size: 12px;
+  font-weight: 700;
+  text-align: center;
+  text-transform: uppercase;
+}
+div#event-date div.day {
+  width: 36px;
+  height: 20px;
+  background: #ffffff;
+  margin: 0 auto;
+  margin-top: 2px;
+  padding: 1px 0;
+  font-size: 18px;
+  font-weight: 500;
+  text-align: center;
+}
+div#event-time {
+  display: table;
+  width: 100%;
+  height: 40px;
+  padding-left: 65px;
+  top: 0;
+  left: 0;
+  font-size: 14px;
+  line-height: 18px;
+}
+div#event-time span {
+  display: table-cell;
+  vertical-align: middle;
+}
+div#event-organizers {
+  margin-top: 25px;
+}
+div#event-organizers div.caption {
+  height: 24px;
+  padding-bottom: 10px;
+  font-size: 14px;
+  font-weight: 500;
+}
+div#event-organizers div.canvas div.organizer {
+  position: relative;
+  width: 100%;
+  height: 40px;
+  padding: 5px 0;
+}
+div#event-organizers div.canvas div.organizer div.organizer-icon {
+  position: absolute;
+  top: 5px;
+  left: 0;
+  width: 30px;
+  height: 30px;
+  border-radius: 4px;
+  background: #faa638;
+}
+div#event-organizers div.canvas div.organizer div.organizer-name {
+  display: table;
+  width: 100%;
+  height: 30px;
+  padding-left: 40px;
+  font-size: 16px;
+  line-height: 18px;
+}
+div#event-organizers div.canvas div.organizer div.organizer-name span {
+  display: table-cell;
+  vertical-align: middle;
+}
+div#event-description > div.caption {
+  height: 28px;
+  font-size: 18px;
+}
+div#event-description > div.caption > div {
+  width: 100%;
+  height: 100%;
+  padding-bottom: 10px;
+  border-bottom: 1px solid #979797;
+}
+div#event-description > div.description {
+  margin-top: 20px;
+}
+div#event-description > div.description div.inner {
+  width: 100%;
+}
+div#event-description > div.description div.inner p {
+  font-size: 14px;
+  line-height: 22px;
+}
+div#event-description > div.description div.inner img,
+div#event-description > div.description div.inner iframe {
+  max-width: 100%;
+}
+div#event-share div.caption {
+  height: 48px;
+  font-size: 18px;
+  padding-bottom: 30px;
+}
+div#event-footer {
+  width: 100%;
+  height: 66px;
+  background: #D4D4D4;
+}
 div#wrapper-event-modify > div {
   padding-top: 40px;
 }
