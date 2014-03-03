@@ -23,454 +23,80 @@ append head
     link(rel="image_src", href="{{ event.cover.source.url|sanitizeUrl }}")
     {% endif %}
 
-prepend body
+block body
     include ../components/facebook
-
-block content
-    div#event.content_divided.event_base(class="{% if event.cover %}with_cover{% endif %}")
-        div.title
-            div.organizers.hidden
-                div.content
-                    {% for organizer in organizers %}
-                    div.organizer
-                        div.logo
-                            {% if organizer.profile.image %}
-                            img(src="{{ organizer.profile.image.source.url }}")
-                            {% endif %}
-                        div.name 
-                            b {{ organizer.profile.name }}
-                        div.clear
-                    {% if forloop.counter != organizers|length %}
-                    div.and and
-                    {% endif %}
-                    {% endfor %}
-                    div.presents presents
-                    div.clear
-            div.inner
-                div.top
-                    div.text
-                        {{ event.name }}
-                    {% if editable %}
-                    div.button Edit
-                    div.editor.hidden
-                        input(type="text", name="name", placeholder="Event name", value="{{ event.name }}", spellcheck="false")
-                    {% endif %}
-                    div.clear
-                div.bottom
-                    div.details
-                        div.text
-                            //- Format the times to form something like this
-                            //- Wednesday, Jul 9th, 10pm - 11pm
-                            //- or
-                            //- Wednesday, Jul 9th, 10am - Thursday, Jul 10th, 11pm
+    div#event
+        div#event-header
+            div.event-header-body.medium-10.columns
+                div.profile-icon
+                div.event-name 
+                    span {{ event.name }}
+            div.event-rsvp.medium-2.columns.clearfix
+                a.right.primary-btn(href="javascript:;") + RSVP
+        div#event-body.row
+            div#event-sidebar.medium-offset-1.medium-3.columns
+                div#event-datetime.row
+                    div#event-date
+                        div.month {{ event.start_time|date:'M' }}
+                        div.day {{ event.start_time|date:'j' }}
+                    div#event-time.small-12.columns
+                        span
                             | {% spaceless %}
-                            | {{ event.start_time|date:"l, M jS, f" }}{{ event.start_time|date:"A"|lower }}
                             | {% if event.end_time %}
+                            //- Short version
                             | {% if event.end_time|shouldShortenEndTime:event.start_time %}
-                            |  - {{ event.end_time|date:"f" }}{{ event.end_time|date:"A"|lower }}
+                            | {{ event.start_time|date:'l, M. jS gA' }} to {{ event.end_time|date:'gA' }}
                             | {% else %}
-                            |  - {{ event.end_time|date:"l, M jS, f" }}{{ event.end_time|date:"A"|lower }}
+                            //- Long version
+                            | {{ event.start_time|date:'M. jS gA' }} to {{ event.end_time|date:'M. jS gA' }}
                             | {% endif %}
-                            | {% endif %}
-                            | {% if event.location %}
-                            | at 
-                            b {{ event.location }}
+                            | {% else %}
+                            | {{ event.start_time|date:'l, M. jS gA' }}
                             | {% endif %}
                             | {% endspaceless %}
-                        {% if editable %}
-                        div.editor.hidden
-                            b When?
-                            | &nbsp;
-                            input(type="text", name="start_date", value="{{ event.start_time|date:'m/d/Y' }}", placeholder="MM/DD/YYYY")
-                            | &nbsp;@&nbsp;
-                            input(type="text", name="start_time", value="{{ event.start_time|date:'g:i A' }}", placeholder="ex. 6:00 PM")
-                            | &nbsp;
-                            label to
-                            | &nbsp;
-                            input(type="text", name="end_date", value="{{ event.end_time|date:'m/d/Y' }}", placeholder="MM/DD/YYYY")
-                            | &nbsp;@&nbsp;
-                            input(type="text", name="end_time", value="{{ event.end_time|date:'g:i A' }}", placeholder="ex. 7:00 PM")
-                            | &nbsp;{{ event.start_time|date:"T" }}&nbsp;&nbsp;
-                            b Where?
-                            | &nbsp;
-                            input(type="text", name="location", value="{{ event.location }}")
-                            input(type="hidden", name="latitude", value="{{ event.latitude }}")
-                            input(type="hidden", name="longitude", value="{{ event.longitude }}")
-                        {% endif %}
-                    {% if not editable %}
-                    div.sponsor.hidden
-                        a(href="javascript:;")
-                            i Want to sponsor this event?
-                    {% endif %}
-                    {% if editable %}
-                    div.button Edit
-                    {% endif %}
-                    div.clear
-                    {% if editable %}
-                    div.controls
-                        span.hidden Drag the image to an appropriate position. 
-                        a.edit(href="javascript:;") 
-                            | {% if event.cover %}Edit Cover Photo{% else %}Add Cover Photo{% endif %}
-                        a.delete(href="javascript:;", class="{% if not event.cover %}hidden{% endif %}") 
-                            | Delete
-                        a.hidden.save(href="javascript:;") Save
-                        a.hidden.cancel(href="javascript:;") Cancel
-                        div.clear
-                        form.upload_cover
-                            input.hidden(type="file", name="image_file")
-                            {% csrf_token %}
-                    {% endif %}
-                    {% if editable or tickets|length != 0 %}
-                    {% if editable or not event|hasStartedOrEnded %}
-                    div.action.hanging
-                        div.button
-                            b
-                                {% if editable %}
-                                | Edit Tickets
-                                {% else %}
-                                {% if cheapest == 0 %}
-                                | RSVP
-                                {% else %}
-                                | Buy Ticket
-                                {% endif %}
-                                {% endif %}
-                        div.price
-                            b
-                                {% if rsvp %}
-                                | Free
-                                {% else %}
-                                | {% if cheapest != 0 %}${{ cheapest|floatformat:-2 }}{% else %}Free{% endif %}{% if tickets|length != 1 %}+{% endif %}
-                                {% endif %}
-                        div.clear
-                    {% endif %}
-                    {% endif %}
-                    {% if not editable %}
-                    div.share.hanging(class="{% if not event.is_launched %}hidden{% endif %}")
-                        b Share on Facebook
-                    {% endif %}
-                    {% if editable %}
-                    div.launch.hanging(class="{% if event.is_launched %}launched{% endif %}")
-                        b 
-                            {% if event.is_launched %}
-                            | Take Event Offline
-                            {% else %}
-                            | Publish Event
-                            {% endif %}
-                    div.preview.hanging
-                        a(href="{% url event:index event.id %}?preview", target="_blank") Preview Event
-                    {% endif %}
-        div.cover
-            div.inner
-                div.image
-                    div.bounds
-                        {% if event.cover %}
-                        img.normal(src="{{ event.cover.source.url }}")
-                        {% endif %}
-        div.frame
-            div.left
-                div.caption(class="{% if not event.cover %}hidden{% else %}{% if not editable and event.cover.caption|length == 0 %}hidden{% endif %}{% endif %}")
-                    div.text
-                        {% if event.cover and event.cover.caption|length != 0 %}
-                        {{ event.cover.caption }}
-                        {% else %}
-                        i No caption yet.
-                        {% endif %}
-                    {% if editable %}
-                    div.button Edit
-                    div.editor.hidden
-                        input(type="text", name="caption", placeholder="Maximum 100 Characters", value="{{ event.cover.caption }}")
-                    {% endif %}
-                {% if editable %}
-                div.placeholder
-                {% endif %}
-                div.description
-                    div.editor
-                        div.inner
-                            {{ event.description|safe }}
-                    {% if editable %}
-                    div.controls
-                        a.save(href="javascript:;") Save
-                        a.edit(href="javascript:;") Edit
-                        div.clear
-                    {% endif %}
-            div.right
-                div.organizers.info
-                    div.caption
-                        div.text Organizer{{ organizers|pluralize }}
-                        {% if editable %}
-                        //div.button Add
-                        {% endif %}
-                        div.clear
-                    div.body
+                div#event-location.row
+                div#event-organizers.row
+                    div.caption.small-12.columns
+                        | Organizers
+                    div.canvas.small-12.columns
                         {% for organizer in organizers %}
                         div.organizer
-                            div.icon(class="{% if not organizer.profile.image %}default{% endif %}")
-                                {% if organizer.profile.image %}
-                                img(src="{{ organizer.profile.image.source.url }}")
-                                {% endif %}
-                            div.name
-                                // href="{% url profile:index organizer.profile.id %}"
-                                a
-                                    b {{ organizer.profile.name }}
-                            div.clear
+                            div.organizer-icon
+                            div.organizer-name
+                                span {{ organizer.profile.name }}
                         {% endfor %}
-                div.summary.info
-                    div.caption
-                        div.text Summary
-                        {% if editable %}
-                        div.button Edit
-                        {% endif %}
-                        div.clear
-                    div.body
-                        div.text
-                            {% if event.summary|length != 0 %}
-                            {{ event.summary }}
-                            {% else %}
-                            | No summary yet.
-                            {% endif %}
-                        {% if editable %}
-                        div.editor.hidden
-                            textarea(name="summary", placeholder="Maximum 100 Characters")
-                                | {{ event.summary }}
-                        {% endif %}
-                div.tags.info
-                    div.caption
-                        div.text Tags
-                        {% if editable %}
-                        div.button Edit
-                        {% endif %}
-                        div.clear
-                    div.body
-                        div.text
-                            {% if event.tags|length != 0 %}
-                            {% for tag in event.tags|split:"," %}
-                            div.tag {{ tag }}
-                            {% endfor %}
-                            div.clear
-                            {% else %}
-                            | No tags yet.
-                            {% endif %}
-                        {% if editable %}
-                        div.editor.hidden
-                            textarea(name="tags", placeholder="Max. 50 Chars. Separate by comma")
-                                | {{ event.tags }}
-                        {% endif %}
-            div.clear
-        div.placeholder
-        div.sponsors.hidden
-            div.caption
-                div.text Sponsors
-                div.clear
-        div.others.hidden
-            div.similar
-            div.nearby
-            div.recommendation
-            div.clear
-    {% if editable %}
-    div#tickets.event_overlay_canvas
-        div.title 
-            div.text 
-                b Ticket Options
-            div.controls
-                a.add(href="javascript:;") Add
-                div.clear
-            div.clear
-        mixin ticket(id, name, description, price, quantity_disp, quantity, start_time, start_time_date, start_time_time, end_time, end_time_date, end_time_time, switchClass)
-            div.ticket(class=attributes.class, data-id=id)
-                form
-                    div.top
-                        div.left
-                            div.price
-                                div.text= '$' + price
-                                div.editor
-                                    input(type="text", name="price", placeholder="Price", value=price)
-                            div.quantity
-                                div.text= quantity_disp
-                                div.editor
-                                    input(type="text", name="quantity", placeholder="# Available", value=quantity)
-                        div.right
-                            div.name
-                                div.text= name
-                                div.editor
-                                    input(type="text", name="name", placeholder="Ticket/RSVP Option Name", value=name)
-                            div.description
-                                div.text= description
-                                div.editor
-                                    textarea(name="description", placeholder="Short description (Maximum 150 characters)")
-                                        =description
-                        div.clear
-                    div.bottom
-                        div.end_time
-                            div.text= end_time
-                            div.editor
-                                input(type="text", name="end_date", value=end_time_date, placeholder="MM/DD/YYYY")
-                                | &nbsp;@&nbsp;
-                                input(type="text", name="end_time", value=end_time_time, placeholder="ex. 7:00 PM")
-                        div.text.show &nbsp;to&nbsp;
-                        div.start_time
-                            div.text= start_time
-                            div.editor
-                                input(type="text", name="start_date", value=start_time_date, placeholder="MM/DD/YYYY")
-                                | &nbsp;@&nbsp;
-                                input(type="text", name="start_time", value=start_time_time, placeholder="ex. 6:00 PM")
-                        div.text.show Valid from
-                        div.clear
-                    div.controls
-                        a.delete(href="javascript:;") Delete
-                        - switchClass = switchClass || 'save'
-                        a.switch(class=switchClass, href="javascript:;") Edit
-                        div.clear
-        +ticket()(class="template editing hidden")
-        div.tickets
-            {% for ticket in tickets %}
-            +ticket('{{ ticket.id }}', '{{ ticket.name }}', '{{ ticket.description }}', '{{ ticket.price|floatformat:-2 }}', '{% if ticket.quantity %}{{ ticket.quantity }}{% else %}Unlimited{% endif %}', '{% if ticket.quantity %}{{ ticket.quantity }}{% endif %}', '{{ ticket.start_time|date:\'l, M jS, f\' }}{{ ticket.start_time|date:\'A\'|lower }}', '{{ ticket.start_time|date:\'m/d/Y\' }}', '{{ ticket.start_time|date:\'g:i A\' }}', '{{ ticket.end_time|date:\'l, M jS, f\' }}{{ ticket.end_time|date:\'A\'|lower }}', '{{ ticket.end_time|date:\'m/d/Y\' }}', '{{ ticket.end_time|date:\'g:i A\' }}', 'edit')
-            {% endfor %}
-            div.empty(class="{% if tickets|length != 0 %}hidden{% endif %}")
-                i No ticket/RSVP options yet.
-    {% else %}
-    div#rsvp.event_overlay_canvas
-        div.tickets
-            div.header
-                div.title {% if rsvp %}RSVP Options{% else %}Ticket Options{% endif %}
-                div.caption
-            div.content
-                {% for ticket in tickets %}
-                div.ticket(class="{% if ticket|validateTiming %}valid{% endif %} {% if forloop.last %}last{% endif %}", data-id="{{ ticket.id }}")
-                    div.input
-                        {% if ticket|validateTiming %}
-                        input(type="radio")
-                        {% endif %}
-                    div.body
-                        div.name {{ ticket.name }}
-                        div.description {{ ticket.description }}
-                    div.quantity
-                        div.text Quantity
-                        div.select
-                            select
-                                {% for i in "xxxxxxxxxxxxxxx" %}
-                                option(value="{{ forloop.counter }}") {{ forloop.counter }}
-                                {% endfor %}
-                    div.detail
-                        div.price 
-                            b 
-                                | {% if ticket.price > 0 %}$ {{ ticket.price|floatformat:-2 }}{% else %}Free{% endif %}
-                        div.quantity 
-                            | {% if ticket|validateTiming %}
-                            | {% if ticket.quantity == None or ticket.quantity > 20 %}
-                            | Available
-                            | {% elif ticket.quantity == 0 %}
-                            span Sold Out
-                            | {% else %}
-                            | {{ ticket.quantity }} Left
-                            | {% endif %}
-                            | {% else %}
-                            | {% if ticket|isOnSaleSoon %}
-                            span On Sale Soon
-                            | {% else %}
-                            span Sale Ended
-                            | {% endif %}
-                            | {% endif %}
-                    div.clear
-                {% endfor %}
-        {% if not user %}
-        //-div.user.hidden
-            div.header
-                div.title Continue as a user
-                div.caption Save time with an account on Bazaarboy
-            div.content
-                div.login
-                    div.caption Log In
-                    div.form
-                        form.login
-                            input(type="text", name="email", placeholder="Email")
-                            input(type="password", name="password", placeholder="Password")
-                            input(type="submit", value="Log In")
-                div.divider
-                div.register
-                    div.caption Register
-                    div.form
-                        form.register
-                            input(type="text", name="full_name", placeholder="Your Name")
-                            input(type="text", name="email", placeholder="Email")
-                            input(type="password", name="password", placeholder="Password")
-                            input(type="submit", value="Register")
-                            input(type="hidden", name="city", value="{{ event.city.id }}")
-                div.clear
-        div.info
-            div.header
-                div.title Some details about you
-                div.caption 
-                    | We treat your privacy seriously, this information will not be shared 
-                    | with any outside parties.
-            div.content
-                input(type="text", name="email", placeholder="Email")
-                input(type="text", name="full_name", placeholder="Full Name")
-                input(type="text", name="phone", placeholder="Phone Number (Optional)")
-                div.clear
-        {% endif %}
-        div.action
-            div.header
-                div.title
-                    a.confirm(class="{% if preview %}preview{% endif %}", href="javascript:;") Confirm
-                    div.loading.hidden
-                        img(src="{{ STATIC_URL }}images/loading.gif")
-                        span Processing...
-                        div.clear
-        div.confirmation.hidden
-            div.header
-                div.title Confirmation - Thank You!
-            div.content
-                div.inner
-                    div.caption
-                        div.presents
-                            {% if organizers|length == 1 %}
-                            div.icon
-                            {% endif %}
-                            div.organizers
-                                {% spaceless %}
-                                {% for organizer in organizers %}
-                                b {{ organizer.profile.name }}{% if not forloop.last %}, {% endif %}
-                                {% endfor %}
-                                | presents
-                                {% endspaceless %}
-                            div.clear
-                        div.code
-                            | Confirmation #
-                            b 000000
-                        div.clear
-                    div.details
-                        div.left
-                            div.name 
-                                b {{ event.name }}
-                            div.time
-                                | {% spaceless %}
-                                | {{ event.start_time|date:"l, M jS, f" }}{{ event.start_time|date:"A"|lower }}
-                                | {% if event.end_time %}
-                                | {% if event.end_time|shouldShortenEndTime:event.start_time %}
-                                |  - {{ event.end_time|date:"f" }}{{ event.end_time|date:"A"|lower }}
-                                | {% else %}
-                                |  - {{ event.end_time|date:"l, M jS, f" }}{{ event.end_time|date:"A"|lower }}
-                                | {% endif %}
-                                | {% endif %}
-                                | {{ event.start_time|date:"T" }}
-                                | {% if event.location %}
-                                | at 
-                                b {{ event.location }}
-                                | {% endif %}
-                                | {% endspaceless %}
-                            div.extra
-                                i
-                                    | Thanks for using Bazaarboy. A more detailed confirmation will 
-                                    | be emailed to you shortly.
-                        div.right
-                            div.price
-                                b Free
-                            div.ticket Normal Admission
-                        div.clear
-    {% endif %}
-    div.content_placeholder
+                div#event-sponsors.row
+            div#event-content.medium-6.columns
+                div#event-description.row
+                    div.caption.small-12.columns
+                        div Event Description
+                    div.description.small-12.columns
+                        div.inner
+                            {{ event.description|safe }}
+            div#event-right.medium-1.columns.end
+                div#event-share
+                    div.caption Share
+                    div.canvas
+                        | <span class='st_facebook_large' displayText='Facebook'></span>
+                        | <span class='st_twitter_large' displayText='Tweet'></span>
+                        | <span class='st_googleplus_large' displayText='Google +'></span>
+                        | <span class='st_blogger_large' displayText='Blogger'></span>
+                        | <span class='st_wordpress_large' displayText='WordPress'></span>
+                        | <span class='st_pinterest_large' displayText='Pinterest'></span>
+                        | <span class='st_email_large' displayText='Email'></span>
+        div#event-footer
 
 append script
+    script.
+        var switchTo5x=true;
+    script(type="text/javascript", src="http://w.sharethis.com/button/buttons.js")
+    script.
+        stLight.options({
+            publisher: "7bffe644-d542-4b4d-affe-420a0175f3c0", 
+            doNotHash: false, 
+            doNotCopy: false, 
+            hashAddressBar: false
+        });
     {% if editable %}
     script(type="text/javascript", src="{{ STATIC_URL }}jQueryUI/jquery-ui.min.js")
     script(type="text/javascript", src="{{ STATIC_URL }}jQueryUI/jquery-ui.autocomplete.html.js")
