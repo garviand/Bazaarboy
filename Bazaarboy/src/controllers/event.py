@@ -132,13 +132,13 @@ def graph_data(request, params, user):
                                         event = event, 
                                         is_expired = False).annotate(rsvps=Count('items'))
         
-        purchase_data = []
+        purchase_data = {}
         for purchase in purchases:
-            purchase_data.append({
+            purchase_data[purchase.created_time.strftime('%Y-%m-%d')] = {
                 'amount': purchase.amount,
                 'rsvps': purchase.rsvps,
-                'date': purchase.created_time.strftime('%Y-%m-%d %H:%M:%S')
-            })
+                'date': purchase.created_time.strftime('%Y-%m-%d')
+            }
         response = {
             'status':'OK',
             'purchases': purchase_data

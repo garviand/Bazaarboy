@@ -53,31 +53,6 @@ def profile(request, params, user):
     }
     return json_response(response)
 
-@login_required()
-def settings(request, user, id):
-    """
-    Edit an existing profile
-    """
-    # Check if the profile is valid
-    if not Profile.objects.filter(id = id).exists():
-        response = {
-            'status':'FAIL',
-            'error':'PROFILE_NOT_FOUND',
-            'message':'The profile doesn\'t exist.'
-        }
-        return json_response(response)
-    profile = Profile.objects.get(id = id)
-    # Check if the user has permission for the profile
-    if not Profile_manager.objects.filter(user = user, profile = profile) \
-                                  .exists():
-        response = {
-            'status':'FAIL',
-            'error':'NOT_A_MANAGER',
-            'message':'You don\'t have permission for the profile.'
-        }
-        return json_response(response)
-    return render(request, 'profile/settings.html', locals())
-
 @validate('GET', ['keyword'])
 def search(request, params):
     """

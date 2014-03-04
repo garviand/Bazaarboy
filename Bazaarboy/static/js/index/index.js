@@ -26,15 +26,13 @@
       Bazaarboy.get('event/data/', {
         id: eventId
       }, function(response) {
-        var date, purchase, _i, _len, _ref;
-        _ref = response.purchases;
-        for (_i = 0, _len = _ref.length; _i < _len; _i++) {
-          purchase = _ref[_i];
+        $.each(response.purchases, function(index, purchase) {
+          var date;
           date = moment(purchase.date, 'YYYY-MM-DD HH:mm:ss');
           total_sales += purchase.amount;
           rsvps.push([date.unix() * 1000, purchase.rsvps]);
           sales.push([date.unix() * 1000, total_sales]);
-        }
+        });
         $(canvas).highcharts({
           chart: {
             type: 'area'
