@@ -6,9 +6,7 @@ block title
     | {% if preview %}Preview | {% endif %}{{ event.name }}
 
 append head
-    {% if event.is_private %}
-    meta(name="robots", content="noindex,nofollow")
-    {% endif %}
+    meta(name="description", content="{{ event.summary }}")
     {% if editable %}
     link(rel="stylesheet", href="{{ STATIC_URL }}jQueryUI/jquery-ui.css")
     link(rel="stylesheet", href="{{ STATIC_URL }}redactor/redactor.css")
@@ -34,7 +32,7 @@ block body
             div.event-rsvp.medium-2.columns.clearfix
                 a.right.primary-btn(href="javascript:;") + RSVP
         div#event-body.row
-            div#event-sidebar.medium-offset-1.medium-3.columns
+            div#event-sidebar.large-offset-1.large-3.medium-3.columns
                 div#event-datetime.row
                     div#event-date
                         div.month {{ event.start_time|date:'M' }}
@@ -55,6 +53,13 @@ block body
                             | {% endif %}
                             | {% endspaceless %}
                 div#event-location.row
+                    div.caption.small-12.columns
+                        | Location
+                    div.location.small-12.columns
+                        {{ event.location }}
+                    div.map-canvas.small-12.columns.hide(data-latitude="{{ event.latitude }}", data-longitude="{{ event.longitude }}")
+                        div
+                            div#map-canvas
                 div#event-organizers.row
                     div.caption.small-12.columns
                         | Organizers
@@ -66,16 +71,24 @@ block body
                                 span {{ organizer.profile.name }}
                         {% endfor %}
                 div#event-sponsors.row
-            div#event-content.medium-6.columns
+            div#event-content.large-6.medium-8.columns
                 div#event-description.row
                     div.caption.small-12.columns
                         div Event Description
                     div.description.small-12.columns
                         div.inner
                             {{ event.description|safe }}
+                    {% if design %}
+                    div.actions.small-12.columns
+                        div.row
+                            div.medium-offset-3.medium-3.columns
+                                a.save.primary-btn(href="javascript:;") Save
+                            div.save-status.medium-3.columns.end
+                                | Saved
+                    {% endif %}
             div#event-right.medium-1.columns.end
                 div#event-share
-                    div.caption Share
+                    div.caption
                     div.canvas
                         | <span class='st_facebook_large' displayText='Facebook'></span>
                         | <span class='st_twitter_large' displayText='Tweet'></span>
@@ -98,19 +111,12 @@ append script
             hashAddressBar: false
         });
     {% if editable %}
-    script(type="text/javascript", src="{{ STATIC_URL }}jQueryUI/jquery-ui.min.js")
-    script(type="text/javascript", src="{{ STATIC_URL }}jQueryUI/jquery-ui.autocomplete.html.js")
     script(type="text/javascript", src="{{ STATIC_URL }}redactor/redactor.min.js")
-    script(type="text/javascript", src="{{ STATIC_URL }}pikaday/pikaday.js")
-    script(type="text/javascript", src="{{ STATIC_URL }}pikaday/pikaday.jquery.js")
-    script(type="text/javascript", src="{{ STATIC_URL }}timeautocomplete/jquery.timeAutocomplete.js")
-    script(type="text/javascript", src="{{ STATIC_URL }}timeautocomplete/formatters/ampm.js")
     script(type="text/javascript", src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAasW6vqPCn18g6UMaFWV90qGMSo6pErwo&sensor=false&libraries=places")
     {% else %}
     script(type="text/javascript", src="https://checkout.stripe.com/v2/checkout.js")
     {% endif %}
     script(type="text/javascript").
         var eventId = {{ event.id }};
-        var editable = {% if editable %}true{% else %}false{% endif %};
-        var token{% if params.token %} = '{{ params.token }}'{% endif %};
+        var design = {% if design %}true{% else %}false{% endif %};
     script(type="text/javascript", src="{{ STATIC_URL }}js/event/index.js")

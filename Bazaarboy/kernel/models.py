@@ -199,6 +199,18 @@ class Ticket(models.Model):
     end_time = models.DateTimeField(null = True, default = None)
     is_deleted = models.BooleanField(default = False)
 
+class Promo(models.Model):
+    """
+    Promo code model
+    """
+    event = models.ForeignKey('Event')
+    ticket = models.ForeignKey('Ticket')
+    code = models.CharField(max_length = 20)
+    amount = models.FloatField()
+    email_domain = models.CharField(max_length = 20)
+    is_deleted = models.BooleanField(default = False)
+    created_time = models.DateTimeField(auto_now_add = True)
+
 class Purchase(models.Model):
     """
     Purchase model for tickets
@@ -207,6 +219,7 @@ class Purchase(models.Model):
     event = models.ForeignKey('Event')
     code = models.CharField(max_length = 6)
     items = models.ManyToManyField('Ticket', through = 'Purchase_item')
+    promos = models.ManyToManyField('Promo')
     amount = models.FloatField(default = 0)
     checkout = models.ForeignKey('Checkout', null = True, default = None)
     is_expired = models.BooleanField(default = False)

@@ -3,13 +3,19 @@
 div#event {
     min-width: 100%;
     min-height: 100%;
+    padding-top: 66px;
     background: #F6F6F6;
 }
 
 div#event-header {
+    position: fixed;
+    top: 0;
+    left: 0;
     width: 100%;
     height: 66px;
-    background: @white;
+    z-index: 20;
+    background: rgba(255, 255, 255, 0.96);
+    box-shadow: 0px 1px 5px 1px rgba(221,221,221,1);
 
     div.event-header-body {
         position: relative;
@@ -45,6 +51,12 @@ div#event-header {
         height: 66px;
         padding: (66px - 36px) / 2 0;
         padding-right: 10px;
+
+        @media @media_small {
+            position: absolute;
+            top: 0;
+            right: 0;
+        }
 
         a.primary-btn {
             display: block;
@@ -119,7 +131,35 @@ div#event-time {
 }
 
 div#event-location {
+    margin-top: 25px;
 
+    div.caption {
+        height: 24px;
+        padding-bottom: 10px;
+        font-size: 14px;
+        font-weight: 500;
+    }
+
+    div.location {
+        padding-top: 5px;
+        font-size: 14px;
+    }
+
+    div.map-canvas {
+        margin-top: 15px;
+        height: 150px;
+
+        > div {
+          width: 100%;
+          height: 100%;
+          border: 1px solid #000;
+        }
+
+        div#map-canvas {
+            width: 100%;
+            height: 100%;
+        }
+    }
 }
 
 div#event-organizers {
@@ -193,6 +233,24 @@ div#event-description {
             img, iframe {
               max-width: 100%;
             }
+        }
+    }
+
+    > div.actions {
+        padding-top: 20px;
+
+        a.primary-btn {
+            display: block;
+            padding-top: 9px;
+            padding-bottom: 11px;
+            color: @white;
+        }
+
+        div.save-status {
+            height: 36px;
+            padding: 10px 15px;
+            font-size: 16px;
+            line-height: 16px;
         }
     }
 }

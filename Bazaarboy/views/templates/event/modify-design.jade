@@ -11,3 +11,17 @@ block sidebar
         | Bonus
     +sidebarItem('ss-mail')(href="{% url event:modify id 'emails' %}")
         | Emails
+
+block header
+    div.header-title.large-9.medium-10.columns.small-centered
+        div.row.clearfix
+            div.icon.left
+                span.ss-picture
+            div.text.left
+                | Edit Event | 
+                span.sub Page Design
+
+block content
+    div#wrapper-event-modify.large-9.medium-10.columns.small-centered
+        div#event-modify-design.small-12.columns
+            iframe(src="{% url event:index event.id %}?design")
