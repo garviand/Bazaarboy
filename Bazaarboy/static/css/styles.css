@@ -6414,12 +6414,18 @@ div#event-manage .controls .list_filters div.ticket_types a.active {
 div#event {
   min-width: 100%;
   min-height: 100%;
+  padding-top: 66px;
   background: #F6F6F6;
 }
 div#event-header {
+  position: fixed;
+  top: 0;
+  left: 0;
   width: 100%;
   height: 66px;
-  background: #ffffff;
+  z-index: 20;
+  background: rgba(255, 255, 255, 0.96);
+  box-shadow: 0px 1px 5px 1px #dddddd;
 }
 div#event-header div.event-header-body {
   position: relative;
@@ -6451,6 +6457,13 @@ div#event-header div.event-rsvp {
   height: 66px;
   padding: 15px 0;
   padding-right: 10px;
+}
+@media only screen and (max-width: 40em) {
+  div#event-header div.event-rsvp {
+    position: absolute;
+    top: 0;
+    right: 0;
+  }
 }
 div#event-header div.event-rsvp a.primary-btn {
   display: block;
@@ -6514,6 +6527,32 @@ div#event-time span {
   display: table-cell;
   vertical-align: middle;
 }
+div#event-location {
+  margin-top: 25px;
+}
+div#event-location div.caption {
+  height: 24px;
+  padding-bottom: 10px;
+  font-size: 14px;
+  font-weight: 500;
+}
+div#event-location div.location {
+  padding-top: 5px;
+  font-size: 14px;
+}
+div#event-location div.map-canvas {
+  margin-top: 15px;
+  height: 150px;
+}
+div#event-location div.map-canvas > div {
+  width: 100%;
+  height: 100%;
+  border: 1px solid #000;
+}
+div#event-location div.map-canvas div#map-canvas {
+  width: 100%;
+  height: 100%;
+}
 div#event-organizers {
   margin-top: 25px;
 }
@@ -6574,6 +6613,21 @@ div#event-description > div.description div.inner img,
 div#event-description > div.description div.inner iframe {
   max-width: 100%;
 }
+div#event-description > div.actions {
+  padding-top: 20px;
+}
+div#event-description > div.actions a.primary-btn {
+  display: block;
+  padding-top: 9px;
+  padding-bottom: 11px;
+  color: #ffffff;
+}
+div#event-description > div.actions div.save-status {
+  height: 36px;
+  padding: 10px 15px;
+  font-size: 16px;
+  line-height: 16px;
+}
 div#event-share div.caption {
   height: 48px;
   font-size: 18px;
@@ -6583,6 +6637,9 @@ div#event-footer {
   width: 100%;
   height: 66px;
   background: #D4D4D4;
+}
+div#wrapper-event-modify.full {
+  width: 100%;
 }
 div#wrapper-event-modify > div {
   padding-top: 40px;
@@ -6619,6 +6676,15 @@ div#event-modify-basics input.primary-btn {
   border: none;
   font-size: 15px;
   text-transform: uppercase;
+}
+div#event-modify-design {
+  width: 100%;
+  padding: 40px 0;
+}
+div#event-modify-design iframe {
+  width: 100%;
+  height: 600px;
+  border: 1px solid #000;
 }
 div#event-modify-tickets {
   position: relative;

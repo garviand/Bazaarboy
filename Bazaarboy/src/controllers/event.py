@@ -28,31 +28,22 @@ from src.sms import sendEventConfirmationSMS
 
 @cache_page(60 * 5)
 @login_check()
-@validate('GET', [], ['preview'])
+@validate('GET', [], ['preview', 'design'])
 def index(request, id, params, user):
     """
     Event page
     """
     if not Event.objects.filter(id = id, is_deleted = False).exists():
         raise Http404
-    preview = False
-    if params['preview'] is not None:
-        user = None
-        preview = True
     event = Event.objects.select_related().get(id = id)
     editable = (user is not None and 
                 Organizer.objects.filter(event = event, 
                                          profile__managers = user).exists())
-    if not editable and not event.is_launched and not preview:
+    preview = params['preview'] is not None and editable
+    design = params['design'] is not None and editable
+    if not design and not preview and not event.is_launched:
         return redirect('index')
     tickets = Ticket.objects.filter(event = event)
-    rsvp = True
-    cheapest = float('inf')
-    for ticket in tickets:
-        if ticket.price > 0:
-            rsvp = False
-        if ticket.price < cheapest:
-            cheapest = ticket.price
     organizers = Organizer.objects.filter(event = event)
     return render(request, 'event/index.html', locals())
 
@@ -77,6 +68,7 @@ def modify(request, id, step, params, user):
                                                   purchase__checkout__is_refunded = False), 
                                                 ticket = tickets[i]).count()
             tickets[i].sold = sold
+        promos = Promo.objects.filter(event = event, is_deleted = False)
     return render(request, 'event/modify-' + step + '.html', locals())
 
 @login_required()
@@ -853,6 +845,166 @@ def delete_ticket(request, params, user):
     }
     return json_response(response)
 
+@login_required()
+@validate('POST', ['ticket', 'code', 'amount', 'email_domain'])
+def create_promo(request, params, user):
+    """
+    Create a promo code
+    """
+    # Check if the ticket is valid
+    if not Ticket.objects.filter(id = params['ticket'], 
+                                 is_deleted = False).exists():
+        response = {
+            'status':'FAIL',
+            'error':'TICKET_NOT_FOUND',
+            'message':'The ticket doesn\'t exist.'
+        }
+        return json_response(response)
+    ticket = Ticket.objects.get(id = params['ticket'])
+    event = ticket.event
+    # Check if user has permission for the event
+    if not Organizer.objects.filter(event = event, 
+                                    profile__managers = user).exists():
+        response = {
+            'status':'FAIL',
+            'error':'NOT_A_MANAGER',
+            'message':'You don\'t have permission for the event.'
+        }
+        return json_response(response)
+    params['code'] = cgi.escape(params['code'])
+    if len(params['code']) > 20:
+        response = {
+            'status':'FAIL',
+            'error':'INVALID_CODE',
+            'message':'The code must be within 20 characters.'
+        }
+        return json_response(response)
+    if Promo.objects.filter(code = params['code'], event = event).exists():
+        response = {
+            'status':'FAIL',
+            'error':'DUPLICATE_CODE',
+            'message':'You cannot have two identical promo codes.'
+        }
+        return json_response(response)
+    params['amount'] = float(params['amount'])
+    if params['amount'] < 0 or ticket.price - params['amount'] < 0:
+        response = {
+            'status':'FAIL',
+            'error':'INVALID_AMOUNT',
+            'message':'The discount amount can be at most the ticket price.'
+        }
+        return json_response(response)
+    params['email_domain'] = cgi.escape(params['email_domain'])
+    if params['email_domain'] > 20:
+        response = {
+            'status':'FAIL',
+            'error':'INVALID_EMAIL_DOMAIN',
+            'message':'The email domain is not valid.'
+        }
+        return json_response(response)
+    promo = Promo(event = event, ticket = ticket, 
+                  code = params['code'], 
+                  amount = params['amount'], 
+                  email_domain = params['email_domain'])
+    promo.save()
+    response = {
+        'status':'OK',
+        'promo':serialize_one(promo)
+    }
+    return json_response(response)
+
+@login_required()
+@validate('POST', ['id', 'code', 'amount', 'email_domain'])
+def edit_promo(request, params, user):
+    """
+    Edit a promo code
+    """
+    if not Promo.objects.filter(id = params['id']).exists():
+        response = {
+            'status':'FAIL',
+            'error':'PROMO_NOT_FOUND',
+            'message':'The promo code does not exist.'
+        }
+        return json_response(response)
+    promo = Promo.objects.get(id = params['id'])
+    event = promo.event
+    # Check if user has permission for the event
+    if not Organizer.objects.filter(event = event, 
+                                    profile__managers = user).exists():
+        response = {
+            'status':'FAIL',
+            'error':'NOT_A_MANAGER',
+            'message':'You don\'t have permission for the event.'
+        }
+        return json_response(response)
+    if params['code'] is not None:
+        params['code'] = cgi.escape(params['code'])
+        if len(params['code']) > 20:
+            response = {
+                'status':'FAIL',
+                'error':'INVALID_CODE',
+                'message':'The code must be within 20 characters.'
+            }
+            return json_response(response)
+        promo.code = params['code']
+    if params['amount'] is not None:
+        params['amount'] = float(params['amount'])
+        if params['amount'] < 0 or ticket.price - params['amount'] < 0:
+            response = {
+                'status':'FAIL',
+                'error':'INVALID_AMOUNT',
+                'message':'The discount amount can be at most the ticket price.'
+            }
+            return json_response(response)
+        promo.amount = params['amount']
+    if params['email_domain'] is not None:
+        params['email_domain'] = cgi.escape(params['email_domain'])
+        if params['email_domain'] > 20:
+            response = {
+                'status':'FAIL',
+                'error':'INVALID_EMAIL_DOMAIN',
+                'message':'The email domain is not valid.'
+            }
+            return json_response(response)
+        promo.email_domain = params['email_domain']
+    promo.save()
+    response = {
+        'status':'OK',
+        'promo':serialize_one(response)
+    }
+    return json_response(response)
+
+@login_required()
+@validate('POST', ['id'])
+def delete_promo(request, params, user):
+    """
+    Delete a promo code
+    """
+    if not Promo.objects.filter(id = params['id']).exists():
+        response = {
+            'status':'FAIL',
+            'error':'PROMO_NOT_FOUND',
+            'message':'The promo code does not exist.'
+        }
+        return json_response(response)
+    promo = Promo.objects.get(id = params['id'])
+    event = promo.event
+    # Check if user has permission for the event
+    if not Organizer.objects.filter(event = event, 
+                                    profile__managers = user).exists():
+        response = {
+            'status':'FAIL',
+            'error':'NOT_A_MANAGER',
+            'message':'You don\'t have permission for the event.'
+        }
+        return json_response(response)
+    promo.is_deleted = True
+    promo.save()
+    response = {
+        'status':'OK'
+    }
+    return json_response(response)
+
 @task()
 def mark_purchase_as_expired(purchase, immediate=False):
     """
@@ -880,7 +1032,8 @@ def mark_purchase_as_expired(purchase, immediate=False):
 
 @login_check()
 @validate('POST', 
-          ['event', 'email', 'first_name', 'last_name', 'details'], ['phone'])
+          ['event', 'email', 'first_name', 'last_name', 'details'], 
+          ['phone', 'promos'])
 def purchase(request, params, user):
     """
     Make purchase for an event
@@ -979,6 +1132,25 @@ def purchase(request, params, user):
             'message':'One of the ticket is invalid.'
         }
         return json_response(response)
+    # Check if the promo codes are valid
+    promos = {}
+    if params['promos'] is not None:
+        codes = params['promos'].split(',')
+        for code in codes:
+            if Promo.objects.filter(code = code, event = event, 
+                                    is_deleted = False).exists():
+                promo = Promo.objects.get(code = code, event = event)
+                if not promo.ticket.is_deleted:
+                    l = len(promo.email_domain)
+                    if params['email'][-l:] == promo.email_domain:
+                        promos[promo.ticket.id] = promo
+                        continue
+            response = {
+                'status':'FAIL',
+                'error':'INVALID_PROMO',
+                'message':'One of the promo codes is invalid.'
+            }
+            return json_response(response)
     # Check if there is an unfinished purchase
     if Purchase.objects.filter(Q(checkout__isnull = False, 
                                  checkout__is_charged = False), 
@@ -1008,13 +1180,19 @@ def purchase(request, params, user):
                     'message':'There aren\'t enough tickets left.'
                 }
                 return json_response(response)
-            amount += ticket.price * details[ticket.id]
+            price = ticket.price
+            if promos.has_key(ticket.id):
+                price -= promos[ticket.id].amount
+            amount += price * details[ticket.id]
         # All checks done, save user information
         user.save()
         # Check if the purchase is in fact an RSVP action (free)
         if amount == 0:
             # Create the purchase
             purchase = Purchase(owner = user, event = event, amount = 0)
+            purchase.save()
+            for promo in promos.itervalue():
+                purchase.promos.add(promo)
             purchase.save()
             for ticket in tickets:
                 for i in range(0, details[ticket.id]):
@@ -1052,6 +1230,9 @@ def purchase(request, params, user):
         # Create the purchase
         purchase = Purchase(owner = user, event = event, amount = amount, 
                             checkout = checkout)
+        purchase.save()
+        for promo in promos.itervalue():
+            purchase.promos.add(promo)
         purchase.save()
         for ticket in tickets:
             for i in range(0, details[ticket.id]):
