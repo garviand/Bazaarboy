@@ -1,6 +1,5 @@
 (function() {
-  var _this = this,
-    __slice = [].slice;
+  var _this = this;
 
   Bazaarboy.event.manage = {
     selectionStatus: 'all',
@@ -19,7 +18,7 @@
       }
       this.purchaseInProgress = true;
       $('div#rsvp div.action a.confirm').css('display', 'none');
-      $('div#rsvp div.action div.loading').removeClass('hidden');
+      $('div#rsvp div.action div.loading').removeClass('hide');
       params = {
         ticket: ticket
       };
@@ -45,8 +44,8 @@
             guest_div.append('<div class="checkin"><a href="javascript:;">Check In</a></div>');
             guest_div.append('<div class="clear">&nbsp;</div>');
             $('div.list_content div.list_guests div.list_headers').after(guest_div);
-            totalCount = parseInt($('div.checkin_count div.checkin_numbers span.total_guests').html()) + 1;
-            $('div.checkin_count div.checkin_numbers span.total_guests').html(totalCount);
+            totalCount = parseInt($('div.checkin_numbers span.total_guests').html()) + 1;
+            $('div.checkin_numbers span.total_guests').html(totalCount);
             $('div.list_content div.inner div.add_purchase').fadeIn();
           });
         } else {
@@ -73,48 +72,26 @@
         targetValue = $(rsvp).find('div.' + param).html();
         if (targetValue.toLowerCase().indexOf(value.toLowerCase()) !== -1) {
           if (rsvp.data('ticket') === ticketType || ticketType === 'all') {
-            $(rsvp).removeClass('hidden');
+            $(rsvp).removeClass('hide');
           }
         }
         if (checkStatus === 'checked_in') {
           if (!$(rsvp).hasClass('checked_in')) {
-            $(rsvp).addClass('hidden');
+            $(rsvp).addClass('hide');
           }
         }
         if (checkStatus === 'not_checked_in') {
           if ($(rsvp).hasClass('checked_in')) {
-            $(rsvp).addClass('hidden');
+            $(rsvp).addClass('hide');
           }
         }
       }
       if (updateListLength) {
-        newLength = $('div.guest').not('.hidden').length;
-        newLengthChecked = $('div.guest.checked_in').not('.hidden').length;
-        $('div.checkin_count div.checkin_numbers span.total_guests').html(newLength);
-        $('div.checkin_count div.checkin_numbers span.checked_in').html(newLengthChecked);
+        newLength = $('div.guest').not('.hide').length;
+        newLengthChecked = $('div.guest.checked_in').not('.hide').length;
+        $('div.checkin_numbers span.total_guests').html(newLength);
+        $('div.checkin_numbers span.checked_in').html(newLengthChecked);
       }
-      Bazaarboy.adjustBottomPosition();
-    },
-    debounce: function(func, threshold, execAsap) {
-      var timeout;
-      timeout = null;
-      (function() {
-        var args, delayed, obj;
-        args = 1 <= arguments.length ? __slice.call(arguments, 0) : [];
-        obj = this;
-        delayed = function() {
-          if (!execAsap) {
-            func.apply(obj, args);
-          }
-          return timeout = null;
-        };
-        if (timeout) {
-          clearTimeout(timeout);
-        } else if (execAsap) {
-          func.apply(obj, args);
-        }
-        return timeout = setTimeout(delayed, threshold || 100);
-      });
     },
     init: function() {
       var scope,
@@ -156,14 +133,19 @@
       });
       $('form.list_search input[name=guest_name]').keyup(function(e) {
         e.preventDefault();
-        _this.debounce(console.log('bouncing herere'), 1000);
+        if ($('form.list_search input[name=guest_name]').val() === '') {
+          $('div.guest').removeClass('hide');
+        } else {
+          $('div.guest').addClass('hide');
+          _this.filterGuests('name', $('form.list_search input[name=guest_name]').val(), _this.selectionStatus, _this.checkinStatus, false);
+        }
       });
       $('form.list_search input[name=guest_code]').keyup(function(e) {
         e.preventDefault();
         if ($('form.list_search input[name=guest_code]').val() === '') {
-          $('div.guest').removeClass('hidden');
+          $('div.guest').removeClass('hide');
         } else {
-          $('div.guest').addClass('hidden');
+          $('div.guest').addClass('hide');
           _this.filterGuests('confirmation', $('form.list_search input[name=guest_code]').val(), _this.selectionStatus, _this.checkinStatus, false);
         }
       });
@@ -173,7 +155,7 @@
         $(this).addClass('active');
         $('form.list_search input[name=guest_name]').val('');
         $('form.list_search input[name=guest_code]').val('');
-        $('div.guest').addClass('hidden');
+        $('div.guest').addClass('hide');
         scope.selectionStatus = $(this).data('id');
         scope.filterGuests('name', '', scope.selectionStatus, scope.checkinStatus, true);
       });
@@ -183,7 +165,7 @@
         $(this).addClass('active');
         $('form.list_search input[name=guest_name]').val('');
         $('form.list_search input[name=guest_code]').val('');
-        $('div.guest').addClass('hidden');
+        $('div.guest').addClass('hide');
         scope.checkinStatus = $(this).data('status');
         scope.filterGuests('name', '', scope.selectionStatus, scope.checkinStatus, true);
       });
@@ -193,29 +175,29 @@
         guest = $(this).parents('div.guest');
         guest_id = guest.data('id');
         if (!guest.hasClass('checked_in')) {
-          checkCount = parseInt($('div.checkin_count div.checkin_numbers span.checked_in').html()) + 1;
-          $('div.checkin_count div.checkin_numbers span.checked_in').html(checkCount);
+          checkCount = parseInt($('div.checkin_numbers span.checked_in').html()) + 1;
+          $('div.checkin_numbers span.checked_in').html(checkCount);
           guest.addClass('checked_in');
           $(this).html('Arrived');
           scope.checkin(guest_id);
           if (scope.checkinStatus === 'not_checked_in') {
-            guest.addClass('hidden');
-            totalCount = parseInt($('div.checkin_count div.checkin_numbers span.total_guests').html()) - 1;
-            $('div.checkin_count div.checkin_numbers span.total_guests').html(totalCount);
-            $('div.checkin_count div.checkin_numbers span.checked_in').html('0');
+            guest.addClass('hide');
+            totalCount = parseInt($('div.checkin_numbers span.total_guests').html()) - 1;
+            $('div.checkin_numbers span.total_guests').html(totalCount);
+            $('div.checkin_numbers span.checked_in').html('0');
             return Bazaarboy.adjustBottomPosition();
           }
         } else {
-          checkCount = parseInt($('div.checkin_count div.checkin_numbers span.checked_in').html()) - 1;
-          $('div.checkin_count div.checkin_numbers span.checked_in').html(checkCount);
+          checkCount = parseInt($('div.checkin_numbers span.checked_in').html()) - 1;
+          $('div.checkin_numbers span.checked_in').html(checkCount);
           guest.removeClass('checked_in');
           $(this).html('Check In');
           scope.checkout(guest_id);
           if (scope.checkinStatus === 'checked_in') {
-            guest.addClass('hidden');
-            totalCount = parseInt($('div.checkin_count div.checkin_numbers span.total_guests').html()) - 1;
-            $('div.checkin_count div.checkin_numbers span.total_guests').html(totalCount);
-            $('div.checkin_count div.checkin_numbers span.checked_in').html(totalCount);
+            guest.addClass('hide');
+            totalCount = parseInt($('div.checkin_numbers span.total_guests').html()) - 1;
+            $('div.checkin_numbers span.total_guests').html(totalCount);
+            $('div.checkin_numbers span.checked_in').html(totalCount);
             return Bazaarboy.adjustBottomPosition();
           }
         }

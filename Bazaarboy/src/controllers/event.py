@@ -1357,7 +1357,7 @@ def checkin(request, params, user):
         item.is_checked_in = False
         item.checked_in_time = None
     else:
-        if not purchase.is_checked_in:
+        if not item.is_checked_in:
             item.is_checked_in = True
             item.checked_in_time = timezone.now()
     item.save()

@@ -6407,6 +6407,34 @@ div#event-manage .controls .list_filters div.ticket_types a.active {
   color: #FFF;
   background: #7F7F7F;
 }
+div#event-manage .guests .list_headers {
+  margin-left: 5px;
+  margin-bottom: 20px;
+}
+div#event-manage .guests .guest {
+  margin-left: 5px;
+  padding: 20px 0px;
+  border-top: 1px solid #7F7F7F;
+}
+div#event-manage .guests .guest .checkin a {
+  display: block;
+  width: 100%;
+  padding-top: 7px;
+  padding-bottom: 10px;
+  text-align: center;
+}
+div#event-manage .guests .guest .checkin a:hover {
+  color: #ffffff;
+}
+div#event-manage .guests .guest.checked_in .checkin a {
+  background: #3c3c3c;
+  border: 1px solid #2e2e2e;
+  -moz-box-shadow: inset 0px -3px 0px 0px #2e2e2e;
+  -webkit-box-shadow: inset 0px -3px 0px 0px #2e2e2e;
+  box-shadow: inset 0px -3px 0px 0px #2e2e2e;
+  color: #FFFFFF;
+  text-shadow: 1px 2px 0px #2e2e2e;
+}
 div#event {
   min-width: 100%;
   min-height: 100%;

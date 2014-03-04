@@ -45,4 +45,40 @@ div#event-manage {
             }
         }
     }
+    .guests{
+        .list_headers{
+            margin-left: 5px;
+            margin-bottom: 20px;
+        }
+        .guest{
+            margin-left: 5px;
+            padding: 20px 0px;
+            border-top: 1px solid #7F7F7F;
+            .checkin{
+                a{
+                    display: block;
+                    width: 100%;
+                    padding-top: 7px;
+                    padding-bottom: 10px;
+                    text-align: center;
+                    &:hover{
+                        color: @white;
+                    }
+                }
+            }
+            &.checked_in{
+                .checkin{
+                    a{
+                        background: @dark;
+                        border: 1px solid @darker;
+                        -moz-box-shadow: inset 0px -3px 0px 0px @darker;
+                        -webkit-box-shadow: inset 0px -3px 0px 0px @darker;
+                        box-shadow: inset 0px -3px 0px 0px @darker;
+                        color: #FFFFFF;
+                        text-shadow: 1px 2px 0px @darker;
+                    }
+                }
+            }
+        }
+    }
 }

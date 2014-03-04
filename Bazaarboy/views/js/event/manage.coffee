@@ -4,7 +4,7 @@ Bazaarboy.event.manage =
     add_purchase: (ticket, email=null, fullName=null, phone=null) ->
         @purchaseInProgress = true
         $('div#rsvp div.action a.confirm').css('display', 'none')
-        $('div#rsvp div.action div.loading').removeClass('hidden')
+        $('div#rsvp div.action div.loading').removeClass('hide')
         params = 
             ticket: ticket
         if email? and fullName?
@@ -26,8 +26,8 @@ Bazaarboy.event.manage =
                     guest_div.append('<div class="checkin"><a href="javascript:;">Check In</a></div>')
                     guest_div.append('<div class="clear">&nbsp;</div>')
                     $('div.list_content div.list_guests div.list_headers').after(guest_div)
-                    totalCount = parseInt($('div.checkin_count div.checkin_numbers span.total_guests').html()) + 1
-                    $('div.checkin_count div.checkin_numbers span.total_guests').html(totalCount)
+                    totalCount = parseInt($('div.checkin_numbers span.total_guests').html()) + 1
+                    $('div.checkin_numbers span.total_guests').html(totalCount)
                     $('div.list_content div.inner div.add_purchase').fadeIn()
                     return
             else
@@ -49,32 +49,18 @@ Bazaarboy.event.manage =
             targetValue = $(rsvp).find('div.' + param).html()
             if targetValue.toLowerCase().indexOf(value.toLowerCase()) != -1
                 if rsvp.data('ticket') == ticketType or ticketType == 'all'
-                    $(rsvp).removeClass('hidden')
+                    $(rsvp).removeClass('hide')
             if(checkStatus == 'checked_in')
                 if not $(rsvp).hasClass('checked_in')
-                    $(rsvp).addClass('hidden')
+                    $(rsvp).addClass('hide')
             if(checkStatus == 'not_checked_in')
                 if $(rsvp).hasClass('checked_in')
-                    $(rsvp).addClass('hidden')
+                    $(rsvp).addClass('hide')
         if updateListLength
-            newLength = $('div.guest').not('.hidden').length
-            newLengthChecked = $('div.guest.checked_in').not('.hidden').length
-            $('div.checkin_count div.checkin_numbers span.total_guests').html(newLength)
-            $('div.checkin_count div.checkin_numbers span.checked_in').html(newLengthChecked)
-        Bazaarboy.adjustBottomPosition()
-        return
-    debounce: (func, threshold, execAsap) ->
-        timeout = null
-        (args...) ->
-            obj = this
-            delayed = ->
-                func.apply(obj, args) unless execAsap
-                timeout = null
-            if timeout
-                clearTimeout(timeout)
-            else if (execAsap)
-                func.apply(obj, args)
-            timeout = setTimeout delayed, threshold || 100
+            newLength = $('div.guest').not('.hide').length
+            newLengthChecked = $('div.guest.checked_in').not('.hide').length
+            $('div.checkin_numbers span.total_guests').html(newLength)
+            $('div.checkin_numbers span.checked_in').html(newLengthChecked)
         return
     init: () ->
         scope = this
@@ -109,14 +95,18 @@ Bazaarboy.event.manage =
             return
         $('form.list_search input[name=guest_name]').keyup (e) =>
             e.preventDefault()
-            @debounce(console.log('bouncing herere'), 1000)
+            if $('form.list_search input[name=guest_name]').val() == ''
+                $('div.guest').removeClass('hide')
+            else
+                $('div.guest').addClass('hide')
+                @filterGuests('name', $('form.list_search input[name=guest_name]').val(), @selectionStatus,  @checkinStatus, false)
             return
         $('form.list_search input[name=guest_code]').keyup (e) =>
             e.preventDefault()
             if $('form.list_search input[name=guest_code]').val() == ''
-                $('div.guest').removeClass('hidden')
+                $('div.guest').removeClass('hide')
             else
-                $('div.guest').addClass('hidden')
+                $('div.guest').addClass('hide')
                 @filterGuests('confirmation', $('form.list_search input[name=guest_code]').val(), @selectionStatus,  @checkinStatus, false)
             return
         $('form.list_search div.ticket_filters a').click (e) ->
@@ -125,7 +115,7 @@ Bazaarboy.event.manage =
             $(this).addClass('active')
             $('form.list_search input[name=guest_name]').val('')
             $('form.list_search input[name=guest_code]').val('')
-            $('div.guest').addClass('hidden')
+            $('div.guest').addClass('hide')
             scope.selectionStatus = $(this).data('id')
             scope.filterGuests('name', '', scope.selectionStatus, scope.checkinStatus, true)
             return
@@ -135,7 +125,7 @@ Bazaarboy.event.manage =
             $(this).addClass('active')
             $('form.list_search input[name=guest_name]').val('')
             $('form.list_search input[name=guest_code]').val('')
-            $('div.guest').addClass('hidden')
+            $('div.guest').addClass('hide')
             scope.checkinStatus = $(this).data('status')
             scope.filterGuests('name', '', scope.selectionStatus, scope.checkinStatus, true)
             return
@@ -144,28 +134,28 @@ Bazaarboy.event.manage =
             guest = $(this).parents('div.guest')
             guest_id = guest.data('id')
             if not guest.hasClass('checked_in')
-                checkCount = parseInt($('div.checkin_count div.checkin_numbers span.checked_in').html()) + 1
-                $('div.checkin_count div.checkin_numbers span.checked_in').html(checkCount)
+                checkCount = parseInt($('div.checkin_numbers span.checked_in').html()) + 1
+                $('div.checkin_numbers span.checked_in').html(checkCount)
                 guest.addClass('checked_in')
                 $(this).html('Arrived')
                 scope.checkin(guest_id)
                 if scope.checkinStatus == 'not_checked_in'
-                    guest.addClass('hidden')
-                    totalCount = parseInt($('div.checkin_count div.checkin_numbers span.total_guests').html()) - 1
-                    $('div.checkin_count div.checkin_numbers span.total_guests').html(totalCount)
-                    $('div.checkin_count div.checkin_numbers span.checked_in').html('0')
+                    guest.addClass('hide')
+                    totalCount = parseInt($('div.checkin_numbers span.total_guests').html()) - 1
+                    $('div.checkin_numbers span.total_guests').html(totalCount)
+                    $('div.checkin_numbers span.checked_in').html('0')
                     Bazaarboy.adjustBottomPosition()
             else
-                checkCount = parseInt($('div.checkin_count div.checkin_numbers span.checked_in').html()) - 1
-                $('div.checkin_count div.checkin_numbers span.checked_in').html(checkCount)
+                checkCount = parseInt($('div.checkin_numbers span.checked_in').html()) - 1
+                $('div.checkin_numbers span.checked_in').html(checkCount)
                 guest.removeClass('checked_in')
                 $(this).html('Check In')
                 scope.checkout(guest_id)
                 if scope.checkinStatus == 'checked_in'
-                    guest.addClass('hidden')
-                    totalCount = parseInt($('div.checkin_count div.checkin_numbers span.total_guests').html()) - 1
-                    $('div.checkin_count div.checkin_numbers span.total_guests').html(totalCount)
-                    $('div.checkin_count div.checkin_numbers span.checked_in').html(totalCount)
+                    guest.addClass('hide')
+                    totalCount = parseInt($('div.checkin_numbers span.total_guests').html()) - 1
+                    $('div.checkin_numbers span.total_guests').html(totalCount)
+                    $('div.checkin_numbers span.checked_in').html(totalCount)
                     Bazaarboy.adjustBottomPosition()
         return
 

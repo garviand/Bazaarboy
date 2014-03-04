@@ -18,11 +18,12 @@ block content
     div#wrapper-event-manage.large-9.medium-10.columns.small-centered
         div#event-manage.small-12.columns
             div.row
-                div.small-4.columns.controls
+                div.small-3.columns.controls
                     div.checkin_numbers 
                         span.checked_in {{ checked_in }}
                         | /
-                        span.total_guests {{ purchases|length }} Checked In
+                        span.total_guests {{ purchases|length }}
+                        span.checkin_label &nbsp;Checked In
                     hr
                     div.list_filters
                         form.list_search
@@ -43,8 +44,8 @@ block content
                                 a(href="javascript:;", data-status="not_checked_in") Not Checked In
                                 a(href="javascript:;", data-status="checked_in") Arrived
                             hr
-                        a.secondary-btn.add_purchase_start(href="javascript:;") Add A Guest
-                        div.add_purchase.hide
+                        //a.secondary-btn.add_purchase_start(href="javascript:;") Add A Guest
+                        //div.add_purchase.hide
                             label Add A Guest
                             form.add_purchase_form
                                 input(type="text", name="guest_name", placeholder="Full Name")
@@ -56,8 +57,27 @@ block content
                                     a(href="javascript:;", data-id="{{ ticket.id }}") {{ ticket.name }}
                                     {% endfor %}
                                 a.secondary-btn.add_purchase_submit(href="javascript:;") Submit Guest
-                div.small-8.columns.guests
-                    | GEUSTS
+                div.small-9.columns.guests
+                    div.list_guests
+                        div.list_headers.row
+                            div.name.small-3.columns Name
+                            div.ticket_name.small-3.columns Ticket
+                            div.confirmation.small-3.columns Code
+                            div.checkin.small-3.columns Check In
+                            div.clear
+                        {% for guest in purchases %}
+                        div.guest.row(class="{% if guest.checked_in_time != None %}checked_in{% endif %}", data-ticket="{{ guest.ticket.id }}", data-id="{{ guest.id }}")
+                            div.name.small-3.columns
+                                {{ guest.purchase.owner.first_name }} {{ guest.purchase.owner.first_name }}
+                            div.ticket_name.small-3.columns
+                                {{ guest.ticket.name }}
+                            div.confirmation.small-3.columns
+                                {{ guest.purchase.code }}
+                            div.checkin.small-3.columns
+                                a.blue-btn(href="javascript:;") 
+                                    {% if guest.is_checked_in %}Arrived{% else %}Check In{% endif %}
+                            div.clear
+                        {% endfor %}
 
 
 

@@ -36,13 +36,21 @@
           sales.push([date.unix() * 1000, total_sales]);
         }
         $(canvas).highcharts({
-          title: {
-            text: null
+          chart: {
+            type: 'area'
           },
           credits: {
             enabled: false
           },
+          colors: ["#4963E4", "#00BD84"],
+          title: {
+            text: ''
+          },
+          legend: {
+            enabled: false
+          },
           xAxis: {
+            gridLineWidth: 0,
             type: 'datetime',
             dateTimeLabelFormats: {
               day: '%b %e'
@@ -54,7 +62,10 @@
                 format: '{value}'
               },
               title: {
-                text: 'RSVPs'
+                text: 'RSVPs',
+                style: {
+                  color: '#4963E4'
+                }
               },
               min: 0
             }, {
@@ -62,21 +73,38 @@
                 format: '${value}'
               },
               title: {
-                text: 'Total Sale'
+                text: 'Total Sales',
+                style: {
+                  color: '#00BD84'
+                }
               },
               opposite: true,
               min: 0
             }
           ],
+          plotOptions: {
+            area: {
+              fillOpacity: .1,
+              pointStart: 0,
+              marker: {
+                enabled: true,
+                symbol: 'circle',
+                radius: 2,
+                states: {
+                  hover: {
+                    enabled: true
+                  }
+                }
+              }
+            }
+          },
           series: [
             {
               name: 'RSVPs',
-              type: 'spline',
               yAxis: 0,
               data: rsvps
             }, {
-              name: 'Total Sale',
-              type: 'spline',
+              name: 'Total Sales',
               yAxis: 1,
               data: sales
             }
