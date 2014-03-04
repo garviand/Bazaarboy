@@ -29,13 +29,13 @@ def index(request):
                                         Q(checkout__is_charged = True, 
                                           checkout__is_refunded = False), 
                                         )
-    total_stats = stats.aggregate(total_sale = Sum('price'), sale_count = Count('id'))
+    total_stats = stats.aggregate(total_sale = Sum('amount'), sale_count = Count('id'))
     monthly_stats = stats.filter(created_time__gte=datetime.now()-timedelta(days=30))
-    monthly_stats = monthly_stats.aggregate(total_sale = Sum('price'), sale_count = Count('id'))
+    monthly_stats = monthly_stats.aggregate(total_sale = Sum('amount'), sale_count = Count('id'))
     weekly_stats = stats.filter(created_time__gte=datetime.now()-timedelta(days=7))
-    weekly_stats = weekly_stats.aggregate(total_sale = Sum('price'), sale_count = Count('id'))
+    weekly_stats = weekly_stats.aggregate(total_sale = Sum('amount'), sale_count = Count('id'))
     daily_stats = stats.filter(created_time__gte=datetime.now()-timedelta(days=1))
-    daily_stats = daily_stats.aggregate(total_sale = Sum('price'), sale_count = Count('id'))
+    daily_stats = daily_stats.aggregate(total_sale = Sum('amount'), sale_count = Count('id'))
     # Events (Upcoming/Past)
     upcoming_events = Event.objects.filter(Q(is_launched = True, start_time__gte = timezone.now())).order_by('start_time')[:30]
     past_events = Event.objects.filter(Q(is_launched = True, start_time__lte = timezone.now())).order_by('start_time')[:30]

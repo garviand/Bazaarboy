@@ -6859,3 +6859,39 @@ div#event-modify-tickets div#edit-ticket form input.primary-btn {
   font-size: 15px;
   text-transform: uppercase;
 }
+div#wrapper-profile-settings {
+  padding-top: 40px;
+}
+div#profile-settings div.name {
+  padding: 0;
+  padding-top: 10px;
+  font-size: 18px;
+}
+div#profile-settings div.text p {
+  color: #666;
+  font-size: 14px;
+  line-height: 18px;
+}
+div#profile-settings div#map-canvas {
+  height: 200px;
+  border: 1px solid #000;
+}
+div#profile-settings div#map-canvas img {
+  max-width: none;
+}
+div#profile-settings div.status {
+  padding-top: 53px;
+  color: #9B9B9B;
+  text-transform: uppercase;
+  text-align: right;
+}
+div#profile-settings input.primary-btn {
+  width: 100%;
+  margin-top: 40px;
+  margin-bottom: 40px;
+  padding-top: 11px;
+  padding-bottom: 14px;
+  border: none;
+  font-size: 15px;
+  text-transform: uppercase;
+}

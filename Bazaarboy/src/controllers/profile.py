@@ -53,6 +53,31 @@ def profile(request, params, user):
     }
     return json_response(response)
 
+@login_required()
+def settings(request, user, id):
+    """
+    Edit an existing profile
+    """
+    # Check if the profile is valid
+    if not Profile.objects.filter(id = id).exists():
+        response = {
+            'status':'FAIL',
+            'error':'PROFILE_NOT_FOUND',
+            'message':'The profile doesn\'t exist.'
+        }
+        return json_response(response)
+    profile = Profile.objects.get(id = id)
+    # Check if the user has permission for the profile
+    if not Profile_manager.objects.filter(user = user, profile = profile) \
+                                  .exists():
+        response = {
+            'status':'FAIL',
+            'error':'NOT_A_MANAGER',
+            'message':'You don\'t have permission for the profile.'
+        }
+        return json_response(response)
+    return render(request, 'profile/settings.html', locals())
+
 @validate('GET', ['keyword'])
 def search(request, params):
     """
@@ -231,7 +256,7 @@ def create(request, params, user):
 
 @login_required()
 @validate('POST', ['id'], 
-          ['name', 'description', 'image', 'cover', 'category', 'latitude', 
+          ['name', 'description', 'email', 'phone', 'link_website', 'link_facebook', 'EIN', 'is_non_profit', 'image', 'cover', 'category', 'location', 'latitude', 
            'longitude', 'payment'])
 def edit(request, params, user):
     """
@@ -314,7 +339,11 @@ def edit(request, params, user):
         else:
             profile.location = params['location']
     if params['latitude'] is not None and params['longitude'] is not None: 
-        if not (-90.0 <= float(params['latitude']) <= 90.0 and 
+        if (params['latitude'].lower() == 'none' or 
+            params['longitude'].lower() == 'none'):
+            profile.latitude = None
+            profile.longitude = None
+        elif not (-90.0 <= float(params['latitude']) <= 90.0 and 
                 -180.0 <= float(params['longitude']) <= 180.0):
             response = {
                 'status':'FAIL',
