@@ -6895,3 +6895,34 @@ div#profile-settings input.primary-btn {
   font-size: 15px;
   text-transform: uppercase;
 }
+div#profile-settings div.logo_controls a {
+  display: block;
+  width: 100%;
+  margin-bottom: 10px;
+  padding-top: 11px;
+  padding-bottom: 14px;
+  font-size: 15px;
+  text-transform: uppercase;
+}
+div#profile-settings div.logo_controls a.hide {
+  display: none;
+}
+div#profile-settings div.logo_controls a.last {
+  margin-bottom: 1.25rem;
+}
+div#profile-settings div.logo_image {
+  position: relative;
+  width: 94px;
+  height: 94px;
+  background-color: #f6f6f6;
+}
+div#profile-settings div.logo_image img {
+  position: absolute;
+  max-width: 100%;
+  max-height: 100%;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  margin: auto;
+}

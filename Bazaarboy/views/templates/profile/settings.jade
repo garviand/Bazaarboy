@@ -34,6 +34,20 @@ block content
                             {{ profile.description }}
                     div.text.medium-10.medium-offset-2.columns
                         p A description of your organization.
+                div.row.logo
+                    div.name.medium-2.columns
+                        | Logo
+                    div.medium-3.columns
+                        div.logo_controls
+                            a.secondary-btn.upload(href="javascript:;") Upload
+                            a.secondary-btn.delete.last(href="javascript:;") Delete
+                            a.secondary-btn.save.hide(href="javascript:;") Save
+                            a.secondary-btn.cancel.hide.last(href="javascript:;") Cancel
+                    div.medium-7.columns
+                        div.logo_image
+                            {% if profile.image %}
+                            img(src="{{ profile.image.source.url }}")
+                            {% endif %}
                 div.row
                     div.name.medium-2.columns
                         | Location
@@ -52,6 +66,9 @@ block content
                         input.primary-btn(type="submit", value="Save Profile")
                 input(type="hidden", name="latitude", value="{{ profile.latitude }}")
                 input(type="hidden", name="longitude", value="{{ profile.longitude }}")
+            form.upload_logo.hide
+                input(type="file", name="image_file")
+                {% csrf_token %}
 
 append script
     script(src="{{ STATIC_URL }}jQueryUI/jquery-ui.min.js")

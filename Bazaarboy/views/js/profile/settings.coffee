@@ -2,6 +2,9 @@ Bazaarboy.event.modify.basics =
     isEditing: false
     map: undefined
     marker: undefined
+    image: undefined
+    uploads:
+        image: undefined
     save: (params, cb) ->
         if token?
             params.token = token
@@ -59,7 +62,84 @@ Bazaarboy.event.modify.basics =
                 @marker.setPosition(center)
             return
         return
+    startEditingLogoImage: () ->
+        scope = this
+        $('<img>')
+            .attr('src', mediaUrl + @uploads.image.source)
+            .load () ->
+                $('div#profile-settings div.logo div.logo_image')
+                    .html('')
+                $('div#profile-settings div.logo div.logo_image')
+                    .append(this)
+                $('div#profile-settings div.logo a.upload')
+                    .addClass('hide')
+                $('div#profile-settings div.logo a.delete')
+                    .addClass('hide')
+                $('div#profile-settings div.logo a.save')
+                    .removeClass('hide')
+                $('div#profile-settings div.logo a.cancel')
+                    .removeClass('hide')
+                return
+        return
+    stopEditingLogoImage: () ->
+        $('div#profile-settings div.logo a.upload')
+            .removeClass('hide')
+        $('div#profile-settings div.logo a.delete')
+            .removeClass('hide')
+        $('div#profile-settings div.logo a.save')
+            .addClass('hide')
+        $('div#profile-settings div.logo a.cancel')
+            .addClass('hide')
+        return
+    saveLogoImage: () ->
+        @save {image: @uploads.image.pk, id: profileId}, (err, profile) =>
+            unless err
+                @uploads.image = null
+                @stopEditingLogoImage()
+            else
+                alert err.message
+            return
+        return
+    deleteLogoImage: () ->
+        if confirm('Are you sure you want to delete the logo?')
+            @save {image: 'delete', id: profileId}, (err, profile) =>
+                unless err
+                    @image = null
+                    $('div#profile-settings div.logo div.logo_image').html('')
+                else
+                    alert err.message
+                return
+        return
     init: () ->
+        $('div#profile-settings div.logo a.upload').click () ->
+            $('div#profile-settings form.upload_logo input[name=image_file]').click()
+            return
+        $('div#profile-settings div.logo a.delete').click () =>
+            @deleteLogoImage()
+            return
+        $('div#profile-settings div.logo a.save').click () =>
+            @saveLogoImage()
+            return
+        $('div#profile-settings div.logo div.logo a.cancel').click () ->
+            return
+        $('div#profile-settings form.upload_logo input[name=image_file]').fileupload
+            url: rootUrl + 'file/image/upload/'
+            type: 'POST'
+            add: (event, data) =>
+                data.submit()
+                return
+            done: (event, data) =>
+                response = jQuery.parseJSON data.result
+                if response.status is 'OK'
+                    # Attempt to delete the last uploaded image
+                    if @uploads.image?
+                        Bazaarboy.post 'file/image/delete/', 
+                            id: @uploads.image.pk
+                    @uploads.image = response.image
+                    @startEditingLogoImage()
+                else
+                    alert response.message
+                return
         # Submit Form
         $('form.profile-settings').submit (e) =>
             e.preventDefault()
@@ -84,6 +164,7 @@ Bazaarboy.event.modify.basics =
         google.maps.event.addListener @marker, 'drag', () =>
             $('form.profile-settings input[name=latitude]').val(@marker.position.lat())
             $('form.profile-settings input[name=longitude]').val(@marker.position.lng())
+            $('div#profile-settings div.status').html 'Editing'
             return
         # Is User Editing Info
         $('form.profile-settings').find('input, textarea').keyup () =>

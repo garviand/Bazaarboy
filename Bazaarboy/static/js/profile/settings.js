@@ -3,6 +3,10 @@
     isEditing: false,
     map: void 0,
     marker: void 0,
+    image: void 0,
+    uploads: {
+      image: void 0
+    },
     save: function(params, cb) {
       if (typeof token !== "undefined" && token !== null) {
         params.token = token;
@@ -70,9 +74,89 @@
         }
       });
     },
+    startEditingLogoImage: function() {
+      var scope;
+      scope = this;
+      $('<img>').attr('src', mediaUrl + this.uploads.image.source).load(function() {
+        $('div#profile-settings div.logo div.logo_image').html('');
+        $('div#profile-settings div.logo div.logo_image').append(this);
+        $('div#profile-settings div.logo a.upload').addClass('hide');
+        $('div#profile-settings div.logo a.delete').addClass('hide');
+        $('div#profile-settings div.logo a.save').removeClass('hide');
+        $('div#profile-settings div.logo a.cancel').removeClass('hide');
+      });
+    },
+    stopEditingLogoImage: function() {
+      $('div#profile-settings div.logo a.upload').removeClass('hide');
+      $('div#profile-settings div.logo a.delete').removeClass('hide');
+      $('div#profile-settings div.logo a.save').addClass('hide');
+      $('div#profile-settings div.logo a.cancel').addClass('hide');
+    },
+    saveLogoImage: function() {
+      var _this = this;
+      this.save({
+        image: this.uploads.image.pk,
+        id: profileId
+      }, function(err, profile) {
+        if (!err) {
+          _this.uploads.image = null;
+          _this.stopEditingLogoImage();
+        } else {
+          alert(err.message);
+        }
+      });
+    },
+    deleteLogoImage: function() {
+      var _this = this;
+      if (confirm('Are you sure you want to delete the logo?')) {
+        this.save({
+          image: 'delete',
+          id: profileId
+        }, function(err, profile) {
+          if (!err) {
+            _this.image = null;
+            $('div#profile-settings div.logo div.logo_image').html('');
+          } else {
+            alert(err.message);
+          }
+        });
+      }
+    },
     init: function() {
       var googleAutocomplete, initial_lat, initial_lng, mapOptions, map_center,
         _this = this;
+      $('div#profile-settings div.logo a.upload').click(function() {
+        $('div#profile-settings form.upload_logo input[name=image_file]').click();
+      });
+      $('div#profile-settings div.logo a.delete').click(function() {
+        _this.deleteLogoImage();
+      });
+      $('div#profile-settings div.logo a.save').click(function() {
+        _this.saveLogoImage();
+      });
+      $('div#profile-settings div.logo div.logo a.cancel').click(function() {});
+      $('div#profile-settings form.upload_logo input[name=image_file]').fileupload({
+        url: rootUrl + 'file/image/upload/',
+        type: 'POST',
+        add: function(event, data) {
+          data.submit();
+        },
+        done: function(event, data) {
+          var response;
+          response = jQuery.parseJSON(data.result);
+          if (response.status === 'OK') {
+            if (_this.uploads.image != null) {
+              Bazaarboy.post('file/image/delete/', {
+                id: _this.uploads.image.pk
+              });
+            }
+            _this.uploads.image = response.image;
+            _this.startEditingLogoImage();
+          } else {
+            alert(response.message);
+          }
+        }
+      });
       $('form.profile-settings').submit(function(e) {
         e.preventDefault();
         _this.saveSettings(false);
@@ -97,6 +181,7 @@
       google.maps.event.addListener(this.marker, 'drag', function() {
         $('form.profile-settings input[name=latitude]').val(_this.marker.position.lat());
         $('form.profile-settings input[name=longitude]').val(_this.marker.position.lng());
+        $('div#profile-settings div.status').html('Editing');
       });
       $('form.profile-settings').find('input, textarea').keyup(function() {
         _this.isEditing = true;
