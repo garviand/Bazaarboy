@@ -95,7 +95,7 @@
       });
     },
     init: function() {
-      var googleAutocomplete, initial_lat, initial_lng, mapOptions, map_center, originalEndTime, originalStartTime,
+      var googleAutocomplete, initial_lat, initial_lng, mapOptions, mapStyles, map_center, originalEndTime, originalStartTime,
         _this = this;
       $('form.event-modify').submit(function(e) {
         e.preventDefault();
@@ -108,9 +108,25 @@
       } else {
         map_center = new google.maps.LatLng(38.650068, -90.259904);
       }
+      mapStyles = [
+        {
+          featureType: "poi",
+          elementType: "labels",
+          stylers: [
+            {
+              visibility: "off"
+            }
+          ]
+        }
+      ];
       mapOptions = {
         zoom: 15,
-        center: map_center
+        center: map_center,
+        mapTypeControl: false,
+        scaleControl: false,
+        scrollWheel: false,
+        streetViewControl: false,
+        styles: mapStyles
       };
       this.map = new google.maps.Map(document.getElementById('map-canvas'), mapOptions);
       this.marker = new google.maps.Marker({
