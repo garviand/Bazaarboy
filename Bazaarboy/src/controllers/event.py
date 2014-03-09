@@ -134,11 +134,15 @@ def graph_data(request, params, user):
         
         purchase_data = {}
         for purchase in purchases:
-            purchase_data[purchase.created_time.strftime('%Y-%m-%d')] = {
-                'amount': purchase.amount,
-                'rsvps': purchase.rsvps,
-                'date': purchase.created_time.strftime('%Y-%m-%d')
-            }
+            if purchase.created_time.strftime('%Y-%m-%d') in purchase_data:
+                purchase_data[purchase.created_time.strftime('%Y-%m-%d')]['amount'] += purchase.amount
+                purchase_data[purchase.created_time.strftime('%Y-%m-%d')]['rsvps'] += purchase.rsvps
+            else:
+                purchase_data[purchase.created_time.strftime('%Y-%m-%d')] = {
+                    'amount': purchase.amount,
+                    'rsvps': purchase.rsvps,
+                    'date': purchase.created_time.strftime('%Y-%m-%d')
+                }
         response = {
             'status':'OK',
             'purchases': purchase_data
