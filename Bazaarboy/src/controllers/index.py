@@ -39,8 +39,8 @@ def index(request, params, user):
                                         Q(checkout__is_charged = True, 
                                           checkout__is_refunded = False), 
                                         event__organizers = profile) \
-                                .aggregate(total_sale = Sum('price'), 
-                                           sale_count = Count('id'))
+                                .aggregate(total_sale = Sum('checkout__amount'), 
+                                               sale_count = Sum('quantity'))
         profile.stats = stats
         # Fetch draft events
         draftEvents = Event.objects.filter(organizers = profile, 
@@ -62,8 +62,8 @@ def index(request, params, user):
                                             Q(checkout__is_charged = True, 
                                               checkout__is_refunded = False), 
                                             event = liveEvents[j]) \
-                                    .aggregate(total_sale = Sum('price'), 
-                                               sale_count = Count('id'))
+                                    .aggregate(total_sale = Sum('checkout__amount'), 
+                                               sale_count = Sum('quantity'))
             liveEvents[j].total_sale = stats['total_sale']
             liveEvents[j].sale_count = stats['sale_count']
         # Fetch past events
@@ -81,8 +81,8 @@ def index(request, params, user):
                                             Q(checkout__is_charged = True, 
                                               checkout__is_refunded = False), 
                                             event = pastEvents[j]) \
-                                    .aggregate(total_sale = Sum('price'), 
-                                               sale_count = Count('id'))
+                                    .aggregate(total_sale = Sum('checkout__amount'), 
+                                               sale_count = Sum('quantity'))
             pastEvents[j].total_sale = stats['total_sale']
             pastEvents[j].sale_count = stats['sale_count']
         # Attached the data to profile

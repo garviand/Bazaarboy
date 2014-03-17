@@ -1342,7 +1342,7 @@ def purchase_csv(request, params, user):
             purchase.owner.email, 
             purchase.ticket.name, 
             purchase.code,
-            purchase.quantity
+            str(purchase.quantity)
         ]
         writer.writerow(row)
     return response
