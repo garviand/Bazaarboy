@@ -1334,14 +1334,15 @@ def purchase_csv(request, params, user):
     response = HttpResponse(mimetype = 'text/csv')
     response['Content-Disposition'] = 'attachment; filename="' + csvName + '"'
     writer = UnicodeWriter(response)
-    headers = ['name', 'email', 'ticket', 'code']
+    headers = ['name', 'email', 'ticket', 'code', 'quantity']
     writer.writerow(headers)
     for purchase in purchases:
         row = [
             purchase.owner.full_name, 
             purchase.owner.email, 
             purchase.ticket.name, 
-            purchase.code
+            purchase.code,
+            purchase.quantity
         ]
         writer.writerow(row)
     return response
