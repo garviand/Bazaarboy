@@ -5962,8 +5962,8 @@ div.current-event > div.tile div.info div.inner div.current-event-datetime {
 }
 div.current-event > div.tile div.info div.inner div.current-event-datetime div.current-event-date {
   position: absolute;
-  width: 40px;
-  height: 40px;
+  width: 38px;
+  height: 38px;
   top: 7px;
   left: 7px;
   border-radius: 4px;
@@ -5971,13 +5971,14 @@ div.current-event > div.tile div.info div.inner div.current-event-datetime div.c
 }
 div.current-event > div.tile div.info div.inner div.current-event-datetime div.current-event-date div.month {
   width: 100%;
-  height: 12px;
+  height: 10px;
   margin-top: 3px;
   color: #ffffff;
-  font-size: 12px;
-  font-weight: 700;
+  font-size: 11px;
+  font-weight: 600;
   text-align: center;
   text-transform: uppercase;
+  letter-spacing: -1px;
 }
 div.current-event > div.tile div.info div.inner div.current-event-datetime div.current-event-date div.day {
   width: 36px;
@@ -5986,6 +5987,7 @@ div.current-event > div.tile div.info div.inner div.current-event-datetime div.c
   margin: 0 auto;
   margin-top: 2px;
   padding: 1px 0;
+  padding-top: 2px;
   font-size: 18px;
   font-weight: 700;
   text-align: center;
@@ -5998,19 +6000,21 @@ div.current-event > div.tile div.info div.inner div.current-event-datetime div.c
   padding-left: 54px;
   top: 0;
   left: 0;
-  font-size: 14px;
+  font-size: 13px;
   line-height: 18px;
+  font-weight: 500;
 }
 div.current-event > div.tile div.info div.inner div.current-event-datetime div.current-event-time span {
   display: table-cell;
   vertical-align: middle;
 }
 div.current-event > div.tile div.info div.inner div.current-event-location {
-  height: 15px;
-  padding-top: 19.5px;
-  padding-bottom: 19.5px;
-  font-size: 15px;
-  line-height: 15px;
+  height: 13px;
+  padding-top: 20.5px;
+  padding-bottom: 20.5px;
+  font-size: 13px;
+  line-height: 13px;
+  font-weight: 500;
 }
 div.current-event > div.tile div.stats {
   margin-top: 15px;
