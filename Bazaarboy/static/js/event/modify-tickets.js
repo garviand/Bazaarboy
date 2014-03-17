@@ -65,6 +65,7 @@
         }
       });
     },
+    newPromo: function() {},
     initDateTimeAutoComplete: function(form) {
       var originalEndTime, originalStartTime;
       originalStartTime = $(form).find('input[name=start_time]').val();
@@ -216,9 +217,8 @@
           if (response.status === 'OK') {
             ticketOption = null;
             if (isNew) {
-              ticketOption = $('div.ticket-option-template').clone();
+              ticketOption = $('div.templates div.ticket-option').clone();
               $(ticketOption).attr('data-id', response.ticket.pk);
-              $(ticketOption).removeClass('ticket-option-template').addClass('ticket-option');
               $(ticketOption).appendTo('div#ticket-canvas');
               $(ticketOption).find('div.top div.secondary-btn').click(function() {
                 var ticket;

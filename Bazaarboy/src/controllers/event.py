@@ -45,6 +45,13 @@ def index(request, id, params, user):
         return redirect('index')
     tickets = Ticket.objects.filter(event = event)
     organizers = Organizer.objects.filter(event = event)
+    rsvp = True
+    cheapest = float('inf')
+    for ticket in tickets:
+        if ticket.price > 0:
+            rsvp = False
+        if ticket.price < cheapest:
+            cheapest = ticket.price
     return render(request, 'event/index.html', locals())
 
 @login_required()

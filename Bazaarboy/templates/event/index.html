@@ -25,7 +25,13 @@ _gaq.push(['_trackPageview']);
     js = d.createElement(s); js.id = id;
     js.src = "//connect.facebook.net/en_US/all.js";
     fjs.parentNode.insertBefore(js, fjs);
-}(document, 'script', 'facebook-jssdk'));</script><div id="event"><div id="event-header"><div class="event-header-body medium-10 columns"><div class="profile-icon"></div><div class="event-name"> <span>{{ event.name }}</span></div></div><div class="event-rsvp medium-2 columns clearfix"><a href="javascript:;" class="right primary-btn">+ RSVP</a></div></div><div id="event-body" class="row"><div id="event-sidebar" class="large-offset-1 large-3 medium-3 columns"><div id="event-datetime" class="row"><div id="event-date"><div class="month">{{ event.start_time|date:'M' }}</div><div class="day">{{ event.start_time|date:'j' }}</div></div><div id="event-time" class="small-12 columns"><span>{% spaceless %}
+}(document, 'script', 'facebook-jssdk'));</script><div id="event"><div id="event-header"><div class="event-header-body medium-10 columns"><div class="profile-icon"><div class="inner"></div></div><div class="event-name"> <span>{{ event.name }}</span></div></div><div class="event-rsvp medium-2 columns clearfix"><a href="javascript:;" class="right primary-btn">+ RSVP</a><div class="price right"><span>{% spaceless %}
+{% if rsvp %}
+Free
+{% else %}
+{% if cheapest != 0 %}${{ cheapest|floatformat:-2 }}{% else %}Free{% endif %}{% if tickets|length != 1 %}+{% endif %}
+{% endif %}
+{% endspaceless %}</span></div></div></div><div id="event-body" class="row"><div id="event-sidebar" class="large-offset-1 large-3 medium-3 columns"><div id="event-datetime" class="row"><div id="event-date"><div class="month">{{ event.start_time|date:'M' }}</div><div class="day">{{ event.start_time|date:'j' }}</div></div><div id="event-time" class="small-12 columns"><span>{% spaceless %}
 {% if event.end_time %}{% if event.end_time|shouldShortenEndTime:event.start_time %}
 {{ event.start_time|date:'l, M. jS gA' }} to {{ event.end_time|date:'gA' }}
 {% else %}{{ event.start_time|date:'M. jS gA' }} to {{ event.end_time|date:'M. jS gA' }}

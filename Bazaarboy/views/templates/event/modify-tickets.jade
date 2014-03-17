@@ -33,50 +33,14 @@ block content
                     a.new-ticket.primary-btn(href="javascript:;") + New Ticket
                 div.medium-3.columns.end
                     a.new-promo.primary-btn(href="javascript:;") + New Promo
-            div#ticket-canvas.small-12.columns
-                {% for ticket in tickets %}
-                div.ticket-option.row(data-id="{{ ticket.id }}")
+            mixin ticket-option(tags)
+                div.ticket-option.row(data-id!= tags ? "{{ ticket.id }}" : "")
                     div.top.small-12.columns
                         div.inner.small-12.columns
                             div.price.medium-2.columns
-                                | {% if ticket.price == 0 %}Free{% else %}${{ ticket.price|floatformat:2 }}{% endif %}
+                                != tags ? '{% if ticket.price == 0 %}Free{% else %}${{ ticket.price|floatformat:2 }}{% endif %}' : ''
                             div.name.medium-7.columns
-                                | {{ ticket.name }}
-                            div.action.medium-3.columns
-                                div.secondary-btn Edit/Delete
-                    div.middle.small-12.columns
-                        div.inner.small-12.columns
-                            div.stats.medium-8.columns
-                                span.quantities
-                                    span.sold {{ ticket.sold }}
-                                    span.quantity {% if ticket.quantity %}/{{ ticket.quantity }}{% endif %}
-                                    | &nbsp;
-                                    span.wording {% if ticket.price == 0 %}RSVP'd{% else %}Sold{% endif %}
-                                span.dates
-                                    {% if ticket.start_time or ticket.end_time %}
-                                    | &nbsp;|&nbsp;
-                                    {% if ticket.start_time %}
-                                    {{ ticket.start_time|date:'n/j/Y' }}
-                                    {% endif %}
-                                    {% if ticket.end_time %}
-                                    | - {{ ticket.end_time|date:'n/j/Y' }}
-                                    {% endif %}
-                                    {% endif %}
-                            div.action.medium-4.columns
-                                a(href="{% url event:manage event.id %}") 
-                                    | View&nbsp;
-                                    span.wording-object {% if ticket.price == 0 %}RSVPs{% else %}Ticket Holders{% endif %}
-                    div.bottom.small-12.columns
-                        div.inner.small-12.columns
-                            div.description.small-12.columns
-                                {{ ticket.description }}
-                {% endfor %}
-            div.hide
-                div.ticket-option-template.row
-                    div.top.small-12.columns
-                        div.inner.small-12.columns
-                            div.price.medium-2.columns
-                            div.name.medium-7.columns
+                                != tags ? '{{ ticket.name }}' : ''
                             div.action.medium-3.columns
                                 div.secondary-btn Edit/Delete
                     div.middle.small-12.columns
@@ -84,17 +48,38 @@ block content
                             div.stats.medium-8.columns
                                 span.quantities
                                     span.sold
-                                    span.quantity
+                                        != tags ? '{{ ticket.sold }}' : ''
+                                    span.quantity 
+                                        != tags ? '{% if ticket.quantity %}/{{ ticket.quantity }}{% endif %}' : ''
                                     | &nbsp;
-                                    span.wording
+                                    span.wording 
+                                        != tags ? "{% if ticket.price == 0 %}RSVP'd{% else %}Sold{% endif %}" : ""
                                 span.dates
+                                    != tags ? "{% if ticket.start_time or ticket.end_time %}&nbsp;|&nbsp;{% if ticket.start_time %}{{ ticket.start_time|date:'n/j/Y' }}{% endif %}{% if ticket.end_time %}- {{ ticket.end_time|date:'n/j/Y' }}{% endif %}{% endif %}" : ""
                             div.action.medium-4.columns
                                 a(href="{% url event:manage event.id %}") 
                                     | View&nbsp;
                                     span.wording-object
+                                        != tags ? '{% if ticket.price == 0 %}RSVPs{% else %}Ticket Holders{% endif %}' : ''
                     div.bottom.small-12.columns
                         div.inner.small-12.columns
                             div.description.small-12.columns
+                                != tags ? '{{ ticket.description }}' : ''
+            div#ticket-canvas.small-12.columns
+                {% for ticket in tickets %}
+                +ticket-option(true)
+                {% endfor %}
+            mixin promo-option(tags)
+                div.promo-option.row
+                    div
+            div#promo-canvas.small-12.columns
+                +promo-option(false)
+                {% for promo in promos %}
+                +promo-option(true)
+                {% endfor %}
+            div.templates.hide
+                +ticket-option(false)
+                +promo-option(false)
             div#edit-ticket.small-12.columns.hide
                 div.cancel-btn
                     span.ss-delete

@@ -27,10 +27,20 @@ block body
         div#event-header
             div.event-header-body.medium-10.columns
                 div.profile-icon
+                    div.inner
                 div.event-name 
                     span {{ event.name }}
             div.event-rsvp.medium-2.columns.clearfix
                 a.right.primary-btn(href="javascript:;") + RSVP
+                div.price.right
+                    span
+                        {% spaceless %}
+                        {% if rsvp %}
+                        | Free
+                        {% else %}
+                        | {% if cheapest != 0 %}${{ cheapest|floatformat:-2 }}{% else %}Free{% endif %}{% if tickets|length != 1 %}+{% endif %}
+                        {% endif %}
+                        {% endspaceless %}
         div#event-body.row
             div#event-sidebar.large-offset-1.large-3.medium-3.columns
                 div#event-datetime.row

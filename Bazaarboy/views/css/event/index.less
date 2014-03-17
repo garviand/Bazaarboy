@@ -23,12 +23,19 @@ div#event-header {
 
         div.profile-icon {
             position: absolute;
-            top: 11px;
-            left: 11px;
-            width: 44px;
-            height: 44px;
-            border-radius: 22px;
+            top: 0;
+            left: 0;
+            width: 66px;
+            height: 66px;
             background: #F5A623;
+
+            div.inner {
+                width: 44px;
+                height: 44px;
+                margin: 11px;
+                border-radius: 22px;
+                background: @white;
+            }
         }
 
         div.event-name {
@@ -64,6 +71,20 @@ div#event-header {
             padding-top: 9px;
             padding-bottom: 11px;
             color: @white;
+        }
+
+        div.price {
+            display: table;
+            height: 36px;
+            padding-right: 10px;
+            color: #4A4A4A;
+            font-size: 18px;
+            line-height: 20px;
+
+            span {
+                display: table-cell;
+                vertical-align: middle;
+            }
         }
     }
 }

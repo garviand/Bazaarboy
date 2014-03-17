@@ -5555,6 +5555,9 @@ ul.ui-autocomplete {
   list-style: none;
   position: absolute !important;
 }
+div#map-canvas img {
+  max-width: inherit;
+}
 /* Styles */
 .absolute-center {
   position: absolute;
@@ -6457,12 +6460,18 @@ div#event-header div.event-header-body {
 }
 div#event-header div.event-header-body div.profile-icon {
   position: absolute;
-  top: 11px;
-  left: 11px;
+  top: 0;
+  left: 0;
+  width: 66px;
+  height: 66px;
+  background: #F5A623;
+}
+div#event-header div.event-header-body div.profile-icon div.inner {
   width: 44px;
   height: 44px;
+  margin: 11px;
   border-radius: 22px;
-  background: #F5A623;
+  background: #ffffff;
 }
 div#event-header div.event-header-body div.event-name {
   display: table;
@@ -6495,6 +6504,18 @@ div#event-header div.event-rsvp a.primary-btn {
   padding-top: 9px;
   padding-bottom: 11px;
   color: #ffffff;
+}
+div#event-header div.event-rsvp div.price {
+  display: table;
+  height: 36px;
+  padding-right: 10px;
+  color: #4A4A4A;
+  font-size: 18px;
+  line-height: 20px;
+}
+div#event-header div.event-rsvp div.price span {
+  display: table-cell;
+  vertical-align: middle;
 }
 div#event-body {
   margin-top: 24px;
@@ -6682,9 +6703,6 @@ div#event-modify-basics div#map-canvas {
   height: 200px;
   border: 1px solid #000;
 }
-div#event-modify-basics div#map-canvas img {
-  max-width: none;
-}
 div#event-modify-basics div.status {
   padding-top: 53px;
   color: #9B9B9B;
@@ -6815,6 +6833,11 @@ div#event-modify-tickets div.ticket-option div.bottom div.inner div.description 
   padding: 15px;
   font-size: 14px;
   line-height: 18px;
+}
+div#event-modify-tickets div.promo-option {
+  margin-bottom: 20px;
+  border-radius: 4px;
+  background: #f6f6f6;
 }
 div#event-modify-tickets div#edit-ticket {
   position: absolute;

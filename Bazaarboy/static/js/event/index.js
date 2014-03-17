@@ -35,9 +35,9 @@
           mapTypeControl: false,
           scaleControl: false,
           panControl: false,
-          scrollWheel: false,
+          scrollwheel: false,
           streetViewControl: false,
-          zoomControl: false
+          zoomControl: true
         };
         map = new google.maps.Map(document.getElementById('map-canvas'), mapOptions);
         marker = new google.maps.Marker({
