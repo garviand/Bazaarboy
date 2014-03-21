@@ -1,6 +1,7 @@
 from django.conf.urls import patterns, include, url
 
 index_urlpatterns = patterns('src.controllers.index', 
+    url(r'^login/$', 'login', name = 'login'),
     url(r'^terms/$', 'terms', name = 'terms'), 
     url(r'^about/$', 'about', name = 'about'),
     url(r'^pricing/$', 'pricing', name = 'pricing'),

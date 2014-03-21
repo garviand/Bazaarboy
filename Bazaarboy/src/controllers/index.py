@@ -103,6 +103,16 @@ def index(request, params, user):
     return render(request, 'index/index.html', locals())
 
 @login_check()
+def login(request, user):
+    """
+    Login Page
+    """
+    if user:
+        return redirect('index')
+    else:
+        return render(request, 'index/login.html', locals())
+
+@login_check()
 def terms(request, user):
     """
     Terms of services

@@ -1,47 +1,85 @@
 extends ../layout
 
+append head
+    link(rel="stylesheet", href="{{ STATIC_URL }}jQueryUI/jquery-ui.css")
+
 block sidebar
     +sidebarItem()
         | Create Profile
 
+block header
+    div.header-title.large-9.medium-10.columns.small-centered
+        div.row.clearfix
+            div.icon.left
+                span.ss-newspaper
+            div.text.left
+                | Profile | 
+                span.sub Create Your New Profile
+
 block content
     div#wrapper-profile-new.medium-9.columns.small-centered
         form.profile-new
-            label Name
-            input(type="text", name="name", placeholder="Profile Name")
-            br
-            label Description
-            textarea(name="description")
-            br
-            label Category
-            select(name="category")
-                option(value="false") --Select A Category--
-                {% for category in categories %}
-                option(value="{{ category }}") {{ category }}
-                {% endfor %}
-            br
-            label Location
-            input(type="text", name="location", placeholder="Location (Optional)")
-            br
-            label Email
-            input(type="text", name="email", placeholder="Profile Email (Optional)")
-            br
-            label Phone
-            input(type="text", name="phone", placeholder="Profile Phone (Optional)")
-            br
-            label Profile Website
-            input(type="text", name="link_website", placeholder="Link to the associated website")
-            br
-            label Facebook
-            input(type="text", name="link_facebook", placeholder="Link to the associated facebook")
-            br
-            label Is this a non-profit/501c(3) organization?
-            input(type="checkbox", name="is_non_profit", value="1")
-            br
-            label EIN
-            input(type="text", name="EIN", placeholder="Required if non-profit")
-            br
-            input(type="submit", value="Create")
+            div.row
+                div.small-8.small-offset-2.columns.profile-new-container
+                    div.row.title
+                        div.small-12.columns
+                            | New Profile
+                            span.subtitle &nbsp;&nbsp;|&nbsp;&nbsp;
+                                span.step-title Basic Information
+                    hr.separator
+                    div.row.profile-steps
+                        div.small-3.columns.profile-step-btn
+                            a.active(href="javascript:;", data-id="1") &nbsp;
+                        div.small-3.columns.profile-step-btn
+                            a(href="javascript:;", data-id="2") &nbsp;
+                        div.small-3.columns.profile-step-btn
+                            a(href="javascript:;", data-id="3") &nbsp;
+                        div.small-3.columns.profile-step-btn
+                            a(href="javascript:;", data-id="4") &nbsp;
+                    div.row.profile-step.profile-step-1.active(data-id="1", data-title="Basic Information")
+                        div.small-12.columns
+                            input(name="email", type="text", name="email", placeholder="Profile Email")
+                        div.small-12.columns
+                            textarea(name="description", placeholder="Profile Description")
+                        div.small-12.columns
+                            input(type="text", name="phone", placeholder="Phone Number (Optional)")
+                        div.small-12.columns
+                            select(name="category")
+                                option(value="false") --Select A Category--
+                                {% for category in categories %}
+                                option(value="{{ category }}") {{ category }}
+                                {% endfor %}
+                    div.row.profile-step.profile-step-2(data-id="2", data-title="Location")
+                        div.small-12.columns
+                            input(name="location", type="text", name="location", placeholder="Your Location")
+                            input(name="latitude", type="hidden", value="")
+                            input(name="longitude", type="hidden", value="")
+                        div.small-12.columns
+                            div#map-canvas
+                        div.hide
+                            div#map-canvas-hidden
+                    div.row.profile-step.profile-step-3(data-id="3", data-title="Details")
+                        div.small-12.columns
+                            input(type="text", name="link_website", placeholder="Link To Your Website (optional)")
+                        div.small-12.columns
+                            input(type="text", name="link_facebook", placeholder="Link To Your Facebook Page (optional)")
+                        div.small-12.columns
+                            input(id="nonprofit", name="is_non_profit", type="checkbox")
+                            label(for="nonprofit") Are you a Non-Profit Organization
+                    div.row.profile-step.profile-step-4(data-title="Confirm")
+                        div.small-12.columns
+                            | Confirm
+                    div.row.next-prev
+                        div.small-3.columns
+                            a.grey-btn.prev-btn.hide(data-id="4", href="javascript:;") PREV
+                        div.small-3.small-offset-6.columns
+                            a.primary-btn.next-btn(href="javascript:;") NEXT
+
+
+            
 
 append script
+    script(src="{{ STATIC_URL }}jQueryUI/jquery-ui.min.js")
+    script(src="{{ STATIC_URL }}jQueryUI/jquery-ui.autocomplete.html.js")
+    script(type="text/javascript", src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAasW6vqPCn18g6UMaFWV90qGMSo6pErwo&sensor=false&libraries=places")
     script(src="{{ STATIC_URL }}js/profile/new.js")

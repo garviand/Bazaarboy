@@ -1,0 +1,66 @@
+@import (reference) "vars.less";
+
+div#wrapper-profile-new{
+	div.profile-new-container{
+		overflow: hidden;
+		margin-top: 50px;
+		border: @grey thin solid;
+		.title{
+			margin-top: 1.25rem;
+			font-size: 18px;
+			font-weight: 600;
+			span.subtitle{
+				color: #9B9B9B;
+			}
+		}
+		div.profile-steps{
+			margin-bottom: 1.25rem;
+			div.profile-step-btn{
+				a{
+					display: block;
+					margin: 0 auto;
+					height: 40px;
+					width: 40px;
+					border-radius: 50%;
+					background: #9B9B9B;
+					transition: background .1s;
+					&.active, &:hover{
+						background: #F4A534;
+					}
+				}
+			}
+		}
+		div.profile-step{
+			display: none;
+			&.active{
+				display: block !important;
+			}
+			input[type=text], input[type=password], textarea{
+				border-radius: 3px;
+				box-shadow: none;
+			}
+			div#map-canvas {
+				height: 150px;
+				border: 1px solid #000;
+				img {
+					max-width: none;
+				}
+			}
+		}
+		div.next-prev{
+			margin-top: 1rem;
+			margin-bottom: 1rem;
+			a.prev-btn, a.next-btn{
+				display: block;
+				width: 100%;
+				padding: 8px 0 10px;
+				&:hover{
+					color: @white !important;
+				}
+				&.hide{
+					display: none !important;
+				}
+			}
+		}
+	}
+}
