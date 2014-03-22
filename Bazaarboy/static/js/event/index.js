@@ -165,6 +165,7 @@
               description: checkoutDescription,
               panelLabel: 'Checkout',
               email: params.email,
+              image: response.logo,
               token: function(token) {
                 $('div#rsvp div.action a.confirm').css('display', 'none');
                 $('div#rsvp div.action div.loading').removeClass('hidden');

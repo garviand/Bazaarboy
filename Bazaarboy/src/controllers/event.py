@@ -1170,10 +1170,15 @@ def purchase(request, params, user):
             Ticket.objects \
                   .filter(id = ticket.id) \
                   .update(quantity = F('quantity') - purchase.quantity)
+        if creator.image:
+            creator_logo = creator.image.source.url
+        else:
+            creator_logo = None
         response = {
             'status':'OK',
             'purchase':serialize_one(purchase),
-            'publishable_key':paymentAccount.publishable_key
+            'publishable_key':paymentAccount.publishable_key,
+            'logo':creator_logo
         }
         return json_response(response)
     # If it gets here, there is a transaction failure
