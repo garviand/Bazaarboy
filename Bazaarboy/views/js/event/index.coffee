@@ -134,6 +134,7 @@ Bazaarboy.event.index =
                         name: response.purchase.event.name
                         description: checkoutDescription
                         panelLabel: 'Checkout'
+                        email: params.email
                         token: (token) =>
                             $('div#rsvp div.action a.confirm')
                                 .css('display', 'none')
