@@ -1171,7 +1171,7 @@ def purchase(request, params, user):
                   .filter(id = ticket.id) \
                   .update(quantity = F('quantity') - purchase.quantity)
         if creator.image:
-            creator_logo = creator.image.source.url
+            creator_logo = creator.image.source.url.split("?")[0]
         else:
             creator_logo = None
         response = {
