@@ -43,12 +43,18 @@ block content
                             textarea(name="description", placeholder="Profile Description")
                         div.small-12.columns
                             input(type="text", name="phone", placeholder="Phone Number (Optional)")
+                        hr
                         div.small-12.columns
-                            select(name="category")
-                                option(value="false") --Select A Category--
-                                {% for category in categories %}
-                                option(value="{{ category }}") {{ category }}
-                                {% endfor %}
+                            div.row.logo
+                                div.medium-4.columns
+                                    div.logo_controls
+                                        div.title Profile Logo
+                                        a.secondary-btn.upload(href="javascript:;") Upload
+                                        a.secondary-btn.cancel.hide.last(href="javascript:;") Cancel
+                                div.medium-8.columns
+                                    div.logo_image
+                                        div.logo_preview_text logo will appear here
+                        hr
                     div.row.profile-step.profile-step-2(data-id="2", data-title="Location")
                         div.small-12.columns
                             input(name="location", type="text", name="location", placeholder="Your Location")
@@ -66,6 +72,8 @@ block content
                         div.small-12.columns
                             input(id="nonprofit", name="is_non_profit", type="checkbox")
                             label(for="nonprofit") Are you a Non-Profit Organization
+                        div.small-12.columns.hide.ein
+                            input(type="text", name="EIN", placeholder="Employee Indentification Number (required)")
                     div.row.profile-step.profile-step-4(data-title="Confirm")
                         div.small-12.columns
                             | Confirm
@@ -74,6 +82,10 @@ block content
                             a.grey-btn.prev-btn.hide(data-id="4", href="javascript:;") PREV
                         div.small-3.small-offset-6.columns
                             a.primary-btn.next-btn(href="javascript:;") NEXT
+                            a.secondary-btn.finish-btn.hide(href="javascript:;") FINISH
+        form.upload_logo.hide
+                input(type="file", name="image_file")
+                {% csrf_token %}
 
 
             

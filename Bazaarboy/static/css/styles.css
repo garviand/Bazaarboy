@@ -6497,12 +6497,12 @@ div#wrapper-profile-new div.profile-new-container {
   margin-top: 50px;
   border: #f6f6f6 thin solid;
 }
-div#wrapper-profile-new div.profile-new-container .title {
+div#wrapper-profile-new div.profile-new-container > .title {
   margin-top: 1.25rem;
   font-size: 18px;
   font-weight: 600;
 }
-div#wrapper-profile-new div.profile-new-container .title span.subtitle {
+div#wrapper-profile-new div.profile-new-container > .title span.subtitle {
   color: #9B9B9B;
 }
 div#wrapper-profile-new div.profile-new-container div.profile-steps {
@@ -6540,22 +6540,71 @@ div#wrapper-profile-new div.profile-new-container div.profile-step div#map-canva
 div#wrapper-profile-new div.profile-new-container div.profile-step div#map-canvas img {
   max-width: none;
 }
+div#wrapper-profile-new div.profile-new-container div.profile-step div.logo {
+  margin-bottom: 20px;
+}
+div#wrapper-profile-new div.profile-new-container div.profile-step div.logo div.logo_controls .title {
+  color: rgba(0, 0, 0, 0.75);
+  width: 100%;
+  text-align: center;
+  margin-top: 10px;
+  margin-bottom: 20px;
+}
+div#wrapper-profile-new div.profile-new-container div.profile-step div.logo div.logo_controls a {
+  display: block;
+  width: 100%;
+  margin-bottom: 10px;
+  padding-top: 11px;
+  padding-bottom: 14px;
+  font-size: 15px;
+  text-transform: uppercase;
+}
+div#wrapper-profile-new div.profile-new-container div.profile-step div.logo div.logo_controls a.hide {
+  display: none;
+}
+div#wrapper-profile-new div.profile-new-container div.profile-step div.logo .logo_image {
+  position: relative;
+  width: 100px;
+  height: 100px;
+  background-color: #f6f6f6;
+  margin: 0 auto;
+}
+div#wrapper-profile-new div.profile-new-container div.profile-step div.logo .logo_image img {
+  position: absolute;
+  max-width: 100%;
+  max-height: 100%;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  margin: auto;
+}
+div#wrapper-profile-new div.profile-new-container div.profile-step div.logo .logo_image .logo_preview_text {
+  color: #DDDDDD;
+  padding-top: 14px;
+  vertical-align: middle;
+  text-align: center;
+  font-size: .8em;
+}
 div#wrapper-profile-new div.profile-new-container div.next-prev {
   margin-top: 1rem;
   margin-bottom: 1rem;
 }
 div#wrapper-profile-new div.profile-new-container div.next-prev a.prev-btn,
-div#wrapper-profile-new div.profile-new-container div.next-prev a.next-btn {
+div#wrapper-profile-new div.profile-new-container div.next-prev a.next-btn,
+div#wrapper-profile-new div.profile-new-container div.next-prev a.finish-btn {
   display: block;
   width: 100%;
   padding: 8px 0 10px;
 }
 div#wrapper-profile-new div.profile-new-container div.next-prev a.prev-btn:hover,
-div#wrapper-profile-new div.profile-new-container div.next-prev a.next-btn:hover {
+div#wrapper-profile-new div.profile-new-container div.next-prev a.next-btn:hover,
+div#wrapper-profile-new div.profile-new-container div.next-prev a.finish-btn:hover {
   color: #ffffff !important;
 }
 div#wrapper-profile-new div.profile-new-container div.next-prev a.prev-btn.hide,
-div#wrapper-profile-new div.profile-new-container div.next-prev a.next-btn.hide {
+div#wrapper-profile-new div.profile-new-container div.next-prev a.next-btn.hide,
+div#wrapper-profile-new div.profile-new-container div.next-prev a.finish-btn.hide {
   display: none !important;
 }
 div#wrapper-event-manage {

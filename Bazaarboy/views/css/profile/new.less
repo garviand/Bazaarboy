@@ -5,7 +5,7 @@ div#wrapper-profile-new{
 		overflow: hidden;
 		margin-top: 50px;
 		border: @grey thin solid;
-		.title{
+		> .title{
 			margin-top: 1.25rem;
 			font-size: 18px;
 			font-weight: 600;
@@ -46,11 +46,59 @@ div#wrapper-profile-new{
 					max-width: none;
 				}
 			}
+			div.logo{
+				margin-bottom: 20px;
+				div.logo_controls{
+					.title{
+						color: rgba(0, 0, 0, 0.75);
+						width: 100%;
+						text-align: center;
+						margin-top: 10px;
+						margin-bottom: 20px;
+					}
+					a{
+						display: block;
+						width: 100%;
+						margin-bottom: 10px;
+						padding-top: 11px;
+						padding-bottom: 14px;
+						font-size: 15px;
+						text-transform: uppercase;
+						&.hide{
+							display: none;
+						}
+					}
+				}
+				.logo_image{
+					position: relative;
+			        width: 100px;
+			        height: 100px;
+			        background-color: @grey;
+			        margin: 0 auto;
+			        img {
+			            position: absolute;
+			            max-width: 100%;
+			            max-height: 100%;
+			            top: 0;
+			            left: 0;
+			            right: 0;
+			            bottom: 0;
+			            margin: auto;
+			        }
+					.logo_preview_text{
+						color: #DDDDDD;
+						padding-top: 14px;
+						vertical-align: middle;
+						text-align: center;
+						font-size: .8em;
+					}
+				}
+			}
 		}
 		div.next-prev{
 			margin-top: 1rem;
 			margin-bottom: 1rem;
-			a.prev-btn, a.next-btn{
+			a.prev-btn, a.next-btn, a.finish-btn{
 				display: block;
 				width: 100%;
 				padding: 8px 0 10px;
