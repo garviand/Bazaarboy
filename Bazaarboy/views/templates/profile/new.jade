@@ -38,23 +38,13 @@ block content
                             a(href="javascript:;", data-id="4") &nbsp;
                     div.row.profile-step.profile-step-1.active(data-id="1", data-title="Basic Information")
                         div.small-12.columns
+                            input(name="email", type="text", name="name", placeholder="Profile Name")
+                        div.small-12.columns
                             input(name="email", type="text", name="email", placeholder="Profile Email")
                         div.small-12.columns
                             textarea(name="description", placeholder="Profile Description")
                         div.small-12.columns
                             input(type="text", name="phone", placeholder="Phone Number (Optional)")
-                        hr
-                        div.small-12.columns
-                            div.row.logo
-                                div.medium-4.columns
-                                    div.logo_controls
-                                        div.title Profile Logo
-                                        a.secondary-btn.upload(href="javascript:;") Upload
-                                        a.secondary-btn.cancel.hide.last(href="javascript:;") Cancel
-                                div.medium-8.columns
-                                    div.logo_image
-                                        div.logo_preview_text logo will appear here
-                        hr
                     div.row.profile-step.profile-step-2(data-id="2", data-title="Location")
                         div.small-12.columns
                             input(name="location", type="text", name="location", placeholder="Your Location")
@@ -74,9 +64,21 @@ block content
                             label(for="nonprofit") Are you a Non-Profit Organization
                         div.small-12.columns.hide.ein
                             input(type="text", name="EIN", placeholder="Employee Indentification Number (required)")
+                        hr
+                        div.small-12.columns
+                            div.row.logo
+                                div.medium-4.columns
+                                    div.logo_controls
+                                        div.title Profile Logo
+                                        a.secondary-btn.upload(href="javascript:;") Upload
+                                        a.secondary-btn.cancel.hide.last(href="javascript:;") Cancel
+                                div.medium-8.columns
+                                    div.logo_image
+                                        div.logo_preview_text logo will appear here
+                        hr
                     div.row.profile-step.profile-step-4(data-title="Confirm")
                         div.small-12.columns
-                            | Confirm
+                            div.
                     div.row.next-prev
                         div.small-3.columns
                             a.grey-btn.prev-btn.hide(data-id="4", href="javascript:;") PREV

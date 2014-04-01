@@ -111,17 +111,16 @@ class Profile(models.Model):
                               related_name = '%(class)s_image', 
                               null = True, default = None, 
                               on_delete = models.SET_NULL)
-    category = models.CharField(max_length = 30)
     location = models.CharField(max_length = 100)
     latitude = models.FloatField(null = True, default = None)
     longitude = models.FloatField(null = True, default = None)
     email = models.CharField(max_length = 50)
-    phone = models.CharField(max_length = 10)
+    phone = models.CharField(max_length = 10, null = True, default = None)
     link_website = models.CharField(max_length = 1024, null = True, 
                                     default = None)
     link_facebook = models.CharField(max_length = 1024, null = True, 
                                      default = None)
-    EIN = models.CharField(max_length = 10)
+    EIN = models.CharField(max_length = 10, null = True, default = None)
     is_non_profit = models.BooleanField(default = False)
     is_verified = models.BooleanField(default = False)
     payment_account = models.ForeignKey('Payment_account', 
