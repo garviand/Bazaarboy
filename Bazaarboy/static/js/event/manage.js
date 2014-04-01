@@ -72,6 +72,7 @@
         rsvp = $('div.guest:eq(' + i + ')');
         targetValue = $(rsvp).find('div.' + param).html();
         if (targetValue.toLowerCase().indexOf(value.toLowerCase()) !== -1) {
+          console.log('name found: ' + value);
           if (rsvp.data('ticket') === ticketType || ticketType === 'all') {
             $(rsvp).removeClass('hidden');
           }
@@ -157,7 +158,12 @@
       });
       $('form.list_search input[name=guest_name]').keyup(function(e) {
         e.preventDefault();
-        _this.debounce(console.log('bouncing herere'), 1000);
+        if ($('form.list_search input[name=guest_name]').val().length > 2) {
+          $('div.guest').addClass('hidden');
+          _this.filterGuests('name', $('form.list_search input[name=guest_name]').val(), _this.selectionStatus, _this.checkinStatus, false);
+        } else {
+          $('div.guest').removeClass('hidden');
+        }
       });
       $('form.list_search input[name=guest_code]').keyup(function(e) {
         e.preventDefault();
