@@ -6527,8 +6527,7 @@ div#wrapper-profile-new div.profile-new-container div.profile-step {
 div#wrapper-profile-new div.profile-new-container div.profile-step.active {
   display: block !important;
 }
-div#wrapper-profile-new div.profile-new-container div.profile-step input[type=text],
-div#wrapper-profile-new div.profile-new-container div.profile-step input[type=password],
+div#wrapper-profile-new div.profile-new-container div.profile-step input,
 div#wrapper-profile-new div.profile-new-container div.profile-step textarea {
   border-radius: 3px;
   box-shadow: none;
@@ -6585,6 +6584,9 @@ div#wrapper-profile-new div.profile-new-container div.profile-step div.logo .log
   vertical-align: middle;
   text-align: center;
   font-size: .8em;
+}
+div#wrapper-profile-new div.profile-new-container div.profile-step .confirm_text {
+  margin: 20px 0;
 }
 div#wrapper-profile-new div.profile-new-container div.next-prev {
   margin-top: 1rem;

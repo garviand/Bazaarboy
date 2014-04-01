@@ -161,21 +161,6 @@ Bazaarboy.profile.new =
             return
         $('form.profile-new').submit (event) ->
             event.preventDefault()
-            params = $(this).serializeObject()
-            optionals = [
-               'email', 'phone', 'link_website', 'link_facebook', 'EIN', 'latitude', 'longitude'
-            ]
-            console.log(params)
-            params = Bazaarboy.stripEmpty params, optionals
-            if typeof scope.uploads.image != 'undefined'
-                params.image = scope.uploads.image.pk
-            console.log(params)
-            #Bazaarboy.post 'profile/create/', params, (response) ->
-            #    if response.status is 'OK'
-            #      Bazaarboy.redirect 'index'
-            #    else
-            #      alert response.message
-            #    return
             return
         # Location Auto-complete
         googleAutocomplete = new google.maps.places.AutocompleteService()
@@ -204,6 +189,30 @@ Bazaarboy.profile.new =
                             @fetchCoordinates ui.item.id
                             return
                         return
+            return
+        $('form.profile-new').on 'invalid', () ->
+            invalid_fields = $(this).find('[data-invalid]')
+            invalid_step = $(invalid_fields[0]).parents('.profile-step').data('id')
+            $('form.profile-new .profile-step-btn-' + invalid_step + ' a').click()
+            return
+        $('form.profile-new').on 'valid', () ->
+            params = $(this).serializeObject()
+            optionals = [
+               'phone', 'link_website', 'link_facebook', 'EIN', 'latitude', 'longitude'
+            ]
+            params = Bazaarboy.stripEmpty params, optionals
+            if typeof scope.uploads.image != 'undefined'
+                params.image = scope.uploads.image.pk
+            if $('form.profile-new input[name=is_non_profit]').is(':checked') and $('form.profile-new input[name=EIN]').val().trim().length > 0
+                params.is_non_profit = true
+            else
+                params.is_non_profit = false
+            Bazaarboy.post 'profile/create/', params, (response) ->
+                if response.status is 'OK'
+                  Bazaarboy.redirect 'index'
+                else
+                    alert response.message
+                return
             return
         return
 

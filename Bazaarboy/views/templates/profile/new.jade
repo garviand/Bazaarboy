@@ -18,7 +18,7 @@ block header
 
 block content
     div#wrapper-profile-new.medium-9.columns.small-centered
-        form.profile-new
+        form.profile-new(data-abide)
             div.row
                 div.small-8.small-offset-2.columns.profile-new-container
                     div.row.title
@@ -28,26 +28,31 @@ block content
                                 span.step-title Basic Information
                     hr.separator
                     div.row.profile-steps
-                        div.small-3.columns.profile-step-btn
+                        div.small-3.columns.profile-step-btn.profile-step-btn-1
                             a.active(href="javascript:;", data-id="1") &nbsp;
-                        div.small-3.columns.profile-step-btn
+                        div.small-3.columns.profile-step-btn.profile-step-btn-2
                             a(href="javascript:;", data-id="2") &nbsp;
-                        div.small-3.columns.profile-step-btn
+                        div.small-3.columns.profile-step-btn.profile-step-btn-3
                             a(href="javascript:;", data-id="3") &nbsp;
-                        div.small-3.columns.profile-step-btn
+                        div.small-3.columns.profile-step-btn.profile-step-btn-4
                             a(href="javascript:;", data-id="4") &nbsp;
                     div.row.profile-step.profile-step-1.active(data-id="1", data-title="Basic Information")
                         div.small-12.columns
-                            input(name="email", type="text", name="name", placeholder="Profile Name")
+                            input(name="name", type="text", placeholder="Profile Name", required)
+                            small.error Profile Name is required
                         div.small-12.columns
-                            input(name="email", type="text", name="email", placeholder="Profile Email")
+                            input(name="email", type="email", placeholder="Profile Email", required)
+                            small.error Valid Email Address is required
                         div.small-12.columns
-                            textarea(name="description", placeholder="Profile Description")
+                            textarea(name="description", placeholder="Profile Description", required)
+                            small.error Profile Description is required
                         div.small-12.columns
-                            input(type="text", name="phone", placeholder="Phone Number (Optional)")
+                            input(type="tel", name="phone", placeholder="Phone Number (Optional)")
+                            small.error Only Use Numbers (0-9)
                     div.row.profile-step.profile-step-2(data-id="2", data-title="Location")
                         div.small-12.columns
-                            input(name="location", type="text", name="location", placeholder="Your Location")
+                            input(name="location", type="text", name="location", placeholder="Your Location (Required)", required)
+                            small.error Profile Location is required (even if not found on map)
                             input(name="latitude", type="hidden", value="")
                             input(name="longitude", type="hidden", value="")
                         div.small-12.columns
@@ -78,13 +83,19 @@ block content
                         hr
                     div.row.profile-step.profile-step-4(data-title="Confirm")
                         div.small-12.columns
-                            div.
+                            div.confirm_text.text-center
+                                | You Are Almost Done!
+                                br
+                                br
+                                | Click
+                                b &nbsp;CONFIRM&nbsp;
+                                | to create your profile.
                     div.row.next-prev
                         div.small-3.columns
                             a.grey-btn.prev-btn.hide(data-id="4", href="javascript:;") PREV
                         div.small-3.small-offset-6.columns
                             a.primary-btn.next-btn(href="javascript:;") NEXT
-                            a.secondary-btn.finish-btn.hide(href="javascript:;") FINISH
+                            a.secondary-btn.finish-btn.hide(href="javascript:;") CONFIRM
         form.upload_logo.hide
                 input(type="file", name="image_file")
                 {% csrf_token %}
@@ -95,5 +106,8 @@ block content
 append script
     script(src="{{ STATIC_URL }}jQueryUI/jquery-ui.min.js")
     script(src="{{ STATIC_URL }}jQueryUI/jquery-ui.autocomplete.html.js")
+    script(src="{{ STATIC_URL }}jQueryUI/jquery-ui.autocomplete.html.js")
     script(type="text/javascript", src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAasW6vqPCn18g6UMaFWV90qGMSo6pErwo&sensor=false&libraries=places")
     script(src="{{ STATIC_URL }}js/profile/new.js")
+    script(type="text/javascript")
+        $(document).foundation()

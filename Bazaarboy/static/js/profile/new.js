@@ -175,16 +175,7 @@
         _this.coordinates = new google.maps.LatLng(_this.marker.position.lat(), _this.marker.position.lng());
       });
       $('form.profile-new').submit(function(event) {
-        var optionals, params;
         event.preventDefault();
-        params = $(this).serializeObject();
-        optionals = ['email', 'phone', 'link_website', 'link_facebook', 'EIN', 'latitude', 'longitude'];
-        console.log(params);
-        params = Bazaarboy.stripEmpty(params, optionals);
-        if (typeof scope.uploads.image !== 'undefined') {
-          params.image = scope.uploads.image.pk;
-        }
-        console.log(params);
       });
       googleAutocomplete = new google.maps.places.AutocompleteService();
       $('form.profile-new input[name=location]').keyup(function() {
@@ -221,6 +212,33 @@
             }
           });
         }
+      });
+      $('form.profile-new').on('invalid', function() {
+        var invalid_fields, invalid_step;
+        invalid_fields = $(this).find('[data-invalid]');
+        invalid_step = $(invalid_fields[0]).parents('.profile-step').data('id');
+        $('form.profile-new .profile-step-btn-' + invalid_step + ' a').click();
+      });
+      $('form.profile-new').on('valid', function() {
+        var optionals, params;
+        params = $(this).serializeObject();
+        optionals = ['phone', 'link_website', 'link_facebook', 'EIN', 'latitude', 'longitude'];
+        params = Bazaarboy.stripEmpty(params, optionals);
+        if (typeof scope.uploads.image !== 'undefined') {
+          params.image = scope.uploads.image.pk;
+        }
+        if ($('form.profile-new input[name=is_non_profit]').is(':checked') && $('form.profile-new input[name=EIN]').val().trim().length > 0) {
+          params.is_non_profit = true;
+        } else {
+          params.is_non_profit = false;
+        }
+        Bazaarboy.post('profile/create/', params, function(response) {
+          if (response.status === 'OK') {
+            Bazaarboy.redirect('index');
+          } else {
+            alert(response.message);
+          }
+        });
       });
     }
   };
