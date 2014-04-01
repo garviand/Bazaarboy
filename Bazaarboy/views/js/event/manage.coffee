@@ -111,7 +111,7 @@ Bazaarboy.event.manage =
             return
         $('form.list_search input[name=guest_name]').keyup (e) =>
             e.preventDefault()
-            if $('form.list_search input[name=guest_name]').val().length > 2
+            if $('form.list_search input[name=guest_name]').val().length > 1
                 $('div.guest').addClass('hidden')
                 @filterGuests('name', $('form.list_search input[name=guest_name]').val(), @selectionStatus,  @checkinStatus, false)
             else
