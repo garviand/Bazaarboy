@@ -43,7 +43,7 @@ def index(request, id, params, user):
     design = params['design'] is not None and editable
     if not design and not preview and not event.is_launched:
         return redirect('index')
-    tickets = Ticket.objects.filter(event = event)
+    tickets = Ticket.objects.filter(event = event, is_deleted = False)
     organizers = Organizer.objects.filter(event = event)
     rsvp = True
     cheapest = float('inf')
@@ -139,13 +139,17 @@ def graph_data(request, params, user):
                                         event = event, 
                                         is_expired = False).annotate(rsvps=Count('items'))
         
-        purchase_data = []
+        purchase_data = {}
         for purchase in purchases:
-            purchase_data.append({
-                'amount': purchase.amount,
-                'rsvps': purchase.rsvps,
-                'date': purchase.created_time.strftime('%Y-%m-%d %H:%M:%S')
-            })
+            if purchase.created_time.strftime('%Y-%m-%d') in purchase_data:
+                purchase_data[purchase.created_time.strftime('%Y-%m-%d')]['amount'] += purchase.amount
+                purchase_data[purchase.created_time.strftime('%Y-%m-%d')]['rsvps'] += purchase.rsvps
+            else:
+                purchase_data[purchase.created_time.strftime('%Y-%m-%d')] = {
+                    'amount': purchase.amount,
+                    'rsvps': purchase.rsvps,
+                    'date': purchase.created_time.strftime('%Y-%m-%d')
+                }
         response = {
             'status':'OK',
             'purchases': purchase_data

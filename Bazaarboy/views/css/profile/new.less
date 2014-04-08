@@ -1,0 +1,117 @@
+@import (reference) "vars.less";
+
+div#wrapper-profile-new{
+	div.profile-new-container{
+		overflow: hidden;
+		margin-top: 50px;
+		border: @grey thin solid;
+		> .title{
+			margin-top: 1.25rem;
+			font-size: 18px;
+			font-weight: 600;
+			span.subtitle{
+				color: #9B9B9B;
+			}
+		}
+		div.profile-steps{
+			margin-bottom: 1.25rem;
+			div.profile-step-btn{
+				a{
+					display: block;
+					margin: 0 auto;
+					height: 40px;
+					width: 40px;
+					border-radius: 50%;
+					background: #9B9B9B;
+					transition: background .1s;
+					&.active, &:hover{
+						background: #F4A534;
+					}
+				}
+			}
+		}
+		div.profile-step{
+			display: none;
+			&.active{
+				display: block !important;
+			}
+			input, textarea{
+				border-radius: 3px;
+				box-shadow: none;
+			}
+			div#map-canvas {
+				height: 150px;
+				border: 1px solid #000;
+				img {
+					max-width: none;
+				}
+			}
+			div.logo{
+				margin-bottom: 20px;
+				div.logo_controls{
+					.title{
+						color: rgba(0, 0, 0, 0.75);
+						width: 100%;
+						text-align: center;
+						margin-top: 10px;
+						margin-bottom: 20px;
+					}
+					a{
+						display: block;
+						width: 100%;
+						margin-bottom: 10px;
+						padding-top: 11px;
+						padding-bottom: 14px;
+						font-size: 15px;
+						text-transform: uppercase;
+						&.hide{
+							display: none;
+						}
+					}
+				}
+				.logo_image{
+					position: relative;
+			        width: 100px;
+			        height: 100px;
+			        background-color: @grey;
+			        margin: 0 auto;
+			        img {
+			            position: absolute;
+			            max-width: 100%;
+			            max-height: 100%;
+			            top: 0;
+			            left: 0;
+			            right: 0;
+			            bottom: 0;
+			            margin: auto;
+			        }
+					.logo_preview_text{
+						color: #DDDDDD;
+						padding-top: 14px;
+						vertical-align: middle;
+						text-align: center;
+						font-size: .8em;
+					}
+				}
+			}
+			.confirm_text{
+				margin: 20px 0;
+			}
+		}
+		div.next-prev{
+			margin-top: 1rem;
+			margin-bottom: 1rem;
+			a.prev-btn, a.next-btn, a.finish-btn{
+				display: block;
+				width: 100%;
+				padding: 8px 0 10px;
+				&:hover{
+					color: @white !important;
+				}
+				&.hide{
+					display: none !important;
+				}
+			}
+		}
+	}
+}

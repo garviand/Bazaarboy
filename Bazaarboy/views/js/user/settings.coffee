@@ -1,4 +1,4 @@
-Bazaarboy.event.modify.basics =
+Bazaarboy.user.settings =
     isEditing: false
     map: undefined
     marker: undefined
@@ -22,7 +22,7 @@ Bazaarboy.event.modify.basics =
         save_data = $('form.profile-settings').serializeObject()
         if save_data.name.length > 100
             console.log('Name is too long.')
-        $('div#profile-settings div.status').html 'Saving...'
+        $('div#user-settings div.status').html 'Saving...'
         @save
             id: profileId
             name: save_data.name
@@ -33,11 +33,11 @@ Bazaarboy.event.modify.basics =
         , (err, event) =>
             unless err
                 setTimeout (() ->
-                    $('div#profile-settings div.status').html 'Saved'
+                    $('div#user-settings div.status').html 'Saved'
                     return
                 ), 1000
             else
-                $('div#profile-settings div.status').html 'Failed to save'
+                $('div#user-settings div.status').html 'Failed to save'
                 console.log err
             return
         return
@@ -67,28 +67,28 @@ Bazaarboy.event.modify.basics =
         $('<img>')
             .attr('src', mediaUrl + @uploads.image.source)
             .load () ->
-                $('div#profile-settings div.logo div.logo_image')
+                $('div#user-settings div.logo div.logo_image')
                     .html('')
-                $('div#profile-settings div.logo div.logo_image')
+                $('div#user-settings div.logo div.logo_image')
                     .append(this)
-                $('div#profile-settings div.logo a.upload')
+                $('div#user-settings div.logo a.upload')
                     .addClass('hide')
-                $('div#profile-settings div.logo a.delete')
+                $('div#user-settings div.logo a.delete')
                     .addClass('hide')
-                $('div#profile-settings div.logo a.save')
+                $('div#user-settings div.logo a.save')
                     .removeClass('hide')
-                $('div#profile-settings div.logo a.cancel')
+                $('div#user-settings div.logo a.cancel')
                     .removeClass('hide')
                 return
         return
     stopEditingLogoImage: () ->
-        $('div#profile-settings div.logo a.upload')
+        $('div#user-settings div.logo a.upload')
             .removeClass('hide')
-        $('div#profile-settings div.logo a.delete')
+        $('div#user-settings div.logo a.delete')
             .removeClass('hide')
-        $('div#profile-settings div.logo a.save')
+        $('div#user-settings div.logo a.save')
             .addClass('hide')
-        $('div#profile-settings div.logo a.cancel')
+        $('div#user-settings div.logo a.cancel')
             .addClass('hide')
         return
     saveLogoImage: () ->
@@ -105,24 +105,24 @@ Bazaarboy.event.modify.basics =
             @save {image: 'delete', id: profileId}, (err, profile) =>
                 unless err
                     @image = null
-                    $('div#profile-settings div.logo div.logo_image').html('')
+                    $('div#user-settings div.logo div.logo_image').html('')
                 else
                     alert err.message
                 return
         return
     init: () ->
-        $('div#profile-settings div.logo a.upload').click () ->
-            $('div#profile-settings form.upload_logo input[name=image_file]').click()
+        $('div#user-settings div.logo a.upload').click () ->
+            $('div#user-settings form.upload_logo input[name=image_file]').click()
             return
-        $('div#profile-settings div.logo a.delete').click () =>
+        $('div#user-settings div.logo a.delete').click () =>
             @deleteLogoImage()
             return
-        $('div#profile-settings div.logo a.save').click () =>
+        $('div#user-settings div.logo a.save').click () =>
             @saveLogoImage()
             return
-        $('div#profile-settings div.logo div.logo a.cancel').click () ->
+        $('div#user-settings div.logo div.logo a.cancel').click () ->
             return
-        $('div#profile-settings form.upload_logo input[name=image_file]').fileupload
+        $('div#user-settings form.upload_logo input[name=image_file]').fileupload
             url: rootUrl + 'file/image/upload/'
             type: 'POST'
             add: (event, data) =>
@@ -164,12 +164,12 @@ Bazaarboy.event.modify.basics =
         google.maps.event.addListener @marker, 'drag', () =>
             $('form.profile-settings input[name=latitude]').val(@marker.position.lat())
             $('form.profile-settings input[name=longitude]').val(@marker.position.lng())
-            $('div#profile-settings div.status').html 'Editing'
+            $('div#user-settings div.status').html 'Editing'
             return
         # Is User Editing Info
         $('form.profile-settings').find('input, textarea').keyup () =>
             @isEditing = true
-            $('div#profile-settings div.status').html 'Editing'
+            $('div#user-settings div.status').html 'Editing'
             setTimeout (() =>
                 @isEditing = false
                 return
@@ -210,4 +210,4 @@ Bazaarboy.event.modify.basics =
             return
         return
 
-Bazaarboy.event.modify.basics.init()
+Bazaarboy.user.settings.init()

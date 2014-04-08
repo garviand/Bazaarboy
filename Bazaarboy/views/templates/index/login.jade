@@ -1,0 +1,69 @@
+// Index.Login
+
+extends ../layout
+
+append script
+    script(type="text/javascript", src="{{ STATIC_URL }}js/index/login.js")
+
+block body
+    div#login
+        div.row
+            div.small-6.small-offset-3.columns
+                div#login-container.active
+                    form#login-form
+                        div.row
+                            div.small-10.small-offset-1.columns
+                                div.row
+                                    div.small-7.columns.text-center
+                                        div.logo-small &nbsp;
+                                div.row.title
+                                    div.small-12.columns.text-center.site-title 
+                                        | Bazaarboy
+                                        span.page-title &nbsp;&nbsp;|&nbsp;&nbsp; Sign In
+                                hr.separator
+                                div.row.login-inputs
+                                    div.small-12.columns
+                                        input(name="email", type="text", name="email", placeholder="Email")
+                                    div.small-12.columns
+                                        input(type="password", name="password", placeholder="Password", autocomplete="off")
+                                div.row.login-bottom
+                                    div.small-8.columns
+                                        input(id="savepw", type="checkbox")
+                                        label(for="savepw") Keep me signed in.
+                                    div.small-4.columns
+                                        input.primary-btn.submit-login(type="submit", value="SIGN IN")
+                div#register-container
+                    form#register-form
+                        div.row
+                            div.small-10.small-offset-1.columns
+                                div.row
+                                    div.small-7.columns.text-center
+                                        div.logo-small &nbsp;
+                                div.row.title
+                                    div.small-12.columns.text-center.site-title 
+                                        | Bazaarboy
+                                        span.page-title &nbsp;&nbsp;|&nbsp;&nbsp; Register
+                                hr.separator
+                                div.row.register-inputs
+                                    div.small-12.columns
+                                        input(type="text", name="first_name", placeholder="First Name")
+                                        input(type="text", name="last_name", placeholder="Last Name")
+                                    div.small-12.columns
+                                        input(type="text", name="email", placeholder="Email")
+                                    div.small-12.columns
+                                        input(type="password", name="password", placeholder="Password", autocomplete="off")
+                                    div.small-12.columns
+                                        input(type="password", name="confirm", placeholder="Confirm Password", autocomplete="off")
+                                div.row.register-bottom
+                                    div.small-8.columns
+                                        &nbsp;
+                                    div.small-4.columns
+                                        input.primary-btn.submit-register(type="submit", value="REGISTER")
+                div#footer
+                    div.row
+                        div.small-10.small-offset-1.columns
+                            div.row
+                                div.small-8.columns
+                                    a.trouble(href="javascript:;") Trouble Logging in?
+                                div.small-4.columns
+                                    a.switch(href="javascript:;") Register

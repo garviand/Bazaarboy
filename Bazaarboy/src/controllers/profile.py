@@ -53,31 +53,6 @@ def profile(request, params, user):
     }
     return json_response(response)
 
-@login_required()
-def settings(request, user, id):
-    """
-    Edit an existing profile
-    """
-    # Check if the profile is valid
-    if not Profile.objects.filter(id = id).exists():
-        response = {
-            'status':'FAIL',
-            'error':'PROFILE_NOT_FOUND',
-            'message':'The profile doesn\'t exist.'
-        }
-        return json_response(response)
-    profile = Profile.objects.get(id = id)
-    # Check if the user has permission for the profile
-    if not Profile_manager.objects.filter(user = user, profile = profile) \
-                                  .exists():
-        response = {
-            'status':'FAIL',
-            'error':'NOT_A_MANAGER',
-            'message':'You don\'t have permission for the profile.'
-        }
-        return json_response(response)
-    return render(request, 'profile/settings.html', locals())
-
 @validate('GET', ['keyword'])
 def search(request, params):
     """
@@ -91,7 +66,7 @@ def search(request, params):
     return json_response(response)
 
 @login_required()
-@validate('POST', ['name', 'description', 'category'], 
+@validate('POST', ['name', 'description'], 
           ['image', 'location', 'latitude', 'longitude', 'email', 'phone', 
            'link_website', 'link_facebook', 'EIN', 'is_non_profit', 'payment'])
 def create(request, params, user):
@@ -107,20 +82,10 @@ def create(request, params, user):
             'message':'Profile name cannot be over 100 characters.'
         }
         return json_response(response)
-    # Check if the category is too long
-    params['category'] = cgi.escape(params['category'])
-    if len(params['category']) > 30:
-        response = {
-            'status':'FAIL',
-            'error':'INVALID_CATEGORY',
-            'message':'Category cannot be over 30 characters.'
-        }
-        return json_response(response)
     # Create profile object
     params['description'] = cgi.escape(params['description'])
     profile = Profile(name = params['name'], 
-                      description = params['description'], 
-                      category = params['category'])
+                      description = params['description'])
     if params['image'] is not None:
         if not Image.objects.filter(id = params['image']).exists():
             response = {
@@ -256,7 +221,7 @@ def create(request, params, user):
 
 @login_required()
 @validate('POST', ['id'], 
-          ['name', 'description', 'email', 'phone', 'link_website', 'link_facebook', 'EIN', 'is_non_profit', 'image', 'cover', 'category', 'location', 'latitude', 
+          ['name', 'description', 'email', 'phone', 'link_website', 'link_facebook', 'EIN', 'is_non_profit', 'image', 'cover', 'location', 'latitude', 
            'longitude', 'payment'])
 def edit(request, params, user):
     """
@@ -316,17 +281,6 @@ def edit(request, params, user):
             image.is_archived = True
             image.save()
             profile.image = image
-    if params['category'] is not None:
-        params['category'] = cgi.escape(params['category'])
-        if not (0 < len(params['category']) <= 30):
-            response = {
-                'status':'FAIL',
-                'error':'INVALID_CATEGORY',
-                'message':'Category cannot be over 30 characters.'
-            }
-            return json_response(response)
-        else:
-            profile.category = params['category']
     if params['location'] is not None:
         params['location'] = cgi.escape(params['location'])
         if len(params['location']) > 100:

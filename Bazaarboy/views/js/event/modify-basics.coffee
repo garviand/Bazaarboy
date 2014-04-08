@@ -90,9 +90,19 @@ Bazaarboy.event.modify.basics =
             map_center = new google.maps.LatLng(initial_lat, initial_lng)
         else
             map_center = new google.maps.LatLng(38.650068, -90.259904)
+        mapStyles = [
+            featureType: "poi"
+            elementType: "labels"
+            stylers: [visibility: "off"]
+        ]
         mapOptions =
             zoom: 15
             center: map_center
+            mapTypeControl: false
+            scaleControl: false
+            scrollWheel: false
+            streetViewControl: false
+            styles: mapStyles
         @map = new google.maps.Map document.getElementById('map-canvas'), mapOptions
         @marker = new google.maps.Marker(
             position: map_center

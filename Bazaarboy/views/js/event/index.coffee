@@ -24,6 +24,11 @@ Bazaarboy.event.index =
         if latitude isnt NaN and longitude isnt NaN
             $('div.map-canvas').removeClass 'hide'
             mapCenter = new google.maps.LatLng latitude, longitude
+            mapStyles = [
+                featureType: "poi"
+                elementType: "labels"
+                stylers: [visibility: "off"]
+            ]
             mapOptions =
                 zoom: 15
                 center: mapCenter
@@ -33,7 +38,8 @@ Bazaarboy.event.index =
                 panControl: false
                 scrollwheel: false
                 streetViewControl: false
-                zoomControl: true
+                zoomControl: false
+                styles: mapStyles
             map = new google.maps.Map document.getElementById('map-canvas'), mapOptions
             marker = new google.maps.Marker
                 position: mapCenter

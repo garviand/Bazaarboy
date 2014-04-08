@@ -93,6 +93,8 @@ def settings(request, user):
     stripeConnectUrl = stripeConnectUrl % (STRIPE_CONNECT_URL, 
                                            STRIPE_CLIENT_ID, 
                                            STRIPE_SCOPE)
+    profiles = Profile.objects.filter(managers = user)
+    profile = profiles[0]
     return render(request, 'user/settings.html', locals())
 
 @login_check()

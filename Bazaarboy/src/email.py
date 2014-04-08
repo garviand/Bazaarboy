@@ -17,7 +17,9 @@ from kernel.models import *
 from src.config import *
 from src.timezone import localize
 
-def sendEmails(self, to, subject, template, mergeVars, attachments=[]):
+import pdb
+
+def sendEmails(to, subject, template, mergeVars, attachments=[]):
     """
     Send an email
     """
@@ -36,7 +38,7 @@ def sendEmails(self, to, subject, template, mergeVars, attachments=[]):
             'track_opens':True,
             'attachments':attachments
         }
-        result = self.client.messages.send_template(template_name = template, 
+        result = client.messages.send_template(template_name = template, 
                                                     template_content = [], 
                                                     message = message, 
                                                     async = True)
@@ -79,7 +81,7 @@ def sendResetRequestEmail(resetCode):
     user = resetCode.user
     to = [{
         'email':user.email, 
-        'name':user.full_name
+        'name':user.user.first_name + ' ' + user.last_name
     }]
     subject = 'Reset Your Password'
     template = 'reset-password'
@@ -88,7 +90,7 @@ def sendResetRequestEmail(resetCode):
         'vars': [
             {
                 'name':'user_name', 
-                'content':user.full_name
+                'content':user.first_name + ' ' + user.last_name
             }, 
             {
                 'name': 'reset_code', 
@@ -103,10 +105,121 @@ def sendEventConfirmationEmail(purchase):
     """
     Send event confirmation
     """
+    user = purchase.owner
+    event = purchase.event
+    organizers = event.organizers.all()
+    organizer_list_html = ''
+    for organizer in organizers:
+        if organizer.image:
+            organizer_image = """
+                <td class='logo' style='-webkit-hyphens: auto; -moz-hyphens: auto; hyphens: auto; border-collapse: collapse !important; vertical-align: middle; text-align: left; color: #222222; font-family: 'Avenir', 'Helvetica', 'Arial', sans-serif; font-weight: normal; line-height: 19px; font-size: 14px; width: 40px !important; margin: 0; padding: 0px 0px 0;' align='left' valign='middle'>
+                    <img src='""" + organizer.image.source.url + """' style='outline: none; text-decoration: none; -ms-interpolation-mode: bicubic; width: 35px !important; max-width: 35px !important; float: left; clear: both; display: block;' align='left' />
+                </td>
+            """
+        else:
+            organizer_image = ''
+        organizer_list_html += """
+            <table class='organizer' style='border-collapse: separate; vertical-align: top; text-align: left; margin-bottom: 10px; padding: 0; font-family: 'Avenir', 'Helvetica', 'Arial', sans-serif;'>
+                <tr style='vertical-align: top; text-align: left; padding: 0; font-family: 'Avenir', 'Helvetica', 'Arial', sans-serif;' align='left'>
+                    """ + organizer_image + """
+                    <td class='name' style='-webkit-hyphens: auto; -moz-hyphens: auto; hyphens: auto; border-collapse: collapse !important; vertical-align: middle; text-align: left; color: #222222; font-family: "Avenir", "Helvetica", "Arial", sans-serif; font-weight: normal; line-height: 19px; font-size: 14px; margin: 0; padding: 0px 0px 0 10px; padding-left: 5px;' align='left' valign='middle'>
+                        """ + organizer.name + """
+                    </td>
+                </tr>
+            </table>
+        """
+    to = [{
+        'email':user.email, 
+        'name':user.first_name + ' ' + user.last_name
+    }]
+    subject = 'Confirmation for \'' + event.name + '\''
+    template = 'confirm-rsvp'
     items = Purchase_item.objects.filter(purchase = purchase) \
                                  .prefetch_related('ticket')
+    tickets = {}
+    ticket_list_html = ''
+    for item in items:
+        if item.ticket.id in tickets:
+            tickets[item.ticket.id]['quantity'] += 1
+        else:
+            tickets[item.ticket.id] = {
+                'name': item.ticket.name,
+                'description': item.ticket.description,
+                'price': item.ticket.price,
+                'quantity': 1
+            }
+    for k, ticket in tickets.iteritems():
+        if ticket['price'] == 0:
+            ticket_price = 'Free'
+        else:
+            ticket_price = '$'+str(ticket['price'])
+        ticket_list_html += """
+            <table class="seven columns ticket" style="border-collapse: separate; vertical-align: top; text-align: left; width: 330px; margin: 0 auto; padding: 0;">
+              <tr style="vertical-align: top; text-align: left; padding: 0;" align="left">
+                <td class="two sub-columns number" style="-webkit-hyphens: auto; -moz-hyphens: auto; hyphens: auto; border-collapse: collapse !important; vertical-align: middle; text-align: center; min-width: 0px; width: 16.666666%; color: #222222; font-family: 'Avenir', 'Helvetica', 'Arial', sans-serif; font-weight: bold; line-height: 19px; font-size: 1.5em; margin: 0; padding: 0px 10px 0 0px;" align="center" valign="middle">
+                  """ + str(ticket['quantity']) + """x
+                </td>
+                <td class="ten sub-columns price_name" style="-webkit-hyphens: auto; -moz-hyphens: auto; hyphens: auto; border-collapse: collapse !important; vertical-align: top; text-align: left; min-width: 0px; width: 83.333333%; color: #222222; font-family: 'Avenir', 'Helvetica', 'Arial', sans-serif; font-weight: normal; line-height: 19px; font-size: 14px; margin: 0; padding: 0px 10px 0 0px;" align="left" valign="top">
+                  <table style="border-collapse: separate; vertical-align: top; text-align: left; padding: 0;">
+                    <tr style="vertical-align: top; text-align: left; padding: 0;" align="left">
+                      <td class="price" style="-webkit-hyphens: auto; -moz-hyphens: auto; hyphens: auto; border-collapse: collapse !important; vertical-align: middle; text-align: center; color: #FFF; font-family: 'Avenir', 'Helvetica', 'Arial', sans-serif; font-weight: 600; line-height: 19px; font-size: 1.2em; border-radius: 2px; height: 35px; min-width: 40px !important; box-sizing: border-box; background: #4b64e9; margin: 0; padding: 0 4px;" align="center" bgcolor="#4b64e9" valign="middle">
+                        """ + ticket_price + """
+                      </td>
+                      <td class="name" style="-webkit-hyphens: auto; -moz-hyphens: auto; hyphens: auto; border-collapse: collapse !important; vertical-align: middle; text-align: left; color: #222222; font-family: 'Avenir', 'Helvetica', 'Arial', sans-serif; font-weight: normal; line-height: 19px; font-size: 14px; margin: 0; padding: 0px 0px 0 10px;" align="left" valign="middle">
+                        """ + ticket['name'] + """
+                      </td>
+                    </tr>
+                  </table>
+                </td>
+              </tr>
+              <tr style="vertical-align: top; text-align: left; padding: 0;" align="left">
+                <td class="two sub-columns" style="-webkit-hyphens: auto; -moz-hyphens: auto; hyphens: auto; border-collapse: collapse !important; vertical-align: top; text-align: left; min-width: 0px; width: 16.666666%; color: #222222; font-family: 'Avenir', 'Helvetica', 'Arial', sans-serif; font-weight: normal; line-height: 19px; font-size: 14px; margin: 0; padding: 0px 10px 0 0px;" align="left" valign="top">
+                </td>
+                <td class="ten sub-columns description" style="-webkit-hyphens: auto; -moz-hyphens: auto; hyphens: auto; border-collapse: collapse !important; vertical-align: top; text-align: left; min-width: 0px; width: 83.333333%; color: #222222; font-family: 'Avenir', 'Helvetica', 'Arial', sans-serif; font-weight: normal; line-height: 19px; font-size: 14px; margin: 0; padding: 10px 10px 0 0px;" align="left" valign="top">
+                  """ + ticket['description'] + """
+                </td>
+              </tr>
+            </table>
+            <hr style="color: #F6F6F6; height: 1px; margin-bottom: 15px; background: #F6F6F6; border: none;" />
+        """
+    reciept_info = ''
+    if purchase.amount > 0:
+        reciept_info = 'TOTAL: $' + str(purchase.amount)
+    mergeVars = [{
+        'rcpt': user.email,
+        'vars': [
+            {
+                'name': 'organizer_list', 
+                'content': organizer_list_html
+            },
+            {
+                'name': 'ticket_list', 
+                'content': ticket_list_html
+            },
+            {
+                'name': 'event_id', 
+                'content': event.id
+            },
+            {
+                'name': 'event_name', 
+                'content': event.name
+            },
+            {
+                'name': 'event_month', 
+                'content': 'MAR'
+            },
+            {
+                'name': 'event_day', 
+                'content': '30'
+            },
+            {
+                'name': 'reciept_info', 
+                'content': reciept_info
+            }
+        ]
+    }]
     attachments = Ticket_attachment.getTicketAttachments(purchase, items)
-    return
+    return sendEmails(to, subject, template, mergeVars)
 
 def sendBonusEmails():
     """
@@ -175,7 +288,7 @@ class Ticket_attachment(Attachment):
         return output
 
     @staticmethod
-    def getTicketAttachments(self, purchase, items):
+    def getTicketAttachments(purchase, items):
         """
         Generate ticket confirmations from purchase items and pack them in 
         the mandrill format dictionary

@@ -1,6 +1,7 @@
 from django.conf.urls import patterns, include, url
 
 index_urlpatterns = patterns('src.controllers.index', 
+    url(r'^login/$', 'login', name = 'login'),
     url(r'^terms/$', 'terms', name = 'terms'), 
     url(r'^about/$', 'about', name = 'about'),
     url(r'^pricing/$', 'pricing', name = 'pricing'),
@@ -24,7 +25,6 @@ payment_urlpatterns = patterns('src.controllers.payment',
 profile_urlpatterns = patterns('src.controllers.profile', 
     url(r'^(?P<id>\d+)/$', 'index', name = 'index'),
     url(r'^new/$', 'new', name = 'new'),
-    url(r'^(?P<id>\d+)/settings/$', 'settings', name = 'settings'),
     url(r'^$', 'profile', name = 'profile'),
     url(r'^search/$', 'search', name = 'search'),
     url(r'^create/$', 'create', name = 'create'),

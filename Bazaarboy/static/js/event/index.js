@@ -21,13 +21,24 @@
       });
     },
     init: function() {
-      var latitude, longitude, map, mapCenter, mapOptions, marker,
+      var latitude, longitude, map, mapCenter, mapOptions, mapStyles, marker,
         _this = this;
       latitude = parseFloat($('div.map-canvas').attr('data-latitude'));
       longitude = parseFloat($('div.map-canvas').attr('data-longitude'));
       if (latitude !== NaN && longitude !== NaN) {
         $('div.map-canvas').removeClass('hide');
         mapCenter = new google.maps.LatLng(latitude, longitude);
+        mapStyles = [
+          {
+            featureType: "poi",
+            elementType: "labels",
+            stylers: [
+              {
+                visibility: "off"
+              }
+            ]
+          }
+        ];
         mapOptions = {
           zoom: 15,
           center: mapCenter,
@@ -37,7 +48,8 @@
           panControl: false,
           scrollwheel: false,
           streetViewControl: false,
-          zoomControl: true
+          zoomControl: false,
+          styles: mapStyles
         };
         map = new google.maps.Map(document.getElementById('map-canvas'), mapOptions);
         marker = new google.maps.Marker({

@@ -60,8 +60,8 @@ div.current-event {
 
                     div.current-event-date {
                         position: absolute;
-                        width: 40px;
-                        height: 40px;
+                        width: 38px;
+                        height: 38px;
                         top: (54px - 40px) / 2;
                         left: (54px - 40px) / 2;
                         border-radius: 4px;
@@ -69,13 +69,14 @@ div.current-event {
 
                         div.month {
                             width: 100%;
-                            height: 12px;
+                            height: 10px;
                             margin-top: 3px;
                             color: @white;
-                            font-size: 12px;
-                            font-weight: 700;
+                            font-size: 11px;
+                            font-weight: 600;
                             text-align: center;
                             text-transform: uppercase;
+                            letter-spacing: -1px;
                         }
 
                         div.day {
@@ -85,6 +86,7 @@ div.current-event {
                             margin: 0 auto;
                             margin-top: 2px;
                             padding: 1px 0;
+                            padding-top: 2px;
                             font-size: 18px;
                             font-weight: 700;
                             text-align: center;
@@ -99,8 +101,9 @@ div.current-event {
                         padding-left: 54px;
                         top: 0;
                         left: 0;
-                        font-size: 14px;
+                        font-size: 13px;
                         line-height: 18px;
+                        font-weight: 500;
 
                         span {
                             display: table-cell;
@@ -110,12 +113,13 @@ div.current-event {
                 }
 
                 div.current-event-location {
-                    @height: 15px;
+                    @height: 13px;
                     height: @height;
                     padding-top: (54px - @height) / 2;
                     padding-bottom: (54px - @height) / 2;
                     font-size: @height;
                     line-height: @height;
+                    font-weight: 500;
                 }
             }
         }

@@ -5618,6 +5618,23 @@ div#map-canvas img {
   text-shadow: 1px 2px 0px #4963E4;
   cursor: pointer;
 }
+.grey-btn {
+  border-radius: 4px;
+  border: #7A7A7A thin solid;
+  -moz-box-shadow: inset 0px -3px 0px 0px #7a7a7a;
+  -webkit-box-shadow: inset 0px -3px 0px 0px #7a7a7a;
+  box-shadow: inset 0px -3px 0px 0px #7a7a7a;
+  background: #FFFFFF;
+  background-image: -o-linear-gradient(-90deg, #d1d1d1 0%, #a3a3a3 100%);
+  background-image: -moz-linear-gradient(-90deg, #d1d1d1 0%, #a3a3a3 100%);
+  background-image: -webkit-linear-gradient(-90deg, #d1d1d1 0%, #a3a3a3 100%);
+  background-image: -ms-linear-gradient(-90deg, #d1d1d1 0%, #a3a3a3 100%);
+  background-image: linear-gradient(-180deg, #d1d1d1 0%, #a3a3a3 100%);
+  color: #FFFFFF;
+  font-weight: 500;
+  text-align: center;
+  cursor: pointer;
+}
 textarea {
   resize: none;
 }
@@ -5912,6 +5929,16 @@ div#main-header div.header-title div.text {
 div#main-header div.header-title div.text span.sub {
   color: #999;
 }
+/* Overlay */
+div#wrapper-overlay {
+  position: fixed;
+  width: 100%;
+  height: 100%;
+  top: 0;
+  left: 0;
+  z-index: 5;
+  background: rgba(255, 255, 255, 0.7);
+}
 div.current-event {
   margin-top: 40px !important;
   margin-bottom: 40px !important;
@@ -5965,8 +5992,8 @@ div.current-event > div.tile div.info div.inner div.current-event-datetime {
 }
 div.current-event > div.tile div.info div.inner div.current-event-datetime div.current-event-date {
   position: absolute;
-  width: 40px;
-  height: 40px;
+  width: 38px;
+  height: 38px;
   top: 7px;
   left: 7px;
   border-radius: 4px;
@@ -5974,13 +6001,14 @@ div.current-event > div.tile div.info div.inner div.current-event-datetime div.c
 }
 div.current-event > div.tile div.info div.inner div.current-event-datetime div.current-event-date div.month {
   width: 100%;
-  height: 12px;
+  height: 10px;
   margin-top: 3px;
   color: #ffffff;
-  font-size: 12px;
-  font-weight: 700;
+  font-size: 11px;
+  font-weight: 600;
   text-align: center;
   text-transform: uppercase;
+  letter-spacing: -1px;
 }
 div.current-event > div.tile div.info div.inner div.current-event-datetime div.current-event-date div.day {
   width: 36px;
@@ -5989,6 +6017,7 @@ div.current-event > div.tile div.info div.inner div.current-event-datetime div.c
   margin: 0 auto;
   margin-top: 2px;
   padding: 1px 0;
+  padding-top: 2px;
   font-size: 18px;
   font-weight: 700;
   text-align: center;
@@ -6001,19 +6030,21 @@ div.current-event > div.tile div.info div.inner div.current-event-datetime div.c
   padding-left: 54px;
   top: 0;
   left: 0;
-  font-size: 14px;
+  font-size: 13px;
   line-height: 18px;
+  font-weight: 500;
 }
 div.current-event > div.tile div.info div.inner div.current-event-datetime div.current-event-time span {
   display: table-cell;
   vertical-align: middle;
 }
 div.current-event > div.tile div.info div.inner div.current-event-location {
-  height: 15px;
-  padding-top: 19.5px;
-  padding-bottom: 19.5px;
-  font-size: 15px;
-  line-height: 15px;
+  height: 13px;
+  padding-top: 20.5px;
+  padding-bottom: 20.5px;
+  font-size: 13px;
+  line-height: 13px;
+  font-weight: 500;
 }
 div.current-event > div.tile div.stats {
   margin-top: 15px;
@@ -6356,6 +6387,241 @@ div#wrapper-pricing div#pricing div#what_else .contact .primary-btn {
 div#wrapper-pricing div#pricing div#what_else .contact .primary-btn:hover {
   color: #ffffff;
 }
+div#login {
+  min-width: 100%;
+  min-height: 100%;
+  background: #F6F6F6;
+}
+div#login div#login-container {
+  background: #ffffff;
+  margin-top: 75px;
+}
+div#login div#login-container form#login-form div.logo-small {
+  margin: 0 auto;
+  margin-top: 50px;
+  height: 40px;
+  width: 40px;
+  border-radius: 50%;
+  background: #F4A534;
+}
+div#login div#login-container form#login-form div.title {
+  font-weight: 500;
+  text-transform: uppercase;
+  margin-top: 16px;
+}
+div#login div#login-container form#login-form div.title div.site-title {
+  font-size: 1.5em;
+}
+div#login div#login-container form#login-form div.title span.page-title {
+  color: #9B9B9B;
+}
+div#login div#login-container form#login-form hr.separator {
+  margin-top: 24px;
+  margin-bottom: 26px;
+}
+div#login div#login-container form#login-form .login-inputs input[type=text],
+div#login div#login-container form#login-form .login-inputs input[type=password] {
+  border-radius: 3px;
+  box-shadow: none;
+}
+div#login div#login-container form#login-form div.login-bottom {
+  margin-top: 16px;
+  padding-bottom: 16px;
+}
+div#login div#login-container form#login-form div.login-bottom .submit-login {
+  width: 100%;
+  font-weight: 400;
+  padding: 8px 0px 10px;
+  position: relative;
+  top: -10px;
+}
+div#login div#register-container {
+  display: none;
+  background: #ffffff;
+  margin-top: 75px;
+}
+div#login div#register-container form#register-form div.logo-small {
+  margin: 0 auto;
+  margin-top: 50px;
+  height: 40px;
+  width: 40px;
+  border-radius: 50%;
+  background: #F4A534;
+}
+div#login div#register-container form#register-form div.title {
+  font-weight: 500;
+  text-transform: uppercase;
+  margin-top: 16px;
+}
+div#login div#register-container form#register-form div.title div.site-title {
+  font-size: 1.5em;
+}
+div#login div#register-container form#register-form div.title span.page-title {
+  color: #9B9B9B;
+}
+div#login div#register-container form#register-form hr.separator {
+  margin-top: 24px;
+  margin-bottom: 26px;
+}
+div#login div#register-container form#register-form .register-inputs input[type=text],
+div#login div#register-container form#register-form .register-inputs input[type=password] {
+  border-radius: 3px;
+  box-shadow: none;
+}
+div#login div#register-container form#register-form div.register-bottom {
+  margin-top: 16px;
+  padding-bottom: 16px;
+}
+div#login div#register-container form#register-form div.register-bottom .submit-register {
+  width: 100%;
+  font-weight: 400;
+  padding: 8px 0px 10px;
+  position: relative;
+  top: -10px;
+}
+div#login div#footer {
+  margin-top: 32px;
+}
+div#login div#footer .trouble {
+  text-decoration: underline;
+  font-size: .8em;
+  color: #F4A534;
+}
+div#login div#footer .switch {
+  display: block;
+  width: 100%;
+  text-align: center;
+  background: #ffffff;
+  color: #F4A534;
+  padding: 10px 0px 10px;
+  border-radius: 4px;
+  position: relative;
+  top: -8px;
+  cursor: pointer;
+  transition: color .2s;
+  transition: background .2s;
+}
+div#login div#footer .switch:hover {
+  color: #ffffff;
+  background: #F4A534;
+}
+div#wrapper-profile-new div.profile-new-container {
+  overflow: hidden;
+  margin-top: 50px;
+  border: #f6f6f6 thin solid;
+}
+div#wrapper-profile-new div.profile-new-container > .title {
+  margin-top: 1.25rem;
+  font-size: 18px;
+  font-weight: 600;
+}
+div#wrapper-profile-new div.profile-new-container > .title span.subtitle {
+  color: #9B9B9B;
+}
+div#wrapper-profile-new div.profile-new-container div.profile-steps {
+  margin-bottom: 1.25rem;
+}
+div#wrapper-profile-new div.profile-new-container div.profile-steps div.profile-step-btn a {
+  display: block;
+  margin: 0 auto;
+  height: 40px;
+  width: 40px;
+  border-radius: 50%;
+  background: #9B9B9B;
+  transition: background .1s;
+}
+div#wrapper-profile-new div.profile-new-container div.profile-steps div.profile-step-btn a.active,
+div#wrapper-profile-new div.profile-new-container div.profile-steps div.profile-step-btn a:hover {
+  background: #F4A534;
+}
+div#wrapper-profile-new div.profile-new-container div.profile-step {
+  display: none;
+}
+div#wrapper-profile-new div.profile-new-container div.profile-step.active {
+  display: block !important;
+}
+div#wrapper-profile-new div.profile-new-container div.profile-step input,
+div#wrapper-profile-new div.profile-new-container div.profile-step textarea {
+  border-radius: 3px;
+  box-shadow: none;
+}
+div#wrapper-profile-new div.profile-new-container div.profile-step div#map-canvas {
+  height: 150px;
+  border: 1px solid #000;
+}
+div#wrapper-profile-new div.profile-new-container div.profile-step div#map-canvas img {
+  max-width: none;
+}
+div#wrapper-profile-new div.profile-new-container div.profile-step div.logo {
+  margin-bottom: 20px;
+}
+div#wrapper-profile-new div.profile-new-container div.profile-step div.logo div.logo_controls .title {
+  color: rgba(0, 0, 0, 0.75);
+  width: 100%;
+  text-align: center;
+  margin-top: 10px;
+  margin-bottom: 20px;
+}
+div#wrapper-profile-new div.profile-new-container div.profile-step div.logo div.logo_controls a {
+  display: block;
+  width: 100%;
+  margin-bottom: 10px;
+  padding-top: 11px;
+  padding-bottom: 14px;
+  font-size: 15px;
+  text-transform: uppercase;
+}
+div#wrapper-profile-new div.profile-new-container div.profile-step div.logo div.logo_controls a.hide {
+  display: none;
+}
+div#wrapper-profile-new div.profile-new-container div.profile-step div.logo .logo_image {
+  position: relative;
+  width: 100px;
+  height: 100px;
+  background-color: #f6f6f6;
+  margin: 0 auto;
+}
+div#wrapper-profile-new div.profile-new-container div.profile-step div.logo .logo_image img {
+  position: absolute;
+  max-width: 100%;
+  max-height: 100%;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  margin: auto;
+}
+div#wrapper-profile-new div.profile-new-container div.profile-step div.logo .logo_image .logo_preview_text {
+  color: #DDDDDD;
+  padding-top: 14px;
+  vertical-align: middle;
+  text-align: center;
+  font-size: .8em;
+}
+div#wrapper-profile-new div.profile-new-container div.profile-step .confirm_text {
+  margin: 20px 0;
+}
+div#wrapper-profile-new div.profile-new-container div.next-prev {
+  margin-top: 1rem;
+  margin-bottom: 1rem;
+}
+div#wrapper-profile-new div.profile-new-container div.next-prev a.prev-btn,
+div#wrapper-profile-new div.profile-new-container div.next-prev a.next-btn,
+div#wrapper-profile-new div.profile-new-container div.next-prev a.finish-btn {
+  display: block;
+  width: 100%;
+  padding: 8px 0 10px;
+}
+div#wrapper-profile-new div.profile-new-container div.next-prev a.prev-btn:hover,
+div#wrapper-profile-new div.profile-new-container div.next-prev a.next-btn:hover,
+div#wrapper-profile-new div.profile-new-container div.next-prev a.finish-btn:hover {
+  color: #ffffff !important;
+}
+div#wrapper-profile-new div.profile-new-container div.next-prev a.prev-btn.hide,
+div#wrapper-profile-new div.profile-new-container div.next-prev a.next-btn.hide,
+div#wrapper-profile-new div.profile-new-container div.next-prev a.finish-btn.hide {
+  display: none !important;
+}
 div#wrapper-event-manage {
   padding-top: 40px;
 }
@@ -6683,6 +6949,190 @@ div#event-footer {
   height: 66px;
   background: #D4D4D4;
 }
+div#tickets {
+  position: absolute;
+  width: 440px;
+  margin-left: auto;
+  margin-right: auto;
+  left: 0;
+  right: 0;
+  top: 100px;
+  z-index: 10;
+  border-radius: 4px;
+  background: #FDE7B5;
+  background-image: -o-linear-gradient(top, #fde7b5, #fde7b5, #fcc75a);
+  background-image: -moz-linear-gradient(top, #fde7b5, #fde7b5, #fcc75a);
+  background-image: -webkit-linear-gradient(top, #fde7b5, #fde7b5, #fcc75a);
+  background-image: -ms-linear-gradient(top, #fde7b5, #fde7b5, #fcc75a);
+  background-image: linear-gradient(top, #fde7b5, #fde7b5, #fcc75a);
+}
+div#tickets-header {
+  width: 100%;
+  height: 40px;
+  padding: 12px 0;
+  font-size: 16px;
+  text-align: center;
+  text-transform: uppercase;
+}
+div#tickets-body {
+  width: 428px;
+  margin: 0 auto;
+  border-radius: 4px;
+  border: 2px solid #FEC84D;
+  background: #4A90E2;
+}
+div#tickets-body > div.inner {
+  width: 404px;
+  padding-left: 4px;
+  background: #FFFFFF;
+}
+div#tickets-body > div.inner > div.caption {
+  width: 100%;
+  height: 40px;
+  padding: 13px 10px;
+  font-size: 14px;
+  text-transform: uppercase;
+}
+div#tickets-body div.ticket {
+  display: table;
+  width: 100%;
+  min-height: 108px;
+  background: #F5F5F5;
+  border-top: 1px solid #dddddd;
+}
+div#tickets-body div.ticket.last {
+  min-height: 109px;
+  border-bottom: 1px solid #dddddd;
+}
+div#tickets-body div.ticket:hover,
+div#tickets-body div.ticket.on {
+  background: #FFE6B0;
+}
+div#tickets-body div.ticket:hover > div.inner > div.info,
+div#tickets-body div.ticket.on > div.inner > div.info {
+  background: #FFF1D2;
+}
+div#tickets-body div.ticket:hover > div.inner > div.info div.top div.price,
+div#tickets-body div.ticket.on > div.inner > div.info div.top div.price {
+  background: #F5A639;
+}
+div#tickets-body div.ticket > div.inner {
+  display: table-row;
+  width: 100%;
+}
+div#tickets-body div.ticket > div.inner > div.action {
+  position: relative;
+  display: table-cell;
+  width: 64px;
+  height: 100%;
+  vertical-align: middle;
+}
+div#tickets-body div.ticket > div.inner > div.action div.wrapper {
+  width: 44px;
+  margin: auto;
+}
+div#tickets-body div.ticket > div.inner > div.action div.wrapper div.top input {
+  display: block;
+  margin: 0 auto;
+}
+div#tickets-body div.ticket > div.inner > div.action div.wrapper div.bottom {
+  margin-top: 10px;
+}
+div#tickets-body div.ticket > div.inner > div.action div.wrapper div.bottom input {
+  width: 44px;
+  height: 20px;
+  margin: 0;
+  text-align: center;
+}
+div#tickets-body div.ticket > div.inner > div.info {
+  display: table-cell;
+  width: 336px;
+  min-height: 107px;
+  padding: 20px;
+  background: #FFFFFF;
+}
+div#tickets-body div.ticket > div.inner > div.info div.top {
+  width: 100%;
+  height: 40px;
+}
+div#tickets-body div.ticket > div.inner > div.info div.top div.price {
+  width: 40px;
+  height: 40px;
+  padding: 13px 0;
+  border-radius: 4px;
+  background: #4963E4;
+  color: #FFFFFF;
+  font-size: 14px;
+  text-align: center;
+}
+div#tickets-body div.ticket > div.inner > div.info div.top div.name {
+  display: table;
+  width: 255px;
+  height: 40px;
+  padding-left: 10px;
+}
+div#tickets-body div.ticket > div.inner > div.info div.top div.name div {
+  display: table-cell;
+  vertical-align: middle;
+  font-size: 14px;
+  line-height: 18px;
+}
+div#tickets-body div.ticket > div.inner > div.info div.bottom {
+  width: 100%;
+  margin-top: 10px;
+  font-size: 14px;
+  line-height: 18px;
+}
+div#tickets-details {
+  width: 100%;
+  padding: 10px 0;
+  border-top: 1px solid #f6f6f6;
+}
+div#tickets-details > div.inner {
+  width: 100%;
+  background: #F5F5F5;
+}
+div#tickets-details div.left {
+  width: 64px;
+}
+div#tickets-details div.right {
+  width: 336px;
+  background: #FFFFFF;
+}
+div#tickets-details div.right > div {
+  width: 336px;
+  height: 40px;
+  padding: 4px;
+}
+div#tickets-details div.right > div input {
+  width: 328px;
+  height: 32px;
+  margin: 0;
+}
+div#tickets-details div.right div.top input {
+  width: 160px;
+}
+div#tickets-footer {
+  position: relative;
+  width: 100%;
+  height: 60px;
+}
+div#tickets-subtotal {
+  width: 100%;
+  height: 60px;
+  padding: 23px 12px;
+  font-size: 14px;
+}
+a#tickets-confirm {
+  position: absolute;
+  width: 140px;
+  height: 41px;
+  top: 10px;
+  right: 10px;
+  padding-top: 10px;
+  padding-bottom: 10px;
+  color: #FFFFFF;
+}
 div#wrapper-event-modify.full {
   width: 100%;
 }
@@ -6972,33 +7422,33 @@ div#event-modify-tickets div#edit-ticket form input.primary-btn {
   font-size: 15px;
   text-transform: uppercase;
 }
-div#wrapper-profile-settings {
+div#wrapper-user-settings {
   padding-top: 40px;
 }
-div#profile-settings div.name {
+div#user-settings div.name {
   padding: 0;
   padding-top: 10px;
   font-size: 18px;
 }
-div#profile-settings div.text p {
+div#user-settings div.text p {
   color: #666;
   font-size: 14px;
   line-height: 18px;
 }
-div#profile-settings div#map-canvas {
+div#user-settings div#map-canvas {
   height: 200px;
   border: 1px solid #000;
 }
-div#profile-settings div#map-canvas img {
+div#user-settings div#map-canvas img {
   max-width: none;
 }
-div#profile-settings div.status {
+div#user-settings div.status {
   padding-top: 53px;
   color: #9B9B9B;
   text-transform: uppercase;
   text-align: right;
 }
-div#profile-settings input.primary-btn {
+div#user-settings input.primary-btn {
   width: 100%;
   margin-top: 40px;
   margin-bottom: 40px;
@@ -7008,7 +7458,7 @@ div#profile-settings input.primary-btn {
   font-size: 15px;
   text-transform: uppercase;
 }
-div#profile-settings div.logo_controls a {
+div#user-settings div.logo_controls a {
   display: block;
   width: 100%;
   margin-bottom: 10px;
@@ -7017,19 +7467,19 @@ div#profile-settings div.logo_controls a {
   font-size: 15px;
   text-transform: uppercase;
 }
-div#profile-settings div.logo_controls a.hide {
+div#user-settings div.logo_controls a.hide {
   display: none;
 }
-div#profile-settings div.logo_controls a.last {
+div#user-settings div.logo_controls a.last {
   margin-bottom: 1.25rem;
 }
-div#profile-settings div.logo_image {
+div#user-settings div.logo_image {
   position: relative;
   width: 94px;
   height: 94px;
   background-color: #f6f6f6;
 }
-div#profile-settings div.logo_image img {
+div#user-settings div.logo_image img {
   position: absolute;
   max-width: 100%;
   max-height: 100%;

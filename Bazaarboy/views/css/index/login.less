@@ -1,0 +1,126 @@
+@import (reference) "vars.less";
+
+div#login {
+    min-width: 100%;
+    min-height: 100%;
+    background: #F6F6F6;
+    div#login-container{
+        background: @white;
+        margin-top: 75px;
+        form#login-form{
+            div.logo-small{
+                margin: 0 auto;
+                margin-top: 50px;
+                height: 40px;
+                width: 40px;
+                border-radius: 50%;
+                background: #F4A534;
+            }
+            div.title{
+                font-weight: 500;
+                text-transform: uppercase;
+                margin-top: 16px;
+                div.site-title{
+                    font-size: 1.5em;
+                }
+                span.page-title{
+                    color: #9B9B9B;
+                }
+            }
+            hr.separator{
+                margin-top: 24px;
+                margin-bottom: 26px;
+            }
+            .login-inputs{
+                input[type=text], input[type=password]{
+                    border-radius: 3px;
+                    box-shadow: none;
+                }
+            }
+            div.login-bottom{
+                margin-top: 16px;
+                padding-bottom: 16px;
+                .submit-login{
+                    width: 100%;
+                    font-weight: 400;
+                    padding: 8px 0px 10px;
+                    position: relative;
+                    top: -10px;
+                }
+            }
+        }
+    }
+    div#register-container{
+        display: none;
+        background: @white;
+        margin-top: 75px;
+        form#register-form{
+            div.logo-small{
+                margin: 0 auto;
+                margin-top: 50px;
+                height: 40px;
+                width: 40px;
+                border-radius: 50%;
+                background: #F4A534;
+            }
+            div.title{
+                font-weight: 500;
+                text-transform: uppercase;
+                margin-top: 16px;
+                div.site-title{
+                    font-size: 1.5em;
+                }
+                span.page-title{
+                    color: #9B9B9B;
+                }
+            }
+            hr.separator{
+                margin-top: 24px;
+                margin-bottom: 26px;
+            }
+            .register-inputs{
+                input[type=text], input[type=password]{
+                    border-radius: 3px;
+                    box-shadow: none;
+                }
+            }
+            div.register-bottom{
+                margin-top: 16px;
+                padding-bottom: 16px;
+                .submit-register{
+                    width: 100%;
+                    font-weight: 400;
+                    padding: 8px 0px 10px;
+                    position: relative;
+                    top: -10px;
+                }
+            }
+        }
+    }
+    div#footer{
+        margin-top: 32px;
+        .trouble{
+            text-decoration: underline;
+            font-size: .8em;
+            color: #F4A534;
+        }
+        .switch{
+            display: block;
+            width: 100%;
+            text-align: center;
+            background: @white;
+            color: #F4A534;
+            padding: 10px 0px 10px;
+            border-radius: 4px;
+            position: relative;
+            top: -8px;
+            cursor: pointer;
+            transition: color .2s;
+            transition: background .2s;
+            &:hover{
+                color: @white;
+                background: #F4A534;
+            }
+        }
+    }
+}

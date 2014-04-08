@@ -108,6 +108,50 @@ block body
                         | <span class='st_pinterest_large' displayText='Pinterest'></span>
                         | <span class='st_email_large' displayText='Email'></span>
         div#event-footer
+        div#tickets
+            div#tickets-header Ticket Options
+            div#tickets-body
+                div.inner
+                    div.caption Choose Your Tickets
+                    div#tickets-canvas
+                        {% for ticket in tickets %}
+                        div.ticket(class="{% if forloop.last %}last{% endif %}")
+                            div.inner.clearfix
+                                div.action
+                                    div.wrapper
+                                        div.top
+                                            input(type="checkbox")
+                                        div.bottom
+                                            input(type="text", name="quantity", value="0")
+                                div.info
+                                    div.top.clearfix
+                                        div.price.left {% if ticket.price == 0 %}Free{% else %}${{ ticket.price|floatformat:"-2" }}{% endif %}
+                                        div.name.right 
+                                            div {{ ticket.name }}
+                                    div.bottom
+                                        {{ ticket.description }}
+                        {% endfor %}
+                    div.caption Details About You
+                    div#tickets-details
+                        div.inner.clearfix
+                            div.left
+                            div.right
+                                div.top.clearfix
+                                    input.left(type="text", name="first_name", placeholder="First")
+                                    input.right(type="text", name="last_name", placeholder="Last")
+                                div.middle
+                                    input(type="text", name="email", placeholder="Email")
+                                div.bottom
+                                    input(type="text", name="phone", placeholder="Phone (Optional)")
+            div#tickets-footer
+                div#tickets-subtotal
+                    | Subtotal | $
+                    span.total 0
+                    | &nbsp;&middot;&nbsp;
+                    span.count 0
+                    |  Tickets
+                a#tickets-confirm.primary-btn(href="javascript:;") Confirm RSVP
+        div#wrapper-overlay
 
 append script
     script.
