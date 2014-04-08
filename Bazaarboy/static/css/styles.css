@@ -7016,6 +7016,16 @@ div#tickets-body div.ticket:hover > div.inner > div.info div.top div.price,
 div#tickets-body div.ticket.on > div.inner > div.info div.top div.price {
   background: #F5A639;
 }
+div#tickets-body div.ticket.soldout {
+  background: #F5F5F5;
+}
+div#tickets-body div.ticket.soldout > div.inner > div.info {
+  background: #FFFFFF;
+  color: #929292;
+}
+div#tickets-body div.ticket.soldout > div.inner > div.info div.top div.price {
+  background: #929292;
+}
 div#tickets-body div.ticket > div.inner {
   display: table-row;
   width: 100%;
@@ -7042,6 +7052,15 @@ div#tickets-body div.ticket > div.inner > div.action div.wrapper div.bottom inpu
   width: 44px;
   height: 20px;
   margin: 0;
+  text-align: center;
+}
+div#tickets-body div.ticket > div.inner > div.action div.wrapper div.soldout {
+  width: 44px;
+  height: 44px;
+  background: #FFFFFF;
+  color: #3c3c3c;
+  font-size: 14px;
+  line-height: 22px;
   text-align: center;
 }
 div#tickets-body div.ticket > div.inner > div.info {
@@ -7108,6 +7127,7 @@ div#tickets-details div.right > div input {
   width: 328px;
   height: 32px;
   margin: 0;
+  border-radius: 4px;
 }
 div#tickets-details div.right div.top input {
   width: 160px;

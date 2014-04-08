@@ -362,6 +362,19 @@ div#tickets-body {
             }
         }
 
+        &.soldout {
+            background: #F5F5F5;
+
+            > div.inner > div.info {
+                background: #FFFFFF;
+                color: #929292;
+
+                div.top div.price {
+                    background: #929292;
+                }
+            }
+        }
+
         > div.inner {
             display: table-row;
             width: 100%;
@@ -393,6 +406,16 @@ div#tickets-body {
                             margin: 0;
                             text-align: center;
                         }
+                    }
+
+                    div.soldout {
+                        width: 44px;
+                        height: 44px;
+                        background: #FFFFFF;
+                        color: @dark;
+                        font-size: 14px;
+                        line-height: 22px;
+                        text-align: center;
                     }
                 }
             }
@@ -472,6 +495,7 @@ div#tickets-details {
                 width: 328px;
                 height: 32px;
                 margin: 0;
+                border-radius: 4px;
             }
         }
 

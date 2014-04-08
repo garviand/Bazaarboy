@@ -115,14 +115,18 @@ block body
                     div.caption Choose Your Tickets
                     div#tickets-canvas
                         {% for ticket in tickets %}
-                        div.ticket(class="{% if forloop.last %}last{% endif %}")
+                        div.ticket(class="{% if forloop.last %}last{% endif %} {% if ticket.quantity == 0 %}soldout{% endif %}", data-id="{{ ticket.id }}", data-price="{{ ticket.price }}")
                             div.inner.clearfix
                                 div.action
                                     div.wrapper
+                                        {% if ticket.quantity != 0 %} 
                                         div.top
-                                            input(type="checkbox")
+                                            input.ticket-selected(type="checkbox")
                                         div.bottom
-                                            input(type="text", name="quantity", value="0")
+                                            input.ticket-quantity(type="text", name="quantity", value="0")
+                                        {% else %}
+                                        div.soldout Sold Out
+                                        {% endif %}
                                 div.info
                                     div.top.clearfix
                                         div.price.left {% if ticket.price == 0 %}Free{% else %}${{ ticket.price|floatformat:"-2" }}{% endif %}
@@ -137,8 +141,8 @@ block body
                             div.left
                             div.right
                                 div.top.clearfix
-                                    input.left(type="text", name="first_name", placeholder="First")
-                                    input.right(type="text", name="last_name", placeholder="Last")
+                                    input.left(type="text", name="first_name", placeholder="First Name")
+                                    input.right(type="text", name="last_name", placeholder="Last Name")
                                 div.middle
                                     input(type="text", name="email", placeholder="Email")
                                 div.bottom

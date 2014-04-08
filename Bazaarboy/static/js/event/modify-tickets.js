@@ -62,6 +62,9 @@
           $('div#edit-ticket div.info a.blue-btn').parent().addClass('columns').removeClass('hide');
           $('div#edit-ticket div.info input.primary-btn').val('Save').parent().removeClass('medium-centered').addClass('end');
           $('div#edit-ticket').attr('data-id', ticket).fadeIn(300);
+          $('body').animate({
+            scrollTop: 0
+          }, 300);
         }
       });
     },
