@@ -2,17 +2,70 @@
 
 extends ../layout
 
-append script
-    script(type="text/javascript", src="{{ STATIC_URL }}js/index/landing.js")
-
 block body
     div#landing
-        form.login
-            input(type="text", name="email", placeholder="Email")
-            input(type="password", name="password", placeholder="Password", autocomplete="off")
-        form.register
-            input(type="text", name="first_name", placeholder="First Name")
-            input(type="text", name="last_name", placeholder="Last Name")
-            input(type="text", name="email", placeholder="Email")
-            input(type="password", name="password", placeholder="Password", autocomplete="off")
-            input(type="password", name="confirm", placeholder="Confirm Password", autocomplete="off")
+        div.section.section-1
+            div.row.header
+                div.small-12.medium-5.columns
+                    a.logo(href="/")
+                        img(src="{{ STATIC_URL }}images/logo-big.png")
+                        div.text BAZAARBOY
+                div.small-12.medium-7.columns.links.clearfix
+                    a.sign_up(href="{% url index:login %}") SIGN UP
+                    a(href="{% url index:login %}") LOG IN
+                    a(href="mailto:build@bazaarboy.com") CONTACT
+                    a(href="{% url index:pricing %}") PRICING
+            div.row.title
+                div.small-12.columns
+                    | TAKE CONTROL OF YOUR EVENT
+            div.row.hr
+                div.small-8.small-offset-2.medium-2.medium-offset-5.columns.hr
+                    hr
+            div.row.subtext
+                div.small-10.small-offset-1.medium-6.medium-offset-3.columns
+                    | Bazaarboy offers Ticketing &amp; Registration Pages, Attendee Communication Tools and Event Materials &amp; Resources.
+            div.row.sign_up
+                div.small-8.small-offset-2.medium-2.medium-offset-5.columns
+                    a.secondary-btn(href="javascript:;") SIGN UP
+        div.section.section-2
+            div.row.content
+                div.small-12.medium-5.medium-offset-1.columns
+                    div.title
+                        span.dark WHO WE ARE
+                        br
+                        | &amp; WHAT WE DO
+                    div.subtext
+                        | Bazaarboy helps non-profits manage events professionally, offering simple tools for ticketing &amp; registration. Our mission is to simplify the cluttered world of event commerce and communication
+                div.small-12.medium-6.columns
+                    img.ticket(src="{{ STATIC_URL }}images/landing/ticket.png")
+        div.section.section-3
+            div.row.content
+                div.small-12.medium-7.columns
+                    div.logo
+                        img(src="{{ STATIC_URL }}images/landing/magdalene.jpg")
+                    hr
+                    div.quote
+                        | &quot;Bazaarboy is the most impressive event management company I have ever worked with.&quot;
+                    div.subquote
+                        b - Angela Mullins,
+                        | &nbsp;Deputy Director at Magdalene St. Louis
+                    div.event_details
+                        a.secondary-btn(href="javascript:;") EVENT DETAILS
+                div.small-12.medium-5.columns
+                    img(src="{{ STATIC_URL }}images/landing/checkin.jpg")
+        div.section.section-4
+            div.row.content
+                div.small-12.medium-6.columns
+                    img.glass(src="{{ STATIC_URL }}images/landing/magnifying_glass.png")
+                div.small-12.medium-6.columns
+                    div.title
+                        span.dark WHERE WE ARE
+                        br
+                        | &amp; HOW WE CAN HELP
+                    div.subtext
+                        | Bazaarboy helps non-profits manage events professionally, offering simple tools for ticketing &amp; registration. Our mission is to simplify the cluttered world of event commerce and communication
+
+        
+
+append script
+    script(type="text/javascript", src="{{ STATIC_URL }}js/index/landing.js")
