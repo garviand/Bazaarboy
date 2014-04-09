@@ -26,6 +26,7 @@ Bazaarboy.user.settings =
         @save
             id: profileId
             name: save_data.name
+            email: save_data.email
             description: save_data.description
             location: save_data.location
             latitude: save_data.latitude

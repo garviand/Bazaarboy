@@ -5,6 +5,7 @@ Bazaarboy.profile.new =
     image: undefined
     uploads:
         image: undefined
+    to_stripe: false
     fetchCoordinates: (reference) ->
         gmap = $('div#map-canvas-hidden').get(0)
         location = $('form.profile-new input[name=location]').val()
@@ -134,7 +135,13 @@ Bazaarboy.profile.new =
                     return
                 return
             return
+        $('div.profile-new-container a.stripe_connect').click (e) ->
+            e.preventDefault()
+            scope.to_stripe = true
+            $('form.profile-new').submit()
+            return
         $('div.profile-new-container div.next-prev .finish-btn').click () ->
+            scope.to_stripe = false
             $('form.profile-new').submit()
             return
         $('div.profile-new-container input[name=is_non_profit]').change () ->
@@ -209,7 +216,10 @@ Bazaarboy.profile.new =
                 params.is_non_profit = false
             Bazaarboy.post 'profile/create/', params, (response) ->
                 if response.status is 'OK'
-                  Bazaarboy.redirect 'index'
+                    if scope.to_stripe
+                        window.location = $('div.profile-new-container a.stripe_connect').attr('href')
+                    else
+                        Bazaarboy.redirect 'index'
                 else
                     alert response.message
                 return

@@ -47,7 +47,11 @@ def connect(request, params, user):
                 publishable_key = response['stripe_publishable_key']
             )
             paymentAccount.save()
-            return redirect(reverse('index') + '#connect')
+            profiles = Profile.objects.filter(managers = user)
+            profile = profiles[0]
+            profile.payment_account = paymentAccount
+            profile.save()
+            return redirect('user:settings')
     return redirect('user:settings')
 
 @login_check()

@@ -7,7 +7,7 @@ import re
 from django.http import Http404
 from django.shortcuts import render
 from kernel.models import *
-from src.config import BBOY_PROFILE_CATEGORIES
+from src.config import *
 from src.controllers.request import *
 from src.regex import REGEX_EMAIL, REGEX_URL, REGEX_EIN
 from src.serializer import serialize, serialize_one
@@ -30,6 +30,10 @@ def new(request, user):
     """
     Create profile page
     """
+    stripeConnectUrl = r'%s?response_type=code&client_id=%s&scope=%s'
+    stripeConnectUrl = stripeConnectUrl % (STRIPE_CONNECT_URL, 
+                                           STRIPE_CLIENT_ID, 
+                                           STRIPE_SCOPE)
     categories = BBOY_PROFILE_CATEGORIES
     return render(request, 'profile/new.html', locals())
 

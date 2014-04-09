@@ -7425,6 +7425,16 @@ div#event-modify-tickets div#edit-ticket form input.primary-btn {
 div#wrapper-user-settings {
   padding-top: 40px;
 }
+div#user-settings div#payment {
+  margin-bottom: 40px;
+}
+div#user-settings div#payment .stripe_status {
+  padding: 0;
+}
+div#user-settings div#payment a.stripe_connect {
+  padding: 10px 10px;
+  padding-bottom: 13px;
+}
 div#user-settings div.name {
   padding: 0;
   padding-top: 10px;

@@ -6,6 +6,10 @@ block title
 append head
     link(rel="stylesheet", href="{{ STATIC_URL }}jQueryUI/jquery-ui.css")
 
+block sidebar
+    +sidebarItem('ss-database')(href="{% url index %}")
+        | Dashboard
+
 block header
     div.header-title.large-9.medium-10.columns.small-centered
         div.row.clearfix
@@ -18,25 +22,38 @@ block header
 block content
     div#wrapper-user-settings.large-9.medium-10.columns.small-centered
         div#user-settings.small-12.columns
-            div#payment
-                {% for account in paymentAccounts %}
-                div.account
-                    {{ account.user_id }}
-                {% endfor %}
-                a(href="{{ stripeConnectUrl|safe }}") Connect a Payment Account
+            div#payment.row
+                {% if profile.payment_account %}
+                div.medium-4.columns.stripe_status
+                    | Stripe Connected
+                div.account.medium-8.columns
+                    a.secondary-btn.stripe_connect(href="https://manage.stripe.com/") View Stripe Account
+                {% else %}
+                div.medium-4.columns.stripe_status
+                    | Stripe NOT Connected
+                div.medium-8.columns
+                    a.secondary-btn.stripe_connect(href="{{ stripeConnectUrl|safe }}") Connect a Payment Account
+                {% endif %}
             form.profile-settings
                 div.row
-                    div.name.medium-2.columns 
+                    div.name.medium-2.columns
                         | Name
                     div.medium-10.columns
-                        input.field(type="text", name="name", value="{{ profile.name }}", placeholder="Event name")
+                        input.field(type="text", name="name", value="{{ profile.name }}", placeholder="Profile name")
                     div.text.medium-10.medium-offset-2.columns
                         p The name of your organization, maximum 100 characters.
                 div.row
                     div.name.medium-2.columns
+                        | Email
+                    div.medium-10.columns
+                        input.field(type="text", name="email", value="{{ profile.email }}", placeholder="Profile email")
+                    div.text.medium-10.medium-offset-2.columns
+                        p The contact email for your organization
+                div.row
+                    div.name.medium-2.columns
                         | Description
                     div.medium-10.columns
-                        textarea.field(type="text", name="description", placeholder="Short summary")
+                        textarea.field(type="text", name="description", placeholder="Profile description")
                             {{ profile.description }}
                     div.text.medium-10.medium-offset-2.columns
                         p A description of your organization.

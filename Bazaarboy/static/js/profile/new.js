@@ -7,6 +7,7 @@
     uploads: {
       image: void 0
     },
+    to_stripe: false,
     fetchCoordinates: function(reference) {
       var gmap, location, placesService,
         _this = this;
@@ -148,7 +149,13 @@
           });
         });
       });
+      $('div.profile-new-container a.stripe_connect').click(function(e) {
+        e.preventDefault();
+        scope.to_stripe = true;
+        $('form.profile-new').submit();
+      });
       $('div.profile-new-container div.next-prev .finish-btn').click(function() {
+        scope.to_stripe = false;
         $('form.profile-new').submit();
       });
       $('div.profile-new-container input[name=is_non_profit]').change(function() {
@@ -234,7 +241,11 @@
         }
         Bazaarboy.post('profile/create/', params, function(response) {
           if (response.status === 'OK') {
-            Bazaarboy.redirect('index');
+            if (scope.to_stripe) {
+              window.location = $('div.profile-new-container a.stripe_connect').attr('href');
+            } else {
+              Bazaarboy.redirect('index');
+            }
           } else {
             alert(response.message);
           }
