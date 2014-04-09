@@ -786,11 +786,11 @@ def edit_ticket(request, params, user):
             ticket.quantity = None
         else:
             params['quantity'] = int(params['quantity'])
-            if params['quantity'] <= 0:
+            if params['quantity'] < 0:
                 response = {
                     'status':'FAIL',
-                    'error':'NON_POSITIVE_QUANTITY',
-                    'message':'Quantity must be a positive integer.'
+                    'error':'NEGATIVE_QUANTITY',
+                    'message':'Quantity must be a non-negative integer.'
                 }
                 return json_response(response)
             else:

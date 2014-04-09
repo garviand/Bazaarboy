@@ -64,6 +64,7 @@ Bazaarboy.event.modify.tickets =
                   .parent()
                   .removeClass('medium-centered').addClass('end')
               $('div#edit-ticket').attr('data-id', ticket).fadeIn 300
+              $('body').animate {scrollTop: 0}, 300
           return
         return
     newPromo: () ->
