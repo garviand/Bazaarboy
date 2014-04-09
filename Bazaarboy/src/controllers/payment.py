@@ -23,7 +23,7 @@ def connect(request, params, user):
     """
     # Check if there is any error
     if params['error'] is not None:
-        return HttpResponse(params['error'] + ':' + params['error_description'])
+        return redirect('user:settings')
     # Check if a code is passed
     elif params['code'] is not None:
         # Exchange the code for an access token
