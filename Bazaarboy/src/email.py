@@ -54,6 +54,29 @@ class Email(object):
         else:
             return result
 
+    def sendNewAccountEmail(self, profile):
+        """
+        Email confirming registration
+        """
+        user = profile.managers.all()[0]
+        to = [{
+            'email':'eric@bazaarboy.com', 
+            'name':'Eric Hamblett'
+        }]
+        subject = 'A New User Has Been Registered'
+        template = 'new-user'
+        mergeVars = [
+            {
+                'name':'user_name', 
+                'content':user.full_name
+            },
+            {
+                'name':'email', 
+                'content':user.email
+            }
+        ]
+        return self.sendEmail(to, subject, template, mergeVars)
+
     def sendConfirmationEmail(self, user, confirmationCode):
         """
         Email confirming registration

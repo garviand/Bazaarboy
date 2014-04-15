@@ -158,7 +158,7 @@
       });
       $('form.list_search input[name=guest_name]').keyup(function(e) {
         e.preventDefault();
-        if ($('form.list_search input[name=guest_name]').val().length > 2) {
+        if ($('form.list_search input[name=guest_name]').val().length > 1) {
           $('div.guest').addClass('hidden');
           _this.filterGuests('name', $('form.list_search input[name=guest_name]').val(), _this.selectionStatus, _this.checkinStatus, false);
         } else {
