@@ -151,9 +151,11 @@ block body
                 div#tickets-subtotal
                     | Subtotal | $
                     span.total 0
+                    span.fee.hide  + Fee
                     | &nbsp;&middot;&nbsp;
                     span.count 0
-                    |  Tickets
+                    |  Ticket
+                    span.plural s
                 a#tickets-confirm.primary-btn(href="javascript:;") Confirm RSVP
         div#wrapper-overlay
 

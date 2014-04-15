@@ -7095,6 +7095,7 @@ div#tickets-body div.ticket > div.inner > div.info div.top div.name div {
   vertical-align: middle;
   font-size: 14px;
   line-height: 18px;
+  font-weight: 700;
 }
 div#tickets-body div.ticket > div.inner > div.info div.bottom {
   width: 100%;

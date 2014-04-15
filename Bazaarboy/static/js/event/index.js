@@ -34,7 +34,17 @@
         }
       }
       $('div#tickets-subtotal span.total').html(totalPrice.toFixed(2));
+      if (totalPrice !== 0) {
+        $('div#tickets-subtotal span.fee').removeClass('hide');
+      } else {
+        $('div#tickets-subtotal span.fee').addClass('hide');
+      }
       $('div#tickets-subtotal span.count').html(totalQuantity);
+      if (totalQuantity === 1) {
+        $('div#tickets-subtotal span.plural').addClass('hide');
+      } else {
+        $('div#tickets-subtotal span.plural').removeClass('hide');
+      }
     },
     purchase: function() {
       var params, quantity, ticket, tickets, _i, _len,
@@ -56,12 +66,17 @@
         }
       }
       Bazaarboy.post('event/purchase/', params, function(response) {
+        var a, b, total;
         if (response.status !== 'OK') {
           alert(response.message);
         } else {
           if (response.publishable_key == null) {
             _this.completePurchase();
           } else {
+            total = response.purchase.amount;
+            a = (1 + 0.05) * total + 50;
+            b = (1 + 0.029) * total + 30 + 1000;
+            total = Math.round(Math.min(a, b));
             StripeCheckout.open({
               key: response.publishable_key,
               address: false,
@@ -70,7 +85,18 @@
               name: response.purchase.event.name,
               description: 'Tickets for ' + response.purchase.event.name,
               panelLabel: 'Checkout',
-              token: function(token) {}
+              token: function(token) {
+                Bazaarboy.post('payment/charge/', {
+                  checkout: response.purchase.checkout,
+                  stripe_token: token
+                }, function(response) {
+                  if (response.status === 'OK') {
+                    _this.completePurchase();
+                  } else {
+                    alert(response.message);
+                  }
+                });
+              }
             });
           }
         }

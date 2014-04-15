@@ -28,7 +28,15 @@ Bazaarboy.event.index =
                 totalQuantity += quantity
                 totalPrice += quantity * parseFloat $(ticket).attr('data-price')
         $('div#tickets-subtotal span.total').html totalPrice.toFixed(2)
+        if totalPrice isnt 0
+            $('div#tickets-subtotal span.fee').removeClass 'hide'
+        else
+            $('div#tickets-subtotal span.fee').addClass 'hide'
         $('div#tickets-subtotal span.count').html totalQuantity
+        if totalQuantity is 1
+            $('div#tickets-subtotal span.plural').addClass 'hide'
+        else
+            $('div#tickets-subtotal span.plural').removeClass 'hide'
         return
     purchase: () ->
         params = 
@@ -50,6 +58,10 @@ Bazaarboy.event.index =
                 if not response.publishable_key?
                     @completePurchase()
                 else
+                    total = response.purchase.amount
+                    a = (1 + 0.05) * total + 50
+                    b = (1 + 0.029) * total + 30 + 1000
+                    total = Math.round(Math.min(a, b))
                     StripeCheckout.open
                         key: response.publishable_key
                         address: false
@@ -59,6 +71,15 @@ Bazaarboy.event.index =
                         description: 'Tickets for ' + response.purchase.event.name
                         panelLabel: 'Checkout'
                         token: (token) =>
+                            Bazaarboy.post 'payment/charge/', 
+                                checkout: response.purchase.checkout
+                                stripe_token: token
+                            , (response) =>
+                                if response.status is 'OK'
+                                    @completePurchase()
+                                else
+                                    alert response.message
+                                return
                             return
             return
         return
