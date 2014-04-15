@@ -5939,6 +5939,160 @@ div#wrapper-overlay {
   z-index: 5;
   background: rgba(255, 255, 255, 0.7);
 }
+div#landing div.section-1 {
+  background: url('../images/landing/bg.jpg');
+  background-size: cover;
+  min-height: 700px;
+  padding-bottom: 60px;
+}
+div#landing div.section-1 div.header {
+  padding-top: 40px;
+}
+div#landing div.section-1 div.header a.logo img {
+  float: left;
+  height: 50px;
+  width: 50px;
+}
+div#landing div.section-1 div.header a.logo div.text {
+  margin-left: 15px;
+  padding-top: 12px;
+  float: left;
+  color: #ff9137;
+  font-size: 26px;
+  font-weight: 600;
+}
+div#landing div.section-1 div.header div.links a {
+  padding-top: 14px;
+  color: #ffffff;
+  float: right;
+  margin-left: 20px;
+  font-size: 18px;
+  font-weight: 600;
+}
+div#landing div.section-1 div.header div.links a.sign_up {
+  color: #ff9137;
+}
+div#landing div.section-1 div.title {
+  text-align: center;
+  margin-top: 180px;
+  color: #ffffff;
+  font-size: 48px;
+  font-weight: 600;
+}
+div#landing div.section-1 div.hr hr {
+  margin: 30px 0;
+}
+div#landing div.section-1 div.subtext {
+  color: #ffffff;
+  text-align: center;
+  line-height: 1.75rem;
+}
+div#landing div.section-1 div.sign_up {
+  margin-top: 60px;
+}
+div#landing div.section-1 div.sign_up a {
+  display: block;
+  background: #ff9137;
+  width: 100%;
+  padding-top: 10px;
+  padding-bottom: 13px;
+  border: none;
+  -moz-box-shadow: inset 0px -3px 0px 0px #c25f00;
+  -webkit-box-shadow: inset 0px -3px 0px 0px #c25f00;
+  box-shadow: inset 0px -3px 0px 0px #c25f00;
+  text-shadow: 1px 1px 0px #c25f00;
+}
+div#landing div.section-1 div.sign_up a:hover {
+  color: #FFF;
+}
+div#landing div.section-2 {
+  color: #ffffff;
+  padding: 150px 0;
+  background: #ff9137;
+}
+div#landing div.section-2 div.content div.title {
+  font-size: 36px;
+  font-weight: 600;
+  text-align: right;
+  line-height: 2.5rem;
+}
+div#landing div.section-2 div.content div.title .dark {
+  color: #2e2e2e;
+}
+div#landing div.section-2 div.content div.subtext {
+  margin-top: 30px;
+  margin-bottom: 30px;
+  text-align: right;
+  line-height: 1.5rem;
+}
+div#landing div.section-2 div.content img.ticket {
+  margin-left: 30px;
+  max-height: 250px;
+}
+div#landing div.section-3 {
+  background: #ffffff;
+  padding: 100px 0;
+}
+div#landing div.section-3 .content div.logo img {
+  max-width: 80%;
+}
+div#landing div.section-3 .content hr {
+  color: #2e2e2e;
+  background: #2e2e2e;
+  margin: 30px 0;
+  border: none;
+  height: 2px;
+  width: 80%;
+}
+div#landing div.section-3 .content div.quote {
+  color: #ff9137;
+  font-size: 20px;
+  font-weight: bold;
+  line-height: 1.7rem;
+  margin-bottom: 20px;
+}
+div#landing div.section-3 .content div.subquote {
+  margin-bottom: 40px;
+}
+div#landing div.section-3 .content div.event_details {
+  margin-bottom: 60px;
+}
+div#landing div.section-3 .content div.event_details a {
+  background: #ff9137;
+  padding: 10px 20px;
+  padding-bottom: 13px;
+  border: none;
+  -moz-box-shadow: inset 0px -3px 0px 0px #c25f00;
+  -webkit-box-shadow: inset 0px -3px 0px 0px #c25f00;
+  box-shadow: inset 0px -3px 0px 0px #c25f00;
+  text-shadow: none;
+  font-weight: 600;
+}
+div#landing div.section-3 .content div.event_details a:hover {
+  color: #FFF;
+}
+div#landing div.section-4 {
+  color: #ffffff;
+  padding: 150px 0;
+  background: #01bd8a;
+}
+div#landing div.section-4 div.content div.title {
+  font-size: 36px;
+  font-weight: 600;
+  line-height: 2.5rem;
+}
+div#landing div.section-4 div.content div.title .dark {
+  color: #2e2e2e;
+}
+div#landing div.section-4 div.content div.subtext {
+  margin-top: 30px;
+  margin-bottom: 30px;
+  line-height: 1.5rem;
+}
+div#landing div.section-4 div.content img.glass {
+  float: right;
+  max-height: 250px;
+}
 div.current-event {
   margin-top: 40px !important;
   margin-bottom: 40px !important;
@@ -7445,6 +7599,16 @@ div#event-modify-tickets div#edit-ticket form input.primary-btn {
 }
 div#wrapper-user-settings {
   padding-top: 40px;
+}
+div#user-settings div#payment {
+  margin-bottom: 40px;
+}
+div#user-settings div#payment .stripe_status {
+  padding: 0;
+}
+div#user-settings div#payment a.stripe_connect {
+  padding: 10px 10px;
+  padding-bottom: 13px;
 }
 div#user-settings div.name {
   padding: 0;

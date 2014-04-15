@@ -41,7 +41,7 @@ block content
                             input(name="name", type="text", placeholder="Profile Name", required)
                             small.error Profile Name is required
                         div.small-12.columns
-                            input(name="email", type="email", placeholder="Profile Email", required)
+                            input(name="email", type="email", placeholder="Profile Email", value="{{ user.email }}", required)
                             small.error Valid Email Address is required
                         div.small-12.columns
                             textarea(name="description", placeholder="Profile Description", required)
@@ -87,15 +87,27 @@ block content
                                 | You Are Almost Done!
                                 br
                                 br
-                                | Click
-                                b &nbsp;CONFIRM&nbsp;
-                                | to create your profile.
+                                br
+                                | Create your payment account to finish.
+                                br
+                                br
+                                br
+                                a.stripe_connect(href="{{ stripeConnectUrl|safe }}")
+                                    img(src="{{ STATIC_URL }}images/stripe_blue.png")
+                                br
+                                br
+                                br
                     div.row.next-prev
-                        div.small-3.columns
-                            a.grey-btn.prev-btn.hide(data-id="4", href="javascript:;") PREV
-                        div.small-3.small-offset-6.columns
-                            a.primary-btn.next-btn(href="javascript:;") NEXT
-                            a.secondary-btn.finish-btn.hide(href="javascript:;") CONFIRM
+                        div.small-6.columns
+                            div.row
+                                div.small-6.columns
+                                    a.grey-btn.prev-btn.hide(data-id="4", href="javascript:;") PREV
+                        div.small-6.columns
+                            div.row
+                                div.small-6.small-offset-6.columns
+                                    a.primary-btn.next-btn(href="javascript:;") NEXT
+                                div.small-10.small-offset-2.columns
+                                    a.secondary-btn.finish-btn.hide(href="javascript:;") SKIP THIS STEP
         form.upload_logo.hide
                 input(type="file", name="image_file")
                 {% csrf_token %}
@@ -109,5 +121,5 @@ append script
     script(src="{{ STATIC_URL }}jQueryUI/jquery-ui.autocomplete.html.js")
     script(type="text/javascript", src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAasW6vqPCn18g6UMaFWV90qGMSo6pErwo&sensor=false&libraries=places")
     script(src="{{ STATIC_URL }}js/profile/new.js")
-    script(type="text/javascript")
+    script.
         $(document).foundation()

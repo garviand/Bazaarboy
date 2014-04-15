@@ -88,7 +88,6 @@ def settings(request, user):
     """
     User settings page
     """
-    paymentAccounts = user.payment_account_set.all()
     stripeConnectUrl = r'%s?response_type=code&client_id=%s&scope=%s'
     stripeConnectUrl = stripeConnectUrl % (STRIPE_CONNECT_URL, 
                                            STRIPE_CLIENT_ID, 
