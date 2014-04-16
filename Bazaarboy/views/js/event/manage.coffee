@@ -48,6 +48,7 @@ Bazaarboy.event.manage =
             rsvp = $('div.guest:eq(' + i + ')')
             targetValue = $(rsvp).find('div.' + param).html()
             if targetValue.toLowerCase().indexOf(value.toLowerCase()) != -1
+                console.log('name found: ' + value)
                 if rsvp.data('ticket') == ticketType or ticketType == 'all'
                     $(rsvp).removeClass('hidden')
             if(checkStatus == 'checked_in')
@@ -110,7 +111,11 @@ Bazaarboy.event.manage =
             return
         $('form.list_search input[name=guest_name]').keyup (e) =>
             e.preventDefault()
-            @debounce(console.log('bouncing herere'), 1000)
+            if $('form.list_search input[name=guest_name]').val().length > 1
+                $('div.guest').addClass('hidden')
+                @filterGuests('name', $('form.list_search input[name=guest_name]').val(), @selectionStatus,  @checkinStatus, false)
+            else
+                $('div.guest').removeClass('hidden')
             return
         $('form.list_search input[name=guest_code]').keyup (e) =>
             e.preventDefault()

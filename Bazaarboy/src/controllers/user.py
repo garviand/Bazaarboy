@@ -178,6 +178,7 @@ def create(request, params, user):
     confirmationCode.save()
     email = Email()
     email.sendConfirmationEmail(user, confirmationCode)
+    email.sendNewAccountEmail(profile)
     # Start the session
     request.session['user'] = user.id
     response = {
