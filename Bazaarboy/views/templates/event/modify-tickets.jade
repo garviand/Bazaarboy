@@ -15,6 +15,17 @@ block sidebar
         | Bonus
     +sidebarItem('ss-mail')(href="{% url event:modify id 'emails' %}")
         | Emails
+    div.launch-event(class="{% if event.is_launched %}launched{% endif %}", data-event-id="{{ event.id }}")
+        div.primary-btn.hide-for-medium-only
+            | <span class="plus">&nbsp;</span>
+            span.launch-text
+                {% if event.is_launched %}
+                | Take Offline
+                {% else %}
+                | Publish Event
+                {% endif %}
+        div.primary-btn.show-for-medium-only
+            | <span class="plus">+</span>
 
 block header
     div.header-title.large-9.medium-10.columns.small-centered
@@ -144,4 +155,5 @@ append script
     script(src="{{ STATIC_URL }}pikaday/pikaday.jquery.js")
     script.
         var eventId = {{ event.id }};
+    script(src="{{ STATIC_URL }}js/event/modify.js")    
     script(src="{{ STATIC_URL }}js/event/modify-tickets.js")

@@ -11,6 +11,17 @@ block sidebar
         | Bonus
     +sidebarItem('ss-mail')(href="{% url event:modify id 'emails' %}")
         | Emails
+    div.launch-event(class="{% if event.is_launched %}launched{% endif %}", data-event-id="{{ event.id }}")
+        div.primary-btn.hide-for-medium-only
+            | <span class="plus">&nbsp;</span>
+            span.launch-text
+                {% if event.is_launched %}
+                | Take Offline
+                {% else %}
+                | Publish Event
+                {% endif %}
+        div.primary-btn.show-for-medium-only
+            | <span class="plus">+</span>
 
 block header
     div.header-title.large-9.medium-10.columns.small-centered
@@ -25,3 +36,6 @@ block content
     div#wrapper-event-modify.large-9.medium-10.columns.small-centered
         div#event-modify-design.small-12.columns
             iframe(src="{% url event:index event.id %}?design")
+
+append script
+    script(src="{{ STATIC_URL }}js/event/modify.js")
