@@ -1,6 +1,7 @@
 (function() {
   Bazaarboy.event.index = {
     savingInProgress: false,
+    overlayAnimationInProgress: false,
     saveDescription: function() {
       var description;
       description = $('div#event-description div.description div.inner').redactor('get');
@@ -34,7 +35,17 @@
         }
       }
       $('div#tickets-subtotal span.total').html(totalPrice.toFixed(2));
+      if (totalPrice !== 0) {
+        $('div#tickets-subtotal span.fee').removeClass('hide');
+      } else {
+        $('div#tickets-subtotal span.fee').addClass('hide');
+      }
       $('div#tickets-subtotal span.count').html(totalQuantity);
+      if (totalQuantity === 1) {
+        $('div#tickets-subtotal span.plural').addClass('hide');
+      } else {
+        $('div#tickets-subtotal span.plural').removeClass('hide');
+      }
     },
     purchase: function() {
       var params, quantity, ticket, tickets, _i, _len,
@@ -45,23 +56,32 @@
         last_name: $('input[name=last_name]').val().trim(),
         email: $('input[name=email]').val().trim(),
         phone: $('input[name=phone]').val().trim(),
-        tickets: {}
+        details: {}
       };
       tickets = $('div#tickets-canvas div.ticket');
       for (_i = 0, _len = tickets.length; _i < _len; _i++) {
         ticket = tickets[_i];
         if ($(ticket).find('input.ticket-selected').is(':checked')) {
           quantity = parseInt($(ticket).find('input.ticket-quantity').val());
-          params.tickets[$(ticket).attr('data-id')] = quantity;
+          params.details[$(ticket).attr('data-id')] = quantity;
         }
       }
+      params.details = JSON.stringify(params.details);
+      if (params.phone.length === 0) {
+        delete params.phone;
+      }
       Bazaarboy.post('event/purchase/', params, function(response) {
+        var a, b, total;
         if (response.status !== 'OK') {
           alert(response.message);
         } else {
           if (response.publishable_key == null) {
             _this.completePurchase();
           } else {
+            total = response.purchase.amount;
+            a = (1 + 0.05) * total + 50;
+            b = (1 + 0.029) * total + 30 + 1000;
+            total = Math.round(Math.min(a, b));
             StripeCheckout.open({
               key: response.publishable_key,
               address: false,
@@ -70,7 +90,18 @@
               name: response.purchase.event.name,
               description: 'Tickets for ' + response.purchase.event.name,
               panelLabel: 'Checkout',
-              token: function(token) {}
+              token: function(token) {
+                Bazaarboy.post('payment/charge/', {
+                  checkout: response.purchase.checkout,
+                  stripe_token: token.id
+                }, function(response) {
+                  if (response.status === 'OK') {
+                    _this.completePurchase();
+                  } else {
+                    alert(response.message);
+                  }
+                });
+              }
             });
           }
         }
@@ -130,6 +161,39 @@
           _this.saveDescription();
         });
       }
+      $('a#rsvp-button').click(function() {
+        if (!_this.overlayAnimationInProgress) {
+          if ($('div#wrapper-overlay').hasClass('hide')) {
+            _this.overlayAnimationInProgress = true;
+            $('div#wrapper-overlay').css('opacity', 0).removeClass('hide');
+            $('div#tickets').css('opacity', 0).removeClass('hide');
+            $('div#wrapper-overlay').animate({
+              opacity: 1
+            }, 300);
+            $('div#tickets').animate({
+              opacity: 1
+            }, 300, function() {
+              _this.overlayAnimationInProgress = false;
+            });
+          }
+        }
+      });
+      $('div#wrapper-overlay').click(function() {
+        if (!_this.overlayAnimationInProgress) {
+          _this.overlayAnimationInProgress = true;
+          $('div#wrapper-overlay').animate({
+            opacity: 0
+          }, 300, function() {
+            $(this).addClass('hide');
+          });
+          $('div#tickets').animate({
+            opacity: 0
+          }, 300, function() {
+            $(this).addClass('hide');
+            scope.overlayAnimationInProgress = false;
+          });
+        }
+      });
       $('input.ticket-selected').click(function() {
         var wrapper;
         wrapper = $(this).closest('div.wrapper');
@@ -157,6 +221,9 @@
           $(this).val(0);
         }
         scope.updateSubtotal();
+      });
+      $('a#tickets-confirm').click(function() {
+        _this.purchase();
       });
     }
   };

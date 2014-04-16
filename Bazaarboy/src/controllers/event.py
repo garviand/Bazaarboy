@@ -21,7 +21,7 @@ from src.config import *
 from src.controllers.request import *
 from src.csvutils import UnicodeWriter
 from src.email import sendEventConfirmationEmail
-from src.regex import REGEX_EMAIL
+from src.regex import REGEX_EMAIL, REGEX_NAME
 from src.sanitizer import sanitize_redactor_input
 from src.serializer import serialize, serialize_one
 from src.sms import sendEventConfirmationSMS
@@ -1109,7 +1109,7 @@ def purchase(request, params, user):
     # Check purchase details
     details = None
     try:
-        details = json.loads(details)
+        details = json.loads(params['details'])
     except ValueError:
         response = {
             'status':'FAIL',
@@ -1132,10 +1132,13 @@ def purchase(request, params, user):
     tickets = {}
     for _ticket in _tickets:
         tickets[_ticket.id] = _ticket
+    _details = {}
     for tid in details:
-        details[tid] = int(details[tid])
+        _details[int(tid)] = int(details[tid])
+    details = _details
+    for tid in details:
         # Check if the ticket belongs to the event
-        if tickets.has_key(int(tid)):
+        if tickets.has_key(tid):
             ticket = tickets[tid]
             now = timezone.now()
             # Check timing
@@ -1256,7 +1259,7 @@ def purchase(request, params, user):
         purchase = Purchase(owner = user, event = event, amount = amount, 
                             checkout = checkout)
         purchase.save()
-        for promo in promos.itervalue():
+        for promo in promos.itervalues():
             purchase.promos.add(promo)
         purchase.save()
         for ticket in tickets:

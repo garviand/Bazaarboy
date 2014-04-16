@@ -28,10 +28,11 @@ block body
             div.event-header-body.medium-10.columns
                 div.profile-icon
                     div.inner
+                        img(src="{{ STATIC_URL }}images/logo-inverse.png")
                 div.event-name 
                     span {{ event.name }}
             div.event-rsvp.medium-2.columns.clearfix
-                a.right.primary-btn(href="javascript:;") + RSVP
+                a#rsvp-button.right.primary-btn(href="javascript:;") + RSVP
                 div.price.right
                     span
                         {% spaceless %}
@@ -108,7 +109,7 @@ block body
                         | <span class='st_pinterest_large' displayText='Pinterest'></span>
                         | <span class='st_email_large' displayText='Email'></span>
         div#event-footer
-        div#tickets
+        div#tickets.hide
             div#tickets-header Ticket Options
             div#tickets-body
                 div.inner
@@ -151,11 +152,13 @@ block body
                 div#tickets-subtotal
                     | Subtotal | $
                     span.total 0
+                    span.fee.hide  + Fee
                     | &nbsp;&middot;&nbsp;
                     span.count 0
-                    |  Tickets
+                    |  Ticket
+                    span.plural s
                 a#tickets-confirm.primary-btn(href="javascript:;") Confirm RSVP
-        div#wrapper-overlay
+        div#wrapper-overlay.hide
 
 append script
     script.
@@ -168,9 +171,9 @@ append script
             doNotCopy: false, 
             hashAddressBar: false
         });
+    script(type="text/javascript", src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAasW6vqPCn18g6UMaFWV90qGMSo6pErwo&sensor=false&libraries=places")
     {% if editable %}
     script(type="text/javascript", src="{{ STATIC_URL }}redactor/redactor.min.js")
-    script(type="text/javascript", src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAasW6vqPCn18g6UMaFWV90qGMSo6pErwo&sensor=false&libraries=places")
     {% else %}
     script(type="text/javascript", src="https://checkout.stripe.com/v2/checkout.js")
     {% endif %}

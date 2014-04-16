@@ -5943,6 +5943,7 @@ div#wrapper-overlay {
   left: 0;
   z-index: 5;
   background: rgba(255, 255, 255, 0.7);
+  cursor: pointer;
 }
 div#landing div.section-1 {
   background: url('../images/landing/bg.jpg');
@@ -7254,6 +7255,7 @@ div#tickets-body div.ticket > div.inner > div.info div.top div.name div {
   vertical-align: middle;
   font-size: 14px;
   line-height: 18px;
+  font-weight: 700;
 }
 div#tickets-body div.ticket > div.inner > div.info div.bottom {
   width: 100%;
