@@ -513,6 +513,20 @@ def launch(request, params, user):
             'message':'The event has been launched.'
         }
         return json_response(response)
+    # Check if the Event has Paid Tickets and the user has connected Stripe
+    creator = Organizer.objects.get(event = event, 
+                                    is_creator = True).profile
+    paymentAccount = creator.payment_account
+    tickets = Ticket.objects.filter(event = event)
+    if paymentAccount is None:
+        for ticket in tickets:
+            if ticket.price > 0:
+                response = {
+                    'status':'FAIL',
+                    'error':'NO_PAYMENT_ACCOUNT',
+                    'message':'Must have a Stripe account before selling Priced Tickets'
+                }
+                return json_response(response)
     # Launch the event
     event.is_launched = True
     event.launched_time = timezone.now()

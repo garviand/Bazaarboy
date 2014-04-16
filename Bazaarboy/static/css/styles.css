@@ -5773,16 +5773,19 @@ div#wrapper-sidebar div#sidebar-logo a div.text {
   text-align: center;
   text-transform: uppercase;
 }
-div#wrapper-sidebar div.create-event {
+div#wrapper-sidebar div.create-event,
+div#wrapper-sidebar div.launch-event {
   padding: 6px 16px;
   padding-top: 0;
 }
 @media only screen and (min-width: 40.063em) and (max-width: 64em) {
-  div#wrapper-sidebar div.create-event {
+  div#wrapper-sidebar div.create-event,
+  div#wrapper-sidebar div.launch-event {
     padding: 6px 12px;
   }
 }
-div#wrapper-sidebar div.create-event div.primary-btn {
+div#wrapper-sidebar div.create-event div.primary-btn,
+div#wrapper-sidebar div.launch-event div.primary-btn {
   margin: 12px 0;
   margin-top: 22px;
   padding-top: 11px;
@@ -5791,13 +5794,15 @@ div#wrapper-sidebar div.create-event div.primary-btn {
   text-transform: uppercase;
 }
 @media only screen and (min-width: 40.063em) and (max-width: 64em) {
-  div#wrapper-sidebar div.create-event div.primary-btn {
+  div#wrapper-sidebar div.create-event div.primary-btn,
+  div#wrapper-sidebar div.launch-event div.primary-btn {
     margin-top: 0;
     padding-top: 6px;
     padding-bottom: 9px;
   }
 }
-div#wrapper-sidebar div.create-event div.primary-btn span.plus {
+div#wrapper-sidebar div.create-event div.primary-btn span.plus,
+div#wrapper-sidebar div.launch-event div.primary-btn span.plus {
   font-size: 18px;
   line-height: 12px;
 }

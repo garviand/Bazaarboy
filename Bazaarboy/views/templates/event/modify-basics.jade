@@ -15,6 +15,17 @@ block sidebar
         | Bonus
     +sidebarItem('ss-mail')(href="{% url event:modify id 'emails' %}")
         | Emails
+    div.launch-event(class="{% if event.is_launched %}launched{% endif %}", data-event-id="{{ event.id }}")
+        div.primary-btn.hide-for-medium-only
+            | <span class="plus">&nbsp;</span>
+            span.launch-text
+                {% if event.is_launched %}
+                | Take Offline
+                {% else %}
+                | Publish Event
+                {% endif %}
+        div.primary-btn.show-for-medium-only
+            | <span class="plus">+</span>
 
 block header
     div.header-title.large-9.medium-10.columns.small-centered
@@ -22,7 +33,7 @@ block header
             div.icon.left
                 span.ss-file
             div.text.left
-                | Edit Event | 
+                | Edit Event |
                 span.sub Modify Basic Event Information
 
 block content
