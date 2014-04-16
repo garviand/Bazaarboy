@@ -1,5 +1,6 @@
 Bazaarboy.event.index = 
     savingInProgress: false
+    overlayAnimationInProgress: false
     saveDescription: () ->
         description = $('div#event-description div.description div.inner').redactor('get')
         $('div.save-status').html 'Saving...'
@@ -45,12 +46,15 @@ Bazaarboy.event.index =
             last_name: $('input[name=last_name]').val().trim()
             email: $('input[name=email]').val().trim()
             phone: $('input[name=phone]').val().trim()
-            tickets: {}
+            details: {}
         tickets = $('div#tickets-canvas div.ticket')
         for ticket in tickets
             if $(ticket).find('input.ticket-selected').is ':checked'
                 quantity = parseInt $(ticket).find('input.ticket-quantity').val()
-                params.tickets[$(ticket).attr('data-id')] = quantity
+                params.details[$(ticket).attr('data-id')] = quantity
+        params.details = JSON.stringify params.details
+        if params.phone.length is 0
+            delete params.phone
         Bazaarboy.post 'event/purchase/', params, (response) =>
             if response.status isnt 'OK'
                 alert response.message
@@ -73,7 +77,7 @@ Bazaarboy.event.index =
                         token: (token) =>
                             Bazaarboy.post 'payment/charge/', 
                                 checkout: response.purchase.checkout
-                                stripe_token: token
+                                stripe_token: token.id
                             , (response) =>
                                 if response.status is 'OK'
                                     @completePurchase()
@@ -131,6 +135,28 @@ Bazaarboy.event.index =
             $('a.save.primary-btn').click () =>
                 @saveDescription()
                 return
+        $('a#rsvp-button').click () =>
+            if not @overlayAnimationInProgress
+                if $('div#wrapper-overlay').hasClass('hide')
+                    @overlayAnimationInProgress = true
+                    $('div#wrapper-overlay').css('opacity', 0).removeClass('hide')
+                    $('div#tickets').css('opacity', 0).removeClass('hide')
+                    $('div#wrapper-overlay').animate {opacity: 1}, 300
+                    $('div#tickets').animate {opacity: 1}, 300, () =>
+                        @overlayAnimationInProgress = false
+                        return
+            return
+        $('div#wrapper-overlay').click () =>
+            if not @overlayAnimationInProgress
+                @overlayAnimationInProgress = true
+                $('div#wrapper-overlay').animate {opacity: 0}, 300, () ->
+                    $(this).addClass('hide')
+                    return
+                $('div#tickets').animate {opacity: 0}, 300, () ->
+                    $(this).addClass('hide')
+                    scope.overlayAnimationInProgress = false
+                    return
+            return
         $('input.ticket-selected').click () ->
             wrapper = $(this).closest('div.wrapper')
             if $(this).is ':checked'
@@ -152,6 +178,9 @@ Bazaarboy.event.index =
             if $(this).val().trim() is ''
                 $(this).val 0
             scope.updateSubtotal()
+            return
+        $('a#tickets-confirm').click () =>
+            @purchase()
             return
         return
 

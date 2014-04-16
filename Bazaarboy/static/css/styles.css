@@ -5938,6 +5938,7 @@ div#wrapper-overlay {
   left: 0;
   z-index: 5;
   background: rgba(255, 255, 255, 0.7);
+  cursor: pointer;
 }
 div#landing div.section-1 {
   background: url('../images/landing/bg.jpg');

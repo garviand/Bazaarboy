@@ -1,6 +1,7 @@
 (function() {
   Bazaarboy.event.index = {
     savingInProgress: false,
+    overlayAnimationInProgress: false,
     saveDescription: function() {
       var description;
       description = $('div#event-description div.description div.inner').redactor('get');
@@ -55,15 +56,19 @@
         last_name: $('input[name=last_name]').val().trim(),
         email: $('input[name=email]').val().trim(),
         phone: $('input[name=phone]').val().trim(),
-        tickets: {}
+        details: {}
       };
       tickets = $('div#tickets-canvas div.ticket');
       for (_i = 0, _len = tickets.length; _i < _len; _i++) {
         ticket = tickets[_i];
         if ($(ticket).find('input.ticket-selected').is(':checked')) {
           quantity = parseInt($(ticket).find('input.ticket-quantity').val());
-          params.tickets[$(ticket).attr('data-id')] = quantity;
+          params.details[$(ticket).attr('data-id')] = quantity;
         }
+      }
+      params.details = JSON.stringify(params.details);
+      if (params.phone.length === 0) {
+        delete params.phone;
       }
       Bazaarboy.post('event/purchase/', params, function(response) {
         var a, b, total;
@@ -88,7 +93,7 @@
               token: function(token) {
                 Bazaarboy.post('payment/charge/', {
                   checkout: response.purchase.checkout,
-                  stripe_token: token
+                  stripe_token: token.id
                 }, function(response) {
                   if (response.status === 'OK') {
                     _this.completePurchase();
@@ -156,6 +161,39 @@
           _this.saveDescription();
         });
       }
+      $('a#rsvp-button').click(function() {
+        if (!_this.overlayAnimationInProgress) {
+          if ($('div#wrapper-overlay').hasClass('hide')) {
+            _this.overlayAnimationInProgress = true;
+            $('div#wrapper-overlay').css('opacity', 0).removeClass('hide');
+            $('div#tickets').css('opacity', 0).removeClass('hide');
+            $('div#wrapper-overlay').animate({
+              opacity: 1
+            }, 300);
+            $('div#tickets').animate({
+              opacity: 1
+            }, 300, function() {
+              _this.overlayAnimationInProgress = false;
+            });
+          }
+        }
+      });
+      $('div#wrapper-overlay').click(function() {
+        if (!_this.overlayAnimationInProgress) {
+          _this.overlayAnimationInProgress = true;
+          $('div#wrapper-overlay').animate({
+            opacity: 0
+          }, 300, function() {
+            $(this).addClass('hide');
+          });
+          $('div#tickets').animate({
+            opacity: 0
+          }, 300, function() {
+            $(this).addClass('hide');
+            scope.overlayAnimationInProgress = false;
+          });
+        }
+      });
       $('input.ticket-selected').click(function() {
         var wrapper;
         wrapper = $(this).closest('div.wrapper');
@@ -183,6 +221,9 @@
           $(this).val(0);
         }
         scope.updateSubtotal();
+      });
+      $('a#tickets-confirm').click(function() {
+        _this.purchase();
       });
     }
   };

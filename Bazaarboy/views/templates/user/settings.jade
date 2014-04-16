@@ -7,8 +7,17 @@ append head
     link(rel="stylesheet", href="{{ STATIC_URL }}jQueryUI/jquery-ui.css")
 
 block sidebar
-    +sidebarItem('ss-database')(href="{% url index %}")
-        | Dashboard
+    div.create-event(data-profile-id="{{ profiles.0.id }}")
+        div.primary-btn.hide-for-medium-only
+            | <span class="plus">+</span> Create Event
+        div.primary-btn.show-for-medium-only
+            | <span class="plus">+</span>
+    +sidebarItem('ss-newspaper')(href="{% url index %}")
+        | Events
+    //-+sidebarItem('ss-database')
+        | Lists
+    +sidebarItem('ss-share')(href="{% url user:settings %}", class="selected")
+        | Settings
 
 block header
     div.header-title.large-9.medium-10.columns.small-centered
