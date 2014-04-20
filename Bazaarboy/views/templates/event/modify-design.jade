@@ -1,16 +1,6 @@
 extends ../layout
 
 block sidebar
-    +sidebarItem('ss-file')(href="{% url event:modify id 'basics' %}")
-        | Basic Info
-    +sidebarItem('ss-picture')(href="{% url event:modify id 'design' %}", class="selected")
-        | Page Design
-    +sidebarItem('ss-tag')(href="{% url event:modify id 'tickets' %}")
-        | Ticket Options
-    +sidebarItem('ss-star')(href="{% url event:modify id 'bonus' %}")
-        | Bonus
-    +sidebarItem('ss-mail')(href="{% url event:modify id 'emails' %}")
-        | Emails
     div.launch-event(class="{% if event.is_launched %}launched{% endif %}", data-event-id="{{ event.id }}")
         div.primary-btn.hide-for-medium-only
             | <span class="plus">&nbsp;</span>
@@ -22,6 +12,16 @@ block sidebar
                 {% endif %}
         div.primary-btn.show-for-medium-only
             | <span class="plus">+</span>
+    +sidebarItem('ss-file')(href="{% url event:modify id 'basics' %}")
+        | Basic Info
+    +sidebarItem('ss-picture')(href="{% url event:modify id 'design' %}", class="selected")
+        | Page Design
+    +sidebarItem('ss-tag')(href="{% url event:modify id 'tickets' %}")
+        | Ticket Options
+    //-+sidebarItem('ss-star')(href="{% url event:modify id 'bonus' %}")
+        | Bonus
+    //-+sidebarItem('ss-mail')(href="{% url event:modify id 'emails' %}")
+        | Emails
 
 block header
     div.header-title.large-9.medium-10.columns.small-centered

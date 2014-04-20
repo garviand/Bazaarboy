@@ -1047,7 +1047,9 @@ def mark_purchase_as_expired(purchase, immediate=False):
         items = Purchase_item.objects.filter(purchase = purchase) \
                                      .values('ticket') \
                                      .annotate(quantity = Count('id'))
-        for tid, quantity in items.iteritems():
+        for item in items:
+            tid = item['ticket']
+            quantity = item['quantity']
             ticket = Ticket.objects.get(id = tid)
             if ticket.quantity is not None:
                 Ticket.objects \

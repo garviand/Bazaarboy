@@ -35,6 +35,10 @@ div#event-header {
                 margin: 11px;
                 border-radius: 22px;
                 background: @white;
+
+                &:hover {
+                    box-shadow: 0 0 20px #FFFFFF;
+                }
             }
         }
 
@@ -173,7 +177,6 @@ div#event-location {
         > div {
           width: 100%;
           height: 100%;
-          border: 1px solid #000;
         }
 
         div#map-canvas {
@@ -208,6 +211,8 @@ div#event-organizers {
                 height: 30px;
                 border-radius: 4px;
                 background: @orange;
+                background-size: cover;
+                background-position: center;
             }
 
             div.organizer-name {
@@ -282,12 +287,50 @@ div#event-share {
         font-size: 18px;
         padding-bottom: 30px;
     }
+
+    div.canvas {
+        padding-left: 7px;
+    }
 }
 
 div#event-footer {
     width: 100%;
     height: 66px;
+    padding: 11px 0;
     background: #D4D4D4;
+
+    div.inner {
+        width: 284px;
+        height: 44px;
+        margin: 0 auto;
+        font-size: 14px;
+        color: #FFFFFF;
+
+        a {
+            color: #FFFFFF;
+        }
+    }
+
+    div.poweredby {
+        width: 120px;
+        height: 44px;
+        padding: 15px 0;
+        text-align: center;
+    }
+
+    div.logo {
+        width: 44px;
+        height: 44px;
+        border-radius: 22px;
+        background: #FFFFFF;
+    }
+
+    div.links {
+        width: 120px;
+        height: 44px;
+        padding: 15px 0;
+        text-align: center;
+    }
 }
 
 div#tickets {

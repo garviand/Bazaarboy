@@ -28,12 +28,13 @@ block body
             div.event-header-body.medium-10.columns
                 div.profile-icon
                     div.inner
-                        img(src="{{ STATIC_URL }}images/logo-inverse.png")
+                        a(href="{% url index %}", target="_blank")
+                            img(src="{{ STATIC_URL }}images/logo-inverse.png")
                 div.event-name 
                     span {{ event.name }}
             div.event-rsvp.medium-2.columns.clearfix
                 a#rsvp-button.right.primary-btn(href="javascript:;") + RSVP
-                div.price.right
+                //-div.price.right
                     span
                         {% spaceless %}
                         {% if rsvp %}
@@ -43,7 +44,33 @@ block body
                         {% endif %}
                         {% endspaceless %}
         div#event-body.row
-            div#event-sidebar.large-offset-1.large-3.medium-3.columns
+            div#event-right.medium-1.columns.end
+                div#event-share
+                    div.caption Share
+                    div.canvas
+                        | <span class='st_facebook_large' displayText='Facebook'></span>
+                        | <span class='st_twitter_large' displayText='Tweet'></span>
+                        | <span class='st_googleplus_large' displayText='Google +'></span>
+                        | <span class='st_blogger_large' displayText='Blogger'></span>
+                        | <span class='st_wordpress_large' displayText='WordPress'></span>
+                        | <span class='st_pinterest_large' displayText='Pinterest'></span>
+                        | <span class='st_email_large' displayText='Email'></span>
+            div#event-content.medium-8.columns
+                div#event-description.row
+                    div.caption.small-12.columns
+                        div Event Description
+                    div.description.small-12.columns
+                        div.inner
+                            {{ event.description|safe }}
+                    {% if design %}
+                    div.actions.small-12.columns
+                        div.row
+                            div.medium-offset-3.medium-3.columns
+                                a.save.primary-btn(href="javascript:;") Save
+                            div.save-status.medium-3.columns.end
+                                | Saved
+                    {% endif %}
+            div#event-sidebar.medium-3.columns
                 div#event-datetime.row
                     div#event-date
                         div.month {{ event.start_time|date:'M' }}
@@ -73,42 +100,26 @@ block body
                             div#map-canvas
                 div#event-organizers.row
                     div.caption.small-12.columns
-                        | Organizers
+                        | Organizer{{ organizers|length|pluralize }}
                     div.canvas.small-12.columns
                         {% for organizer in organizers %}
                         div.organizer
-                            div.organizer-icon
+                            div.organizer-icon(style="{% if organizer.profile.image %}background-image:url({{ organizer.profile.image.source.url }});{% endif %}")
                             div.organizer-name
                                 span {{ organizer.profile.name }}
                         {% endfor %}
                 div#event-sponsors.row
-            div#event-content.large-6.medium-8.columns
-                div#event-description.row
-                    div.caption.small-12.columns
-                        div Event Description
-                    div.description.small-12.columns
-                        div.inner
-                            {{ event.description|safe }}
-                    {% if design %}
-                    div.actions.small-12.columns
-                        div.row
-                            div.medium-offset-3.medium-3.columns
-                                a.save.primary-btn(href="javascript:;") Save
-                            div.save-status.medium-3.columns.end
-                                | Saved
-                    {% endif %}
-            div#event-right.medium-1.columns.end
-                div#event-share
-                    div.caption
-                    div.canvas
-                        | <span class='st_facebook_large' displayText='Facebook'></span>
-                        | <span class='st_twitter_large' displayText='Tweet'></span>
-                        | <span class='st_googleplus_large' displayText='Google +'></span>
-                        | <span class='st_blogger_large' displayText='Blogger'></span>
-                        | <span class='st_wordpress_large' displayText='WordPress'></span>
-                        | <span class='st_pinterest_large' displayText='Pinterest'></span>
-                        | <span class='st_email_large' displayText='Email'></span>
         div#event-footer
+            div.inner.clearfix
+                div.poweredby.left
+                    | Powered by 
+                div.logo.left
+                    a(href="{% url index %}", target="_blank")
+                        img(src="{{ STATIC_URL }}images/logo-inverse.png")
+                div.links.left
+                    a(href="{% url index:pricing %}") Pricing
+                    | &nbsp;&nbsp;&nbsp;
+                    a(href="http://blog.bazaarboy.com") Blog
         div#tickets.hide
             div#tickets-header Ticket Options
             div#tickets-body
@@ -162,7 +173,7 @@ block body
 
 append script
     script.
-        var switchTo5x=true;
+        var switchTo5x = true;
     script(type="text/javascript", src="http://w.sharethis.com/button/buttons.js")
     script.
         stLight.options({

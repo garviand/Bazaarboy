@@ -5,16 +5,6 @@ append head
     link(rel="stylesheet", href="{{ STATIC_URL }}pikaday/pikaday.css")
 
 block sidebar
-    +sidebarItem('ss-file')(href="{% url event:modify id 'basics' %}")
-        | Basic Info
-    +sidebarItem('ss-picture')(href="{% url event:modify id 'design' %}")
-        | Page Design
-    +sidebarItem('ss-tag')(href="{% url event:modify id 'tickets' %}", class="selected")
-        | Ticket Options
-    +sidebarItem('ss-star')(href="{% url event:modify id 'bonus' %}")
-        | Bonus
-    +sidebarItem('ss-mail')(href="{% url event:modify id 'emails' %}")
-        | Emails
     div.launch-event(class="{% if event.is_launched %}launched{% endif %}", data-event-id="{{ event.id }}")
         div.primary-btn.hide-for-medium-only
             | <span class="plus">&nbsp;</span>
@@ -26,6 +16,16 @@ block sidebar
                 {% endif %}
         div.primary-btn.show-for-medium-only
             | <span class="plus">+</span>
+    +sidebarItem('ss-file')(href="{% url event:modify id 'basics' %}")
+        | Basic Info
+    +sidebarItem('ss-picture')(href="{% url event:modify id 'design' %}")
+        | Page Design
+    +sidebarItem('ss-tag')(href="{% url event:modify id 'tickets' %}", class="selected")
+        | Ticket Options
+    //-+sidebarItem('ss-star')(href="{% url event:modify id 'bonus' %}")
+        | Bonus
+    //-+sidebarItem('ss-mail')(href="{% url event:modify id 'emails' %}")
+        | Emails
 
 block header
     div.header-title.large-9.medium-10.columns.small-centered
@@ -42,7 +42,7 @@ block content
             div#action-canvas.small-12.columns
                 div.medium-3.columns
                     a.new-ticket.primary-btn(href="javascript:;") + New Ticket
-                div.medium-3.columns.end
+                div.medium-3.columns.end.hide
                     a.new-promo.primary-btn(href="javascript:;") + New Promo
             mixin ticket-option(tags)
                 div.ticket-option.row(data-id!= tags ? "{{ ticket.id }}" : "")

@@ -62,14 +62,14 @@ Bazaarboy.event.index =
                 if not response.publishable_key?
                     @completePurchase()
                 else
-                    total = response.purchase.amount
+                    total = response.purchase.amount * 100
                     a = (1 + 0.05) * total + 50
                     b = (1 + 0.029) * total + 30 + 1000
                     total = Math.round(Math.min(a, b))
                     StripeCheckout.open
                         key: response.publishable_key
                         address: false
-                        amount: response.purchase.amount
+                        amount: total
                         currency: 'usd'
                         name: response.purchase.event.name
                         description: 'Tickets for ' + response.purchase.event.name

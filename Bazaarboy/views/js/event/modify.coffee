@@ -25,4 +25,5 @@ Bazaarboy.event.modify =
             @switchLaunchState $('div#wrapper-sidebar div.launch-event').data('event-id')
             return
     	return
+        
 Bazaarboy.event.modify.init()
