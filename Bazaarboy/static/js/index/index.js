@@ -20,12 +20,16 @@
       launchedTime = moment(launchedTime, 'YYYY-MM-DD HH:mm:ss');
       now = moment();
       canvas = $(eventFrame).find('div.graph-canvas');
-      rsvps = [[launchedTime.unix() * 1000, 0]];
-      sales = [[launchedTime.unix() * 1000, 0]];
+      rsvps = [];
+      sales = [];
       total_sales = 0;
       Bazaarboy.get('event/data/', {
         id: eventId
       }, function(response) {
+        if (Object.keys(response.purchases).length === 0) {
+          rsvps.push([launchedTime.unix() * 1000, 0]);
+          sales.push([launchedTime.unix() * 1000, 0]);
+        }
         $.each(response.purchases, function(index, purchase) {
           var date;
           date = moment(purchase.date, 'YYYY-MM-DD HH:mm:ss');

@@ -90,6 +90,8 @@
               name: response.purchase.event.name,
               description: 'Tickets for ' + response.purchase.event.name,
               panelLabel: 'Checkout',
+              email: params.email,
+              image: response.logo,
               token: function(token) {
                 Bazaarboy.post('payment/charge/', {
                   checkout: response.purchase.checkout,

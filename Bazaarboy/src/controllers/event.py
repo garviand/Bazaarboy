@@ -1279,11 +1279,17 @@ def purchase(request, params, user):
         # Create an async task to restore quantities if necessary
         expiration = timezone.now() + timedelta(minutes = BBOY_TRANSACTION_EXPIRATION)
         mark_purchase_as_expired.apply_async(args = [purchase], eta = expiration)
+        # Check for creator logo
+        if creator.image:
+            creator_logo = creator.image.source.url.split("?")[0]
+        else:
+            creator_logo = None
         # All done, send publishable key to create client checkout
         response = {
             'status':'OK',
             'purchase':serialize_one(purchase),
-            'publishable_key':paymentAccount.publishable_key
+            'publishable_key':paymentAccount.publishable_key,
+            'logo':creator_logo
         }
         return json_response(response)
     # If it gets here, there is a transaction failure

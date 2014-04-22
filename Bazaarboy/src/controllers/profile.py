@@ -314,7 +314,7 @@ def edit(request, params, user):
             profile.longitude = float(params['longitude'])
     if params['email'] is not None:
         # Check email format
-        if not REGEX_EMAIL.match(params['email']):
+        if not REGEX_EMAIL.match(params['email']) and len(params['email']) > 0:
             response = {
                 'status':'FAIL',
                 'error':'INVALID_EMAIL',
