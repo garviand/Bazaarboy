@@ -31,6 +31,66 @@ block header
                 span.sub Current Events
     
 block content
+    mixin draftEvent()
+        div.draft-event.row(data-id="{{ event.id }}", data-launched-time="{{ event.launched_time|date:'Y-m-d H:i:s' }}")
+            div.small-12.columns.tile
+                div.header.row
+                    div.draft-event-collapse.large-1.medium-1.columns.action-btn
+                        div.absolute-center
+                    div.draft-event-title.large-6.medium-5.columns
+                        | {{ event.name }}
+                    div.draft-event-view.large-5.medium-6.columns
+                        div.row
+                            div.medium-7.columns.draft-publish
+                                a.primary-btn.launch-draft(href="javascript:;", data-id="{{ event.id }}")  
+                                    | Launch Event
+                            div.medium-5.columns
+                                a.secondary-btn.delete-draft(href="javascript:;", data-id="{{ event.id }}") 
+                                    | Delete
+                div.info.small-12.columns
+                    div.inner.row
+                        div.draft-event-datetime.small-3.columns
+                            div.draft-event-date
+                                div.month {{ event.start_time|date:'M' }}
+                                div.day {{ event.start_time|date:'j' }}
+                            div.draft-event-time
+                                span
+                                    {{ event.start_time|date:'g:iA' }}{% if event.end_time %}-{{ event.end_time|date:'g:iA' }}{% endif %}
+                        div.draft-event-location.small-9.columns
+                            | {{ event.location }}
+                div.stats.small-12.columns
+                    div.row
+                        div.draft-event-stats.medium-9.columns
+                            div.bg.row
+                                div
+                            div.inner.row
+                                div
+                                    div.summary.medium-12.columns
+                                        div.summary-title
+                                            | EVENT SUMMARY
+                                        div.summary-text
+                                            {{ event.summary }}
+                        div.draft-event-actions.medium-3.columns
+                            a.draft-event-action.first(href="{% url event:modify event.id 'basics' %}")
+                                div.icon
+                                    span.ss-info
+                                div.text
+                                    span Edit Info
+                            a.draft-event-action(href="{% url event:modify event.id 'design' %}")
+                                div.icon
+                                    span.ss-picture
+                                div.text
+                                    span Page Design
+                            a.draft-event-action(href="{% url event:modify event.id 'tickets' %}")
+                                div.icon
+                                    span.ss-creditcard
+                                div.text
+                                    span Ticket Options
+                            a.draft-event-action.last(href="{% url event:index event.id %}?preview")
+                                div.icon
+                                    span.ss-airplay
+                                div.text
+                                    span Preview Event
     mixin currentEvent()
         div.current-event.row(data-id="{{ event.id }}", data-launched-time="{{ event.launched_time|date:'Y-m-d H:i:s' }}")
             div.small-12.columns.tile
@@ -107,17 +167,20 @@ block content
                                     span.ss-mail
                                 div.text
                                     span Emails
-                div
+                //div
                     div.section-title.medium-12.columns
                         | Communications
                     div.current-event-add-communication
-                div
+                //div
                     div.current-event-communication-stat.medium-6.columns
                     div.medium-6.columns
-                div
+                //div
                     div.section-title.medium-12.columns
                         | Bonus
     div#wrapper-dashboard.large-9.medium-10.columns.small-centered
+        {% for event in draftEvents %}
+        +draftEvent()
+        {% endfor %}
         {% for event in currentEvents %}
         +currentEvent()
         {% endfor %}

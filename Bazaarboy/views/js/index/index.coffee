@@ -87,12 +87,41 @@ Bazaarboy.index.index =
         return
     loadGraph: (eventFrame) ->
         return
+    deleteEvent: (eventId) ->
+        Bazaarboy.post 'event/delete/', {id: eventId}, (response) =>
+            if response.status is 'OK'
+                return 'OK'
+            else
+                alert response.message
+            return
+        return
+    launchEvent: (eventId) ->
+        Bazaarboy.post 'event/launch/', {id: eventId}, (response) =>
+            if response.status is 'OK'
+                window.location = 'event/' + eventId
+            else
+                alert response.message
+            return
     init: () ->
         scope = this
         # Create event
         $('div.create-event').click () ->
             profileId = $(this).attr('data-profile-id')
             scope.createEvent profileId
+            return
+        $('div.draft-event a.delete-draft').click (e) ->
+            e.preventDefault()
+            deleteConfirm = confirm("All information (including RSVPs) from this event will be lost. Are you sure you want to delete?")
+            eventId = $(this).data('id')
+            if deleteConfirm
+                eventId = $(this).data('id')
+                scope.deleteEvent(eventId)
+                $(this).parents('div.draft-event').fadeOut()
+            return
+        $('div.draft-event a.launch-draft').click (e) ->
+            eventId = $(this).data('id')
+            scope.launchEvent(eventId)
+            $(this).html("Launching...")
             return
         # Initialize graphs
         $('div.current-event').each () ->

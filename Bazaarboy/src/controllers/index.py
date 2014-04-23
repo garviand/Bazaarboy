@@ -97,7 +97,8 @@ def index(request, params, user):
         pastEvents[i].potentialQuantity = potentialQuantity
         pastEvents[i].potentialSale = potentialSale
     draftEvents = Event.objects.filter(is_launched = False, 
-                                       organizers__in = pids)[:5]
+                                       organizers__in = pids,
+                                       is_deleted = False)[:5]
     draftEventsCount = draftEvents.count()
     draftEvents = draftEvents
     return render(request, 'index/index.html', locals())

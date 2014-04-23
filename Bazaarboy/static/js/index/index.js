@@ -115,6 +115,30 @@
       });
     },
     loadGraph: function(eventFrame) {},
+    deleteEvent: function(eventId) {
+      var _this = this;
+      Bazaarboy.post('event/delete/', {
+        id: eventId
+      }, function(response) {
+        if (response.status === 'OK') {
+          return 'OK';
+        } else {
+          alert(response.message);
+        }
+      });
+    },
+    launchEvent: function(eventId) {
+      var _this = this;
+      return Bazaarboy.post('event/launch/', {
+        id: eventId
+      }, function(response) {
+        if (response.status === 'OK') {
+          window.location = 'event/' + eventId;
+        } else {
+          alert(response.message);
+        }
+      });
+    },
     init: function() {
       var scope;
       scope = this;
@@ -122,6 +146,23 @@
         var profileId;
         profileId = $(this).attr('data-profile-id');
         scope.createEvent(profileId);
+      });
+      $('div.draft-event a.delete-draft').click(function(e) {
+        var deleteConfirm, eventId;
+        e.preventDefault();
+        deleteConfirm = confirm("All information (including RSVPs) from this event will be lost. Are you sure you want to delete?");
+        eventId = $(this).data('id');
+        if (deleteConfirm) {
+          eventId = $(this).data('id');
+          scope.deleteEvent(eventId);
+          $(this).parents('div.draft-event').fadeOut();
+        }
+      });
+      $('div.draft-event a.launch-draft').click(function(e) {
+        var eventId;
+        eventId = $(this).data('id');
+        scope.launchEvent(eventId);
+        $(this).html("Launching...");
       });
       $('div.current-event').each(function() {
         scope.initGraph(this);

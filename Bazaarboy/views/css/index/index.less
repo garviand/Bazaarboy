@@ -1,6 +1,6 @@
 @import (reference) "vars.less";
 
-div.current-event {
+div.current-event, div.draft-event {
     margin-top: 40px !important;
     margin-bottom: 40px !important;
 
@@ -10,7 +10,7 @@ div.current-event {
         div.header {
             height: 64px;
 
-            div.current-event-collapse {
+            div.current-event-collapse, div.draft-event-collapse {
                 height: 64px;
 
                 > div {
@@ -20,7 +20,7 @@ div.current-event {
                 }
             }
 
-            div.current-event-title {
+            div.current-event-title, div.draft-event-title {
                 height: 64px;
                 padding: 22px 0;
                 font-size: 20px;
@@ -28,7 +28,7 @@ div.current-event {
                 line-height: 20px;
             }
 
-            div.current-event-view {
+            div.current-event-view, div.draft-event-view {
                 a {
                     display: block;
                     width: 100%;
@@ -41,6 +41,9 @@ div.current-event {
                     font-weight: 700;
                     text-transform: uppercase;
                 }
+                div.draft-publish{
+                    padding-right: 0;
+                }
             }
         }
 
@@ -52,13 +55,13 @@ div.current-event {
                 background: @white;
                 border-radius: 4px;
 
-                div.current-event-datetime {
+                div.current-event-datetime, div.draft-event-datetime {
                     position: relative;
                     height: 100%;
                     padding: 0;
                     border-right: 2px solid @grey;
 
-                    div.current-event-date {
+                    div.current-event-date, div.draft-event-date {
                         position: absolute;
                         width: 38px;
                         height: 38px;
@@ -93,7 +96,7 @@ div.current-event {
                         }
                     }
 
-                    div.current-event-time {
+                    div.current-event-time, div.draft-event-time {
                         display: table;
                         position: absolute;
                         width: 100%;
@@ -112,7 +115,7 @@ div.current-event {
                     }
                 }
 
-                div.current-event-location {
+                div.current-event-location, div.draft-event-location {
                     @height: 13px;
                     height: @height;
                     padding-top: (54px - @height) / 2;
@@ -125,14 +128,15 @@ div.current-event {
         }
 
         div.stats {
-            margin-top: 15px;
+            margin-top: 10px;
 
             @stat-height: 44px * 5 + 2px * 4;
 
             > div.row {
                 height: @stat-height;
+                margin-bottom: 15px;
 
-                div.current-event-stats {
+                div.current-event-stats, div.draft-event-stats {
                     position: relative;
                     height: @stat-height;
 
@@ -190,6 +194,21 @@ div.current-event {
                                 }
                             }
 
+                            div.summary{
+                                div.summary-title{
+                                    color: #D6D6D6;
+                                    font-weight: 600;
+                                    font-size: .9rem;
+                                    margin: 15px 0;
+                                }
+                                div.summary-text{
+                                    color: @dark;
+                                    font-weight: 100;
+                                    line-height: 1.5rem;
+                                    padding-right: 15px;
+                                }
+                            }
+
                             div.graph {
                                 height: 100%;
                                 padding-left: 0;
@@ -209,12 +228,12 @@ div.current-event {
                     }
                 }
 
-                div.current-event-actions {
+                div.current-event-actions, div.draft-event-actions {
                     padding: 0;
                     border-radius: 4px;
                     background: #FFF;
 
-                    a.current-event-action {
+                    a.current-event-action, a.draft-event-action {
                         display: block;
                         position: relative;
                         width: 100%;
