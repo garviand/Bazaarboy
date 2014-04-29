@@ -5,7 +5,7 @@ block sidebar
         | Basic Info
     +sidebarItem('ss-picture')(href="{% url event:modify id 'design' %}")
         | Page Design
-    +sidebarItem('ss-tag')(href="{% url event:modify id 'tickets' %}")
+    +sidebarItem('ss-picture')(href="{% url event:index id %}?design")
         | Ticket Options
     +sidebarItem('ss-star')(href="{% url event:modify id 'bonus' %}", class="selected")
         | Bonus

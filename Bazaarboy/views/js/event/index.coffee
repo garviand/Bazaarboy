@@ -139,6 +139,7 @@ Bazaarboy.event.index =
                 return
         $('a#rsvp-button').click () =>
             if not @overlayAnimationInProgress
+                $("html, body").animate({ scrollTop: 0 }, "fast")
                 if $('div#wrapper-overlay').hasClass('hide')
                     @overlayAnimationInProgress = true
                     $('div#wrapper-overlay').css('opacity', 0).removeClass('hide')
@@ -158,6 +159,12 @@ Bazaarboy.event.index =
                     $(this).addClass('hide')
                     scope.overlayAnimationInProgress = false
                     return
+            return
+        $('div#tickets-canvas div.ticket').click () ->
+            $(this).find('.ticket-selected').click()
+            return
+        $('input.ticket-quantity').click (e) ->
+            e.stopPropagation()
             return
         $('input.ticket-selected').click () ->
             wrapper = $(this).closest('div.wrapper')

@@ -8,7 +8,7 @@
             id: eventId
           }, function(response) {
             if (response.status === 'OK') {
-              $('div#wrapper-sidebar div.launch-event').removeClass('launched').find('.launch-text').html('Publish Event');
+              $('div#wrapper-sidebar div.launch-event').removeClass('launched').find('.launch-text').html('Launch Event');
             } else {
               alert(response.message);
             }
@@ -19,7 +19,7 @@
           id: eventId
         }, function(response) {
           if (response.status === 'OK') {
-            $('div#wrapper-sidebar div.launch-event').addClass('launched').find('.launch-text').html('Take Offline');
+            window.location = '/event/' + eventId;
           } else {
             alert(response.message);
           }
@@ -29,6 +29,9 @@
     init: function() {
       var _this = this;
       $('div#wrapper-sidebar div.launch-event').click(function() {
+        if (!$('div#wrapper-sidebar div.launch-event').hasClass('launched')) {
+          $('div#wrapper-sidebar div.launch-event span.launch-text').html("Launching...");
+        }
         _this.switchLaunchState($('div#wrapper-sidebar div.launch-event').data('event-id'));
       });
     }

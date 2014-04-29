@@ -8,13 +8,13 @@ block sidebar
                 {% if event.is_launched %}
                 | Take Offline
                 {% else %}
-                | Publish Event
+                | Launch Event
                 {% endif %}
         div.primary-btn.show-for-medium-only
             | <span class="plus">+</span>
     +sidebarItem('ss-file')(href="{% url event:modify id 'basics' %}")
         | Basic Info
-    +sidebarItem('ss-picture')(href="{% url event:modify id 'design' %}", class="selected")
+    +sidebarItem('ss-picture')(href="{% url event:index id %}?design")(class="selected")
         | Page Design
     +sidebarItem('ss-tag')(href="{% url event:modify id 'tickets' %}")
         | Ticket Options

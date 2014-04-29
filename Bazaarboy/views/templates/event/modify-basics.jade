@@ -5,20 +5,9 @@ append head
     link(rel="stylesheet", href="{{ STATIC_URL }}pikaday/pikaday.css")
 
 block sidebar
-    div.launch-event(class="{% if event.is_launched %}launched{% endif %}", data-event-id="{{ event.id }}")
-        div.primary-btn.hide-for-medium-only
-            | <span class="plus">&nbsp;</span>
-            span.launch-text
-                {% if event.is_launched %}
-                | Take Offline
-                {% else %}
-                | Publish Event
-                {% endif %}
-        div.primary-btn.show-for-medium-only
-            | <span class="plus">+</span>
     +sidebarItem('ss-file')(href="{% url event:modify id 'basics' %}", class="selected")
         | Basic Info
-    +sidebarItem('ss-picture')(href="{% url event:modify id 'design' %}")
+    +sidebarItem('ss-picture')(href="{% url event:index id %}?design")
         | Page Design
     +sidebarItem('ss-tag')(href="{% url event:modify id 'tickets' %}")
         | Ticket Options
@@ -26,6 +15,19 @@ block sidebar
         | Bonus
     //-+sidebarItem('ss-mail')(href="{% url event:modify id 'emails' %}")
         | Emails
+    div.launch-event(class="{% if event.is_launched %}launched{% endif %}", data-event-id="{{ event.id }}")
+        div.primary-btn.hide-for-medium-only
+            | <span class="plus">&nbsp;</span>
+            span.launch-text
+                {% if event.is_launched %}
+                | Take Offline
+                {% else %}
+                | Launch Event
+                {% endif %}
+        div.primary-btn.show-for-medium-only
+            | <span class="plus">+</span>
+    +sidebarItem('ss-newspaper')(href="{% url index %}")(class="sidebar-separate")
+        | Events
 
 block header
     div.header-title.large-9.medium-10.columns.small-centered
@@ -34,7 +36,7 @@ block header
                 span.ss-file
             div.text.left
                 | Edit Event |
-                span.sub Modify Basic Event Information
+                span.sub &nbsp;Modify Basic Event Information
 
 block content
     div#wrapper-event-modify.large-9.medium-10.columns.small-centered

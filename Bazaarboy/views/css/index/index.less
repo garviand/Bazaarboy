@@ -1,6 +1,6 @@
 @import (reference) "vars.less";
 
-div.current-event, div.draft-event {
+div.current-event, div.draft-event, div.past-event {
     margin-top: 40px !important;
     margin-bottom: 40px !important;
 
@@ -10,7 +10,7 @@ div.current-event, div.draft-event {
         div.header {
             height: 64px;
 
-            div.current-event-collapse, div.draft-event-collapse {
+            div.current-event-collapse, div.draft-event-collapse, div.past-event-collapse {
                 height: 64px;
 
                 > div {
@@ -20,15 +20,14 @@ div.current-event, div.draft-event {
                 }
             }
 
-            div.current-event-title, div.draft-event-title {
-                height: 64px;
+            div.current-event-title, div.draft-event-title, div.past-event-title {
                 padding: 22px 0;
                 font-size: 20px;
                 font-weight: 500;
                 line-height: 20px;
             }
 
-            div.current-event-view, div.draft-event-view {
+            div.current-event-view, div.draft-event-view, div.past-event-view {
                 a {
                     display: block;
                     width: 100%;
@@ -55,13 +54,13 @@ div.current-event, div.draft-event {
                 background: @white;
                 border-radius: 4px;
 
-                div.current-event-datetime, div.draft-event-datetime {
+                div.current-event-datetime, div.draft-event-datetime, div.past-event-datetime {
                     position: relative;
                     height: 100%;
                     padding: 0;
                     border-right: 2px solid @grey;
 
-                    div.current-event-date, div.draft-event-date {
+                    div.current-event-date, div.draft-event-date, div.past-event-date {
                         position: absolute;
                         width: 38px;
                         height: 38px;
@@ -96,7 +95,7 @@ div.current-event, div.draft-event {
                         }
                     }
 
-                    div.current-event-time, div.draft-event-time {
+                    div.current-event-time, div.draft-event-time, div.past-event-time {
                         display: table;
                         position: absolute;
                         width: 100%;
@@ -115,7 +114,7 @@ div.current-event, div.draft-event {
                     }
                 }
 
-                div.current-event-location, div.draft-event-location {
+                div.current-event-location, div.draft-event-location, div.past-event-location {
                     @height: 13px;
                     height: @height;
                     padding-top: (54px - @height) / 2;
@@ -136,7 +135,7 @@ div.current-event, div.draft-event {
                 height: @stat-height;
                 margin-bottom: 15px;
 
-                div.current-event-stats, div.draft-event-stats {
+                div.current-event-stats, div.draft-event-stats, div.past-event-stats {
                     position: relative;
                     height: @stat-height;
 
@@ -228,12 +227,12 @@ div.current-event, div.draft-event {
                     }
                 }
 
-                div.current-event-actions, div.draft-event-actions {
+                div.current-event-actions, div.draft-event-actions, div.past-event-actions {
                     padding: 0;
                     border-radius: 4px;
                     background: #FFF;
 
-                    a.current-event-action, a.draft-event-action {
+                    a.current-event-action, a.draft-event-action, a.past-event-action {
                         display: block;
                         position: relative;
                         width: 100%;

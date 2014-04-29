@@ -8,13 +8,13 @@ block sidebar
             | <span class="plus">+</span> Create Event
         div.primary-btn.show-for-medium-only
             | <span class="plus">+</span>
-    +sidebarItem('ss-newspaper')(class="selected")
+    +sidebarItem('ss-newspaper')(href="{% url index %}")
         | Events
-    +sidebarItemSub('{{ currentEventsCount }}')(class="first")
+    +sidebarItemSub('{{ currentEventsCount }}')(class="first selected events-filter events-filter-current")
         | Current Events
-    +sidebarItemSub('{{ draftEventsCount }}')
+    +sidebarItemSub('{{ draftEventsCount }}')(class="events-filter events-filter-draft")
         | Event Drafts
-    +sidebarItemSub('{{ pastEventsCount }}')
+    +sidebarItemSub('{{ pastEventsCount }}')(class="events-filter events-filter-past")
         | Past Events
     //-+sidebarItem('ss-database')
         | Lists
@@ -76,7 +76,7 @@ block content
                                     span.ss-info
                                 div.text
                                     span Edit Info
-                            a.draft-event-action(href="{% url event:modify event.id 'design' %}")
+                            a.draft-event-action(href="{% url event:index event.id %}?design")
                                 div.icon
                                     span.ss-picture
                                 div.text
@@ -147,7 +147,7 @@ block content
                                     span.ss-info
                                 div.text
                                     span Edit Info
-                            a.current-event-action(href="{% url event:modify event.id 'design' %}")
+                            a.current-event-action(href="{% url event:index event.id %}?design")
                                 div.icon
                                     span.ss-picture
                                 div.text
@@ -157,16 +157,16 @@ block content
                                     span.ss-creditcard
                                 div.text
                                     span Ticket Options
-                            a.current-event-action(href="{% url event:modify event.id 'bonus' %}")
+                            a.current-event-action(href="{% url event:manage event.id %}")
                                 div.icon
-                                    span.ss-box
+                                    span.ss-file
                                 div.text
-                                    span Bonus
-                            a.current-event-action.last(href="{% url event:modify event.id 'emails' %}")
+                                    span Guest List
+                            a.current-event-action.last(href="{% url event:export %}?id={{ event.id }}")
                                 div.icon
-                                    span.ss-mail
+                                    span.ss-outbox
                                 div.text
-                                    span Emails
+                                    span Export Guests
                 //div
                     div.section-title.medium-12.columns
                         | Communications
@@ -177,13 +177,85 @@ block content
                 //div
                     div.section-title.medium-12.columns
                         | Bonus
+    mixin pastEvent()
+        div.past-event.row(data-id="{{ event.id }}", data-launched-time="{{ event.launched_time|date:'Y-m-d H:i:s' }}")
+            div.small-12.columns.tile
+                div.header.row
+                    div.past-event-collapse.large-1.medium-1.columns.action-btn
+                        div.absolute-center
+                    div.past-event-title.large-8.medium-7.columns
+                        | {{ event.name }}
+                    div.past-event-view.large-3.medium-4.columns
+                        div.row
+                            div.medium-10.medium-offset-2.columns
+                                a.secondary-btn(href="{% url event:index event.id %}?preview", target="_blank") 
+                                    | View Event
+                div.info.small-12.columns
+                    div.inner.row
+                        div.past-event-datetime.small-3.columns
+                            div.past-event-date
+                                div.month {{ event.start_time|date:'M' }}
+                                div.day {{ event.start_time|date:'j' }}
+                            div.past-event-time
+                                span
+                                    {{ event.start_time|date:'g:iA' }}{% if event.end_time %}-{{ event.end_time|date:'g:iA' }}{% endif %}
+                        div.past-event-location.small-9.columns
+                            | {{ event.location }}
+                div.stats.small-12.columns
+                    div.row
+                        div.past-event-stats.medium-9.columns
+                            div.bg.row
+                                div
+                            div.inner.row
+                                div
+                                    div.numbers.medium-4.columns
+                                        div.count
+                                            div.title
+                                                | RSVPs
+                                            div.number
+                                                {{ event.rsvpCount }}{% if event.potentialQuantity %}/{{ event.potentialQuantity }}{% endif %}
+                                        div.sales
+                                            div.title
+                                                | Revenue
+                                            div.number
+                                                | ${{ event.totalSale }}
+                                        div.sales-potential
+                                            div.title
+                                                | Potential Rev.
+                                            div.number
+                                                | ${{ event.potentialSale }}
+                                    div.graph.medium-8.columns
+                                        div.graph-frame
+                                            div.graph-canvas
+                        div.past-event-actions.medium-3.columns
+                            a.past-event-action(href="{% url event:index event.id %}?design")
+                                div.icon
+                                    span.ss-picture
+                                div.text
+                                    span Page Design
+                            a.past-event-action(href="{% url event:manage event.id %}")
+                                div.icon
+                                    span.ss-file
+                                div.text
+                                    span Guest List
+                            a.past-event-action.last(href="{% url event:export %}?id={{ event.id }}")
+                                div.icon
+                                    span.ss-outbox
+                                div.text
+                                    span Export Guests
     div#wrapper-dashboard.large-9.medium-10.columns.small-centered
-        {% for event in draftEvents %}
-        +draftEvent()
-        {% endfor %}
-        {% for event in currentEvents %}
-        +currentEvent()
-        {% endfor %}
+        div.event-tiles-container.current-events.active
+            {% for event in currentEvents %}
+            +currentEvent()
+            {% endfor %}
+        div.event-tiles-container.draft-events.hidden
+            {% for event in draftEvents %}
+            +draftEvent()
+            {% endfor %}
+        div.event-tiles-container.past-events.hidden
+            {% for event in pastEvents %}
+            +pastEvent()
+            {% endfor %}
 
 append script
     script(src="{{ STATIC_URL }}js/index/index.js")

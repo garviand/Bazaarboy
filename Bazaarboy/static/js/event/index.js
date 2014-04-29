@@ -165,6 +165,9 @@
       }
       $('a#rsvp-button').click(function() {
         if (!_this.overlayAnimationInProgress) {
+          $("html, body").animate({
+            scrollTop: 0
+          }, "fast");
           if ($('div#wrapper-overlay').hasClass('hide')) {
             _this.overlayAnimationInProgress = true;
             $('div#wrapper-overlay').css('opacity', 0).removeClass('hide');
@@ -195,6 +198,12 @@
             scope.overlayAnimationInProgress = false;
           });
         }
+      });
+      $('div#tickets-canvas div.ticket').click(function() {
+        $(this).find('.ticket-selected').click();
+      });
+      $('input.ticket-quantity').click(function(e) {
+        e.stopPropagation();
       });
       $('input.ticket-selected').click(function() {
         var wrapper;

@@ -98,7 +98,7 @@ Bazaarboy.index.index =
     launchEvent: (eventId) ->
         Bazaarboy.post 'event/launch/', {id: eventId}, (response) =>
             if response.status is 'OK'
-                window.location = 'event/' + eventId
+                window.location = '/event/' + eventId
             else
                 alert response.message
             return
@@ -108,6 +108,35 @@ Bazaarboy.index.index =
         $('div.create-event').click () ->
             profileId = $(this).attr('data-profile-id')
             scope.createEvent profileId
+            return
+        $('div#wrapper-sidebar a.sidebar-item.events-filter').click () ->
+            $('div#wrapper-sidebar a.sidebar-item.events-filter').removeClass('selected')
+            $(this).addClass('selected')
+            filter = $(this)
+            $('#wrapper-dashboard div.event-tiles-container.active').fadeOut 300, () ->
+                $('#wrapper-dashboard div.graph-canvas').empty()
+                $('#wrapper-dashboard div.event-tiles-container.active').removeClass('active')
+                if filter.hasClass('events-filter-current')
+                    $('div.header-title div.text span.sub').text 'Current Events'
+                    $('#wrapper-dashboard div.current-events').addClass('active')
+                    $('#wrapper-dashboard div.current-events').fadeIn 300, () ->
+                        $('div.current-event').each () ->
+                            scope.initGraph this
+                            return
+                        return
+                if filter.hasClass('events-filter-draft')
+                    $('div.header-title div.text span.sub').text 'Draft Events'
+                    $('#wrapper-dashboard div.draft-events').addClass('active')
+                    $('#wrapper-dashboard div.draft-events').fadeIn 300
+                if filter.hasClass('events-filter-past')
+                    $('div.header-title div.text span.sub').text 'Past Events'
+                    $('#wrapper-dashboard div.past-events').addClass('active')
+                    $('#wrapper-dashboard div.past-events').fadeIn 300, () ->
+                        $('div.past-event').each () ->
+                            scope.initGraph this
+                            return
+                        return
+                return
             return
         $('div.draft-event a.delete-draft').click (e) ->
             e.preventDefault()

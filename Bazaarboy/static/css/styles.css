@@ -5559,6 +5559,9 @@ div#map-canvas img {
   max-width: inherit;
 }
 /* Styles */
+.hidden {
+  display: none;
+}
 .absolute-center {
   position: absolute;
   margin: auto;
@@ -5815,6 +5818,9 @@ a.sidebar-item {
   margin-top: 2px;
   margin-bottom: 2px;
   color: #ffffff;
+}
+a.sidebar-item.sidebar-separate {
+  margin-bottom: 22px;
 }
 @media only screen and (min-width: 40.063em) and (max-width: 64em) {
   a.sidebar-item {
@@ -6100,37 +6106,54 @@ div#landing div.section-4 div.content img.glass {
   max-height: 250px;
 }
 div.current-event,
-div.draft-event {
+div.draft-event,
+div.past-event {
   margin-top: 40px !important;
   margin-bottom: 40px !important;
 }
 div.current-event > div.tile,
-div.draft-event > div.tile {
+div.draft-event > div.tile,
+div.past-event > div.tile {
   border-radius: 4px;
 }
 div.current-event > div.tile div.header,
-div.draft-event > div.tile div.header {
+div.draft-event > div.tile div.header,
+div.past-event > div.tile div.header {
   height: 64px;
 }
 div.current-event > div.tile div.header div.current-event-collapse,
 div.draft-event > div.tile div.header div.current-event-collapse,
+div.past-event > div.tile div.header div.current-event-collapse,
 div.current-event > div.tile div.header div.draft-event-collapse,
-div.draft-event > div.tile div.header div.draft-event-collapse {
+div.draft-event > div.tile div.header div.draft-event-collapse,
+div.past-event > div.tile div.header div.draft-event-collapse,
+div.current-event > div.tile div.header div.past-event-collapse,
+div.draft-event > div.tile div.header div.past-event-collapse,
+div.past-event > div.tile div.header div.past-event-collapse {
   height: 64px;
 }
 div.current-event > div.tile div.header div.current-event-collapse > div,
 div.draft-event > div.tile div.header div.current-event-collapse > div,
+div.past-event > div.tile div.header div.current-event-collapse > div,
 div.current-event > div.tile div.header div.draft-event-collapse > div,
-div.draft-event > div.tile div.header div.draft-event-collapse > div {
+div.draft-event > div.tile div.header div.draft-event-collapse > div,
+div.past-event > div.tile div.header div.draft-event-collapse > div,
+div.current-event > div.tile div.header div.past-event-collapse > div,
+div.draft-event > div.tile div.header div.past-event-collapse > div,
+div.past-event > div.tile div.header div.past-event-collapse > div {
   width: 24px;
   height: 24px;
   background: #faa638;
 }
 div.current-event > div.tile div.header div.current-event-title,
 div.draft-event > div.tile div.header div.current-event-title,
+div.past-event > div.tile div.header div.current-event-title,
 div.current-event > div.tile div.header div.draft-event-title,
-div.draft-event > div.tile div.header div.draft-event-title {
-  height: 64px;
+div.draft-event > div.tile div.header div.draft-event-title,
+div.past-event > div.tile div.header div.draft-event-title,
+div.current-event > div.tile div.header div.past-event-title,
+div.draft-event > div.tile div.header div.past-event-title,
+div.past-event > div.tile div.header div.past-event-title {
   padding: 22px 0;
   font-size: 20px;
   font-weight: 500;
@@ -6138,8 +6161,13 @@ div.draft-event > div.tile div.header div.draft-event-title {
 }
 div.current-event > div.tile div.header div.current-event-view a,
 div.draft-event > div.tile div.header div.current-event-view a,
+div.past-event > div.tile div.header div.current-event-view a,
 div.current-event > div.tile div.header div.draft-event-view a,
-div.draft-event > div.tile div.header div.draft-event-view a {
+div.draft-event > div.tile div.header div.draft-event-view a,
+div.past-event > div.tile div.header div.draft-event-view a,
+div.current-event > div.tile div.header div.past-event-view a,
+div.draft-event > div.tile div.header div.past-event-view a,
+div.past-event > div.tile div.header div.past-event-view a {
   display: block;
   width: 100%;
   height: 39px;
@@ -6153,24 +6181,36 @@ div.draft-event > div.tile div.header div.draft-event-view a {
 }
 div.current-event > div.tile div.header div.current-event-view div.draft-publish,
 div.draft-event > div.tile div.header div.current-event-view div.draft-publish,
+div.past-event > div.tile div.header div.current-event-view div.draft-publish,
 div.current-event > div.tile div.header div.draft-event-view div.draft-publish,
-div.draft-event > div.tile div.header div.draft-event-view div.draft-publish {
+div.draft-event > div.tile div.header div.draft-event-view div.draft-publish,
+div.past-event > div.tile div.header div.draft-event-view div.draft-publish,
+div.current-event > div.tile div.header div.past-event-view div.draft-publish,
+div.draft-event > div.tile div.header div.past-event-view div.draft-publish,
+div.past-event > div.tile div.header div.past-event-view div.draft-publish {
   padding-right: 0;
 }
 div.current-event > div.tile div.info,
-div.draft-event > div.tile div.info {
+div.draft-event > div.tile div.info,
+div.past-event > div.tile div.info {
   height: 54px;
 }
 div.current-event > div.tile div.info div.inner,
-div.draft-event > div.tile div.info div.inner {
+div.draft-event > div.tile div.info div.inner,
+div.past-event > div.tile div.info div.inner {
   height: 100%;
   background: #ffffff;
   border-radius: 4px;
 }
 div.current-event > div.tile div.info div.inner div.current-event-datetime,
 div.draft-event > div.tile div.info div.inner div.current-event-datetime,
+div.past-event > div.tile div.info div.inner div.current-event-datetime,
 div.current-event > div.tile div.info div.inner div.draft-event-datetime,
-div.draft-event > div.tile div.info div.inner div.draft-event-datetime {
+div.draft-event > div.tile div.info div.inner div.draft-event-datetime,
+div.past-event > div.tile div.info div.inner div.draft-event-datetime,
+div.current-event > div.tile div.info div.inner div.past-event-datetime,
+div.draft-event > div.tile div.info div.inner div.past-event-datetime,
+div.past-event > div.tile div.info div.inner div.past-event-datetime {
   position: relative;
   height: 100%;
   padding: 0;
@@ -6178,12 +6218,31 @@ div.draft-event > div.tile div.info div.inner div.draft-event-datetime {
 }
 div.current-event > div.tile div.info div.inner div.current-event-datetime div.current-event-date,
 div.draft-event > div.tile div.info div.inner div.current-event-datetime div.current-event-date,
+div.past-event > div.tile div.info div.inner div.current-event-datetime div.current-event-date,
 div.current-event > div.tile div.info div.inner div.draft-event-datetime div.current-event-date,
 div.draft-event > div.tile div.info div.inner div.draft-event-datetime div.current-event-date,
+div.past-event > div.tile div.info div.inner div.draft-event-datetime div.current-event-date,
+div.current-event > div.tile div.info div.inner div.past-event-datetime div.current-event-date,
+div.draft-event > div.tile div.info div.inner div.past-event-datetime div.current-event-date,
+div.past-event > div.tile div.info div.inner div.past-event-datetime div.current-event-date,
 div.current-event > div.tile div.info div.inner div.current-event-datetime div.draft-event-date,
 div.draft-event > div.tile div.info div.inner div.current-event-datetime div.draft-event-date,
+div.past-event > div.tile div.info div.inner div.current-event-datetime div.draft-event-date,
 div.current-event > div.tile div.info div.inner div.draft-event-datetime div.draft-event-date,
-div.draft-event > div.tile div.info div.inner div.draft-event-datetime div.draft-event-date {
+div.draft-event > div.tile div.info div.inner div.draft-event-datetime div.draft-event-date,
+div.past-event > div.tile div.info div.inner div.draft-event-datetime div.draft-event-date,
+div.current-event > div.tile div.info div.inner div.past-event-datetime div.draft-event-date,
+div.draft-event > div.tile div.info div.inner div.past-event-datetime div.draft-event-date,
+div.past-event > div.tile div.info div.inner div.past-event-datetime div.draft-event-date,
+div.current-event > div.tile div.info div.inner div.current-event-datetime div.past-event-date,
+div.draft-event > div.tile div.info div.inner div.current-event-datetime div.past-event-date,
+div.past-event > div.tile div.info div.inner div.current-event-datetime div.past-event-date,
+div.current-event > div.tile div.info div.inner div.draft-event-datetime div.past-event-date,
+div.draft-event > div.tile div.info div.inner div.draft-event-datetime div.past-event-date,
+div.past-event > div.tile div.info div.inner div.draft-event-datetime div.past-event-date,
+div.current-event > div.tile div.info div.inner div.past-event-datetime div.past-event-date,
+div.draft-event > div.tile div.info div.inner div.past-event-datetime div.past-event-date,
+div.past-event > div.tile div.info div.inner div.past-event-datetime div.past-event-date {
   position: absolute;
   width: 38px;
   height: 38px;
@@ -6194,12 +6253,31 @@ div.draft-event > div.tile div.info div.inner div.draft-event-datetime div.draft
 }
 div.current-event > div.tile div.info div.inner div.current-event-datetime div.current-event-date div.month,
 div.draft-event > div.tile div.info div.inner div.current-event-datetime div.current-event-date div.month,
+div.past-event > div.tile div.info div.inner div.current-event-datetime div.current-event-date div.month,
 div.current-event > div.tile div.info div.inner div.draft-event-datetime div.current-event-date div.month,
 div.draft-event > div.tile div.info div.inner div.draft-event-datetime div.current-event-date div.month,
+div.past-event > div.tile div.info div.inner div.draft-event-datetime div.current-event-date div.month,
+div.current-event > div.tile div.info div.inner div.past-event-datetime div.current-event-date div.month,
+div.draft-event > div.tile div.info div.inner div.past-event-datetime div.current-event-date div.month,
+div.past-event > div.tile div.info div.inner div.past-event-datetime div.current-event-date div.month,
 div.current-event > div.tile div.info div.inner div.current-event-datetime div.draft-event-date div.month,
 div.draft-event > div.tile div.info div.inner div.current-event-datetime div.draft-event-date div.month,
+div.past-event > div.tile div.info div.inner div.current-event-datetime div.draft-event-date div.month,
 div.current-event > div.tile div.info div.inner div.draft-event-datetime div.draft-event-date div.month,
-div.draft-event > div.tile div.info div.inner div.draft-event-datetime div.draft-event-date div.month {
+div.draft-event > div.tile div.info div.inner div.draft-event-datetime div.draft-event-date div.month,
+div.past-event > div.tile div.info div.inner div.draft-event-datetime div.draft-event-date div.month,
+div.current-event > div.tile div.info div.inner div.past-event-datetime div.draft-event-date div.month,
+div.draft-event > div.tile div.info div.inner div.past-event-datetime div.draft-event-date div.month,
+div.past-event > div.tile div.info div.inner div.past-event-datetime div.draft-event-date div.month,
+div.current-event > div.tile div.info div.inner div.current-event-datetime div.past-event-date div.month,
+div.draft-event > div.tile div.info div.inner div.current-event-datetime div.past-event-date div.month,
+div.past-event > div.tile div.info div.inner div.current-event-datetime div.past-event-date div.month,
+div.current-event > div.tile div.info div.inner div.draft-event-datetime div.past-event-date div.month,
+div.draft-event > div.tile div.info div.inner div.draft-event-datetime div.past-event-date div.month,
+div.past-event > div.tile div.info div.inner div.draft-event-datetime div.past-event-date div.month,
+div.current-event > div.tile div.info div.inner div.past-event-datetime div.past-event-date div.month,
+div.draft-event > div.tile div.info div.inner div.past-event-datetime div.past-event-date div.month,
+div.past-event > div.tile div.info div.inner div.past-event-datetime div.past-event-date div.month {
   width: 100%;
   height: 10px;
   margin-top: 3px;
@@ -6212,12 +6290,31 @@ div.draft-event > div.tile div.info div.inner div.draft-event-datetime div.draft
 }
 div.current-event > div.tile div.info div.inner div.current-event-datetime div.current-event-date div.day,
 div.draft-event > div.tile div.info div.inner div.current-event-datetime div.current-event-date div.day,
+div.past-event > div.tile div.info div.inner div.current-event-datetime div.current-event-date div.day,
 div.current-event > div.tile div.info div.inner div.draft-event-datetime div.current-event-date div.day,
 div.draft-event > div.tile div.info div.inner div.draft-event-datetime div.current-event-date div.day,
+div.past-event > div.tile div.info div.inner div.draft-event-datetime div.current-event-date div.day,
+div.current-event > div.tile div.info div.inner div.past-event-datetime div.current-event-date div.day,
+div.draft-event > div.tile div.info div.inner div.past-event-datetime div.current-event-date div.day,
+div.past-event > div.tile div.info div.inner div.past-event-datetime div.current-event-date div.day,
 div.current-event > div.tile div.info div.inner div.current-event-datetime div.draft-event-date div.day,
 div.draft-event > div.tile div.info div.inner div.current-event-datetime div.draft-event-date div.day,
+div.past-event > div.tile div.info div.inner div.current-event-datetime div.draft-event-date div.day,
 div.current-event > div.tile div.info div.inner div.draft-event-datetime div.draft-event-date div.day,
-div.draft-event > div.tile div.info div.inner div.draft-event-datetime div.draft-event-date div.day {
+div.draft-event > div.tile div.info div.inner div.draft-event-datetime div.draft-event-date div.day,
+div.past-event > div.tile div.info div.inner div.draft-event-datetime div.draft-event-date div.day,
+div.current-event > div.tile div.info div.inner div.past-event-datetime div.draft-event-date div.day,
+div.draft-event > div.tile div.info div.inner div.past-event-datetime div.draft-event-date div.day,
+div.past-event > div.tile div.info div.inner div.past-event-datetime div.draft-event-date div.day,
+div.current-event > div.tile div.info div.inner div.current-event-datetime div.past-event-date div.day,
+div.draft-event > div.tile div.info div.inner div.current-event-datetime div.past-event-date div.day,
+div.past-event > div.tile div.info div.inner div.current-event-datetime div.past-event-date div.day,
+div.current-event > div.tile div.info div.inner div.draft-event-datetime div.past-event-date div.day,
+div.draft-event > div.tile div.info div.inner div.draft-event-datetime div.past-event-date div.day,
+div.past-event > div.tile div.info div.inner div.draft-event-datetime div.past-event-date div.day,
+div.current-event > div.tile div.info div.inner div.past-event-datetime div.past-event-date div.day,
+div.draft-event > div.tile div.info div.inner div.past-event-datetime div.past-event-date div.day,
+div.past-event > div.tile div.info div.inner div.past-event-datetime div.past-event-date div.day {
   width: 36px;
   height: 20px;
   background: #ffffff;
@@ -6231,12 +6328,31 @@ div.draft-event > div.tile div.info div.inner div.draft-event-datetime div.draft
 }
 div.current-event > div.tile div.info div.inner div.current-event-datetime div.current-event-time,
 div.draft-event > div.tile div.info div.inner div.current-event-datetime div.current-event-time,
+div.past-event > div.tile div.info div.inner div.current-event-datetime div.current-event-time,
 div.current-event > div.tile div.info div.inner div.draft-event-datetime div.current-event-time,
 div.draft-event > div.tile div.info div.inner div.draft-event-datetime div.current-event-time,
+div.past-event > div.tile div.info div.inner div.draft-event-datetime div.current-event-time,
+div.current-event > div.tile div.info div.inner div.past-event-datetime div.current-event-time,
+div.draft-event > div.tile div.info div.inner div.past-event-datetime div.current-event-time,
+div.past-event > div.tile div.info div.inner div.past-event-datetime div.current-event-time,
 div.current-event > div.tile div.info div.inner div.current-event-datetime div.draft-event-time,
 div.draft-event > div.tile div.info div.inner div.current-event-datetime div.draft-event-time,
+div.past-event > div.tile div.info div.inner div.current-event-datetime div.draft-event-time,
 div.current-event > div.tile div.info div.inner div.draft-event-datetime div.draft-event-time,
-div.draft-event > div.tile div.info div.inner div.draft-event-datetime div.draft-event-time {
+div.draft-event > div.tile div.info div.inner div.draft-event-datetime div.draft-event-time,
+div.past-event > div.tile div.info div.inner div.draft-event-datetime div.draft-event-time,
+div.current-event > div.tile div.info div.inner div.past-event-datetime div.draft-event-time,
+div.draft-event > div.tile div.info div.inner div.past-event-datetime div.draft-event-time,
+div.past-event > div.tile div.info div.inner div.past-event-datetime div.draft-event-time,
+div.current-event > div.tile div.info div.inner div.current-event-datetime div.past-event-time,
+div.draft-event > div.tile div.info div.inner div.current-event-datetime div.past-event-time,
+div.past-event > div.tile div.info div.inner div.current-event-datetime div.past-event-time,
+div.current-event > div.tile div.info div.inner div.draft-event-datetime div.past-event-time,
+div.draft-event > div.tile div.info div.inner div.draft-event-datetime div.past-event-time,
+div.past-event > div.tile div.info div.inner div.draft-event-datetime div.past-event-time,
+div.current-event > div.tile div.info div.inner div.past-event-datetime div.past-event-time,
+div.draft-event > div.tile div.info div.inner div.past-event-datetime div.past-event-time,
+div.past-event > div.tile div.info div.inner div.past-event-datetime div.past-event-time {
   display: table;
   position: absolute;
   width: 100%;
@@ -6250,19 +6366,43 @@ div.draft-event > div.tile div.info div.inner div.draft-event-datetime div.draft
 }
 div.current-event > div.tile div.info div.inner div.current-event-datetime div.current-event-time span,
 div.draft-event > div.tile div.info div.inner div.current-event-datetime div.current-event-time span,
+div.past-event > div.tile div.info div.inner div.current-event-datetime div.current-event-time span,
 div.current-event > div.tile div.info div.inner div.draft-event-datetime div.current-event-time span,
 div.draft-event > div.tile div.info div.inner div.draft-event-datetime div.current-event-time span,
+div.past-event > div.tile div.info div.inner div.draft-event-datetime div.current-event-time span,
+div.current-event > div.tile div.info div.inner div.past-event-datetime div.current-event-time span,
+div.draft-event > div.tile div.info div.inner div.past-event-datetime div.current-event-time span,
+div.past-event > div.tile div.info div.inner div.past-event-datetime div.current-event-time span,
 div.current-event > div.tile div.info div.inner div.current-event-datetime div.draft-event-time span,
 div.draft-event > div.tile div.info div.inner div.current-event-datetime div.draft-event-time span,
+div.past-event > div.tile div.info div.inner div.current-event-datetime div.draft-event-time span,
 div.current-event > div.tile div.info div.inner div.draft-event-datetime div.draft-event-time span,
-div.draft-event > div.tile div.info div.inner div.draft-event-datetime div.draft-event-time span {
+div.draft-event > div.tile div.info div.inner div.draft-event-datetime div.draft-event-time span,
+div.past-event > div.tile div.info div.inner div.draft-event-datetime div.draft-event-time span,
+div.current-event > div.tile div.info div.inner div.past-event-datetime div.draft-event-time span,
+div.draft-event > div.tile div.info div.inner div.past-event-datetime div.draft-event-time span,
+div.past-event > div.tile div.info div.inner div.past-event-datetime div.draft-event-time span,
+div.current-event > div.tile div.info div.inner div.current-event-datetime div.past-event-time span,
+div.draft-event > div.tile div.info div.inner div.current-event-datetime div.past-event-time span,
+div.past-event > div.tile div.info div.inner div.current-event-datetime div.past-event-time span,
+div.current-event > div.tile div.info div.inner div.draft-event-datetime div.past-event-time span,
+div.draft-event > div.tile div.info div.inner div.draft-event-datetime div.past-event-time span,
+div.past-event > div.tile div.info div.inner div.draft-event-datetime div.past-event-time span,
+div.current-event > div.tile div.info div.inner div.past-event-datetime div.past-event-time span,
+div.draft-event > div.tile div.info div.inner div.past-event-datetime div.past-event-time span,
+div.past-event > div.tile div.info div.inner div.past-event-datetime div.past-event-time span {
   display: table-cell;
   vertical-align: middle;
 }
 div.current-event > div.tile div.info div.inner div.current-event-location,
 div.draft-event > div.tile div.info div.inner div.current-event-location,
+div.past-event > div.tile div.info div.inner div.current-event-location,
 div.current-event > div.tile div.info div.inner div.draft-event-location,
-div.draft-event > div.tile div.info div.inner div.draft-event-location {
+div.draft-event > div.tile div.info div.inner div.draft-event-location,
+div.past-event > div.tile div.info div.inner div.draft-event-location,
+div.current-event > div.tile div.info div.inner div.past-event-location,
+div.draft-event > div.tile div.info div.inner div.past-event-location,
+div.past-event > div.tile div.info div.inner div.past-event-location {
   height: 13px;
   padding-top: 20.5px;
   padding-bottom: 20.5px;
@@ -6271,25 +6411,37 @@ div.draft-event > div.tile div.info div.inner div.draft-event-location {
   font-weight: 500;
 }
 div.current-event > div.tile div.stats,
-div.draft-event > div.tile div.stats {
+div.draft-event > div.tile div.stats,
+div.past-event > div.tile div.stats {
   margin-top: 10px;
 }
 div.current-event > div.tile div.stats > div.row,
-div.draft-event > div.tile div.stats > div.row {
+div.draft-event > div.tile div.stats > div.row,
+div.past-event > div.tile div.stats > div.row {
   height: 228px;
   margin-bottom: 15px;
 }
 div.current-event > div.tile div.stats > div.row div.current-event-stats,
 div.draft-event > div.tile div.stats > div.row div.current-event-stats,
+div.past-event > div.tile div.stats > div.row div.current-event-stats,
 div.current-event > div.tile div.stats > div.row div.draft-event-stats,
-div.draft-event > div.tile div.stats > div.row div.draft-event-stats {
+div.draft-event > div.tile div.stats > div.row div.draft-event-stats,
+div.past-event > div.tile div.stats > div.row div.draft-event-stats,
+div.current-event > div.tile div.stats > div.row div.past-event-stats,
+div.draft-event > div.tile div.stats > div.row div.past-event-stats,
+div.past-event > div.tile div.stats > div.row div.past-event-stats {
   position: relative;
   height: 228px;
 }
 div.current-event > div.tile div.stats > div.row div.current-event-stats div.bg,
 div.draft-event > div.tile div.stats > div.row div.current-event-stats div.bg,
+div.past-event > div.tile div.stats > div.row div.current-event-stats div.bg,
 div.current-event > div.tile div.stats > div.row div.draft-event-stats div.bg,
-div.draft-event > div.tile div.stats > div.row div.draft-event-stats div.bg {
+div.draft-event > div.tile div.stats > div.row div.draft-event-stats div.bg,
+div.past-event > div.tile div.stats > div.row div.draft-event-stats div.bg,
+div.current-event > div.tile div.stats > div.row div.past-event-stats div.bg,
+div.draft-event > div.tile div.stats > div.row div.past-event-stats div.bg,
+div.past-event > div.tile div.stats > div.row div.past-event-stats div.bg {
   position: relative;
   height: 100%;
   padding-right: 15px;
@@ -6297,16 +6449,26 @@ div.draft-event > div.tile div.stats > div.row div.draft-event-stats div.bg {
 }
 div.current-event > div.tile div.stats > div.row div.current-event-stats div.bg > div,
 div.draft-event > div.tile div.stats > div.row div.current-event-stats div.bg > div,
+div.past-event > div.tile div.stats > div.row div.current-event-stats div.bg > div,
 div.current-event > div.tile div.stats > div.row div.draft-event-stats div.bg > div,
-div.draft-event > div.tile div.stats > div.row div.draft-event-stats div.bg > div {
+div.draft-event > div.tile div.stats > div.row div.draft-event-stats div.bg > div,
+div.past-event > div.tile div.stats > div.row div.draft-event-stats div.bg > div,
+div.current-event > div.tile div.stats > div.row div.past-event-stats div.bg > div,
+div.draft-event > div.tile div.stats > div.row div.past-event-stats div.bg > div,
+div.past-event > div.tile div.stats > div.row div.past-event-stats div.bg > div {
   height: 100%;
   border-radius: 4px;
   background: #ffffff;
 }
 div.current-event > div.tile div.stats > div.row div.current-event-stats div.inner,
 div.draft-event > div.tile div.stats > div.row div.current-event-stats div.inner,
+div.past-event > div.tile div.stats > div.row div.current-event-stats div.inner,
 div.current-event > div.tile div.stats > div.row div.draft-event-stats div.inner,
-div.draft-event > div.tile div.stats > div.row div.draft-event-stats div.inner {
+div.draft-event > div.tile div.stats > div.row div.draft-event-stats div.inner,
+div.past-event > div.tile div.stats > div.row div.draft-event-stats div.inner,
+div.current-event > div.tile div.stats > div.row div.past-event-stats div.inner,
+div.draft-event > div.tile div.stats > div.row div.past-event-stats div.inner,
+div.past-event > div.tile div.stats > div.row div.past-event-stats div.inner {
   position: relative;
   height: 100%;
   z-index: 1;
@@ -6314,23 +6476,38 @@ div.draft-event > div.tile div.stats > div.row div.draft-event-stats div.inner {
 }
 div.current-event > div.tile div.stats > div.row div.current-event-stats div.inner > div,
 div.draft-event > div.tile div.stats > div.row div.current-event-stats div.inner > div,
+div.past-event > div.tile div.stats > div.row div.current-event-stats div.inner > div,
 div.current-event > div.tile div.stats > div.row div.draft-event-stats div.inner > div,
-div.draft-event > div.tile div.stats > div.row div.draft-event-stats div.inner > div {
+div.draft-event > div.tile div.stats > div.row div.draft-event-stats div.inner > div,
+div.past-event > div.tile div.stats > div.row div.draft-event-stats div.inner > div,
+div.current-event > div.tile div.stats > div.row div.past-event-stats div.inner > div,
+div.draft-event > div.tile div.stats > div.row div.past-event-stats div.inner > div,
+div.past-event > div.tile div.stats > div.row div.past-event-stats div.inner > div {
   width: 100%;
   height: 100%;
 }
 div.current-event > div.tile div.stats > div.row div.current-event-stats div.inner > div div.numbers,
 div.draft-event > div.tile div.stats > div.row div.current-event-stats div.inner > div div.numbers,
+div.past-event > div.tile div.stats > div.row div.current-event-stats div.inner > div div.numbers,
 div.current-event > div.tile div.stats > div.row div.draft-event-stats div.inner > div div.numbers,
-div.draft-event > div.tile div.stats > div.row div.draft-event-stats div.inner > div div.numbers {
+div.draft-event > div.tile div.stats > div.row div.draft-event-stats div.inner > div div.numbers,
+div.past-event > div.tile div.stats > div.row div.draft-event-stats div.inner > div div.numbers,
+div.current-event > div.tile div.stats > div.row div.past-event-stats div.inner > div div.numbers,
+div.draft-event > div.tile div.stats > div.row div.past-event-stats div.inner > div div.numbers,
+div.past-event > div.tile div.stats > div.row div.past-event-stats div.inner > div div.numbers {
   height: 100%;
   padding: 0;
   border-right: 2px solid #f6f6f6;
 }
 div.current-event > div.tile div.stats > div.row div.current-event-stats div.inner > div div.numbers div.title,
 div.draft-event > div.tile div.stats > div.row div.current-event-stats div.inner > div div.numbers div.title,
+div.past-event > div.tile div.stats > div.row div.current-event-stats div.inner > div div.numbers div.title,
 div.current-event > div.tile div.stats > div.row div.draft-event-stats div.inner > div div.numbers div.title,
-div.draft-event > div.tile div.stats > div.row div.draft-event-stats div.inner > div div.numbers div.title {
+div.draft-event > div.tile div.stats > div.row div.draft-event-stats div.inner > div div.numbers div.title,
+div.past-event > div.tile div.stats > div.row div.draft-event-stats div.inner > div div.numbers div.title,
+div.current-event > div.tile div.stats > div.row div.past-event-stats div.inner > div div.numbers div.title,
+div.draft-event > div.tile div.stats > div.row div.past-event-stats div.inner > div div.numbers div.title,
+div.past-event > div.tile div.stats > div.row div.past-event-stats div.inner > div div.numbers div.title {
   color: #a1a1a1;
   font-size: 14px;
   font-weight: 700;
@@ -6338,8 +6515,13 @@ div.draft-event > div.tile div.stats > div.row div.draft-event-stats div.inner >
 }
 div.current-event > div.tile div.stats > div.row div.current-event-stats div.inner > div div.numbers div.number,
 div.draft-event > div.tile div.stats > div.row div.current-event-stats div.inner > div div.numbers div.number,
+div.past-event > div.tile div.stats > div.row div.current-event-stats div.inner > div div.numbers div.number,
 div.current-event > div.tile div.stats > div.row div.draft-event-stats div.inner > div div.numbers div.number,
-div.draft-event > div.tile div.stats > div.row div.draft-event-stats div.inner > div div.numbers div.number {
+div.draft-event > div.tile div.stats > div.row div.draft-event-stats div.inner > div div.numbers div.number,
+div.past-event > div.tile div.stats > div.row div.draft-event-stats div.inner > div div.numbers div.number,
+div.current-event > div.tile div.stats > div.row div.past-event-stats div.inner > div div.numbers div.number,
+div.draft-event > div.tile div.stats > div.row div.past-event-stats div.inner > div div.numbers div.number,
+div.past-event > div.tile div.stats > div.row div.past-event-stats div.inner > div div.numbers div.number {
   margin-top: 10px;
   color: #4A4A4A;
   font-size: 26px;
@@ -6347,8 +6529,13 @@ div.draft-event > div.tile div.stats > div.row div.draft-event-stats div.inner >
 }
 div.current-event > div.tile div.stats > div.row div.current-event-stats div.inner > div div.numbers > div,
 div.draft-event > div.tile div.stats > div.row div.current-event-stats div.inner > div div.numbers > div,
+div.past-event > div.tile div.stats > div.row div.current-event-stats div.inner > div div.numbers > div,
 div.current-event > div.tile div.stats > div.row div.draft-event-stats div.inner > div div.numbers > div,
-div.draft-event > div.tile div.stats > div.row div.draft-event-stats div.inner > div div.numbers > div {
+div.draft-event > div.tile div.stats > div.row div.draft-event-stats div.inner > div div.numbers > div,
+div.past-event > div.tile div.stats > div.row div.draft-event-stats div.inner > div div.numbers > div,
+div.current-event > div.tile div.stats > div.row div.past-event-stats div.inner > div div.numbers > div,
+div.draft-event > div.tile div.stats > div.row div.past-event-stats div.inner > div div.numbers > div,
+div.past-event > div.tile div.stats > div.row div.past-event-stats div.inner > div div.numbers > div {
   height: 76px;
   padding: 5px 10px;
   padding-top: 15px;
@@ -6356,14 +6543,24 @@ div.draft-event > div.tile div.stats > div.row div.draft-event-stats div.inner >
 }
 div.current-event > div.tile div.stats > div.row div.current-event-stats div.inner > div div.numbers > div.last,
 div.draft-event > div.tile div.stats > div.row div.current-event-stats div.inner > div div.numbers > div.last,
+div.past-event > div.tile div.stats > div.row div.current-event-stats div.inner > div div.numbers > div.last,
 div.current-event > div.tile div.stats > div.row div.draft-event-stats div.inner > div div.numbers > div.last,
-div.draft-event > div.tile div.stats > div.row div.draft-event-stats div.inner > div div.numbers > div.last {
+div.draft-event > div.tile div.stats > div.row div.draft-event-stats div.inner > div div.numbers > div.last,
+div.past-event > div.tile div.stats > div.row div.draft-event-stats div.inner > div div.numbers > div.last,
+div.current-event > div.tile div.stats > div.row div.past-event-stats div.inner > div div.numbers > div.last,
+div.draft-event > div.tile div.stats > div.row div.past-event-stats div.inner > div div.numbers > div.last,
+div.past-event > div.tile div.stats > div.row div.past-event-stats div.inner > div div.numbers > div.last {
   border-bottom: none;
 }
 div.current-event > div.tile div.stats > div.row div.current-event-stats div.inner > div div.summary div.summary-title,
 div.draft-event > div.tile div.stats > div.row div.current-event-stats div.inner > div div.summary div.summary-title,
+div.past-event > div.tile div.stats > div.row div.current-event-stats div.inner > div div.summary div.summary-title,
 div.current-event > div.tile div.stats > div.row div.draft-event-stats div.inner > div div.summary div.summary-title,
-div.draft-event > div.tile div.stats > div.row div.draft-event-stats div.inner > div div.summary div.summary-title {
+div.draft-event > div.tile div.stats > div.row div.draft-event-stats div.inner > div div.summary div.summary-title,
+div.past-event > div.tile div.stats > div.row div.draft-event-stats div.inner > div div.summary div.summary-title,
+div.current-event > div.tile div.stats > div.row div.past-event-stats div.inner > div div.summary div.summary-title,
+div.draft-event > div.tile div.stats > div.row div.past-event-stats div.inner > div div.summary div.summary-title,
+div.past-event > div.tile div.stats > div.row div.past-event-stats div.inner > div div.summary div.summary-title {
   color: #D6D6D6;
   font-weight: 600;
   font-size: .9rem;
@@ -6371,8 +6568,13 @@ div.draft-event > div.tile div.stats > div.row div.draft-event-stats div.inner >
 }
 div.current-event > div.tile div.stats > div.row div.current-event-stats div.inner > div div.summary div.summary-text,
 div.draft-event > div.tile div.stats > div.row div.current-event-stats div.inner > div div.summary div.summary-text,
+div.past-event > div.tile div.stats > div.row div.current-event-stats div.inner > div div.summary div.summary-text,
 div.current-event > div.tile div.stats > div.row div.draft-event-stats div.inner > div div.summary div.summary-text,
-div.draft-event > div.tile div.stats > div.row div.draft-event-stats div.inner > div div.summary div.summary-text {
+div.draft-event > div.tile div.stats > div.row div.draft-event-stats div.inner > div div.summary div.summary-text,
+div.past-event > div.tile div.stats > div.row div.draft-event-stats div.inner > div div.summary div.summary-text,
+div.current-event > div.tile div.stats > div.row div.past-event-stats div.inner > div div.summary div.summary-text,
+div.draft-event > div.tile div.stats > div.row div.past-event-stats div.inner > div div.summary div.summary-text,
+div.past-event > div.tile div.stats > div.row div.past-event-stats div.inner > div div.summary div.summary-text {
   color: #3c3c3c;
   font-weight: 100;
   line-height: 1.5rem;
@@ -6380,42 +6582,81 @@ div.draft-event > div.tile div.stats > div.row div.draft-event-stats div.inner >
 }
 div.current-event > div.tile div.stats > div.row div.current-event-stats div.inner > div div.graph,
 div.draft-event > div.tile div.stats > div.row div.current-event-stats div.inner > div div.graph,
+div.past-event > div.tile div.stats > div.row div.current-event-stats div.inner > div div.graph,
 div.current-event > div.tile div.stats > div.row div.draft-event-stats div.inner > div div.graph,
-div.draft-event > div.tile div.stats > div.row div.draft-event-stats div.inner > div div.graph {
+div.draft-event > div.tile div.stats > div.row div.draft-event-stats div.inner > div div.graph,
+div.past-event > div.tile div.stats > div.row div.draft-event-stats div.inner > div div.graph,
+div.current-event > div.tile div.stats > div.row div.past-event-stats div.inner > div div.graph,
+div.draft-event > div.tile div.stats > div.row div.past-event-stats div.inner > div div.graph,
+div.past-event > div.tile div.stats > div.row div.past-event-stats div.inner > div div.graph {
   height: 100%;
   padding-left: 0;
 }
 div.current-event > div.tile div.stats > div.row div.current-event-stats div.inner > div div.graph div.graph-frame,
 div.draft-event > div.tile div.stats > div.row div.current-event-stats div.inner > div div.graph div.graph-frame,
+div.past-event > div.tile div.stats > div.row div.current-event-stats div.inner > div div.graph div.graph-frame,
 div.current-event > div.tile div.stats > div.row div.draft-event-stats div.inner > div div.graph div.graph-frame,
-div.draft-event > div.tile div.stats > div.row div.draft-event-stats div.inner > div div.graph div.graph-frame {
+div.draft-event > div.tile div.stats > div.row div.draft-event-stats div.inner > div div.graph div.graph-frame,
+div.past-event > div.tile div.stats > div.row div.draft-event-stats div.inner > div div.graph div.graph-frame,
+div.current-event > div.tile div.stats > div.row div.past-event-stats div.inner > div div.graph div.graph-frame,
+div.draft-event > div.tile div.stats > div.row div.past-event-stats div.inner > div div.graph div.graph-frame,
+div.past-event > div.tile div.stats > div.row div.past-event-stats div.inner > div div.graph div.graph-frame {
   width: 100%;
   height: 100%;
   padding: 5px 0;
 }
 div.current-event > div.tile div.stats > div.row div.current-event-stats div.inner > div div.graph div.graph-frame div.graph-canvas,
 div.draft-event > div.tile div.stats > div.row div.current-event-stats div.inner > div div.graph div.graph-frame div.graph-canvas,
+div.past-event > div.tile div.stats > div.row div.current-event-stats div.inner > div div.graph div.graph-frame div.graph-canvas,
 div.current-event > div.tile div.stats > div.row div.draft-event-stats div.inner > div div.graph div.graph-frame div.graph-canvas,
-div.draft-event > div.tile div.stats > div.row div.draft-event-stats div.inner > div div.graph div.graph-frame div.graph-canvas {
+div.draft-event > div.tile div.stats > div.row div.draft-event-stats div.inner > div div.graph div.graph-frame div.graph-canvas,
+div.past-event > div.tile div.stats > div.row div.draft-event-stats div.inner > div div.graph div.graph-frame div.graph-canvas,
+div.current-event > div.tile div.stats > div.row div.past-event-stats div.inner > div div.graph div.graph-frame div.graph-canvas,
+div.draft-event > div.tile div.stats > div.row div.past-event-stats div.inner > div div.graph div.graph-frame div.graph-canvas,
+div.past-event > div.tile div.stats > div.row div.past-event-stats div.inner > div div.graph div.graph-frame div.graph-canvas {
   width: 100%;
   height: 100%;
 }
 div.current-event > div.tile div.stats > div.row div.current-event-actions,
 div.draft-event > div.tile div.stats > div.row div.current-event-actions,
+div.past-event > div.tile div.stats > div.row div.current-event-actions,
 div.current-event > div.tile div.stats > div.row div.draft-event-actions,
-div.draft-event > div.tile div.stats > div.row div.draft-event-actions {
+div.draft-event > div.tile div.stats > div.row div.draft-event-actions,
+div.past-event > div.tile div.stats > div.row div.draft-event-actions,
+div.current-event > div.tile div.stats > div.row div.past-event-actions,
+div.draft-event > div.tile div.stats > div.row div.past-event-actions,
+div.past-event > div.tile div.stats > div.row div.past-event-actions {
   padding: 0;
   border-radius: 4px;
   background: #FFF;
 }
 div.current-event > div.tile div.stats > div.row div.current-event-actions a.current-event-action,
 div.draft-event > div.tile div.stats > div.row div.current-event-actions a.current-event-action,
+div.past-event > div.tile div.stats > div.row div.current-event-actions a.current-event-action,
 div.current-event > div.tile div.stats > div.row div.draft-event-actions a.current-event-action,
 div.draft-event > div.tile div.stats > div.row div.draft-event-actions a.current-event-action,
+div.past-event > div.tile div.stats > div.row div.draft-event-actions a.current-event-action,
+div.current-event > div.tile div.stats > div.row div.past-event-actions a.current-event-action,
+div.draft-event > div.tile div.stats > div.row div.past-event-actions a.current-event-action,
+div.past-event > div.tile div.stats > div.row div.past-event-actions a.current-event-action,
 div.current-event > div.tile div.stats > div.row div.current-event-actions a.draft-event-action,
 div.draft-event > div.tile div.stats > div.row div.current-event-actions a.draft-event-action,
+div.past-event > div.tile div.stats > div.row div.current-event-actions a.draft-event-action,
 div.current-event > div.tile div.stats > div.row div.draft-event-actions a.draft-event-action,
-div.draft-event > div.tile div.stats > div.row div.draft-event-actions a.draft-event-action {
+div.draft-event > div.tile div.stats > div.row div.draft-event-actions a.draft-event-action,
+div.past-event > div.tile div.stats > div.row div.draft-event-actions a.draft-event-action,
+div.current-event > div.tile div.stats > div.row div.past-event-actions a.draft-event-action,
+div.draft-event > div.tile div.stats > div.row div.past-event-actions a.draft-event-action,
+div.past-event > div.tile div.stats > div.row div.past-event-actions a.draft-event-action,
+div.current-event > div.tile div.stats > div.row div.current-event-actions a.past-event-action,
+div.draft-event > div.tile div.stats > div.row div.current-event-actions a.past-event-action,
+div.past-event > div.tile div.stats > div.row div.current-event-actions a.past-event-action,
+div.current-event > div.tile div.stats > div.row div.draft-event-actions a.past-event-action,
+div.draft-event > div.tile div.stats > div.row div.draft-event-actions a.past-event-action,
+div.past-event > div.tile div.stats > div.row div.draft-event-actions a.past-event-action,
+div.current-event > div.tile div.stats > div.row div.past-event-actions a.past-event-action,
+div.draft-event > div.tile div.stats > div.row div.past-event-actions a.past-event-action,
+div.past-event > div.tile div.stats > div.row div.past-event-actions a.past-event-action {
   display: block;
   position: relative;
   width: 100%;
@@ -6425,53 +6666,148 @@ div.draft-event > div.tile div.stats > div.row div.draft-event-actions a.draft-e
 }
 div.current-event > div.tile div.stats > div.row div.current-event-actions a.current-event-action:hover,
 div.draft-event > div.tile div.stats > div.row div.current-event-actions a.current-event-action:hover,
+div.past-event > div.tile div.stats > div.row div.current-event-actions a.current-event-action:hover,
 div.current-event > div.tile div.stats > div.row div.draft-event-actions a.current-event-action:hover,
 div.draft-event > div.tile div.stats > div.row div.draft-event-actions a.current-event-action:hover,
+div.past-event > div.tile div.stats > div.row div.draft-event-actions a.current-event-action:hover,
+div.current-event > div.tile div.stats > div.row div.past-event-actions a.current-event-action:hover,
+div.draft-event > div.tile div.stats > div.row div.past-event-actions a.current-event-action:hover,
+div.past-event > div.tile div.stats > div.row div.past-event-actions a.current-event-action:hover,
 div.current-event > div.tile div.stats > div.row div.current-event-actions a.draft-event-action:hover,
 div.draft-event > div.tile div.stats > div.row div.current-event-actions a.draft-event-action:hover,
+div.past-event > div.tile div.stats > div.row div.current-event-actions a.draft-event-action:hover,
 div.current-event > div.tile div.stats > div.row div.draft-event-actions a.draft-event-action:hover,
-div.draft-event > div.tile div.stats > div.row div.draft-event-actions a.draft-event-action:hover {
+div.draft-event > div.tile div.stats > div.row div.draft-event-actions a.draft-event-action:hover,
+div.past-event > div.tile div.stats > div.row div.draft-event-actions a.draft-event-action:hover,
+div.current-event > div.tile div.stats > div.row div.past-event-actions a.draft-event-action:hover,
+div.draft-event > div.tile div.stats > div.row div.past-event-actions a.draft-event-action:hover,
+div.past-event > div.tile div.stats > div.row div.past-event-actions a.draft-event-action:hover,
+div.current-event > div.tile div.stats > div.row div.current-event-actions a.past-event-action:hover,
+div.draft-event > div.tile div.stats > div.row div.current-event-actions a.past-event-action:hover,
+div.past-event > div.tile div.stats > div.row div.current-event-actions a.past-event-action:hover,
+div.current-event > div.tile div.stats > div.row div.draft-event-actions a.past-event-action:hover,
+div.draft-event > div.tile div.stats > div.row div.draft-event-actions a.past-event-action:hover,
+div.past-event > div.tile div.stats > div.row div.draft-event-actions a.past-event-action:hover,
+div.current-event > div.tile div.stats > div.row div.past-event-actions a.past-event-action:hover,
+div.draft-event > div.tile div.stats > div.row div.past-event-actions a.past-event-action:hover,
+div.past-event > div.tile div.stats > div.row div.past-event-actions a.past-event-action:hover {
   background: #5ae8be;
 }
 div.current-event > div.tile div.stats > div.row div.current-event-actions a.current-event-action:hover div.icon,
 div.draft-event > div.tile div.stats > div.row div.current-event-actions a.current-event-action:hover div.icon,
+div.past-event > div.tile div.stats > div.row div.current-event-actions a.current-event-action:hover div.icon,
 div.current-event > div.tile div.stats > div.row div.draft-event-actions a.current-event-action:hover div.icon,
 div.draft-event > div.tile div.stats > div.row div.draft-event-actions a.current-event-action:hover div.icon,
+div.past-event > div.tile div.stats > div.row div.draft-event-actions a.current-event-action:hover div.icon,
+div.current-event > div.tile div.stats > div.row div.past-event-actions a.current-event-action:hover div.icon,
+div.draft-event > div.tile div.stats > div.row div.past-event-actions a.current-event-action:hover div.icon,
+div.past-event > div.tile div.stats > div.row div.past-event-actions a.current-event-action:hover div.icon,
 div.current-event > div.tile div.stats > div.row div.current-event-actions a.draft-event-action:hover div.icon,
 div.draft-event > div.tile div.stats > div.row div.current-event-actions a.draft-event-action:hover div.icon,
+div.past-event > div.tile div.stats > div.row div.current-event-actions a.draft-event-action:hover div.icon,
 div.current-event > div.tile div.stats > div.row div.draft-event-actions a.draft-event-action:hover div.icon,
-div.draft-event > div.tile div.stats > div.row div.draft-event-actions a.draft-event-action:hover div.icon {
+div.draft-event > div.tile div.stats > div.row div.draft-event-actions a.draft-event-action:hover div.icon,
+div.past-event > div.tile div.stats > div.row div.draft-event-actions a.draft-event-action:hover div.icon,
+div.current-event > div.tile div.stats > div.row div.past-event-actions a.draft-event-action:hover div.icon,
+div.draft-event > div.tile div.stats > div.row div.past-event-actions a.draft-event-action:hover div.icon,
+div.past-event > div.tile div.stats > div.row div.past-event-actions a.draft-event-action:hover div.icon,
+div.current-event > div.tile div.stats > div.row div.current-event-actions a.past-event-action:hover div.icon,
+div.draft-event > div.tile div.stats > div.row div.current-event-actions a.past-event-action:hover div.icon,
+div.past-event > div.tile div.stats > div.row div.current-event-actions a.past-event-action:hover div.icon,
+div.current-event > div.tile div.stats > div.row div.draft-event-actions a.past-event-action:hover div.icon,
+div.draft-event > div.tile div.stats > div.row div.draft-event-actions a.past-event-action:hover div.icon,
+div.past-event > div.tile div.stats > div.row div.draft-event-actions a.past-event-action:hover div.icon,
+div.current-event > div.tile div.stats > div.row div.past-event-actions a.past-event-action:hover div.icon,
+div.draft-event > div.tile div.stats > div.row div.past-event-actions a.past-event-action:hover div.icon,
+div.past-event > div.tile div.stats > div.row div.past-event-actions a.past-event-action:hover div.icon {
   color: #ffffff;
 }
 div.current-event > div.tile div.stats > div.row div.current-event-actions a.current-event-action:hover div.text,
 div.draft-event > div.tile div.stats > div.row div.current-event-actions a.current-event-action:hover div.text,
+div.past-event > div.tile div.stats > div.row div.current-event-actions a.current-event-action:hover div.text,
 div.current-event > div.tile div.stats > div.row div.draft-event-actions a.current-event-action:hover div.text,
 div.draft-event > div.tile div.stats > div.row div.draft-event-actions a.current-event-action:hover div.text,
+div.past-event > div.tile div.stats > div.row div.draft-event-actions a.current-event-action:hover div.text,
+div.current-event > div.tile div.stats > div.row div.past-event-actions a.current-event-action:hover div.text,
+div.draft-event > div.tile div.stats > div.row div.past-event-actions a.current-event-action:hover div.text,
+div.past-event > div.tile div.stats > div.row div.past-event-actions a.current-event-action:hover div.text,
 div.current-event > div.tile div.stats > div.row div.current-event-actions a.draft-event-action:hover div.text,
 div.draft-event > div.tile div.stats > div.row div.current-event-actions a.draft-event-action:hover div.text,
+div.past-event > div.tile div.stats > div.row div.current-event-actions a.draft-event-action:hover div.text,
 div.current-event > div.tile div.stats > div.row div.draft-event-actions a.draft-event-action:hover div.text,
-div.draft-event > div.tile div.stats > div.row div.draft-event-actions a.draft-event-action:hover div.text {
+div.draft-event > div.tile div.stats > div.row div.draft-event-actions a.draft-event-action:hover div.text,
+div.past-event > div.tile div.stats > div.row div.draft-event-actions a.draft-event-action:hover div.text,
+div.current-event > div.tile div.stats > div.row div.past-event-actions a.draft-event-action:hover div.text,
+div.draft-event > div.tile div.stats > div.row div.past-event-actions a.draft-event-action:hover div.text,
+div.past-event > div.tile div.stats > div.row div.past-event-actions a.draft-event-action:hover div.text,
+div.current-event > div.tile div.stats > div.row div.current-event-actions a.past-event-action:hover div.text,
+div.draft-event > div.tile div.stats > div.row div.current-event-actions a.past-event-action:hover div.text,
+div.past-event > div.tile div.stats > div.row div.current-event-actions a.past-event-action:hover div.text,
+div.current-event > div.tile div.stats > div.row div.draft-event-actions a.past-event-action:hover div.text,
+div.draft-event > div.tile div.stats > div.row div.draft-event-actions a.past-event-action:hover div.text,
+div.past-event > div.tile div.stats > div.row div.draft-event-actions a.past-event-action:hover div.text,
+div.current-event > div.tile div.stats > div.row div.past-event-actions a.past-event-action:hover div.text,
+div.draft-event > div.tile div.stats > div.row div.past-event-actions a.past-event-action:hover div.text,
+div.past-event > div.tile div.stats > div.row div.past-event-actions a.past-event-action:hover div.text {
   color: #ffffff;
 }
 div.current-event > div.tile div.stats > div.row div.current-event-actions a.current-event-action.first,
 div.draft-event > div.tile div.stats > div.row div.current-event-actions a.current-event-action.first,
+div.past-event > div.tile div.stats > div.row div.current-event-actions a.current-event-action.first,
 div.current-event > div.tile div.stats > div.row div.draft-event-actions a.current-event-action.first,
 div.draft-event > div.tile div.stats > div.row div.draft-event-actions a.current-event-action.first,
+div.past-event > div.tile div.stats > div.row div.draft-event-actions a.current-event-action.first,
+div.current-event > div.tile div.stats > div.row div.past-event-actions a.current-event-action.first,
+div.draft-event > div.tile div.stats > div.row div.past-event-actions a.current-event-action.first,
+div.past-event > div.tile div.stats > div.row div.past-event-actions a.current-event-action.first,
 div.current-event > div.tile div.stats > div.row div.current-event-actions a.draft-event-action.first,
 div.draft-event > div.tile div.stats > div.row div.current-event-actions a.draft-event-action.first,
+div.past-event > div.tile div.stats > div.row div.current-event-actions a.draft-event-action.first,
 div.current-event > div.tile div.stats > div.row div.draft-event-actions a.draft-event-action.first,
-div.draft-event > div.tile div.stats > div.row div.draft-event-actions a.draft-event-action.first {
+div.draft-event > div.tile div.stats > div.row div.draft-event-actions a.draft-event-action.first,
+div.past-event > div.tile div.stats > div.row div.draft-event-actions a.draft-event-action.first,
+div.current-event > div.tile div.stats > div.row div.past-event-actions a.draft-event-action.first,
+div.draft-event > div.tile div.stats > div.row div.past-event-actions a.draft-event-action.first,
+div.past-event > div.tile div.stats > div.row div.past-event-actions a.draft-event-action.first,
+div.current-event > div.tile div.stats > div.row div.current-event-actions a.past-event-action.first,
+div.draft-event > div.tile div.stats > div.row div.current-event-actions a.past-event-action.first,
+div.past-event > div.tile div.stats > div.row div.current-event-actions a.past-event-action.first,
+div.current-event > div.tile div.stats > div.row div.draft-event-actions a.past-event-action.first,
+div.draft-event > div.tile div.stats > div.row div.draft-event-actions a.past-event-action.first,
+div.past-event > div.tile div.stats > div.row div.draft-event-actions a.past-event-action.first,
+div.current-event > div.tile div.stats > div.row div.past-event-actions a.past-event-action.first,
+div.draft-event > div.tile div.stats > div.row div.past-event-actions a.past-event-action.first,
+div.past-event > div.tile div.stats > div.row div.past-event-actions a.past-event-action.first {
   border-top-left-radius: 4px;
   border-top-right-radius: 4px;
 }
 div.current-event > div.tile div.stats > div.row div.current-event-actions a.current-event-action.last,
 div.draft-event > div.tile div.stats > div.row div.current-event-actions a.current-event-action.last,
+div.past-event > div.tile div.stats > div.row div.current-event-actions a.current-event-action.last,
 div.current-event > div.tile div.stats > div.row div.draft-event-actions a.current-event-action.last,
 div.draft-event > div.tile div.stats > div.row div.draft-event-actions a.current-event-action.last,
+div.past-event > div.tile div.stats > div.row div.draft-event-actions a.current-event-action.last,
+div.current-event > div.tile div.stats > div.row div.past-event-actions a.current-event-action.last,
+div.draft-event > div.tile div.stats > div.row div.past-event-actions a.current-event-action.last,
+div.past-event > div.tile div.stats > div.row div.past-event-actions a.current-event-action.last,
 div.current-event > div.tile div.stats > div.row div.current-event-actions a.draft-event-action.last,
 div.draft-event > div.tile div.stats > div.row div.current-event-actions a.draft-event-action.last,
+div.past-event > div.tile div.stats > div.row div.current-event-actions a.draft-event-action.last,
 div.current-event > div.tile div.stats > div.row div.draft-event-actions a.draft-event-action.last,
-div.draft-event > div.tile div.stats > div.row div.draft-event-actions a.draft-event-action.last {
+div.draft-event > div.tile div.stats > div.row div.draft-event-actions a.draft-event-action.last,
+div.past-event > div.tile div.stats > div.row div.draft-event-actions a.draft-event-action.last,
+div.current-event > div.tile div.stats > div.row div.past-event-actions a.draft-event-action.last,
+div.draft-event > div.tile div.stats > div.row div.past-event-actions a.draft-event-action.last,
+div.past-event > div.tile div.stats > div.row div.past-event-actions a.draft-event-action.last,
+div.current-event > div.tile div.stats > div.row div.current-event-actions a.past-event-action.last,
+div.draft-event > div.tile div.stats > div.row div.current-event-actions a.past-event-action.last,
+div.past-event > div.tile div.stats > div.row div.current-event-actions a.past-event-action.last,
+div.current-event > div.tile div.stats > div.row div.draft-event-actions a.past-event-action.last,
+div.draft-event > div.tile div.stats > div.row div.draft-event-actions a.past-event-action.last,
+div.past-event > div.tile div.stats > div.row div.draft-event-actions a.past-event-action.last,
+div.current-event > div.tile div.stats > div.row div.past-event-actions a.past-event-action.last,
+div.draft-event > div.tile div.stats > div.row div.past-event-actions a.past-event-action.last,
+div.past-event > div.tile div.stats > div.row div.past-event-actions a.past-event-action.last {
   height: 44px;
   border-bottom: none;
   border-bottom-left-radius: 4px;
@@ -6479,12 +6815,31 @@ div.draft-event > div.tile div.stats > div.row div.draft-event-actions a.draft-e
 }
 div.current-event > div.tile div.stats > div.row div.current-event-actions a.current-event-action div.icon,
 div.draft-event > div.tile div.stats > div.row div.current-event-actions a.current-event-action div.icon,
+div.past-event > div.tile div.stats > div.row div.current-event-actions a.current-event-action div.icon,
 div.current-event > div.tile div.stats > div.row div.draft-event-actions a.current-event-action div.icon,
 div.draft-event > div.tile div.stats > div.row div.draft-event-actions a.current-event-action div.icon,
+div.past-event > div.tile div.stats > div.row div.draft-event-actions a.current-event-action div.icon,
+div.current-event > div.tile div.stats > div.row div.past-event-actions a.current-event-action div.icon,
+div.draft-event > div.tile div.stats > div.row div.past-event-actions a.current-event-action div.icon,
+div.past-event > div.tile div.stats > div.row div.past-event-actions a.current-event-action div.icon,
 div.current-event > div.tile div.stats > div.row div.current-event-actions a.draft-event-action div.icon,
 div.draft-event > div.tile div.stats > div.row div.current-event-actions a.draft-event-action div.icon,
+div.past-event > div.tile div.stats > div.row div.current-event-actions a.draft-event-action div.icon,
 div.current-event > div.tile div.stats > div.row div.draft-event-actions a.draft-event-action div.icon,
-div.draft-event > div.tile div.stats > div.row div.draft-event-actions a.draft-event-action div.icon {
+div.draft-event > div.tile div.stats > div.row div.draft-event-actions a.draft-event-action div.icon,
+div.past-event > div.tile div.stats > div.row div.draft-event-actions a.draft-event-action div.icon,
+div.current-event > div.tile div.stats > div.row div.past-event-actions a.draft-event-action div.icon,
+div.draft-event > div.tile div.stats > div.row div.past-event-actions a.draft-event-action div.icon,
+div.past-event > div.tile div.stats > div.row div.past-event-actions a.draft-event-action div.icon,
+div.current-event > div.tile div.stats > div.row div.current-event-actions a.past-event-action div.icon,
+div.draft-event > div.tile div.stats > div.row div.current-event-actions a.past-event-action div.icon,
+div.past-event > div.tile div.stats > div.row div.current-event-actions a.past-event-action div.icon,
+div.current-event > div.tile div.stats > div.row div.draft-event-actions a.past-event-action div.icon,
+div.draft-event > div.tile div.stats > div.row div.draft-event-actions a.past-event-action div.icon,
+div.past-event > div.tile div.stats > div.row div.draft-event-actions a.past-event-action div.icon,
+div.current-event > div.tile div.stats > div.row div.past-event-actions a.past-event-action div.icon,
+div.draft-event > div.tile div.stats > div.row div.past-event-actions a.past-event-action div.icon,
+div.past-event > div.tile div.stats > div.row div.past-event-actions a.past-event-action div.icon {
   position: absolute;
   top: 0;
   left: 0;
@@ -6498,12 +6853,31 @@ div.draft-event > div.tile div.stats > div.row div.draft-event-actions a.draft-e
 }
 div.current-event > div.tile div.stats > div.row div.current-event-actions a.current-event-action div.text,
 div.draft-event > div.tile div.stats > div.row div.current-event-actions a.current-event-action div.text,
+div.past-event > div.tile div.stats > div.row div.current-event-actions a.current-event-action div.text,
 div.current-event > div.tile div.stats > div.row div.draft-event-actions a.current-event-action div.text,
 div.draft-event > div.tile div.stats > div.row div.draft-event-actions a.current-event-action div.text,
+div.past-event > div.tile div.stats > div.row div.draft-event-actions a.current-event-action div.text,
+div.current-event > div.tile div.stats > div.row div.past-event-actions a.current-event-action div.text,
+div.draft-event > div.tile div.stats > div.row div.past-event-actions a.current-event-action div.text,
+div.past-event > div.tile div.stats > div.row div.past-event-actions a.current-event-action div.text,
 div.current-event > div.tile div.stats > div.row div.current-event-actions a.draft-event-action div.text,
 div.draft-event > div.tile div.stats > div.row div.current-event-actions a.draft-event-action div.text,
+div.past-event > div.tile div.stats > div.row div.current-event-actions a.draft-event-action div.text,
 div.current-event > div.tile div.stats > div.row div.draft-event-actions a.draft-event-action div.text,
-div.draft-event > div.tile div.stats > div.row div.draft-event-actions a.draft-event-action div.text {
+div.draft-event > div.tile div.stats > div.row div.draft-event-actions a.draft-event-action div.text,
+div.past-event > div.tile div.stats > div.row div.draft-event-actions a.draft-event-action div.text,
+div.current-event > div.tile div.stats > div.row div.past-event-actions a.draft-event-action div.text,
+div.draft-event > div.tile div.stats > div.row div.past-event-actions a.draft-event-action div.text,
+div.past-event > div.tile div.stats > div.row div.past-event-actions a.draft-event-action div.text,
+div.current-event > div.tile div.stats > div.row div.current-event-actions a.past-event-action div.text,
+div.draft-event > div.tile div.stats > div.row div.current-event-actions a.past-event-action div.text,
+div.past-event > div.tile div.stats > div.row div.current-event-actions a.past-event-action div.text,
+div.current-event > div.tile div.stats > div.row div.draft-event-actions a.past-event-action div.text,
+div.draft-event > div.tile div.stats > div.row div.draft-event-actions a.past-event-action div.text,
+div.past-event > div.tile div.stats > div.row div.draft-event-actions a.past-event-action div.text,
+div.current-event > div.tile div.stats > div.row div.past-event-actions a.past-event-action div.text,
+div.draft-event > div.tile div.stats > div.row div.past-event-actions a.past-event-action div.text,
+div.past-event > div.tile div.stats > div.row div.past-event-actions a.past-event-action div.text {
   display: table;
   position: absolute;
   top: 0;
@@ -6517,17 +6891,37 @@ div.draft-event > div.tile div.stats > div.row div.draft-event-actions a.draft-e
 }
 div.current-event > div.tile div.stats > div.row div.current-event-actions a.current-event-action div.text span,
 div.draft-event > div.tile div.stats > div.row div.current-event-actions a.current-event-action div.text span,
+div.past-event > div.tile div.stats > div.row div.current-event-actions a.current-event-action div.text span,
 div.current-event > div.tile div.stats > div.row div.draft-event-actions a.current-event-action div.text span,
 div.draft-event > div.tile div.stats > div.row div.draft-event-actions a.current-event-action div.text span,
+div.past-event > div.tile div.stats > div.row div.draft-event-actions a.current-event-action div.text span,
+div.current-event > div.tile div.stats > div.row div.past-event-actions a.current-event-action div.text span,
+div.draft-event > div.tile div.stats > div.row div.past-event-actions a.current-event-action div.text span,
+div.past-event > div.tile div.stats > div.row div.past-event-actions a.current-event-action div.text span,
 div.current-event > div.tile div.stats > div.row div.current-event-actions a.draft-event-action div.text span,
 div.draft-event > div.tile div.stats > div.row div.current-event-actions a.draft-event-action div.text span,
+div.past-event > div.tile div.stats > div.row div.current-event-actions a.draft-event-action div.text span,
 div.current-event > div.tile div.stats > div.row div.draft-event-actions a.draft-event-action div.text span,
-div.draft-event > div.tile div.stats > div.row div.draft-event-actions a.draft-event-action div.text span {
+div.draft-event > div.tile div.stats > div.row div.draft-event-actions a.draft-event-action div.text span,
+div.past-event > div.tile div.stats > div.row div.draft-event-actions a.draft-event-action div.text span,
+div.current-event > div.tile div.stats > div.row div.past-event-actions a.draft-event-action div.text span,
+div.draft-event > div.tile div.stats > div.row div.past-event-actions a.draft-event-action div.text span,
+div.past-event > div.tile div.stats > div.row div.past-event-actions a.draft-event-action div.text span,
+div.current-event > div.tile div.stats > div.row div.current-event-actions a.past-event-action div.text span,
+div.draft-event > div.tile div.stats > div.row div.current-event-actions a.past-event-action div.text span,
+div.past-event > div.tile div.stats > div.row div.current-event-actions a.past-event-action div.text span,
+div.current-event > div.tile div.stats > div.row div.draft-event-actions a.past-event-action div.text span,
+div.draft-event > div.tile div.stats > div.row div.draft-event-actions a.past-event-action div.text span,
+div.past-event > div.tile div.stats > div.row div.draft-event-actions a.past-event-action div.text span,
+div.current-event > div.tile div.stats > div.row div.past-event-actions a.past-event-action div.text span,
+div.draft-event > div.tile div.stats > div.row div.past-event-actions a.past-event-action div.text span,
+div.past-event > div.tile div.stats > div.row div.past-event-actions a.past-event-action div.text span {
   display: table-cell;
   vertical-align: middle;
 }
 div.current-event > div.tile div.section-title,
-div.draft-event > div.tile div.section-title {
+div.draft-event > div.tile div.section-title,
+div.past-event > div.tile div.section-title {
   height: 44px;
   margin-bottom: 15px;
   padding: 0;
@@ -7125,6 +7519,13 @@ div#event-header div.event-rsvp a.primary-btn {
   padding-bottom: 11px;
   color: #ffffff;
 }
+div#event-header div.event-rsvp a.secondary-btn {
+  display: block;
+  width: 100%;
+  padding-top: 9px;
+  padding-bottom: 11px;
+  color: #ffffff;
+}
 div#event-header div.event-rsvp div.price {
   display: table;
   height: 36px;
@@ -7140,9 +7541,33 @@ div#event-header div.event-rsvp div.price span {
 div#event-body {
   margin-top: 24px;
   margin-bottom: 48px;
-  padding-top: 40px;
   padding-bottom: 40px;
   background: #ffffff;
+}
+div#event-body div#event-content {
+  padding-right: 2rem;
+  padding-top: 70px;
+  padding-left: 3rem;
+}
+div#event-body div#event-sidebar {
+  border-left: #F6F6F6 thin solid;
+}
+div#event-body div#event-sidebar hr {
+  border: solid #F6F6F6;
+  border-width: 1px 0 0;
+}
+div#event-body div#event-sidebar > .row {
+  padding-left: 2rem;
+}
+div#event-body div#event-sidebar div.event-share-container {
+  border-bottom: #F6F6F6 thin solid;
+}
+div#event-body div#event-sidebar div#event-share {
+  height: 70px;
+}
+div#event-body div#event-sidebar div#event-datetime {
+  margin-top: 35px;
+  position: relative;
 }
 div#event-info {
   position: relative;
@@ -7193,13 +7618,8 @@ div#event-time span {
   vertical-align: middle;
 }
 div#event-location {
-  margin-top: 25px;
-}
-div#event-location div.caption {
-  height: 24px;
+  margin-top: 15px;
   padding-bottom: 10px;
-  font-size: 14px;
-  font-weight: 500;
 }
 div#event-location div.location {
   padding-top: 5px;
@@ -7386,6 +7806,11 @@ div#tickets-body div.ticket {
   min-height: 108px;
   background: #F5F5F5;
   border-top: 1px solid #dddddd;
+  cursor: pointer;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
 }
 div#tickets-body div.ticket.last {
   min-height: 109px;
@@ -7425,7 +7850,7 @@ div#tickets-body div.ticket > div.inner > div.action {
   vertical-align: middle;
 }
 div#tickets-body div.ticket > div.inner > div.action div.wrapper {
-  width: 44px;
+  width: 40px;
   margin: auto;
 }
 div#tickets-body div.ticket > div.inner > div.action div.wrapper div.top input {
@@ -7436,10 +7861,11 @@ div#tickets-body div.ticket > div.inner > div.action div.wrapper div.bottom {
   margin-top: 10px;
 }
 div#tickets-body div.ticket > div.inner > div.action div.wrapper div.bottom input {
-  width: 44px;
-  height: 20px;
+  width: 40px;
+  height: 24px;
   margin: 0;
   text-align: center;
+  border-radius: 3px;
 }
 div#tickets-body div.ticket > div.inner > div.action div.wrapper div.soldout {
   width: 44px;

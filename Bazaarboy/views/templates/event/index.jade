@@ -28,11 +28,14 @@ block body
             div.event-header-body.medium-10.columns
                 div.profile-icon
                     div.inner
-                        a(href="{% url index %}", target="_blank")
+                        a(href="{% url index %}")
                             img(src="{{ STATIC_URL }}images/logo-inverse.png")
                 div.event-name 
                     span {{ event.name }}
             div.event-rsvp.medium-2.columns.clearfix
+                {% if design %}
+                a.ticket_options.right.secondary-btn(href="{% url event:modify id 'tickets' %}") Next: Tickets &gt;
+                {% elif tickets|length > 0 %}
                 a#rsvp-button.right.primary-btn(href="javascript:;") + RSVP
                 //-div.price.right
                     span
@@ -42,9 +45,10 @@ block body
                         {% else %}
                         | {% if cheapest != 0 %}${{ cheapest|floatformat:-2 }}{% else %}Free{% endif %}{% if tickets|length != 1 %}+{% endif %}
                         {% endif %}
-                        {% endspaceless %}
+                        {% endspaceless %}''
+                {% endif %}
         div#event-body.row
-            div#event-right.medium-1.columns.end
+            //div#event-right.medium-1.columns.end
                 div#event-share
                     div.caption Share
                     div.canvas
@@ -57,9 +61,9 @@ block body
                         | <span class='st_email_large' displayText='Email'></span>
             div#event-content.medium-8.columns
                 div#event-description.row
-                    div.caption.small-12.columns
+                    //div.caption.small-12.columns
                         div Event Description
-                    div.description.small-12.columns
+                    div.description.small-12.columns(style="margin-top:0;")
                         div.inner
                             {{ event.description|safe }}
                     {% if design %}
@@ -70,45 +74,51 @@ block body
                             div.save-status.medium-3.columns.end
                                 | Saved
                     {% endif %}
-            div#event-sidebar.medium-3.columns
-                div#event-datetime.row
-                    div#event-date
-                        div.month {{ event.start_time|date:'M' }}
-                        div.day {{ event.start_time|date:'j' }}
-                    div#event-time.small-12.columns
-                        span
-                            | {% spaceless %}
-                            | {% if event.end_time %}
-                            //- Short version
-                            | {% if event.end_time|shouldShortenEndTime:event.start_time %}
-                            | {{ event.start_time|date:'l, M. jS gA' }} to {{ event.end_time|date:'gA' }}
-                            | {% else %}
-                            //- Long version
-                            | {{ event.start_time|date:'M. jS gA' }} to {{ event.end_time|date:'M. jS gA' }}
-                            | {% endif %}
-                            | {% else %}
-                            | {{ event.start_time|date:'l, M. jS gA' }}
-                            | {% endif %}
-                            | {% endspaceless %}
-                div#event-location.row
-                    div.caption.small-12.columns
-                        | Location
-                    div.location.small-12.columns
-                        {{ event.location }}
-                    div.map-canvas.small-12.columns.hide(data-latitude="{{ event.latitude }}", data-longitude="{{ event.longitude }}")
-                        div
-                            div#map-canvas
-                div#event-organizers.row
-                    div.caption.small-12.columns
-                        | Organizer{{ organizers|length|pluralize }}
-                    div.canvas.small-12.columns
-                        {% for organizer in organizers %}
-                        div.organizer
-                            div.organizer-icon(style="{% if organizer.profile.image %}background-image:url({{ organizer.profile.image.source.url }});{% endif %}")
-                            div.organizer-name
-                                span {{ organizer.profile.name }}
-                        {% endfor %}
-                div#event-sponsors.row
+            div#event-sidebar.medium-4.columns
+                div.row.event-share-container
+                    div.medium-12.columns
+                        div#event-share.row
+                            | &nbsp;
+                div.row
+                    div.medium-9.columns
+                        div#event-datetime.row
+                            div#event-date
+                                div.month {{ event.start_time|date:'M' }}
+                                div.day {{ event.start_time|date:'j' }}
+                            div#event-time.small-12.columns
+                                span
+                                    | {% spaceless %}
+                                    | {% if event.end_time %}
+                                    //- Short version
+                                    | {% if event.end_time|shouldShortenEndTime:event.start_time %}
+                                    | {{ event.start_time|date:'l, M. jS gA' }} to {{ event.end_time|date:'gA' }}
+                                    | {% else %}
+                                    //- Long version
+                                    | {{ event.start_time|date:'M. jS gA' }} to {{ event.end_time|date:'M. jS gA' }}
+                                    | {% endif %}
+                                    | {% else %}
+                                    | {{ event.start_time|date:'l, M. jS gA' }}
+                                    | {% endif %}
+                                    | {% endspaceless %}
+                        hr
+                        div#event-location.row
+                            div.location.small-12.columns
+                                {{ event.location }}
+                            div.map-canvas.small-12.columns.hide(data-latitude="{{ event.latitude }}", data-longitude="{{ event.longitude }}")
+                                div
+                                    div#map-canvas
+                        hr
+                        div#event-organizers.row
+                            div.caption.small-12.columns
+                                | Organizer{{ organizers|length|pluralize }}
+                            div.canvas.small-12.columns
+                                {% for organizer in organizers %}
+                                div.organizer
+                                    div.organizer-icon(style="{% if organizer.profile.image %}background-image:url({{ organizer.profile.image.source.url }});{% endif %}")
+                                    div.organizer-name
+                                        span {{ organizer.profile.name }}
+                                {% endfor %}
+                        div#event-sponsors.row
         div#event-footer
             div.inner.clearfix
                 div.poweredby.left

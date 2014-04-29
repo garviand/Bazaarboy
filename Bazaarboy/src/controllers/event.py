@@ -1353,12 +1353,12 @@ def export(request, params, user):
     for i in range(1, items.count() + 1):
         item = items[i - 1]
         row = [
-            i, 
+            str(i), 
             item.purchase.owner.email, 
             item.purchase.owner.first_name, 
             item.purchase.owner.last_name, 
             item.ticket.name, 
-            item.code
+            item.purchase.code
         ]
         writer.writerow(row)
     return response

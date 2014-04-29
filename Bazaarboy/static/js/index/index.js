@@ -133,7 +133,7 @@
         id: eventId
       }, function(response) {
         if (response.status === 'OK') {
-          window.location = 'event/' + eventId;
+          window.location = '/event/' + eventId;
         } else {
           alert(response.message);
         }
@@ -146,6 +146,39 @@
         var profileId;
         profileId = $(this).attr('data-profile-id');
         scope.createEvent(profileId);
+      });
+      $('div#wrapper-sidebar a.sidebar-item.events-filter').click(function() {
+        var filter;
+        $('div#wrapper-sidebar a.sidebar-item.events-filter').removeClass('selected');
+        $(this).addClass('selected');
+        filter = $(this);
+        $('#wrapper-dashboard div.event-tiles-container.active').fadeOut(300, function() {
+          $('#wrapper-dashboard div.graph-canvas').empty();
+          $('#wrapper-dashboard div.event-tiles-container.active').removeClass('active');
+          if (filter.hasClass('events-filter-current')) {
+            $('div.header-title div.text span.sub').text('Current Events');
+            $('#wrapper-dashboard div.current-events').addClass('active');
+            $('#wrapper-dashboard div.current-events').fadeIn(300, function() {
+              $('div.current-event').each(function() {
+                scope.initGraph(this);
+              });
+            });
+          }
+          if (filter.hasClass('events-filter-draft')) {
+            $('div.header-title div.text span.sub').text('Draft Events');
+            $('#wrapper-dashboard div.draft-events').addClass('active');
+            $('#wrapper-dashboard div.draft-events').fadeIn(300);
+          }
+          if (filter.hasClass('events-filter-past')) {
+            $('div.header-title div.text span.sub').text('Past Events');
+            $('#wrapper-dashboard div.past-events').addClass('active');
+            $('#wrapper-dashboard div.past-events').fadeIn(300, function() {
+              $('div.past-event').each(function() {
+                scope.initGraph(this);
+              });
+            });
+          }
+        });
       });
       $('div.draft-event a.delete-draft').click(function(e) {
         var deleteConfirm, eventId;
