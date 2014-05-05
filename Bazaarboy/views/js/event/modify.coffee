@@ -13,7 +13,7 @@ Bazaarboy.event.modify =
         else
             Bazaarboy.post 'event/launch/', {id: eventId}, (response) =>
                 if response.status is 'OK'
-                    window.location = '/event/' + eventId
+                    window.location = '/event/' + eventId + '#launch'
                 else
                     alert response.message
                 return

@@ -23,6 +23,9 @@ append head
 
 block body
     include ../components/facebook
+    div#launch-modal.reveal-modal.text-center.small(data-reveal)
+        h1.text-center Congratulations, Your Event is Live!
+        a.close-reveal-modal &#215;
     div#event
         div#event-header
             div.event-header-body(class="{% if design %}medium-9{% else %}medium-12{% endif %} columns")

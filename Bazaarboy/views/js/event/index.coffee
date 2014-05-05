@@ -15,6 +15,8 @@ Bazaarboy.event.index =
         , (response) ->
             if response.status isnt 'OK'
                 alert response.message
+                $('div.event-launch a.launch-btn').html('Launch Event')
+                $('div.save-status').html 'Saved'
             else
                 @savingInProgress = false
                 setTimeout (() ->
@@ -25,6 +27,7 @@ Bazaarboy.event.index =
                                 window.location = '/event/' + eventId + '#launch'
                             else
                                 alert response.message
+                                $('div.event-launch a.launch-btn').html('Launch Event')
                             return
                     return
                 ), 500
@@ -107,8 +110,8 @@ Bazaarboy.event.index =
         $(window).hashchange () ->
             hash = location.hash
             if hash is '#launch'
-                console.log 'Just Launched'
-                location.hash = ''
+                $('div#launch-modal').foundation('reveal', 'open');
+                window.history.pushState("", document.title, window.location.pathname)
                 return
         $(window).hashchange()
         latitude = parseFloat $('div.map-canvas').attr('data-latitude')

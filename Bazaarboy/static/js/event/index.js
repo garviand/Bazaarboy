@@ -17,6 +17,8 @@
       }, function(response) {
         if (response.status !== 'OK') {
           alert(response.message);
+          $('div.event-launch a.launch-btn').html('Launch Event');
+          $('div.save-status').html('Saved');
         } else {
           this.savingInProgress = false;
           setTimeout((function() {
@@ -30,6 +32,7 @@
                   window.location = '/event/' + eventId + '#launch';
                 } else {
                   alert(response.message);
+                  $('div.event-launch a.launch-btn').html('Launch Event');
                 }
               });
             }
@@ -134,8 +137,8 @@
         var hash;
         hash = location.hash;
         if (hash === '#launch') {
-          console.log('Just Launched');
-          location.hash = '';
+          $('div#launch-modal').foundation('reveal', 'open');
+          window.history.pushState("", document.title, window.location.pathname);
         }
       });
       $(window).hashchange();
