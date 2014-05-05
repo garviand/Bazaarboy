@@ -7,6 +7,7 @@ import base64
 import qrcode
 import urllib
 import weasyprint
+import logging
 from datetime import datetime
 from celery import task
 from mandrill import Mandrill
@@ -16,8 +17,6 @@ from django.template.loader import *
 from kernel.models import *
 from src.config import *
 from src.timezone import localize
-
-import pdb
 
 def sendEmails(to, subject, template, mergeVars, attachments=[]):
     """
@@ -72,7 +71,7 @@ def sendConfirmationEmail(confirmationCode):
             }
         ]
     }]
-    return Email.sendEmails(to, subject, template, mergeVars)
+    return sendEmails(to, subject, template, mergeVars)
 
 def sendResetRequestEmail(resetCode):
     """

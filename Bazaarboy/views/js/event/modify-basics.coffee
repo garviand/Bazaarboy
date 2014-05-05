@@ -50,7 +50,7 @@ Bazaarboy.event.modify.basics =
                     return
                 ), 1000
                 if not autoSave
-                    window.location = '/event/' + eventId + '?design'
+                    window.location = '/event/' + eventId + '/tickets'
             else
                 $('div#event-modify-basics div.status').html 'Failed to save'
                 console.log err

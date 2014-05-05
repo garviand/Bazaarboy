@@ -68,7 +68,7 @@ block content
                         {% for guest in purchases %}
                         div.guest.row(class="{% if guest.checked_in_time != None %}checked_in{% endif %}", data-ticket="{{ guest.ticket.id }}", data-id="{{ guest.id }}")
                             div.name.small-3.columns
-                                {{ guest.purchase.owner.first_name }} {{ guest.purchase.owner.first_name }}
+                                {{ guest.purchase.owner.first_name }} {{ guest.purchase.owner.last_name }}
                             div.ticket_name.small-3.columns
                                 {{ guest.ticket.name }}
                             div.confirmation.small-3.columns

@@ -25,18 +25,21 @@ block body
     include ../components/facebook
     div#event
         div#event-header
-            div.event-header-body.medium-10.columns
+            div.event-header-body(class="{% if design %}medium-9{% else %}medium-12{% endif %} columns")
                 div.profile-icon
                     div.inner
                         a(href="{% url index %}")
                             img(src="{{ STATIC_URL }}images/logo-inverse.png")
                 div.event-name 
                     span {{ event.name }}
-            div.event-rsvp.medium-2.columns.clearfix
                 {% if design %}
-                a.ticket_options.right.secondary-btn(href="{% url event:modify id 'tickets' %}") Next: Tickets &gt;
-                {% elif tickets|length > 0 %}
-                a#rsvp-button.right.primary-btn(href="javascript:;") + RSVP
+                {% if not event.is_launched %}
+            div.event-launch.medium-2.columns.clearfix
+                a.right.primary-btn.launch-btn(href="javascript:;") Launch Event
+                {% endif %}
+            div.event-launch.medium-1.columns.clearfix.right
+                a.back-btn.secondary-btn(href="{% url event:modify id 'tickets' %}") Back
+                {% endif %}
                 //-div.price.right
                     span
                         {% spaceless %}
@@ -46,39 +49,30 @@ block body
                         | {% if cheapest != 0 %}${{ cheapest|floatformat:-2 }}{% else %}Free{% endif %}{% if tickets|length != 1 %}+{% endif %}
                         {% endif %}
                         {% endspaceless %}''
-                {% endif %}
         div#event-body.row
-            //div#event-right.medium-1.columns.end
-                div#event-share
-                    div.caption Share
-                    div.canvas
-                        | <span class='st_facebook_large' displayText='Facebook'></span>
-                        | <span class='st_twitter_large' displayText='Tweet'></span>
-                        | <span class='st_googleplus_large' displayText='Google +'></span>
-                        | <span class='st_blogger_large' displayText='Blogger'></span>
-                        | <span class='st_wordpress_large' displayText='WordPress'></span>
-                        | <span class='st_pinterest_large' displayText='Pinterest'></span>
-                        | <span class='st_email_large' displayText='Email'></span>
             div#event-content.medium-8.columns
                 div#event-description.row
-                    //div.caption.small-12.columns
-                        div Event Description
                     div.description.small-12.columns(style="margin-top:0;")
                         div.inner
                             {{ event.description|safe }}
                     {% if design %}
                     div.actions.small-12.columns
                         div.row
-                            div.medium-offset-3.medium-3.columns
-                                a.save.primary-btn(href="javascript:;") Save
-                            div.save-status.medium-3.columns.end
+                            div.save-status.medium-3.medium-offset-3.columns
                                 | Saved
                     {% endif %}
             div#event-sidebar.medium-4.columns
                 div.row.event-share-container
                     div.medium-12.columns
                         div#event-share.row
-                            | &nbsp;
+                            div.medium-12.columns
+                                a.share-btn.secondary-btn.right Share
+                                div.share-canvas.hidden
+                                    | <span class='st_facebook_large' displayText='Facebook'></span>
+                                    | <span class='st_twitter_large' displayText='Tweet'></span>
+                                    | <span class='st_googleplus_large' displayText='Google +'></span>
+                                    | <span class='st_pinterest_large' displayText='Pinterest'></span>
+                                    | <span class='st_email_large' displayText='Email'></span>
                 div.row
                     div.medium-9.columns
                         div#event-datetime.row
@@ -182,6 +176,7 @@ block body
         div#wrapper-overlay.hide
 
 append script
+    script(type="text/javascript", src="{{ STATIC_URL }}hashchange/jquery.ba-hashchange.min.js")
     script.
         var switchTo5x = true;
     script(type="text/javascript", src="http://w.sharethis.com/button/buttons.js")
@@ -195,9 +190,8 @@ append script
     script(type="text/javascript", src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAasW6vqPCn18g6UMaFWV90qGMSo6pErwo&sensor=false&libraries=places")
     {% if editable %}
     script(type="text/javascript", src="{{ STATIC_URL }}redactor/redactor.min.js")
-    {% else %}
-    script(type="text/javascript", src="https://checkout.stripe.com/v2/checkout.js")
     {% endif %}
+    script(type="text/javascript", src="https://checkout.stripe.com/v2/checkout.js")
     script(type="text/javascript").
         var eventId = {{ event.id }};
         var design = {% if design %}true{% else %}false{% endif %};

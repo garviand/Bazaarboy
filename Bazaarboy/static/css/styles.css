@@ -5820,7 +5820,7 @@ a.sidebar-item {
   color: #ffffff;
 }
 a.sidebar-item.sidebar-separate {
-  margin-bottom: 22px;
+  margin-top: 22px;
 }
 @media only screen and (min-width: 40.063em) and (max-width: 64em) {
   a.sidebar-item {
@@ -7137,17 +7137,24 @@ div#login {
   min-height: 100%;
   background: #F6F6F6;
 }
+div#login div#container {
+  width: 450px;
+  max-width: 98%;
+  margin: 0 auto;
+}
 div#login div#login-container {
+  display: none;
   background: #ffffff;
   margin-top: 75px;
 }
 div#login div#login-container form#login-form div.logo-small {
   margin: 0 auto;
   margin-top: 50px;
-  height: 40px;
-  width: 40px;
+  height: 50px;
+  width: 50px;
   border-radius: 50%;
-  background: #F4A534;
+  background: url(/static/images/logo-big.png);
+  background-size: cover;
 }
 div#login div#login-container form#login-form div.title {
   font-weight: 500;
@@ -7188,10 +7195,11 @@ div#login div#register-container {
 div#login div#register-container form#register-form div.logo-small {
   margin: 0 auto;
   margin-top: 50px;
-  height: 40px;
-  width: 40px;
+  height: 50px;
+  width: 50px;
   border-radius: 50%;
-  background: #F4A534;
+  background: url(/static/images/logo-big.png);
+  background-size: cover;
 }
 div#login div#register-container form#register-form div.title {
   font-weight: 500;
@@ -7500,33 +7508,27 @@ div#event-header div.event-header-body div.event-name span {
   display: table-cell;
   vertical-align: middle;
 }
-div#event-header div.event-rsvp {
+div#event-header div.event-launch {
   height: 66px;
   padding: 15px 0;
   padding-right: 10px;
 }
 @media only screen and (max-width: 40em) {
-  div#event-header div.event-rsvp {
+  div#event-header div.event-launch {
     position: absolute;
     top: 0;
     right: 0;
   }
 }
-div#event-header div.event-rsvp a.primary-btn {
-  display: block;
-  width: 100px;
-  padding-top: 9px;
-  padding-bottom: 11px;
-  color: #ffffff;
-}
-div#event-header div.event-rsvp a.secondary-btn {
+div#event-header div.event-launch a.primary-btn,
+div#event-header div.event-launch a.secondary-btn {
   display: block;
   width: 100%;
   padding-top: 9px;
   padding-bottom: 11px;
   color: #ffffff;
 }
-div#event-header div.event-rsvp div.price {
+div#event-header div.event-launch div.price {
   display: table;
   height: 36px;
   padding-right: 10px;
@@ -7534,7 +7536,7 @@ div#event-header div.event-rsvp div.price {
   font-size: 18px;
   line-height: 20px;
 }
-div#event-header div.event-rsvp div.price span {
+div#event-header div.event-launch div.price span {
   display: table-cell;
   vertical-align: middle;
 }
@@ -7564,6 +7566,17 @@ div#event-body div#event-sidebar div.event-share-container {
 }
 div#event-body div#event-sidebar div#event-share {
   height: 70px;
+}
+div#event-body div#event-sidebar div#event-share a.share-btn {
+  display: block;
+  width: 80px;
+  padding-top: 9px;
+  padding-bottom: 11px;
+  margin-right: 20px;
+  margin-top: 15px;
+}
+div#event-body div#event-sidebar div#event-share div.share-canvas {
+  margin-top: 18px;
 }
 div#event-body div#event-sidebar div#event-datetime {
   margin-top: 35px;
@@ -8117,6 +8130,18 @@ div#event-modify-tickets div.ticket-option div.bottom div.inner div.description 
   padding: 15px;
   font-size: 14px;
   line-height: 18px;
+}
+div#event-modify-tickets div.next-step a.primary-btn {
+  width: 100%;
+  margin-bottom: 40px;
+  padding-top: 11px;
+  padding-bottom: 14px;
+  border: none;
+  font-size: 15px;
+  text-transform: uppercase;
+}
+div#event-modify-tickets div.next-step a.primary-btn:hover {
+  color: #ffffff;
 }
 div#event-modify-tickets div.promo-option {
   margin-bottom: 20px;

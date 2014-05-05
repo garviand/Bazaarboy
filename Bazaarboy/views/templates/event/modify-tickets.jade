@@ -5,16 +5,6 @@ append head
     link(rel="stylesheet", href="{{ STATIC_URL }}pikaday/pikaday.css")
 
 block sidebar
-    +sidebarItem('ss-file')(href="{% url event:modify id 'basics' %}")
-        | Basic Info
-    +sidebarItem('ss-picture')(href="{% url event:index id %}?design")
-        | Page Design
-    +sidebarItem('ss-tag')(href="{% url event:modify id 'tickets' %}", class="selected")
-        | Ticket Options
-    //-+sidebarItem('ss-star')(href="{% url event:modify id 'bonus' %}")
-        | Bonus
-    //-+sidebarItem('ss-mail')(href="{% url event:modify id 'emails' %}")
-        | Emails
     div.launch-event(class="{% if event.is_launched %}launched{% endif %}", data-event-id="{{ event.id }}")
         div.primary-btn.hide-for-medium-only
             | <span class="plus">&nbsp;</span>
@@ -26,8 +16,18 @@ block sidebar
                 {% endif %}
         div.primary-btn.show-for-medium-only
             | <span class="plus">+</span>
+    +sidebarItem('ss-file')(href="{% url event:modify id 'basics' %}")
+        | Basic Info
+    +sidebarItem('ss-tag')(href="{% url event:modify id 'tickets' %}", class="selected")
+        | Ticket Options
+    +sidebarItem('ss-picture')(href="{% url event:index id %}?design")
+        | Page Design
+    //-+sidebarItem('ss-star')(href="{% url event:modify id 'bonus' %}")
+        | Bonus
+    //-+sidebarItem('ss-mail')(href="{% url event:modify id 'emails' %}")
+        | Emails
     +sidebarItem('ss-newspaper')(href="{% url index %}")(class="sidebar-separate")
-        | Events
+        | Dashboard
 
 block header
     div.header-title.large-9.medium-10.columns.small-centered
@@ -64,7 +64,7 @@ block content
                                     span.sold
                                         != tags ? '{{ ticket.sold }}' : ''
                                     span.quantity 
-                                        != tags ? '{% if ticket.quantity %}/{{ ticket.quantity }}{% endif %}' : ''
+                                        != tags ? '{% if ticket.quantity %}/&nbsp;{{ ticket.quantity|add:ticket.sold }}{% endif %}' : ''
                                     | &nbsp;
                                     span.wording 
                                         != tags ? "{% if ticket.price == 0 %}RSVP'd{% else %}Sold{% endif %}" : ""
@@ -148,6 +148,10 @@ block content
                                     a.blue-btn(href="javascript:;") Delete
                                 div.medium-3.medium-centered.small-12.columns
                                     input.primary-btn(type="submit", value="Add")
+            div.next-step
+                div.row
+                    div.medium-4.medium-offset-3.columns.end
+                        a.primary-btn.right(href="{% url event:index event.id %}?design") Page Design &gt;
 
 append script
     script(src="{{ STATIC_URL }}jQueryUI/jquery-ui.min.js")

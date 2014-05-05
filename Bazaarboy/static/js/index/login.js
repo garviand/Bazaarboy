@@ -1,6 +1,22 @@
 (function() {
   this.Bazaarboy.login = {
     init: function() {
+      $(window).hashchange(function() {
+        var hash;
+        hash = location.hash;
+        if (hash === '#register') {
+          $('div#login-container').hide();
+          $('div#register-container').show();
+          $('div#register-container').addClass('active');
+          $('div#login div#footer a.switch').html('Login');
+        } else {
+          $('div#register-container').hide();
+          $('div#login-container').show();
+          $('div#login-container').addClass('active');
+          $('div#login div#footer a.switch').html('Register');
+        }
+      });
+      $(window).hashchange();
       $('div#login div#footer a.switch').click(function() {
         if ($('div#login-container').hasClass('active')) {
           $('div#login div#footer a.switch').html('Login');

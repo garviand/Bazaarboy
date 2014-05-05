@@ -102,7 +102,7 @@ block content
                     div.current-event-view.large-3.medium-4.columns
                         div.row
                             div.medium-10.medium-offset-2.columns
-                                a.secondary-btn(href="{% url event:index event.id %}?preview", target="_blank") 
+                                a.secondary-btn(href="{% url event:index event.id %}") 
                                     | View Event
                 div.info.small-12.columns
                     div.inner.row
@@ -132,12 +132,12 @@ block content
                                             div.title
                                                 | Revenue
                                             div.number
-                                                | ${{ event.totalSale }}
+                                                | ${{ event.totalSale|floatformat:"-2" }}
                                         div.sales-potential
                                             div.title
                                                 | Potential Rev.
                                             div.number
-                                                | ${{ event.potentialSale }}
+                                                | ${{ event.potentialSale|floatformat:"-2" }}
                                     div.graph.medium-8.columns
                                         div.graph-frame
                                             div.graph-canvas
@@ -147,16 +147,16 @@ block content
                                     span.ss-info
                                 div.text
                                     span Edit Info
-                            a.current-event-action(href="{% url event:index event.id %}?design")
-                                div.icon
-                                    span.ss-picture
-                                div.text
-                                    span Page Design
                             a.current-event-action(href="{% url event:modify event.id 'tickets' %}")
                                 div.icon
                                     span.ss-creditcard
                                 div.text
                                     span Ticket Options
+                            a.current-event-action(href="{% url event:index event.id %}?design")
+                                div.icon
+                                    span.ss-picture
+                                div.text
+                                    span Page Design
                             a.current-event-action(href="{% url event:manage event.id %}")
                                 div.icon
                                     span.ss-file

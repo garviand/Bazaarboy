@@ -1,9 +1,13 @@
 (function() {
   Bazaarboy.event.index = {
     savingInProgress: false,
+    unsavedProgress: false,
+    toLaunch: false,
     overlayAnimationInProgress: false,
+    redactorContent: void 0,
     saveDescription: function() {
-      var description;
+      var description, scope;
+      scope = this;
       description = $('div#event-description div.description div.inner').redactor('get');
       $('div.save-status').html('Saving...');
       this.savingInProgress = true;
@@ -16,7 +20,19 @@
         } else {
           this.savingInProgress = false;
           setTimeout((function() {
+            var _this = this;
             $('div.save-status').html('Saved');
+            if (scope.toLaunch) {
+              Bazaarboy.post('event/launch/', {
+                id: eventId
+              }, function(response) {
+                if (response.status === 'OK') {
+                  window.location = '/event/' + eventId + '#launch';
+                } else {
+                  alert(response.message);
+                }
+              });
+            }
           }), 500);
         }
       });
@@ -114,6 +130,15 @@
       var latitude, longitude, map, mapCenter, mapOptions, mapStyles, marker, scope,
         _this = this;
       scope = this;
+      $(window).hashchange(function() {
+        var hash;
+        hash = location.hash;
+        if (hash === '#launch') {
+          console.log('Just Launched');
+          location.hash = '';
+        }
+      });
+      $(window).hashchange();
       latitude = parseFloat($('div.map-canvas').attr('data-latitude'));
       longitude = parseFloat($('div.map-canvas').attr('data-longitude'));
       if (latitude !== NaN && longitude !== NaN) {
@@ -162,7 +187,27 @@
         $('a.save.primary-btn').click(function() {
           _this.saveDescription();
         });
+        $('div.event-launch a.launch-btn').click(function() {
+          scope.toLaunch = true;
+          $('div.event-launch a.launch-btn').html('Launching...');
+          scope.saveDescription();
+        });
+        $('div#event-description div.description div.inner').keyup(function() {
+          $('div.save-status').html('Editing');
+        });
+        scope.redactorContent = $('div#event-description div.description div.inner').redactor('get');
+        setInterval((function() {
+          if ($('div#event-description div.description div.inner').redactor('get') !== scope.redactorContent) {
+            scope.redactorContent = $('div#event-description div.description div.inner').redactor('get');
+            scope.saveDescription();
+          }
+        }), 5000);
       }
+      $("div#event-share a.share-btn").click(function() {
+        $(this).fadeOut(300, function() {
+          $("div#event-share div.share-canvas").fadeIn(300);
+        });
+      });
       $('a#rsvp-button').click(function() {
         if (!_this.overlayAnimationInProgress) {
           $("html, body").animate({

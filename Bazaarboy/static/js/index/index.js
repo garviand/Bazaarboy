@@ -133,7 +133,7 @@
         id: eventId
       }, function(response) {
         if (response.status === 'OK') {
-          window.location = '/event/' + eventId;
+          window.location = '/event/' + eventId + '#launch';
         } else {
           alert(response.message);
         }

@@ -58,7 +58,7 @@ div#event-header {
         }
     }
 
-    div.event-rsvp {
+    div.event-launch {
         height: 66px;
         padding: (66px - 36px) / 2 0;
         padding-right: 10px;
@@ -69,15 +69,7 @@ div#event-header {
             right: 0;
         }
 
-        a.primary-btn {
-            display: block;
-            width: 100px;
-            padding-top: 9px;
-            padding-bottom: 11px;
-            color: @white;
-        }
-
-        a.secondary-btn {
+        a.primary-btn, a.secondary-btn {
             display: block;
             width: 100%;
             padding-top: 9px;
@@ -125,6 +117,17 @@ div#event-body {
         }
         div#event-share{
             height: 70px;
+            a.share-btn{
+                display: block;
+                width: 80px;
+                padding-top: 9px;
+                padding-bottom: 11px;
+                margin-right: 20px;
+                margin-top: 15px;
+            }
+            div.share-canvas{
+                margin-top: 18px;
+            }
         }
         div#event-datetime{
             margin-top: 35px;

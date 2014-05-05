@@ -1,5 +1,19 @@
 @Bazaarboy.login = 
     init: () ->
+        $(window).hashchange () ->
+            hash = location.hash
+            if hash is '#register'
+                $('div#login-container').hide()
+                $('div#register-container').show()
+                $('div#register-container').addClass('active')
+                $('div#login div#footer a.switch').html('Login')
+            else
+                $('div#register-container').hide()
+                $('div#login-container').show()
+                $('div#login-container').addClass('active')
+                $('div#login div#footer a.switch').html('Register')
+            return
+        $(window).hashchange()
         $('div#login div#footer a.switch').click () ->
             if $('div#login-container').hasClass('active')
                 $('div#login div#footer a.switch').html('Login')

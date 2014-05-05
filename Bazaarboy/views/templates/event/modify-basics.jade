@@ -5,16 +5,6 @@ append head
     link(rel="stylesheet", href="{{ STATIC_URL }}pikaday/pikaday.css")
 
 block sidebar
-    +sidebarItem('ss-file')(href="{% url event:modify id 'basics' %}", class="selected")
-        | Basic Info
-    +sidebarItem('ss-picture')(href="{% url event:index id %}?design")
-        | Page Design
-    +sidebarItem('ss-tag')(href="{% url event:modify id 'tickets' %}")
-        | Ticket Options
-    //-+sidebarItem('ss-star')(href="{% url event:modify id 'bonus' %}")
-        | Bonus
-    //-+sidebarItem('ss-mail')(href="{% url event:modify id 'emails' %}")
-        | Emails
     div.launch-event(class="{% if event.is_launched %}launched{% endif %}", data-event-id="{{ event.id }}")
         div.primary-btn.hide-for-medium-only
             | <span class="plus">&nbsp;</span>
@@ -26,8 +16,18 @@ block sidebar
                 {% endif %}
         div.primary-btn.show-for-medium-only
             | <span class="plus">+</span>
+    +sidebarItem('ss-file')(href="{% url event:modify id 'basics' %}", class="selected")
+        | Basic Info
+    +sidebarItem('ss-tag')(href="{% url event:modify id 'tickets' %}")
+        | Ticket Options
+    +sidebarItem('ss-picture')(href="{% url event:index id %}?design")
+        | Page Design
+    //-+sidebarItem('ss-star')(href="{% url event:modify id 'bonus' %}")
+        | Bonus
+    //-+sidebarItem('ss-mail')(href="{% url event:modify id 'emails' %}")
+        | Emails
     +sidebarItem('ss-newspaper')(href="{% url index %}")(class="sidebar-separate")
-        | Events
+        | Dashboard
 
 block header
     div.header-title.large-9.medium-10.columns.small-centered
@@ -90,7 +90,7 @@ block content
                     div.status.medium-3.medium-offset-1.columns
                         | Saved
                     div.medium-4.columns.end
-                        input.primary-btn(type="submit", value="Next")
+                        input.primary-btn(type="submit", value="Ticket Options >")
                 input(type="hidden", name="latitude", value="{{ event.latitude }}")
                 input(type="hidden", name="longitude", value="{{ event.longitude }}")
 

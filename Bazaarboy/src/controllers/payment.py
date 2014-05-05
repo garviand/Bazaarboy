@@ -68,13 +68,6 @@ def charge(request, params, user):
         }
         return json_response(response)
     checkout = Checkout.objects.get(id = params['checkout'])
-    if user is not None and checkout.payer != user:
-        response = {
-            'status':'FAIL',
-            'error':'PERMISSION_DENIED',
-            'message':'You don\'t have permission for the checkout.'
-        }
-        return json_response(response)
     if not Purchase.objects.filter(checkout = checkout).exists():
         response = {
             'status':'FAIL',

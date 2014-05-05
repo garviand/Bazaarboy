@@ -1,7 +1,11 @@
 Bazaarboy.event.index = 
     savingInProgress: false
+    unsavedProgress: false
+    toLaunch: false
     overlayAnimationInProgress: false
+    redactorContent: undefined
     saveDescription: () ->
+        scope = this
         description = $('div#event-description div.description div.inner').redactor('get')
         $('div.save-status').html 'Saving...'
         @savingInProgress = true
@@ -15,6 +19,13 @@ Bazaarboy.event.index =
                 @savingInProgress = false
                 setTimeout (() ->
                     $('div.save-status').html 'Saved'
+                    if scope.toLaunch
+                        Bazaarboy.post 'event/launch/', {id: eventId}, (response) =>
+                            if response.status is 'OK'
+                                window.location = '/event/' + eventId + '#launch'
+                            else
+                                alert response.message
+                            return
                     return
                 ), 500
             return
@@ -93,6 +104,13 @@ Bazaarboy.event.index =
         return
     init: () ->
         scope = this
+        $(window).hashchange () ->
+            hash = location.hash
+            if hash is '#launch'
+                console.log 'Just Launched'
+                location.hash = ''
+                return
+        $(window).hashchange()
         latitude = parseFloat $('div.map-canvas').attr('data-latitude')
         longitude = parseFloat $('div.map-canvas').attr('data-longitude')
         if latitude isnt NaN and longitude isnt NaN
@@ -137,6 +155,27 @@ Bazaarboy.event.index =
             $('a.save.primary-btn').click () =>
                 @saveDescription()
                 return
+            $('div.event-launch a.launch-btn').click () ->
+                scope.toLaunch = true
+                $('div.event-launch a.launch-btn').html('Launching...')
+                scope.saveDescription()
+                return
+            $('div#event-description div.description div.inner').keyup () ->
+                $('div.save-status').html 'Editing'
+                return
+            scope.redactorContent = $('div#event-description div.description div.inner').redactor('get')
+            # SET AUTO SAVE TIMER
+            setInterval (() =>
+                if $('div#event-description div.description div.inner').redactor('get') != scope.redactorContent
+                    scope.redactorContent = $('div#event-description div.description div.inner').redactor('get')
+                    scope.saveDescription()
+                return
+            ), 5000
+        $("div#event-share a.share-btn").click () ->
+            $(this).fadeOut 300, () ->
+                $("div#event-share div.share-canvas").fadeIn 300
+                return
+            return
         $('a#rsvp-button').click () =>
             if not @overlayAnimationInProgress
                 $("html, body").animate({ scrollTop: 0 }, "fast")

@@ -2,14 +2,11 @@
 
 extends ../layout
 
-append script
-    script(type="text/javascript", src="{{ STATIC_URL }}js/index/login.js")
-
 block body
     div#login
         div.row
-            div.small-6.small-offset-3.columns
-                div#login-container.active
+            div#container
+                div#login-container
                     form#login-form
                         div.row
                             div.small-10.small-offset-1.columns
@@ -67,3 +64,7 @@ block body
                                     a.trouble(href="javascript:;") Trouble Logging in?
                                 div.small-4.columns
                                     a.switch(href="javascript:;") Register
+
+append script
+    script(type="text/javascript", src="{{ STATIC_URL }}hashchange/jquery.ba-hashchange.min.js")
+    script(type="text/javascript", src="{{ STATIC_URL }}js/index/login.js")

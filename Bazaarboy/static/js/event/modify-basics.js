@@ -62,7 +62,7 @@
             $('div#event-modify-basics div.status').html('Saved');
           }), 1000);
           if (!autoSave) {
-            window.location = '/event/' + eventId + '?design';
+            window.location = '/event/' + eventId + '/tickets';
           }
         } else {
           $('div#event-modify-basics div.status').html('Failed to save');
