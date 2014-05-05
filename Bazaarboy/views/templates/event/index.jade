@@ -65,17 +65,31 @@ block body
                                 | Saved
                     {% endif %}
             div#event-sidebar.medium-4.columns
-                div.row.event-share-container
+                div.row.event-actions-container
                     div.medium-12.columns
-                        div#event-share.row
-                            div.medium-12.columns
+                        div#event-actions.row
+                            div.medium-3.columns.ticket-prices
+                                span
+                                    {% spaceless %}
+                                    {% if rsvp %}
+                                    | Free
+                                    {% else %}
+                                    | {% if cheapest != 0 %}${{ cheapest|floatformat:-2 }}{% else %}Free{% endif %}{% if tickets|length != 1 %}+{% endif %}
+                                    {% endif %}
+                                    {% endspaceless %}
+                            div.medium-5.columns
+                                a#rsvp-button.primary-btn
+                                    span.ss-bookmark.rsvp-icon &nbsp;
+                                    | RSVP
+                            div.medium-4.columns.share-btn-container
                                 a.share-btn.secondary-btn.right Share
-                                div.share-canvas.hidden
-                                    | <span class='st_facebook_large' displayText='Facebook'></span>
-                                    | <span class='st_twitter_large' displayText='Tweet'></span>
-                                    | <span class='st_googleplus_large' displayText='Google +'></span>
-                                    | <span class='st_pinterest_large' displayText='Pinterest'></span>
-                                    | <span class='st_email_large' displayText='Email'></span>
+                        div.share-canvas.hidden
+                            | <span class='st_facebook_large' displayText='Facebook'></span>
+                            | <span class='st_twitter_large' displayText='Tweet'></span>
+                            | <span class='st_googleplus_large' displayText='Google +'></span>
+                            | <span class='st_pinterest_large' displayText='Pinterest'></span>
+                            | <span class='st_email_large' displayText='Email'></span>
+                            | <span class='close-share ss-delete'></span>
                 div.row
                     div.medium-9.columns
                         div#event-datetime.row

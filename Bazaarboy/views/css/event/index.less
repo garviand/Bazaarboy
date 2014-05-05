@@ -101,7 +101,7 @@ div#event-body {
     div#event-content{
         padding-right: 2rem;
         padding-top: 70px;
-        padding-left: 3rem;
+        padding-left: 2rem;
     }
     div#event-sidebar{
         border-left: #F6F6F6 thin solid;
@@ -112,21 +112,58 @@ div#event-body {
         > .row{
             padding-left: 2rem;
         }
-        div.event-share-container{
+        div.event-actions-container{
             border-bottom: #F6F6F6 thin solid;
         }
-        div#event-share{
-            height: 70px;
-            a.share-btn{
+        div#event-actions{
+            min-height: 50px;
+            div.ticket-prices{
+                padding-left: 0;
+                padding-right: 0;
+                text-align: center;
+                color: @dark;
+                font-size: 1.2rem;
+                font-weight: 500;
+                margin-top: 25px;
+            }
+            div.share-btn-container{
+                border-left: #F6F6F6 thin solid;
+            }
+            a#rsvp-button{
                 display: block;
-                width: 80px;
+                width: 100%;
                 padding-top: 9px;
                 padding-bottom: 11px;
-                margin-right: 20px;
                 margin-top: 15px;
+                margin-bottom: 15px;
+                .rsvp-icon{
+                    position: relative;
+                    top: 4px;
+                }
+                &:hover{
+                    color: #FFF;
+                }
             }
-            div.share-canvas{
-                margin-top: 18px;
+            a.share-btn{
+                display: block;
+                width: 100%;
+                padding-top: 9px;
+                padding-bottom: 11px;
+                margin-top: 15px;
+                margin-bottom: 15px;
+            }
+        }
+        div.share-canvas{
+            min-height: 50px;
+            margin-top: 19px;
+            span.close-share{
+                font-size: 1.9rem;
+                color: #000;
+                cursor: pointer;
+                user-select:none;
+                &:hover{
+                    color: @dark;
+                }
             }
         }
         div#event-datetime{

@@ -7549,7 +7549,7 @@ div#event-body {
 div#event-body div#event-content {
   padding-right: 2rem;
   padding-top: 70px;
-  padding-left: 3rem;
+  padding-left: 2rem;
 }
 div#event-body div#event-sidebar {
   border-left: #F6F6F6 thin solid;
@@ -7561,22 +7561,59 @@ div#event-body div#event-sidebar hr {
 div#event-body div#event-sidebar > .row {
   padding-left: 2rem;
 }
-div#event-body div#event-sidebar div.event-share-container {
+div#event-body div#event-sidebar div.event-actions-container {
   border-bottom: #F6F6F6 thin solid;
 }
-div#event-body div#event-sidebar div#event-share {
-  height: 70px;
+div#event-body div#event-sidebar div#event-actions {
+  min-height: 50px;
 }
-div#event-body div#event-sidebar div#event-share a.share-btn {
+div#event-body div#event-sidebar div#event-actions div.ticket-prices {
+  padding-left: 0;
+  padding-right: 0;
+  text-align: center;
+  color: #3c3c3c;
+  font-size: 1.2rem;
+  font-weight: 500;
+  margin-top: 25px;
+}
+div#event-body div#event-sidebar div#event-actions div.share-btn-container {
+  border-left: #F6F6F6 thin solid;
+}
+div#event-body div#event-sidebar div#event-actions a#rsvp-button {
   display: block;
-  width: 80px;
+  width: 100%;
   padding-top: 9px;
   padding-bottom: 11px;
-  margin-right: 20px;
   margin-top: 15px;
+  margin-bottom: 15px;
 }
-div#event-body div#event-sidebar div#event-share div.share-canvas {
-  margin-top: 18px;
+div#event-body div#event-sidebar div#event-actions a#rsvp-button .rsvp-icon {
+  position: relative;
+  top: 4px;
+}
+div#event-body div#event-sidebar div#event-actions a#rsvp-button:hover {
+  color: #FFF;
+}
+div#event-body div#event-sidebar div#event-actions a.share-btn {
+  display: block;
+  width: 100%;
+  padding-top: 9px;
+  padding-bottom: 11px;
+  margin-top: 15px;
+  margin-bottom: 15px;
+}
+div#event-body div#event-sidebar div.share-canvas {
+  min-height: 50px;
+  margin-top: 19px;
+}
+div#event-body div#event-sidebar div.share-canvas span.close-share {
+  font-size: 1.9rem;
+  color: #000;
+  cursor: pointer;
+  user-select: none;
+}
+div#event-body div#event-sidebar div.share-canvas span.close-share:hover {
+  color: #3c3c3c;
 }
 div#event-body div#event-sidebar div#event-datetime {
   margin-top: 35px;
@@ -8139,6 +8176,8 @@ div#event-modify-tickets div.next-step a.primary-btn {
   border: none;
   font-size: 15px;
   text-transform: uppercase;
+  position: relative;
+  z-index: -1;
 }
 div#event-modify-tickets div.next-step a.primary-btn:hover {
   color: #ffffff;

@@ -206,12 +206,18 @@
           }
         }), 5000);
       }
-      $("div#event-share a.share-btn").click(function() {
-        $(this).fadeOut(300, function() {
-          $("div#event-share div.share-canvas").fadeIn(300);
+      $("div#event-actions a.share-btn").click(function() {
+        $('div#event-actions').fadeOut(300, function() {
+          $("div.share-canvas").fadeIn(300);
+        });
+      });
+      $("span.close-share").click(function() {
+        $("div.share-canvas").fadeOut(300, function() {
+          $("div#event-actions").fadeIn(300);
         });
       });
       $('a#rsvp-button').click(function() {
+        console.log('clicked');
         if (!_this.overlayAnimationInProgress) {
           $("html, body").animate({
             scrollTop: 0

@@ -174,12 +174,18 @@ Bazaarboy.event.index =
                     scope.saveDescription()
                 return
             ), 5000
-        $("div#event-share a.share-btn").click () ->
-            $(this).fadeOut 300, () ->
-                $("div#event-share div.share-canvas").fadeIn 300
+        $("div#event-actions a.share-btn").click () ->
+            $('div#event-actions').fadeOut 300, () ->
+                $("div.share-canvas").fadeIn 300
+                return
+            return
+        $("span.close-share").click () ->
+            $("div.share-canvas").fadeOut 300, () ->
+                $("div#event-actions").fadeIn 300
                 return
             return
         $('a#rsvp-button').click () =>
+            console.log 'clicked'
             if not @overlayAnimationInProgress
                 $("html, body").animate({ scrollTop: 0 }, "fast")
                 if $('div#wrapper-overlay').hasClass('hide')
