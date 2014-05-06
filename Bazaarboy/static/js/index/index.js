@@ -26,6 +26,7 @@
       Bazaarboy.get('event/data/', {
         id: eventId
       }, function(response) {
+        var sale, _i, _len;
         if (Object.keys(response.purchases).length === 0) {
           rsvps.push([launchedTime.unix() * 1000, 0]);
           sales.push([launchedTime.unix() * 1000, 0]);
@@ -33,10 +34,16 @@
         $.each(response.purchases, function(index, purchase) {
           var date;
           date = moment(purchase.date, 'YYYY-MM-DD HH:mm:ss');
-          total_sales += purchase.amount;
           rsvps.push([date.unix() * 1000, purchase.rsvps]);
-          sales.push([date.unix() * 1000, total_sales]);
+          sales.push([date.unix() * 1000, purchase.amount]);
         });
+        rsvps = rsvps.sort();
+        sales = sales.sort();
+        for (_i = 0, _len = sales.length; _i < _len; _i++) {
+          sale = sales[_i];
+          total_sales += sale[1];
+          sale[1] = total_sales;
+        }
         $(canvas).highcharts({
           chart: {
             type: 'area'

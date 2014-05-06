@@ -5,6 +5,14 @@ Bazaarboy.user.settings =
     image: undefined
     uploads:
         image: undefined
+    createEvent: (profileId) ->
+        Bazaarboy.post 'event/create/', {profile: profileId}, (response) =>
+            if response.status is 'OK'
+                Bazaarboy.redirect 'event/' + response.event.pk + '/basics/'
+            else
+                alert response.message
+            return
+        return
     save: (params, cb) ->
         if token?
             params.token = token
@@ -112,6 +120,11 @@ Bazaarboy.user.settings =
                 return
         return
     init: () ->
+        scope = this
+        $('div.create-event').click () ->
+            profileId = $(this).attr('data-profile-id')
+            scope.createEvent profileId
+            return
         $('div#user-settings div.logo a.upload').click () ->
             $('div#user-settings form.upload_logo input[name=image_file]').click()
             return

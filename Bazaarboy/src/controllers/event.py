@@ -137,7 +137,7 @@ def graph_data(request, params, user):
                                         Q(checkout__is_charged = True, 
                                           checkout__is_refunded = False), 
                                         event = event, 
-                                        is_expired = False).annotate(rsvps=Count('items'))
+                                        is_expired = False).annotate(rsvps=Count('items')).order_by('-created_time')
         
         purchase_data = {}
         for purchase in purchases:

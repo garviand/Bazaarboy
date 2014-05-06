@@ -22,10 +22,14 @@ Bazaarboy.index.index =
                 sales.push [launchedTime.unix() * 1000, 0]
             $.each response.purchases, (index, purchase) ->
                 date = moment purchase.date, 'YYYY-MM-DD HH:mm:ss'
-                total_sales += purchase.amount
                 rsvps.push [date.unix() * 1000, purchase.rsvps]
-                sales.push [date.unix() * 1000, total_sales]
+                sales.push [date.unix() * 1000, purchase.amount]
                 return
+            rsvps = rsvps.sort()
+            sales = sales.sort()
+            for sale in sales
+                total_sales += sale[1]
+                sale[1] = total_sales
             $(canvas).highcharts
                 chart: {
                     type: 'area'

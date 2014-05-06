@@ -129,9 +129,9 @@ block content
                                                 | ${{ event.totalSale|floatformat:"-2" }}
                                         div.sales-potential
                                             div.title
-                                                | Potential Rev.
+                                                | {% if event.potentialSale %}Potential Rev.{% endif %}
                                             div.number
-                                                | ${{ event.potentialSale|floatformat:"-2" }}
+                                                | {% if event.potentialSale %}${{ event.potentialSale|floatformat:"-2" }}{% else %}{% endif %}
                                     div.graph.medium-8.columns
                                         div.graph-frame
                                             div.graph-canvas
@@ -200,12 +200,12 @@ block content
                                             div.title
                                                 | Revenue
                                             div.number
-                                                | ${{ event.totalSale }}
+                                                | ${{ event.totalSale|floatformat:"-2" }}
                                         div.sales-potential
                                             div.title
-                                                | Potential Rev.
+                                                | {% if event.potentialSale %}Potential Rev.{% endif %}
                                             div.number
-                                                | ${{ event.potentialSale }}
+                                                | {% if event.potentialSale %}${{ event.potentialSale|floatformat:"-2" }}{% else %}{% endif %}
                                     div.graph.medium-8.columns
                                         div.graph-frame
                                             div.graph-canvas

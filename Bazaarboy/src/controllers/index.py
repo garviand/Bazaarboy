@@ -13,6 +13,8 @@ from kernel.models import *
 from src.config import *
 from src.controllers.request import validate, login_check, json_response
 
+import pdb
+
 @never_cache
 @login_check()
 @validate('GET', [], ['next'])
@@ -31,33 +33,39 @@ def index(request, params, user):
     # If user doesn't have a profile, redirect to profile creation
     if profiles.count() is 0:
         return redirect('profile:new')
-    # Fetch events
+    # Count events
     eventsCount = Event.objects.filter(is_deleted = False, organizers__in = pids).count()
+    # Fetch events
     currentEvents = Event.objects.filter(Q(end_time = None, 
                                            start_time__gt = tz.now()) | 
                                          Q(end_time__isnull = False, 
                                            end_time__gt = tz.now()),   
                                          is_launched = True, 
                                          organizers__in = pids) \
-                                 .order_by('start_time')[:5]
+                                 .order_by('start_time')
     currentEventsCount = currentEvents.count()
+    currentEvents = currentEvents.filter()[:5]
     currentEvents = list(currentEvents)
     for i in range(0, len(currentEvents)):
         stats = Purchase.objects.filter(Q(checkout = None) | 
                                         Q(checkout__is_charged = True, 
                                           checkout__is_refunded = False), 
-                                        event = currentEvents[i]) \
-                                .aggregate(total_sale = Sum('amount'), 
-                                           rsvp_count = Count('id'))
-        currentEvents[i].totalSale = stats['total_sale']
+                                        event = currentEvents[i])
+        totalSale = stats.aggregate(Sum('amount'))['amount__sum']
+        totalRSVP = stats.aggregate(Count('items'))['items__count']
+        currentEvents[i].totalSale = totalSale
         if currentEvents[i].totalSale is None:
             currentEvents[i].totalSale = 0
-        currentEvents[i].rsvpCount = stats['rsvp_count']
+        currentEvents[i].rsvpCount = totalRSVP
         tickets = Ticket.objects.filter(event = currentEvents[i], 
                                         is_deleted = False)
         potentialQuantity = 0
         potentialSale = 0
         for ticket in tickets:
+            if ticket.price > 0 and ticket.quantity is None:
+                potentialQuantity = None
+                potentialSale = None
+                break
             if ticket.quantity is not None:
                 if potentialQuantity is not None:
                   potentialQuantity += ticket.quantity
@@ -65,6 +73,8 @@ def index(request, params, user):
             else:
                 potentialQuantity = None
         currentEvents[i].potentialQuantity = potentialQuantity
+        if potentialQuantity:
+            currentEvents[i].potentialQuantity += totalRSVP
         currentEvents[i].potentialSale = potentialSale
     pastEvents = Event.objects.filter(Q(end_time = None, 
                                         start_time__lt = tz.now()) | 
@@ -80,16 +90,20 @@ def index(request, params, user):
         stats = Purchase.objects.filter(Q(checkout = None) | 
                                         Q(checkout__is_charged = True, 
                                           checkout__is_refunded = False), 
-                                        event = pastEvents[i]) \
-                                .aggregate(total_sale = Sum('amount'), 
-                                           rsvp_count = Count('id'))
-        pastEvents[i].totalSale = stats['total_sale']
-        pastEvents[i].rsvpCount = stats['rsvp_count']
+                                        event = pastEvents[i])
+        totalSale = stats.aggregate(Sum('amount'))['amount__sum']
+        totalRSVP = stats.aggregate(Count('items'))['items__count']
+        pastEvents[i].totalSale = totalSale
+        pastEvents[i].rsvpCount = totalRSVP
         tickets = Ticket.objects.filter(event = pastEvents[i], 
                                         is_deleted = False)
         potentialQuantity = 0
         potentialSale = 0
         for ticket in tickets:
+            if ticket.price > 0 and ticket.quantity is None:
+                potentialQuantity = None
+                potentialSale = None
+                break
             if ticket.quantity is not None:
                 if potentialQuantity is not None:
                   potentialQuantity += ticket.quantity
@@ -97,6 +111,8 @@ def index(request, params, user):
             else:
                 potentialQuantity = None
         pastEvents[i].potentialQuantity = potentialQuantity
+        if potentialQuantity:
+            pastEvents[i].potentialQuantity += totalRSVP
         pastEvents[i].potentialSale = potentialSale
     draftEvents = Event.objects.filter(is_launched = False,
                                        is_deleted = False,
