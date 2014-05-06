@@ -32,6 +32,7 @@ def index(request, params, user):
     if profiles.count() is 0:
         return redirect('profile:new')
     # Fetch events
+    eventsCount = Event.objects.filter(is_deleted = False, organizers__in = pids).count()
     currentEvents = Event.objects.filter(Q(end_time = None, 
                                            start_time__gt = tz.now()) | 
                                          Q(end_time__isnull = False, 
@@ -113,6 +114,16 @@ def login(request, user):
         return redirect('index')
     else:
         return render(request, 'index/login.html', locals())
+
+@login_check()
+def register(request, user):
+    """
+    Register Page
+    """
+    if user:
+        return redirect('index')
+    else:
+        return render(request, 'index/register.html', locals())
 
 @login_check()
 def terms(request, user):

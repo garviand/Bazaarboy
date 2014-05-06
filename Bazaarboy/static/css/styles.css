@@ -6155,6 +6155,7 @@ div.current-event > div.tile div.header div.past-event-title,
 div.draft-event > div.tile div.header div.past-event-title,
 div.past-event > div.tile div.header div.past-event-title {
   padding: 22px 0;
+  padding-left: 20px;
   font-size: 20px;
   font-weight: 500;
   line-height: 20px;
@@ -6932,6 +6933,38 @@ div.past-event > div.tile div.section-title {
   line-height: 50px;
   text-transform: uppercase;
 }
+div#wrapper-dashboard div.empty-state-container {
+  margin-top: 40px;
+  border: #F6F6F6 thin solid;
+  border-radius: 4px;
+  background: url('../images/emptystates/pizza_bg.jpg');
+  background-size: 80%;
+  background-position: left center;
+  background-repeat: no-repeat;
+}
+div#wrapper-dashboard div.empty-state-container div.empty-state-content {
+  margin: 80px 0;
+}
+div#wrapper-dashboard div.empty-state-container div.empty-state-content div.text {
+  font-size: 1.3rem;
+  font-weight: 600;
+  color: #3c3c3c;
+}
+div#wrapper-dashboard div.empty-state-container div.empty-state-content hr {
+  margin: 10px 0;
+}
+div#wrapper-dashboard div.empty-state-container div.empty-state-content div.primary-btn {
+  width: 100%;
+  margin-top: 20px;
+  margin-left: 10px;
+  padding-top: 11px;
+  padding-bottom: 14px;
+  font-size: 15px;
+  text-transform: uppercase;
+}
+div#wrapper-dashboard div.events-overview-title:first-child {
+  margin-top: 40px;
+}
 div#wrapper-pricing {
   min-height: 100%;
 }
@@ -7132,22 +7165,25 @@ div#wrapper-pricing div#pricing div#what_else .contact .primary-btn {
 div#wrapper-pricing div#pricing div#what_else .contact .primary-btn:hover {
   color: #ffffff;
 }
-div#login {
+div#login,
+div#register {
   min-width: 100%;
   min-height: 100%;
   background: #F6F6F6;
 }
-div#login div#container {
+div#login div#container,
+div#register div#container {
   width: 450px;
   max-width: 98%;
   margin: 0 auto;
 }
-div#login div#login-container {
-  display: none;
+div#login div#login-container,
+div#register div#login-container {
   background: #ffffff;
   margin-top: 75px;
 }
-div#login div#login-container form#login-form div.logo-small {
+div#login div#login-container form#login-form div.logo-small,
+div#register div#login-container form#login-form div.logo-small {
   margin: 0 auto;
   margin-top: 50px;
   height: 50px;
@@ -7156,43 +7192,52 @@ div#login div#login-container form#login-form div.logo-small {
   background: url(/static/images/logo-big.png);
   background-size: cover;
 }
-div#login div#login-container form#login-form div.title {
+div#login div#login-container form#login-form div.title,
+div#register div#login-container form#login-form div.title {
   font-weight: 500;
   text-transform: uppercase;
   margin-top: 16px;
 }
-div#login div#login-container form#login-form div.title div.site-title {
+div#login div#login-container form#login-form div.title div.site-title,
+div#register div#login-container form#login-form div.title div.site-title {
   font-size: 1.5em;
 }
-div#login div#login-container form#login-form div.title span.page-title {
+div#login div#login-container form#login-form div.title span.page-title,
+div#register div#login-container form#login-form div.title span.page-title {
   color: #9B9B9B;
 }
-div#login div#login-container form#login-form hr.separator {
+div#login div#login-container form#login-form hr.separator,
+div#register div#login-container form#login-form hr.separator {
   margin-top: 24px;
   margin-bottom: 26px;
 }
 div#login div#login-container form#login-form .login-inputs input[type=text],
-div#login div#login-container form#login-form .login-inputs input[type=password] {
+div#register div#login-container form#login-form .login-inputs input[type=text],
+div#login div#login-container form#login-form .login-inputs input[type=password],
+div#register div#login-container form#login-form .login-inputs input[type=password] {
   border-radius: 3px;
   box-shadow: none;
 }
-div#login div#login-container form#login-form div.login-bottom {
+div#login div#login-container form#login-form div.login-bottom,
+div#register div#login-container form#login-form div.login-bottom {
   margin-top: 16px;
   padding-bottom: 16px;
 }
-div#login div#login-container form#login-form div.login-bottom .submit-login {
+div#login div#login-container form#login-form div.login-bottom .submit-login,
+div#register div#login-container form#login-form div.login-bottom .submit-login {
   width: 100%;
   font-weight: 400;
   padding: 8px 0px 10px;
   position: relative;
   top: -10px;
 }
-div#login div#register-container {
-  display: none;
+div#login div#register-container,
+div#register div#register-container {
   background: #ffffff;
   margin-top: 75px;
 }
-div#login div#register-container form#register-form div.logo-small {
+div#login div#register-container form#register-form div.logo-small,
+div#register div#register-container form#register-form div.logo-small {
   margin: 0 auto;
   margin-top: 50px;
   height: 50px;
@@ -7201,46 +7246,57 @@ div#login div#register-container form#register-form div.logo-small {
   background: url(/static/images/logo-big.png);
   background-size: cover;
 }
-div#login div#register-container form#register-form div.title {
+div#login div#register-container form#register-form div.title,
+div#register div#register-container form#register-form div.title {
   font-weight: 500;
   text-transform: uppercase;
   margin-top: 16px;
 }
-div#login div#register-container form#register-form div.title div.site-title {
+div#login div#register-container form#register-form div.title div.site-title,
+div#register div#register-container form#register-form div.title div.site-title {
   font-size: 1.5em;
 }
-div#login div#register-container form#register-form div.title span.page-title {
+div#login div#register-container form#register-form div.title span.page-title,
+div#register div#register-container form#register-form div.title span.page-title {
   color: #9B9B9B;
 }
-div#login div#register-container form#register-form hr.separator {
+div#login div#register-container form#register-form hr.separator,
+div#register div#register-container form#register-form hr.separator {
   margin-top: 24px;
   margin-bottom: 26px;
 }
 div#login div#register-container form#register-form .register-inputs input[type=text],
-div#login div#register-container form#register-form .register-inputs input[type=password] {
+div#register div#register-container form#register-form .register-inputs input[type=text],
+div#login div#register-container form#register-form .register-inputs input[type=password],
+div#register div#register-container form#register-form .register-inputs input[type=password] {
   border-radius: 3px;
   box-shadow: none;
 }
-div#login div#register-container form#register-form div.register-bottom {
+div#login div#register-container form#register-form div.register-bottom,
+div#register div#register-container form#register-form div.register-bottom {
   margin-top: 16px;
   padding-bottom: 16px;
 }
-div#login div#register-container form#register-form div.register-bottom .submit-register {
+div#login div#register-container form#register-form div.register-bottom .submit-register,
+div#register div#register-container form#register-form div.register-bottom .submit-register {
   width: 100%;
   font-weight: 400;
   padding: 8px 0px 10px;
   position: relative;
   top: -10px;
 }
-div#login div#footer {
+div#login div#footer,
+div#register div#footer {
   margin-top: 32px;
 }
-div#login div#footer .trouble {
+div#login div#footer .trouble,
+div#register div#footer .trouble {
   text-decoration: underline;
   font-size: .8em;
   color: #F4A534;
 }
-div#login div#footer .switch {
+div#login div#footer .switch,
+div#register div#footer .switch {
   display: block;
   width: 100%;
   text-align: center;
@@ -7254,7 +7310,8 @@ div#login div#footer .switch {
   transition: color .2s;
   transition: background .2s;
 }
-div#login div#footer .switch:hover {
+div#login div#footer .switch:hover,
+div#register div#footer .switch:hover {
   color: #ffffff;
   background: #F4A534;
 }
@@ -8176,8 +8233,6 @@ div#event-modify-tickets div.next-step a.primary-btn {
   border: none;
   font-size: 15px;
   text-transform: uppercase;
-  position: relative;
-  z-index: -1;
 }
 div#event-modify-tickets div.next-step a.primary-btn:hover {
   color: #ffffff;
@@ -8189,6 +8244,7 @@ div#event-modify-tickets div.promo-option {
 }
 div#event-modify-tickets div#edit-ticket {
   position: absolute;
+  z-index: 1;
   top: 30px;
   left: 0;
   border: 9px solid #FEC84D;

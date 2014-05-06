@@ -11,7 +11,7 @@ block body
                         img(src="{{ STATIC_URL }}images/logo-big.png")
                         div.text BAZAARBOY
                 div.small-12.medium-7.columns.links.clearfix
-                    a.sign_up(href="{% url index:login %}#register") SIGN UP
+                    a.sign_up(href="{% url index:register %}") SIGN UP
                     a(href="{% url index:login %}") LOG IN
                     a(href="mailto:build@bazaarboy.com") CONTACT
                     a(href="{% url index:pricing %}") PRICING
@@ -23,10 +23,10 @@ block body
                     hr
             div.row.subtext
                 div.small-10.small-offset-1.medium-6.medium-offset-3.columns
-                    | Bazaarboy offers Ticketing &amp; Registration Pages, Attendee Communication Tools and Event Materials &amp; Resources.
+                    | We are an online ticketing &amp; registration company helping event organizers connect the dots. 
             div.row.sign_up
                 div.small-8.small-offset-2.medium-2.medium-offset-5.columns
-                    a.secondary-btn(href="{% url index:login %}#register") SIGN UP
+                    a.secondary-btn(href="{% url index:register %}") SIGN UP
         div.section.section-2
             div.row.content
                 div.small-12.medium-5.medium-offset-1.columns
@@ -35,10 +35,10 @@ block body
                         br
                         | &amp; WHAT WE DO
                     div.subtext
-                        | Bazaarboy helps non-profits manage events professionally, offering simple tools for ticketing &amp; registration. Our mission is to simplify the cluttered world of event commerce and communication
+                        | Bazaarboy offers simple tools for event ticketing &amp; registration to businesses, non-profits, organizations and membership associations. Our mission is to simplify event commerce and communication.
                 div.small-12.medium-6.columns
                     img.ticket(src="{{ STATIC_URL }}images/landing/ticket.png")
-        div.section.section-3
+        //div.section.section-3
             div.row.content
                 div.small-12.medium-7.columns
                     div.logo
@@ -53,7 +53,7 @@ block body
                         a.secondary-btn(href="javascript:;") EVENT DETAILS
                 div.small-12.medium-5.columns
                     img(src="{{ STATIC_URL }}images/landing/checkin.jpg")
-        div.section.section-4
+        //div.section.section-4
             div.row.content
                 div.small-12.medium-6.columns
                     img.glass(src="{{ STATIC_URL }}images/landing/magnifying_glass.png")
@@ -63,7 +63,7 @@ block body
                         br
                         | &amp; HOW WE CAN HELP
                     div.subtext
-                        | Bazaarboy helps non-profits manage events professionally, offering simple tools for ticketing &amp; registration. Our mission is to simplify the cluttered world of event commerce and communication
+                        | Bazaarboy is located at the TechArtista Collaborative Working Environment in St. Louis, MO. We understand selling tickets is just one hurdle for event organizers. Our team can also provide strategic planning to help your marketing and communication efforts. 
 
         
 

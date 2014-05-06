@@ -109,14 +109,23 @@ Bazaarboy.index.index =
             profileId = $(this).attr('data-profile-id')
             scope.createEvent profileId
             return
-        $('div#wrapper-sidebar a.sidebar-item.events-filter').click () ->
+        $('a.events-filter').click () ->
             $('div#wrapper-sidebar a.sidebar-item.events-filter').removeClass('selected')
-            $(this).addClass('selected')
             filter = $(this)
             $('#wrapper-dashboard div.event-tiles-container.active').fadeOut 300, () ->
                 $('#wrapper-dashboard div.graph-canvas').empty()
                 $('#wrapper-dashboard div.event-tiles-container.active').removeClass('active')
+                if filter.hasClass('events-filter-summary')
+                    $('div#wrapper-sidebar a.sidebar-item.events-filter-summary').addClass('selected')
+                    $('div.header-title div.text span.sub').text 'Events Overview'
+                    $('#wrapper-dashboard div.summary-events').addClass('active')
+                    $('#wrapper-dashboard div.summary-events').fadeIn 300, () ->
+                        $('div.current-event, div.past-event').each () ->
+                            scope.initGraph this
+                            return
+                        return
                 if filter.hasClass('events-filter-current')
+                    $('div#wrapper-sidebar a.sidebar-item.events-filter-current').addClass('selected')
                     $('div.header-title div.text span.sub').text 'Current Events'
                     $('#wrapper-dashboard div.current-events').addClass('active')
                     $('#wrapper-dashboard div.current-events').fadeIn 300, () ->
@@ -125,10 +134,12 @@ Bazaarboy.index.index =
                             return
                         return
                 if filter.hasClass('events-filter-draft')
+                    $('div#wrapper-sidebar a.sidebar-item.events-filter-draft').addClass('selected')
                     $('div.header-title div.text span.sub').text 'Draft Events'
                     $('#wrapper-dashboard div.draft-events').addClass('active')
                     $('#wrapper-dashboard div.draft-events').fadeIn 300
                 if filter.hasClass('events-filter-past')
+                    $('div#wrapper-sidebar a.sidebar-item.events-filter-past').addClass('selected')
                     $('div.header-title div.text span.sub').text 'Past Events'
                     $('#wrapper-dashboard div.past-events').addClass('active')
                     $('#wrapper-dashboard div.past-events').fadeIn 300, () ->
@@ -153,7 +164,7 @@ Bazaarboy.index.index =
             $(this).html("Launching...")
             return
         # Initialize graphs
-        $('div.current-event').each () ->
+        $('div.current-event, div.past-event').each () ->
             scope.initGraph this
             return
         return

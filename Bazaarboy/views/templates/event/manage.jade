@@ -5,6 +5,10 @@ extends ../layout
 block title
     | Manage | {{ event.name }}
 
+block sidebar
+    +sidebarItem('ss-newspaper')(href="{% url index %}")
+        | Events
+
 block header
     div.header-title.large-9.medium-10.columns.small-centered
         div.row.clearfix
