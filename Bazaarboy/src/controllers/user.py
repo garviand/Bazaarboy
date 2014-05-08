@@ -4,6 +4,7 @@ Controller for all user related actions
 
 import hashlib
 import os
+import uuid
 from datetime import timedelta
 from django.db.models import Q
 from django.http import HttpResponse, HttpResponseForbidden
@@ -330,11 +331,11 @@ def create_reset(request, params, user):
     user = User.objects.get(email = params['email'])
     expirationTime = timezone.now() + timedelta(days = 3)
     resetCode = User_reset_code(user = user, 
-                           code = os.urandom(128).encode('base_64')[:128], 
-                           expiration_time = expirationTime)
+                                code = str(uuid.uuid4()), 
+                                expiration_time = expirationTime)
     resetCode.save()
-    email = Email()
-    email.sendResetRequestEmail(resetCode)
+    #email = Email()
+    #email.sendResetRequestEmail(resetCode)
     response = {
         'status':'OK'
     }
@@ -390,8 +391,8 @@ def change_password(request, params, user):
     user.password = params['password']
     user.save()
     # Send a notification email to the user
-    email = Email()
-    email.sendPasswordChangedEmail(user)
+    #email = Email()
+    #email.sendPasswordChangedEmail(user)
     response = {
         'status':'OK'
     }
