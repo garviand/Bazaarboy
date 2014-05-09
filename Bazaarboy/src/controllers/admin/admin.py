@@ -37,8 +37,8 @@ def index(request):
     daily_stats = stats.filter(created_time__gte=datetime.now()-timedelta(days=1))
     daily_stats = daily_stats.aggregate(total_sale = Sum('amount'), sale_count = Count('id'))
     # Events (Upcoming/Past)
-    upcoming_events = Event.objects.filter(Q(is_launched = True, start_time__gte = timezone.now())).order_by('start_time')[:30]
-    past_events = Event.objects.filter(Q(is_launched = True, start_time__lte = timezone.now())).order_by('start_time')[:30]
+    upcoming_events = Event.objects.filter(Q(is_launched = True, start_time__gte = timezone.now())).order_by('-start_time')[:50]
+    past_events = Event.objects.filter(Q(is_launched = True, start_time__lte = timezone.now())).order_by('-start_time')[:100]
     return render(request, 'admin/index.html', locals())
 
 def login(request):

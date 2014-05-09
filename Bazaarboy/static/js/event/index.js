@@ -128,7 +128,25 @@
         }
       });
     },
-    completePurchase: function() {},
+    completePurchase: function() {
+      var scope;
+      scope = this;
+      if (!this.overlayAnimationInProgress) {
+        this.overlayAnimationInProgress = true;
+        $('div#wrapper-overlay').animate({
+          opacity: 0
+        }, 300, function() {
+          $(this).addClass('hide');
+        });
+        $('div#tickets').animate({
+          opacity: 0
+        }, 300, function() {
+          $(this).addClass('hide');
+          scope.overlayAnimationInProgress = false;
+        });
+      }
+      $('div#confirmation-modal').foundation('reveal', 'open');
+    },
     init: function() {
       var latitude, longitude, map, mapCenter, mapOptions, mapStyles, marker, scope,
         _this = this;
@@ -139,6 +157,10 @@
         if (hash === '#launch') {
           $('div#launch-modal').foundation('reveal', 'open');
           window.history.pushState("", document.title, window.location.pathname);
+          return;
+        }
+        if (hash === '#conf') {
+          $('div#confirmation-modal').foundation('reveal', 'open');
         }
       });
       $(window).hashchange();
@@ -217,7 +239,6 @@
         });
       });
       $('a#rsvp-button').click(function() {
-        console.log('clicked');
         if (!_this.overlayAnimationInProgress) {
           $("html, body").animate({
             scrollTop: 0

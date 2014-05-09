@@ -104,14 +104,28 @@ Bazaarboy.event.index =
             return
         return
     completePurchase: () ->
+        scope = this
+        if not @overlayAnimationInProgress
+            @overlayAnimationInProgress = true
+            $('div#wrapper-overlay').animate {opacity: 0}, 300, () ->
+                $(this).addClass('hide')
+                return
+            $('div#tickets').animate {opacity: 0}, 300, () ->
+                $(this).addClass('hide')
+                scope.overlayAnimationInProgress = false
+                return
+        $('div#confirmation-modal').foundation('reveal', 'open')
         return
     init: () ->
         scope = this
         $(window).hashchange () ->
             hash = location.hash
             if hash is '#launch'
-                $('div#launch-modal').foundation('reveal', 'open');
+                $('div#launch-modal').foundation('reveal', 'open')
                 window.history.pushState("", document.title, window.location.pathname)
+                return
+            if hash is '#conf'
+                $('div#confirmation-modal').foundation('reveal', 'open')
                 return
         $(window).hashchange()
         latitude = parseFloat $('div.map-canvas').attr('data-latitude')
@@ -185,7 +199,6 @@ Bazaarboy.event.index =
                 return
             return
         $('a#rsvp-button').click () =>
-            console.log 'clicked'
             if not @overlayAnimationInProgress
                 $("html, body").animate({ scrollTop: 0 }, "fast")
                 if $('div#wrapper-overlay').hasClass('hide')

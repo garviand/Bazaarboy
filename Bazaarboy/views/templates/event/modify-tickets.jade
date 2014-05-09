@@ -41,12 +41,23 @@ block header
 block content
     div#wrapper-event-modify.large-9.medium-10.columns.small-centered
         div#event-modify-tickets.small-12.columns
-            div#action-canvas.small-12.columns
+            div#action-canvas.small-12.columns(class="{% if not ticketExists %}hide{% endif %}")
                 div.row
                     div.medium-3.columns.new-ticket
                         a.new-ticket.primary-btn(href="javascript:;") + New Ticket
                     div.medium-3.columns.end.hide
                         a.new-promo.primary-btn(href="javascript:;") + New Promo
+            div.empty-state-container(class="{% if ticketExists %}hide{% endif %}")
+                div.row
+                    div.medium-5.columns
+                        | &nbsp;
+                    div.medium-6.columns.end.empty-state-content
+                        div.text ADD EVENT TICKETS
+                        hr
+                        div.subtext Or add a free RSVP option.
+                        div.row
+                            div.large-5.medium-7.small-9
+                                a.new-ticket.primary-btn(href="javascript:;") + New Ticket
             mixin ticket-option(tags)
                 div.ticket-option.row(data-id!= tags ? "{{ ticket.id }}" : "")
                     div.top.small-12.columns
