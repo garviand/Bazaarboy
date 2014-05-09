@@ -95,7 +95,7 @@
           alert(response.message);
         } else {
           if (response.publishable_key == null) {
-            _this.completePurchase();
+            _this.completePurchase(response.tickets);
           } else {
             total = response.purchase.amount * 100;
             a = (1 + 0.05) * total + 50;
@@ -117,7 +117,7 @@
                   stripe_token: token.id
                 }, function(response) {
                   if (response.status === 'OK') {
-                    _this.completePurchase();
+                    _this.completePurchase(response.tickets);
                   } else {
                     alert(response.message);
                   }
@@ -128,11 +128,20 @@
         }
       });
     },
-    completePurchase: function() {
-      var scope;
+    completePurchase: function(tickets) {
+      var k, newTicket, scope, ticket, ticketHTML;
       scope = this;
       if (!this.overlayAnimationInProgress) {
         this.overlayAnimationInProgress = true;
+        ticketHTML = $('div#confirmation-modal div.ticket-model').html();
+        $('div#confirmation-modal div.ticket-model').remove();
+        for (k in tickets) {
+          ticket = tickets[k];
+          newTicket = $(ticketHTML);
+          newTicket.find('div.quantity').html('x' + ticket['quantity']);
+          newTicket.find('div.name').html(ticket['name']);
+          $('div#confirmation-modal').find('div.tickets').append(newTicket);
+        }
         $('div#wrapper-overlay').animate({
           opacity: 0
         }, 300, function() {

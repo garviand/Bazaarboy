@@ -42,11 +42,12 @@ block body
                 div.row
                     div.medium-12.title.columns
                         | Your Tickets
-                div.ticket.row
-                    div.medium-4.columns
-                        div.quantity x0
-                    div.medium-8.columns
-                        div.name Ticket Name
+                div.ticket-model
+                    div.ticket.row
+                        div.medium-4.columns
+                            div.quantity x0
+                        div.medium-8.columns
+                            div.name Ticket Name
     div#launch-modal.reveal-modal.text-center.medium(data-reveal)
         div.empty-state-container(class="{% if ticketExists %}hide{% endif %}")
                 div.row

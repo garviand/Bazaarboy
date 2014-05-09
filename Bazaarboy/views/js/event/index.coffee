@@ -74,7 +74,7 @@ Bazaarboy.event.index =
                 alert response.message
             else
                 if not response.publishable_key?
-                    @completePurchase()
+                    @completePurchase(response.tickets)
                 else
                     total = response.purchase.amount * 100
                     a = (1 + 0.05) * total + 50
@@ -96,17 +96,24 @@ Bazaarboy.event.index =
                                 stripe_token: token.id
                             , (response) =>
                                 if response.status is 'OK'
-                                    @completePurchase()
+                                    @completePurchase(response.tickets)
                                 else
                                     alert response.message
                                 return
                             return
             return
         return
-    completePurchase: () ->
+    completePurchase: (tickets) ->
         scope = this
         if not @overlayAnimationInProgress
             @overlayAnimationInProgress = true
+            ticketHTML = $('div#confirmation-modal div.ticket-model').html()
+            $('div#confirmation-modal div.ticket-model').remove()
+            for k, ticket of tickets
+                newTicket = $(ticketHTML)
+                newTicket.find('div.quantity').html('x'+ticket['quantity'])
+                newTicket.find('div.name').html(ticket['name'])
+                $('div#confirmation-modal').find('div.tickets').append(newTicket)
             $('div#wrapper-overlay').animate {opacity: 0}, 300, () ->
                 $(this).addClass('hide')
                 return

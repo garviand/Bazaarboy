@@ -1223,7 +1223,6 @@ def purchase(request, params, user):
             # Create the purchase
             purchase = Purchase(owner = user, event = event, amount = 0)
             purchase.save()
-
             for promo in promos.itervalues():
                 purchase.promos.add(promo)
             purchase.save()
@@ -1239,13 +1238,23 @@ def purchase(request, params, user):
                     Ticket.objects \
                           .filter(id = ticket.id) \
                           .update(quantity = F('quantity') - details[ticket.id])
+            items = {}
+            for ticket in tickets:
+                if ticket.id in items:
+                    items[ticket.id]['quantity'] += 1
+                else:
+                    items[ticket.id] = {
+                'name': ticket.name,
+                'quantity': 1
+            }
             # Send confirmation email and sms
             sendEventConfirmationEmail(purchase)
             sendEventConfirmationSMS(purchase)
             # Success
             response = {
                 'status':'OK',
-                'purchase':serialize_one(purchase)
+                'purchase':serialize_one(purchase),
+                'tickets': items
             }
             return json_response(response)
         # Otherwise

@@ -79,6 +79,16 @@ def charge(request, params, user):
     creator = Organizer.objects.get(event = purchase.event, 
                                     is_creator = True).profile
     isNonProfit = creator.is_non_profit and creator.is_verified
+    tickets = purchase.items.all()
+    items = {}
+    for ticket in tickets:
+        if ticket.id in items:
+            items[ticket.id]['quantity'] += 1
+        else:
+            items[ticket.id] = {
+        'name': ticket.name,
+        'quantity': 1
+    }
     if checkout.is_charged:
         response = {
             'status':'FAIL',
@@ -109,6 +119,7 @@ def charge(request, params, user):
         sendEventConfirmationEmail(purchase)
         sendEventConfirmationSMS(purchase)
         response = {
-            'status':'OK'
+            'status':'OK',
+            'tickets': items
         }
         return json_response(response)
