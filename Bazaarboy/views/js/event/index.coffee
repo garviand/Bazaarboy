@@ -54,6 +54,7 @@ Bazaarboy.event.index =
             $('div#tickets-subtotal span.plural').removeClass 'hide'
         return
     purchase: () ->
+        $('a#tickets-confirm').html 'Processing...'
         params = 
             event: eventId
             first_name: $('input[name=first_name]').val().trim()
@@ -72,6 +73,7 @@ Bazaarboy.event.index =
         Bazaarboy.post 'event/purchase/', params, (response) =>
             if response.status isnt 'OK'
                 alert response.message
+                $('a#tickets-confirm').html 'Confirm RSVP'
             else
                 if not response.publishable_key?
                     @completePurchase(response.tickets)

@@ -69,6 +69,7 @@
     purchase: function() {
       var params, quantity, ticket, tickets, _i, _len,
         _this = this;
+      $('a#tickets-confirm').html('Processing...');
       params = {
         event: eventId,
         first_name: $('input[name=first_name]').val().trim(),
@@ -93,6 +94,7 @@
         var a, b, total;
         if (response.status !== 'OK') {
           alert(response.message);
+          $('a#tickets-confirm').html('Confirm RSVP');
         } else {
           if (response.publishable_key == null) {
             _this.completePurchase(response.tickets);

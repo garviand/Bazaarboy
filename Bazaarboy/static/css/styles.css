@@ -6105,6 +6105,11 @@ div#landing div.section-4 div.content img.glass {
   float: right;
   max-height: 250px;
 }
+div.summary-events div.current-event,
+div.summary-events div.draft-event,
+div.summary-events div.past-event {
+  margin-top: 10px !important;
+}
 div.current-event,
 div.draft-event,
 div.past-event {
@@ -6964,6 +6969,20 @@ div#wrapper-dashboard div.empty-state-container div.empty-state-content div.prim
 }
 div#wrapper-dashboard div.events-overview-title:first-child {
   margin-top: 40px;
+}
+div#wrapper-dashboard div.events-overview-title .title {
+  font-size: 18px;
+  font-weight: 600;
+  text-transform: uppercase;
+}
+div#wrapper-dashboard div.events-overview-title .title .pipe {
+  color: #9B9B9B;
+}
+div#wrapper-dashboard div.events-overview-title a.view-all {
+  position: relative;
+  top: 2px;
+  color: #faa638;
+  font-size: 13px;
 }
 div#wrapper-pricing {
   min-height: 100%;

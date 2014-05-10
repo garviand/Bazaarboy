@@ -1,5 +1,11 @@
 @import (reference) "vars.less";
 
+div.summary-events{
+    div.current-event, div.draft-event, div.past-event{
+        margin-top: 10px !important;
+    }
+}
+
 div.current-event, div.draft-event, div.past-event {
     margin-top: 40px !important;
     margin-bottom: 40px !important;
@@ -344,7 +350,23 @@ div#wrapper-dashboard{
             }
         }
     }
-    div.events-overview-title:first-child{
-        margin-top: 40px;
+    div.events-overview-title{
+        &:first-child{
+            margin-top: 40px;
+        }
+        .title{
+            font-size: 18px;
+            font-weight: 600;
+            text-transform: uppercase;
+            .pipe{
+                color: #9B9B9B;
+            }
+        }
+        a.view-all{
+            position: relative;
+            top: 2px;
+            color: @orange;
+            font-size: 13px;
+        }
     }
 }
