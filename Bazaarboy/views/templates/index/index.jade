@@ -170,7 +170,7 @@ block content
                     div.past-event-view.large-3.medium-4.columns
                         div.row
                             div.medium-10.medium-offset-2.columns
-                                a.secondary-btn(href="{% url event:index event.id %}?preview", target="_blank") 
+                                a.secondary-btn(href="{% url event:index event.id %}", target="_blank") 
                                     | View Event
                 div.info.small-12.columns
                     div.inner.row
@@ -210,6 +210,11 @@ block content
                                         div.graph-frame
                                             div.graph-canvas
                         div.past-event-actions.medium-3.columns
+                            a.past-event-action.first(href="{% url event:modify event.id 'basics' %}")
+                                div.icon
+                                    span.ss-info
+                                div.text
+                                    span Edit Info
                             a.past-event-action(href="{% url event:index event.id %}?design")
                                 div.icon
                                     span.ss-picture

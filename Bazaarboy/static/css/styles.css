@@ -7767,6 +7767,17 @@ div#event-body div#event-sidebar div.event-actions-container {
 div#event-body div#event-sidebar div#event-actions {
   min-height: 50px;
 }
+div#event-body div#event-sidebar div#event-actions div.edit-tickets a.edit-tickets-btn {
+  display: block;
+  width: 100%;
+  padding-top: 9px;
+  padding-bottom: 11px;
+  margin-top: 15px;
+  margin-bottom: 15px;
+}
+div#event-body div#event-sidebar div#event-actions div.edit-tickets a.edit-tickets-btn:hover {
+  color: #FFF;
+}
 div#event-body div#event-sidebar div#event-actions div.ticket-prices {
   padding-left: 0;
   padding-right: 0;
