@@ -65,20 +65,24 @@ block body
                                 a.close-reveal-modal Close
     div#event
         div#event-header
-            div.event-header-body(class="{% if design %}medium-9{% else %}medium-12{% endif %} columns")
+            div.event-header-body(class="{% if design %}medium-8{% elif preview %}medium-10{% else %}medium-12{% endif %} columns")
                 div.profile-icon
                     div.inner
                         a(href="{% url index %}")
                             img(src="{{ STATIC_URL }}images/logo-inverse.png")
                 div.event-name 
                     span {{ event.name }}
+                {% if preview %}
+            div.event-launch.medium-2.columns.clearfix.right
+                a.secondary-btn(href="{% url event:index id %}?design") Edit Page Design
+                {% endif %}
                 {% if design %}
                 {% if not event.is_launched %}
             div.event-launch.medium-2.columns.clearfix
                 a.right.primary-btn.launch-btn(href="javascript:;") Launch Event
                 {% endif %}
-            div.event-launch.medium-1.columns.clearfix.right
-                a.back-btn.secondary-btn(href="{% url event:modify id 'tickets' %}") Back
+            div.event-launch.medium-2.columns.clearfix.right
+                a.back-btn.secondary-btn(href="{% url event:index id %}?preview") Preview Event
                 {% endif %}
                 //-div.price.right
                     span
@@ -105,6 +109,11 @@ block body
                 div.row.event-actions-container
                     div.medium-12.columns
                         div#event-actions.row
+                            {% if design %}
+                            div.medium-8.columns.edit-tickets.columns
+                                a.edit-tickets-btn.primary-btn(href="{% url event:modify id 'tickets' %}")
+                                    | Edit Tickets
+                            {% else %}
                             div.medium-3.columns.ticket-prices
                                 span
                                     {% spaceless %}
@@ -120,6 +129,7 @@ block body
                                     | RSVP
                             div.medium-4.columns.share-btn-container
                                 a.share-btn.secondary-btn.right Share
+                            {% endif %}
                         div.share-canvas.hidden
                             | <span class='st_facebook_large' displayText='Facebook'></span>
                             | <span class='st_twitter_large' displayText='Tweet'></span>
@@ -233,13 +243,14 @@ append script
     script(type="text/javascript", src="{{ STATIC_URL }}hashchange/jquery.ba-hashchange.min.js")
     script.
         var switchTo5x = true;
-    script(type="text/javascript", src="http://w.sharethis.com/button/buttons.js")
+    script(type="text/javascript", src="https://w.sharethis.com/button/buttons.js")
     script.
         stLight.options({
             publisher: "7bffe644-d542-4b4d-affe-420a0175f3c0", 
             doNotHash: false, 
             doNotCopy: false, 
-            hashAddressBar: false
+            hashAddressBar: false,
+            popup: true
         });
     script(type="text/javascript", src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAasW6vqPCn18g6UMaFWV90qGMSo6pErwo&sensor=false&libraries=places")
     {% if editable %}

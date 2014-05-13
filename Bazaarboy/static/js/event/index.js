@@ -19,6 +19,7 @@
           alert(response.message);
           $('div.event-launch a.launch-btn').html('Launch Event');
           $('div.save-status').html('Saved');
+          scope.toLaunch = false;
         } else {
           this.savingInProgress = false;
           setTimeout((function() {
@@ -33,6 +34,7 @@
                 } else {
                   alert(response.message);
                   $('div.event-launch a.launch-btn').html('Launch Event');
+                  scope.toLaunch = false;
                 }
               });
             }
@@ -287,6 +289,9 @@
       });
       $('div#tickets-canvas div.ticket').click(function() {
         $(this).find('.ticket-selected').click();
+      });
+      $('.ticket-selected').click(function(e) {
+        e.stopPropagation();
       });
       $('input.ticket-quantity').click(function(e) {
         e.stopPropagation();

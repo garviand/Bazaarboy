@@ -17,6 +17,7 @@ Bazaarboy.event.index =
                 alert response.message
                 $('div.event-launch a.launch-btn').html('Launch Event')
                 $('div.save-status').html 'Saved'
+                scope.toLaunch = false
             else
                 @savingInProgress = false
                 setTimeout (() ->
@@ -28,6 +29,7 @@ Bazaarboy.event.index =
                             else
                                 alert response.message
                                 $('div.event-launch a.launch-btn').html('Launch Event')
+                                scope.toLaunch = false
                             return
                     return
                 ), 500
@@ -232,6 +234,9 @@ Bazaarboy.event.index =
             return
         $('div#tickets-canvas div.ticket').click () ->
             $(this).find('.ticket-selected').click()
+            return
+        $('.ticket-selected').click (e) ->
+            e.stopPropagation()
             return
         $('input.ticket-quantity').click (e) ->
             e.stopPropagation()
