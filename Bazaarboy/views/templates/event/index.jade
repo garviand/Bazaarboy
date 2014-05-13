@@ -243,14 +243,14 @@ append script
     script(type="text/javascript", src="{{ STATIC_URL }}hashchange/jquery.ba-hashchange.min.js")
     script.
         var switchTo5x = true;
-    script(type="text/javascript", src="https://w.sharethis.com/button/buttons.js")
+    script(type="text/javascript", src="https://ws.sharethis.com/button/buttons.js")
     script.
         stLight.options({
             publisher: "7bffe644-d542-4b4d-affe-420a0175f3c0", 
             doNotHash: false, 
             doNotCopy: false, 
             hashAddressBar: false,
-            popup: true
+            popup: false
         });
     script(type="text/javascript", src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAasW6vqPCn18g6UMaFWV90qGMSo6pErwo&sensor=false&libraries=places")
     {% if editable %}
