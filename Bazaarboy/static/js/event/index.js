@@ -69,6 +69,7 @@
     purchase: function() {
       var params, quantity, ticket, tickets, _i, _len,
         _this = this;
+      $('a#tickets-confirm').html('Processing...');
       params = {
         event: eventId,
         first_name: $('input[name=first_name]').val().trim(),
@@ -93,9 +94,10 @@
         var a, b, total;
         if (response.status !== 'OK') {
           alert(response.message);
+          $('a#tickets-confirm').html('Confirm RSVP');
         } else {
           if (response.publishable_key == null) {
-            _this.completePurchase();
+            _this.completePurchase(response.tickets);
           } else {
             total = response.purchase.amount * 100;
             a = (1 + 0.05) * total + 50;
@@ -117,7 +119,7 @@
                   stripe_token: token.id
                 }, function(response) {
                   if (response.status === 'OK') {
-                    _this.completePurchase();
+                    _this.completePurchase(response.tickets);
                   } else {
                     alert(response.message);
                   }
@@ -128,7 +130,34 @@
         }
       });
     },
-    completePurchase: function() {},
+    completePurchase: function(tickets) {
+      var k, newTicket, scope, ticket, ticketHTML;
+      scope = this;
+      if (!this.overlayAnimationInProgress) {
+        this.overlayAnimationInProgress = true;
+        ticketHTML = $('div#confirmation-modal div.ticket-model').html();
+        $('div#confirmation-modal div.ticket-model').remove();
+        for (k in tickets) {
+          ticket = tickets[k];
+          newTicket = $(ticketHTML);
+          newTicket.find('div.quantity').html('x' + ticket['quantity']);
+          newTicket.find('div.name').html(ticket['name']);
+          $('div#confirmation-modal').find('div.tickets').append(newTicket);
+        }
+        $('div#wrapper-overlay').animate({
+          opacity: 0
+        }, 300, function() {
+          $(this).addClass('hide');
+        });
+        $('div#tickets').animate({
+          opacity: 0
+        }, 300, function() {
+          $(this).addClass('hide');
+          scope.overlayAnimationInProgress = false;
+        });
+      }
+      $('div#confirmation-modal').foundation('reveal', 'open');
+    },
     init: function() {
       var latitude, longitude, map, mapCenter, mapOptions, mapStyles, marker, scope,
         _this = this;
@@ -139,6 +168,10 @@
         if (hash === '#launch') {
           $('div#launch-modal').foundation('reveal', 'open');
           window.history.pushState("", document.title, window.location.pathname);
+          return;
+        }
+        if (hash === '#conf') {
+          $('div#confirmation-modal').foundation('reveal', 'open');
         }
       });
       $(window).hashchange();
@@ -217,7 +250,6 @@
         });
       });
       $('a#rsvp-button').click(function() {
-        console.log('clicked');
         if (!_this.overlayAnimationInProgress) {
           $("html, body").animate({
             scrollTop: 0

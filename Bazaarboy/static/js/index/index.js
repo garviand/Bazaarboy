@@ -26,6 +26,7 @@
       Bazaarboy.get('event/data/', {
         id: eventId
       }, function(response) {
+        var sale, _i, _len;
         if (Object.keys(response.purchases).length === 0) {
           rsvps.push([launchedTime.unix() * 1000, 0]);
           sales.push([launchedTime.unix() * 1000, 0]);
@@ -33,10 +34,16 @@
         $.each(response.purchases, function(index, purchase) {
           var date;
           date = moment(purchase.date, 'YYYY-MM-DD HH:mm:ss');
-          total_sales += purchase.amount;
           rsvps.push([date.unix() * 1000, purchase.rsvps]);
-          sales.push([date.unix() * 1000, total_sales]);
+          sales.push([date.unix() * 1000, purchase.amount]);
         });
+        rsvps = rsvps.sort();
+        sales = sales.sort();
+        for (_i = 0, _len = sales.length; _i < _len; _i++) {
+          sale = sales[_i];
+          total_sales += sale[1];
+          sale[1] = total_sales;
+        }
         $(canvas).highcharts({
           chart: {
             type: 'area'
@@ -147,15 +154,25 @@
         profileId = $(this).attr('data-profile-id');
         scope.createEvent(profileId);
       });
-      $('div#wrapper-sidebar a.sidebar-item.events-filter').click(function() {
+      $('a.events-filter').click(function() {
         var filter;
         $('div#wrapper-sidebar a.sidebar-item.events-filter').removeClass('selected');
-        $(this).addClass('selected');
         filter = $(this);
         $('#wrapper-dashboard div.event-tiles-container.active').fadeOut(300, function() {
           $('#wrapper-dashboard div.graph-canvas').empty();
           $('#wrapper-dashboard div.event-tiles-container.active').removeClass('active');
+          if (filter.hasClass('events-filter-summary')) {
+            $('div#wrapper-sidebar a.sidebar-item.events-filter-summary').addClass('selected');
+            $('div.header-title div.text span.sub').text('Events Overview');
+            $('#wrapper-dashboard div.summary-events').addClass('active');
+            $('#wrapper-dashboard div.summary-events').fadeIn(300, function() {
+              $('div.current-event, div.past-event').each(function() {
+                scope.initGraph(this);
+              });
+            });
+          }
           if (filter.hasClass('events-filter-current')) {
+            $('div#wrapper-sidebar a.sidebar-item.events-filter-current').addClass('selected');
             $('div.header-title div.text span.sub').text('Current Events');
             $('#wrapper-dashboard div.current-events').addClass('active');
             $('#wrapper-dashboard div.current-events').fadeIn(300, function() {
@@ -165,11 +182,13 @@
             });
           }
           if (filter.hasClass('events-filter-draft')) {
+            $('div#wrapper-sidebar a.sidebar-item.events-filter-draft').addClass('selected');
             $('div.header-title div.text span.sub').text('Draft Events');
             $('#wrapper-dashboard div.draft-events').addClass('active');
             $('#wrapper-dashboard div.draft-events').fadeIn(300);
           }
           if (filter.hasClass('events-filter-past')) {
+            $('div#wrapper-sidebar a.sidebar-item.events-filter-past').addClass('selected');
             $('div.header-title div.text span.sub').text('Past Events');
             $('#wrapper-dashboard div.past-events').addClass('active');
             $('#wrapper-dashboard div.past-events').fadeIn(300, function() {
@@ -197,7 +216,7 @@
         scope.launchEvent(eventId);
         $(this).html("Launching...");
       });
-      $('div.current-event').each(function() {
+      $('div.current-event, div.past-event').each(function() {
         scope.initGraph(this);
       });
     }

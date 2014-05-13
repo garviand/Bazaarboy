@@ -69,7 +69,9 @@ def modify(request, id, step, params, user):
     if step == 'tickets':
         tickets = Ticket.objects.filter(event = event, is_deleted = False)
         tickets = list(tickets)
-        for i in range(0, len(tickets)):
+        ticketCount = len(tickets)
+        ticketExists = ticketCount > 0
+        for i in range(0, ticketCount):
             sold = Purchase_item.objects.filter(Q(purchase__checkout = None) | 
                                                 Q(purchase__checkout__is_charged = True, 
                                                   purchase__checkout__is_refunded = False), 
@@ -137,7 +139,7 @@ def graph_data(request, params, user):
                                         Q(checkout__is_charged = True, 
                                           checkout__is_refunded = False), 
                                         event = event, 
-                                        is_expired = False).annotate(rsvps=Count('items'))
+                                        is_expired = False).annotate(rsvps=Count('items')).order_by('-created_time')
         
         purchase_data = {}
         for purchase in purchases:
@@ -1221,7 +1223,7 @@ def purchase(request, params, user):
             # Create the purchase
             purchase = Purchase(owner = user, event = event, amount = 0)
             purchase.save()
-            for promo in promos.itervalue():
+            for promo in promos.itervalues():
                 purchase.promos.add(promo)
             purchase.save()
             for ticket in tickets:
@@ -1230,20 +1232,29 @@ def purchase(request, params, user):
                                          ticket = ticket, 
                                          price = ticket.price)
                     item.save()
-                    items.append(item)
                 # If the ticket has a quantity limit
                 if ticket.quantity is not None:
                     # Update the ticket quantity
                     Ticket.objects \
                           .filter(id = ticket.id) \
                           .update(quantity = F('quantity') - details[ticket.id])
+            items = {}
+            for ticket in tickets:
+                if ticket.id in items:
+                    items[ticket.id]['quantity'] += 1
+                else:
+                    items[ticket.id] = {
+                'name': ticket.name,
+                'quantity': 1
+            }
             # Send confirmation email and sms
             sendEventConfirmationEmail(purchase)
             sendEventConfirmationSMS(purchase)
             # Success
             response = {
                 'status':'OK',
-                'purchase':serialize_one(purchase)
+                'purchase':serialize_one(purchase),
+                'tickets': items
             }
             return json_response(response)
         # Otherwise

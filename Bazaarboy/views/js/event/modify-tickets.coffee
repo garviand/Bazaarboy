@@ -195,6 +195,8 @@ Bazaarboy.event.modify.tickets =
                 endpoint = 'event/ticket/create/'
             Bazaarboy.post endpoint, params, (response) ->
                 if response.status is 'OK'
+                    $('div#event-modify-tickets div.empty-state-container').addClass('hide')
+                    $('div#event-modify-tickets div#action-canvas').removeClass('hide')
                     ticketOption = null
                     if isNew
                         ticketOption = $('div.templates div.ticket-option').clone()

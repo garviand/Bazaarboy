@@ -54,6 +54,7 @@ Bazaarboy.event.index =
             $('div#tickets-subtotal span.plural').removeClass 'hide'
         return
     purchase: () ->
+        $('a#tickets-confirm').html 'Processing...'
         params = 
             event: eventId
             first_name: $('input[name=first_name]').val().trim()
@@ -72,9 +73,10 @@ Bazaarboy.event.index =
         Bazaarboy.post 'event/purchase/', params, (response) =>
             if response.status isnt 'OK'
                 alert response.message
+                $('a#tickets-confirm').html 'Confirm RSVP'
             else
                 if not response.publishable_key?
-                    @completePurchase()
+                    @completePurchase(response.tickets)
                 else
                     total = response.purchase.amount * 100
                     a = (1 + 0.05) * total + 50
@@ -96,22 +98,43 @@ Bazaarboy.event.index =
                                 stripe_token: token.id
                             , (response) =>
                                 if response.status is 'OK'
-                                    @completePurchase()
+                                    @completePurchase(response.tickets)
                                 else
                                     alert response.message
                                 return
                             return
             return
         return
-    completePurchase: () ->
+    completePurchase: (tickets) ->
+        scope = this
+        if not @overlayAnimationInProgress
+            @overlayAnimationInProgress = true
+            ticketHTML = $('div#confirmation-modal div.ticket-model').html()
+            $('div#confirmation-modal div.ticket-model').remove()
+            for k, ticket of tickets
+                newTicket = $(ticketHTML)
+                newTicket.find('div.quantity').html('x'+ticket['quantity'])
+                newTicket.find('div.name').html(ticket['name'])
+                $('div#confirmation-modal').find('div.tickets').append(newTicket)
+            $('div#wrapper-overlay').animate {opacity: 0}, 300, () ->
+                $(this).addClass('hide')
+                return
+            $('div#tickets').animate {opacity: 0}, 300, () ->
+                $(this).addClass('hide')
+                scope.overlayAnimationInProgress = false
+                return
+        $('div#confirmation-modal').foundation('reveal', 'open')
         return
     init: () ->
         scope = this
         $(window).hashchange () ->
             hash = location.hash
             if hash is '#launch'
-                $('div#launch-modal').foundation('reveal', 'open');
+                $('div#launch-modal').foundation('reveal', 'open')
                 window.history.pushState("", document.title, window.location.pathname)
+                return
+            if hash is '#conf'
+                $('div#confirmation-modal').foundation('reveal', 'open')
                 return
         $(window).hashchange()
         latitude = parseFloat $('div.map-canvas').attr('data-latitude')
@@ -185,7 +208,6 @@ Bazaarboy.event.index =
                 return
             return
         $('a#rsvp-button').click () =>
-            console.log 'clicked'
             if not @overlayAnimationInProgress
                 $("html, body").animate({ scrollTop: 0 }, "fast")
                 if $('div#wrapper-overlay').hasClass('hide')

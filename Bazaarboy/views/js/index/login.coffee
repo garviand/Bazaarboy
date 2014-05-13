@@ -1,37 +1,15 @@
 @Bazaarboy.login = 
+    timer: undefined
+    rotateLogo: (degree) ->  
+        $('div.logo-small').css({ WebkitTransform: 'rotate(' + degree + 'deg)'}) 
+        $('div.logo-small').css({ '-moz-transform': 'rotate(' + degree + 'deg)'})                      
+        @timer = setTimeout (() =>
+            @rotateLogo(++degree)
+            return
+        ),5
+        return
     init: () ->
-        $(window).hashchange () ->
-            hash = location.hash
-            if hash is '#register'
-                $('div#login-container').hide()
-                $('div#register-container').show()
-                $('div#register-container').addClass('active')
-                $('div#login div#footer a.switch').html('Login')
-            else
-                $('div#register-container').hide()
-                $('div#login-container').show()
-                $('div#login-container').addClass('active')
-                $('div#login div#footer a.switch').html('Register')
-            return
-        $(window).hashchange()
-        $('div#login div#footer a.switch').click () ->
-            if $('div#login-container').hasClass('active')
-                $('div#login div#footer a.switch').html('Login')
-                $('div#login-container').fadeOut 300, () ->
-                    $('div#register-container').fadeIn 300, () ->
-                        $('div#login-container').removeClass('active')
-                        $('div#register-container').addClass('active')
-                        return
-                    return
-            else
-                $('div#login div#footer a.switch').html('Register')
-                $('div#register-container').fadeOut 300, () ->
-                    $('div#login-container').fadeIn 300, () ->
-                        $('div#register-container').removeClass('active')
-                        $('div#login-container').addClass('active')
-                        return
-                    return
-            return
+        scope = this
         $('form#login-form input').keypress (event) ->
             if event.which == 13
                 event.preventDefault()
@@ -39,6 +17,7 @@
             return
         $('form#login-form').submit (event) ->
             event.preventDefault()
+            scope.rotateLogo(0)
             params = $('form#login-form').serializeObject()
             params = Bazaarboy.trim params
             if params.email.length isnt 0 and
@@ -48,6 +27,9 @@
                             Bazaarboy.redirect 'index'
                         else
                             alert response.message
+                            window.clearTimeout(scope.timer)
+                            $('div.logo-small').css({ WebkitTransform: 'none'}) 
+                            $('div.logo-small').css({ '-moz-transform': 'none'})
                         return
             return
         $('form#register-form input').keypress (event) ->
@@ -57,6 +39,7 @@
             return
         $('form#register-form').submit (event) ->
             event.preventDefault()
+            scope.rotateLogo(0)
             params = $('form#register-form').serializeObject()
             params = Bazaarboy.trim params
             if params.email.length isnt 0 and

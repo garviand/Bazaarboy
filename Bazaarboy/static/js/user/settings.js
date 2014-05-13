@@ -7,6 +7,18 @@
     uploads: {
       image: void 0
     },
+    createEvent: function(profileId) {
+      var _this = this;
+      Bazaarboy.post('event/create/', {
+        profile: profileId
+      }, function(response) {
+        if (response.status === 'OK') {
+          Bazaarboy.redirect('event/' + response.event.pk + '/basics/');
+        } else {
+          alert(response.message);
+        }
+      });
+    },
     save: function(params, cb) {
       if (typeof token !== "undefined" && token !== null) {
         params.token = token;
@@ -124,8 +136,14 @@
       }
     },
     init: function() {
-      var googleAutocomplete, initial_lat, initial_lng, mapOptions, map_center,
+      var googleAutocomplete, initial_lat, initial_lng, mapOptions, map_center, scope,
         _this = this;
+      scope = this;
+      $('div.create-event').click(function() {
+        var profileId;
+        profileId = $(this).attr('data-profile-id');
+        scope.createEvent(profileId);
+      });
       $('div#user-settings div.logo a.upload').click(function() {
         $('div#user-settings form.upload_logo input[name=image_file]').click();
       });

@@ -218,6 +218,8 @@
         Bazaarboy.post(endpoint, params, function(response) {
           var price, quantity, sold, ticketOption, wording, wordingObject;
           if (response.status === 'OK') {
+            $('div#event-modify-tickets div.empty-state-container').addClass('hide');
+            $('div#event-modify-tickets div#action-canvas').removeClass('hide');
             ticketOption = null;
             if (isNew) {
               ticketOption = $('div.templates div.ticket-option').clone();

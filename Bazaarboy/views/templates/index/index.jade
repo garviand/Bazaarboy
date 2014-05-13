@@ -8,16 +8,14 @@ block sidebar
             | <span class="plus">+</span> Create Event
         div.primary-btn.show-for-medium-only
             | <span class="plus">+</span>
-    +sidebarItem('ss-newspaper')(href="{% url index %}")
+    +sidebarItem('ss-newspaper')(href="javascript:;")(class="events-filter events-filter-summary selected")
         | Events
-    +sidebarItemSub('{{ currentEventsCount }}')(class="first selected events-filter events-filter-current")
+    +sidebarItemSub('{{ currentEventsCount }}')(class="first events-filter events-filter-current")
         | Current Events
     +sidebarItemSub('{{ draftEventsCount }}')(class="events-filter events-filter-draft")
         | Event Drafts
     +sidebarItemSub('{{ pastEventsCount }}')(class="events-filter events-filter-past")
         | Past Events
-    //-+sidebarItem('ss-database')
-        | Lists
     +sidebarItem('ss-share')(href="{% url user:settings %}")
         | Settings
 
@@ -28,16 +26,14 @@ block header
                 span.ss-newspaper
             div.text.left
                 | Events | 
-                span.sub Current Events
+                span.sub Events Overview
     
 block content
     mixin draftEvent()
         div.draft-event.row(data-id="{{ event.id }}", data-launched-time="{{ event.launched_time|date:'Y-m-d H:i:s' }}")
             div.small-12.columns.tile
                 div.header.row
-                    div.draft-event-collapse.large-1.medium-1.columns.action-btn
-                        div.absolute-center
-                    div.draft-event-title.large-6.medium-5.columns
+                    div.draft-event-title.large-7.medium-6.columns
                         | {{ event.name }}
                     div.draft-event-view.large-5.medium-6.columns
                         div.row
@@ -76,16 +72,16 @@ block content
                                     span.ss-info
                                 div.text
                                     span Edit Info
-                            a.draft-event-action(href="{% url event:index event.id %}?design")
-                                div.icon
-                                    span.ss-picture
-                                div.text
-                                    span Page Design
                             a.draft-event-action(href="{% url event:modify event.id 'tickets' %}")
                                 div.icon
                                     span.ss-creditcard
                                 div.text
                                     span Ticket Options
+                            a.draft-event-action(href="{% url event:index event.id %}?design")
+                                div.icon
+                                    span.ss-picture
+                                div.text
+                                    span Page Design
                             a.draft-event-action.last(href="{% url event:index event.id %}?preview")
                                 div.icon
                                     span.ss-airplay
@@ -95,9 +91,7 @@ block content
         div.current-event.row(data-id="{{ event.id }}", data-launched-time="{{ event.launched_time|date:'Y-m-d H:i:s' }}")
             div.small-12.columns.tile
                 div.header.row
-                    div.current-event-collapse.large-1.medium-1.columns.action-btn
-                        div.absolute-center
-                    div.current-event-title.large-8.medium-7.columns
+                    div.current-event-title.large-9.medium-8.columns
                         | {{ event.name }}
                     div.current-event-view.large-3.medium-4.columns
                         div.row
@@ -135,9 +129,9 @@ block content
                                                 | ${{ event.totalSale|floatformat:"-2" }}
                                         div.sales-potential
                                             div.title
-                                                | Potential Rev.
+                                                | {% if event.potentialSale %}Potential Rev.{% endif %}
                                             div.number
-                                                | ${{ event.potentialSale|floatformat:"-2" }}
+                                                | {% if event.potentialSale %}${{ event.potentialSale|floatformat:"-2" }}{% else %}{% endif %}
                                     div.graph.medium-8.columns
                                         div.graph-frame
                                             div.graph-canvas
@@ -167,23 +161,11 @@ block content
                                     span.ss-outbox
                                 div.text
                                     span Export Guests
-                //div
-                    div.section-title.medium-12.columns
-                        | Communications
-                    div.current-event-add-communication
-                //div
-                    div.current-event-communication-stat.medium-6.columns
-                    div.medium-6.columns
-                //div
-                    div.section-title.medium-12.columns
-                        | Bonus
     mixin pastEvent()
         div.past-event.row(data-id="{{ event.id }}", data-launched-time="{{ event.launched_time|date:'Y-m-d H:i:s' }}")
             div.small-12.columns.tile
                 div.header.row
-                    div.past-event-collapse.large-1.medium-1.columns.action-btn
-                        div.absolute-center
-                    div.past-event-title.large-8.medium-7.columns
+                    div.past-event-title.large-9.medium-8.columns
                         | {{ event.name }}
                     div.past-event-view.large-3.medium-4.columns
                         div.row
@@ -218,12 +200,12 @@ block content
                                             div.title
                                                 | Revenue
                                             div.number
-                                                | ${{ event.totalSale }}
+                                                | ${{ event.totalSale|floatformat:"-2" }}
                                         div.sales-potential
                                             div.title
-                                                | Potential Rev.
+                                                | {% if event.potentialSale %}Potential Rev.{% endif %}
                                             div.number
-                                                | ${{ event.potentialSale }}
+                                                | {% if event.potentialSale %}${{ event.potentialSale|floatformat:"-2" }}{% else %}{% endif %}
                                     div.graph.medium-8.columns
                                         div.graph-frame
                                             div.graph-canvas
@@ -244,7 +226,56 @@ block content
                                 div.text
                                     span Export Guests
     div#wrapper-dashboard.large-9.medium-10.columns.small-centered
-        div.event-tiles-container.current-events.active
+        {% if eventsCount == 0 %}
+        div.empty-state-container
+            div.row
+                div.medium-5.columns
+                    &nbsp;
+                div.medium-6.columns.end.empty-state-content
+                    div.text New Here?
+                    hr
+                    div.subtext Try creating your first event!
+                    div.row
+                        div.large-5.medium-7.small-9
+                            div.create-event(data-profile-id="{{ profiles.0.id }}")
+                                div.primary-btn
+                                    | <span class="plus">+</span> Create Event
+        {% endif %}
+        div.event-tiles-container.summary-events.active
+            {% if currentEventsCount > 0 %}
+            div.events-overview-title
+                div.title.left
+                    | Current Events
+                    span.pipe &nbsp;|
+                a.view-all.events-filter.events-filter-current(href="javascript:;") &nbsp;View All Current Events
+                div.clearfix &nbsp;
+            {% with event=currentEvents.0 %}
+            +currentEvent()
+            {% endwith %}
+            {% endif %}
+            {% if draftEventsCount > 0 %}
+            div.events-overview-title
+                div.title.left
+                    | Draft Events
+                    span.pipe &nbsp;|
+                a.view-all.events-filter.events-filter-draft(href="javascript:;") &nbsp;View All Draft Events
+                div.clearfix &nbsp;
+            {% with event=draftEvents.0 %}
+            +draftEvent()
+            {% endwith %}
+            {% endif %}
+            {% if pastEventsCount > 0 %}
+            div.events-overview-title
+                div.title.left
+                    | Past Events
+                    span.pipe &nbsp;|
+                a.view-all.events-filter.events-filter-past(href="javascript:;") &nbsp;View All Past Events
+                div.clearfix &nbsp;
+            {% with event=pastEvents.0 %}
+            +pastEvent()
+            {% endwith %}
+            {% endif %}
+        div.event-tiles-container.current-events.hidden
             {% for event in currentEvents %}
             +currentEvent()
             {% endfor %}
