@@ -290,6 +290,9 @@
       $('div#tickets-canvas div.ticket').click(function() {
         $(this).find('.ticket-selected').click();
       });
+      $('.ticket-selected').click(function(e) {
+        e.stopPropagation();
+      });
       $('input.ticket-quantity').click(function(e) {
         e.stopPropagation();
       });

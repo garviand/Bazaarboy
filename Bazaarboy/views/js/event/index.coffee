@@ -235,6 +235,9 @@ Bazaarboy.event.index =
         $('div#tickets-canvas div.ticket').click () ->
             $(this).find('.ticket-selected').click()
             return
+        $('.ticket-selected').click (e) ->
+            e.stopPropagation()
+            return
         $('input.ticket-quantity').click (e) ->
             e.stopPropagation()
             return
