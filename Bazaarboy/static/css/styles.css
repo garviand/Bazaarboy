@@ -6126,6 +6126,62 @@ div.draft-event > div.tile div.header,
 div.past-event > div.tile div.header {
   height: 64px;
 }
+div.current-event > div.tile div.header div.current-event-date,
+div.draft-event > div.tile div.header div.current-event-date,
+div.past-event > div.tile div.header div.current-event-date,
+div.current-event > div.tile div.header div.draft-event-date,
+div.draft-event > div.tile div.header div.draft-event-date,
+div.past-event > div.tile div.header div.draft-event-date,
+div.current-event > div.tile div.header div.past-event-date,
+div.draft-event > div.tile div.header div.past-event-date,
+div.past-event > div.tile div.header div.past-event-date {
+  position: absolute;
+  width: 38px;
+  height: 38px;
+  top: 13px;
+  left: 17px;
+  border-radius: 4px;
+  background: rgba(73, 99, 228, 0.5);
+}
+div.current-event > div.tile div.header div.current-event-date div.month,
+div.draft-event > div.tile div.header div.current-event-date div.month,
+div.past-event > div.tile div.header div.current-event-date div.month,
+div.current-event > div.tile div.header div.draft-event-date div.month,
+div.draft-event > div.tile div.header div.draft-event-date div.month,
+div.past-event > div.tile div.header div.draft-event-date div.month,
+div.current-event > div.tile div.header div.past-event-date div.month,
+div.draft-event > div.tile div.header div.past-event-date div.month,
+div.past-event > div.tile div.header div.past-event-date div.month {
+  width: 100%;
+  height: 10px;
+  margin-top: 3px;
+  color: #ffffff;
+  font-size: 11px;
+  font-weight: 600;
+  text-align: center;
+  text-transform: uppercase;
+  letter-spacing: -1px;
+}
+div.current-event > div.tile div.header div.current-event-date div.day,
+div.draft-event > div.tile div.header div.current-event-date div.day,
+div.past-event > div.tile div.header div.current-event-date div.day,
+div.current-event > div.tile div.header div.draft-event-date div.day,
+div.draft-event > div.tile div.header div.draft-event-date div.day,
+div.past-event > div.tile div.header div.draft-event-date div.day,
+div.current-event > div.tile div.header div.past-event-date div.day,
+div.draft-event > div.tile div.header div.past-event-date div.day,
+div.past-event > div.tile div.header div.past-event-date div.day {
+  width: 36px;
+  height: 20px;
+  background: #ffffff;
+  margin: 0 auto;
+  margin-top: 2px;
+  padding: 1px 0;
+  padding-top: 2px;
+  font-size: 18px;
+  font-weight: 700;
+  text-align: center;
+}
 div.current-event > div.tile div.header div.current-event-collapse,
 div.draft-event > div.tile div.header div.current-event-collapse,
 div.past-event > div.tile div.header div.current-event-collapse,
@@ -6160,7 +6216,7 @@ div.current-event > div.tile div.header div.past-event-title,
 div.draft-event > div.tile div.header div.past-event-title,
 div.past-event > div.tile div.header div.past-event-title {
   padding: 22px 0;
-  padding-left: 20px;
+  padding-left: 70px;
   font-size: 20px;
   font-weight: 500;
   line-height: 20px;
@@ -6222,116 +6278,6 @@ div.past-event > div.tile div.info div.inner div.past-event-datetime {
   padding: 0;
   border-right: 2px solid #f6f6f6;
 }
-div.current-event > div.tile div.info div.inner div.current-event-datetime div.current-event-date,
-div.draft-event > div.tile div.info div.inner div.current-event-datetime div.current-event-date,
-div.past-event > div.tile div.info div.inner div.current-event-datetime div.current-event-date,
-div.current-event > div.tile div.info div.inner div.draft-event-datetime div.current-event-date,
-div.draft-event > div.tile div.info div.inner div.draft-event-datetime div.current-event-date,
-div.past-event > div.tile div.info div.inner div.draft-event-datetime div.current-event-date,
-div.current-event > div.tile div.info div.inner div.past-event-datetime div.current-event-date,
-div.draft-event > div.tile div.info div.inner div.past-event-datetime div.current-event-date,
-div.past-event > div.tile div.info div.inner div.past-event-datetime div.current-event-date,
-div.current-event > div.tile div.info div.inner div.current-event-datetime div.draft-event-date,
-div.draft-event > div.tile div.info div.inner div.current-event-datetime div.draft-event-date,
-div.past-event > div.tile div.info div.inner div.current-event-datetime div.draft-event-date,
-div.current-event > div.tile div.info div.inner div.draft-event-datetime div.draft-event-date,
-div.draft-event > div.tile div.info div.inner div.draft-event-datetime div.draft-event-date,
-div.past-event > div.tile div.info div.inner div.draft-event-datetime div.draft-event-date,
-div.current-event > div.tile div.info div.inner div.past-event-datetime div.draft-event-date,
-div.draft-event > div.tile div.info div.inner div.past-event-datetime div.draft-event-date,
-div.past-event > div.tile div.info div.inner div.past-event-datetime div.draft-event-date,
-div.current-event > div.tile div.info div.inner div.current-event-datetime div.past-event-date,
-div.draft-event > div.tile div.info div.inner div.current-event-datetime div.past-event-date,
-div.past-event > div.tile div.info div.inner div.current-event-datetime div.past-event-date,
-div.current-event > div.tile div.info div.inner div.draft-event-datetime div.past-event-date,
-div.draft-event > div.tile div.info div.inner div.draft-event-datetime div.past-event-date,
-div.past-event > div.tile div.info div.inner div.draft-event-datetime div.past-event-date,
-div.current-event > div.tile div.info div.inner div.past-event-datetime div.past-event-date,
-div.draft-event > div.tile div.info div.inner div.past-event-datetime div.past-event-date,
-div.past-event > div.tile div.info div.inner div.past-event-datetime div.past-event-date {
-  position: absolute;
-  width: 38px;
-  height: 38px;
-  top: 7px;
-  left: 7px;
-  border-radius: 4px;
-  background: rgba(73, 99, 228, 0.5);
-}
-div.current-event > div.tile div.info div.inner div.current-event-datetime div.current-event-date div.month,
-div.draft-event > div.tile div.info div.inner div.current-event-datetime div.current-event-date div.month,
-div.past-event > div.tile div.info div.inner div.current-event-datetime div.current-event-date div.month,
-div.current-event > div.tile div.info div.inner div.draft-event-datetime div.current-event-date div.month,
-div.draft-event > div.tile div.info div.inner div.draft-event-datetime div.current-event-date div.month,
-div.past-event > div.tile div.info div.inner div.draft-event-datetime div.current-event-date div.month,
-div.current-event > div.tile div.info div.inner div.past-event-datetime div.current-event-date div.month,
-div.draft-event > div.tile div.info div.inner div.past-event-datetime div.current-event-date div.month,
-div.past-event > div.tile div.info div.inner div.past-event-datetime div.current-event-date div.month,
-div.current-event > div.tile div.info div.inner div.current-event-datetime div.draft-event-date div.month,
-div.draft-event > div.tile div.info div.inner div.current-event-datetime div.draft-event-date div.month,
-div.past-event > div.tile div.info div.inner div.current-event-datetime div.draft-event-date div.month,
-div.current-event > div.tile div.info div.inner div.draft-event-datetime div.draft-event-date div.month,
-div.draft-event > div.tile div.info div.inner div.draft-event-datetime div.draft-event-date div.month,
-div.past-event > div.tile div.info div.inner div.draft-event-datetime div.draft-event-date div.month,
-div.current-event > div.tile div.info div.inner div.past-event-datetime div.draft-event-date div.month,
-div.draft-event > div.tile div.info div.inner div.past-event-datetime div.draft-event-date div.month,
-div.past-event > div.tile div.info div.inner div.past-event-datetime div.draft-event-date div.month,
-div.current-event > div.tile div.info div.inner div.current-event-datetime div.past-event-date div.month,
-div.draft-event > div.tile div.info div.inner div.current-event-datetime div.past-event-date div.month,
-div.past-event > div.tile div.info div.inner div.current-event-datetime div.past-event-date div.month,
-div.current-event > div.tile div.info div.inner div.draft-event-datetime div.past-event-date div.month,
-div.draft-event > div.tile div.info div.inner div.draft-event-datetime div.past-event-date div.month,
-div.past-event > div.tile div.info div.inner div.draft-event-datetime div.past-event-date div.month,
-div.current-event > div.tile div.info div.inner div.past-event-datetime div.past-event-date div.month,
-div.draft-event > div.tile div.info div.inner div.past-event-datetime div.past-event-date div.month,
-div.past-event > div.tile div.info div.inner div.past-event-datetime div.past-event-date div.month {
-  width: 100%;
-  height: 10px;
-  margin-top: 3px;
-  color: #ffffff;
-  font-size: 11px;
-  font-weight: 600;
-  text-align: center;
-  text-transform: uppercase;
-  letter-spacing: -1px;
-}
-div.current-event > div.tile div.info div.inner div.current-event-datetime div.current-event-date div.day,
-div.draft-event > div.tile div.info div.inner div.current-event-datetime div.current-event-date div.day,
-div.past-event > div.tile div.info div.inner div.current-event-datetime div.current-event-date div.day,
-div.current-event > div.tile div.info div.inner div.draft-event-datetime div.current-event-date div.day,
-div.draft-event > div.tile div.info div.inner div.draft-event-datetime div.current-event-date div.day,
-div.past-event > div.tile div.info div.inner div.draft-event-datetime div.current-event-date div.day,
-div.current-event > div.tile div.info div.inner div.past-event-datetime div.current-event-date div.day,
-div.draft-event > div.tile div.info div.inner div.past-event-datetime div.current-event-date div.day,
-div.past-event > div.tile div.info div.inner div.past-event-datetime div.current-event-date div.day,
-div.current-event > div.tile div.info div.inner div.current-event-datetime div.draft-event-date div.day,
-div.draft-event > div.tile div.info div.inner div.current-event-datetime div.draft-event-date div.day,
-div.past-event > div.tile div.info div.inner div.current-event-datetime div.draft-event-date div.day,
-div.current-event > div.tile div.info div.inner div.draft-event-datetime div.draft-event-date div.day,
-div.draft-event > div.tile div.info div.inner div.draft-event-datetime div.draft-event-date div.day,
-div.past-event > div.tile div.info div.inner div.draft-event-datetime div.draft-event-date div.day,
-div.current-event > div.tile div.info div.inner div.past-event-datetime div.draft-event-date div.day,
-div.draft-event > div.tile div.info div.inner div.past-event-datetime div.draft-event-date div.day,
-div.past-event > div.tile div.info div.inner div.past-event-datetime div.draft-event-date div.day,
-div.current-event > div.tile div.info div.inner div.current-event-datetime div.past-event-date div.day,
-div.draft-event > div.tile div.info div.inner div.current-event-datetime div.past-event-date div.day,
-div.past-event > div.tile div.info div.inner div.current-event-datetime div.past-event-date div.day,
-div.current-event > div.tile div.info div.inner div.draft-event-datetime div.past-event-date div.day,
-div.draft-event > div.tile div.info div.inner div.draft-event-datetime div.past-event-date div.day,
-div.past-event > div.tile div.info div.inner div.draft-event-datetime div.past-event-date div.day,
-div.current-event > div.tile div.info div.inner div.past-event-datetime div.past-event-date div.day,
-div.draft-event > div.tile div.info div.inner div.past-event-datetime div.past-event-date div.day,
-div.past-event > div.tile div.info div.inner div.past-event-datetime div.past-event-date div.day {
-  width: 36px;
-  height: 20px;
-  background: #ffffff;
-  margin: 0 auto;
-  margin-top: 2px;
-  padding: 1px 0;
-  padding-top: 2px;
-  font-size: 18px;
-  font-weight: 700;
-  text-align: center;
-}
 div.current-event > div.tile div.info div.inner div.current-event-datetime div.current-event-time,
 div.draft-event > div.tile div.info div.inner div.current-event-datetime div.current-event-time,
 div.past-event > div.tile div.info div.inner div.current-event-datetime div.current-event-time,
@@ -6363,7 +6309,7 @@ div.past-event > div.tile div.info div.inner div.past-event-datetime div.past-ev
   position: absolute;
   width: 100%;
   height: 100%;
-  padding-left: 54px;
+  padding-left: 10px;
   top: 0;
   left: 0;
   font-size: 13px;

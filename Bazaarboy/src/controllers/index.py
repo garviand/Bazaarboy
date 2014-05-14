@@ -44,7 +44,7 @@ def index(request, params, user):
                                          organizers__in = pids) \
                                  .order_by('start_time')
     currentEventsCount = currentEvents.count()
-    currentEvents = currentEvents.filter()[:5]
+    currentEvents = currentEvents.filter()[:10]
     currentEvents = list(currentEvents)
     for i in range(0, len(currentEvents)):
         stats = Purchase.objects.filter(Q(checkout = None) | 
@@ -84,7 +84,7 @@ def index(request, params, user):
                                       organizers__in = pids) \
                               .order_by('-start_time')
     pastEventsCount = pastEvents.count()
-    pastEvents = pastEvents.filter()[:5]
+    pastEvents = pastEvents.filter()[:10]
     pastEvents = list(pastEvents)
     for i in range(0, len(pastEvents)):
         stats = Purchase.objects.filter(Q(checkout = None) | 
@@ -118,7 +118,7 @@ def index(request, params, user):
                                        is_deleted = False,
                                        organizers__in = pids)
     draftEventsCount = draftEvents.count()
-    draftEvents = draftEvents.filter()[:5]
+    draftEvents = draftEvents.filter()[:10]
     return render(request, 'index/index.html', locals())
 
 @login_check()

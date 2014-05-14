@@ -64,7 +64,7 @@ block body
                                 | or&nbsp;&nbsp;
                                 a.close-reveal-modal Close
     div#event
-        div#event-header
+        div#event-header(style="{% if design %}position:absolute;{% endif %}")
             div.event-header-body(class="{% if design %}medium-8{% elif preview %}medium-10{% else %}medium-12{% endif %} columns")
                 div.profile-icon
                     div.inner
@@ -101,9 +101,11 @@ block body
                             {{ event.description|safe }}
                     {% if design %}
                     div.actions.small-12.columns
-                        div.row
-                            div.save-status.medium-3.medium-offset-3.columns
+                        div.row.save-container
+                            div.save-status.medium-4.columns.text-center
                                 | Saved
+                            div.medium-4.end.columns
+                                a.save.primary-btn(href="javascript:;") Save description
                     {% endif %}
             div#event-sidebar.medium-4.columns
                 div.row.event-actions-container
@@ -114,6 +116,7 @@ block body
                                 a.edit-tickets-btn.primary-btn(href="{% url event:modify id 'tickets' %}")
                                     | Edit Tickets
                             {% else %}
+                            {% if not hasEnded %}
                             div.medium-3.columns.ticket-prices
                                 span
                                     {% spaceless %}
@@ -127,6 +130,9 @@ block body
                                 a#rsvp-button.primary-btn
                                     span.ss-bookmark.rsvp-icon &nbsp;
                                     | RSVP
+                            {% else %}
+                            div.medium-8.columns &nbsp;
+                            {% endif %}
                             div.medium-4.columns.share-btn-container
                                 a.share-btn.secondary-btn.right Share
                             {% endif %}
@@ -149,13 +155,13 @@ block body
                                     | {% if event.end_time %}
                                     //- Short version
                                     | {% if event.end_time|shouldShortenEndTime:event.start_time %}
-                                    | {{ event.start_time|date:'l, M. jS gA' }} to {{ event.end_time|date:'gA' }}
+                                    | {{ event.start_time|date:'l, M. jS g:iA' }} to {{ event.end_time|date:'g:iA' }}
                                     | {% else %}
                                     //- Long version
-                                    | {{ event.start_time|date:'M. jS gA' }} to {{ event.end_time|date:'M. jS gA' }}
+                                    | {{ event.start_time|date:'M. jS g:iA' }} to {{ event.end_time|date:'M. jS g:iA' }}
                                     | {% endif %}
                                     | {% else %}
-                                    | {{ event.start_time|date:'l, M. jS gA' }}
+                                    | {{ event.start_time|date:'l, M. jS g:iA' }}
                                     | {% endif %}
                                     | {% endspaceless %}
                         hr

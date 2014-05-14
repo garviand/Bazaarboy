@@ -220,7 +220,8 @@
           buttons: ['formatting', 'bold', 'italic', 'deleted', 'fontcolor', 'alignment', '|', 'unorderedlist', 'orderedlist', 'outdent', 'indent', '|', 'horizontalrule', 'table', 'image', 'video', 'link', '|', 'html'],
           boldTag: 'b',
           italicTag: 'i',
-          imageUpload: rootUrl + 'file/image/upload/'
+          imageUpload: rootUrl + 'file/image/upload/',
+          toolbarFixedBox: true
         });
         $('a.save.primary-btn').click(function() {
           _this.saveDescription();
@@ -231,15 +232,9 @@
           scope.saveDescription();
         });
         $('div#event-description div.description div.inner').keyup(function() {
-          $('div.save-status').html('Editing');
+          $('div.save-status').html('Unsaved Changes');
         });
         scope.redactorContent = $('div#event-description div.description div.inner').redactor('get');
-        setInterval((function() {
-          if ($('div#event-description div.description div.inner').redactor('get') !== scope.redactorContent) {
-            scope.redactorContent = $('div#event-description div.description div.inner').redactor('get');
-            scope.saveDescription();
-          }
-        }), 5000);
       }
       $("div#event-actions a.share-btn").click(function() {
         $('div#event-actions').fadeOut(300, function() {
