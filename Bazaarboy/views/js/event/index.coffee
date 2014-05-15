@@ -180,6 +180,7 @@ Bazaarboy.event.index =
                 boldTag: 'b'
                 italicTag: 'i'
                 imageUpload: rootUrl + 'file/image/upload/'
+                toolbarFixedBox: true
             $('a.save.primary-btn').click () =>
                 @saveDescription()
                 return
@@ -189,16 +190,9 @@ Bazaarboy.event.index =
                 scope.saveDescription()
                 return
             $('div#event-description div.description div.inner').keyup () ->
-                $('div.save-status').html 'Editing'
+                $('div.save-status').html 'Unsaved Changes'
                 return
             scope.redactorContent = $('div#event-description div.description div.inner').redactor('get')
-            # SET AUTO SAVE TIMER
-            setInterval (() =>
-                if $('div#event-description div.description div.inner').redactor('get') != scope.redactorContent
-                    scope.redactorContent = $('div#event-description div.description div.inner').redactor('get')
-                    scope.saveDescription()
-                return
-            ), 5000
         $("div#event-actions a.share-btn").click () ->
             $('div#event-actions').fadeOut 300, () ->
                 $("div.share-canvas").fadeIn 300

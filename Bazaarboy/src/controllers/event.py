@@ -47,6 +47,13 @@ def index(request, id, params, user):
     organizers = Organizer.objects.filter(event = event)
     rsvp = True
     cheapest = float('inf')
+    hasEnded = False
+    if event.end_time:
+        if event.end_time < timezone.now():
+            hasEnded = True
+    else:
+        if event.start_time < timezone.now():
+            hasEnded = True
     for ticket in tickets:
         if ticket.price > 0:
             rsvp = False
@@ -522,7 +529,7 @@ def launch(request, params, user):
     tickets = Ticket.objects.filter(event = event)
     if paymentAccount is None:
         for ticket in tickets:
-            if ticket.price > 0:
+            if ticket.price > 0 and not ticket.is_deleted:
                 response = {
                     'status':'FAIL',
                     'error':'NO_PAYMENT_ACCOUNT',

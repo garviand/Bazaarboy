@@ -33,6 +33,9 @@ block content
         div.draft-event.row(data-id="{{ event.id }}", data-launched-time="{{ event.launched_time|date:'Y-m-d H:i:s' }}")
             div.small-12.columns.tile
                 div.header.row
+                    div.draft-event-date
+                        div.month {{ event.start_time|date:'M' }}
+                        div.day {{ event.start_time|date:'j' }}
                     div.draft-event-title.large-7.medium-6.columns
                         | {{ event.name }}
                     div.draft-event-view.large-5.medium-6.columns
@@ -46,9 +49,6 @@ block content
                 div.info.small-12.columns
                     div.inner.row
                         div.draft-event-datetime.small-3.columns
-                            div.draft-event-date
-                                div.month {{ event.start_time|date:'M' }}
-                                div.day {{ event.start_time|date:'j' }}
                             div.draft-event-time
                                 span
                                     {{ event.start_time|date:'g:iA' }}{% if event.end_time %}-{{ event.end_time|date:'g:iA' }}{% endif %}
@@ -91,6 +91,9 @@ block content
         div.current-event.row(data-id="{{ event.id }}", data-launched-time="{{ event.launched_time|date:'Y-m-d H:i:s' }}")
             div.small-12.columns.tile
                 div.header.row
+                    div.current-event-date
+                        div.month {{ event.start_time|date:'M' }}
+                        div.day {{ event.start_time|date:'j' }}
                     div.current-event-title.large-9.medium-8.columns
                         | {{ event.name }}
                     div.current-event-view.large-3.medium-4.columns
@@ -101,9 +104,6 @@ block content
                 div.info.small-12.columns
                     div.inner.row
                         div.current-event-datetime.small-3.columns
-                            div.current-event-date
-                                div.month {{ event.start_time|date:'M' }}
-                                div.day {{ event.start_time|date:'j' }}
                             div.current-event-time
                                 span
                                     {{ event.start_time|date:'g:iA' }}{% if event.end_time %}-{{ event.end_time|date:'g:iA' }}{% endif %}
@@ -165,6 +165,9 @@ block content
         div.past-event.row(data-id="{{ event.id }}", data-launched-time="{{ event.launched_time|date:'Y-m-d H:i:s' }}")
             div.small-12.columns.tile
                 div.header.row
+                    div.past-event-date
+                        div.month {{ event.start_time|date:'M' }}
+                        div.day {{ event.start_time|date:'j' }}
                     div.past-event-title.large-9.medium-8.columns
                         | {{ event.name }}
                     div.past-event-view.large-3.medium-4.columns
@@ -175,9 +178,6 @@ block content
                 div.info.small-12.columns
                     div.inner.row
                         div.past-event-datetime.small-3.columns
-                            div.past-event-date
-                                div.month {{ event.start_time|date:'M' }}
-                                div.day {{ event.start_time|date:'j' }}
                             div.past-event-time
                                 span
                                     {{ event.start_time|date:'g:iA' }}{% if event.end_time %}-{{ event.end_time|date:'g:iA' }}{% endif %}

@@ -59,8 +59,9 @@ def upload_image(request, params):
         'image':serialize_one(image)
     }
     if isFromRedactor:
+        redactorImage = image.source.url.split("?", 1)
         response = {
-            'filelink':image.source.url
+            'filelink':redactorImage[0]
         }
     return json_response(response)
 
