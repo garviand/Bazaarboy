@@ -72,6 +72,7 @@ Bazaarboy.event.index =
         params.details = JSON.stringify params.details
         if params.phone.length is 0
             delete params.phone
+        console.log params
         Bazaarboy.post 'event/purchase/', params, (response) =>
             if response.status isnt 'OK'
                 alert response.message
@@ -259,6 +260,33 @@ Bazaarboy.event.index =
             return
         $('a#tickets-confirm').click () =>
             @purchase()
+            return
+        $('a.contact-organizer-btn').click () ->
+            $('div#contact-organizer-modal').foundation('reveal', 'open')
+            return
+        $('a.contact-organizer-close').click () ->
+            $('div#contact-organizer-modal').foundation('reveal', 'close')
+            return
+        $('div.send-contact-organizer a.send-message').click () ->
+            $(this).html('Sending...')
+            $('form.contact-organizer-form').submit()
+            return
+        $('form.contact-organizer-form').submit (event) ->
+            event.preventDefault()
+            return
+        $('form.contact-organizer-form').on 'valid', () ->
+            params = $(this).serializeObject()
+            optionals = []
+            params = Bazaarboy.stripEmpty params, optionals
+            console.log params
+            Bazaarboy.post 'profile/message/', params, (response) ->
+                if response.status is 'OK'
+                    $('form.contact-organizer-form').fadeOut 300, () ->
+                        $('div.row.contact-organizer-success').fadeIn 300
+                        return
+                else
+                    alert response.message
+                    $('div.send-contact-organizer a.send-message').html('Send Message')
             return
         return
 

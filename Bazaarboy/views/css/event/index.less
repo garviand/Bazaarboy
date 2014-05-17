@@ -145,6 +145,46 @@ div#launch-modal{
     }
 }
 
+div#contact-organizer-modal{
+    div.contact-organizer-title{
+        margin-bottom: 20px;
+    }
+    form{
+        > div{
+            margin-top: 15px;
+        }
+    }
+    span.underline{
+        text-decoration: underline;
+    }
+    div.send-contact-organizer{
+        a.send-message{
+            display: block;
+            width: 100%;
+            padding-top: 9px;
+            padding-bottom: 11px;
+            &:hover, &:focus{
+                color: #FFF;
+                    }
+        }
+        div.move-down{
+            margin-top: 10px;
+        }
+    }
+    div.contact-organizer-success{
+        display: none;
+        a.contact-organizer-close{
+            display: block;
+            width: 100%;
+            padding-top: 9px;
+            padding-bottom: 11px;
+            &:hover{
+                color:#FFF;
+            }
+        }
+    }
+}
+
 div#event-header {
     position: fixed;
     top: 0;
@@ -446,6 +486,16 @@ div#event-organizers {
                 }
             }
         }
+    }
+}
+
+div.contact-organizer{
+    margin-top: 20px !important;
+    a{
+        font-size: 13px;
+        color: @orange;
+        font-style: italic;
+        text-decoration: underline;
     }
 }
 

@@ -30,6 +30,7 @@ profile_urlpatterns = patterns('src.controllers.profile',
     url(r'^search/$', 'search', name = 'search'),
     url(r'^create/$', 'create', name = 'create'),
     url(r'^edit/$', 'edit', name = 'edit'),
+    url(r'^message/$', 'message', name = 'message'),
 )
 
 event_urlpatterns = patterns('src.controllers.event', 

@@ -92,6 +92,7 @@
       if (params.phone.length === 0) {
         delete params.phone;
       }
+      console.log(params);
       Bazaarboy.post('event/purchase/', params, function(response) {
         var a, b, total;
         if (response.status !== 'OK') {
@@ -321,6 +322,36 @@
       });
       $('a#tickets-confirm').click(function() {
         _this.purchase();
+      });
+      $('a.contact-organizer-btn').click(function() {
+        $('div#contact-organizer-modal').foundation('reveal', 'open');
+      });
+      $('a.contact-organizer-close').click(function() {
+        $('div#contact-organizer-modal').foundation('reveal', 'close');
+      });
+      $('div.send-contact-organizer a.send-message').click(function() {
+        $(this).html('Sending...');
+        $('form.contact-organizer-form').submit();
+      });
+      $('form.contact-organizer-form').submit(function(event) {
+        event.preventDefault();
+      });
+      $('form.contact-organizer-form').on('valid', function() {
+        var optionals, params;
+        params = $(this).serializeObject();
+        optionals = [];
+        params = Bazaarboy.stripEmpty(params, optionals);
+        console.log(params);
+        Bazaarboy.post('profile/message/', params, function(response) {
+          if (response.status === 'OK') {
+            return $('form.contact-organizer-form').fadeOut(300, function() {
+              $('div.row.contact-organizer-success').fadeIn(300);
+            });
+          } else {
+            alert(response.message);
+            return $('div.send-contact-organizer a.send-message').html('Send Message');
+          }
+        });
       });
     }
   };

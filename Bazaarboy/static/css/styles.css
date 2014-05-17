@@ -7609,6 +7609,40 @@ div#launch-modal div.empty-state-container div.empty-state-content div.close-lau
   color: #faa638;
   font-weight: normal;
 }
+div#contact-organizer-modal div.contact-organizer-title {
+  margin-bottom: 20px;
+}
+div#contact-organizer-modal form > div {
+  margin-top: 15px;
+}
+div#contact-organizer-modal span.underline {
+  text-decoration: underline;
+}
+div#contact-organizer-modal div.send-contact-organizer a.send-message {
+  display: block;
+  width: 100%;
+  padding-top: 9px;
+  padding-bottom: 11px;
+}
+div#contact-organizer-modal div.send-contact-organizer a.send-message:hover,
+div#contact-organizer-modal div.send-contact-organizer a.send-message:focus {
+  color: #FFF;
+}
+div#contact-organizer-modal div.send-contact-organizer div.move-down {
+  margin-top: 10px;
+}
+div#contact-organizer-modal div.contact-organizer-success {
+  display: none;
+}
+div#contact-organizer-modal div.contact-organizer-success a.contact-organizer-close {
+  display: block;
+  width: 100%;
+  padding-top: 9px;
+  padding-bottom: 11px;
+}
+div#contact-organizer-modal div.contact-organizer-success a.contact-organizer-close:hover {
+  color: #FFF;
+}
 div#event-header {
   position: fixed;
   top: 0;
@@ -7881,6 +7915,15 @@ div#event-organizers div.canvas div.organizer div.organizer-name {
 div#event-organizers div.canvas div.organizer div.organizer-name span {
   display: table-cell;
   vertical-align: middle;
+}
+div.contact-organizer {
+  margin-top: 20px !important;
+}
+div.contact-organizer a {
+  font-size: 13px;
+  color: #faa638;
+  font-style: italic;
+  text-decoration: underline;
 }
 div#event-description > div.caption {
   height: 28px;

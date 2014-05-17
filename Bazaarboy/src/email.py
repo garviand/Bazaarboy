@@ -100,6 +100,37 @@ def sendResetRequestEmail(resetCode):
     return self.sendEmail(to, subject, template, mergeVars)
 
 @task()
+def sendProfileMessageEmail(name, email, message, profile, event):
+    to = [{
+        'email':profile.email, 
+        'name':name
+    }]
+    subject = event.name + ' - message from ' + name
+    template = 'contact-organizer'
+    mergeVars = [{
+        'rcpt': profile.email,
+        'vars': [
+            {
+                'name': 'user_name', 
+                'content': name
+            },
+            {
+                'name': 'user_email', 
+                'content': email
+            },
+            {
+                'name': 'event_name', 
+                'content': event.name
+            },
+            {
+                'name': 'user_message', 
+                'content': message
+            }
+        ]
+    }]
+    return sendEmails(to, subject, template, mergeVars)
+
+@task()
 def sendEventConfirmationEmail(purchase):
     """
     Send event confirmation

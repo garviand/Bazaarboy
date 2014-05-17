@@ -63,6 +63,46 @@ block body
                             div.large-5.medium-5.small-4.columns.close-launch-modal
                                 | or&nbsp;&nbsp;
                                 a.close-reveal-modal Close
+    div#contact-organizer-modal.reveal-modal.medium(data-reveal)
+        form.contact-organizer-form(name="contact-organizer", data-abide)
+            div.row
+                div.medium-12.columns.text-center.contact-organizer-title
+                    h3 Contact 
+                        span.underline {{ organizers.0.profile.name }}
+            div.row
+                div.medium-3.columns.text-center
+                    label.right.inline(for="contact-name") Your Name
+                div.medium-9.columns
+                    input#contact-name(type="text", name="name", required)
+                    small.error Your Name Is Required
+            div.row
+                div.medium-3.columns.text-center
+                    label.right.inline(for="contact-email") Your Email
+                div.medium-9.columns
+                    input#contact-email(type="email", name="useremail", required)
+                    small.error Your Email Is Required
+            div.row
+                div.medium-3.columns.text-center
+                    label.right.inline(for="contact-message") Your Message
+                div.medium-9.columns
+                    textarea#contact-message(name="message", required)
+                    small.error A Message Is Required
+            div.row.send-contact-organizer
+                div.medium-4.medium-offset-3.columns
+                    a.secondary-btn.send-message(href="javascript:;") Send Message
+                div.medium-1.columns.text-center.move-down
+                    | or
+                div.medium-2.columns.end.move-down
+                    a.contact-organizer-close(href="javascript:;") Close
+            input(type="hidden", name="profile", value="{{ organizers.0.profile.id }}")
+            input(type="hidden", name="event", value="{{ event.id }}")
+        div.row.contact-organizer-success
+            div.medium-12.columns.text-center.contact-organizer-title
+                h3 Message Sent! 
+        div.row.contact-organizer-success
+            div.medium-4.medium-offset-4
+                a.contact-organizer-close.primary-btn(href="javascript:;") Back To Event
+
     div#event
         div#event-header(style="{% if design %}position:absolute;{% endif %}")
             div.event-header-body(class="{% if design %}medium-8{% elif preview %}medium-10{% else %}medium-12{% endif %} columns")
@@ -182,6 +222,11 @@ block body
                                     div.organizer-name
                                         span {{ organizer.profile.name }}
                                 {% endfor %}
+                        {% if organizers.0.profile.email %}
+                        div.row.contact-organizer
+                            div.small-12.columns
+                                a.contact-organizer-btn(href="javascript:;") Contact Organizer
+                        {% endif %}
                         div#event-sponsors.row
         div#event-footer
             div.inner.clearfix

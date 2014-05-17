@@ -11,6 +11,7 @@ from src.config import *
 from src.controllers.request import *
 from src.regex import REGEX_EMAIL, REGEX_URL, REGEX_EIN
 from src.serializer import serialize, serialize_one
+from src.email import sendProfileMessageEmail
 
 @login_check()
 def index(request, id, user):
@@ -531,3 +532,27 @@ def delete_manager(request, params):
             'status':'OK'
         }
         return json_response(response)
+
+@validate('POST', ['name', 'useremail', 'message', 'profile', 'event'])
+def message(request, params):
+    if not Profile.objects.filter(id = params['profile']).exists():
+        response = {
+            'status':'FAIL',
+            'error':'PROFILE_NOT_FOUND',
+            'message':'The profile doesn\'t exist.'
+        }
+        return json_response(response)
+    if not REGEX_EMAIL.match(params['useremail']):
+        response = {
+            'status':'FAIL',
+            'error':'INVALID_EMAIL',
+            'message':'Email format is invalid.'
+        }
+        return json_response(response)
+    profile = Profile.objects.get(id = params['profile'])
+    event = Event.objects.get(id = params['event'])
+    sendProfileMessageEmail(params['name'], params['useremail'], params['message'], profile, event)
+    response = {
+                'status':'OK'
+    }
+    return json_response(response)
