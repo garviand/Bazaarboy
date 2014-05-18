@@ -7643,6 +7643,41 @@ div#contact-organizer-modal div.contact-organizer-success a.contact-organizer-cl
 div#contact-organizer-modal div.contact-organizer-success a.contact-organizer-close:hover {
   color: #FFF;
 }
+div#add-organizer-modal div.add-organizer-title {
+  margin-bottom: 20px;
+}
+div#add-organizer-modal form > div {
+  margin-top: 15px;
+}
+div#add-organizer-modal form div.organizer div.organizer-name {
+  padding-top: 9px;
+}
+div#add-organizer-modal form div.organizer div.organizer-submit a {
+  display: block;
+  width: 100%;
+  padding-top: 9px;
+  padding-bottom: 11px;
+}
+div#add-organizer-modal form div.organizer div.organizer-submit a:hover {
+  color: #FFF;
+}
+div#add-organizer-modal span.underline {
+  text-decoration: underline;
+}
+div#add-organizer-modal div.add-organizer-success {
+  display: none;
+}
+div#add-organizer-modal div.add-organizer-success a.add-organizer-close,
+div#add-organizer-modal div.add-organizer-success a.add-organizer-another {
+  display: block;
+  width: 100%;
+  padding-top: 9px;
+  padding-bottom: 11px;
+}
+div#add-organizer-modal div.add-organizer-success a.add-organizer-close:hover,
+div#add-organizer-modal div.add-organizer-success a.add-organizer-another:hover {
+  color: #FFF;
+}
 div#event-header {
   position: fixed;
   top: 0;
@@ -7900,7 +7935,7 @@ div#event-organizers div.canvas div.organizer div.organizer-icon {
   width: 30px;
   height: 30px;
   border-radius: 4px;
-  background: #faa638;
+  background: #ffffff;
   background-size: cover;
   background-position: center;
 }
@@ -7916,10 +7951,12 @@ div#event-organizers div.canvas div.organizer div.organizer-name span {
   display: table-cell;
   vertical-align: middle;
 }
-div.contact-organizer {
+div.contact-organizer,
+div.add-organizer {
   margin-top: 20px !important;
 }
-div.contact-organizer a {
+div.contact-organizer a,
+div.add-organizer a {
   font-size: 13px;
   color: #faa638;
   font-style: italic;

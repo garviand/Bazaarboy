@@ -128,6 +128,22 @@ Bazaarboy.event.index =
                 return
         $('div#confirmation-modal').foundation('reveal', 'open')
         return
+    search_organizers: () ->
+        $('form.add-organizer-form div.organizer').remove()
+        organizerModel = $('div.organizer-model')
+        value = $('form.add-organizer-form input#organizer-name').val()
+        Bazaarboy.get 'profile/search/', {keyword: value}, (response) =>
+            if response.status is 'OK'
+                profiles = response.profiles
+                if profiles.length > 0
+                    $('.profile_login .profile_choices').empty()
+                    for i in [0..profiles.length-1]
+                        newProfile = organizerModel
+                        newProfile.find('div.organizer-name').html(profiles[i].name)
+                        newProfile.find('a.add-organizer-submit').attr('data-profile', profiles[i].pk)
+                        $('form.add-organizer-form').append(newProfile.html())
+            return
+        return
     init: () ->
         scope = this
         $(window).hashchange () ->
@@ -261,6 +277,7 @@ Bazaarboy.event.index =
         $('a#tickets-confirm').click () =>
             @purchase()
             return
+        # CONTACT ORGANIZER
         $('a.contact-organizer-btn').click () ->
             $('div#contact-organizer-modal').foundation('reveal', 'open')
             return
@@ -287,6 +304,32 @@ Bazaarboy.event.index =
                 else
                     alert response.message
                     $('div.send-contact-organizer a.send-message').html('Send Message')
+            return
+        # ADD ORGANIZER
+        $('a.add-organizer-btn').click () ->
+            $('div#add-organizer-modal').foundation('reveal', 'open')
+            return
+        $('a.add-organizer-close').click () ->
+            $('div#add-organizer-modal').foundation('reveal', 'close')
+            return
+        $('a.add-organizer-another').click () ->
+            $('div.row.add-organizer-success').fadeOut 300, () ->
+                $('form.add-organizer-form').fadeIn 300
+                return
+            return
+        add_organizer_debounce = jQuery.debounce(1000, false, scope.search_organizers)
+        $('form.add-organizer-form input#organizer-name').bind('keypress', add_organizer_debounce)
+        $('form.add-organizer-form').on 'click', 'a.add-organizer-submit', () ->
+            profileId = $(this).data('profile')
+            Bazaarboy.post 'event/organizer/add/', {id: eventId, profile: profileId}, (response) =>
+                if response.status is 'OK'
+                    $('form.add-organizer-form').fadeOut 300, () ->
+                        $('form.add-organizer-form input#organizer-name').val('')
+                        $('form.add-organizer-form div.organizer').remove()
+                        $('div.row.add-organizer-success').fadeIn 300
+                        return
+                else
+                    alert response.message
             return
         return
 

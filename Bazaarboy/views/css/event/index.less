@@ -185,6 +185,48 @@ div#contact-organizer-modal{
     }
 }
 
+div#add-organizer-modal{
+    div.add-organizer-title{
+        margin-bottom: 20px;
+    }
+    form{
+        > div{
+            margin-top: 15px;
+        }
+        div.organizer{
+            div.organizer-name{
+                padding-top: 9px;
+            }
+            div.organizer-submit{
+                a{
+                    display: block;
+                    width: 100%;
+                    padding-top: 9px;
+                    padding-bottom: 11px;
+                    &:hover{
+                        color: #FFF;
+                    }
+                }
+            }
+        }
+    }
+    span.underline{
+        text-decoration: underline;
+    }
+    div.add-organizer-success{
+        display: none;
+        a.add-organizer-close, a.add-organizer-another{
+            display: block;
+            width: 100%;
+            padding-top: 9px;
+            padding-bottom: 11px;
+            &:hover{
+                color:#FFF;
+            }
+        }
+    }
+}
+
 div#event-header {
     position: fixed;
     top: 0;
@@ -467,7 +509,7 @@ div#event-organizers {
                 width: 30px;
                 height: 30px;
                 border-radius: 4px;
-                background: @orange;
+                background: @white;
                 background-size: cover;
                 background-position: center;
             }
@@ -489,7 +531,7 @@ div#event-organizers {
     }
 }
 
-div.contact-organizer{
+div.contact-organizer, div.add-organizer{
     margin-top: 20px !important;
     a{
         font-size: 13px;

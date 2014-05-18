@@ -465,6 +465,7 @@ def delete_organizer(request, params, user):
             'message':'The profile doesn\'t exist.'
         }
         return json_response(response)
+    profile = Profile.objects.get(id = params['profile'])
     # Check if the profile is an organizer of the event
     if not Organizer.objects.filter(event = event, profile = profile).exists():
         response = {
