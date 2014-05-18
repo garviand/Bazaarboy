@@ -17,6 +17,7 @@ from django.template.loader import *
 from kernel.models import *
 from src.config import *
 from src.timezone import localize
+from django.utils.dateformat import DateFormat
 
 def sendEmails(to, subject, template, mergeVars, attachments=[]):
     """
@@ -137,6 +138,10 @@ def sendEventConfirmationEmail(purchase):
     """
     user = purchase.owner
     event = purchase.event
+    event_month = DateFormat(event.start_time)
+    event_month = event_month.format('M')
+    event_day = DateFormat(event.start_time)
+    event_day = event_day.format('j')
     organizers = event.organizers.all()
     organizer_list_html = ''
     for organizer in organizers:
@@ -236,11 +241,11 @@ def sendEventConfirmationEmail(purchase):
             },
             {
                 'name': 'event_month', 
-                'content': 'MAR'
+                'content': event_month
             },
             {
                 'name': 'event_day', 
-                'content': '30'
+                'content': event_day
             },
             {
                 'name': 'reciept_info', 

@@ -196,7 +196,7 @@ Bazaarboy.user.settings =
         ), 10000
         # Location Auto-complete
         googleAutocomplete = new google.maps.places.AutocompleteService()
-        $('form.profile-settings input[name=location]').keyup () =>
+        $('form.profile-settings input[name=location]').keypress (e) =>
             keyword = $('form.profile-settings input[name=location]').val()
             if keyword.trim() isnt ''
                 googleAutocomplete.getQueryPredictions
@@ -217,6 +217,9 @@ Bazaarboy.user.settings =
                         $('form.profile-settings input[name=location]').autocomplete
                             source: autocompleteSource
                             html: true
+                            matchContains: true
+                            minChars: 0
+                        $('form.profile-settings input[name=location]').autocomplete("search"," ")
                         $('form.profile-settings input[name=location]').on 'autocompleteselect', (event, ui) =>
                             @fetchCoordinates ui.item.id
                             return

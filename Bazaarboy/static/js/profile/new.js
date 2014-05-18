@@ -185,7 +185,7 @@
         event.preventDefault();
       });
       googleAutocomplete = new google.maps.places.AutocompleteService();
-      $('form.profile-new input[name=location]').keyup(function() {
+      $('form.profile-new input[name=location]').keypress(function() {
         var keyword;
         keyword = $('form.profile-new input[name=location]').val();
         if (keyword.trim() !== '') {
@@ -211,8 +211,11 @@
               }
               $('form.profile-new input[name=location]').autocomplete({
                 source: autocompleteSource,
-                html: true
+                html: true,
+                matchContains: true,
+                minChars: 0
               });
+              $('form.profile-new input[name=location]').autocomplete("search", " ");
               $('form.profile-new input[name=location]').on('autocompleteselect', function(event, ui) {
                 _this.fetchCoordinates(ui.item.id);
               });

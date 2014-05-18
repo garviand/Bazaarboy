@@ -145,11 +145,10 @@ Bazaarboy.event.modify.basics =
             format: 'MM/DD/YYYY'
         # Location Auto-complete
         googleAutocomplete = new google.maps.places.AutocompleteService()
-        $('form.event-modify input[name=location]').keyup () =>
+        $('form.event-modify input[name=location]').keypress () =>
             keyword = $('form.event-modify input[name=location]').val()
             if keyword.trim() isnt ''
                 googleAutocomplete.getQueryPredictions
-                    types: ['establishment']
                     input: keyword
                 , (predictions, status) =>
                     autocompleteSource = []
@@ -166,6 +165,9 @@ Bazaarboy.event.modify.basics =
                         $('form.event-modify input[name=location]').autocomplete
                             source: autocompleteSource
                             html: true
+                            matchContains: true
+                            minLength: 0
+                        $('form.event-modify input[name=location]').autocomplete("search","")
                         $('form.event-modify input[name=location]').on 'autocompleteselect', (event, ui) =>
                             @fetchCoordinates ui.item.id
                             return

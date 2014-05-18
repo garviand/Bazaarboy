@@ -166,12 +166,11 @@
         format: 'MM/DD/YYYY'
       });
       googleAutocomplete = new google.maps.places.AutocompleteService();
-      $('form.event-modify input[name=location]').keyup(function() {
+      $('form.event-modify input[name=location]').keypress(function() {
         var keyword;
         keyword = $('form.event-modify input[name=location]').val();
         if (keyword.trim() !== '') {
           googleAutocomplete.getQueryPredictions({
-            types: ['establishment'],
             input: keyword
           }, function(predictions, status) {
             var autocompleteSource, labelExtenstion, prediction, _i, _len;
@@ -192,8 +191,11 @@
               }
               $('form.event-modify input[name=location]').autocomplete({
                 source: autocompleteSource,
-                html: true
+                html: true,
+                matchContains: true,
+                minLength: 0
               });
+              $('form.event-modify input[name=location]').autocomplete("search", "");
               $('form.event-modify input[name=location]').on('autocompleteselect', function(event, ui) {
                 _this.fetchCoordinates(ui.item.id);
               });
