@@ -64,9 +64,17 @@ def search(request, params):
     Search profiles by keyword
     """
     profiles = Profile.objects.filter(name__icontains = params['keyword'])
+    results = []
+    for profile in profiles:
+        profileObj = serialize_one(profile)
+        if profile.image:
+            profileObj['image_url'] = profile.image.source.url
+        else:
+            profileObj['image_url'] = None
+        results.append(profileObj)
     response = {
         'status':'OK',
-        'profiles':serialize(profiles)
+        'profiles':results
     }
     return json_response(response)
 

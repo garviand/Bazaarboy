@@ -178,6 +178,11 @@
             for (i = _i = 0, _ref = profiles.length - 1; 0 <= _ref ? _i <= _ref : _i >= _ref; i = 0 <= _ref ? ++_i : --_i) {
               newProfile = organizerModel;
               newProfile.find('div.organizer-name').html(profiles[i].name);
+              if (profiles[i].image_url != null) {
+                newProfile.find('div.organizer-image').html('<img src=' + profiles[i].image_url + ' />');
+              } else {
+                newProfile.find('div.organizer-image').html('&nbsp;');
+              }
               newProfile.find('a.add-organizer-submit').attr('data-profile', profiles[i].pk);
               $('form.add-organizer-form').append(newProfile.html());
             }
@@ -398,7 +403,15 @@
           id: eventId,
           profile: profileId
         }, function(response) {
+          var newOrganizer;
           if (response.status === 'OK') {
+            newOrganizer = $('div#event-organizers div.organizer').clone();
+            if (response.profile['image_url'] != null) {
+              newOrganizer.find('div.organizer-icon').css("background-image", "url(" + response.profile.image_url + ")");
+            }
+            newOrganizer.find('div.organizer-name').html("<span>" + response.profile.name + "</span>");
+            $('div#event-organizers div.organizer-list').append(newOrganizer);
+            console.log(newOrganizer);
             return $('form.add-organizer-form').fadeOut(300, function() {
               $('form.add-organizer-form input#organizer-name').val('');
               $('form.add-organizer-form div.organizer').remove();

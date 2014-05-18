@@ -7,6 +7,7 @@
         var i, profiles, _i, _ref;
         if (response.status === 'OK') {
           profiles = response.profiles;
+          console.log(profiles);
           if (profiles.length > 0) {
             $('.profile_login .profile_choices').empty();
             for (i = _i = 0, _ref = profiles.length - 1; 0 <= _ref ? _i <= _ref : _i >= _ref; i = 0 <= _ref ? ++_i : --_i) {

@@ -239,7 +239,7 @@ block body
                         div#event-organizers.row
                             div.caption.small-12.columns
                                 | Organizer{{ organizers|length|pluralize }}
-                            div.canvas.small-12.columns
+                            div.canvas.small-12.columns.organizer-list
                                 {% for organizer in organizers %}
                                 div.organizer
                                     div.organizer-icon(style="{% if organizer.profile.image %}background-image:url({{ organizer.profile.image.source.url }});{% endif %}")

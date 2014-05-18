@@ -3,6 +3,7 @@ Bazaarboy.admin.login =
 		Bazaarboy.get 'profile/search/', {keyword: value}, (response) ->
 			if response.status is 'OK'
 				profiles = response.profiles
+				console.log profiles
 				if profiles.length > 0
 					$('.profile_login .profile_choices').empty()
 					for i in [0..profiles.length-1]

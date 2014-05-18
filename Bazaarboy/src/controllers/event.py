@@ -430,8 +430,14 @@ def add_organizer(request, params, user):
     # Add the profile as an organizer
     organizer = Organizer(event = event, profile = profile)
     organizer.save()
+    result_profile = serialize_one(profile)
+    if profile.image:
+        result_profile['image_url'] = profile.image.source.url
+    else:
+        result_profile['image_url'] = None
     response = {
-        'status':'OK'
+        'status':'OK',
+        'profile': result_profile
     }
     return json_response(response)
 

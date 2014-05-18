@@ -7650,7 +7650,13 @@ div#add-organizer-modal form > div {
   margin-top: 15px;
 }
 div#add-organizer-modal form div.organizer div.organizer-name {
-  padding-top: 9px;
+  padding-top: 10px;
+}
+div#add-organizer-modal form div.organizer div.organizer-image {
+  text-align: center;
+}
+div#add-organizer-modal form div.organizer div.organizer-image img {
+  max-height: 40px;
 }
 div#add-organizer-modal form div.organizer div.organizer-submit a {
   display: block;
