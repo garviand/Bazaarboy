@@ -188,41 +188,6 @@ block body
                                 a.save.primary-btn(href="javascript:;") Save description
                     {% endif %}
             div#event-sidebar.medium-4.columns
-                //div.row.event-actions-container
-                    div.medium-12.columns
-                        div#event-actions.row
-                            {% if design %}
-                            div.medium-8.columns.edit-tickets.columns
-                                a.edit-tickets-btn.primary-btn(href="{% url event:modify id 'tickets' %}")
-                                    | Edit Tickets
-                            {% else %}
-                            {% if not hasEnded %}
-                            div.medium-3.columns.ticket-prices
-                                span
-                                    {% spaceless %}
-                                    {% if rsvp %}
-                                    | Free
-                                    {% else %}
-                                    | {% if cheapest != 0 %}${{ cheapest|floatformat:-2 }}{% else %}Free{% endif %}{% if tickets|length != 1 %}+{% endif %}
-                                    {% endif %}
-                                    {% endspaceless %}
-                            div.medium-5.columns
-                                a#rsvp-button.primary-btn
-                                    span.ss-bookmark.rsvp-icon &nbsp;
-                                    | RSVP
-                            {% else %}
-                            div.medium-8.columns &nbsp;
-                            {% endif %}
-                            div.medium-4.columns.share-btn-container
-                                a.share-btn.secondary-btn.right Share
-                            {% endif %}
-                        div.share-canvas.hidden
-                            | <span class='st_facebook_large' displayText='Facebook'></span>
-                            | <span class='st_twitter_large' displayText='Tweet'></span>
-                            | <span class='st_googleplus_large' displayText='Google +'></span>
-                            | <span class='st_pinterest_large' displayText='Pinterest'></span>
-                            | <span class='st_email_large' displayText='Email'></span>
-                            | <span class='close-share ss-delete'></span>
                 div.row.event-info
                     div.medium-10.columns
                         div#event-datetime.row
@@ -250,6 +215,10 @@ block body
                         div#event-location.row
                             div.location.small-12.columns
                                 {{ event.location }}
+                            div.address.small-12.columns.hide
+                                span.street-address Street address
+                                br
+                                span.city-zip City and Zip
                             div.map-canvas.small-12.columns.hide(data-latitude="{{ event.latitude }}", data-longitude="{{ event.longitude }}")
                                 div
                                     div#map-canvas

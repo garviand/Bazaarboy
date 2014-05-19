@@ -177,6 +177,18 @@ Bazaarboy.event.index =
         latitude = parseFloat $('div.map-canvas').attr('data-latitude')
         longitude = parseFloat $('div.map-canvas').attr('data-longitude')
         if latitude isnt NaN and longitude isnt NaN
+            # GET ADDRESS
+            geocoder = new google.maps.Geocoder()
+            latlng = new google.maps.LatLng(latitude, longitude)
+            geocoder.geocode {'latLng': latlng}, (results, status) ->
+                if results[0]
+                    loc = results[0]['formatted_address'].split(",")
+                    street = loc[0]
+                    city_zip = loc[1] + ", " + loc[2]
+                    $("div#event-location div.address span.street-address").html(street)
+                    $("div#event-location div.address span.city-zip").html(city_zip)
+                    $("div#event-location div.address").removeClass("hide")
+                return 
             $('div.map-canvas').removeClass 'hide'
             mapCenter = new google.maps.LatLng latitude, longitude
             mapStyles = [

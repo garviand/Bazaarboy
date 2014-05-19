@@ -8017,6 +8017,11 @@ div#event-location div.location {
   font-size: 14px;
   font-weight: 500;
 }
+div#event-location div.address {
+  line-height: 1.3rem;
+  margin-top: 5px;
+  font-size: 13px;
+}
 div#event-location div.map-canvas {
   margin-top: 15px;
   height: 150px;
