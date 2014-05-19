@@ -224,7 +224,7 @@
       });
       latitude = parseFloat($('div.map-canvas').attr('data-latitude'));
       longitude = parseFloat($('div.map-canvas').attr('data-longitude'));
-      if (latitude !== NaN && longitude !== NaN) {
+      if (!isNaN(latitude) && !isNaN(longitude)) {
         geocoder = new google.maps.Geocoder();
         latlng = new google.maps.LatLng(latitude, longitude);
         geocoder.geocode({

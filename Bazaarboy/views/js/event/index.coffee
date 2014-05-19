@@ -176,7 +176,7 @@ Bazaarboy.event.index =
             return
         latitude = parseFloat $('div.map-canvas').attr('data-latitude')
         longitude = parseFloat $('div.map-canvas').attr('data-longitude')
-        if latitude isnt NaN and longitude isnt NaN
+        if not isNaN(latitude) and not isNaN(longitude)
             # GET ADDRESS
             geocoder = new google.maps.Geocoder()
             latlng = new google.maps.LatLng(latitude, longitude)
