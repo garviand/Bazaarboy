@@ -160,6 +160,20 @@ Bazaarboy.event.index =
                 $('div#confirmation-modal').foundation('reveal', 'open')
                 return
         $(window).hashchange()
+        # MOBILE HEADER FIX
+        if $('div#event-header').height() > 66
+            $('div#event-header').css('position', 'absolute')
+            $('div#event').css('padding-top', $('div#event-header').height() + 'px')
+            $('div#tickets').css('top', ($('div#event-header').height() + 20) + 'px')
+        $(window).resize () ->
+            if $('div#event-header').height() > 66
+                $('div#event-header').css('position', 'absolute')
+                $('div#tickets').css('top', ($('div#event-header').height() + 20) + 'px')
+            else
+                $('div#event-header').css('position', 'fixed')
+                $('div#tickets').css('top', '100px')
+            $('div#event').css('padding-top', $('div#event-header').height() + 'px')
+            return
         latitude = parseFloat $('div.map-canvas').attr('data-latitude')
         longitude = parseFloat $('div.map-canvas').attr('data-longitude')
         if latitude isnt NaN and longitude isnt NaN
@@ -214,14 +228,14 @@ Bazaarboy.event.index =
                 $('div.save-status').html 'Unsaved Changes'
                 return
             scope.redactorContent = $('div#event-description div.description div.inner').redactor('get')
-        $("div#event-actions a.share-btn").click () ->
-            $('div#event-actions').fadeOut 300, () ->
-                $("div.share-canvas").fadeIn 300
+        $("div.event-share a.share-btn").click () ->
+            $('div.event-rsvp, div.event-share, div.event-price').fadeOut 300, () ->
+                $("div.event-share-canvas").fadeIn 300
                 return
             return
         $("span.close-share").click () ->
-            $("div.share-canvas").fadeOut 300, () ->
-                $("div#event-actions").fadeIn 300
+            $("div.event-share-canvas").fadeOut 300, () ->
+                $('div.event-rsvp, div.event-share, div.event-price').fadeIn 300
                 return
             return
         $('a#rsvp-button').click () =>

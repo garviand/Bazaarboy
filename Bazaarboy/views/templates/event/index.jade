@@ -129,13 +129,36 @@ block body
                 a.add-organizer-another.secondary-btn(href="javascript:;") Add Another
     div#event
         div#event-header(style="{% if design %}position:absolute;{% endif %}")
-            div.event-header-body(class="{% if design %}medium-8{% elif preview %}medium-10{% else %}medium-12{% endif %} columns")
+            div.event-header-body(class="{% if design %}medium-8{% elif preview %}medium-10{% else %}medium-8{% endif %} columns")
                 div.profile-icon
                     div.inner
                         a(href="{% url index %}")
                             img(src="{{ STATIC_URL }}images/logo-inverse.png")
                 div.event-name 
                     span {{ event.name }}
+                {% if not preview and not design %}
+            div.event-price.medium-1.columns
+                span
+                    {% spaceless %}
+                    {% if rsvp %}
+                    | Free
+                    {% else %}
+                    | {% if cheapest != 0 %}${{ cheapest|floatformat:-2 }}{% else %}Free{% endif %}{% if tickets|length != 1 %}+{% endif %}
+                    {% endif %}
+                    {% endspaceless %}
+            div.event-rsvp.medium-2.columns
+                a#rsvp-button.primary-btn(href="javascript:;") + RSVP
+            div.event-share.medium-1.columns
+                a.share-btn.secondary-btn Invite
+            div.event-share-canvas.medium-3.small-12.columns.hidden
+                div.share-canvas
+                    | <span class='st_facebook_large' displayText='Facebook'></span>
+                    | <span class='st_twitter_large' displayText='Tweet'></span>
+                    | <span class='st_googleplus_large' displayText='Google +'></span>
+                    | <span class='st_pinterest_large' displayText='Pinterest'></span>
+                    | <span class='st_email_large' displayText='Email'></span>
+                    | <span class='close-share ss-delete'></span>
+                {% endif %}
                 {% if preview %}
             div.event-launch.medium-2.columns.clearfix.right
                 a.secondary-btn(href="{% url event:index id %}?design") Edit Page Design
@@ -148,15 +171,6 @@ block body
             div.event-launch.medium-2.columns.clearfix.right
                 a.back-btn.secondary-btn(href="{% url event:index id %}?preview") Preview Event
                 {% endif %}
-                //-div.price.right
-                    span
-                        {% spaceless %}
-                        {% if rsvp %}
-                        | Free
-                        {% else %}
-                        | {% if cheapest != 0 %}${{ cheapest|floatformat:-2 }}{% else %}Free{% endif %}{% if tickets|length != 1 %}+{% endif %}
-                        {% endif %}
-                        {% endspaceless %}''
         div#event-body.row
             div#event-content.medium-8.columns
                 div#event-description.row
@@ -172,7 +186,7 @@ block body
                                 a.save.primary-btn(href="javascript:;") Save description
                     {% endif %}
             div#event-sidebar.medium-4.columns
-                div.row.event-actions-container
+                //div.row.event-actions-container
                     div.medium-12.columns
                         div#event-actions.row
                             {% if design %}
@@ -207,8 +221,8 @@ block body
                             | <span class='st_pinterest_large' displayText='Pinterest'></span>
                             | <span class='st_email_large' displayText='Email'></span>
                             | <span class='close-share ss-delete'></span>
-                div.row
-                    div.medium-9.columns
+                div.row.event-info
+                    div.medium-10.columns
                         div#event-datetime.row
                             div#event-date
                                 div.month {{ event.start_time|date:'M' }}
@@ -219,13 +233,15 @@ block body
                                     | {% if event.end_time %}
                                     //- Short version
                                     | {% if event.end_time|shouldShortenEndTime:event.start_time %}
-                                    | {{ event.start_time|date:'l, M. jS g:iA' }} to {{ event.end_time|date:'g:iA' }}
+                                    div.day-name {{ event.start_time|date:'l' }}
+                                    div.time{{ event.start_time|date:'g:iA' }} - {{ event.end_time|date:'g:iA' }}
                                     | {% else %}
                                     //- Long version
                                     | {{ event.start_time|date:'M. jS g:iA' }} to {{ event.end_time|date:'M. jS g:iA' }}
                                     | {% endif %}
                                     | {% else %}
-                                    | {{ event.start_time|date:'l, M. jS g:iA' }}
+                                    div.day-name {{ event.start_time|date:'l' }}
+                                    div.time{{ event.start_time|date:'g:iA' }}
                                     | {% endif %}
                                     | {% endspaceless %}
                         hr

@@ -207,6 +207,21 @@
         }
       });
       $(window).hashchange();
+      if ($('div#event-header').height() > 66) {
+        $('div#event-header').css('position', 'absolute');
+        $('div#event').css('padding-top', $('div#event-header').height() + 'px');
+        $('div#tickets').css('top', ($('div#event-header').height() + 20) + 'px');
+      }
+      $(window).resize(function() {
+        if ($('div#event-header').height() > 66) {
+          $('div#event-header').css('position', 'absolute');
+          $('div#tickets').css('top', ($('div#event-header').height() + 20) + 'px');
+        } else {
+          $('div#event-header').css('position', 'fixed');
+          $('div#tickets').css('top', '100px');
+        }
+        $('div#event').css('padding-top', $('div#event-header').height() + 'px');
+      });
       latitude = parseFloat($('div.map-canvas').attr('data-latitude'));
       longitude = parseFloat($('div.map-canvas').attr('data-longitude'));
       if (latitude !== NaN && longitude !== NaN) {
@@ -266,14 +281,14 @@
         });
         scope.redactorContent = $('div#event-description div.description div.inner').redactor('get');
       }
-      $("div#event-actions a.share-btn").click(function() {
-        $('div#event-actions').fadeOut(300, function() {
-          $("div.share-canvas").fadeIn(300);
+      $("div.event-share a.share-btn").click(function() {
+        $('div.event-rsvp, div.event-share, div.event-price').fadeOut(300, function() {
+          $("div.event-share-canvas").fadeIn(300);
         });
       });
       $("span.close-share").click(function() {
-        $("div.share-canvas").fadeOut(300, function() {
-          $("div#event-actions").fadeIn(300);
+        $("div.event-share-canvas").fadeOut(300, function() {
+          $('div.event-rsvp, div.event-share, div.event-price').fadeIn(300);
         });
       });
       $('a#rsvp-button').click(function() {

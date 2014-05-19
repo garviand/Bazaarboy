@@ -238,26 +238,26 @@ div#event-header {
     top: 0;
     left: 0;
     width: 100%;
-    height: 66px;
+    min-height: 66px;
     z-index: 20;
     background: rgba(255, 255, 255, 0.96);
     box-shadow: 0px 1px 5px 1px rgba(221,221,221,1);
 
     div.event-header-body {
         position: relative;
-        height: 66px;
+        min-height: 66px;
 
         div.profile-icon {
             position: absolute;
             top: 0;
             left: 0;
             width: 66px;
-            height: 66px;
+            min-height: 66px;
             background: #F5A623;
 
             div.inner {
                 width: 44px;
-                height: 44px;
+                min-height: 44px;
                 margin: 11px;
                 border-radius: 22px;
                 background: @white;
@@ -282,6 +282,34 @@ div#event-header {
                 vertical-align: middle;
             }
         }
+    }
+
+    div.event-price{
+        margin-top: 13px;
+        padding-top: 9px;
+        text-align: center;
+        font-weight: 600;
+        color: @dark;
+        font-size: 20px;
+    }
+
+    div.event-rsvp, div.event-share{
+        padding-top: 13px;
+        height: 66px;
+        a{
+            display: block;
+            width: 100%;
+            margin: 0 auto;
+            padding-top: 9px;
+            padding-bottom: 11px;
+            &:hover{
+                color: #FFF;
+            }
+        }
+    }
+
+    div.event-share{
+        border-left: #F6F6F6 thin solid;
     }
 
     div.event-launch {
@@ -314,6 +342,21 @@ div#event-header {
             span {
                 display: table-cell;
                 vertical-align: middle;
+            }
+        }
+    }
+    div.event-share-canvas{
+        margin: 0 auto;
+        margin-top: 15px;
+        margin-bottom: 10px;
+        text-align: center;
+        span.close-share{
+            font-size: 1.9rem;
+            color: #000;
+            cursor: pointer;
+            user-select:none;
+            &:hover{
+                color: @dark;
             }
         }
     }
@@ -392,21 +435,8 @@ div#event-body {
                 margin-bottom: 15px;
             }
         }
-        div.share-canvas{
-            min-height: 50px;
-            margin-top: 19px;
-            span.close-share{
-                font-size: 1.9rem;
-                color: #000;
-                cursor: pointer;
-                user-select:none;
-                &:hover{
-                    color: @dark;
-                }
-            }
-        }
         div#event-datetime{
-            margin-top: 35px;
+            margin-top: 70px;
             position: relative;
         }
     }
@@ -420,41 +450,48 @@ div#event-date {
     position: absolute;
     top: 0;
     left: 15px;
-    width: 40px;
-    height: 40px;
+    width: 44px;
+    height: 44px;
     border-radius: 4px;
     box-shadow: inset 0px -2px 0px 0px #F5A623;
     background: #FEC84D;
+    border: @orange thin solid;
 
     div.month {
         width: 100%;
-        height: 12px;
+        height: 10px;
         margin-top: 3px;
         color: @white;
-        font-size: 12px;
-        font-weight: 700;
+        font-size: 11px;
+        font-weight: 600;
         text-align: center;
         text-transform: uppercase;
+        letter-spacing: -1px;
     }
 
     div.day {
-        width: 36px;
-        height: 20px;
+        color: @dark;
+        width: 42px;
+        height: 25px;
         background: @white;
         margin: 0 auto;
         margin-top: 2px;
         padding: 1px 0;
-        font-size: 18px;
-        font-weight: 500;
+        padding-top: 3px;
+        font-size: 20px;
+        font-weight: 700;
         text-align: center;
+        border-bottom-left-radius: 1px;
+        border-bottom-right-radius: 1px;
     }
 }
 
 div#event-time {
+    color: @dark;
     display: table;
     width: 100%;
     height: 40px;
-    padding-left: 65px;
+    padding-left: 70px;
     top: 0;
     left: 0;
     font-size: 14px;
@@ -463,6 +500,13 @@ div#event-time {
     span {
         display: table-cell;
         vertical-align: middle;
+    }
+
+    div.day-name{
+        font-size: 16px;
+        font-weight: 600;
+        margin-bottom: 5px;
+        text-transform: uppercase;
     }
 }
 
@@ -473,6 +517,7 @@ div#event-location {
     div.location {
         padding-top: 5px;
         font-size: 14px;
+        font-weight: 500;
     }
 
     div.map-canvas {
@@ -487,6 +532,7 @@ div#event-location {
         div#map-canvas {
             width: 100%;
             height: 100%;
+            border-radius: 3px;
         }
     }
 }
