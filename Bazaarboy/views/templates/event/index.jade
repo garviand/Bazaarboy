@@ -141,7 +141,7 @@ block body
                 span
                     {% spaceless %}
                     {% if rsvp %}
-                    | Free
+                    | &nbsp;
                     {% else %}
                     | {% if cheapest != 0 %}${{ cheapest|floatformat:-2 }}{% else %}Free{% endif %}{% if tickets|length != 1 %}+{% endif %}
                     {% endif %}
