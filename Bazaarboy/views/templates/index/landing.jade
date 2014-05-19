@@ -6,15 +6,19 @@ block body
     div#landing
         div.section.section-1
             div.row.header
-                div.small-12.medium-5.columns
+                div.small-12.medium-5.columns.logo-container
                     a.logo(href="/")
                         img(src="{{ STATIC_URL }}images/logo-big.png")
                         div.text BAZAARBOY
-                div.small-12.medium-7.columns.links.clearfix
+                div.small-12.medium-7.columns.links.clearfix.hide-for-small-only
                     a.sign_up(href="{% url index:register %}") SIGN UP
                     a(href="{% url index:login %}") LOG IN
                     a(href="mailto:build@bazaarboy.com") CONTACT
                     a(href="{% url index:pricing %}") PRICING
+                div.small-12.columns.mobile-links.clearfix.show-for-small-only
+                    div.row
+                        a.small-5.small-offset-1.columns.text-center(href="{% url index:login %}") LOG IN
+                        a.small-5.end.columns.text-center(href="{% url index:pricing %}") PRICING
             div.row.title
                 div.small-12.columns
                     | TAKE CONTROL OF YOUR EVENT
@@ -36,7 +40,7 @@ block body
                         | &amp; WHAT WE DO
                     div.subtext
                         | Bazaarboy offers simple tools for event ticketing &amp; registration to businesses, non-profits, organizations and membership associations. Our mission is to simplify event commerce and communication.
-                div.small-12.medium-6.columns
+                div.small-12.medium-6.columns.ticket-container
                     img.ticket(src="{{ STATIC_URL }}images/landing/ticket.png")
         //div.section.section-3
             div.row.content

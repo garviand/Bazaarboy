@@ -287,10 +287,17 @@ div#event-header {
     div.event-price{
         margin-top: 13px;
         padding-top: 9px;
-        text-align: center;
+        padding-right: 0;
+        text-align: right;
         font-weight: 500;
         color: @dark;
         font-size: 20px;
+    }
+
+    @media only screen and (max-width: 40em){
+        div.event-price{
+            text-align: center !important;
+        }
     }
 
     div.event-rsvp, div.event-share{
@@ -305,6 +312,18 @@ div#event-header {
             &:hover{
                 color: #FFF;
             }
+            span.ss-bookmark{
+                position: relative;
+                top: 4px;
+                font-size: 17px;
+                right: 8px;
+            }
+        }
+    }
+
+    @media only screen and (min-width: 40em){
+        div.event-rsvp{
+            padding-left: 2rem;
         }
     }
 
@@ -380,6 +399,11 @@ div#event-body {
         }
         > .row{
             padding-left: 2rem;
+        }
+        @media only screen and (max-width: 40em){
+            > .row{
+                padding-right: 2rem;
+            }
         }
         div.event-actions-container{
             border-bottom: #F6F6F6 thin solid;

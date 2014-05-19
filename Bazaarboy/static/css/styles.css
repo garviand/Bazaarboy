@@ -5960,28 +5960,43 @@ div#landing div.section-1 {
 div#landing div.section-1 div.header {
   padding-top: 40px;
 }
+@media only screen and (max-width: 40em) {
+  div#landing div.section-1 div.header div.logo-container {
+    text-align: center;
+  }
+}
 div#landing div.section-1 div.header a.logo img {
-  float: left;
+  display: inline;
   height: 50px;
   width: 50px;
 }
 div#landing div.section-1 div.header a.logo div.text {
+  position: relative;
+  top: 5px;
+  display: inline;
   margin-left: 15px;
-  padding-top: 12px;
-  float: left;
   color: #ff9137;
   font-size: 26px;
   font-weight: 600;
 }
 div#landing div.section-1 div.header div.links a {
+  float: right;
   padding-top: 14px;
   color: #ffffff;
-  float: right;
   margin-left: 20px;
   font-size: 18px;
   font-weight: 600;
 }
 div#landing div.section-1 div.header div.links a.sign_up {
+  color: #ff9137;
+}
+div#landing div.section-1 div.header div.mobile-links a {
+  padding-top: 25px;
+  color: #ffffff;
+  font-size: 18px;
+  font-weight: 600;
+}
+div#landing div.section-1 div.header div.mobile-links a.sign_up {
   color: #ff9137;
 }
 div#landing div.section-1 div.title {
@@ -5990,6 +6005,11 @@ div#landing div.section-1 div.title {
   color: #ffffff;
   font-size: 48px;
   font-weight: 600;
+}
+@media only screen and (max-width: 40em) {
+  div#landing div.section-1 div.title {
+    margin-top: 100px !important;
+  }
 }
 div#landing div.section-1 div.hr hr {
   margin: 30px 0;
@@ -6017,6 +6037,11 @@ div#landing div.section-1 div.sign_up a {
 div#landing div.section-1 div.sign_up a:hover {
   color: #FFF;
 }
+@media only screen and (max-width: 40em) {
+  div#landing div.section-2 {
+    padding: 75px 0 !important;
+  }
+}
 div#landing div.section-2 {
   color: #ffffff;
   padding: 150px 0;
@@ -6031,15 +6056,33 @@ div#landing div.section-2 div.content div.title {
 div#landing div.section-2 div.content div.title .dark {
   color: #2e2e2e;
 }
+@media only screen and (max-width: 40em) {
+  div#landing div.section-2 div.content div.title {
+    text-align: center !important;
+  }
+}
 div#landing div.section-2 div.content div.subtext {
   margin-top: 30px;
   margin-bottom: 30px;
   text-align: right;
   line-height: 1.5rem;
 }
+@media only screen and (max-width: 40em) {
+  div#landing div.section-2 div.content div.subtext {
+    text-align: center !important;
+  }
+}
 div#landing div.section-2 div.content img.ticket {
   margin-left: 30px;
   max-height: 250px;
+}
+@media only screen and (max-width: 40em) {
+  div#landing div.section-2 div.content div.ticket-container {
+    text-align: center !important;
+  }
+  div#landing div.section-2 div.content div.ticket-container img.ticket {
+    margin-left: 0px;
+  }
 }
 div#landing div.section-3 {
   background: #ffffff;
@@ -7732,10 +7775,16 @@ div#event-header div.event-header-body div.event-name span {
 div#event-header div.event-price {
   margin-top: 13px;
   padding-top: 9px;
-  text-align: center;
+  padding-right: 0;
+  text-align: right;
   font-weight: 500;
   color: #3c3c3c;
   font-size: 20px;
+}
+@media only screen and (max-width: 40em) {
+  div#event-header div.event-price {
+    text-align: center !important;
+  }
 }
 div#event-header div.event-rsvp,
 div#event-header div.event-share {
@@ -7753,6 +7802,18 @@ div#event-header div.event-share a {
 div#event-header div.event-rsvp a:hover,
 div#event-header div.event-share a:hover {
   color: #FFF;
+}
+div#event-header div.event-rsvp a span.ss-bookmark,
+div#event-header div.event-share a span.ss-bookmark {
+  position: relative;
+  top: 4px;
+  font-size: 17px;
+  right: 8px;
+}
+@media only screen and (min-width: 40em) {
+  div#event-header div.event-rsvp {
+    padding-left: 2rem;
+  }
 }
 div#event-header div.event-share {
   border-left: #F6F6F6 thin solid;
@@ -7824,6 +7885,11 @@ div#event-body div#event-sidebar hr {
 }
 div#event-body div#event-sidebar > .row {
   padding-left: 2rem;
+}
+@media only screen and (max-width: 40em) {
+  div#event-body div#event-sidebar > .row {
+    padding-right: 2rem;
+  }
 }
 div#event-body div#event-sidebar div.event-actions-container {
   border-bottom: #F6F6F6 thin solid;
