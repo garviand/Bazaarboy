@@ -353,12 +353,13 @@ Bazaarboy.event.index =
             profileId = $(this).data('profile')
             Bazaarboy.post 'event/organizer/add/', {id: eventId, profile: profileId}, (response) =>
                 if response.status is 'OK'
-                    newOrganizer = $('div#event-organizers div.organizer').clone()
+                    newOrganizer = $('div#event-organizers div.organizer').eq(0).clone()
                     if response.profile['image_url']?
                         newOrganizer.find('div.organizer-icon').css("background-image", "url(#{response.profile.image_url})")
+                    else
+                        newOrganizer.find('div.organizer-icon').css("background-image", "none")
                     newOrganizer.find('div.organizer-name').html("<span>#{response.profile.name}</span>")
                     $('div#event-organizers div.organizer-list').append(newOrganizer)
-                    console.log newOrganizer
                     $('form.add-organizer-form').fadeOut 300, () ->
                         $('form.add-organizer-form input#organizer-name').val('')
                         $('form.add-organizer-form div.organizer').remove()

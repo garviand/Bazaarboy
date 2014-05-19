@@ -435,13 +435,14 @@
         }, function(response) {
           var newOrganizer;
           if (response.status === 'OK') {
-            newOrganizer = $('div#event-organizers div.organizer').clone();
+            newOrganizer = $('div#event-organizers div.organizer').eq(0).clone();
             if (response.profile['image_url'] != null) {
               newOrganizer.find('div.organizer-icon').css("background-image", "url(" + response.profile.image_url + ")");
+            } else {
+              newOrganizer.find('div.organizer-icon').css("background-image", "none");
             }
             newOrganizer.find('div.organizer-name').html("<span>" + response.profile.name + "</span>");
             $('div#event-organizers div.organizer-list').append(newOrganizer);
-            console.log(newOrganizer);
             return $('form.add-organizer-form').fadeOut(300, function() {
               $('form.add-organizer-form input#organizer-name').val('');
               $('form.add-organizer-form div.organizer').remove();
