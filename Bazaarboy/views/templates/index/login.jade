@@ -11,12 +11,14 @@ block body
                         div.row
                             div.small-10.small-offset-1.columns
                                 div.row
-                                    div.small-7.columns.text-center
+                                    div.small-12.medium-7.columns.text-center
                                         div.logo-small &nbsp;
                                 div.row.title
                                     div.small-12.columns.text-center.site-title 
                                         | Bazaarboy
-                                        span.page-title &nbsp;&nbsp;|&nbsp;&nbsp; Sign In
+                                        span.page-title 
+                                            span.hide-for-small-only &nbsp;&nbsp;|&nbsp;
+                                            | &nbsp;Login
                                 hr.separator
                                 div.row.login-inputs
                                     div.small-12.columns
@@ -27,7 +29,7 @@ block body
                                     //div.small-8.columns
                                         input(id="savepw", type="checkbox")
                                         label(for="savepw") Keep me signed in.
-                                    div.small-4.columns
+                                    div.small-12.medium-4.columns
                                         input.primary-btn.submit-login(type="submit", value="SIGN IN")
                 div#footer
                     div.row
@@ -35,7 +37,7 @@ block body
                             div.row
                                 div.small-8.columns
                                     //a.trouble(href="javascript:;") Trouble Logging in?
-                                div.small-4.columns
+                                div.small-12.medium-4.columns
                                     a.switch(href="{% url index:register %}") Register
 
 append script

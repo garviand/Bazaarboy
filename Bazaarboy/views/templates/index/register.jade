@@ -11,12 +11,14 @@ block body
                         div.row
                             div.small-10.small-offset-1.columns
                                 div.row
-                                    div.small-7.columns.text-center
+                                    div.small-12.medium-7.columns.text-center
                                         div.logo-small &nbsp;
                                 div.row.title
                                     div.small-12.columns.text-center.site-title 
                                         | Bazaarboy
-                                        span.page-title &nbsp;&nbsp;|&nbsp;&nbsp; Register
+                                        span.page-title
+                                            span.hide-for-small-only &nbsp;&nbsp;|&nbsp;
+                                            | &nbsp;Register
                                 hr.separator
                                 div.row.register-inputs
                                     div.small-12.columns
@@ -31,7 +33,7 @@ block body
                                 div.row.register-bottom
                                     div.small-8.columns
                                         &nbsp;
-                                    div.small-4.columns
+                                    div.small-12.medium-4.columns
                                         input.primary-btn.submit-register(type="submit", value="REGISTER")
                 div#footer
                     div.row
@@ -39,7 +41,7 @@ block body
                             div.row
                                 div.small-8.columns
                                     //a.trouble(href="javascript:;") Trouble Logging in?
-                                div.small-4.columns
+                                div.small-12.medium-4.columns
                                     a.switch(href="{% url index:login %}") Login
 
 append script
