@@ -65,47 +65,52 @@ Bazaarboy.event.index =
             phone: $('input[name=phone]').val().trim()
             details: {}
         tickets = $('div#tickets-canvas div.ticket')
+        ticketSelected = false
         for ticket in tickets
             if $(ticket).find('input.ticket-selected').is ':checked'
+                ticketSelected = true
                 quantity = parseInt $(ticket).find('input.ticket-quantity').val()
                 params.details[$(ticket).attr('data-id')] = quantity
         params.details = JSON.stringify params.details
         if params.phone.length is 0
             delete params.phone
-        console.log params
-        Bazaarboy.post 'event/purchase/', params, (response) =>
-            if response.status isnt 'OK'
-                alert response.message
-                $('a#tickets-confirm').html 'Confirm RSVP'
-            else
-                if not response.publishable_key?
-                    @completePurchase(response.tickets)
+        if not ticketSelected
+            alert 'You Must Select A Ticket'
+            $('a#tickets-confirm').html 'Confirm RSVP'
+        else
+            Bazaarboy.post 'event/purchase/', params, (response) =>
+                if response.status isnt 'OK'
+                    alert response.message
+                    $('a#tickets-confirm').html 'Confirm RSVP'
                 else
-                    total = response.purchase.amount * 100
-                    a = (1 + 0.05) * total + 50
-                    b = (1 + 0.029) * total + 30 + 1000
-                    total = Math.round(Math.min(a, b))
-                    StripeCheckout.open
-                        key: response.publishable_key
-                        address: false
-                        amount: total
-                        currency: 'usd'
-                        name: response.purchase.event.name
-                        description: 'Tickets for ' + response.purchase.event.name
-                        panelLabel: 'Checkout'
-                        email: params.email
-                        image: response.logo
-                        token: (token) =>
-                            Bazaarboy.post 'payment/charge/', 
-                                checkout: response.purchase.checkout
-                                stripe_token: token.id
-                            , (response) =>
-                                if response.status is 'OK'
-                                    @completePurchase(response.tickets)
-                                else
-                                    alert response.message
+                    if not response.publishable_key?
+                        @completePurchase(response.tickets)
+                    else
+                        total = response.purchase.amount * 100
+                        a = (1 + 0.05) * total + 50
+                        b = (1 + 0.029) * total + 30 + 1000
+                        total = Math.round(Math.min(a, b))
+                        StripeCheckout.open
+                            key: response.publishable_key
+                            address: false
+                            amount: total
+                            currency: 'usd'
+                            name: response.purchase.event.name
+                            description: 'Tickets for ' + response.purchase.event.name
+                            panelLabel: 'Checkout'
+                            email: params.email
+                            image: response.logo
+                            token: (token) =>
+                                Bazaarboy.post 'payment/charge/', 
+                                    checkout: response.purchase.checkout
+                                    stripe_token: token.id
+                                , (response) =>
+                                    if response.status is 'OK'
+                                        @completePurchase(response.tickets)
+                                    else
+                                        alert response.message
+                                    return
                                 return
-                            return
             return
         return
     completePurchase: (tickets) ->

@@ -69,7 +69,7 @@
       }
     },
     purchase: function() {
-      var params, quantity, ticket, tickets, _i, _len,
+      var params, quantity, ticket, ticketSelected, tickets, _i, _len,
         _this = this;
       $('a#tickets-confirm').html('Processing...');
       params = {
@@ -81,9 +81,11 @@
         details: {}
       };
       tickets = $('div#tickets-canvas div.ticket');
+      ticketSelected = false;
       for (_i = 0, _len = tickets.length; _i < _len; _i++) {
         ticket = tickets[_i];
         if ($(ticket).find('input.ticket-selected').is(':checked')) {
+          ticketSelected = true;
           quantity = parseInt($(ticket).find('input.ticket-quantity').val());
           params.details[$(ticket).attr('data-id')] = quantity;
         }
@@ -92,46 +94,51 @@
       if (params.phone.length === 0) {
         delete params.phone;
       }
-      console.log(params);
-      Bazaarboy.post('event/purchase/', params, function(response) {
-        var a, b, total;
-        if (response.status !== 'OK') {
-          alert(response.message);
-          $('a#tickets-confirm').html('Confirm RSVP');
-        } else {
-          if (response.publishable_key == null) {
-            _this.completePurchase(response.tickets);
+      if (!ticketSelected) {
+        alert('You Must Select A Ticket');
+        $('a#tickets-confirm').html('Confirm RSVP');
+      } else {
+        Bazaarboy.post('event/purchase/', params, function(response) {
+          var a, b, total;
+          if (response.status !== 'OK') {
+            alert(response.message);
+            return $('a#tickets-confirm').html('Confirm RSVP');
           } else {
-            total = response.purchase.amount * 100;
-            a = (1 + 0.05) * total + 50;
-            b = (1 + 0.029) * total + 30 + 1000;
-            total = Math.round(Math.min(a, b));
-            StripeCheckout.open({
-              key: response.publishable_key,
-              address: false,
-              amount: total,
-              currency: 'usd',
-              name: response.purchase.event.name,
-              description: 'Tickets for ' + response.purchase.event.name,
-              panelLabel: 'Checkout',
-              email: params.email,
-              image: response.logo,
-              token: function(token) {
-                Bazaarboy.post('payment/charge/', {
-                  checkout: response.purchase.checkout,
-                  stripe_token: token.id
-                }, function(response) {
-                  if (response.status === 'OK') {
-                    _this.completePurchase(response.tickets);
-                  } else {
-                    alert(response.message);
-                  }
-                });
-              }
-            });
+            if (response.publishable_key == null) {
+              return _this.completePurchase(response.tickets);
+            } else {
+              total = response.purchase.amount * 100;
+              a = (1 + 0.05) * total + 50;
+              b = (1 + 0.029) * total + 30 + 1000;
+              total = Math.round(Math.min(a, b));
+              return StripeCheckout.open({
+                key: response.publishable_key,
+                address: false,
+                amount: total,
+                currency: 'usd',
+                name: response.purchase.event.name,
+                description: 'Tickets for ' + response.purchase.event.name,
+                panelLabel: 'Checkout',
+                email: params.email,
+                image: response.logo,
+                token: function(token) {
+                  Bazaarboy.post('payment/charge/', {
+                    checkout: response.purchase.checkout,
+                    stripe_token: token.id
+                  }, function(response) {
+                    if (response.status === 'OK') {
+                      _this.completePurchase(response.tickets);
+                    } else {
+                      alert(response.message);
+                    }
+                  });
+                }
+              });
+            }
           }
-        }
-      });
+        });
+        return;
+      }
     },
     completePurchase: function(tickets) {
       var k, newTicket, scope, ticket, ticketHTML;
