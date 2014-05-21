@@ -1,5 +1,62 @@
 @import (reference) "vars.less";
 
+#wrapper-sidebar{
+    div.checkin_numbers{
+        width: 100%;
+        text-align: center;
+        color: #FFF;
+        font-weight: 500;
+        padding: 15px 0;
+        border-bottom: solid 1px #464646;
+        span.checkin_label{
+            font-weight: 300;
+        }
+    }
+    div.guest-search, div.ticket-filters-container{
+        width: 100%;
+        color: #FFF;
+        font-weight: 500;
+        padding: 20px 0;
+        border-bottom: solid 1px #464646;
+        label{
+            color: @white;
+            width: 80%;
+            margin-left: 10%;
+        }
+        input{
+            margin-bottom: 0px;
+            width: 80%;
+            margin-left: 10%;
+            border: none;
+            outline: none;
+            border-radius: 3px;
+            height: 1.9rem;
+            &[name=guest_name]{
+                margin-bottom: 5px;
+            }
+        }
+        a{
+            color: #FFF;
+            display: block;
+            width: 80%;
+            margin-left: 10%;
+            border: 1px solid #464646;
+            text-decoration: none;
+            border-top: none;
+            padding: 5px;
+            text-align: center;
+            font-weight: 300;
+            &:first-child{
+                border-top: 1px solid #464646;
+            }
+            &:hover, &.active{
+                color: #FFF;
+                background: #7F7F7F;
+            }
+        }
+    }
+}
+
 div#wrapper-event-manage{
     padding-top: 40px;
 }

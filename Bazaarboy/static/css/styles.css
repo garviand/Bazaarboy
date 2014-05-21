@@ -5680,7 +5680,7 @@ div#wrapper-top {
   position: relative;
   height: 64px;
   z-index: 3;
-  background: #3c3c3c;
+  background: #4a4a4a;
 }
 div#wrapper-sidebar,
 div#wrapper-main {
@@ -5692,7 +5692,7 @@ div#wrapper-sidebar {
   width: 200px;
   min-height: 100%;
   z-index: 1;
-  background: #2e2e2e;
+  background: #3c3c3c;
 }
 @media only screen and (min-width: 40.063em) and (max-width: 64em) {
   div#wrapper-sidebar {
@@ -5814,7 +5814,7 @@ a.sidebar-item {
   position: relative;
   width: 200px;
   height: 54px;
-  background: #3c3c3c;
+  background: #4a4a4a;
   margin-top: 2px;
   margin-bottom: 2px;
   color: #ffffff;
@@ -5832,6 +5832,12 @@ a.sidebar-item.sidebar-separate {
   a.sidebar-item:hover div.sidebar-item-text {
     display: block;
   }
+}
+a.sidebar-item.selected div.sidebar-item-icon {
+  color: #faa638;
+}
+a.sidebar-item.selected div.sidebar-item-icon .text {
+  color: #ffffff;
 }
 a.sidebar-item.selected div.sidebar-item-text {
   color: #ffffff;
@@ -5852,8 +5858,8 @@ a.sidebar-item.sub {
   height: 56px;
   margin-top: 0;
   margin-bottom: 0;
-  border-top: 2px solid #3c3c3c;
-  background: #2e2e2e;
+  border-top: 2px solid #4a4a4a;
+  background: #3c3c3c;
 }
 a.sidebar-item.sub.first {
   height: 54px;
@@ -5864,7 +5870,7 @@ a.sidebar-item.sub div.sidebar-item-icon div {
   background: #9C9C9C;
 }
 a.sidebar-item.sub div.sidebar-item-text {
-  background: #2e2e2e;
+  background: #3c3c3c;
 }
 a.sidebar-item:hover {
   background: #faa638;
@@ -5877,7 +5883,7 @@ div.sidebar-item-icon {
   position: absolute;
   width: 54px;
   height: 54px;
-  top: 0;
+  top: -1px;
   left: 0;
 }
 div.sidebar-item-icon div {
@@ -5897,8 +5903,9 @@ div.sidebar-item-text {
   height: 54px;
   top: 0;
   left: 54px;
-  background: #3c3c3c;
+  background: #4a4a4a;
   color: #7A7A7A;
+  font-weight: 600;
 }
 @media only screen and (min-width: 40.063em) and (max-width: 64em) {
   div.sidebar-item-text {
@@ -6054,7 +6061,7 @@ div#landing div.section-2 div.content div.title {
   line-height: 2.5rem;
 }
 div#landing div.section-2 div.content div.title .dark {
-  color: #2e2e2e;
+  color: #3c3c3c;
 }
 @media only screen and (max-width: 40em) {
   div#landing div.section-2 div.content div.title {
@@ -6092,8 +6099,8 @@ div#landing div.section-3 .content div.logo img {
   max-width: 80%;
 }
 div#landing div.section-3 .content hr {
-  color: #2e2e2e;
-  background: #2e2e2e;
+  color: #3c3c3c;
+  background: #3c3c3c;
   margin: 30px 0;
   border: none;
   height: 2px;
@@ -6137,7 +6144,7 @@ div#landing div.section-4 div.content div.title {
   line-height: 2.5rem;
 }
 div#landing div.section-4 div.content div.title .dark {
-  color: #2e2e2e;
+  color: #3c3c3c;
 }
 div#landing div.section-4 div.content div.subtext {
   margin-top: 30px;
@@ -6570,7 +6577,7 @@ div.past-event > div.tile div.stats > div.row div.draft-event-stats div.inner > 
 div.current-event > div.tile div.stats > div.row div.past-event-stats div.inner > div div.summary div.summary-text,
 div.draft-event > div.tile div.stats > div.row div.past-event-stats div.inner > div div.summary div.summary-text,
 div.past-event > div.tile div.stats > div.row div.past-event-stats div.inner > div div.summary div.summary-text {
-  color: #3c3c3c;
+  color: #4a4a4a;
   font-weight: 100;
   line-height: 1.5rem;
   padding-right: 15px;
@@ -6921,7 +6928,7 @@ div.past-event > div.tile div.section-title {
   margin-bottom: 15px;
   padding: 0;
   border-bottom: 2px solid #ffffff;
-  color: #3c3c3c;
+  color: #4a4a4a;
   font-size: 18px;
   font-weight: 700;
   line-height: 50px;
@@ -6942,7 +6949,7 @@ div#wrapper-dashboard div.empty-state-container div.empty-state-content {
 div#wrapper-dashboard div.empty-state-container div.empty-state-content div.text {
   font-size: 1.3rem;
   font-weight: 600;
-  color: #3c3c3c;
+  color: #4a4a4a;
 }
 div#wrapper-dashboard div.empty-state-container div.empty-state-content hr {
   margin: 10px 0;
@@ -7440,6 +7447,69 @@ div#wrapper-profile-new div.profile-new-container div.next-prev a.next-btn.hide,
 div#wrapper-profile-new div.profile-new-container div.next-prev a.finish-btn.hide {
   display: none !important;
 }
+#wrapper-sidebar div.checkin_numbers {
+  width: 100%;
+  text-align: center;
+  color: #FFF;
+  font-weight: 500;
+  padding: 15px 0;
+  border-bottom: solid 1px #464646;
+}
+#wrapper-sidebar div.checkin_numbers span.checkin_label {
+  font-weight: 300;
+}
+#wrapper-sidebar div.guest-search,
+#wrapper-sidebar div.ticket-filters-container {
+  width: 100%;
+  color: #FFF;
+  font-weight: 500;
+  padding: 20px 0;
+  border-bottom: solid 1px #464646;
+}
+#wrapper-sidebar div.guest-search label,
+#wrapper-sidebar div.ticket-filters-container label {
+  color: #ffffff;
+  width: 80%;
+  margin-left: 10%;
+}
+#wrapper-sidebar div.guest-search input,
+#wrapper-sidebar div.ticket-filters-container input {
+  margin-bottom: 0px;
+  width: 80%;
+  margin-left: 10%;
+  border: none;
+  outline: none;
+  border-radius: 3px;
+  height: 1.9rem;
+}
+#wrapper-sidebar div.guest-search input[name=guest_name],
+#wrapper-sidebar div.ticket-filters-container input[name=guest_name] {
+  margin-bottom: 5px;
+}
+#wrapper-sidebar div.guest-search a,
+#wrapper-sidebar div.ticket-filters-container a {
+  color: #FFF;
+  display: block;
+  width: 80%;
+  margin-left: 10%;
+  border: 1px solid #464646;
+  text-decoration: none;
+  border-top: none;
+  padding: 5px;
+  text-align: center;
+  font-weight: 300;
+}
+#wrapper-sidebar div.guest-search a:first-child,
+#wrapper-sidebar div.ticket-filters-container a:first-child {
+  border-top: 1px solid #464646;
+}
+#wrapper-sidebar div.guest-search a:hover,
+#wrapper-sidebar div.ticket-filters-container a:hover,
+#wrapper-sidebar div.guest-search a.active,
+#wrapper-sidebar div.ticket-filters-container a.active {
+  color: #FFF;
+  background: #7F7F7F;
+}
 div#wrapper-event-manage {
   padding-top: 40px;
 }
@@ -7514,13 +7584,13 @@ div#event-manage .guests .guest .checkin a:hover {
   color: #ffffff;
 }
 div#event-manage .guests .guest.checked_in .checkin a {
-  background: #3c3c3c;
-  border: 1px solid #2e2e2e;
-  -moz-box-shadow: inset 0px -3px 0px 0px #2e2e2e;
-  -webkit-box-shadow: inset 0px -3px 0px 0px #2e2e2e;
-  box-shadow: inset 0px -3px 0px 0px #2e2e2e;
+  background: #4a4a4a;
+  border: 1px solid #3c3c3c;
+  -moz-box-shadow: inset 0px -3px 0px 0px #3c3c3c;
+  -webkit-box-shadow: inset 0px -3px 0px 0px #3c3c3c;
+  box-shadow: inset 0px -3px 0px 0px #3c3c3c;
   color: #FFFFFF;
-  text-shadow: 1px 2px 0px #2e2e2e;
+  text-shadow: 1px 2px 0px #3c3c3c;
 }
 div#event {
   min-width: 100%;
@@ -7615,7 +7685,7 @@ div#launch-modal div.empty-state-container div.empty-state-content div.text {
   text-align: left;
   font-size: 1.3rem;
   font-weight: 600;
-  color: #3c3c3c;
+  color: #4a4a4a;
 }
 div#launch-modal div.empty-state-container div.empty-state-content hr {
   margin: 10px 0;
@@ -7778,7 +7848,7 @@ div#event-header div.event-price {
   padding-right: 0;
   text-align: right;
   font-weight: 500;
-  color: #3c3c3c;
+  color: #4a4a4a;
   font-size: 20px;
 }
 @media only screen and (max-width: 40em) {
@@ -7863,7 +7933,7 @@ div#event-header div.event-share-canvas span.close-share {
   user-select: none;
 }
 div#event-header div.event-share-canvas span.close-share:hover {
-  color: #3c3c3c;
+  color: #4a4a4a;
 }
 div#event-body {
   margin-top: 24px;
@@ -7912,7 +7982,7 @@ div#event-body div#event-sidebar div#event-actions div.ticket-prices {
   padding-left: 0;
   padding-right: 0;
   text-align: center;
-  color: #3c3c3c;
+  color: #4a4a4a;
   font-size: 1.2rem;
   font-weight: 500;
   margin-top: 25px;
@@ -7973,7 +8043,7 @@ div#event-date div.month {
   letter-spacing: -1px;
 }
 div#event-date div.day {
-  color: #3c3c3c;
+  color: #4a4a4a;
   width: 40px;
   height: 25px;
   background: #ffffff;
@@ -7988,7 +8058,7 @@ div#event-date div.day {
   border-bottom-right-radius: 1px;
 }
 div#event-time {
-  color: #3c3c3c;
+  color: #4a4a4a;
   display: table;
   width: 100%;
   height: 40px;
@@ -8278,7 +8348,7 @@ div#tickets-body div.ticket > div.inner > div.action div.wrapper div.soldout {
   width: 44px;
   height: 44px;
   background: #FFFFFF;
-  color: #3c3c3c;
+  color: #4a4a4a;
   font-size: 14px;
   line-height: 22px;
   text-align: center;
@@ -8436,7 +8506,7 @@ div#event-modify-tickets div.empty-state-container div.empty-state-content {
 div#event-modify-tickets div.empty-state-container div.empty-state-content div.text {
   font-size: 1.3rem;
   font-weight: 600;
-  color: #3c3c3c;
+  color: #4a4a4a;
 }
 div#event-modify-tickets div.empty-state-container div.empty-state-content hr {
   margin: 10px 0;
@@ -8589,7 +8659,7 @@ div#event-modify-tickets div#edit-ticket div.cancel-btn {
   left: -18px;
   width: 30px;
   height: 30px;
-  border: 5px solid #3c3c3c;
+  border: 5px solid #4a4a4a;
   border-radius: 15px;
   background: #ffffff;
   font-size: 20px;
