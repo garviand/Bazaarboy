@@ -35,15 +35,13 @@ sudo apt-get install python-dev
 echo -e "\nInstalling python-mysqldb\n"
 sudo apt-get build-dep python-mysqldb
 sudo apt-get install python-mysqldb
+sudo apt-get install libmysqlclient-dev
 echo -e "\nInstalling pip\n"
 sudo apt-get install python-pip
 echo -e "\nInstalling virtualenvwrapper\n"
 sudo pip install virtualenvwrapper
 echo -e "\nInstalling PIL requirements\n"
-sudo apt-get build-dep python-imaging
-sudo ln -s /usr/lib/`uname -i`-linux-gnu/libfreetype.so /usr/lib/
-sudo ln -s /usr/lib/`uname -i`-linux-gnu/libjpeg.so /usr/lib/
-sudo ln -s /usr/lib/`uname -i`-linux-gnu/libz.so /usr/lib/
+sudo apt-get install libtiff4-dev libjpeg8-dev zlib1g-dev libfreetype6-dev liblcms2-dev libwebp-dev tcl8.5-dev tk8.5-dev python-tk
 echo -e "\nInstalling WeasyPrint requirements\n"
 sudo apt-get install python-lxml libcairo2 libpango1.0-0 libgdk-pixbuf2.0-0 libffi-dev libxml2-dev libxslt-dev 
 

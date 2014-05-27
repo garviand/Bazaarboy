@@ -223,7 +223,9 @@ Bazaarboy.event.modify.tickets =
                         wordingObject = 'Ticket Holders'
                     $(ticketOption).find('span.wording').html wording
                     $(ticketOption).find('span.wording-object').html wordingObject
-                    $('div#edit-ticket').fadeOut 300
+                    $('div#edit-ticket').fadeOut 300, () ->
+                      $('div#edit-ticket div.step-2').hide()
+                      $('div#edit-ticket div.step-1').show()
                 else
                     alert response.message
                 return
