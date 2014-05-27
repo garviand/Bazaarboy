@@ -288,7 +288,8 @@
           boldTag: 'b',
           italicTag: 'i',
           imageUpload: rootUrl + 'file/image/upload/',
-          toolbarFixedBox: true
+          toolbarFixedBox: true,
+          placeholder: 'Add Your Event Description Here...'
         });
         $('a.save.primary-btn').click(function() {
           _this.saveDescription();

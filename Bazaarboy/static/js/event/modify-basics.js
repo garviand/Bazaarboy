@@ -65,7 +65,7 @@
             window.location = '/event/' + eventId + '/tickets';
           }
         } else {
-          $('div#event-modify-basics div.status').html('Failed to save');
+          $('div#event-modify-basics div.status').html(err.message);
           console.log(err);
         }
       });
@@ -140,6 +140,7 @@
       });
       $('form.event-modify').find('input, textarea').keyup(function() {
         _this.isEditing = true;
+        $('div#event-modify-basics div.status').html('Unsaved Changes');
         setTimeout((function() {
           _this.isEditing = false;
         }), 5000);

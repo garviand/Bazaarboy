@@ -52,7 +52,7 @@ Bazaarboy.event.modify.basics =
                 if not autoSave
                     window.location = '/event/' + eventId + '/tickets'
             else
-                $('div#event-modify-basics div.status').html 'Failed to save'
+                $('div#event-modify-basics div.status').html err.message
                 console.log err
             return
         return
@@ -116,6 +116,7 @@ Bazaarboy.event.modify.basics =
         # Is User Editing Info
         $('form.event-modify').find('input, textarea').keyup () =>
             @isEditing = true
+            $('div#event-modify-basics div.status').html 'Unsaved Changes'
             setTimeout (() =>
                 @isEditing = false
                 return

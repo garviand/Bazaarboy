@@ -233,6 +233,7 @@ Bazaarboy.event.index =
                 italicTag: 'i'
                 imageUpload: rootUrl + 'file/image/upload/'
                 toolbarFixedBox: true
+                placeholder: 'Add Your Event Description Here...'
             $('a.save.primary-btn').click () =>
                 @saveDescription()
                 return

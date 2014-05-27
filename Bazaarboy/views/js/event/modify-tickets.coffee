@@ -1,5 +1,8 @@
-Bazaarboy.event.modify.tickets = 
+Bazaarboy.event.modify.tickets =
+    ticketSubmitting: false
     newTicket: () ->
+        $('div#edit-ticket div.step-2').hide()
+        $('div#edit-ticket div.step-1').show()
         $('div#edit-ticket').removeAttr('data-id').removeClass('edit').addClass 'add'
         $('div#edit-ticket div.step-1').removeClass 'hide'
         $('div#edit-ticket div.step-1 span.type').html 'First, Choose a'
@@ -148,87 +151,91 @@ Bazaarboy.event.modify.tickets =
             return
         $('div#edit-ticket form').submit (event) ->
             event.preventDefault()
-            isNew = $('div#edit-ticket').hasClass 'add'
-            ticketId = $('div#edit-ticket').attr 'data-id'
-            params = $(this).serializeObject()
-            if isNew
-                params.event = eventId
-            else
-                params.id = ticketId
-            if params.quantity.trim().length is 0
+            if not scope.ticketSubmitting
+                console.log scope.ticketSubmitting
+                scope.ticketSubmitting = true
+                isNew = $('div#edit-ticket').hasClass 'add'
+                ticketId = $('div#edit-ticket').attr 'data-id'
+                params = $(this).serializeObject()
                 if isNew
-                    delete params.quantity
+                    params.event = eventId
                 else
-                    params.quantity = 'None'
-            if params.start_date.trim().length != 0 and 
-               params.start_time.trim().length != 0
-                startDate = moment(params.start_date.trim(), 'MM/DD/YYYY')
-                if not startDate.isValid()
-                    return
-                startTime = moment(params.start_time.trim(), 'h:mm A')
-                if not startTime.isValid()
-                    return
-                params.start_time = moment(params.start_date.trim() + ' ' + params.start_time.trim(), 
-                                           'MM/DD/YYYY h:mm A').utc().format('YYYY-MM-DD HH:mm:ss')
-            else
-                if isNew
-                    delete params.start_time
-                else
-                    params.start_time = 'None'
-            if params.end_date.trim().length != 0 and
-               params.end_time.trim().length != 0
-                endDate = moment(params.end_date.trim(), 'MM/DD/YYYY')
-                if not endDate.isValid()
-                    return
-                endTime = moment(params.end_time.trim(), 'h:mm A')
-                if not endTime.isValid()
-                    return
-                params.end_time = moment(params.end_date.trim() + ' ' + params.end_time.trim(), 
-                                         'MM/DD/YYYY h:mm A').utc().format('YYYY-MM-DD HH:mm:ss')
-            else
-                if isNew
-                    delete params.end_time
-                else
-                    params.end_time = 'None'
-            endpoint = 'event/ticket/edit/'
-            if isNew
-                endpoint = 'event/ticket/create/'
-            Bazaarboy.post endpoint, params, (response) ->
-                if response.status is 'OK'
-                    $('div#event-modify-tickets div.empty-state-container').addClass('hide')
-                    $('div#event-modify-tickets div#action-canvas').removeClass('hide')
-                    ticketOption = null
+                    params.id = ticketId
+                if params.quantity.trim().length is 0
                     if isNew
-                        ticketOption = $('div.templates div.ticket-option').clone()
-                        $(ticketOption).attr 'data-id', response.ticket.pk
-                        $(ticketOption).appendTo 'div#ticket-canvas'
-                        $(ticketOption).find('div.top div.secondary-btn').click () ->
-                            ticket = $(this).closest('div.ticket-option').attr('data-id')
-                            scope.editTicket ticket
+                        delete params.quantity
+                    else
+                        params.quantity = 'None'
+                if params.start_date.trim().length != 0 and 
+                   params.start_time.trim().length != 0
+                    startDate = moment(params.start_date.trim(), 'MM/DD/YYYY')
+                    if not startDate.isValid()
+                        return
+                    startTime = moment(params.start_time.trim(), 'h:mm A')
+                    if not startTime.isValid()
+                        return
+                    params.start_time = moment(params.start_date.trim() + ' ' + params.start_time.trim(), 
+                                               'MM/DD/YYYY h:mm A').utc().format('YYYY-MM-DD HH:mm:ss')
+                else
+                    if isNew
+                        delete params.start_time
+                    else
+                        params.start_time = 'None'
+                if params.end_date.trim().length != 0 and
+                   params.end_time.trim().length != 0
+                    endDate = moment(params.end_date.trim(), 'MM/DD/YYYY')
+                    if not endDate.isValid()
+                        return
+                    endTime = moment(params.end_time.trim(), 'h:mm A')
+                    if not endTime.isValid()
+                        return
+                    params.end_time = moment(params.end_date.trim() + ' ' + params.end_time.trim(), 
+                                             'MM/DD/YYYY h:mm A').utc().format('YYYY-MM-DD HH:mm:ss')
+                else
+                    if isNew
+                        delete params.end_time
+                    else
+                        params.end_time = 'None'
+                endpoint = 'event/ticket/edit/'
+                if isNew
+                    endpoint = 'event/ticket/create/'
+                Bazaarboy.post endpoint, params, (response) ->
+                    if response.status is 'OK'
+                        $('div#event-modify-tickets div.empty-state-container').addClass('hide')
+                        $('div#event-modify-tickets div#action-canvas').removeClass('hide')
+                        ticketOption = null
+                        if isNew
+                            ticketOption = $('div.templates div.ticket-option').clone()
+                            $(ticketOption).attr 'data-id', response.ticket.pk
+                            $(ticketOption).appendTo 'div#ticket-canvas'
+                            $(ticketOption).find('div.top div.secondary-btn').click () ->
+                                ticket = $(this).closest('div.ticket-option').attr('data-id')
+                                scope.editTicket ticket
+                                return
+                        else
+                            ticketOption = $('div.ticket-option[data-id="' + ticketId + '"]')
+                        price = if response.ticket.price > 0 then '$' + response.ticket.price.toFixed(2) else 'Free'
+                        $(ticketOption).find('div.price').html price
+                        $(ticketOption).find('div.name').html response.ticket.name
+                        $(ticketOption).find('div.description').html response.ticket.description
+                        sold = if response.ticket.sold? then response.ticket.sold else 0
+                        $(ticketOption).find('span.sold').html sold
+                        quantity = if response.ticket.quantity then '/' + response.ticket.quantity else ''
+                        $(ticketOption).find('span.quantity').html quantity
+                        wording = 'RSVP\'d'
+                        wordingObject = 'RSVPs'
+                        if response.ticket.price > 0
+                            wording = 'Sold'
+                            wordingObject = 'Ticket Holders'
+                        $(ticketOption).find('span.wording').html wording
+                        $(ticketOption).find('span.wording-object').html wordingObject
+                        $('div#edit-ticket').fadeOut 300, () ->
+                            scope.ticketSubmitting = false
                             return
                     else
-                        ticketOption = $('div.ticket-option[data-id="' + ticketId + '"]')
-                    price = if response.ticket.price > 0 then '$' + response.ticket.price.toFixed(2) else 'Free'
-                    $(ticketOption).find('div.price').html price
-                    $(ticketOption).find('div.name').html response.ticket.name
-                    $(ticketOption).find('div.description').html response.ticket.description
-                    sold = if response.ticket.sold? then response.ticket.sold else 0
-                    $(ticketOption).find('span.sold').html sold
-                    quantity = if response.ticket.quantity then '/' + response.ticket.quantity else ''
-                    $(ticketOption).find('span.quantity').html quantity
-                    wording = 'RSVP\'d'
-                    wordingObject = 'RSVPs'
-                    if response.ticket.price > 0
-                        wording = 'Sold'
-                        wordingObject = 'Ticket Holders'
-                    $(ticketOption).find('span.wording').html wording
-                    $(ticketOption).find('span.wording-object').html wordingObject
-                    $('div#edit-ticket').fadeOut 300, () ->
-                      $('div#edit-ticket div.step-2').hide()
-                      $('div#edit-ticket div.step-1').show()
-                else
-                    alert response.message
-                return
+                        scope.ticketSubmitting = false
+                        alert response.message
+                    return
             return
         return
 
