@@ -3,6 +3,7 @@
     isEditing: false,
     map: void 0,
     marker: void 0,
+    autoSaveTimer: void 0,
     save: function(params, cb) {
       if (typeof token !== "undefined" && token !== null) {
         params.token = token;
@@ -140,8 +141,9 @@
       });
       $('form.event-modify').find('input, textarea').keyup(function() {
         _this.isEditing = true;
+        clearTimeout(_this.autoSaveTimer);
         $('div#event-modify-basics div.status').html('Unsaved Changes');
-        setTimeout((function() {
+        _this.autoSaveTimer = setTimeout((function() {
           _this.isEditing = false;
         }), 5000);
       });

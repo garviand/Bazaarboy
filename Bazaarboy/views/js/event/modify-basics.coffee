@@ -2,6 +2,7 @@ Bazaarboy.event.modify.basics =
     isEditing: false
     map: undefined
     marker: undefined
+    autoSaveTimer: undefined
     save: (params, cb) ->
         if token?
             params.token = token
@@ -116,8 +117,9 @@ Bazaarboy.event.modify.basics =
         # Is User Editing Info
         $('form.event-modify').find('input, textarea').keyup () =>
             @isEditing = true
+            clearTimeout(@autoSaveTimer)
             $('div#event-modify-basics div.status').html 'Unsaved Changes'
-            setTimeout (() =>
+            @autoSaveTimer = setTimeout (() =>
                 @isEditing = false
                 return
             ), 5000
