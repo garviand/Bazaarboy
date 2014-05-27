@@ -81,14 +81,14 @@ def charge(request, params, user):
     isNonProfit = creator.is_non_profit and creator.is_verified
     tickets = purchase.items.all()
     items = {}
-    for ticket in tickets:
+    for ticket in purchase.items.all():
         if ticket.id in items:
             items[ticket.id]['quantity'] += 1
         else:
             items[ticket.id] = {
-        'name': ticket.name,
-        'quantity': 1
-    }
+                'name': ticket.name,
+                'quantity': 1
+            }
     if checkout.is_charged:
         response = {
             'status':'FAIL',

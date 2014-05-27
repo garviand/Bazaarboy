@@ -1255,14 +1255,14 @@ def purchase(request, params, user):
                           .filter(id = ticket.id) \
                           .update(quantity = F('quantity') - details[ticket.id])
             items = {}
-            for ticket in tickets:
+            for ticket in purchase.items.all():
                 if ticket.id in items:
                     items[ticket.id]['quantity'] += 1
                 else:
                     items[ticket.id] = {
-                'name': ticket.name,
-                'quantity': 1
-            }
+                        'name': ticket.name,
+                        'quantity': 1
+                    }
             # Send confirmation email and sms
             sendEventConfirmationEmail(purchase)
             sendEventConfirmationSMS(purchase)

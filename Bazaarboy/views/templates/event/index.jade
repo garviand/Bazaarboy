@@ -42,7 +42,7 @@ block body
                 div.row
                     div.medium-12.title.columns
                         | Your Tickets
-                div.ticket-model
+                div.ticket-model.hidden
                     div.ticket.row
                         div.medium-4.columns
                             div.quantity x0
@@ -129,14 +129,18 @@ block body
                 a.add-organizer-another.secondary-btn(href="javascript:;") Add Another
     div#event
         div#event-header(style="{% if design %}position:absolute;{% endif %}")
-            div.event-header-body(class="{% if design %}medium-8{% elif preview %}medium-10{% else %}medium-8{% endif %} columns")
+            div.event-header-body(class="{% if design %}medium-8{% elif preview and editable %}medium-7{% elif preview %}medium-8{% else %}medium-8{% endif %} columns")
                 div.profile-icon
                     div.inner
                         a(href="{% url index %}")
                             img(src="{{ STATIC_URL }}images/logo-inverse.png")
                 div.event-name 
                     span {{ event.name }}
-                {% if not preview and not design %}
+                {% if not design %}
+                {% if preview and editable %}
+            div.event-design.medium-1.columns
+                a(href="{% url event:index id %}?design") Back to Page Design
+                {% endif %}
                 {% if not hasEnded %}
             div.event-price.medium-1.columns
                 span
@@ -164,10 +168,6 @@ block body
                     | <span class='st_pinterest_large' displayText='Pinterest'></span>
                     | <span class='st_email_large' displayText='Email'></span>
                     | <span class='close-share ss-delete'></span>
-                {% endif %}
-                {% if preview %}
-            div.event-launch.medium-2.columns.clearfix.right
-                a.secondary-btn(href="{% url event:index id %}?design") Edit Page Design
                 {% endif %}
                 {% if design %}
                 {% if not event.is_launched %}

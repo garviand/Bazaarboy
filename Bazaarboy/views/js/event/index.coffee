@@ -118,9 +118,9 @@ Bazaarboy.event.index =
         if not @overlayAnimationInProgress
             @overlayAnimationInProgress = true
             ticketHTML = $('div#confirmation-modal div.ticket-model').html()
-            $('div#confirmation-modal div.ticket-model').remove()
             for k, ticket of tickets
                 newTicket = $(ticketHTML)
+                console.log ticket
                 newTicket.find('div.quantity').html('x'+ticket['quantity'])
                 newTicket.find('div.name').html(ticket['name'])
                 $('div#confirmation-modal').find('div.tickets').append(newTicket)

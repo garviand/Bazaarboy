@@ -7888,6 +7888,16 @@ div#event-header div.event-share a span.ss-bookmark {
 div#event-header div.event-share {
   border-left: #F6F6F6 thin solid;
 }
+div#event-header div.event-design {
+  height: 66px;
+  padding: 15px 0;
+  padding-right: 10px;
+  text-align: center;
+}
+div#event-header div.event-design a {
+  color: #faa638;
+  font-size: .9em;
+}
 div#event-header div.event-launch {
   height: 66px;
   padding: 15px 0;
