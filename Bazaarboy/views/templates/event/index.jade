@@ -237,7 +237,7 @@ block body
                                     span._end {{ event.start_time|date:'m-d-Y' }} {{ event.start_time|date:'H'|add:'1'}}:{{ event.start_time|date:'i:s' }}
                                     {% endif %}
                                     span._zonecode 11
-                                    span._summary {{ event.summary }}
+                                    span._summary {{ event.name }}
                                     span._description {{ event.summary }}
                                     span._location {{ event.location }}
                                     span._organizer {{ organizers.0.profile.name }}
