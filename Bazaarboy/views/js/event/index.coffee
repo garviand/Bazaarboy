@@ -179,6 +179,15 @@ Bazaarboy.event.index =
                 $('div#tickets').css('top', '100px')
             $('div#event').css('padding-top', $('div#event-header').height() + 'px')
             return
+        # ADD THIS EVENT INIT
+        addthisevent.settings
+            outlook   : {show:true, text:"Outlook Calendar"}
+            google    : {show:true, text:"Google Calendar"}
+            yahoo     : {show:true, text:"Yahoo Calendar"}
+            hotmail   : {show:false, text:"Hotmail Calendar"}
+            ical      : {show:true, text:"iCal Calendar"}
+            facebook  : {show:true, text:"Facebook Event"}
+            dropdown  : {order:"google,ical,outlook,yahoo,hotmail"}
         latitude = parseFloat $('div.map-canvas').attr('data-latitude')
         longitude = parseFloat $('div.map-canvas').attr('data-longitude')
         if not isNaN(latitude) and not isNaN(longitude)

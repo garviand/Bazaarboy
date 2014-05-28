@@ -8115,6 +8115,25 @@ div#event-location div.map-canvas div#map-canvas {
   height: 100%;
   border-radius: 3px;
 }
+div#event-calendar-add div.calendar-add {
+  position: relative;
+  z-index: 10;
+}
+div#event-calendar-add div.calendar-add .addthisevent-drop {
+  position: relative;
+  color: #faa638 !important;
+  background: transparent;
+  text-decoration: underline !important;
+  font-style: italic;
+  border: none;
+  font-weight: normal;
+  font-size: 14px;
+  padding: 0px 0px 8px 0px !important;
+  border-radius: 0 !important;
+}
+div#event-calendar-add div.calendar-add .copyx {
+  display: none !important;
+}
 div#event-organizers {
   margin-top: 25px;
 }

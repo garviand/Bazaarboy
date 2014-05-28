@@ -226,6 +226,24 @@ block body
                             div.map-canvas.small-12.columns.hide(data-latitude="{{ event.latitude }}", data-longitude="{{ event.longitude }}")
                                 div
                                     div#map-canvas
+                        div#event-calendar-add.row
+                            div.calendar-add.small-12.columns
+                                a.addthisevent(href="https://bazaarboy.com/event/{{ event.id }}", title="Add to Calendar")
+                                    | Add to Calendar
+                                    span._start {{ event.start_time|date:'m-d-Y H:i:s' }}
+                                    {% if event.end_time %}
+                                    span._end {{ event.end_time|date:'m-d-Y H:i:s' }}
+                                    {% else %}
+                                    span._end {{ event.start_time|date:'m-d-Y' }} {{ event.start_time|date:'H'|add:'1'}}:{{ event.start_time|date:'i:s' }}
+                                    {% endif %}
+                                    span._zonecode 11
+                                    span._summary {{ event.summary }}
+                                    span._description {{ event.summary }}
+                                    span._location {{ event.location }}
+                                    span._organizer {{ organizers.0.profile.name }}
+                                    span._organizer_email {{ organizers.0.profile.email }}
+                                    span._all_day_event false
+                                    span._date_format DD/MM/YYYY
                         hr
                         div#event-organizers.row
                             div.caption.small-12.columns
@@ -327,6 +345,7 @@ append script
     script(type="text/javascript", src="{{ STATIC_URL }}redactor/redactor.min.js")
     {% endif %}
     script(type="text/javascript", src="{{ STATIC_URL }}debounce/jquery.debounce.js")
+    script(type="text/javascript", src="{{ STATIC_URL }}addthisevent/atemay.js")
     script(type="text/javascript", src="https://checkout.stripe.com/v2/checkout.js")
     script(type="text/javascript").
         var eventId = {{ event.id }};
