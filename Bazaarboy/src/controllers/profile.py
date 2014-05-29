@@ -11,7 +11,7 @@ from src.config import *
 from src.controllers.request import *
 from src.regex import REGEX_EMAIL, REGEX_URL, REGEX_EIN
 from src.serializer import serialize, serialize_one
-from src.email import sendProfileMessageEmail
+from src.email import sendProfileMessageEmail, sendNewAccountEmail
 
 @login_check()
 def index(request, id, user):
@@ -226,6 +226,7 @@ def create(request, params, user):
                                      profile = profile,
                                      is_creator = True)
     profileManager.save()
+    sendNewAccountEmail(profile)
     response = {
         'status':'OK',
         'profile':serialize_one(profile)
