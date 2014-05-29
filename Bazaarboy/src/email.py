@@ -48,6 +48,37 @@ def sendEmails(to, subject, template, mergeVars, attachments=[]):
     else:
         return result
 
+@task
+def sendNewAccountEmail(profile):
+    """
+    Email confirming registration
+    """
+    user = profile.managers.all()[0]
+    to = [{
+        'email':'eric@bazaarboy.com', 
+        'name':'Eric Hamblett'
+    }]
+    subject = 'A New User Has Been Registered'
+    template = 'new-user'
+    mergeVars = [{
+        'rcpt': 'eric@bazaarboy.com',
+        'vars': [
+            {
+                'name':'profile_name', 
+                'content':profile.name
+            },
+            {
+                'name':'user_name', 
+                'content':user.first_name + ' ' + user.last_name
+            },
+            {
+                'name':'email', 
+                'content':user.email
+            }
+        ]
+    }]
+    return sendEmails(to, subject, template, mergeVars)
+
 def sendConfirmationEmail(confirmationCode):
     """
     Email to confirm registration
