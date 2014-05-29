@@ -93,7 +93,7 @@ block content
                     div.promos.small-12.columns
                         {% for promo in promos %}
                         {% if promo.ticket.id == ticket.id %}
-                        div.promo.small-12.columns
+                        div.promo.small-12.columns(data-code='{{promo.code}}', data-amount='{{promo.amount}}', data-domain='{{promo.email_domain}}')
                             div.small-12.columns
                                 div.row.promo-details
                                     div.small-9.columns.text
@@ -104,7 +104,7 @@ block content
                                         span.pipe &nbsp;|&nbsp;
                                         span.claims 0 Claimed
                                     div.action.small-3.columns.text-right
-                                        a.edit-promo(href="javascript:;") Edit/Delete Promo
+                                        a.edit-promo(href="javascript:;", data-id="{{ promo.id }}") Edit/Delete Promo
                         {% endif %}
                         {% endfor %}
                     {% if ticket.price != 0 %}
@@ -115,7 +115,8 @@ block content
                             div.add-promo-fields.hidden
                                 form.add-promo(name="add_promo", data-abide)
                                     div.row
-                                        div.small-12.columns.title Add Promo&nbsp;&nbsp;&nbsp;
+                                        div.small-12.columns.title 
+                                            span.text Add Promo&nbsp;&nbsp;&nbsp;
                                             span.promo-error &nbsp;
                                         div.small-12.columns
                                             input(name="code", type="text", pattern="alpha_numeric", required, placeholder="Promo Code (Max 20 Characters)")
@@ -127,10 +128,13 @@ block content
                                             input(name="email_domain", pattern="domain", type="text", placeholder="Email Domain (ex. mycompany.org, optional)")
                                             small.error Must Be A Domain (gmail.com, yahoo.com, schoolname.edu)
                                         input(name="ticket", type="hidden", value="{{ ticket.id }}")
-                                        div.small-12.medium-7.columns
+                                        input(name="id", type="hidden", value="")
+                                        div.small-12.medium-6.columns.submit
                                             input.blue-btn(name="submit", type="submit", value="Submit Promo")
-                                        div.small-12.medium-2.columns.text-center.text or
-                                        div.small-12.medium-3.columns.text-center.text
+                                        div.small-12.medium-4.columns.delete.hidden
+                                            a.blue-btn.delete-promo(href="javascript:;") Delete Promo
+                                        div.small-12.medium-2.columns.text-center.text.or or
+                                        div.small-12.medium-4.columns.text-center.text.cancel
                                             a.cancel-btn(href="javascript:;") cancel
                     {% endif %}
             div#ticket-canvas.small-12.columns
@@ -148,6 +152,18 @@ block content
             div.templates.hide
                 +ticket-option(false)
                 +promo-option(false)
+                div.promo.small-12.columns
+                    div.small-12.columns
+                        div.row.promo-details
+                            div.small-9.columns.text
+                                span.subtitle PROMO&nbsp;&nbsp;&nbsp;&nbsp;
+                                span.amount &nbsp;
+                                span.dot &nbsp;&middot;&nbsp;
+                                span.code &nbsp;
+                                span.pipe &nbsp;|&nbsp;
+                                span.claims 0 Claimed
+                            div.action.small-3.columns.text-right
+                                a.edit-promo(href="javascript:;") Edit/Delete Promo
             div#edit-ticket.small-12.columns.hide
                 div.cancel-btn
                     span.ss-delete

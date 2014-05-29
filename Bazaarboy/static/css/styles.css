@@ -8726,21 +8726,26 @@ div#event-modify-tickets div.ticket-option div.add-promos div.inner div.action a
 div#event-modify-tickets div.ticket-option div.add-promos div.inner div.action a.add-promo:hover {
   color: #ffffff;
 }
-div#event-modify-tickets div.ticket-option div.add-promos div.inner div.add-promo-fields form.add-promo {
+div#event-modify-tickets div.ticket-option div.add-promos div.inner div.add-promo-fields form.add-promo,
+div#event-modify-tickets div.ticket-option div.add-promos div.inner div.add-promo-fields form.edit-promo {
   margin-bottom: 0;
 }
-div#event-modify-tickets div.ticket-option div.add-promos div.inner div.add-promo-fields form.add-promo div.title {
+div#event-modify-tickets div.ticket-option div.add-promos div.inner div.add-promo-fields form.add-promo div.title,
+div#event-modify-tickets div.ticket-option div.add-promos div.inner div.add-promo-fields form.edit-promo div.title {
   margin-top: 3px;
   font-weight: bold;
 }
-div#event-modify-tickets div.ticket-option div.add-promos div.inner div.add-promo-fields form.add-promo div.title span.promo-error {
+div#event-modify-tickets div.ticket-option div.add-promos div.inner div.add-promo-fields form.add-promo div.title span.promo-error,
+div#event-modify-tickets div.ticket-option div.add-promos div.inner div.add-promo-fields form.edit-promo div.title span.promo-error {
   font-weight: normal;
   font-style: italic;
 }
-div#event-modify-tickets div.ticket-option div.add-promos div.inner div.add-promo-fields form.add-promo div.text {
+div#event-modify-tickets div.ticket-option div.add-promos div.inner div.add-promo-fields form.add-promo div.text,
+div#event-modify-tickets div.ticket-option div.add-promos div.inner div.add-promo-fields form.edit-promo div.text {
   margin-top: 10px;
 }
-div#event-modify-tickets div.ticket-option div.add-promos div.inner div.add-promo-fields form.add-promo div.text a.cancel-btn {
+div#event-modify-tickets div.ticket-option div.add-promos div.inner div.add-promo-fields form.add-promo div.text a.cancel-btn,
+div#event-modify-tickets div.ticket-option div.add-promos div.inner div.add-promo-fields form.edit-promo div.text a.cancel-btn {
   color: #4963e4;
 }
 div#event-modify-tickets div.ticket-option div.add-promos div.inner div.add-promo-fields form div.row > div {

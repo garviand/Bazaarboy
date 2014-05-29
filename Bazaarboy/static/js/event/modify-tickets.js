@@ -105,20 +105,76 @@
           $(this).parents('div.add-promo-container').find('div.add-promo-fields').fadeIn(300);
         });
       });
+      $('body').on('click', 'a.edit-promo', function() {
+        var promoId;
+        promoId = $(this).data('id');
+        $(this).parents('div.promo').fadeOut(300, function() {
+          var container;
+          $(this).addClass('promo-editing');
+          container = $(this).parents('div.ticket-option').find('div.add-promos');
+          $("html, body").animate({
+            scrollTop: container.offset().top
+          }, 500);
+          container.find('div.action').hide();
+          container.find('form.add-promo').removeClass('add-promo').addClass('edit-promo');
+          container.find('div.title span.text').html('Edit Promo&nbsp;&nbsp;&nbsp;');
+          container.find('div.add-promo-fields').fadeIn(300);
+          container.find('input[name=id]').val(promoId);
+          container.find('input[name=code]').val($(this).data('code'));
+          container.find('input[name=amount]').val($(this).data('amount'));
+          container.find('input[name=email_domain]').val($(this).data('domain'));
+        });
+      });
       $('body').on('submit', 'form.add-promo', function(e) {
         var form, params;
         e.preventDefault();
         params = $(this).serializeObject();
         form = $(this);
         Bazaarboy.post('event/promo/create/', params, function(response) {
-          console.log(response);
           if (response.status === 'OK') {
-            return form.parents('div.add-promo-fields').fadeOut(300, function() {
+            form.parents('div.add-promo-fields').fadeOut(300, function() {
+              var newPromo;
               form.find('input[type=text]').val('');
-              return form.parents('div.add-promo-container').find('a.add-promo').fadeIn(300);
+              form.parents('div.add-promo-container').find('a.add-promo').fadeIn(300);
+              newPromo = $('div.templates div.promo').clone();
+              newPromo.find('span.amount').html('$' + response.promo.amount + ' OFF');
+              newPromo.find('span.code').html(response.promo.code);
+              newPromo.find('a.edit-promo').attr('data-id', response.promo.pk);
+              newPromo.attr('data-code', response.promo.code);
+              newPromo.attr('data-amount', response.promo.amount);
+              newPromo.attr('data-domain', response.promo.email_domain);
+              return form.parents('div.ticket-option').find('div.promos').append(newPromo);
             });
           } else {
-            return form.find('span.promo-error').html(response.message);
+            form.find('span.promo-error').html(response.message);
+          }
+        });
+      });
+      $('body').on('submit', 'form.edit-promo', function(e) {
+        var form, params;
+        e.preventDefault();
+        params = $(this).serializeObject();
+        form = $(this);
+        Bazaarboy.post('event/promo/edit/', params, function(response) {
+          if (response.status === 'OK') {
+            form.removeClass('edit-promo').addClass('add-promo');
+            form.parents('div.add-promo-fields').fadeOut(300, function() {
+              var newPromo;
+              $('.promo-editing').remove();
+              form.find('input[type=text]').val('');
+              form.parents('div.add-promo-container').find('a.add-promo').fadeIn(300);
+              newPromo = $('div.templates div.promo').clone();
+              newPromo.find('span.amount').html('$' + response.promo.amount + ' OFF');
+              newPromo.find('span.code').html(response.promo.code);
+              newPromo.find('a.edit-promo').attr('data-id', response.promo.pk);
+              newPromo.attr('data-code', response.promo.code);
+              newPromo.attr('data-amount', response.promo.amount);
+              newPromo.attr('data-domain', response.promo.email_domain);
+              form.parents('div.ticket-option').find('div.promos').append(newPromo);
+              return form.parents('div.ticket-option').find('div.add-promo-container div.action').fadeIn(300);
+            });
+          } else {
+            form.find('span.promo-error').html(response.message);
           }
         });
       });
@@ -127,6 +183,16 @@
           $(this).find('input[type=text]').val('');
           $('span.promo-error').html('&nbsp;');
           $(this).parents('div.add-promo-container').find('a.add-promo').fadeIn(300);
+        });
+      });
+      $('body').on('click', 'form.edit-promo a.cancel-btn', function() {
+        $(this).parents('div.add-promo-fields').fadeOut(300, function() {
+          $(this).find('input[type=text]').val('');
+          $('span.promo-error').html('&nbsp;');
+          $(this).parents('div.add-promo-container').find('form.edit-promo').removeClass('edit-promo').addClass('add-promo');
+          $(this).parents('div.add-promo-container').find('div.title span.text').html('Add Promo&nbsp;&nbsp;&nbsp;');
+          $(this).parents('div.add-promo-container').find('div.action').fadeIn(300);
+          $('.promo-editing').fadeIn(300);
         });
       });
       $('div.ticket-option div.top div.secondary-btn').click(function() {

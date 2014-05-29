@@ -960,7 +960,7 @@ def create_promo(request, params, user):
     return json_response(response)
 
 @login_required()
-@validate('POST', ['id', 'code', 'amount', 'email_domain'])
+@validate('POST', ['id', 'code', 'amount'], ['email_domain'])
 def edit_promo(request, params, user):
     """
     Edit a promo code
@@ -974,6 +974,7 @@ def edit_promo(request, params, user):
         return json_response(response)
     promo = Promo.objects.get(id = params['id'])
     event = promo.event
+    ticket = promo.ticket
     # Check if user has permission for the event
     if not Organizer.objects.filter(event = event, 
                                     profile__managers = user).exists():
@@ -1005,7 +1006,7 @@ def edit_promo(request, params, user):
         promo.amount = params['amount']
     if params['email_domain'] is not None:
         params['email_domain'] = cgi.escape(params['email_domain'])
-        if params['email_domain'] > 20:
+        if len(params['email_domain']) > 20:
             response = {
                 'status':'FAIL',
                 'error':'INVALID_EMAIL_DOMAIN',
@@ -1016,7 +1017,7 @@ def edit_promo(request, params, user):
     promo.save()
     response = {
         'status':'OK',
-        'promo':serialize_one(response)
+        'promo':serialize_one(promo)
     }
     return json_response(response)
 
