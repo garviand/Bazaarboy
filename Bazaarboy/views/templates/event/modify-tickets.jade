@@ -90,6 +90,49 @@ block content
                         div.inner.small-12.columns
                             div.description.small-12.columns
                                 != tags ? '{{ ticket.description }}' : ''
+                    div.promos.small-12.columns
+                        {% for promo in promos %}
+                        {% if promo.ticket.id == ticket.id %}
+                        div.promo.small-12.columns
+                            div.small-12.columns
+                                div.row.promo-details
+                                    div.small-9.columns.text
+                                        span.subtitle PROMO&nbsp;&nbsp;&nbsp;&nbsp;
+                                        span.amount ${{ promo.amount|floatformat:"-2" }} OFF
+                                        span.dot &nbsp;&middot;&nbsp;
+                                        span.code {{ promo.code }}
+                                        span.pipe &nbsp;|&nbsp;
+                                        span.claims 0 Claimed
+                                    div.action.small-3.columns.text-right
+                                        a.edit-promo(href="javascript:;") Edit/Delete Promo
+                        {% endif %}
+                        {% endfor %}
+                    {% if ticket.price != 0 %}
+                    div.add-promos.small-12.columns
+                        div.inner.small-12.columns.add-promo-container
+                            div.action.medium-3.columns.right
+                                a.add-promo.blue-btn(href="javascript:;") Add Promo
+                            div.add-promo-fields.hidden
+                                form.add-promo(name="add_promo", data-abide)
+                                    div.row
+                                        div.small-12.columns.title Add Promo&nbsp;&nbsp;&nbsp;
+                                            span.promo-error &nbsp;
+                                        div.small-12.columns
+                                            input(name="code", type="text", pattern="alpha_numeric", required, placeholder="Promo Code (Max 20 Characters)")
+                                            small.error You Can Only Use Letters and Numbers (Max 20 Characters)
+                                        div.small-12.columns
+                                            input(name="amount", type="text", pattern="number", required, placeholder="Discount Amount ($)")
+                                            small.error Must Be A Number (less than ticket amount)
+                                        div.small-12.columns
+                                            input(name="email_domain", pattern="domain", type="text", placeholder="Email Domain (ex. mycompany.org, optional)")
+                                            small.error Must Be A Domain (gmail.com, yahoo.com, schoolname.edu)
+                                        input(name="ticket", type="hidden", value="{{ ticket.id }}")
+                                        div.small-12.medium-7.columns
+                                            input.blue-btn(name="submit", type="submit", value="Submit Promo")
+                                        div.small-12.medium-2.columns.text-center.text or
+                                        div.small-12.medium-3.columns.text-center.text
+                                            a.cancel-btn(href="javascript:;") cancel
+                    {% endif %}
             div#ticket-canvas.small-12.columns
                 {% for ticket in tickets %}
                 +ticket-option(true)

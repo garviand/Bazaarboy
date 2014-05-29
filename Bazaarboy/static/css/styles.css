@@ -5614,12 +5614,16 @@ div#map-canvas img {
   border-radius: 4px;
   background: #879BFF;
   border: 1px solid #4963E4;
-  -moz-box-shadow: inset 0px -3px 0px 0px #4963e4;
-  -webkit-box-shadow: inset 0px -3px 0px 0px #4963e4;
-  box-shadow: inset 0px -3px 0px 0px #4963e4;
+  -moz-box-shadow: inset 0px -2px 0px 0px #4963e4;
+  -webkit-box-shadow: inset 0px -2px 0px 0px #4963e4;
+  box-shadow: inset 0px -2px 0px 0px #4963e4;
   color: #FFFFFF;
-  text-shadow: 1px 2px 0px #4963E4;
+  font-weight: 500;
+  text-shadow: 1px 1px 0px #4963E4;
   cursor: pointer;
+}
+.blue-btn:hover {
+  color: #FFFFFF;
 }
 .grey-btn {
   border-radius: 4px;
@@ -8642,19 +8646,119 @@ div#event-modify-tickets div.ticket-option div.middle div.inner div.action a {
 }
 div#event-modify-tickets div.ticket-option div.bottom {
   padding: 0 10px;
-  padding-bottom: 10px;
 }
 div#event-modify-tickets div.ticket-option div.bottom div.inner {
   min-height: 44px;
   padding: 0;
-  border-bottom-left-radius: 4px;
-  border-bottom-right-radius: 4px;
   background: #ffffff;
 }
 div#event-modify-tickets div.ticket-option div.bottom div.inner div.description {
   padding: 15px;
   font-size: 14px;
   line-height: 18px;
+}
+div#event-modify-tickets div.ticket-option div.promos-title {
+  margin-top: 5px;
+  margin-bottom: 13px;
+  font-weight: 300;
+}
+div#event-modify-tickets div.ticket-option div.promos {
+  padding: 0 10px;
+  padding-bottom: 10px;
+}
+div#event-modify-tickets div.ticket-option div.promos div.promo {
+  padding: 0;
+  background: #FAFAFA;
+  border-top: #F7F7F7 thin solid;
+  font-size: 12px;
+  font-weight: 600;
+}
+div#event-modify-tickets div.ticket-option div.promos div.promo:last-child {
+  border-bottom-left-radius: 4px;
+  border-bottom-right-radius: 4px;
+}
+div#event-modify-tickets div.ticket-option div.promos div.promo div.promo-details div.text {
+  margin-top: 23px;
+}
+div#event-modify-tickets div.ticket-option div.promos div.promo div.promo-details div.text span.subtitle {
+  color: #D4D4D4;
+}
+div#event-modify-tickets div.ticket-option div.promos div.promo div.promo-details div.text span.claims {
+  color: #4963e4;
+}
+div#event-modify-tickets div.ticket-option div.promos div.promo div.action {
+  padding-right: 5px;
+  padding-left: 30px;
+}
+div#event-modify-tickets div.ticket-option div.promos div.promo div.action a.edit-promo {
+  color: #4963e4;
+  display: block;
+  width: 100%;
+  height: 35px;
+  padding-top: 13px;
+  padding-bottom: 13px;
+  text-align: center;
+  margin: 10px 0;
+  font-weight: 400;
+  text-decoration: underline;
+  font-style: italic;
+}
+div#event-modify-tickets div.ticket-option div.add-promos {
+  padding: 0 10px;
+  padding-bottom: 3px;
+}
+div#event-modify-tickets div.ticket-option div.add-promos div.inner {
+  min-height: 44px;
+  padding: 0;
+}
+div#event-modify-tickets div.ticket-option div.add-promos div.inner div.action {
+  padding-right: 5px;
+  padding-left: 30px;
+}
+div#event-modify-tickets div.ticket-option div.add-promos div.inner div.action a.add-promo {
+  display: block;
+  height: 35px;
+  padding-top: 8px;
+  padding-bottom: 13px;
+  width: 100%;
+  text-align: center;
+}
+div#event-modify-tickets div.ticket-option div.add-promos div.inner div.action a.add-promo:hover {
+  color: #ffffff;
+}
+div#event-modify-tickets div.ticket-option div.add-promos div.inner div.add-promo-fields form.add-promo {
+  margin-bottom: 0;
+}
+div#event-modify-tickets div.ticket-option div.add-promos div.inner div.add-promo-fields form.add-promo div.title {
+  margin-top: 3px;
+  font-weight: bold;
+}
+div#event-modify-tickets div.ticket-option div.add-promos div.inner div.add-promo-fields form.add-promo div.title span.promo-error {
+  font-weight: normal;
+  font-style: italic;
+}
+div#event-modify-tickets div.ticket-option div.add-promos div.inner div.add-promo-fields form.add-promo div.text {
+  margin-top: 10px;
+}
+div#event-modify-tickets div.ticket-option div.add-promos div.inner div.add-promo-fields form.add-promo div.text a.cancel-btn {
+  color: #4963e4;
+}
+div#event-modify-tickets div.ticket-option div.add-promos div.inner div.add-promo-fields form div.row > div {
+  margin-bottom: 10px;
+}
+div#event-modify-tickets div.ticket-option div.add-promos div.inner div.add-promo-fields input[type=text] {
+  padding: 5px;
+  border-radius: 4px;
+  width: 100%;
+  border: #f6f6f6 thin solid;
+  outline: none;
+  margin-bottom: 0;
+}
+div#event-modify-tickets div.ticket-option div.add-promos div.inner div.add-promo-fields input.blue-btn {
+  padding-top: 8px;
+  padding-bottom: 13px;
+  width: 100%;
+  height: 37px;
 }
 div#event-modify-tickets div.next-step a.primary-btn {
   width: 100%;

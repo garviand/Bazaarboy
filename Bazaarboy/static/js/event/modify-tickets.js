@@ -100,7 +100,35 @@
       $('a.new-ticket').click(function() {
         _this.newTicket();
       });
-      $('a.new-promo').click(function() {});
+      $('body').on('click', 'a.add-promo', function() {
+        $(this).fadeOut(300, function() {
+          $(this).parents('div.add-promo-container').find('div.add-promo-fields').fadeIn(300);
+        });
+      });
+      $('body').on('submit', 'form.add-promo', function(e) {
+        var form, params;
+        e.preventDefault();
+        params = $(this).serializeObject();
+        form = $(this);
+        Bazaarboy.post('event/promo/create/', params, function(response) {
+          console.log(response);
+          if (response.status === 'OK') {
+            return form.parents('div.add-promo-fields').fadeOut(300, function() {
+              form.find('input[type=text]').val('');
+              return form.parents('div.add-promo-container').find('a.add-promo').fadeIn(300);
+            });
+          } else {
+            return form.find('span.promo-error').html(response.message);
+          }
+        });
+      });
+      $('body').on('click', 'form.add-promo a.cancel-btn', function() {
+        $(this).parents('div.add-promo-fields').fadeOut(300, function() {
+          $(this).find('input[type=text]').val('');
+          $('span.promo-error').html('&nbsp;');
+          $(this).parents('div.add-promo-container').find('a.add-promo').fadeIn(300);
+        });
+      });
       $('div.ticket-option div.top div.secondary-btn').click(function() {
         var ticket;
         ticket = $(this).closest('div.ticket-option').attr('data-id');
@@ -255,6 +283,7 @@
               }
               $(ticketOption).find('span.wording').html(wording);
               $(ticketOption).find('span.wording-object').html(wordingObject);
+              $(ticketOption).find('input[name=ticket]').val(response.ticket.pk);
               $('div#edit-ticket').fadeOut(300, function() {
                 scope.ticketSubmitting = false;
               });

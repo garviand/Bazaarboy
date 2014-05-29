@@ -96,7 +96,31 @@ Bazaarboy.event.modify.tickets =
         $('a.new-ticket').click () =>
             @newTicket()
             return
-        $('a.new-promo').click () =>
+        $('body').on 'click', 'a.add-promo', () ->
+            $(this).fadeOut 300, () ->
+                $(this).parents('div.add-promo-container').find('div.add-promo-fields').fadeIn 300
+                return
+            return
+        $('body').on 'submit', 'form.add-promo', (e) ->
+            e.preventDefault()
+            params = $(this).serializeObject()
+            form = $(this)
+            Bazaarboy.post 'event/promo/create/', params, (response) ->
+                console.log response
+                if response.status is 'OK'
+                    form.parents('div.add-promo-fields').fadeOut 300, () ->
+                        form.find('input[type=text]').val('')
+                        form.parents('div.add-promo-container').find('a.add-promo').fadeIn 300
+                else
+                    form.find('span.promo-error').html(response.message)
+
+            return
+        $('body').on 'click', 'form.add-promo a.cancel-btn', () ->
+            $(this).parents('div.add-promo-fields').fadeOut 300, () ->
+                $(this).find('input[type=text]').val('')
+                $('span.promo-error').html('&nbsp;')
+                $(this).parents('div.add-promo-container').find('a.add-promo').fadeIn 300
+                return
             return
         $('div.ticket-option div.top div.secondary-btn').click () ->
             ticket = $(this).closest('div.ticket-option').attr('data-id')
@@ -229,6 +253,7 @@ Bazaarboy.event.modify.tickets =
                             wordingObject = 'Ticket Holders'
                         $(ticketOption).find('span.wording').html wording
                         $(ticketOption).find('span.wording-object').html wordingObject
+                        $(ticketOption).find('input[name=ticket]').val(response.ticket.pk)
                         $('div#edit-ticket').fadeOut 300, () ->
                             scope.ticketSubmitting = false
                             return
