@@ -57,10 +57,6 @@
     }
 }
 
-div#wrapper-event-manage{
-    padding-top: 40px;
-}
-
 div#event-manage {
     padding-left: 0;
     .controls{
@@ -104,20 +100,41 @@ div#event-manage {
     }
     .guests{
         .list_headers{
-            margin-left: 5px;
-            margin-bottom: 20px;
+            color: @dark;
+            font-weight: 500;
+            > div{
+                padding-top: 20px;
+                padding-bottom: 20px;
+                border-right: 2px solid @grey;
+                &:last-child{
+                    border-right: none;
+                }
+            }
         }
         .guest{
-            margin-left: 5px;
-            padding: 20px 0px;
-            border-top: 1px solid #7F7F7F;
+            color: @dark;
+            font-size: 14px;
+            padding: 10px 0px;
+            border-top: 2px solid @grey;
+            div.ticket_name{
+                line-height: 1.2em;
+                font-weight: 300;
+            }
+            div.confirmation{
+                font-weight: 600;
+                margin-top: 9px;
+            }
+            div.name{
+                font-weight: 300;
+            }
             .checkin{
                 a{
                     display: block;
                     width: 100%;
-                    padding-top: 7px;
-                    padding-bottom: 10px;
+                    padding-top: 9px;
+                    padding-bottom: 11px;
                     text-align: center;
+                    border: none;
                     &:hover{
                         color: @white;
                     }

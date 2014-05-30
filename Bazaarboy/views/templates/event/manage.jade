@@ -8,7 +8,7 @@ block title
 block sidebar
     +sidebarItem('ss-newspaper')(href="{% url index %}")
         | Events
-    div.checkin_numbers.show-for-large-only
+    //div.checkin_numbers.show-for-large-only
         span.checked_in {{ checked_in }}
         | /
         span.total_guests {{ purchases|length }}
@@ -42,23 +42,29 @@ block content
                 div.small-12.columns.guests
                     div.list_guests
                         div.list_headers.row
-                            div.name.small-3.columns Name
-                            div.ticket_name.small-3.columns Ticket
-                            div.confirmation.small-3.columns Code
-                            div.checkin.small-3.columns Check In
-                            div.clear
+                            div.checkin.small-2.columns Status
+                            div.confirmation.small-2.columns Conf. #
+                            div.ticket_name.small-4.columns Ticket Type(s)
+                            div.name.small-4.columns Name
                         {% for guest in purchases %}
-                        div.guest.row(class="{% if guest.checked_in_time != None %}checked_in{% endif %}", data-ticket="{{ guest.ticket.id }}", data-id="{{ guest.id }}")
-                            div.name.small-3.columns
-                                {{ guest.purchase.owner.first_name }} {{ guest.purchase.owner.last_name }}
-                            div.ticket_name.small-3.columns
-                                {{ guest.ticket.name }}
-                            div.confirmation.small-3.columns
-                                {{ guest.purchase.code }}
-                            div.checkin.small-3.columns
-                                a.blue-btn(href="javascript:;") 
+                        {% with purchase=guest.purchase tickets=guest.purchase.items.all %}
+                        {% ifchanged purchase.id %}
+                        div.guest.row(class="{% if guest.checked_in_time != None %}checked_in{% endif %}", data-ticket="{% for ticket in tickets %}{% ifchanged ticket.id %}{% if not forloop.first %},{% endif %}{{ ticket.id }}{% endifchanged %}{% endfor %}", data-id="{{ guest.id }}")
+                            div.checkin.small-2.columns
+                                a.secondary-btn(href="javascript:;") 
                                     {% if guest.is_checked_in %}Arrived{% else %}Check In{% endif %}
-                            div.clear
+                            div.confirmation.small-2.columns
+                                {{ guest.purchase.code }}&nbsp;
+                            div.ticket_name.small-4.columns
+                                {% for ticket in tickets %}
+                                {% ifchanged ticket.id %}
+                                {{ ticket.name }}{% if not forloop.last %}<br />{% endif %}
+                                {% endifchanged %}
+                                {% endfor %}
+                            div.name.small-4.columns
+                                {{ purchase.owner.first_name }} {{ purchase.owner.last_name }}
+                        {% endifchanged %}
+                        {% endwith %}
                         {% endfor %}
 
 

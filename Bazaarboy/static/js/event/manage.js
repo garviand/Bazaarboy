@@ -65,13 +65,18 @@
       }, function(response) {});
     },
     filterGuests: function(param, value, ticketType, checkStatus, updateListLength) {
-      var i, length, newLength, newLengthChecked, rsvp, targetValue, _i, _ref;
+      var i, length, newLength, newLengthChecked, rsvp, targetValue, ticketCheck, _i, _ref;
       length = $('div.guest').length;
       for (i = _i = 0, _ref = length - 1; 0 <= _ref ? _i <= _ref : _i >= _ref; i = 0 <= _ref ? ++_i : --_i) {
         rsvp = $('div.guest:eq(' + i + ')');
         targetValue = $(rsvp).find('div.' + param).html();
         if (targetValue.toLowerCase().indexOf(value.toLowerCase()) !== -1) {
-          if (rsvp.data('ticket') === ticketType || ticketType === 'all') {
+          if (String(rsvp.data('ticket')).indexOf(',') > -1) {
+            ticketCheck = $.inArray(String(ticketType), String(rsvp.data('ticket')).split(',')) > -1;
+          } else {
+            ticketCheck = rsvp.data('ticket') === ticketType;
+          }
+          if (ticketCheck || ticketType === 'all') {
             $(rsvp).removeClass('hide');
           }
         }

@@ -226,7 +226,7 @@ block body
                             div.map-canvas.small-12.columns.hide(data-latitude="{{ event.latitude }}", data-longitude="{{ event.longitude }}")
                                 div
                                     div#map-canvas
-                        div#event-calendar-add.row
+                        div#event-calendar-add.row.hidden
                             div.calendar-add.small-12.columns
                                 a.addthisevent(href="https://bazaarboy.com/event/{{ event.id }}", title="Add to Calendar")
                                     | Add to Calendar
@@ -350,4 +350,7 @@ append script
     script(type="text/javascript").
         var eventId = {{ event.id }};
         var design = {% if design %}true{% else %}false{% endif %};
+        $(window).load(function(){
+            $('div#event-calendar-add').removeClass('hidden')
+        });
     script(type="text/javascript", src="{{ STATIC_URL }}js/event/index.js")

@@ -7565,9 +7565,6 @@ div#wrapper-profile-new div.profile-new-container div.next-prev a.finish-btn.hid
   color: #FFF;
   background: #7F7F7F;
 }
-div#wrapper-event-manage {
-  padding-top: 40px;
-}
 div#event-manage {
   padding-left: 0;
 }
@@ -7620,20 +7617,41 @@ div#event-manage .controls .list_filters div.ticket_types a.active {
   background: #7F7F7F;
 }
 div#event-manage .guests .list_headers {
-  margin-left: 5px;
-  margin-bottom: 20px;
+  color: #4a4a4a;
+  font-weight: 500;
+}
+div#event-manage .guests .list_headers > div {
+  padding-top: 20px;
+  padding-bottom: 20px;
+  border-right: 2px solid #f6f6f6;
+}
+div#event-manage .guests .list_headers > div:last-child {
+  border-right: none;
 }
 div#event-manage .guests .guest {
-  margin-left: 5px;
-  padding: 20px 0px;
-  border-top: 1px solid #7F7F7F;
+  color: #4a4a4a;
+  font-size: 14px;
+  padding: 10px 0px;
+  border-top: 2px solid #f6f6f6;
+}
+div#event-manage .guests .guest div.ticket_name {
+  line-height: 1.2em;
+  font-weight: 300;
+}
+div#event-manage .guests .guest div.confirmation {
+  font-weight: 600;
+  margin-top: 9px;
+}
+div#event-manage .guests .guest div.name {
+  font-weight: 300;
 }
 div#event-manage .guests .guest .checkin a {
   display: block;
   width: 100%;
-  padding-top: 7px;
-  padding-bottom: 10px;
+  padding-top: 9px;
+  padding-bottom: 11px;
   text-align: center;
+  border: none;
 }
 div#event-manage .guests .guest .checkin a:hover {
   color: #ffffff;

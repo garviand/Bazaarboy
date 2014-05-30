@@ -48,7 +48,11 @@ Bazaarboy.event.manage =
             rsvp = $('div.guest:eq(' + i + ')')
             targetValue = $(rsvp).find('div.' + param).html()
             if targetValue.toLowerCase().indexOf(value.toLowerCase()) != -1
-                if rsvp.data('ticket') == ticketType or ticketType == 'all'
+                if String(rsvp.data('ticket')).indexOf(',') > -1
+                    ticketCheck = $.inArray(String(ticketType), String(rsvp.data('ticket')).split(',')) > -1
+                else
+                    ticketCheck = rsvp.data('ticket') == ticketType
+                if ticketCheck or ticketType == 'all'
                     $(rsvp).removeClass('hide')
             if(checkStatus == 'checked_in')
                 if not $(rsvp).hasClass('checked_in')
