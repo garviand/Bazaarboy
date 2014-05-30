@@ -13,8 +13,6 @@ from kernel.models import *
 from src.config import *
 from src.controllers.request import validate, login_check, json_response
 
-import pdb
-
 @never_cache
 @login_check()
 @validate('GET', [], ['next'])

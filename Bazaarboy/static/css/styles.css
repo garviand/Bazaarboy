@@ -5958,6 +5958,61 @@ div#wrapper-overlay {
   background: rgba(255, 255, 255, 0.7);
   cursor: pointer;
 }
+div#show404 div.background {
+  position: fixed;
+  width: 110%;
+  height: 110%;
+  min-height: 600px;
+  min-width: 970px;
+  top: -5%;
+  left: -5%;
+  z-index: -1;
+  background-image: url('../images/404/bg.jpg');
+  background-size: cover;
+  background-position: center center;
+}
+div#show404 div.info {
+  margin-top: 50px;
+  color: #FFF;
+  text-align: center;
+}
+div#show404 div.info div.title {
+  font-size: 80px;
+}
+div#show404 div.info div.title img {
+  padding: 0 15px;
+  position: relative;
+  top: -7px;
+}
+div#show404 div.info hr {
+  display: block;
+  width: 50%;
+  margin: 40px auto;
+}
+div#show404 div.info div.subtitle {
+  font-size: 50px;
+}
+div#show404 div.info div.subtitle.bold {
+  font-weight: bold;
+}
+div#show404 div.controls {
+  text-align: center;
+}
+div#show404 div.controls a.home {
+  color: #FFF;
+  text-decoration: none;
+  margin: 0 auto;
+  margin-top: 40px;
+  display: block;
+  background-color: #ff9c00;
+  width: 40%;
+  padding: 20px 0;
+  font-size: 24px;
+  transition: background-color 0.2s;
+}
+div#show404 div.controls a.home:hover {
+  background-color: #ffa61a;
+}
 div#landing div.section-1 {
   background: url('../images/landing/bg.jpg');
   background-size: cover;
