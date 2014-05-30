@@ -46,24 +46,20 @@ block content
                             div.confirmation.small-2.columns Conf. #
                             div.ticket_name.small-4.columns Ticket Type(s)
                             div.name.small-4.columns Name
-                        {% for guest in purchases %}
-                        {% with purchase=guest.purchase tickets=guest.purchase.items.all %}
-                        {% ifchanged purchase.id %}
-                        div.guest.row(class="{% if guest.checked_in_time != None %}checked_in{% endif %}", data-ticket="{% for ticket in tickets %}{% ifchanged ticket.id %}{% if not forloop.first %},{% endif %}{{ ticket.id }}{% endifchanged %}{% endfor %}", data-id="{{ guest.id }}")
+                        {% for k, purchase in purchases.items %}
+                        {% with tickets=purchase.tickets.items %}
+                        div.guest.row(class="{% if purchase.checked_in %}checked_in{% endif %}", data-ticket="{% for k, ticket in tickets %}{% if not forloop.first %},{% endif %}{{ ticket.id }}{% endfor %}", data-id="{{ purchase.id }}")
                             div.checkin.small-2.columns
                                 a.secondary-btn(href="javascript:;") 
-                                    {% if guest.is_checked_in %}Arrived{% else %}Check In{% endif %}
+                                    {% if purchase.checked_in %}Arrived{% else %}Check In{% endif %}
                             div.confirmation.small-2.columns
-                                {{ guest.purchase.code }}&nbsp;
+                                {{ purchase.code }}&nbsp;
                             div.ticket_name.small-4.columns
-                                {% for ticket in tickets %}
-                                {% ifchanged ticket.id %}
-                                {{ ticket.name }}{% if not forloop.last %}<br />{% endif %}
-                                {% endifchanged %}
+                                {% for k, ticket in tickets %}
+                                {{ ticket.name }} ({{ ticket.quantity }}){% if not forloop.last %}<br />{% endif %}
                                 {% endfor %}
                             div.name.small-4.columns
-                                {{ purchase.owner.first_name }} {{ purchase.owner.last_name }}
-                        {% endifchanged %}
+                                {{ purchase.name }}
                         {% endwith %}
                         {% endfor %}
 

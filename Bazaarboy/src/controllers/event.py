@@ -96,13 +96,46 @@ def manage(request, id, params, user):
     if not Organizer.objects.filter(event = event, 
                                     profile__managers = user).exists():
         return redirect('index')
-    purchases = Purchase_item.objects.filter(Q(purchase__checkout = None) | 
+    purchase_items = Purchase_item.objects.filter(Q(purchase__checkout = None) | 
                                         Q(purchase__checkout__is_charged = True, 
                                           purchase__checkout__is_refunded = False), 
                                         purchase__event = event, 
                                         purchase__is_expired = False).order_by('-id')
+    purchases = {}
+    for item in purchase_items:
+        if item.purchase.id in purchases:
+            if item.is_checked_in:
+                purchases[item.purchase.id]['checked_in'] = True
+            if item.ticket.id in purchases[item.purchase.id]['tickets']:
+                purchases[item.purchase.id]['tickets'][item.ticket.id]['quantity'] += 1
+            else:
+                purchases[item.purchase.id]['tickets'].update({
+                    item.ticket.id:{
+                        'id':item.ticket.id,
+                        'name':item.ticket.name,
+                        'quantity':1
+                    }
+                })
+        else:
+            if item.is_checked_in:
+                checkedIn = True
+            else:
+                checkedIn = False
+            purchases[item.purchase.id] = {
+                'id': item.id,
+                'name': item.purchase.owner.first_name + ' ' + item.purchase.owner.last_name,
+                'code': item.purchase.code,
+                'checked_in': checkedIn,
+                'tickets': {
+                    item.ticket.id:{
+                        'id':item.ticket.id,
+                        'name':item.ticket.name,
+                        'quantity':1
+                    }
+                }
+            }
     tickets = Ticket.objects.filter(event=event)
-    checked_in = purchases.exclude(Q(checked_in_time = None)).count()
+    checked_in = purchase_items.exclude(Q(checked_in_time = None)).count()
     return render(request, 'event/manage.html', locals())
 
 @login_required()
