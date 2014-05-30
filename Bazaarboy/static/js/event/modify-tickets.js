@@ -221,48 +221,63 @@
           if (isNew) {
             endpoint = 'event/ticket/create/';
           }
-          Bazaarboy.post(endpoint, params, function(response) {
-            var price, quantity, sold, ticketOption, wording, wordingObject;
-            if (response.status === 'OK') {
-              $('div#event-modify-tickets div.empty-state-container').addClass('hide');
-              $('div#event-modify-tickets div#action-canvas').removeClass('hide');
-              ticketOption = null;
-              if (isNew) {
-                ticketOption = $('div.templates div.ticket-option').clone();
-                $(ticketOption).attr('data-id', response.ticket.pk);
-                $(ticketOption).appendTo('div#ticket-canvas');
-                $(ticketOption).find('div.top div.secondary-btn').click(function() {
-                  var ticket;
-                  ticket = $(this).closest('div.ticket-option').attr('data-id');
-                  scope.editTicket(ticket);
+          if (params.name.trim() !== '' && params.description.trim() !== '') {
+            Bazaarboy.post(endpoint, params, function(response) {
+              var price, quantity, sold, ticketOption, wording, wordingObject;
+              if (response.status === 'OK') {
+                $('div#event-modify-tickets div.empty-state-container').addClass('hide');
+                $('div#event-modify-tickets div#action-canvas').removeClass('hide');
+                ticketOption = null;
+                if (isNew) {
+                  ticketOption = $('div.templates div.ticket-option').clone();
+                  $(ticketOption).attr('data-id', response.ticket.pk);
+                  $(ticketOption).appendTo('div#ticket-canvas');
+                  $(ticketOption).find('div.top div.secondary-btn').click(function() {
+                    var ticket;
+                    ticket = $(this).closest('div.ticket-option').attr('data-id');
+                    scope.editTicket(ticket);
+                  });
+                } else {
+                  ticketOption = $('div.ticket-option[data-id="' + ticketId + '"]');
+                }
+                price = response.ticket.price > 0 ? '$' + response.ticket.price.toFixed(2) : 'Free';
+                $(ticketOption).find('div.price').html(price);
+                $(ticketOption).find('div.name').html(response.ticket.name);
+                $(ticketOption).find('div.description').html(response.ticket.description);
+                sold = response.ticket.sold != null ? response.ticket.sold : 0;
+                $(ticketOption).find('span.sold').html(sold);
+                quantity = response.ticket.quantity ? '/' + response.ticket.quantity : '';
+                $(ticketOption).find('span.quantity').html(quantity);
+                wording = 'RSVP\'d';
+                wordingObject = 'RSVPs';
+                if (response.ticket.price > 0) {
+                  wording = 'Sold';
+                  wordingObject = 'Ticket Holders';
+                }
+                $(ticketOption).find('span.wording').html(wording);
+                $(ticketOption).find('span.wording-object').html(wordingObject);
+                $('div#edit-ticket').fadeOut(300, function() {
+                  scope.ticketSubmitting = false;
                 });
               } else {
-                ticketOption = $('div.ticket-option[data-id="' + ticketId + '"]');
-              }
-              price = response.ticket.price > 0 ? '$' + response.ticket.price.toFixed(2) : 'Free';
-              $(ticketOption).find('div.price').html(price);
-              $(ticketOption).find('div.name').html(response.ticket.name);
-              $(ticketOption).find('div.description').html(response.ticket.description);
-              sold = response.ticket.sold != null ? response.ticket.sold : 0;
-              $(ticketOption).find('span.sold').html(sold);
-              quantity = response.ticket.quantity ? '/' + response.ticket.quantity : '';
-              $(ticketOption).find('span.quantity').html(quantity);
-              wording = 'RSVP\'d';
-              wordingObject = 'RSVPs';
-              if (response.ticket.price > 0) {
-                wording = 'Sold';
-                wordingObject = 'Ticket Holders';
-              }
-              $(ticketOption).find('span.wording').html(wording);
-              $(ticketOption).find('span.wording-object').html(wordingObject);
-              $('div#edit-ticket').fadeOut(300, function() {
                 scope.ticketSubmitting = false;
-              });
-            } else {
-              scope.ticketSubmitting = false;
-              alert(response.message);
+                alert(response.message);
+              }
+            });
+          } else {
+            scope.ticketSubmitting = false;
+            if (params.name.trim() === '') {
+              $('div#edit-ticket input[name=name]').addClass('warning');
             }
-          });
+            if (params.description.trim() === '') {
+              $('div#edit-ticket textarea[name=description]').addClass('warning');
+            }
+          }
+        }
+      });
+      $('div#edit-ticket input[name=name], div#edit-ticket textarea[name=description]').keypress(function() {
+        if ($(this).val().trim() !== '') {
+          $(this).removeClass('warning');
         }
       });
     }

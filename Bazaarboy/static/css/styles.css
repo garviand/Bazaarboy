@@ -8763,6 +8763,9 @@ div#event-modify-tickets div#edit-ticket div.type div.clearfix > div a div.text 
   font-weight: 500;
   text-align: center;
 }
+div#event-modify-tickets div#edit-ticket form .warning {
+  border: #B33A3A thin solid !important;
+}
 div#event-modify-tickets div#edit-ticket form input[name="name"] {
   margin-top: 24px;
 }
