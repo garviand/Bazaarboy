@@ -922,6 +922,13 @@ def create_promo(request, params, user):
             'message':'The code must be within 20 characters.'
         }
         return json_response(response)
+    if ' ' in params['code']:
+        response = {
+            'status':'FAIL',
+            'error':'INVALID_CODE',
+            'message':'Code cannot contain spaces.'
+        }
+        return json_response(response)
     if Promo.objects.filter(code = params['code'], event = event).exists():
         response = {
             'status':'FAIL',
@@ -991,6 +998,13 @@ def edit_promo(request, params, user):
                 'status':'FAIL',
                 'error':'INVALID_CODE',
                 'message':'The code must be within 20 characters.'
+            }
+            return json_response(response)
+        if ' ' in params['code']:
+            response = {
+                'status':'FAIL',
+                'error':'INVALID_CODE',
+                'message':'Code cannot contain spaces.'
             }
             return json_response(response)
         promo.code = params['code']

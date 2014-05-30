@@ -102,12 +102,20 @@
       });
       $('body').on('click', 'a.add-promo', function() {
         $(this).fadeOut(300, function() {
-          $(this).parents('div.add-promo-container').find('div.add-promo-fields').fadeIn(300);
+          var container;
+          container = $(this).parents('div.add-promo-container');
+          container.find('form.edit-promo').removeClass('edit-promo').addClass('add-promo');
+          container.find('div.title span.text').html('Add Promo&nbsp;&nbsp;&nbsp;');
+          container.find('form.add-promo .submit').removeClass('medium-4').addClass('medium-6');
+          container.find('form.add-promo .delete').addClass('hidden');
+          container.find('form.add-promo .or').removeClass('hidden');
+          container.find('div.add-promo-fields').fadeIn(300);
         });
       });
       $('body').on('click', 'a.edit-promo', function() {
         var promoId;
         promoId = $(this).data('id');
+        $('.promo-editing').fadeIn(300);
         $(this).parents('div.promo').fadeOut(300, function() {
           var container;
           $(this).addClass('promo-editing');
@@ -117,6 +125,9 @@
           }, 500);
           container.find('div.action').hide();
           container.find('form.add-promo').removeClass('add-promo').addClass('edit-promo');
+          container.find('form.edit-promo .submit').removeClass('medium-6').addClass('medium-4');
+          container.find('form.edit-promo .delete').removeClass('hidden');
+          container.find('form.edit-promo .or').addClass('hidden');
           container.find('div.title span.text').html('Edit Promo&nbsp;&nbsp;&nbsp;');
           container.find('div.add-promo-fields').fadeIn(300);
           container.find('input[name=id]').val(promoId);
@@ -189,10 +200,26 @@
         $(this).parents('div.add-promo-fields').fadeOut(300, function() {
           $(this).find('input[type=text]').val('');
           $('span.promo-error').html('&nbsp;');
-          $(this).parents('div.add-promo-container').find('form.edit-promo').removeClass('edit-promo').addClass('add-promo');
-          $(this).parents('div.add-promo-container').find('div.title span.text').html('Add Promo&nbsp;&nbsp;&nbsp;');
           $(this).parents('div.add-promo-container').find('div.action').fadeIn(300);
           $('.promo-editing').fadeIn(300);
+        });
+      });
+      $('body').on('click', 'form.edit-promo a.delete-promo', function() {
+        var form, params;
+        form = $(this).parents('form.edit-promo');
+        params = form.serializeObject();
+        Bazaarboy.post('event/promo/delete/', {
+          id: params.id
+        }, function(response) {
+          if (response.status === 'OK') {
+            form.parents('div.add-promo-fields').fadeOut(300, function() {
+              form.find('input[type=text]').val('');
+              $('span.promo-error').html('&nbsp;');
+              form.parents('div.add-promo-container').find('a.add-promo').show();
+              form.parents('div.add-promo-container').find('div.action').fadeIn(300);
+              return $('.promo-editing').remove();
+            });
+          }
         });
       });
       $('div.ticket-option div.top div.secondary-btn').click(function() {

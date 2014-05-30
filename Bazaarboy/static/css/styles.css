@@ -8759,7 +8759,9 @@ div#event-modify-tickets div.ticket-option div.add-promos div.inner div.add-prom
   outline: none;
   margin-bottom: 0;
 }
-div#event-modify-tickets div.ticket-option div.add-promos div.inner div.add-promo-fields input.blue-btn {
+div#event-modify-tickets div.ticket-option div.add-promos div.inner div.add-promo-fields input.blue-btn,
+div#event-modify-tickets div.ticket-option div.add-promos div.inner div.add-promo-fields a.delete-promo {
+  display: block;
   padding-top: 8px;
   padding-bottom: 13px;
   width: 100%;

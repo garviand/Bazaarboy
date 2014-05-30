@@ -130,9 +130,9 @@ block content
                                         input(name="ticket", type="hidden", value="{{ ticket.id }}")
                                         input(name="id", type="hidden", value="")
                                         div.small-12.medium-6.columns.submit
-                                            input.blue-btn(name="submit", type="submit", value="Submit Promo")
+                                            input.blue-btn(name="submit", type="submit", value="Save Promo")
                                         div.small-12.medium-4.columns.delete.hidden
-                                            a.blue-btn.delete-promo(href="javascript:;") Delete Promo
+                                            a.secondary-btn.delete-promo(href="javascript:;") Delete Promo
                                         div.small-12.medium-2.columns.text-center.text.or or
                                         div.small-12.medium-4.columns.text-center.text.cancel
                                             a.cancel-btn(href="javascript:;") cancel
@@ -144,7 +144,7 @@ block content
             mixin promo-option(tags)
                 div.promo-option.row
                     div
-            div#promo-canvas.small-12.columns
+            div#promo-canvas.small-12.columns.hidden
                 +promo-option(false)
                 {% for promo in promos %}
                 +promo-option(true)
