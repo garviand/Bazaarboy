@@ -51,9 +51,13 @@ block content
                         div.draft-event-datetime.small-3.columns
                             div.draft-event-time
                                 span
+                                    span.ss-clock &nbsp;
                                     {{ event.start_time|date:'g:iA' }}{% if event.end_time %}-{{ event.end_time|date:'g:iA' }}{% endif %}
-                        div.draft-event-location.small-9.columns
-                            | {{ event.location }}
+                        div.draft-event-location-container.small-9.columns
+                            div.draft-event-location
+                                span
+                                    span.ss-location &nbsp;
+                                    {% if event.location|length > 0 %}{{ event.location }}{% else %}NO LOCATION SELECTED{% endif %}
                 div.stats.small-12.columns
                     div.row
                         div.draft-event-stats.medium-9.columns
@@ -106,9 +110,13 @@ block content
                         div.current-event-datetime.small-3.columns
                             div.current-event-time
                                 span
+                                    span.ss-clock &nbsp;
                                     {{ event.start_time|date:'g:iA' }}{% if event.end_time %}-{{ event.end_time|date:'g:iA' }}{% endif %}
-                        div.current-event-location.small-9.columns
-                            | {{ event.location }}
+                        div.current-event-location-container.small-9.columns
+                            div.current-event-location
+                                span
+                                    span.ss-location &nbsp;
+                                    {% if event.location|length > 0 %}{{ event.location }}{% else %}NO LOCATION SELECTED{% endif %}
                 div.stats.small-12.columns
                     div.row
                         div.current-event-stats.medium-9.columns
@@ -180,9 +188,13 @@ block content
                         div.past-event-datetime.small-3.columns
                             div.past-event-time
                                 span
+                                    span.ss-clock &nbsp;
                                     {{ event.start_time|date:'g:iA' }}{% if event.end_time %}-{{ event.end_time|date:'g:iA' }}{% endif %}
-                        div.past-event-location.small-9.columns
-                            | {{ event.location }}
+                        div.past-event-location-container.small-9.columns
+                            div.past-event-location
+                                span
+                                    span.ss-location &nbsp;
+                                    {% if event.location|length > 0 %}{{ event.location }}{% else %}NO LOCATION SELECTED{% endif %}
                 div.stats.small-12.columns
                     div.row
                         div.past-event-stats.medium-9.columns

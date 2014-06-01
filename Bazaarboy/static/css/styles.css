@@ -5675,6 +5675,7 @@ textarea {
 html,
 body {
   height: 100%;
+  color: #4a4a4a;
   font-family: "Gotham SSm A", "Gotham SSm B", sans-serif;
   font-weight: 400;
   font-style: normal;
@@ -6195,7 +6196,7 @@ div.past-event > div.tile div.header div.past-event-date {
   top: 13px;
   left: 17px;
   border-radius: 4px;
-  background: rgba(73, 99, 228, 0.5);
+  background: rgba(250, 166, 56, 0.75);
 }
 div.current-event > div.tile div.header div.current-event-date div.month,
 div.draft-event > div.tile div.header div.current-event-date div.month,
@@ -6400,21 +6401,152 @@ div.past-event > div.tile div.info div.inner div.past-event-datetime div.past-ev
   display: table-cell;
   vertical-align: middle;
 }
-div.current-event > div.tile div.info div.inner div.current-event-location,
-div.draft-event > div.tile div.info div.inner div.current-event-location,
-div.past-event > div.tile div.info div.inner div.current-event-location,
-div.current-event > div.tile div.info div.inner div.draft-event-location,
-div.draft-event > div.tile div.info div.inner div.draft-event-location,
-div.past-event > div.tile div.info div.inner div.draft-event-location,
-div.current-event > div.tile div.info div.inner div.past-event-location,
-div.draft-event > div.tile div.info div.inner div.past-event-location,
-div.past-event > div.tile div.info div.inner div.past-event-location {
-  height: 13px;
-  padding-top: 20.5px;
-  padding-bottom: 20.5px;
+div.current-event > div.tile div.info div.inner div.current-event-datetime div.current-event-time span .ss-clock,
+div.draft-event > div.tile div.info div.inner div.current-event-datetime div.current-event-time span .ss-clock,
+div.past-event > div.tile div.info div.inner div.current-event-datetime div.current-event-time span .ss-clock,
+div.current-event > div.tile div.info div.inner div.draft-event-datetime div.current-event-time span .ss-clock,
+div.draft-event > div.tile div.info div.inner div.draft-event-datetime div.current-event-time span .ss-clock,
+div.past-event > div.tile div.info div.inner div.draft-event-datetime div.current-event-time span .ss-clock,
+div.current-event > div.tile div.info div.inner div.past-event-datetime div.current-event-time span .ss-clock,
+div.draft-event > div.tile div.info div.inner div.past-event-datetime div.current-event-time span .ss-clock,
+div.past-event > div.tile div.info div.inner div.past-event-datetime div.current-event-time span .ss-clock,
+div.current-event > div.tile div.info div.inner div.current-event-datetime div.draft-event-time span .ss-clock,
+div.draft-event > div.tile div.info div.inner div.current-event-datetime div.draft-event-time span .ss-clock,
+div.past-event > div.tile div.info div.inner div.current-event-datetime div.draft-event-time span .ss-clock,
+div.current-event > div.tile div.info div.inner div.draft-event-datetime div.draft-event-time span .ss-clock,
+div.draft-event > div.tile div.info div.inner div.draft-event-datetime div.draft-event-time span .ss-clock,
+div.past-event > div.tile div.info div.inner div.draft-event-datetime div.draft-event-time span .ss-clock,
+div.current-event > div.tile div.info div.inner div.past-event-datetime div.draft-event-time span .ss-clock,
+div.draft-event > div.tile div.info div.inner div.past-event-datetime div.draft-event-time span .ss-clock,
+div.past-event > div.tile div.info div.inner div.past-event-datetime div.draft-event-time span .ss-clock,
+div.current-event > div.tile div.info div.inner div.current-event-datetime div.past-event-time span .ss-clock,
+div.draft-event > div.tile div.info div.inner div.current-event-datetime div.past-event-time span .ss-clock,
+div.past-event > div.tile div.info div.inner div.current-event-datetime div.past-event-time span .ss-clock,
+div.current-event > div.tile div.info div.inner div.draft-event-datetime div.past-event-time span .ss-clock,
+div.draft-event > div.tile div.info div.inner div.draft-event-datetime div.past-event-time span .ss-clock,
+div.past-event > div.tile div.info div.inner div.draft-event-datetime div.past-event-time span .ss-clock,
+div.current-event > div.tile div.info div.inner div.past-event-datetime div.past-event-time span .ss-clock,
+div.draft-event > div.tile div.info div.inner div.past-event-datetime div.past-event-time span .ss-clock,
+div.past-event > div.tile div.info div.inner div.past-event-datetime div.past-event-time span .ss-clock {
+  display: inline;
+  font-size: 28px;
+  position: relative;
+  top: 3px;
+  color: #D6D6D6;
+}
+div.current-event > div.tile div.info div.inner div.current-event-location-container,
+div.draft-event > div.tile div.info div.inner div.current-event-location-container,
+div.past-event > div.tile div.info div.inner div.current-event-location-container,
+div.current-event > div.tile div.info div.inner div.draft-event-location-container,
+div.draft-event > div.tile div.info div.inner div.draft-event-location-container,
+div.past-event > div.tile div.info div.inner div.draft-event-location-container,
+div.current-event > div.tile div.info div.inner div.past-event-location-container,
+div.draft-event > div.tile div.info div.inner div.past-event-location-container,
+div.past-event > div.tile div.info div.inner div.past-event-location-container {
+  position: relative;
+  height: 100%;
+  padding: 0;
+}
+div.current-event > div.tile div.info div.inner div.current-event-location-container div.current-event-location,
+div.draft-event > div.tile div.info div.inner div.current-event-location-container div.current-event-location,
+div.past-event > div.tile div.info div.inner div.current-event-location-container div.current-event-location,
+div.current-event > div.tile div.info div.inner div.draft-event-location-container div.current-event-location,
+div.draft-event > div.tile div.info div.inner div.draft-event-location-container div.current-event-location,
+div.past-event > div.tile div.info div.inner div.draft-event-location-container div.current-event-location,
+div.current-event > div.tile div.info div.inner div.past-event-location-container div.current-event-location,
+div.draft-event > div.tile div.info div.inner div.past-event-location-container div.current-event-location,
+div.past-event > div.tile div.info div.inner div.past-event-location-container div.current-event-location,
+div.current-event > div.tile div.info div.inner div.current-event-location-container div.draft-event-location,
+div.draft-event > div.tile div.info div.inner div.current-event-location-container div.draft-event-location,
+div.past-event > div.tile div.info div.inner div.current-event-location-container div.draft-event-location,
+div.current-event > div.tile div.info div.inner div.draft-event-location-container div.draft-event-location,
+div.draft-event > div.tile div.info div.inner div.draft-event-location-container div.draft-event-location,
+div.past-event > div.tile div.info div.inner div.draft-event-location-container div.draft-event-location,
+div.current-event > div.tile div.info div.inner div.past-event-location-container div.draft-event-location,
+div.draft-event > div.tile div.info div.inner div.past-event-location-container div.draft-event-location,
+div.past-event > div.tile div.info div.inner div.past-event-location-container div.draft-event-location,
+div.current-event > div.tile div.info div.inner div.current-event-location-container div.past-event-location,
+div.draft-event > div.tile div.info div.inner div.current-event-location-container div.past-event-location,
+div.past-event > div.tile div.info div.inner div.current-event-location-container div.past-event-location,
+div.current-event > div.tile div.info div.inner div.draft-event-location-container div.past-event-location,
+div.draft-event > div.tile div.info div.inner div.draft-event-location-container div.past-event-location,
+div.past-event > div.tile div.info div.inner div.draft-event-location-container div.past-event-location,
+div.current-event > div.tile div.info div.inner div.past-event-location-container div.past-event-location,
+div.draft-event > div.tile div.info div.inner div.past-event-location-container div.past-event-location,
+div.past-event > div.tile div.info div.inner div.past-event-location-container div.past-event-location {
+  display: table;
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  padding-left: 10px;
+  top: 0;
+  left: 0;
   font-size: 13px;
-  line-height: 13px;
+  line-height: 18px;
   font-weight: 500;
+}
+div.current-event > div.tile div.info div.inner div.current-event-location-container div.current-event-location span,
+div.draft-event > div.tile div.info div.inner div.current-event-location-container div.current-event-location span,
+div.past-event > div.tile div.info div.inner div.current-event-location-container div.current-event-location span,
+div.current-event > div.tile div.info div.inner div.draft-event-location-container div.current-event-location span,
+div.draft-event > div.tile div.info div.inner div.draft-event-location-container div.current-event-location span,
+div.past-event > div.tile div.info div.inner div.draft-event-location-container div.current-event-location span,
+div.current-event > div.tile div.info div.inner div.past-event-location-container div.current-event-location span,
+div.draft-event > div.tile div.info div.inner div.past-event-location-container div.current-event-location span,
+div.past-event > div.tile div.info div.inner div.past-event-location-container div.current-event-location span,
+div.current-event > div.tile div.info div.inner div.current-event-location-container div.draft-event-location span,
+div.draft-event > div.tile div.info div.inner div.current-event-location-container div.draft-event-location span,
+div.past-event > div.tile div.info div.inner div.current-event-location-container div.draft-event-location span,
+div.current-event > div.tile div.info div.inner div.draft-event-location-container div.draft-event-location span,
+div.draft-event > div.tile div.info div.inner div.draft-event-location-container div.draft-event-location span,
+div.past-event > div.tile div.info div.inner div.draft-event-location-container div.draft-event-location span,
+div.current-event > div.tile div.info div.inner div.past-event-location-container div.draft-event-location span,
+div.draft-event > div.tile div.info div.inner div.past-event-location-container div.draft-event-location span,
+div.past-event > div.tile div.info div.inner div.past-event-location-container div.draft-event-location span,
+div.current-event > div.tile div.info div.inner div.current-event-location-container div.past-event-location span,
+div.draft-event > div.tile div.info div.inner div.current-event-location-container div.past-event-location span,
+div.past-event > div.tile div.info div.inner div.current-event-location-container div.past-event-location span,
+div.current-event > div.tile div.info div.inner div.draft-event-location-container div.past-event-location span,
+div.draft-event > div.tile div.info div.inner div.draft-event-location-container div.past-event-location span,
+div.past-event > div.tile div.info div.inner div.draft-event-location-container div.past-event-location span,
+div.current-event > div.tile div.info div.inner div.past-event-location-container div.past-event-location span,
+div.draft-event > div.tile div.info div.inner div.past-event-location-container div.past-event-location span,
+div.past-event > div.tile div.info div.inner div.past-event-location-container div.past-event-location span {
+  display: table-cell;
+  vertical-align: middle;
+}
+div.current-event > div.tile div.info div.inner div.current-event-location-container div.current-event-location span .ss-location,
+div.draft-event > div.tile div.info div.inner div.current-event-location-container div.current-event-location span .ss-location,
+div.past-event > div.tile div.info div.inner div.current-event-location-container div.current-event-location span .ss-location,
+div.current-event > div.tile div.info div.inner div.draft-event-location-container div.current-event-location span .ss-location,
+div.draft-event > div.tile div.info div.inner div.draft-event-location-container div.current-event-location span .ss-location,
+div.past-event > div.tile div.info div.inner div.draft-event-location-container div.current-event-location span .ss-location,
+div.current-event > div.tile div.info div.inner div.past-event-location-container div.current-event-location span .ss-location,
+div.draft-event > div.tile div.info div.inner div.past-event-location-container div.current-event-location span .ss-location,
+div.past-event > div.tile div.info div.inner div.past-event-location-container div.current-event-location span .ss-location,
+div.current-event > div.tile div.info div.inner div.current-event-location-container div.draft-event-location span .ss-location,
+div.draft-event > div.tile div.info div.inner div.current-event-location-container div.draft-event-location span .ss-location,
+div.past-event > div.tile div.info div.inner div.current-event-location-container div.draft-event-location span .ss-location,
+div.current-event > div.tile div.info div.inner div.draft-event-location-container div.draft-event-location span .ss-location,
+div.draft-event > div.tile div.info div.inner div.draft-event-location-container div.draft-event-location span .ss-location,
+div.past-event > div.tile div.info div.inner div.draft-event-location-container div.draft-event-location span .ss-location,
+div.current-event > div.tile div.info div.inner div.past-event-location-container div.draft-event-location span .ss-location,
+div.draft-event > div.tile div.info div.inner div.past-event-location-container div.draft-event-location span .ss-location,
+div.past-event > div.tile div.info div.inner div.past-event-location-container div.draft-event-location span .ss-location,
+div.current-event > div.tile div.info div.inner div.current-event-location-container div.past-event-location span .ss-location,
+div.draft-event > div.tile div.info div.inner div.current-event-location-container div.past-event-location span .ss-location,
+div.past-event > div.tile div.info div.inner div.current-event-location-container div.past-event-location span .ss-location,
+div.current-event > div.tile div.info div.inner div.draft-event-location-container div.past-event-location span .ss-location,
+div.draft-event > div.tile div.info div.inner div.draft-event-location-container div.past-event-location span .ss-location,
+div.past-event > div.tile div.info div.inner div.draft-event-location-container div.past-event-location span .ss-location,
+div.current-event > div.tile div.info div.inner div.past-event-location-container div.past-event-location span .ss-location,
+div.draft-event > div.tile div.info div.inner div.past-event-location-container div.past-event-location span .ss-location,
+div.past-event > div.tile div.info div.inner div.past-event-location-container div.past-event-location span .ss-location {
+  display: inline;
+  font-size: 28px;
+  position: relative;
+  top: 3px;
+  color: #D6D6D6;
 }
 div.current-event > div.tile div.stats,
 div.draft-event > div.tile div.stats,
@@ -7809,7 +7941,7 @@ div#event-header {
   min-height: 66px;
   z-index: 20;
   background: rgba(255, 255, 255, 0.96);
-  box-shadow: 0px 1px 5px 1px #dddddd;
+  border-bottom: #f6f6f6 thin solid;
 }
 div#event-header div.event-header-body {
   position: relative;
@@ -7841,6 +7973,7 @@ div#event-header div.event-header-body div.event-name {
   color: #4A4A4A;
   font-size: 18px;
   line-height: 20px;
+  font-weight: 600;
 }
 div#event-header div.event-header-body div.event-name span {
   display: table-cell;
@@ -8058,7 +8191,7 @@ div#event-date div.month {
 }
 div#event-date div.day {
   color: #4a4a4a;
-  width: 40px;
+  width: 42px;
   height: 25px;
   background: #ffffff;
   margin: 0 auto;
