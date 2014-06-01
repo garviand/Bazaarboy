@@ -46,7 +46,11 @@
         }
         $(canvas).highcharts({
           chart: {
-            type: 'area'
+            type: 'area',
+            marginTop: 20,
+            style: {
+              fontFamily: '"Gotham SSm A", "Gotham SSm B", sans-serif'
+            }
           },
           credits: {
             enabled: false
@@ -59,44 +63,53 @@
             enabled: false
           },
           xAxis: {
-            gridLineWidth: 0,
+            allowDecimals: false,
+            lineColor: '#D6D6D6',
+            gridLineColor: '#F6F6F6',
+            gridLineWidth: 1,
             type: 'datetime',
             dateTimeLabelFormats: {
+              millisecond: '%b %e',
+              second: '%b %e',
+              minute: '%b %e',
+              hour: '%b %e',
               day: '%b %e'
+            },
+            labels: {
+              style: {
+                color: '#D6D6D6',
+                fontWeight: 'bold'
+              }
             }
           },
-          yAxis: [
-            {
-              labels: {
-                format: '{value}'
-              },
-              title: {
-                text: 'RSVPs',
-                style: {
-                  color: '#4963E4'
-                }
-              },
-              min: 0
-            }, {
-              labels: {
-                format: '${value}'
-              },
-              title: {
-                text: 'Total Sales',
-                style: {
-                  color: '#00BD84'
-                }
-              },
-              opposite: true,
-              min: 0
+          yAxis: {
+            lineWidth: 1,
+            lineColor: '#D6D6D6',
+            offset: -3,
+            gridLineWidth: 0,
+            labels: {
+              format: '{value}'
+            },
+            title: {
+              text: '',
+              style: {
+                color: '#4963E4'
+              }
+            },
+            min: 0,
+            labels: {
+              style: {
+                color: '#D6D6D6',
+                fontWeight: 'bold'
+              }
             }
-          ],
+          },
           plotOptions: {
             area: {
-              fillOpacity: .1,
+              fillOpacity: .25,
               pointStart: 0,
               marker: {
-                enabled: true,
+                enabled: false,
                 symbol: 'circle',
                 radius: 2,
                 states: {
@@ -112,10 +125,6 @@
               name: 'RSVPs',
               yAxis: 0,
               data: rsvps
-            }, {
-              name: 'Total Sales',
-              yAxis: 1,
-              data: sales
             }
           ]
         });

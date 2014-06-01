@@ -6729,7 +6729,7 @@ div.past-event > div.tile div.stats > div.row div.draft-event-stats div.inner > 
 div.current-event > div.tile div.stats > div.row div.past-event-stats div.inner > div div.numbers > div,
 div.draft-event > div.tile div.stats > div.row div.past-event-stats div.inner > div div.numbers > div,
 div.past-event > div.tile div.stats > div.row div.past-event-stats div.inner > div div.numbers > div {
-  height: 76px;
+  height: 77px;
   padding: 5px 10px;
   padding-top: 15px;
   border-bottom: 2px solid #f6f6f6;
@@ -8852,6 +8852,7 @@ div#event-modify-tickets div.ticket-option div.middle div.inner div.action a {
 }
 div#event-modify-tickets div.ticket-option div.bottom {
   padding: 0 10px;
+  margin-bottom: 10px;
 }
 div#event-modify-tickets div.ticket-option div.bottom div.inner {
   min-height: 44px;

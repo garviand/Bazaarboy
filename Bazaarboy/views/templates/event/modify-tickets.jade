@@ -90,7 +90,7 @@ block content
                         div.inner.small-12.columns
                             div.description.small-12.columns
                                 != tags ? '{{ ticket.description }}' : ''
-                    div.promos.small-12.columns
+                    //div.promos.small-12.columns
                         {% for promo in promos %}
                         {% if promo.ticket.id == ticket.id %}
                         div.promo.small-12.columns(data-code='{{promo.code}}', data-amount='{{promo.amount}}', data-domain='{{promo.email_domain}}')
@@ -108,7 +108,7 @@ block content
                         {% endif %}
                         {% endfor %}
                     {% if ticket.price != 0 %}
-                    div.add-promos.small-12.columns
+                    //div.add-promos.small-12.columns
                         div.inner.small-12.columns.add-promo-container
                             div.action.medium-3.columns.right
                                 a.add-promo.blue-btn(href="javascript:;") Add Promo
