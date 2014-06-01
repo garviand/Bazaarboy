@@ -31,27 +31,40 @@ Bazaarboy.index.index =
                 total_sales += sale[1]
                 sale[1] = total_sales
             $(canvas).highcharts
-                chart: {
+                chart:
                     type: 'area'
-                    marginTop: 20
+                    marginTop: 30
+                    marginRight: 20
                     style:
-                        fontFamily: '"Gotham SSm A", "Gotham SSm B", sans-serif' 
-                },
-                credits: {
+                        fontFamily: 'helvetica'
+                credits:
                     enabled: false
-                },
-                colors: ["#4963E4", "#00BD84"],
-                title: {
+                colors: ["#4963E4", "#00BD84"]
+                title:
                     text: ''
-                },
-                legend: {
+                legend:
                     enabled: false
-                },
+                tooltip:
+                    formatter: () ->
+                        return Highcharts.dateFormat('%b %e', new Date(this.x)) + '<br /><b>' + this.y + ' RSVPs</b>'
+                    backgroundColor: '#4963E4'
+                    borderWidth: 0
+                    dateTimeLabelFormats:
+                        millisecond: '%b %e'
+                        second: '%b %e'
+                        minute: '%b %e'
+                        hour: '%b %e'
+                        day: '%b %e'
+                        week: '%b %e'
+                    style:
+                        color: '#FFF'
+                    shadow: false
                 xAxis: 
                     allowDecimals: false
                     lineColor: '#D6D6D6'
                     gridLineColor: '#F6F6F6'
                     gridLineWidth: 1
+                    tickLength: 0
                     type: 'datetime'
                     dateTimeLabelFormats:
                         millisecond: '%b %e'
