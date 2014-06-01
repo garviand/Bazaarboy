@@ -23,7 +23,7 @@ div.current-event, div.draft-event, div.past-event {
                 top: 13px;
                 left: 17px;
                 border-radius: 4px;
-                background: rgba(73, 99, 228, 0.50);
+                background: fade(@orange, 75%);
 
                 div.month {
                     width: 100%;
@@ -118,18 +118,44 @@ div.current-event, div.draft-event, div.past-event {
                         span {
                             display: table-cell;
                             vertical-align: middle;
+                            .ss-clock{
+                                display: inline;
+                                font-size: 28px;
+                                position: relative;
+                                top: 3px;
+                                color: #D6D6D6;
+                            }
                         }
                     }
                 }
 
-                div.current-event-location, div.draft-event-location, div.past-event-location {
-                    @height: 13px;
-                    height: @height;
-                    padding-top: (54px - @height) / 2;
-                    padding-bottom: (54px - @height) / 2;
-                    font-size: @height;
-                    line-height: @height;
-                    font-weight: 500;
+                div.current-event-location-container, div.draft-event-location-container, div.past-event-location-container {
+                    position: relative;
+                    height: 100%;
+                    padding: 0;
+                    div.current-event-location, div.draft-event-location, div.past-event-location {
+                        display: table;
+                        position: absolute;
+                        width: 100%;
+                        height: 100%;
+                        padding-left: 10px;
+                        top: 0;
+                        left: 0;
+                        font-size: 13px;
+                        line-height: 18px;
+                        font-weight: 500;
+                        span {
+                            display: table-cell;
+                            vertical-align: middle;
+                            .ss-location{
+                                display: inline;
+                                font-size: 28px;
+                                position: relative;
+                                top: 3px;
+                                color: #D6D6D6;
+                            }
+                        }
+                    }
                 }
             }
         }

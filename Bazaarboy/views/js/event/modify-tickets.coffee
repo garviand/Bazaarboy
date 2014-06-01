@@ -96,7 +96,118 @@ Bazaarboy.event.modify.tickets =
         $('a.new-ticket').click () =>
             @newTicket()
             return
-        $('a.new-promo').click () =>
+        #ADD PROMO START
+        $('body').on 'click', 'a.add-promo', () ->
+            $(this).fadeOut 300, () ->
+                container = $(this).parents('div.add-promo-container')
+                container.find('form.edit-promo').removeClass('edit-promo').addClass('add-promo')
+                container.find('div.title span.text').html('Add Promo&nbsp;&nbsp;&nbsp;')
+                container.find('form.add-promo .submit').removeClass('medium-4').addClass('medium-6')
+                container.find('form.add-promo .delete').addClass('hidden')
+                container.find('form.add-promo .or').removeClass('hidden')
+                container.find('div.add-promo-fields').fadeIn 300
+                return
+            return
+        #EDIT PROMO START
+        $('body').on 'click', 'a.edit-promo', () ->
+            promoId = $(this).data('id')
+            $('.promo-editing').fadeIn 300
+            $(this).parents('div.promo').fadeOut 300, () ->
+                $(this).addClass('promo-editing')
+                container = $(this).parents('div.ticket-option').find('div.add-promos')
+                $("html, body").animate
+                    scrollTop: container.offset().top
+                , 500
+                container.find('div.action').hide()
+                container.find('form.add-promo').removeClass('add-promo').addClass('edit-promo')
+                container.find('form.edit-promo .submit').removeClass('medium-6').addClass('medium-4')
+                container.find('form.edit-promo .delete').removeClass('hidden')
+                container.find('form.edit-promo .or').addClass('hidden')
+                container.find('div.title span.text').html('Edit Promo&nbsp;&nbsp;&nbsp;')
+                container.find('div.add-promo-fields').fadeIn 300
+                container.find('input[name=id]').val(promoId)
+                container.find('input[name=code]').val($(this).data('code'))
+                container.find('input[name=amount]').val($(this).data('amount'))
+                container.find('input[name=email_domain]').val($(this).data('domain'))
+                return
+            return
+        #ADD PROMO SUBMIT
+        $('body').on 'submit', 'form.add-promo', (e) ->
+            e.preventDefault()
+            params = $(this).serializeObject()
+            form = $(this)
+            Bazaarboy.post 'event/promo/create/', params, (response) ->
+                if response.status is 'OK'
+                    form.parents('div.add-promo-fields').fadeOut 300, () ->
+                        form.find('input[type=text]').val('')
+                        form.parents('div.add-promo-container').find('a.add-promo').fadeIn 300
+                        newPromo = $('div.templates div.promo').clone()
+                        newPromo.find('span.amount').html('$' + response.promo.amount + ' OFF')
+                        newPromo.find('span.code').html(response.promo.code)
+                        newPromo.find('a.edit-promo').attr('data-id' , response.promo.pk)
+                        newPromo.attr('data-code', response.promo.code)
+                        newPromo.attr('data-amount', response.promo.amount)
+                        newPromo.attr('data-domain', response.promo.email_domain)
+                        form.parents('div.ticket-option').find('div.promos').append(newPromo)
+                else
+                    form.find('span.promo-error').html(response.message)
+                return
+            return
+        #EDIT PROMO SUBMIT
+        $('body').on 'submit', 'form.edit-promo', (e) ->
+            e.preventDefault()
+            params = $(this).serializeObject()
+            form = $(this)
+            Bazaarboy.post 'event/promo/edit/', params, (response) ->
+                if response.status is 'OK'
+                    form.removeClass('edit-promo').addClass('add-promo')
+                    form.parents('div.add-promo-fields').fadeOut 300, () ->
+                        $('.promo-editing').remove()
+                        form.find('input[type=text]').val('')
+                        form.parents('div.add-promo-container').find('a.add-promo').fadeIn 300
+                        newPromo = $('div.templates div.promo').clone()
+                        newPromo.find('span.amount').html('$' + response.promo.amount + ' OFF')
+                        newPromo.find('span.code').html(response.promo.code)
+                        newPromo.find('a.edit-promo').attr('data-id' , response.promo.pk)
+                        newPromo.attr('data-code', response.promo.code)
+                        newPromo.attr('data-amount', response.promo.amount)
+                        newPromo.attr('data-domain', response.promo.email_domain)
+                        form.parents('div.ticket-option').find('div.promos').append(newPromo)
+                        form.parents('div.ticket-option').find('div.add-promo-container div.action').fadeIn 300
+                else
+                    form.find('span.promo-error').html(response.message)
+                return
+            return
+        #CANCEL ADD PROMO
+        $('body').on 'click', 'form.add-promo a.cancel-btn', () ->
+            $(this).parents('div.add-promo-fields').fadeOut 300, () ->
+                $(this).find('input[type=text]').val('')
+                $('span.promo-error').html('&nbsp;')
+                $(this).parents('div.add-promo-container').find('a.add-promo').fadeIn 300
+                return
+            return
+        #CANCEL EDIT PROMO
+        $('body').on 'click', 'form.edit-promo a.cancel-btn', () ->
+            $(this).parents('div.add-promo-fields').fadeOut 300, () ->
+                $(this).find('input[type=text]').val('')
+                $('span.promo-error').html('&nbsp;')
+                $(this).parents('div.add-promo-container').find('div.action').fadeIn 300
+                $('.promo-editing').fadeIn 300
+                return
+            return
+        #DELETE PROMO
+        $('body').on 'click', 'form.edit-promo a.delete-promo', () ->
+            form = $(this).parents('form.edit-promo')
+            params = form.serializeObject()
+            Bazaarboy.post 'event/promo/delete/', {id:params.id}, (response) ->
+                if response.status is 'OK'
+                    form.parents('div.add-promo-fields').fadeOut 300, () ->
+                        form.find('input[type=text]').val('')
+                        $('span.promo-error').html('&nbsp;')
+                        form.parents('div.add-promo-container').find('a.add-promo').show()
+                        form.parents('div.add-promo-container').find('div.action').fadeIn 300
+                        $('.promo-editing').remove()
+                return
             return
         $('div.ticket-option div.top div.secondary-btn').click () ->
             ticket = $(this).closest('div.ticket-option').attr('data-id')
@@ -234,6 +345,24 @@ Bazaarboy.event.modify.tickets =
                                 scope.ticketSubmitting = false
                                 return
                         else
+                            ticketOption = $('div.ticket-option[data-id="' + ticketId + '"]')
+                        price = if response.ticket.price > 0 then '$' + response.ticket.price.toFixed(2) else 'Free'
+                        $(ticketOption).find('div.price').html price
+                        $(ticketOption).find('div.name').html response.ticket.name
+                        $(ticketOption).find('div.description').html response.ticket.description
+                        sold = if response.ticket.sold? then response.ticket.sold else 0
+                        $(ticketOption).find('span.sold').html sold
+                        quantity = if response.ticket.quantity then '/' + response.ticket.quantity else ''
+                        $(ticketOption).find('span.quantity').html quantity
+                        wording = 'RSVP\'d'
+                        wordingObject = 'RSVPs'
+                        if response.ticket.price > 0
+                            wording = 'Sold'
+                            wordingObject = 'Ticket Holders'
+                        $(ticketOption).find('span.wording').html wording
+                        $(ticketOption).find('span.wording-object').html wordingObject
+                        $(ticketOption).find('input[name=ticket]').val(response.ticket.pk)
+                        $('div#edit-ticket').fadeOut 300, () ->
                             scope.ticketSubmitting = false
                             alert response.message
                         return

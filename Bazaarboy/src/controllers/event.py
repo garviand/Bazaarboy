@@ -922,7 +922,7 @@ def delete_ticket(request, params, user):
     return json_response(response)
 
 @login_required()
-@validate('POST', ['ticket', 'code', 'amount', 'email_domain'])
+@validate('POST', ['ticket', 'code', 'amount'], ['email_domain'])
 def create_promo(request, params, user):
     """
     Create a promo code
@@ -955,6 +955,13 @@ def create_promo(request, params, user):
             'message':'The code must be within 20 characters.'
         }
         return json_response(response)
+    if ' ' in params['code']:
+        response = {
+            'status':'FAIL',
+            'error':'INVALID_CODE',
+            'message':'Code cannot contain spaces.'
+        }
+        return json_response(response)
     if Promo.objects.filter(code = params['code'], event = event).exists():
         response = {
             'status':'FAIL',
@@ -970,14 +977,17 @@ def create_promo(request, params, user):
             'message':'The discount amount can be at most the ticket price.'
         }
         return json_response(response)
-    params['email_domain'] = cgi.escape(params['email_domain'])
-    if params['email_domain'] > 20:
-        response = {
-            'status':'FAIL',
-            'error':'INVALID_EMAIL_DOMAIN',
-            'message':'The email domain is not valid.'
-        }
-        return json_response(response)
+    if params['email_domain']:
+        params['email_domain'] = cgi.escape(params['email_domain'])
+        if len(params['email_domain']) > 20:
+            response = {
+                'status':'FAIL',
+                'error':'INVALID_EMAIL_DOMAIN',
+                'message':'The email domain is not valid.'
+            }
+            return json_response(response)
+    else:
+        params['email_domain'] = ''
     promo = Promo(event = event, ticket = ticket, 
                   code = params['code'], 
                   amount = params['amount'], 
@@ -990,7 +1000,7 @@ def create_promo(request, params, user):
     return json_response(response)
 
 @login_required()
-@validate('POST', ['id', 'code', 'amount', 'email_domain'])
+@validate('POST', ['id', 'code', 'amount'], ['email_domain'])
 def edit_promo(request, params, user):
     """
     Edit a promo code
@@ -1004,6 +1014,7 @@ def edit_promo(request, params, user):
         return json_response(response)
     promo = Promo.objects.get(id = params['id'])
     event = promo.event
+    ticket = promo.ticket
     # Check if user has permission for the event
     if not Organizer.objects.filter(event = event, 
                                     profile__managers = user).exists():
@@ -1022,6 +1033,13 @@ def edit_promo(request, params, user):
                 'message':'The code must be within 20 characters.'
             }
             return json_response(response)
+        if ' ' in params['code']:
+            response = {
+                'status':'FAIL',
+                'error':'INVALID_CODE',
+                'message':'Code cannot contain spaces.'
+            }
+            return json_response(response)
         promo.code = params['code']
     if params['amount'] is not None:
         params['amount'] = float(params['amount'])
@@ -1035,7 +1053,7 @@ def edit_promo(request, params, user):
         promo.amount = params['amount']
     if params['email_domain'] is not None:
         params['email_domain'] = cgi.escape(params['email_domain'])
-        if params['email_domain'] > 20:
+        if len(params['email_domain']) > 20:
             response = {
                 'status':'FAIL',
                 'error':'INVALID_EMAIL_DOMAIN',
@@ -1046,7 +1064,7 @@ def edit_promo(request, params, user):
     promo.save()
     response = {
         'status':'OK',
-        'promo':serialize_one(response)
+        'promo':serialize_one(promo)
     }
     return json_response(response)
 
