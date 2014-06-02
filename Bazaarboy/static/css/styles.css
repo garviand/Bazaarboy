@@ -5859,6 +5859,12 @@ a.sidebar-item.selected:after {
   border-color: transparent #ffffff transparent transparent;
   -webkit-transform: rotate(360deg);
 }
+a.sidebar-item.sub.selected div.sidebar-item-icon {
+  display: block !important;
+}
+a.sidebar-item.sub.selected div.sidebar-item-text {
+  left: 54px !important;
+}
 a.sidebar-item.sub {
   height: 56px;
   margin-top: 0;
@@ -5870,12 +5876,21 @@ a.sidebar-item.sub.first {
   height: 54px;
   border-top: 0;
 }
+@media only screen and (min-width: 40.063em) and (max-width: 64em) {
+  a.sidebar-item.sub div.sidebar-item-icon {
+    display: block !important;
+  }
+}
+a.sidebar-item.sub div.sidebar-item-icon {
+  display: none;
+}
 a.sidebar-item.sub div.sidebar-item-icon div {
   border-radius: 3px;
   background: #9C9C9C;
 }
 a.sidebar-item.sub div.sidebar-item-text {
   background: #3c3c3c;
+  left: 22px;
 }
 a.sidebar-item:hover {
   background: #faa638;

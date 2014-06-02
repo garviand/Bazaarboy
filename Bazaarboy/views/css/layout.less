@@ -203,6 +203,15 @@ a.sidebar-item {
         -webkit-transform: rotate(360deg);
     }
 
+    &.sub.selected{
+        div.sidebar-item-icon {
+            display: block !important;
+        }
+        div.sidebar-item-text {
+            left: @sidebar-item-height !important;
+        }
+    }
+
     &.sub {
         height: @sidebar-item-height + 2px;
         margin-top: 0;
@@ -215,7 +224,14 @@ a.sidebar-item {
             border-top: 0;
         }
 
+        @media @media_medium {
+            div.sidebar-item-icon {
+                display: block !important;
+            }
+        }
+
         div.sidebar-item-icon {
+            display: none;
             div {
                 border-radius: 3px;
                 background: #9C9C9C;
@@ -224,6 +240,7 @@ a.sidebar-item {
 
         div.sidebar-item-text {
             background: @darker;
+            left: 22px;
         }
     }
 

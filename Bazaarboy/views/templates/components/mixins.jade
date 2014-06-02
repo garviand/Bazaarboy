@@ -12,9 +12,9 @@ mixin sidebarItem(icon)
 
 mixin sidebarItemSub(count)
     a.sidebar-item.sub(class!=attributes.class, href!=attributes.href)
-        div.sidebar-item-icon
-            div.text.absolute-center= count
         div.sidebar-item-text
             div
                 div
                     block
+        div.sidebar-item-icon
+            div.text.absolute-center= count
