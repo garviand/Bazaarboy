@@ -103,6 +103,7 @@ urlpatterns = patterns('',
     url(r'^bonus/', include(bonus_urlpatterns, namespace = 'bonus')), 
     url(r'^file/', include(file_urlpatterns, namespace = 'file')),
     url(r'^admin/', include(admin_urlpatterns, namespace = 'admin')),
+    url(r'^(?P<id>[A-Za-z0-9-]+)/$', 'src.controllers.event.index'),
 )
 
 handler404 = 'src.controllers.index.pageNotFound'

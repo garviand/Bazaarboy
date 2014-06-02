@@ -31,6 +31,14 @@
       if (save_data.summary.length > 250) {
         console.log('Summary is too long.');
       }
+      save_data.slug = save_data.slug.trim();
+      if (save_data.slug.length > 0) {
+        if (!/^[A-Za-z0-9-]{1,30}$/.test(save_data.slug)) {
+          console.log('Invalid slug');
+        }
+      } else {
+        save_data.slug = 'None';
+      }
       if (save_data.start_date.trim().length !== 0 && save_data.start_time.trim().length !== 0 && moment(save_data.start_date, 'MM/DD/YYYY').isValid() && moment(save_data.start_time, 'h:mm A').isValid()) {
         start_time = moment(save_data.start_date + ' ' + save_data.start_time, 'MM/DD/YYYY h:mm A').utc().format('YYYY-MM-DD HH:mm:ss');
       } else {
@@ -56,7 +64,8 @@
         summary: save_data.summary,
         location: save_data.location,
         latitude: save_data.latitude,
-        longitude: save_data.longitude
+        longitude: save_data.longitude,
+        slug: save_data.slug
       }, function(err, event) {
         if (!err) {
           setTimeout((function() {

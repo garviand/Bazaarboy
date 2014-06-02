@@ -166,6 +166,7 @@ class Event(models.Model):
     sponsors = models.ManyToManyField('Profile', 
                                       related_name = '%(class)s_sponsorship', 
                                       through = 'Sponsorship')
+    slug = models.CharField(max_length = 30, null = True, default = None, unique = True)
     is_deleted = models.BooleanField(default = False)
 
 def randomConfirmationCode(size=6):
