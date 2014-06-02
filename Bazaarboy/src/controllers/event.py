@@ -309,8 +309,6 @@ def edit(request, params, user):
             return json_response(response)
         else:
             event.description = params['description']
-    elif params['description'] is None and event.description.strip() == '':
-        event.description = '<p>' + params['summary'] + '</p>'
     if params['cover'] is not None:
         if params['cover'].lower() == 'delete':
             if event.cover is not None:
