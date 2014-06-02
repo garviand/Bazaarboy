@@ -402,7 +402,9 @@
               $(ticketOption).find('input[name=ticket]').val(response.ticket.pk);
               $('div#edit-ticket').fadeOut(300, function() {
                 scope.ticketSubmitting = false;
-                return alert(response.message);
+                if (response.status !== 'OK') {
+                  return alert(response.message);
+                }
               });
             });
           } else {

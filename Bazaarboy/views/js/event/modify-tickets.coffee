@@ -364,7 +364,8 @@ Bazaarboy.event.modify.tickets =
                         $(ticketOption).find('input[name=ticket]').val(response.ticket.pk)
                         $('div#edit-ticket').fadeOut 300, () ->
                             scope.ticketSubmitting = false
-                            alert response.message
+                            if response.status isnt 'OK'
+                                alert response.message
                         return
                 else
                     scope.ticketSubmitting = false
