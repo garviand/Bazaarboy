@@ -26,6 +26,8 @@ from src.sanitizer import sanitize_redactor_input
 from src.serializer import serialize, serialize_one
 from src.sms import sendEventConfirmationSMS
 
+import pdb
+
 @cache_page(60 * 5)
 @login_check()
 @validate('GET', [], ['preview', 'design'])
@@ -1410,33 +1412,59 @@ def export(request, params, user):
         }
         return json_response(response)
     # Get all successful purchases
-    purchases = Purchase.objects.filter(Q(checkout = None) | 
-                                        Q(checkout__is_charged = True, 
-                                          checkout__is_refunded = False), 
-                                        event = event)
-    pids = [purchase.id for purchase in purchases]
-    # Get all relevant purchase items
-    items = Purchase_item.objects.select_related('purchase__owner', 'ticket') \
-                                 .filter(purchase__in = pids)
+    purchase_items = Purchase_item.objects.filter(Q(purchase__checkout = None) | 
+                                        Q(purchase__checkout__is_charged = True, 
+                                          purchase__checkout__is_refunded = False), 
+                                        purchase__event = event, 
+                                        purchase__is_expired = False).order_by('-id')
+    items = {}
+    for item in purchase_items:
+        if item.purchase.id in items:
+            if item.ticket.id in items[item.purchase.id]['tickets']:
+                items[item.purchase.id]['tickets'][item.ticket.id]['quantity'] += 1
+            else:
+                items[item.purchase.id]['tickets'].update({
+                    item.ticket.id:{
+                        'name':item.ticket.name,
+                        'quantity':1
+                    }
+                })
+        else:
+            items[item.purchase.id] = {
+                'id': item.id,
+                'email': item.purchase.owner.email,
+                'first_name': item.purchase.owner.first_name,
+                'last_name': item.purchase.owner.last_name,
+                'code': item.purchase.code,
+                'tickets': {
+                    item.ticket.id:{
+                        'name':item.ticket.name,
+                        'quantity':1
+                    }
+                }
+            }
     # Prepare csv writer and the response headers
     response = HttpResponse(mimetype = 'text/csv')
     csvName = re.sub(r'\W+', '-', event.name) + '.csv'
     response['Content-Disposition'] = 'attachment; filename="' + csvName + '"'
     writer = UnicodeWriter(response)
-    headers = ['id', 'email', 'first_name', 'last_name', 'ticket', 'code']
+    headers = ['id', 'email', 'first_name', 'last_name', 'ticket', 'quantity', 'code']
     writer.writerow(headers)
     # Write to csv
-    for i in range(1, items.count() + 1):
-        item = items[i - 1]
-        row = [
-            str(i), 
-            item.purchase.owner.email, 
-            item.purchase.owner.first_name, 
-            item.purchase.owner.last_name, 
-            item.ticket.name, 
-            item.purchase.code
-        ]
-        writer.writerow(row)
+    count = 1
+    for k, item in items.iteritems():
+        for k, ticket in item['tickets'].iteritems():
+            row = [
+                str(count),
+                item['email'],
+                item['first_name'],
+                item['last_name'], 
+                ticket['name'], 
+                str(ticket['quantity']), 
+                item['code']
+            ]
+            writer.writerow(row)
+            count += 1
     return response
 
 @login_required()
