@@ -13,5 +13,6 @@ _gaq.push(['_trackPageview']);
 {% endfor %}</div><div class="name small-4 columns">{{ purchase.name }}</div></div>{% endwith %}
 {% endfor %}</div></div></div></div></div></div><div id="wrapper-bottom" class="row"></div></div></div></div><div id="scripts"><script src="{{ STATIC_URL }}js/libraries.js"></script><script>var rootUrl = '{% url index %}';
 var mediaUrl = '{{ MEDIA_URL }}';
+var staticUrl = '{{ STATIC_URL }}';
 var csrfToken = '{{ csrf_token }}';
 var loggedIn = {% if user %}true{% else %}false{% endif %};</script><script src="{{ STATIC_URL }}js/bazaarboy.js"></script><script type="text/javascript" src="{{ STATIC_URL }}js/event/manage.js"></script></div></body></html>

@@ -8314,7 +8314,7 @@ div#event-location div.address {
 }
 div#event-location div.map-canvas {
   margin-top: 15px;
-  height: 150px;
+  height: 120px;
 }
 div#event-location div.map-canvas > div {
   width: 100%;
@@ -8323,13 +8323,23 @@ div#event-location div.map-canvas > div {
 div#event-location div.map-canvas div#map-canvas {
   width: 100%;
   height: 100%;
-  border-radius: 3px;
 }
 div#event-calendar-add div.calendar-add {
   position: relative;
   z-index: 10;
 }
+div#event-calendar-add div.calendar-add span {
+  font-size: 12px;
+}
+div#event-calendar-add div.calendar-add a {
+  color: #faa638 !important;
+  font-size: 12px;
+  text-decoration: underline;
+  font-style: italic;
+  font-weight: normal;
+}
 div#event-calendar-add div.calendar-add .addthisevent-drop {
+  font-family: "Gotham SSm A", "Gotham SSm B", sans-serif !important;
   position: relative;
   color: #faa638 !important;
   background: transparent;
@@ -8337,7 +8347,7 @@ div#event-calendar-add div.calendar-add .addthisevent-drop {
   font-style: italic;
   border: none;
   font-weight: normal;
-  font-size: 14px;
+  font-size: 12px;
   padding: 0px 0px 8px 0px !important;
   border-radius: 0 !important;
 }

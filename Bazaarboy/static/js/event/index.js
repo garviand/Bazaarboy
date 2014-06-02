@@ -198,7 +198,7 @@
       });
     },
     init: function() {
-      var add_organizer_debounce, geocoder, latitude, latlng, longitude, map, mapCenter, mapOptions, mapStyles, marker, scope,
+      var add_organizer_debounce, geocoder, iconImage, latitude, latlng, longitude, map, mapCenter, mapOptions, mapStyles, marker, scope,
         _this = this;
       scope = this;
       $(window).hashchange(function() {
@@ -280,11 +280,63 @@
         mapCenter = new google.maps.LatLng(latitude, longitude);
         mapStyles = [
           {
-            featureType: 'poi',
-            elementType: 'labels',
+            featureType: "administrative",
+            elementType: "all",
             stylers: [
               {
-                visibility: 'off'
+                visibility: "on"
+              }, {
+                saturation: -100
+              }, {
+                lightness: 20
+              }
+            ]
+          }, {
+            featureType: "road",
+            elementType: "all",
+            stylers: [
+              {
+                visibility: "on"
+              }, {
+                saturation: -100
+              }, {
+                lightness: 40
+              }
+            ]
+          }, {
+            featureType: "water",
+            elementType: "all",
+            stylers: [
+              {
+                visibility: "on"
+              }, {
+                saturation: -10
+              }, {
+                lightness: 30
+              }
+            ]
+          }, {
+            featureType: "landscape.man_made",
+            elementType: "all",
+            stylers: [
+              {
+                visibility: "simplified"
+              }, {
+                saturation: -60
+              }, {
+                lightness: 10
+              }
+            ]
+          }, {
+            featureType: "landscape.natural",
+            elementType: "all",
+            stylers: [
+              {
+                visibility: "simplified"
+              }, {
+                saturation: -60
+              }, {
+                lightness: 60
               }
             ]
           }
@@ -302,6 +354,12 @@
           styles: mapStyles
         };
         map = new google.maps.Map(document.getElementById('map-canvas'), mapOptions);
+        iconImage = {
+          url: staticUrl + "images/map_icon.png",
+          size: new google.maps.Size(200, 111),
+          origin: new google.maps.Point(0, 15),
+          anchor: new google.maps.Point(100, 55)
+        };
         marker = new google.maps.Marker({
           position: mapCenter,
           map: map,

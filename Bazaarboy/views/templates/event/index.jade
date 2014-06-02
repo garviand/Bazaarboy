@@ -244,6 +244,10 @@ block body
                                     span._organizer_email {{ organizers.0.profile.email }}
                                     span._all_day_event false
                                     span._date_format MM/DD/YYYY
+                                {% if event.latitude and event.longitude %}
+                                span &nbsp;or&nbsp;
+                                a(href="https://maps.google.com/?saddr={{ event.latitude }},{{ event.longitude }}", target="_blank") Get Directions
+                                {% endif %}
                         hr
                         div#event-organizers.row
                             div.caption.small-12.columns

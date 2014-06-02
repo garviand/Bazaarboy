@@ -50,6 +50,7 @@ html(lang="en")
                 script.
                     var rootUrl = '{% url index %}';
                     var mediaUrl = '{{ MEDIA_URL }}';
+                    var staticUrl = '{{ STATIC_URL }}';
                     var csrfToken = '{{ csrf_token }}';
                     var loggedIn = {% if user %}true{% else %}false{% endif %};
                 script(src="{{ STATIC_URL }}js/bazaarboy.js")

@@ -8,5 +8,6 @@ _gaq.push(['_trackPageview']);
     var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
 })();</script></head><body><div id="show404"><div class="background"></div><div class="info"><div class="title">4<span><img src="{{ STATIC_URL }}images/404/o_logo.png"></span>4</div><hr><div class="subtitle bold">Well this is bizarre,</div><div class="subtitle">it looks like there's nothing here!</div></div><div class="controls"><a href="http://bazaarboy.com" class="home">Back to Home</a></div></div><div id="scripts"><script src="{{ STATIC_URL }}js/libraries.js"></script><script>var rootUrl = '{% url index %}';
 var mediaUrl = '{{ MEDIA_URL }}';
+var staticUrl = '{{ STATIC_URL }}';
 var csrfToken = '{{ csrf_token }}';
 var loggedIn = {% if user %}true{% else %}false{% endif %};</script><script src="{{ STATIC_URL }}js/bazaarboy.js"></script></div></body></html>
