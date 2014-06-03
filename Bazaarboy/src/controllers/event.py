@@ -213,8 +213,9 @@ def search(request, params):
     }
     return json_response(response)
 
+@login_required()
 @validate('GET', [], ['events', 'emails'])
-def invite(request, params):
+def invite(request, params, user):
     if not params['events'] and not params['emails']:
         response = {
             'status':'FAIL',
@@ -222,10 +223,14 @@ def invite(request, params):
             'message':'You need to select at least one email.'
         }
         return json_response(response)
+    profiles = Profile.objects.filter(managers = user)
+    pids = []
+    for profile in profiles:
+        pids.append(profile.id)
     emails = []
     if params['events']:
         eids = params['events'].replace(" ", "").split(",")
-        purchases = Purchase.objects.filter(event__in = eids)
+        purchases = Purchase.objects.filter(event__in = eids, event__organizers__in = pids)
         for purchase in purchases.all():
             if not any(purchase.owner.email.lower() == val.lower() for val in emails):
                 emails.append(purchase.owner.email)
