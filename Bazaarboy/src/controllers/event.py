@@ -20,7 +20,7 @@ from kernel.models import *
 from src.config import *
 from src.controllers.request import *
 from src.csvutils import UnicodeWriter
-from src.email import sendEventConfirmationEmail
+from src.email import sendEventConfirmationEmail, sendEventInvite
 from src.regex import REGEX_EMAIL, REGEX_NAME
 from src.sanitizer import sanitize_redactor_input
 from src.serializer import serialize, serialize_one
@@ -215,7 +215,16 @@ def search(request, params):
 
 @login_required()
 @validate('GET', [], ['events', 'emails'])
-def invite(request, params, user):
+def invite(request, id, params, user):
+    if not Event.objects.filter(id = id, 
+                                is_deleted = False).exists():
+        response = {
+            'status':'FAIL',
+            'error':'EVENT_NOT_FOUND',
+            'message':'The event doesn\'t exist.'
+        }
+        return json_response(response)
+    event = Event.objects.get(id = id)
     if not params['events'] and not params['emails']:
         response = {
             'status':'FAIL',
@@ -224,6 +233,7 @@ def invite(request, params, user):
         }
         return json_response(response)
     profiles = Profile.objects.filter(managers = user)
+    inviter = profiles.all()[0].name
     pids = []
     for profile in profiles:
         pids.append(profile.id)
@@ -237,8 +247,9 @@ def invite(request, params, user):
     if params['emails']:
         additional_emails = params['emails'].replace(" ", "").split(",")
         for email in additional_emails:
-            if not any(purchase.owner.email.lower() == val.lower() for val in emails):
+            if not any(email.lower() == val.lower() for val in emails):
                 emails.append(email)
+    sendEventInvite(event, emails, inviter)
     response = {
         'status':'OK'
     }
