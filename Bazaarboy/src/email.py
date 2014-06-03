@@ -21,7 +21,7 @@ from django.utils.dateformat import DateFormat
 
 import pdb
 
-def sendEmails(to, subject, template, mergeVars, globalMergeVars=[], attachments=[]):
+def sendEmails(to, subject, template, mergeVars, attachments=[]):
     """
     Send an email
     """
@@ -35,7 +35,6 @@ def sendEmails(to, subject, template, mergeVars, globalMergeVars=[], attachments
             },
             'subject':subject,
             'merge_vars':mergeVars,
-            'global_merge_vars':globalMergeVars,
             'to':to,
             'track_clicks':True,
             'track_opens':True,
@@ -165,7 +164,8 @@ def sendProfileMessageEmail(name, email, message, profile, event):
     }]
     return sendEmails(to, subject, template, mergeVars)
 
-def sendEventInvite(event, emails, inviter):
+@task()
+def sendEventInvite(event, email, inviter):
     event_month = DateFormat(event.start_time)
     event_month = event_month.format('M')
     event_day = DateFormat(event.start_time)
@@ -191,45 +191,45 @@ def sendEventInvite(event, emails, inviter):
                 </tr>
             </table>
         """
-    to = []
-    for email in emails:
-        to.append({
-            'email':email,
-        })
+    to = [{
+        'email':email
+    }]
     subject = 'Invitation to \'' + event.name + '\''
     template = 'event-invitation-1'
-    mergeVars = []
-    globalMergeVars = [
-        {
-            'name': 'organizer_list', 
-            'content': organizer_list_html
-        },
-        {
-            'name': 'inviter', 
-            'content': inviter
-        },
-        {
-            'name': 'event_id', 
-            'content': event.id
-        },
-        {
-            'name': 'event_name', 
-            'content': event.name
-        },
-        {
-            'name': 'event_month', 
-            'content': event_month
-        },
-        {
-            'name': 'event_day', 
-            'content': event_day
-        },
-        {
-            'name': 'event_summary', 
-            'content': event.summary
-        }
-    ]
-    return sendEmails(to, subject, template, mergeVars, globalMergeVars)
+    mergeVars = [{
+        'rcpt': email,
+        'vars': [
+            {
+                'name': 'organizer_list', 
+                'content': organizer_list_html
+            },
+            {
+                'name': 'inviter', 
+                'content': inviter
+            },
+            {
+                'name': 'event_id', 
+                'content': event.id
+            },
+            {
+                'name': 'event_name', 
+                'content': event.name
+            },
+            {
+                'name': 'event_month', 
+                'content': event_month
+            },
+            {
+                'name': 'event_day', 
+                'content': event_day
+            },
+            {
+                'name': 'event_summary', 
+                'content': event.summary
+            }
+        ]
+    }]
+    return sendEmails(to, subject, template, mergeVars)
 
 @task()
 def sendEventConfirmationEmail(purchase):

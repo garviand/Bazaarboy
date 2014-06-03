@@ -145,6 +145,74 @@ div#launch-modal{
     }
 }
 
+div#invite-modal{
+    form.invite-form{
+        div.title{
+            font-size: 1.3rem;
+            font-weight: bold;
+            margin: 40px 0;
+        }
+        label{
+            line-height: 1.3rem;
+        }
+        div.event-list{
+            cursor: pointer;
+            padding: 10px 15px;
+            margin-bottom: 5px;
+            border-radius: 3px;
+            background: @grey;
+            &:hover{
+                background: @dark;
+                color: @white;
+            }
+            &.selected{
+                background: @blue !important;
+                color: @white !important;
+                font-weight: bold;
+            }
+            div.event{
+                user-select: none;
+            }
+        }
+        div.subtext{
+            margin-top: 5px;
+            margin-bottom: 20px;
+        }
+    }
+    div.send-invite{
+        margin-top: 20px;
+        a.send-invitation{
+            display: block;
+            width: 100%;
+            padding-top: 9px;
+            padding-bottom: 11px;
+            text-align: center;
+            &:hover, &:focus{
+                color: #FFF;
+            }
+        }
+        div.move-down{
+            margin-top: 10px;
+        }
+    }
+    div.invite-success{
+        span.invite-count{
+            font-weight: bold;
+        }
+        div.close{
+            margin-top: 40px;
+            text-align: center;
+            a.blue-btn{
+                display: inline;
+                padding: 15px;
+                padding-top: 9px;
+                padding-bottom: 11px;
+                color: @white;
+            }
+        }
+    }
+}
+
 div#contact-organizer-modal{
     div.contact-organizer-title{
         margin-bottom: 20px;

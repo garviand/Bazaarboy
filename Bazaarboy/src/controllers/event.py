@@ -45,6 +45,36 @@ def index(request, id, params, user):
     design = params['design'] is not None and editable
     if not design and not preview and not event.is_launched:
         return redirect('index')
+    pastEventList = {}
+    if editable:
+        profiles = Profile.objects.filter(managers = user)
+        pids = []
+        for profile in profiles:
+            pids.append(profile.id)
+        pastEvents = Event.objects.filter(Q(end_time = None, 
+                                            start_time__lt = timezone.now()) | 
+                                          Q(end_time__isnull = False, 
+                                            end_time__lt = timezone.now()), 
+                                          is_launched = True, 
+                                          organizers__in = pids) \
+                                  .order_by('-start_time')
+        eids = []
+        for event in pastEvents:
+            eids.append(event.id)
+        purchases = Purchase.objects.filter(Q(checkout = None) | 
+                                    Q(checkout__is_charged = True, 
+                                      checkout__is_refunded = False), 
+                                    event__in = eids, 
+                                    is_expired = False)
+        for purchase in purchases:
+            if purchase.event.id in pastEventList:
+                pastEventList[purchase.event.id]['quantity'] += 1
+            else:
+                pastEventList[purchase.event.id] = {
+                    'id': purchase.event.id,
+                    'name': purchase.event.name,
+                    'quantity': 1
+                }
     tickets = Ticket.objects.filter(event = event, is_deleted = False)
     organizers = Organizer.objects.filter(event = event)
     rsvp = True
@@ -214,7 +244,7 @@ def search(request, params):
     return json_response(response)
 
 @login_required()
-@validate('GET', [], ['events', 'emails'])
+@validate('POST', [], ['events', 'emails'])
 def invite(request, id, params, user):
     if not Event.objects.filter(id = id, 
                                 is_deleted = False).exists():
@@ -240,18 +270,25 @@ def invite(request, id, params, user):
     emails = []
     if params['events']:
         eids = params['events'].replace(" ", "").split(",")
-        purchases = Purchase.objects.filter(event__in = eids, event__organizers__in = pids)
+        purchases = Purchase.objects.filter(Q(checkout = None) | 
+                                        Q(checkout__is_charged = True, 
+                                          checkout__is_refunded = False), 
+                                        event__in = eids,
+                                        event__organizers__in = pids, 
+                                        is_expired = False)
         for purchase in purchases.all():
             if not any(purchase.owner.email.lower() == val.lower() for val in emails):
                 emails.append(purchase.owner.email)
     if params['emails']:
         additional_emails = params['emails'].replace(" ", "").split(",")
         for email in additional_emails:
-            if not any(email.lower() == val.lower() for val in emails):
+            if not any(email.lower() == val.lower() for val in emails) and REGEX_EMAIL.match(email):
                 emails.append(email)
-    sendEventInvite(event, emails, inviter)
+    for email in emails:
+        sendEventInvite(event, email, inviter)
     response = {
-        'status':'OK'
+        'status':'OK',
+        'count': str(len(emails))
     }
     return json_response(response)
 
