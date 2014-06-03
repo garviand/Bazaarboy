@@ -227,9 +227,13 @@ def invite(request, params):
         eids = params['events'].replace(" ", "").split(",")
         purchases = Purchase.objects.filter(event__in = eids)
         for purchase in purchases.all():
-            emails.append(purchase.owner.email)
+            if not any(purchase.owner.email.lower() == val.lower() for val in emails):
+                emails.append(purchase.owner.email)
     if params['emails']:
-        emails.extend(params['emails'].replace(" ", "").split(","))
+        additional_emails = params['emails'].replace(" ", "").split(",")
+        for email in additional_emails:
+            if not any(purchase.owner.email.lower() == val.lower() for val in emails):
+                emails.append(email)
     response = {
         'status':'OK'
     }
