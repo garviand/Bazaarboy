@@ -213,6 +213,30 @@ def search(request, params):
     }
     return json_response(response)
 
+@validate('GET', [], ['events', 'emails'])
+def invite(request, params):
+    if not params['events'] and not params['emails']:
+        response = {
+            'status':'FAIL',
+            'error':'NO_EMAILS',
+            'message':'You need to select at least one email.'
+        }
+        return json_response(response)
+    emails = []
+    if params['events']:
+        eids = params['events'].replace(" ", "").split(",")
+        purchases = Purchase.objects.filter(event__in = eids)
+        for purchase in purchases.all():
+            emails.append(purchase.owner.email)
+    if params['emails']:
+        emails.extend(params['emails'].replace(" ", "").split(","))
+    response = {
+        'status':'OK'
+    }
+    return json_response(response)
+
+
+
 @login_required()
 @validate('POST', ['profile'])
 def create(request, params, user):
