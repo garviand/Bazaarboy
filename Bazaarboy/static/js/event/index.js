@@ -79,9 +79,11 @@
         last_name: $('input[name=last_name]').val().trim(),
         email: $('input[name=email]').val().trim(),
         phone: $('input[name=phone]').val().trim(),
-        promos: $('input[name=promos]').val().trim(),
         details: {}
       };
+      if ($('input[name=promos]').length > 0) {
+        params['promos'] = $('input[name=promos]').val().trim();
+      }
       tickets = $('div#tickets-canvas div.ticket');
       ticketSelected = false;
       for (_i = 0, _len = tickets.length; _i < _len; _i++) {
