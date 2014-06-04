@@ -59,8 +59,8 @@ def index(request, id, params, user):
                                           organizers__in = pids) \
                                   .order_by('-start_time')
         eids = []
-        for event in pastEvents:
-            eids.append(event.id)
+        for pastEvent in pastEvents:
+            eids.append(pastEvent.id)
         purchases = Purchase.objects.filter(Q(checkout = None) | 
                                     Q(checkout__is_charged = True, 
                                       checkout__is_refunded = False), 
