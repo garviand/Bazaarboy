@@ -50,19 +50,57 @@ block body
                             div.name Ticket Name
     div#launch-modal.reveal-modal.text-center.medium(data-reveal)
         div.empty-state-container(class="{% if ticketExists %}hide{% endif %}")
-                div.row
-                    div.medium-5.columns
-                        | &nbsp;
-                    div.medium-6.columns.end.empty-state-content
-                        div.text CONGRATULATIONS
-                        hr
-                        div.subtext Your event is live!
-                        div.row
-                            div.large-7.medium-7.small-8.columns.to-dash
-                                a.new-ticket.primary-btn(href="{% url index %}") Go To Dashboard
-                            div.large-5.medium-5.small-4.columns.close-launch-modal
-                                | or&nbsp;&nbsp;
-                                a.close-reveal-modal Close
+            div.row
+                div.medium-5.columns
+                    | &nbsp;
+                div.medium-6.columns.end.empty-state-content
+                    div.text CONGRATULATIONS
+                    hr
+                    div.subtext Your event is live!
+                    div.row
+                        div.large-7.medium-7.small-8.columns.to-dash
+                            a.start-invite.primary-btn(href="javascript:;") Invite Guests
+                        div.large-5.medium-5.small-4.columns.close-launch-modal
+                            | or&nbsp;&nbsp;
+                            a.close-reveal-modal Close
+    div#invite-modal.reveal-modal.medium(data-reveal)
+        form.invite-form(name="invite")
+            div.row
+                div.medium-12.columns.title.text-center Invite Guests
+            {% if pastEventList.items.count > 0 %}
+            div.row
+                div.medium-3.columns
+                    label.right.inline Select Previous Attendee Lists To Invite
+                div.medium-9.columns
+                    {% for k, event in pastEventList.items %}
+                    div.row.event-list(data-id="{{ event.id }}")
+                        div.medium-12.columns
+                            div.event {{ event.name }} ({{ event.quantity }} emails)
+                    {% endfor %}
+                    div.row.subtext
+                        div.medium-12.columns
+                            small * duplicate emails will not receive multiple messages
+            {% endif %}
+            div.row
+                div.medium-3.columns.text-center
+                    label.right.inline(for="additional-emails") Add Emails
+                div.medium-9.columns
+                    textarea#additional-emails(name="emails", placeholder="Separated By Commas (x@email.com, y@email.com)")
+            div.row.send-invite
+                div.medium-4.medium-offset-3.columns
+                    a.blue-btn.send-invitation(href="javascript:;") Send Invitations
+                div.medium-1.columns.text-center.move-down
+                    | or
+                div.medium-2.columns.end.move-down
+                    a.contact-organizer-close(href="javascript:;") Close
+        div.invite-success.hidden
+            div.row
+                div.medium-12.column.text-center.congrats
+                    | Congratulations, you just sent&nbsp;
+                    span.invite-count &nbsp;
+                    | &nbsp;invitations!
+                div.medium-12.columns.close
+                    a.blue-btn.close-invite-modal Back To Event
     div#contact-organizer-modal.reveal-modal.medium(data-reveal)
         form.contact-organizer-form(name="contact-organizer", data-abide)
             div.row
@@ -319,6 +357,17 @@ block body
                                     input(type="text", name="email", placeholder="Email")
                                 div.bottom
                                     input(type="text", name="phone", placeholder="Phone (Optional)")
+                                {% if promos.count > 0 %}
+                                div.bottom
+                                    div.row.collapse.start-promo
+                                        div.small-12.columns.text-right
+                                            a.start-promo-btn(href="javascript:;") Enter Promo Code
+                                    div.row.collapse.enter-promo.hidden
+                                        div.small-12.columns.promo-container
+                                            input.promo-input(type="text", name="promos", placeholder="Promo Code (applies on confirm)")
+                                        //div.small-4.columns
+                                            a.button.postfix(href="javascript:;") Apply Promo
+                                {% endif %}
             div#tickets-footer
                 div#tickets-subtotal
                     | Subtotal | $

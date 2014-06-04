@@ -4,6 +4,7 @@ Bazaarboy.event.index =
     toLaunch: false
     overlayAnimationInProgress: false
     redactorContent: undefined
+    emailSending: false
     saveDescription: () ->
         scope = this
         description = $('div#event-description div.description div.inner').redactor('get')
@@ -63,6 +64,7 @@ Bazaarboy.event.index =
             last_name: $('input[name=last_name]').val().trim()
             email: $('input[name=email]').val().trim()
             phone: $('input[name=phone]').val().trim()
+            promos: $('input[name=promos]').val().trim()
             details: {}
         tickets = $('div#tickets-canvas div.ticket')
         ticketSelected = false
@@ -78,6 +80,7 @@ Bazaarboy.event.index =
             alert 'You Must Select A Ticket'
             $('a#tickets-confirm').html 'Confirm RSVP'
         else
+            console.log params
             Bazaarboy.post 'event/purchase/', params, (response) =>
                 if response.status isnt 'OK'
                     alert response.message
@@ -161,6 +164,10 @@ Bazaarboy.event.index =
                 $('div#launch-modal').foundation('reveal', 'open')
                 window.history.pushState("", document.title, window.location.pathname)
                 return
+            if hash is '#invite'
+                $('div#invite-modal').foundation('reveal', 'open')
+                window.history.pushState("", document.title, window.location.pathname)
+                return
             if hash is '#conf'
                 $('div#confirmation-modal').foundation('reveal', 'open')
                 return
@@ -179,6 +186,47 @@ Bazaarboy.event.index =
                 $('div#tickets').css('top', '100px')
             $('div#event').css('padding-top', $('div#event-header').height() + 'px')
             return
+        # LAUNCH MODAL
+        $('div#launch-modal a.start-invite').click () ->
+            $('div#invite-modal').foundation('reveal', 'open')
+            return
+        # INVITE MODAL INIT
+        $('div#invite-modal form.invite-form div.event-list').click () ->
+            $(this).toggleClass 'selected'
+            return
+        $('div#invite-modal form.invite-form a.send-invitation').click () ->
+            params = $('form.invite-form').serializeObject()
+            events = ''
+            $('div#invite-modal form.invite-form div.event-list.selected').each () ->
+                if events isnt ''
+                    events += ','
+                events += $(this).data('id')
+                return
+            params['events'] = events
+            optionals = ['emails', 'events']
+            params = Bazaarboy.stripEmpty params, optionals
+            if not scope.emailSending
+                scope.emailSending = true
+                Bazaarboy.post 'event/'+eventId+'/invite/', params, (response) ->
+                    if response.status is 'OK'
+                        $('div.invite-success span.invite-count').html(response.count)
+                        $('form.invite-form').fadeOut 300, () ->
+                            scope.emailSending = false
+                            $('div.invite-success').fadeIn 300
+                            return
+                    else
+                        scope.emailSending = false
+                        alert response.message
+                    return
+            return
+        $('div.invite-success a.close-invite-modal').click () ->
+            $('div#invite-modal').foundation('reveal', 'close')
+            return
+        # PROMOS
+        $('div#tickets-details a.start-promo-btn').click () ->
+            $('div.start-promo').fadeOut 300, () ->
+                $('div.enter-promo').fadeIn 300
+                return
         # ADD THIS EVENT INIT
         addthisevent.settings
             outlook   : {show:true, text:"Outlook Calendar"}

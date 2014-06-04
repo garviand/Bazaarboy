@@ -7946,6 +7946,68 @@ div#launch-modal div.empty-state-container div.empty-state-content div.close-lau
   color: #faa638;
   font-weight: normal;
 }
+div#invite-modal form.invite-form div.title {
+  font-size: 1.3rem;
+  font-weight: bold;
+  margin: 40px 0;
+}
+div#invite-modal form.invite-form label {
+  line-height: 1.3rem;
+}
+div#invite-modal form.invite-form div.event-list {
+  cursor: pointer;
+  padding: 10px 15px;
+  margin-bottom: 5px;
+  border-radius: 3px;
+  background: #f6f6f6;
+}
+div#invite-modal form.invite-form div.event-list:hover {
+  background: #4a4a4a;
+  color: #ffffff;
+}
+div#invite-modal form.invite-form div.event-list.selected {
+  background: #4963e4 !important;
+  color: #ffffff !important;
+  font-weight: bold;
+}
+div#invite-modal form.invite-form div.event-list div.event {
+  user-select: none;
+}
+div#invite-modal form.invite-form div.subtext {
+  margin-top: 5px;
+  margin-bottom: 20px;
+}
+div#invite-modal div.send-invite {
+  margin-top: 20px;
+}
+div#invite-modal div.send-invite a.send-invitation {
+  display: block;
+  width: 100%;
+  padding-top: 9px;
+  padding-bottom: 11px;
+  text-align: center;
+}
+div#invite-modal div.send-invite a.send-invitation:hover,
+div#invite-modal div.send-invite a.send-invitation:focus {
+  color: #FFF;
+}
+div#invite-modal div.send-invite div.move-down {
+  margin-top: 10px;
+}
+div#invite-modal div.invite-success span.invite-count {
+  font-weight: bold;
+}
+div#invite-modal div.invite-success div.close {
+  margin-top: 40px;
+  text-align: center;
+}
+div#invite-modal div.invite-success div.close a.blue-btn {
+  display: inline;
+  padding: 15px;
+  padding-top: 9px;
+  padding-bottom: 11px;
+  color: #ffffff;
+}
 div#contact-organizer-modal div.contact-organizer-title {
   margin-bottom: 20px;
 }
@@ -8677,14 +8739,37 @@ div#tickets-details div.right > div {
   height: 40px;
   padding: 4px;
 }
-div#tickets-details div.right > div input {
+div#tickets-details div.right > div input:not(.promo-input) {
   width: 328px;
   height: 32px;
   margin: 0;
   border-radius: 4px;
 }
+div#tickets-details div.right > div div.start-promo {
+  margin-top: 8px;
+}
+div#tickets-details div.right > div div.start-promo a.start-promo-btn {
+  font-size: .8rem;
+  margin-right: 8px;
+  color: #faa638;
+  font-style: italic;
+  text-decoration: underline;
+}
+div#tickets-details div.right > div input.promo-input {
+  border-radius: 4px;
+  margin-bottom: 0;
+}
+div#tickets-details div.right > div a.postfix {
+  background: #4963e4;
+  border-top-right-radius: 4px;
+  border-bottom-right-radius: 4px;
+  margin-bottom: 0;
+}
 div#tickets-details div.right div.top input {
   width: 160px;
+}
+div#tickets-details div.right div.promo-container {
+  padding-left: 0;
 }
 div#tickets-footer {
   position: relative;

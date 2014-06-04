@@ -5,6 +5,7 @@
     toLaunch: false,
     overlayAnimationInProgress: false,
     redactorContent: void 0,
+    emailSending: false,
     saveDescription: function() {
       var description, scope;
       scope = this;
@@ -78,6 +79,7 @@
         last_name: $('input[name=last_name]').val().trim(),
         email: $('input[name=email]').val().trim(),
         phone: $('input[name=phone]').val().trim(),
+        promos: $('input[name=promos]').val().trim(),
         details: {}
       };
       tickets = $('div#tickets-canvas div.ticket');
@@ -98,6 +100,7 @@
         alert('You Must Select A Ticket');
         $('a#tickets-confirm').html('Confirm RSVP');
       } else {
+        console.log(params);
         Bazaarboy.post('event/purchase/', params, function(response) {
           var a, b, total;
           if (response.status !== 'OK') {
@@ -209,6 +212,11 @@
           window.history.pushState("", document.title, window.location.pathname);
           return;
         }
+        if (hash === '#invite') {
+          $('div#invite-modal').foundation('reveal', 'open');
+          window.history.pushState("", document.title, window.location.pathname);
+          return;
+        }
         if (hash === '#conf') {
           $('div#confirmation-modal').foundation('reveal', 'open');
         }
@@ -228,6 +236,49 @@
           $('div#tickets').css('top', '100px');
         }
         $('div#event').css('padding-top', $('div#event-header').height() + 'px');
+      });
+      $('div#launch-modal a.start-invite').click(function() {
+        $('div#invite-modal').foundation('reveal', 'open');
+      });
+      $('div#invite-modal form.invite-form div.event-list').click(function() {
+        $(this).toggleClass('selected');
+      });
+      $('div#invite-modal form.invite-form a.send-invitation').click(function() {
+        var events, optionals, params;
+        params = $('form.invite-form').serializeObject();
+        events = '';
+        $('div#invite-modal form.invite-form div.event-list.selected').each(function() {
+          if (events !== '') {
+            events += ',';
+          }
+          events += $(this).data('id');
+        });
+        params['events'] = events;
+        optionals = ['emails', 'events'];
+        params = Bazaarboy.stripEmpty(params, optionals);
+        if (!scope.emailSending) {
+          scope.emailSending = true;
+          Bazaarboy.post('event/' + eventId + '/invite/', params, function(response) {
+            if (response.status === 'OK') {
+              $('div.invite-success span.invite-count').html(response.count);
+              $('form.invite-form').fadeOut(300, function() {
+                scope.emailSending = false;
+                $('div.invite-success').fadeIn(300);
+              });
+            } else {
+              scope.emailSending = false;
+              alert(response.message);
+            }
+          });
+        }
+      });
+      $('div.invite-success a.close-invite-modal').click(function() {
+        $('div#invite-modal').foundation('reveal', 'close');
+      });
+      $('div#tickets-details a.start-promo-btn').click(function() {
+        return $('div.start-promo').fadeOut(300, function() {
+          $('div.enter-promo').fadeIn(300);
+        });
       });
       addthisevent.settings({
         outlook: {

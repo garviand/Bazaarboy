@@ -20,7 +20,7 @@ from kernel.models import *
 from src.config import *
 from src.controllers.request import *
 from src.csvutils import UnicodeWriter
-from src.email import sendEventConfirmationEmail
+from src.email import sendEventConfirmationEmail, sendEventInvite
 from src.regex import REGEX_EMAIL, REGEX_NAME, REGEX_SLUG
 from src.sanitizer import sanitize_redactor_input
 from src.serializer import serialize, serialize_one
@@ -49,7 +49,38 @@ def index(request, id, params, user):
     design = params['design'] is not None and editable
     if not design and not preview and not event.is_launched:
         return redirect('index')
+    pastEventList = {}
+    if editable:
+        profiles = Profile.objects.filter(managers = user)
+        pids = []
+        for profile in profiles:
+            pids.append(profile.id)
+        pastEvents = Event.objects.filter(Q(end_time = None, 
+                                            start_time__lt = timezone.now()) | 
+                                          Q(end_time__isnull = False, 
+                                            end_time__lt = timezone.now()), 
+                                          is_launched = True, 
+                                          organizers__in = pids) \
+                                  .order_by('-start_time')
+        eids = []
+        for pastEvent in pastEvents:
+            eids.append(pastEvent.id)
+        purchases = Purchase.objects.filter(Q(checkout = None) | 
+                                    Q(checkout__is_charged = True, 
+                                      checkout__is_refunded = False), 
+                                    event__in = eids, 
+                                    is_expired = False)
+        for purchase in purchases:
+            if purchase.event.id in pastEventList:
+                pastEventList[purchase.event.id]['quantity'] += 1
+            else:
+                pastEventList[purchase.event.id] = {
+                    'id': purchase.event.id,
+                    'name': purchase.event.name,
+                    'quantity': 1
+                }
     tickets = Ticket.objects.filter(event = event, is_deleted = False)
+    promos = Promo.objects.filter(event = event, is_deleted = False)
     organizers = Organizer.objects.filter(event = event)
     rsvp = True
     cheapest = float('inf')
@@ -91,6 +122,12 @@ def modify(request, id, step, params, user):
                                                 ticket = tickets[i]).count()
             tickets[i].sold = sold
         promos = Promo.objects.filter(event = event, is_deleted = False)
+
+        for promo in promos:
+            promo.purchase_count = Purchase_item.objects.filter(Q(purchase__checkout = None) | 
+                                                Q(purchase__checkout__is_charged = True, 
+                                                  purchase__checkout__is_refunded = False), 
+                                                purchase__promos__id__contains = promo.id).count()
     return render(request, 'event/modify-' + step + '.html', locals())
 
 @login_required()
@@ -216,6 +253,57 @@ def search(request, params):
         'events':serialize(events)
     }
     return json_response(response)
+
+@login_required()
+@validate('POST', [], ['events', 'emails'])
+def invite(request, id, params, user):
+    if not Event.objects.filter(id = id, 
+                                is_deleted = False).exists():
+        response = {
+            'status':'FAIL',
+            'error':'EVENT_NOT_FOUND',
+            'message':'The event doesn\'t exist.'
+        }
+        return json_response(response)
+    event = Event.objects.get(id = id)
+    if not params['events'] and not params['emails']:
+        response = {
+            'status':'FAIL',
+            'error':'NO_EMAILS',
+            'message':'You need to select at least one email.'
+        }
+        return json_response(response)
+    profiles = Profile.objects.filter(managers = user)
+    inviter = profiles.all()[0].name
+    pids = []
+    for profile in profiles:
+        pids.append(profile.id)
+    emails = []
+    if params['events']:
+        eids = params['events'].replace(" ", "").split(",")
+        purchases = Purchase.objects.filter(Q(checkout = None) | 
+                                        Q(checkout__is_charged = True, 
+                                          checkout__is_refunded = False), 
+                                        event__in = eids,
+                                        event__organizers__in = pids, 
+                                        is_expired = False)
+        for purchase in purchases.all():
+            if not any(purchase.owner.email.lower() == val.lower() for val in emails):
+                emails.append(purchase.owner.email)
+    if params['emails']:
+        additional_emails = params['emails'].replace(" ", "").split(",")
+        for email in additional_emails:
+            if not any(email.lower() == val.lower() for val in emails) and REGEX_EMAIL.match(email):
+                emails.append(email)
+    for email in emails:
+        sendEventInvite(event, email, inviter)
+    response = {
+        'status':'OK',
+        'count': str(len(emails))
+    }
+    return json_response(response)
+
+
 
 @login_required()
 @validate('POST', ['profile'])
@@ -1266,7 +1354,7 @@ def purchase(request, params, user):
                 promo = Promo.objects.get(code = code, event = event)
                 if not promo.ticket.is_deleted:
                     l = len(promo.email_domain)
-                    if params['email'][-l:] == promo.email_domain:
+                    if params['email'][-l:] == promo.email_domain or l == 0:
                         promos[promo.ticket.id] = promo
                         continue
             response = {

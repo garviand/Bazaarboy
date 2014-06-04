@@ -19,6 +19,8 @@ from src.config import *
 from src.timezone import localize
 from django.utils.dateformat import DateFormat
 
+import pdb
+
 def sendEmails(to, subject, template, mergeVars, attachments=[]):
     """
     Send an email
@@ -157,6 +159,73 @@ def sendProfileMessageEmail(name, email, message, profile, event):
             {
                 'name': 'user_message', 
                 'content': message
+            }
+        ]
+    }]
+    return sendEmails(to, subject, template, mergeVars)
+
+@task()
+def sendEventInvite(event, email, inviter):
+    event_month = DateFormat(event.start_time)
+    event_month = event_month.format('M')
+    event_day = DateFormat(event.start_time)
+    event_day = event_day.format('j')
+    organizers = event.organizers.all()
+    organizer_list_html = ''
+    for organizer in organizers:
+        if organizer.image:
+            organizer_image = """
+                <td class='logo' style='-webkit-hyphens: auto; -moz-hyphens: auto; hyphens: auto; border-collapse: collapse !important; vertical-align: middle; text-align: left; color: #222222; font-family: 'Avenir', 'Helvetica', 'Arial', sans-serif; font-weight: normal; line-height: 19px; font-size: 14px; width: 40px !important; margin: 0; padding: 0px 0px 0;' align='left' valign='middle'>
+                    <img src='""" + organizer.image.source.url.split("?", 1)[0] + """' style='outline: none; text-decoration: none; -ms-interpolation-mode: bicubic; width: 35px !important; max-width: 35px !important; float: left; clear: both; display: block;' align='left' />
+                </td>
+            """
+        else:
+            organizer_image = ''
+        organizer_list_html += """
+            <table class='organizer' style='border-collapse: separate; vertical-align: top; text-align: left; margin-bottom: 10px; padding: 0; font-family: 'Avenir', 'Helvetica', 'Arial', sans-serif;'>
+                <tr style='vertical-align: top; text-align: left; padding: 0; font-family: 'Avenir', 'Helvetica', 'Arial', sans-serif;' align='left'>
+                    """ + organizer_image + """
+                    <td class='name' style='-webkit-hyphens: auto; -moz-hyphens: auto; hyphens: auto; border-collapse: collapse !important; vertical-align: middle; text-align: left; color: #222222; font-family: "Avenir", "Helvetica", "Arial", sans-serif; font-weight: normal; line-height: 19px; font-size: 14px; margin: 0; padding: 0px 0px 0 10px; padding-left: 5px;' align='left' valign='middle'>
+                        """ + organizer.name + """
+                    </td>
+                </tr>
+            </table>
+        """
+    to = [{
+        'email':email
+    }]
+    subject = 'Invitation to \'' + event.name + '\''
+    template = 'event-invitation-1'
+    mergeVars = [{
+        'rcpt': email,
+        'vars': [
+            {
+                'name': 'organizer_list', 
+                'content': organizer_list_html
+            },
+            {
+                'name': 'inviter', 
+                'content': inviter
+            },
+            {
+                'name': 'event_id', 
+                'content': event.id
+            },
+            {
+                'name': 'event_name', 
+                'content': event.name
+            },
+            {
+                'name': 'event_month', 
+                'content': event_month
+            },
+            {
+                'name': 'event_day', 
+                'content': event_day
+            },
+            {
+                'name': 'event_summary', 
+                'content': event.summary
             }
         ]
     }]
