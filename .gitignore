@@ -7,3 +7,4 @@ migration/*
 *~
 Bazaarboy/*/migrations/*
 *.DS_STORE
+celery.conf

@@ -21,7 +21,7 @@ from src.config import *
 from src.controllers.request import *
 from src.csvutils import UnicodeWriter
 from src.email import sendEventConfirmationEmail, sendEventInvite
-from src.regex import REGEX_EMAIL, REGEX_NAME
+from src.regex import REGEX_EMAIL, REGEX_NAME, REGEX_SLUG
 from src.sanitizer import sanitize_redactor_input
 from src.serializer import serialize, serialize_one
 from src.sms import sendEventConfirmationSMS
@@ -35,9 +35,13 @@ def index(request, id, params, user):
     """
     Event page
     """
-    if not Event.objects.filter(id = id, is_deleted = False).exists():
+    event = None
+    if id.isdigit() and Event.objects.filter(id = id, is_deleted = False).exists():
+        event = Event.objects.select_related().get(id = id)
+    elif Event.objects.filter(slug = id, is_deleted = False).exists():
+        event = Event.objects.select_related().get(slug = id)
+    if event is None:
         raise Http404
-    event = Event.objects.select_related().get(id = id)
     editable = (user is not None and 
                 Organizer.objects.filter(event = event, 
                                          profile__managers = user).exists())
@@ -341,7 +345,7 @@ def create(request, params, user):
           ['id'], 
           ['name', 'summary', 'description', 'cover', 'caption', 'tags', 
            'category', 'start_time', 'end_time', 'location', 'latitude', 
-           'longitude'])
+           'longitude', 'slug'])
 def edit(request, params, user):
     """
     Edit an existing event
@@ -503,6 +507,27 @@ def edit(request, params, user):
             return json_response(response)
         else:
             event.category = params['category']
+    if params['slug'] is not None:
+        params['slug'] = cgi.escape(params['slug'])
+        if params['slug'] == 'none':
+            event.slug = None
+        elif not REGEX_SLUG.match(params['slug']):
+            response = {
+                'status':'FAIL',
+                'error':'INVALID_SLUG',
+                'message':'The shortcut must be a combination of alphanumeric chars and hyphen.'
+            }
+            return json_response(response)
+        elif Event.objects.filter(slug = params['slug'], is_deleted = False) \
+                          .exclude(id = event.id).exists():
+            response = {
+                'status':'FAIL',
+                'error':'DUPLICATE_SLUG',
+                'message':'The shortcut has already been taken.'
+            }
+            return
+        else:
+            event.slug = params['slug']
     # Save the changes
     event.save()
     response = {

@@ -8818,6 +8818,21 @@ div#event-modify-basics div.status {
   text-transform: uppercase;
   text-align: right;
 }
+div#event-modify-basics div.url-shortcut {
+  position: relative;
+}
+div#event-modify-basics div.url-shortcut div.url-prefix {
+  position: absolute;
+  height: 14px;
+  top: 11px;
+  left: 23px;
+  color: #000;
+  font-size: 14px;
+  line-height: 14px;
+}
+div#event-modify-basics div.url-shortcut input {
+  padding-left: 235px;
+}
 div#event-modify-basics input.primary-btn {
   width: 100%;
   margin-top: 40px;

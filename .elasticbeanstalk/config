@@ -1,7 +1,7 @@
 [global]
 EnvironmentType=LoadBalanced
 InstanceProfileName=aws-elasticbeanstalk-ec2-role
-OptionSettingFile=/vagrant/Bazaarboy/.elasticbeanstalk/optionsettings.Bazaarboy-Production
+OptionSettingFile=/vagrant/Development/Bazaarboy/.elasticbeanstalk/optionsettings.Bazaarboy-Production
 RdsEnabled=No
 ServiceEndpoint=https://elasticbeanstalk.us-east-1.amazonaws.com
 SolutionStack=64bit Amazon Linux running Python
