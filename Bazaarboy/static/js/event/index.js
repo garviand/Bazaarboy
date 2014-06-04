@@ -79,6 +79,7 @@
         last_name: $('input[name=last_name]').val().trim(),
         email: $('input[name=email]').val().trim(),
         phone: $('input[name=phone]').val().trim(),
+        promos: $('input[name=promos]').val().trim(),
         details: {}
       };
       tickets = $('div#tickets-canvas div.ticket');
@@ -99,6 +100,7 @@
         alert('You Must Select A Ticket');
         $('a#tickets-confirm').html('Confirm RSVP');
       } else {
+        console.log(params);
         Bazaarboy.post('event/purchase/', params, function(response) {
           var a, b, total;
           if (response.status !== 'OK') {
@@ -272,6 +274,11 @@
       });
       $('div.invite-success a.close-invite-modal').click(function() {
         $('div#invite-modal').foundation('reveal', 'close');
+      });
+      $('div#tickets-details a.start-promo-btn').click(function() {
+        return $('div.start-promo').fadeOut(300, function() {
+          $('div.enter-promo').fadeIn(300);
+        });
       });
       addthisevent.settings({
         outlook: {

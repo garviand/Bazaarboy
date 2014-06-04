@@ -76,6 +76,7 @@ def index(request, id, params, user):
                     'quantity': 1
                 }
     tickets = Ticket.objects.filter(event = event, is_deleted = False)
+    promos = Promo.objects.filter(event = event, is_deleted = False)
     organizers = Organizer.objects.filter(event = event)
     rsvp = True
     cheapest = float('inf')
@@ -117,6 +118,12 @@ def modify(request, id, step, params, user):
                                                 ticket = tickets[i]).count()
             tickets[i].sold = sold
         promos = Promo.objects.filter(event = event, is_deleted = False)
+
+        for promo in promos:
+            promo.purchase_count = Purchase_item.objects.filter(Q(purchase__checkout = None) | 
+                                                Q(purchase__checkout__is_charged = True, 
+                                                  purchase__checkout__is_refunded = False), 
+                                                purchase__promos__id__contains = promo.id).count()
     return render(request, 'event/modify-' + step + '.html', locals())
 
 @login_required()
@@ -1322,7 +1329,7 @@ def purchase(request, params, user):
                 promo = Promo.objects.get(code = code, event = event)
                 if not promo.ticket.is_deleted:
                     l = len(promo.email_domain)
-                    if params['email'][-l:] == promo.email_domain:
+                    if params['email'][-l:] == promo.email_domain or l == 0:
                         promos[promo.ticket.id] = promo
                         continue
             response = {

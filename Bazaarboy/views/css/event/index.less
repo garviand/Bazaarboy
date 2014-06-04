@@ -1041,16 +1041,40 @@ div#tickets-details {
             height: 40px;
             padding: 4px;
 
-            input {
+            input:not(.promo-input) {
                 width: 328px;
                 height: 32px;
                 margin: 0;
                 border-radius: 4px;
             }
+            div.start-promo{
+                margin-top: 8px;
+                a.start-promo-btn{
+                    font-size: .8rem;
+                    margin-right: 8px;
+                    color: @orange;
+                    font-style: italic;
+                    text-decoration: underline;
+                }
+            }
+            input.promo-input{
+                border-radius: 4px;
+                margin-bottom: 0;
+            }
+            a.postfix{
+                background: @blue;
+                border-top-right-radius: 4px;
+                border-bottom-right-radius: 4px;
+                margin-bottom: 0;
+            }
         }
 
         div.top input {
             width: 160px;
+        }
+
+        div.promo-container{
+            padding-left: 0;
         }
     }
 }

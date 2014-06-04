@@ -64,6 +64,7 @@ Bazaarboy.event.index =
             last_name: $('input[name=last_name]').val().trim()
             email: $('input[name=email]').val().trim()
             phone: $('input[name=phone]').val().trim()
+            promos: $('input[name=promos]').val().trim()
             details: {}
         tickets = $('div#tickets-canvas div.ticket')
         ticketSelected = false
@@ -79,6 +80,7 @@ Bazaarboy.event.index =
             alert 'You Must Select A Ticket'
             $('a#tickets-confirm').html 'Confirm RSVP'
         else
+            console.log params
             Bazaarboy.post 'event/purchase/', params, (response) =>
                 if response.status isnt 'OK'
                     alert response.message
@@ -220,6 +222,11 @@ Bazaarboy.event.index =
         $('div.invite-success a.close-invite-modal').click () ->
             $('div#invite-modal').foundation('reveal', 'close')
             return
+        # PROMOS
+        $('div#tickets-details a.start-promo-btn').click () ->
+            $('div.start-promo').fadeOut 300, () ->
+                $('div.enter-promo').fadeIn 300
+                return
         # ADD THIS EVENT INIT
         addthisevent.settings
             outlook   : {show:true, text:"Outlook Calendar"}

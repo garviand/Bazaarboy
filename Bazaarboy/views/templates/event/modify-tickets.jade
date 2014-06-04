@@ -102,7 +102,7 @@ block content
                                         span.dot &nbsp;&middot;&nbsp;
                                         span.code {{ promo.code }}
                                         span.pipe &nbsp;|&nbsp;
-                                        span.claims 0 Claimed
+                                        span.claims {{ promo.purchase_count }} Claimed
                                     div.action.small-3.columns.text-right
                                         a.edit-promo(href="javascript:;", data-id="{{ promo.id }}") Edit/Delete Promo
                         {% endif %}

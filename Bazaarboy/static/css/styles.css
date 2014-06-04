@@ -8739,14 +8739,37 @@ div#tickets-details div.right > div {
   height: 40px;
   padding: 4px;
 }
-div#tickets-details div.right > div input {
+div#tickets-details div.right > div input:not(.promo-input) {
   width: 328px;
   height: 32px;
   margin: 0;
   border-radius: 4px;
 }
+div#tickets-details div.right > div div.start-promo {
+  margin-top: 8px;
+}
+div#tickets-details div.right > div div.start-promo a.start-promo-btn {
+  font-size: .8rem;
+  margin-right: 8px;
+  color: #faa638;
+  font-style: italic;
+  text-decoration: underline;
+}
+div#tickets-details div.right > div input.promo-input {
+  border-radius: 4px;
+  margin-bottom: 0;
+}
+div#tickets-details div.right > div a.postfix {
+  background: #4963e4;
+  border-top-right-radius: 4px;
+  border-bottom-right-radius: 4px;
+  margin-bottom: 0;
+}
 div#tickets-details div.right div.top input {
   width: 160px;
+}
+div#tickets-details div.right div.promo-container {
+  padding-left: 0;
 }
 div#tickets-footer {
   position: relative;

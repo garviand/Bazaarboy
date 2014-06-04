@@ -357,6 +357,17 @@ block body
                                     input(type="text", name="email", placeholder="Email")
                                 div.bottom
                                     input(type="text", name="phone", placeholder="Phone (Optional)")
+                                {% if promos.count > 0 %}
+                                div.bottom
+                                    div.row.collapse.start-promo
+                                        div.small-12.columns.text-right
+                                            a.start-promo-btn(href="javascript:;") Enter Promo Code
+                                    div.row.collapse.enter-promo.hidden
+                                        div.small-12.columns.promo-container
+                                            input.promo-input(type="text", name="promos", placeholder="Promo Code (applies on confirm)")
+                                        //div.small-4.columns
+                                            a.button.postfix(href="javascript:;") Apply Promo
+                                {% endif %}
             div#tickets-footer
                 div#tickets-subtotal
                     | Subtotal | $
