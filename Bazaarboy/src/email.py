@@ -354,7 +354,7 @@ def sendEventConfirmationEmail(purchase):
         ]
     }]
     attachments = Ticket_attachment.getTicketAttachments(purchase, items)
-    return sendEmails(to, subject, template, mergeVars)
+    return sendEmails(to, subject, template, mergeVars, attachments)
 
 def sendBonusEmails():
     """
