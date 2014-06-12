@@ -66,7 +66,8 @@ Bazaarboy.event.index =
             phone: $('input[name=phone]').val().trim()
             details: {}
         if $('input[name=promos]').length > 0
-            params['promos'] = $('input[name=promos]').val().trim()
+            if $('input[name=promos]').val().trim() isnt ''
+                params['promos'] = $('input[name=promos]').val().trim()
         tickets = $('div#tickets-canvas div.ticket')
         ticketSelected = false
         for ticket in tickets

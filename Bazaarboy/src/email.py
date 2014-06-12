@@ -248,27 +248,31 @@ def sendEventConfirmationEmail(purchase):
         if organizer.image:
             organizer_image = """
                 <td class='logo' style='-webkit-hyphens: auto; -moz-hyphens: auto; hyphens: auto; border-collapse: collapse !important; vertical-align: middle; text-align: left; color: #222222; font-family: 'Avenir', 'Helvetica', 'Arial', sans-serif; font-weight: normal; line-height: 19px; font-size: 14px; width: 40px !important; margin: 0; padding: 0px 0px 0;' align='left' valign='middle'>
-                    <img src='""" + organizer.image.source.url.split("?", 1)[0] + """' style='outline: none; text-decoration: none; -ms-interpolation-mode: bicubic; width: 35px !important; max-width: 35px !important; float: left; clear: both; display: block;' align='left' />
+                    <img src='""" + organizer.image.source.url + """' style='outline: none; text-decoration: none; -ms-interpolation-mode: bicubic; width: 35px !important; max-width: 35px !important; float: left; clear: both; display: block;' align='left' />
                 </td>
             """
         else:
             organizer_image = ''
         organizer_list_html += """
-            <table class='organizer' style='border-collapse: separate; vertical-align: top; text-align: left; margin-bottom: 10px; padding: 0; font-family: 'Avenir', 'Helvetica', 'Arial', sans-serif;'>
-                <tr style='vertical-align: top; text-align: left; padding: 0; font-family: 'Avenir', 'Helvetica', 'Arial', sans-serif;' align='left'>
-                    """ + organizer_image + """
-                    <td class='name' style='-webkit-hyphens: auto; -moz-hyphens: auto; hyphens: auto; border-collapse: collapse !important; vertical-align: middle; text-align: left; color: #222222; font-family: "Avenir", "Helvetica", "Arial", sans-serif; font-weight: normal; line-height: 19px; font-size: 14px; margin: 0; padding: 0px 0px 0 10px; padding-left: 5px;' align='left' valign='middle'>
-                        """ + organizer.name + """
-                    </td>
-                </tr>
-            </table>
+            <tr class="organizer" style="vertical-align: top; text-align: left; padding: 0;" align="left">
+                <td class="three sub-columns center text-pad-left" style="word-break: break-word; -webkit-hyphens: auto; -moz-hyphens: auto; hyphens: auto; border-collapse: collapse !important; vertical-align: top; text-align: center; min-width: 0px; width: 25%; line-height: 19px; font-size: 14px; color: #4A4A4A !important; margin: 0; padding: 0px 10px 10px;" align="center" valign="top">
+                    <img class="organizer_logo" src="logo.png" style="outline: none; text-decoration: none; -ms-interpolation-mode: bicubic; width: auto; max-width: 100%; float: left; clear: both; display: block;" align="left" />
+                </td>
+                <td class="nine sub-columns last" style="word-break: break-word; -webkit-hyphens: auto; -moz-hyphens: auto; hyphens: auto; border-collapse: collapse !important; vertical-align: top; text-align: left; min-width: 0px; width: 75%; line-height: 19px; font-size: 14px; color: #4A4A4A !important; margin: 0; padding: 0px 0px 10px;" align="left" valign="top">
+                    <div class="organizer_name" style="font-size: 16px; margin-top: 10px;">
+                        Bazaarboy
+                    </div>
+                </td>
+                <td class="expander" style="word-break: break-word; -webkit-hyphens: auto; -moz-hyphens: auto; hyphens: auto; border-collapse: collapse !important; vertical-align: top; text-align: left; visibility: hidden; width: 0px; line-height: 19px; font-size: 14px; color: #4A4A4A !important; margin: 0; padding: 0;" align="left" valign="top">
+                </td>
+            </tr>
         """
     to = [{
         'email':user.email, 
         'name':user.first_name + ' ' + user.last_name
     }]
     subject = 'Confirmation for \'' + event.name + '\''
-    template = 'confirm-rsvp'
+    template = 'event-rsvp'
     items = Purchase_item.objects.filter(purchase = purchase) \
                                  .prefetch_related('ticket')
     tickets = {}
@@ -289,37 +293,57 @@ def sendEventConfirmationEmail(purchase):
         else:
             ticket_price = '$'+str(ticket['price'])
         ticket_list_html += """
-            <table class="seven columns ticket" style="border-collapse: separate; vertical-align: top; text-align: left; width: 330px; margin: 0 auto; padding: 0;">
-              <tr style="vertical-align: top; text-align: left; padding: 0;" align="left">
-                <td class="two sub-columns number" style="-webkit-hyphens: auto; -moz-hyphens: auto; hyphens: auto; border-collapse: collapse !important; vertical-align: middle; text-align: center; min-width: 0px; width: 16.666666%; color: #222222; font-family: 'Avenir', 'Helvetica', 'Arial', sans-serif; font-weight: bold; line-height: 19px; font-size: 1.5em; margin: 0; padding: 0px 10px 0 0px;" align="center" valign="middle">
-                  """ + str(ticket['quantity']) + """x
+            <tr class="ticket_top" style="vertical-align: top; text-align: left; padding: 0;" align="left">
+                <td class="two sub-columns" style="word-break: break-word; -webkit-hyphens: auto; -moz-hyphens: auto; hyphens: auto; border-collapse: collapse !important; vertical-align: top; text-align: left; min-width: 0px; width: 16.666666%; line-height: 19px; font-size: 14px; color: #4A4A4A !important; margin: 0; padding: 0px 10px 10px 0px;" align="left" valign="top">
+                    <div class="ticket_count left-text-pad" style="padding-left: 10px; margin-top: 0; font-size: 20px; font-weight: 500; padding-top: 8px;">
+                        """ + str(ticket['quantity']) + """x
+                    </div>
                 </td>
-                <td class="ten sub-columns price_name" style="-webkit-hyphens: auto; -moz-hyphens: auto; hyphens: auto; border-collapse: collapse !important; vertical-align: top; text-align: left; min-width: 0px; width: 83.333333%; color: #222222; font-family: 'Avenir', 'Helvetica', 'Arial', sans-serif; font-weight: normal; line-height: 19px; font-size: 14px; margin: 0; padding: 0px 10px 0 0px;" align="left" valign="top">
-                  <table style="border-collapse: separate; vertical-align: top; text-align: left; padding: 0;">
-                    <tr style="vertical-align: top; text-align: left; padding: 0;" align="left">
-                      <td class="price" style="-webkit-hyphens: auto; -moz-hyphens: auto; hyphens: auto; border-collapse: collapse !important; vertical-align: middle; text-align: center; color: #FFF; font-family: 'Avenir', 'Helvetica', 'Arial', sans-serif; font-weight: 600; line-height: 19px; font-size: 1.2em; border-radius: 2px; height: 35px; min-width: 40px !important; box-sizing: border-box; background: #4b64e9; margin: 0; padding: 0 4px;" align="center" bgcolor="#4b64e9" valign="middle">
+                <td class="two sub-columns" style="word-break: break-word; -webkit-hyphens: auto; -moz-hyphens: auto; hyphens: auto; border-collapse: collapse !important; vertical-align: top; text-align: left; min-width: 0px; width: 16.666666%; line-height: 19px; font-size: 14px; color: #4A4A4A !important; margin: 0; padding: 0px 10px 10px 0px;" align="left" valign="top">
+                    <div class="ticket_price" style="margin-top: 0; color: #FFF; border-radius: 2px; text-align: center; font-weight: 500; background: #4963E4; padding: 8px 0;" align="center">
                         """ + ticket_price + """
-                      </td>
-                      <td class="name" style="-webkit-hyphens: auto; -moz-hyphens: auto; hyphens: auto; border-collapse: collapse !important; vertical-align: middle; text-align: left; color: #222222; font-family: 'Avenir', 'Helvetica', 'Arial', sans-serif; font-weight: normal; line-height: 19px; font-size: 14px; margin: 0; padding: 0px 0px 0 10px;" align="left" valign="middle">
+                    </div>
+                </td>
+                <td class="eight sub-columns last" style="word-break: break-word; -webkit-hyphens: auto; -moz-hyphens: auto; hyphens: auto; border-collapse: collapse !important; vertical-align: top; text-align: left; min-width: 0px; width: 66.666666%; line-height: 19px; font-size: 14px; color: #4A4A4A !important; margin: 0; padding: 0px 0px 10px;" align="left" valign="top">
+                    <div class="ticket_name right-text-pad" style="padding-right: 10px; margin-top: 0; font-weight: 500; padding-top: 8px;">
                         """ + ticket['name'] + """
-                      </td>
-                    </tr>
-                  </table>
+                    </div>
                 </td>
-              </tr>
-              <tr style="vertical-align: top; text-align: left; padding: 0;" align="left">
-                <td class="two sub-columns" style="-webkit-hyphens: auto; -moz-hyphens: auto; hyphens: auto; border-collapse: collapse !important; vertical-align: top; text-align: left; min-width: 0px; width: 16.666666%; color: #222222; font-family: 'Avenir', 'Helvetica', 'Arial', sans-serif; font-weight: normal; line-height: 19px; font-size: 14px; margin: 0; padding: 0px 10px 0 0px;" align="left" valign="top">
+                <td class="expander" style="word-break: break-word; -webkit-hyphens: auto; -moz-hyphens: auto; hyphens: auto; border-collapse: collapse !important; vertical-align: top; text-align: left; visibility: hidden; width: 0px; line-height: 19px; font-size: 14px; color: #4A4A4A !important; margin: 0; padding: 0;" align="left" valign="top"></td>
+            </tr>
+            <tr class="ticket_bottom" style="vertical-align: top; text-align: left; border-bottom-width: thin; border-bottom-color: #F6F6F6; border-bottom-style: solid; padding: 0;" align="left">
+                <td class="one sub-columns" style="word-break: break-word; -webkit-hyphens: auto; -moz-hyphens: auto; hyphens: auto; border-collapse: collapse !important; vertical-align: top; text-align: left; min-width: 0px; width: 8.333333%; line-height: 19px; font-size: 14px; color: #4A4A4A !important; margin: 0; padding: 0px 10px 10px 0px;" align="left" valign="top">
                 </td>
-                <td class="ten sub-columns description" style="-webkit-hyphens: auto; -moz-hyphens: auto; hyphens: auto; border-collapse: collapse !important; vertical-align: top; text-align: left; min-width: 0px; width: 83.333333%; color: #222222; font-family: 'Avenir', 'Helvetica', 'Arial', sans-serif; font-weight: normal; line-height: 19px; font-size: 14px; margin: 0; padding: 10px 10px 0 0px;" align="left" valign="top">
-                  """ + ticket['description'] + """
+                <td class="one sub-columns" style="word-break: break-word; -webkit-hyphens: auto; -moz-hyphens: auto; hyphens: auto; border-collapse: collapse !important; vertical-align: top; text-align: left; min-width: 0px; width: 8.333333%; line-height: 19px; font-size: 14px; color: #4A4A4A !important; margin: 0; padding: 0px 10px 10px 0px;" align="left" valign="top">
                 </td>
-              </tr>
-            </table>
-            <hr style="color: #F6F6F6; height: 1px; margin-bottom: 15px; background: #F6F6F6; border: none;" />
+                <td class="ten sub-columns last" style="word-break: break-word; -webkit-hyphens: auto; -moz-hyphens: auto; hyphens: auto; border-collapse: collapse !important; vertical-align: top; text-align: left; min-width: 0px; width: 83.333333%; line-height: 19px; font-size: 14px; color: #4A4A4A !important; margin: 0; padding: 0px 0px 10px;" align="left" valign="top">
+                    <div class="ticket_description right-text-pad" style="padding-right: 10px; padding-bottom: 10px !important;">
+                        """ + ticket['description'] + """
+                    </div>
+                </td>
+                <td class="expander" style="word-break: break-word; -webkit-hyphens: auto; -moz-hyphens: auto; hyphens: auto; border-collapse: collapse !important; vertical-align: top; text-align: left; visibility: hidden; width: 0px; line-height: 19px; font-size: 14px; color: #4A4A4A !important; margin: 0; padding: 0;" align="left" valign="top">
+                </td>
+            </tr>
         """
     reciept_info = ''
     if purchase.amount > 0:
         reciept_info = 'TOTAL: $' + str(purchase.amount)
+    if event.slug:
+        event_url = 'https://bazaarboy.com/' + event.slug
+    else:
+        event_url = 'https://bazaarboy.com/event/' + str(event.id)
+    startTime = localize(event.start_time)
+    if event.end_time:
+        endTime = localize(event.end_time)
+        if endTime.day == startTime.day:
+            event_date = '<span style="font-weight: 600;">' + startTime.strftime('%A') + '</span>, '
+            event_date += startTime.strftime('%I:%M%p').lower() + ' - ' + endTime.strftime('%I:%M%p').lower()
+        else:
+            event_date = startTime.strftime('%A') + ', ' + startTime.strftime('%I:%M%p').lower() + ' - '
+            event_date += endTime.strftime('%A') + ', ' + endTime.strftime('%I:%M%p').lower()
+    else:
+        event_date = '<span style="font-weight: 600;">' + startTime.strftime('%A') + '</span>, '
+        event_date += startTime.strftime('%I:%M%p').lower()
     mergeVars = [{
         'rcpt': user.email,
         'vars': [
@@ -332,8 +356,12 @@ def sendEventConfirmationEmail(purchase):
                 'content': ticket_list_html
             },
             {
-                'name': 'event_id', 
-                'content': event.id
+                'name': 'event_link', 
+                'content': event_url
+            },
+            {
+                'name': 'primary_organizer', 
+                'content': organizers[0].name
             },
             {
                 'name': 'event_name', 
@@ -346,6 +374,14 @@ def sendEventConfirmationEmail(purchase):
             {
                 'name': 'event_day', 
                 'content': event_day
+            },
+            {
+                'name': 'event_date', 
+                'content': event_date
+            },
+            {
+                'name': 'event_location', 
+                'content': event.location
             },
             {
                 'name': 'reciept_info', 

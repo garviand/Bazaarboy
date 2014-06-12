@@ -82,7 +82,9 @@
         details: {}
       };
       if ($('input[name=promos]').length > 0) {
-        params['promos'] = $('input[name=promos]').val().trim();
+        if ($('input[name=promos]').val().trim() !== '') {
+          params['promos'] = $('input[name=promos]').val().trim();
+        }
       }
       tickets = $('div#tickets-canvas div.ticket');
       ticketSelected = false;
