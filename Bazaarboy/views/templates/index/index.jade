@@ -81,7 +81,7 @@ block content
                                     span.ss-creditcard
                                 div.text
                                     span Ticket Options
-                            a.draft-event-action(href="{% url event:index event.id %}?design")
+                            a.draft-event-action(href="{{ event|eventUrl }}?design")
                                 div.icon
                                     span.ss-picture
                                 div.text

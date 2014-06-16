@@ -1,5 +1,6 @@
 from django import template
 from django.utils import timezone
+from django.core.urlresolvers import reverse
 from src.timezone import localize
 
 register = template.Library()
@@ -60,9 +61,9 @@ def eventUrl(event):
     Return Slug or Event ID when appropriate
     """
     if event.slug:
-        return '/' + event.slug
+        return reverse('event-slug', kwargs={'id': event.slug})
     else:
-        return '/event/' + str(event.id)
+        return reverse('event:index', kwargs={'id': event.id})
 
 @register.filter
 def sanitizeUrl(url):
