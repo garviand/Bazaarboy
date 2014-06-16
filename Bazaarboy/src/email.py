@@ -265,9 +265,9 @@ def sendEventConfirmationEmail(purchase):
     """
     user = purchase.owner
     event = purchase.event
-    event_month = DateFormat(event.start_time)
+    event_month = DateFormat(localize(event.start_time))
     event_month = event_month.format('M')
-    event_day = DateFormat(event.start_time)
+    event_day = DateFormat(localize(event.start_time))
     event_day = event_day.format('j')
     organizers = event.organizers.all()
     organizer_list_html = ''
