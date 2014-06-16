@@ -22,7 +22,7 @@ block sidebar
             label Filter Tickets
             div.ticket_filters
                 a.all_tickets.active(href="javascript:;", data-id="all") All Tickets
-                {% for ticket in tickets %}
+                {% for k, ticket in ticket_list.items %}
                 a(href="javascript:;", data-id="{{ ticket.id }}") {{ ticket.name }}
                 {% endfor %}
 

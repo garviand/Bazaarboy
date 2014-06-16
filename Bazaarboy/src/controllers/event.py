@@ -177,7 +177,13 @@ def manage(request, id, params, user):
                     }
                 }
             }
-    tickets = Ticket.objects.filter(event=event)
+    ticket_list = {}
+    for item in purchase_items:
+        if not item.ticket.id in ticket_list:
+            ticket_list[item.ticket.id] = {
+                'id': item.ticket.id,
+                'name': item.ticket.name
+            }
     checked_in = purchase_items.exclude(Q(checked_in_time = None)).count()
     return render(request, 'event/manage.html', locals())
 
