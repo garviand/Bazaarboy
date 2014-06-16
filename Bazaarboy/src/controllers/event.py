@@ -585,7 +585,6 @@ def add_organizer(request, params, user):
     else:
         result_profile['image_url'] = None
     if profile.email:
-        pdb.set_trace()
         sendOrganizerAddedEmail(event, user_profile, profile)
     response = {
         'status':'OK',
