@@ -20,7 +20,7 @@ from kernel.models import *
 from src.config import *
 from src.controllers.request import *
 from src.csvutils import UnicodeWriter
-from src.email import sendEventConfirmationEmail, sendEventInvite
+from src.email import sendEventConfirmationEmail, sendEventInvite, sendOrganizerAddedEmail
 from src.regex import REGEX_EMAIL, REGEX_NAME, REGEX_SLUG
 from src.sanitizer import sanitize_redactor_input
 from src.serializer import serialize, serialize_one
@@ -558,6 +558,7 @@ def add_organizer(request, params, user):
             'message':'You don\'t have permission for the event.'
         }
         return json_response(response)
+    user_profile = Organizer.objects.filter(event = event, profile__managers = user)[0].profile
     # Check if the profile exists
     if not Profile.objects.filter(id = params['profile']).exists():
         response = {
@@ -583,6 +584,9 @@ def add_organizer(request, params, user):
         result_profile['image_url'] = profile.image.source.url
     else:
         result_profile['image_url'] = None
+    if profile.email:
+        pdb.set_trace()
+        sendOrganizerAddedEmail(event, user_profile, profile)
     response = {
         'status':'OK',
         'profile': result_profile

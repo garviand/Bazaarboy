@@ -165,6 +165,33 @@ def sendProfileMessageEmail(name, email, message, profile, event):
     return sendEmails(to, subject, template, mergeVars)
 
 @task()
+def sendOrganizerAddedEmail(event, adder, profile):
+    to = [{
+        'email':profile.email, 
+        'name':profile.name
+    }]
+    subject = 'Added as organizer - ' + event.name
+    template = 'organizer-added'
+    mergeVars = [{
+        'rcpt': profile.email,
+        'vars': [
+            {
+                'name': 'adder_name', 
+                'content': adder.name
+            },
+            {
+                'name': 'event_id', 
+                'content': event.id
+            },
+            {
+                'name': 'event_name', 
+                'content': event.name
+            }
+        ]
+    }]
+    return sendEmails(to, subject, template, mergeVars)
+
+@task()
 def sendEventInvite(event, email, inviter):
     event_month = DateFormat(event.start_time)
     event_month = event_month.format('M')

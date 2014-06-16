@@ -55,6 +55,16 @@ def hasStartedOrEnded(obj):
             (obj.end_time is not None and timezone.now() >= obj.end_time))
 
 @register.filter
+def eventUrl(event):
+    """
+    Return Slug or Event ID when appropriate
+    """
+    if event.slug:
+        return '/' + event.slug
+    else:
+        return '/event/' + str(event.id)
+
+@register.filter
 def sanitizeUrl(url):
     """
     Strip the parameters from the url
