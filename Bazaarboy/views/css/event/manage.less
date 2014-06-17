@@ -12,6 +12,22 @@
             font-weight: 300;
         }
     }
+    div.guest-add{
+        width: 100%;
+        color: #FFF;
+        font-weight: 500;
+        padding: 20px 0;
+        border-bottom: solid 1px #464646;
+        a{
+            display: block;
+            width: 100%;
+            text-align: center;
+            font-size: 12px;
+            color: @orange;
+            text-decoration: underline;
+            font-style: italic;
+        }
+    }
     div.guest-search, div.ticket-filters-container{
         width: 100%;
         color: #FFF;
@@ -59,43 +75,18 @@
 
 div#event-manage {
     padding-left: 0;
-    .controls{
-        .checkin_numbers{
+    .add-guest-container{
+        margin: 20px 0;
+        div.add-guest-title{
+            margin-bottom: 10px;
             font-weight: bold;
-            text-align: center;
         }
-        .list_filters{
-            .add_purchase_start, .add_purchase_submit{
-                display: block; 
-                width: 100%;
-                padding-top: 10px;
-                padding-bottom: 13px;
-            }
-            .add_purchase_submit{
-                margin-top: 10px;
-            }
-            div.ticket_filters, div.checkin_filters, div.ticket_types{
-                a{
-                    color: #222222;
-                    display: block;
-                    width: 100%;
-                    border: 1px solid @grey;
-                    text-decoration: none;
-                    border-top: none;
-                    padding: 5px;
-                    text-align: center;
-                    &.all_tickets, &.all_checkins{
-                        font-weight: bold;
-                    }
-                    &:first-child{
-                        border-top: 1px solid @grey;
-                    }
-                    &:hover, &.active{
-                        color: #FFF;
-                        background: #7F7F7F;
-                    }
-                }
-            }
+        input[type=submit]{
+            display: block;
+            width: 100%;
+            text-align: center;
+            padding-top: 6px;
+            padding-bottom: 9px;
         }
     }
     .guests{

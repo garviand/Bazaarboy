@@ -177,6 +177,7 @@ def manage(request, id, params, user):
                     }
                 }
             }
+    tickets = Ticket.objects.filter(event=event, is_deleted=False)
     ticket_list = {}
     for item in purchase_items:
         if not item.ticket.id in ticket_list:
@@ -1501,12 +1502,162 @@ def purchase(request, params, user):
     return json_response(response)
 
 @login_required()
-@validate('POST', ['details', 'email', 'first_name', 'last_name'], ['phone'])
+@validate('POST', ['event', 'details', 'email', 'first_name', 'last_name'], ['phone'])
 def add_purchase(request, params, user):
     """
     Manually add purchase by organizer
+
+    @details: {'#ticket1.id':#quantity, '#ticket2.id':#quantity, ...}
     """
-    pass
+    _user = user
+    # Check purchaser information
+    if not REGEX_EMAIL.match(params['email']):
+        response = {
+            'status':'FAIL',
+            'error':'INVALID_EMAIL',
+            'message':'Email format is invalid.'
+        }
+        return json_response(response)
+    user, created = User.objects.get_or_create(email = params['email'])
+    if (not REGEX_NAME.match(params['first_name']) or 
+        not REGEX_NAME.match(params['last_name'])):
+        response = {
+            'status':'FAIL',
+            'error':'INVALID_NAME',
+            'message':'Your first or last name contain illegal characters.'
+        }
+        return json_response(response)
+    if len(params['first_name']) > 50 or len(params['last_name']) > 50:
+        response = {
+            'status':'FAIL',
+            'error':'NAME_TOO_LONG',
+            'message':'Your first or last name is too long.'
+        }
+        return json_response(response)
+    if user.password is None or (_user is not None and _user.id == user.id):
+        user.first_name = params['first_name']
+        user.last_name = params['last_name']
+    if params['phone'] is not None:
+        params['phone'] = re.compile(r'[^\d]+').sub('', params['phone'])
+        if len(params['phone']) != 10:
+            response = {
+                'status':'FAIL',
+                'error':'INVALID_PHONE',
+                'message':'Your phone number is invalid.'
+            }
+            return json_response(response)
+        if (user.password is None or 
+            (_user is not None and _user.id == user.id)):
+            user.phone = params['phone']
+    # Save the user details after all other checks are done
+    # Check purchase details
+    details = None
+    try:
+        details = json.loads(params['details'])
+    except ValueError:
+        response = {
+            'status':'FAIL',
+            'error':'INVALID_DETAILS',
+            'message':'The purchase details are not in legal format.'
+        }
+        return json_response(response)
+    # Check if the event is valid
+    if not Event.objects.filter(id = params['event'], 
+                                is_deleted = False).exists():
+        response = {
+            'status':'FAIL',
+            'error':'EVENT_NOT_FOUND',
+            'message':'The event doesn\'t exist.'
+        }
+        return json_response(response)
+    event = Event.objects.get(id = params['event'])
+    # Check if the tickets are valid
+    _tickets = Ticket.objects.filter(event = event, is_deleted = False)
+    tickets = {}
+    for _ticket in _tickets:
+        tickets[_ticket.id] = _ticket
+    _details = {}
+    for tid in details:
+        _details[int(tid)] = int(details[tid])
+    details = _details
+    for tid in details:
+        # Check if the ticket belongs to the event
+        if tickets.has_key(tid):
+            ticket = tickets[tid]
+            now = timezone.now()
+            # Check timing
+            if ((ticket.start_time is None or ticket.start_time <= now) and 
+                (ticket.end_time is None or ticket.end_time >= now)):
+                # Check quantity
+                if details[tid] > 0:
+                    continue
+                else:
+                    response = {
+                        'status':'FAIL',
+                        'error':'INVALID_QUANTITY',
+                        'message':'Quantity must be a positive number.'
+                    }
+                    return json_response(response)
+        response = {
+            'status':'FAIL',
+            'error':'INVALID_TICKET',
+            'message':'One of the ticket is invalid.'
+        }
+        return json_response(response)
+    # Start a database transaction
+    with transaction.commit_on_success():
+        # Place a lock on the ticket information (quantity)
+        tids = details.keys()
+        tickets = Ticket.objects.select_for_update().filter(id__in = tids)
+        # Calculate the aggregate amount
+        amount = 0
+        for ticket in tickets:
+            # Check if the ticket has enough quantity left
+            if (ticket.quantity is not None and 
+                ticket.quantity < details[ticket.id]):
+                response = {
+                    'status':'FAIL',
+                    'error':'INSUFFICIENT_QUANTITY',
+                    'message':'There aren\'t enough tickets left.'
+                }
+                return json_response(response)
+        # All checks done, save user information
+        user.save()
+        # Create the purchase
+        purchase = Purchase(owner = user, event = event, amount = 0)
+        purchase.save()
+        purchase.save()
+        for ticket in tickets:
+            for i in range(0, details[ticket.id]):
+                item = Purchase_item(purchase = purchase, 
+                                     ticket = ticket, 
+                                     price = ticket.price)
+                item.save()
+            # If the ticket has a quantity limit
+            if ticket.quantity is not None:
+                # Update the ticket quantity
+                Ticket.objects \
+                      .filter(id = ticket.id) \
+                      .update(quantity = F('quantity') - details[ticket.id])
+        items = {}
+        for ticket in purchase.items.all():
+            if ticket.id in items:
+                items[ticket.id]['quantity'] += 1
+            else:
+                items[ticket.id] = {
+                    'name': ticket.name,
+                    'quantity': 1
+                }
+        # Send confirmation email and sms
+        sendEventConfirmationEmail(purchase)
+        sendEventConfirmationSMS(purchase)
+        # Success
+        response = {
+            'status':'OK',
+            'purchase':serialize_one(purchase),
+            'tickets': items
+        }
+        return json_response(response)
 
 @login_required()
 @validate('GET', ['id'])

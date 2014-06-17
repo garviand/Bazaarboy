@@ -4,52 +4,44 @@
   Bazaarboy.event.manage = {
     selectionStatus: 'all',
     checkinStatus: 'all',
-    add_purchase: function(ticket, email, fullName, phone) {
-      var params,
+    purchaseInProgress: false,
+    add_purchase: function() {
+      var params, ticketId,
         _this = this;
-      if (email == null) {
-        email = null;
-      }
-      if (fullName == null) {
-        fullName = null;
-      }
-      if (phone == null) {
-        phone = null;
-      }
       this.purchaseInProgress = true;
       $('div#rsvp div.action a.confirm').css('display', 'none');
       $('div#rsvp div.action div.loading').removeClass('hide');
       params = {
-        ticket: ticket
+        event: eventId,
+        first_name: $('form[name=add-guest] input[name=first_name]').val().trim(),
+        last_name: $('form[name=add-guest] input[name=last_name]').val().trim(),
+        email: $('form[name=add-guest] input[name=email]').val().trim(),
+        details: {}
       };
-      if ((email != null) && (fullName != null)) {
-        params.email = email;
-        params.full_name = fullName;
-      }
-      if (phone != null) {
-        params.phone = phone;
-      }
+      ticketId = parseInt($('form[name=add-guest] select[name=ticket]').val());
+      params.details[ticketId] = parseInt($('form[name=add-guest] input[name=quantity]').val());
+      params.details = JSON.stringify(params.details);
+      $('form[name=add-guest] input[name=submit]').val('Adding...');
       Bazaarboy.post('event/purchase/add/', params, function(response) {
+        var newGuest;
         if (response.status === 'OK') {
-          $('form.add_purchase_form div.ticket_types a').removeClass('active');
-          $('div.list_content div.inner div.add_purchase').fadeOut(400, function(e) {
-            var guest_div, totalCount;
-            $('form.add_purchase_form input[name=guest_email]').val('');
-            $('form.add_purchase_form input[name=guest_name]').val('');
-            $('form.add_purchase_form input[name=guest_phone]').val('');
-            guest_div = $('<div class="guest" data-ticket="' + response.purchase.ticket + '" data-id="' + response.purchase.pk + '"></div>');
-            guest_div.append('<div class="name">' + fullName + '</div>');
-            guest_div.append('<div class="ticket_name">' + response.purchase.ticket.name + '</div>');
-            guest_div.append('<div class="confirmation">' + response.purchase.code + '</div>');
-            guest_div.append('<div class="checkin"><a href="javascript:;">Check In</a></div>');
-            guest_div.append('<div class="clear">&nbsp;</div>');
-            $('div.list_content div.list_guests div.list_headers').after(guest_div);
-            totalCount = parseInt($('div.checkin_numbers span.total_guests').html()) + 1;
-            $('div.checkin_numbers span.total_guests').html(totalCount);
-            $('div.list_content div.inner div.add_purchase').fadeIn();
-          });
+          $('form[name=add-guest] input[name=first_name]').val('');
+          $('form[name=add-guest] input[name=last_name]').val('');
+          $('form[name=add-guest] input[name=email]').val('');
+          $('form[name=add-guest] input[name=quantity]').val('');
+          $('form[name=add-guest] input[name=submit]').val('Add Guest(s)');
+          newGuest = $('div.guest_template').clone();
+          newGuest.find('div.confirmation').html(response.purchase.code + '&nbsp;');
+          newGuest.find('div.ticket_name').html(response.tickets[ticketId]['name'] + ' (' + response.tickets[ticketId]['quantity'] + ')');
+          newGuest.find('div.name').html(params.first_name + ' ' + params.last_name);
+          newGuest.data('id', response.purchase.id);
+          newGuest.data('ticket', ticketId);
+          newGuest.removeClass('guest_template').removeClass('hidden');
+          $('div.list_headers').after(newGuest);
+          _this.purchaseInProgress = false;
         } else {
           alert(response.message);
+          _this.purchaseInProgress = false;
         }
       });
     },
@@ -102,39 +94,15 @@
       var scope,
         _this = this;
       scope = this;
-      $("div.list_filters a.add_purchase_start").click(function(e) {
+      $("div.guest-add a.start-guest-add").click(function(e) {
         e.preventDefault();
-        $(this).fadeOut(300, function(e) {
-          $("div.list_filters div.add_purchase").removeClass('hide');
-        });
+        $('div.add-guest-container').removeClass('hidden');
       });
-      $('form.add_purchase_form a.add_purchase_submit').click(function(e) {
-        var email, fullName, phone, ticket;
-        if ($('form.add_purchase_form div.ticket_types a.active').length > 0) {
-          ticket = $('form.add_purchase_form div.ticket_types a.active').attr('data-id');
-          email = $('form.add_purchase_form input[name=guest_email]').val();
-          fullName = $('form.add_purchase_form input[name=guest_name]').val();
-          phone = $('form.add_purchase_form input[name=guest_phone]').val();
-          if (email.trim() === '') {
-            alert('You must enter a valid email address.');
-            return;
-          }
-          if (fullName.trim() === '') {
-            alert('You must enter your full name,');
-            return;
-          }
-          if (phone.trim() === '') {
-            phone = null;
-          }
-          scope.add_purchase(ticket, email, fullName, phone);
-        } else {
-          alert('No ticket selected.');
+      $('form[name=add-guest]').submit(function(e) {
+        e.preventDefault();
+        if (!scope.purchaseInProgress) {
+          scope.add_purchase();
         }
-      });
-      $('form.add_purchase_form div.ticket_types a').click(function(e) {
-        e.preventDefault();
-        $('form.add_purchase_form div.ticket_types a').removeClass('active');
-        $(this).addClass('active');
       });
       $('form.list_search input[name=guest_name]').keyup(function(e) {
         e.preventDefault();

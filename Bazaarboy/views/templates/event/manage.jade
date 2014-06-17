@@ -18,6 +18,8 @@ block sidebar
             label Search Guests
             input(type="text", name="guest_name", placeholder="Name")
             input(type="text", name="guest_code", placeholder="Confirmation #")
+        div.guest-add.show-for-large-only
+            a.start-guest-add(href="javascript:;") Manually Add a Guest
         div.ticket-filters-container.show-for-large-only
             label Filter Tickets
             div.ticket_filters
@@ -36,6 +38,30 @@ block header
 block content
     div#wrapper-event-manage.large-9.medium-10.columns.small-centered
         div#event-manage.small-12.columns
+            div.row.add-guest-container.hidden
+                form(name="add-guest")
+                    div.medium-12.columns
+                        div.row
+                            div.small-12.columns
+                                div.add-guest-title Add Guest
+                        div.row
+                            div.medium-4.small-12.columns
+                                input(type="text", name="first_name", placeholder="First Name")
+                            div.medium-4.small-12.columns
+                                input(type="text", name="last_name", placeholder="Last Name")
+                            div.medium-4.small-12.columns
+                                input(type="text", name="email", placeholder="Email")
+                        div.row
+                            div.medium-4.small-12.columns
+                                select(name="ticket")
+                                    option(value="-1") - Choose a Ticket -
+                                    {% for ticket in tickets %}
+                                    option(value="{{ ticket.id }}") {{ ticket.name }}
+                                    {% endfor %}
+                            div.medium-4.small-12.columns
+                                input(type="text", name="quantity", placeholder="Quantity")
+                            div.medium-4.small-12.columns
+                                input.primary-btn(type="submit", name="submit", value="Add Guest(s)")
             div.row
                 div.small-12.columns.guests
                     div.list_guests
@@ -44,6 +70,12 @@ block content
                             div.confirmation.small-2.columns Conf. #
                             div.ticket_name.small-4.columns Ticket Type(s)
                             div.name.small-4.columns Name
+                        div.guest.guest_template.hidden.row
+                            div.checkin.small-2.columns
+                                a.secondary-btn(href="javascript:;") Check In
+                            div.confirmation.small-2.columns &nbsp;
+                            div.ticket_name.small-4.columns &nbsp;
+                            div.name.small-4.columns &nbsp;
                         {% for k, purchase in purchases.items %}
                         {% with tickets=purchase.tickets.items %}
                         div.guest.row(class="{% if purchase.checked_in %}checked_in{% endif %}", data-ticket="{% for k, ticket in tickets %}{% if not forloop.first %},{% endif %}{{ ticket.id }}{% endfor %}", data-id="{{ purchase.id }}")
@@ -64,4 +96,6 @@ block content
 
 
 append script
+    script(type="text/javascript").
+        var eventId = {{ event.id }};
     script(type="text/javascript", src="{{ STATIC_URL }}js/event/manage.js")
