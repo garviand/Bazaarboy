@@ -7,7 +7,7 @@ BBOY_ENV = os.getenv('BBOY_ENV', 'development')
 PROJECT_PATH = os.path.realpath(os.path.dirname(__file__)) + '/../'
 
 DEBUG = os.getenv('BBOY_DEBUG', 'true') == 'true'
-TEMPLATE_DEBUG = DEBUG
+TEMPLATE_DEBUG = True
 
 # General
 
