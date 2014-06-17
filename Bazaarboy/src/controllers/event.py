@@ -19,6 +19,7 @@ from celery import task
 from kernel.models import *
 from src.config import *
 from src.controllers.request import *
+from src.ordereddict import OrderedDict
 from src.csvutils import UnicodeWriter
 from src.email import sendEventConfirmationEmail, sendEventInvite, sendOrganizerAddedEmail
 from src.regex import REGEX_EMAIL, REGEX_NAME, REGEX_SLUG
@@ -186,7 +187,7 @@ def manage(request, id, params, user):
                 'name': item.ticket.name
             }
     checked_in = purchase_items.exclude(Q(checked_in_time = None)).count()
-    
+    purchases = OrderedDict(reversed(sorted(purchases.items())))
     return render(request, 'event/manage.html', locals())
 
 @login_required()
