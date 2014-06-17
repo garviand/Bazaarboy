@@ -6,7 +6,6 @@ import cgi
 import json
 import os
 import re
-import collections
 from datetime import timedelta
 from django.db import transaction, IntegrityError
 from django.db.models import F, Q, Count
@@ -187,7 +186,7 @@ def manage(request, id, params, user):
                 'name': item.ticket.name
             }
     checked_in = purchase_items.exclude(Q(checked_in_time = None)).count()
-    purchases = collections.OrderedDict(reversed(sorted(purchases.items())))
+    
     return render(request, 'event/manage.html', locals())
 
 @login_required()
