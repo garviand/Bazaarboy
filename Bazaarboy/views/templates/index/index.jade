@@ -36,31 +36,31 @@ block content
                     div.draft-event-date
                         div.month {{ event.start_time|date:'M' }}
                         div.day {{ event.start_time|date:'j' }}
-                    div.draft-event-title.large-7.medium-6.columns
+                    div.draft-event-title.large-7.medium-6.small-12.columns
                         | {{ event.name }}
-                    div.draft-event-view.large-5.medium-6.columns
+                    div.draft-event-view.large-5.medium-6.small-12.columns
                         div.row
-                            div.medium-7.columns.draft-publish
+                            div.medium-7.small-12.columns.draft-publish
                                 a.primary-btn.launch-draft(href="javascript:;", data-id="{{ event.id }}")  
                                     | Launch Event
-                            div.medium-5.columns
+                            div.medium-5.small-12.columns
                                 a.secondary-btn.delete-draft(href="javascript:;", data-id="{{ event.id }}") 
                                     | Delete
                 div.info.small-12.columns
                     div.inner.row
-                        div.draft-event-datetime.small-3.columns
+                        div.draft-event-datetime.medium-3.small-12.columns
                             div.draft-event-time
                                 span
                                     span.ss-clock &nbsp;
                                     {{ event.start_time|date:'g:iA' }}{% if event.end_time %}-{{ event.end_time|date:'g:iA' }}{% endif %}
-                        div.draft-event-location-container.small-9.columns
+                        div.draft-event-location-container.medium-9.small-12.columns
                             div.draft-event-location
                                 span
                                     span.ss-location &nbsp;
                                     {% if event.location|length > 0 %}{{ event.location }}{% else %}NO LOCATION SELECTED{% endif %}
                 div.stats.small-12.columns
                     div.row
-                        div.draft-event-stats.medium-9.columns
+                        div.draft-event-stats.medium-9.small-12.columns
                             div.bg.row
                                 div
                             div.inner.row
@@ -70,7 +70,7 @@ block content
                                             | EVENT SUMMARY
                                         div.summary-text
                                             {{ event.summary }}
-                        div.draft-event-actions.medium-3.columns
+                        div.draft-event-actions.medium-3.small-12.columns
                             a.draft-event-action.first(href="{% url event:modify event.id 'basics' %}")
                                 div.icon
                                     span.ss-info
@@ -140,7 +140,7 @@ block content
                                                 | {% if event.potentialSale %}Potential Rev.{% endif %}
                                             div.number
                                                 | {% if event.potentialSale %}${{ event.potentialSale|floatformat:"-2" }}{% else %}{% endif %}
-                                    div.graph.medium-8.small-12.columns.hide-for-small-only
+                                    div.graph.medium-8.columns.hide-for-small-only
                                         div.graph-frame
                                             div.graph-canvas
                         div.current-event-actions.medium-3.small-12.columns
@@ -176,33 +176,33 @@ block content
                     div.past-event-date
                         div.month {{ event.start_time|date:'M' }}
                         div.day {{ event.start_time|date:'j' }}
-                    div.past-event-title.large-9.medium-8.columns
+                    div.past-event-title.large-9.medium-8.small-12.columns
                         | {{ event.name }}
-                    div.past-event-view.large-3.medium-4.columns
+                    div.past-event-view.large-3.medium-4.small-12.columns
                         div.row
                             div.medium-10.medium-offset-2.columns
                                 a.secondary-btn(href="{% url event:index event.id %}", target="_blank") 
                                     | View Event
                 div.info.small-12.columns
                     div.inner.row
-                        div.past-event-datetime.small-3.columns
+                        div.past-event-datetime.medium-3.small-6.columns
                             div.past-event-time
                                 span
                                     span.ss-clock &nbsp;
                                     {{ event.start_time|date:'g:iA' }}{% if event.end_time %}-{{ event.end_time|date:'g:iA' }}{% endif %}
-                        div.past-event-location-container.small-9.columns
+                        div.past-event-location-container.medium-9.small-6.columns
                             div.past-event-location
                                 span
                                     span.ss-location &nbsp;
                                     {% if event.location|length > 0 %}{{ event.location }}{% else %}NO LOCATION SELECTED{% endif %}
                 div.stats.small-12.columns
                     div.row
-                        div.past-event-stats.medium-9.columns
+                        div.past-event-stats.medium-9.small-12.columns
                             div.bg.row
                                 div
                             div.inner.row
                                 div
-                                    div.numbers.medium-4.columns
+                                    div.numbers.medium-4.small-12.columns
                                         div.count
                                             div.title
                                                 | RSVPs
@@ -218,10 +218,10 @@ block content
                                                 | {% if event.potentialSale %}Potential Rev.{% endif %}
                                             div.number
                                                 | {% if event.potentialSale %}${{ event.potentialSale|floatformat:"-2" }}{% else %}{% endif %}
-                                    div.graph.medium-8.columns
+                                    div.graph.medium-8.columns.hide-for-small-only
                                         div.graph-frame
                                             div.graph-canvas
-                        div.past-event-actions.medium-3.columns
+                        div.past-event-actions.medium-3.small-12.columns
                             a.past-event-action.first(href="{% url event:modify event.id 'basics' %}")
                                 div.icon
                                     span.ss-info
