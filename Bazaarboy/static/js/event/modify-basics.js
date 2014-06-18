@@ -43,14 +43,18 @@
         start_time = moment(save_data.start_date + ' ' + save_data.start_time, 'MM/DD/YYYY h:mm A').utc().format('YYYY-MM-DD HH:mm:ss');
       } else {
         start_time = '';
+        $('div#event-modify-basics div.status').html('Start Time is Invalid');
+        return;
       }
       if (save_data.end_date.trim().length === 0 || save_data.end_time.trim().length === 0) {
         end_time = false;
       } else {
         if (!moment(save_data.end_date, 'MM/DD/YYYY').isValid()) {
+          $('div#event-modify-basics div.status').html('End Time is Invalid');
           return;
         }
         if (!moment(save_data.end_time, 'h:mm A').isValid()) {
+          $('div#event-modify-basics div.status').html('End Time is Invalid');
           return;
         }
         end_time = moment(save_data.end_date + ' ' + save_data.end_time, 'MM/DD/YYYY h:mm A').utc().format('YYYY-MM-DD HH:mm:ss');

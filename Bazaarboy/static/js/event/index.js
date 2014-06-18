@@ -103,8 +103,19 @@
       if (!ticketSelected) {
         alert('You Must Select A Ticket');
         $('a#tickets-confirm').html('Confirm RSVP');
+      } else if (params.first_name === '') {
+        alert('Please Add a First Name');
+        $('a#tickets-confirm').html('Confirm RSVP');
+        return;
+      } else if (params.last_name === '') {
+        alert('Please Add a Last Name');
+        $('a#tickets-confirm').html('Confirm RSVP');
+        return;
+      } else if (params.email === '') {
+        alert('Please Add an Email');
+        $('a#tickets-confirm').html('Confirm RSVP');
+        return;
       } else {
-        console.log(params);
         Bazaarboy.post('event/purchase/', params, function(response) {
           var a, b, total;
           if (response.status !== 'OK') {
@@ -152,14 +163,15 @@
       scope = this;
       if (!this.overlayAnimationInProgress) {
         this.overlayAnimationInProgress = true;
+        $('div#confirmation-modal div.ticket').hide();
         ticketHTML = $('div#confirmation-modal div.ticket-model').html();
         for (k in tickets) {
           ticket = tickets[k];
           newTicket = $(ticketHTML);
-          console.log(ticket);
           newTicket.find('div.quantity').html('x' + ticket['quantity']);
           newTicket.find('div.name').html(ticket['name']);
           $('div#confirmation-modal').find('div.tickets').append(newTicket);
+          newTicket.show();
         }
         $('div#wrapper-overlay').animate({
           opacity: 0
@@ -172,8 +184,15 @@
           $(this).addClass('hide');
           scope.overlayAnimationInProgress = false;
         });
+        $('a#tickets-confirm').html('Confirm RSVP');
+        $('input[name=quantity]').val(0);
+        $('input[name=first_name]').val('');
+        $('input[name=last_name]').val('');
+        $('input[name=email]').val('');
+        $('input[name=phone]').val('');
+        $('input.ticket-selected').prop('checked', false);
+        $('div#confirmation-modal').foundation('reveal', 'open');
       }
-      $('div#confirmation-modal').foundation('reveal', 'open');
     },
     search_organizers: function() {
       var organizerModel, value,

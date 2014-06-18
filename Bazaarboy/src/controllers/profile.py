@@ -5,13 +5,15 @@ Controller for Profile
 import cgi
 import re
 from django.http import Http404
-from django.shortcuts import render
+from django.shortcuts import render, redirect
 from kernel.models import *
 from src.config import *
 from src.controllers.request import *
 from src.regex import REGEX_EMAIL, REGEX_URL, REGEX_EIN
 from src.serializer import serialize, serialize_one
 from src.email import sendProfileMessageEmail, sendNewAccountEmail
+
+import pdb
 
 @login_check()
 def index(request, id, user):
@@ -31,6 +33,9 @@ def new(request, user):
     """
     Create profile page
     """
+    profiles = Profile.objects.filter(managers = user)
+    if len(profiles) > 0:
+        return redirect('user:settings')
     stripeConnectUrl = r'%s?response_type=code&client_id=%s&scope=%s'
     stripeConnectUrl = stripeConnectUrl % (STRIPE_CONNECT_URL, 
                                            STRIPE_CLIENT_ID, 

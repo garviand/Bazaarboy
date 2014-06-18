@@ -81,8 +81,19 @@ Bazaarboy.event.index =
         if not ticketSelected
             alert 'You Must Select A Ticket'
             $('a#tickets-confirm').html 'Confirm RSVP'
+        else if params.first_name is ''
+            alert 'Please Add a First Name'
+            $('a#tickets-confirm').html 'Confirm RSVP'
+            return
+        else if params.last_name is ''
+            alert 'Please Add a Last Name'
+            $('a#tickets-confirm').html 'Confirm RSVP'
+            return
+        else if params.email is ''
+            alert 'Please Add an Email'
+            $('a#tickets-confirm').html 'Confirm RSVP'
+            return
         else
-            console.log params
             Bazaarboy.post 'event/purchase/', params, (response) =>
                 if response.status isnt 'OK'
                     alert response.message
@@ -122,13 +133,14 @@ Bazaarboy.event.index =
         scope = this
         if not @overlayAnimationInProgress
             @overlayAnimationInProgress = true
+            $('div#confirmation-modal div.ticket').hide()
             ticketHTML = $('div#confirmation-modal div.ticket-model').html()
             for k, ticket of tickets
                 newTicket = $(ticketHTML)
-                console.log ticket
                 newTicket.find('div.quantity').html('x'+ticket['quantity'])
                 newTicket.find('div.name').html(ticket['name'])
                 $('div#confirmation-modal').find('div.tickets').append(newTicket)
+                newTicket.show()
             $('div#wrapper-overlay').animate {opacity: 0}, 300, () ->
                 $(this).addClass('hide')
                 return
@@ -136,7 +148,14 @@ Bazaarboy.event.index =
                 $(this).addClass('hide')
                 scope.overlayAnimationInProgress = false
                 return
-        $('div#confirmation-modal').foundation('reveal', 'open')
+            $('a#tickets-confirm').html 'Confirm RSVP'
+            $('input[name=quantity]').val(0)
+            $('input[name=first_name]').val('')
+            $('input[name=last_name]').val('')
+            $('input[name=email]').val('')
+            $('input[name=phone]').val('')
+            $('input.ticket-selected').prop('checked', false)
+            $('div#confirmation-modal').foundation('reveal', 'open')
         return
     search_organizers: () ->
         $('form.add-organizer-form div.organizer').remove()
