@@ -7653,6 +7653,11 @@ div#wrapper-profile-new div.profile-new-container div.next-prev a.next-btn.hide,
 div#wrapper-profile-new div.profile-new-container div.next-prev a.finish-btn.hide {
   display: none !important;
 }
+@media only screen and (max-width: 40.063em) {
+  div#main-header {
+    display: none;
+  }
+}
 #wrapper-sidebar div.checkin_numbers {
   width: 100%;
   text-align: center;
@@ -7732,6 +7737,18 @@ div#wrapper-profile-new div.profile-new-container div.next-prev a.finish-btn.hid
   color: #FFF;
   background: #7F7F7F;
 }
+form.mobile-guest-search input[name=guest_name] {
+  margin-top: 20px;
+}
+form.mobile-guest-search input[name=guest_code] {
+  margin-bottom: 0px;
+}
+form.mobile-guest-search input {
+  margin-bottom: 20px;
+}
+form.mobile-guest-search .mobile-guest-input-container {
+  padding: 0 30px;
+}
 div#event-manage {
   padding-left: 0;
 }
@@ -7778,7 +7795,7 @@ div#event-manage .guests .guest div.confirmation {
 @media only screen and (max-width: 40.063em) {
   div#event-manage .guests .guest div.confirmation {
     margin-top: 0;
-    padding-left: 20px;
+    line-height: 1.3em;
   }
 }
 div#event-manage .guests .guest div.name {
@@ -7787,7 +7804,6 @@ div#event-manage .guests .guest div.name {
 @media only screen and (max-width: 40.063em) {
   div#event-manage .guests .guest div.name {
     margin-top: 20px;
-    padding-left: 20px;
   }
   div#event-manage .guests .guest div.checkin {
     margin-top: 10px;

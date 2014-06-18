@@ -91,8 +91,7 @@
       }
     },
     init: function() {
-      var scope,
-        _this = this;
+      var scope;
       scope = this;
       $("div.guest-add a.start-guest-add").click(function(e) {
         e.preventDefault();
@@ -104,22 +103,22 @@
           scope.add_purchase();
         }
       });
-      $('form.list_search input[name=guest_name]').keyup(function(e) {
+      $('form input[name=guest_name]').keyup(function(e) {
         e.preventDefault();
-        if ($('form.list_search input[name=guest_name]').val() === '') {
+        if ($(this).val() === '') {
           $('div.guest').removeClass('hide');
         } else {
           $('div.guest').addClass('hide');
-          _this.filterGuests('name', $('form.list_search input[name=guest_name]').val(), _this.selectionStatus, _this.checkinStatus, false);
+          scope.filterGuests('name', $(this).val(), scope.selectionStatus, scope.checkinStatus, false);
         }
       });
-      $('form.list_search input[name=guest_code]').keyup(function(e) {
+      $('form input[name=guest_code]').keyup(function(e) {
         e.preventDefault();
-        if ($('form.list_search input[name=guest_code]').val() === '') {
+        if ($(this).val() === '') {
           $('div.guest').removeClass('hide');
         } else {
           $('div.guest').addClass('hide');
-          _this.filterGuests('confirmation', $('form.list_search input[name=guest_code]').val(), _this.selectionStatus, _this.checkinStatus, false);
+          scope.filterGuests('confirmation', $(this).val(), scope.selectionStatus, scope.checkinStatus, false);
         }
       });
       $('form.list_search div.ticket_filters a').click(function(e) {

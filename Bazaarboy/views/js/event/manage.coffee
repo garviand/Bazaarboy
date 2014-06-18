@@ -80,21 +80,21 @@ Bazaarboy.event.manage =
             if not scope.purchaseInProgress
                 scope.add_purchase()
             return
-        $('form.list_search input[name=guest_name]').keyup (e) =>
+        $('form input[name=guest_name]').keyup (e) ->
             e.preventDefault()
-            if $('form.list_search input[name=guest_name]').val() == ''
+            if $(this).val() == ''
                 $('div.guest').removeClass('hide')
             else
                 $('div.guest').addClass('hide')
-                @filterGuests('name', $('form.list_search input[name=guest_name]').val(), @selectionStatus,  @checkinStatus, false)
+                scope.filterGuests('name', $(this).val(), scope.selectionStatus,  scope.checkinStatus, false)
             return
-        $('form.list_search input[name=guest_code]').keyup (e) =>
+        $('form input[name=guest_code]').keyup (e) ->
             e.preventDefault()
-            if $('form.list_search input[name=guest_code]').val() == ''
+            if $(this).val() == ''
                 $('div.guest').removeClass('hide')
             else
                 $('div.guest').addClass('hide')
-                @filterGuests('confirmation', $('form.list_search input[name=guest_code]').val(), @selectionStatus,  @checkinStatus, false)
+                scope.filterGuests('confirmation', $(this).val(), scope.selectionStatus,  scope.checkinStatus, false)
             return
         $('form.list_search div.ticket_filters a').click (e) ->
             e.preventDefault()
