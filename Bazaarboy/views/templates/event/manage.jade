@@ -29,7 +29,7 @@ block sidebar
                 {% endfor %}
 
 block header
-    div.header-title.large-9.medium-10.columns.small-centered
+    div.header-title.large-9.medium-10.columns.small-centered.hide-for-small-only
         div.row.clearfix
             div.text.left
                 | RSVP Management | 
@@ -65,31 +65,35 @@ block content
             div.row
                 div.small-12.columns.guests
                     div.list_guests
-                        div.list_headers.row
-                            div.checkin.small-2.columns Status
-                            div.confirmation.small-2.columns Conf. #
-                            div.ticket_name.small-4.columns Ticket Type(s)
-                            div.name.small-4.columns Name
+                        div.list_headers.row.hide-for-small-only
+                            div.checkin.medium-2.columns Status
+                            div.confirmation.medium-2.columns Conf. #
+                            div.ticket_name.medium-4.columns Ticket Type(s)
+                            div.name.medium-4.columns Name
                         div.guest.guest_template.hidden.row
-                            div.checkin.small-2.columns
+                            div.checkin.medium-2.columns
                                 a.secondary-btn(href="javascript:;") Check In
-                            div.confirmation.small-2.columns &nbsp;
-                            div.ticket_name.small-4.columns &nbsp;
-                            div.name.small-4.columns &nbsp;
+                            div.confirmation.medium-2.columns &nbsp;
+                            div.ticket_name.medium-4.columns &nbsp;
+                            div.name.medium-4.columns &nbsp;
                         {% for k, purchase in purchases.items %}
                         {% with tickets=purchase.tickets.items %}
                         div.guest.row(class="{% if purchase.checked_in %}checked_in{% endif %}", data-ticket="{% for k, ticket in tickets %}{% if not forloop.first %},{% endif %}{{ ticket.id }}{% endfor %}", data-id="{{ purchase.id }}")
-                            div.checkin.small-2.columns
+                            div.checkin.medium-2.small-12.columns.hide-for-small-only
                                 a.secondary-btn(href="javascript:;") 
                                     {% if purchase.checked_in %}Arrived{% else %}Check In{% endif %}
-                            div.confirmation.small-2.columns
+                            div.confirmation.medium-2.small-6.columns
                                 {{ purchase.code }}&nbsp;
-                            div.ticket_name.small-4.columns
+                            div.ticket_name.medium-4.small-6.columns.clearfix
                                 {% for k, ticket in tickets %}
                                 {{ ticket.name }} ({{ ticket.quantity }}){% if not forloop.last %}<br />{% endif %}
                                 {% endfor %}
-                            div.name.small-4.columns
+                            div.spacer.show-for-small-only
+                            div.name.medium-4.small-6.columns
                                 {{ purchase.name }}
+                            div.checkin.small-6.columns.show-for-small-only
+                                a.secondary-btn(href="javascript:;") 
+                                    {% if purchase.checked_in %}Arrived{% else %}Check In{% endif %}
                         {% endwith %}
                         {% endfor %}
 

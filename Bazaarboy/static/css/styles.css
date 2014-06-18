@@ -7775,10 +7775,25 @@ div#event-manage .guests .guest div.confirmation {
   font-weight: 600;
   margin-top: 9px;
 }
+@media only screen and (max-width: 40.063em) {
+  div#event-manage .guests .guest div.confirmation {
+    margin-top: 0;
+    padding-left: 20px;
+  }
+}
 div#event-manage .guests .guest div.name {
   font-weight: 300;
 }
-div#event-manage .guests .guest .checkin a {
+@media only screen and (max-width: 40.063em) {
+  div#event-manage .guests .guest div.name {
+    margin-top: 20px;
+    padding-left: 20px;
+  }
+  div#event-manage .guests .guest div.checkin {
+    margin-top: 10px;
+  }
+}
+div#event-manage .guests .guest .checkin a.secondary-btn {
   display: block;
   width: 100%;
   padding-top: 9px;
@@ -7786,10 +7801,10 @@ div#event-manage .guests .guest .checkin a {
   text-align: center;
   border: none;
 }
-div#event-manage .guests .guest .checkin a:hover {
+div#event-manage .guests .guest .checkin a.secondary-btn:hover {
   color: #ffffff;
 }
-div#event-manage .guests .guest.checked_in .checkin a {
+div#event-manage .guests .guest.checked_in .checkin a.secondary-btn {
   background: #4a4a4a;
   border: 1px solid #3c3c3c;
   -moz-box-shadow: inset 0px -3px 0px 0px #3c3c3c;
