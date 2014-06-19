@@ -86,7 +86,7 @@ block content
                                     span.ss-picture
                                 div.text
                                     span Page Design
-                            a.draft-event-action.last(href="{% url event:index event.id %}?preview")
+                            a.draft-event-action.last(href="{{ event|eventUrl }}?preview")
                                 div.icon
                                     span.ss-airplay
                                 div.text
@@ -103,7 +103,7 @@ block content
                     div.current-event-view.large-3.medium-4.small-12.columns
                         div.row
                             div.medium-10.medium-offset-2.columns
-                                a.secondary-btn(href="{% url event:index event.id %}") 
+                                a.secondary-btn(href="{{ event|eventUrl }}") 
                                     | View Event
                 div.info.small-12.columns
                     div.inner.row
@@ -154,7 +154,7 @@ block content
                                     span.ss-creditcard
                                 div.text
                                     span Ticket Options
-                            a.current-event-action(href="{% url event:index event.id %}?design")
+                            a.current-event-action(href="{{ event|eventUrl }}?design")
                                 div.icon
                                     span.ss-picture
                                 div.text
@@ -181,7 +181,7 @@ block content
                     div.past-event-view.large-3.medium-4.small-12.columns
                         div.row
                             div.medium-10.medium-offset-2.columns
-                                a.secondary-btn(href="{% url event:index event.id %}", target="_blank") 
+                                a.secondary-btn(href="{{ event|eventUrl }}", target="_blank") 
                                     | View Event
                 div.info.small-12.columns
                     div.inner.row
@@ -227,7 +227,7 @@ block content
                                     span.ss-info
                                 div.text
                                     span Edit Info
-                            a.past-event-action(href="{% url event:index event.id %}?design")
+                            a.past-event-action(href="{{ event|eventUrl }}?design")
                                 div.icon
                                     span.ss-picture
                                 div.text

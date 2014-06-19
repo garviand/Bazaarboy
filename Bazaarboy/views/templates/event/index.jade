@@ -177,7 +177,7 @@ block body
                 {% if not design %}
                 {% if preview and editable %}
             div.event-design.medium-1.columns
-                a(href="{% url event:index id %}?design") Back to Page Design
+                a(href="{{ event|eventUrl }}?design") Back to Page Design
                 {% endif %}
                 {% if not hasEnded %}
             div.event-price.medium-1.columns
@@ -213,7 +213,7 @@ block body
                 a.right.primary-btn.launch-btn(href="javascript:;") Launch Event
                 {% endif %}
             div.event-launch.medium-2.columns.clearfix.right
-                a.back-btn.secondary-btn(href="{% url event:index id %}?preview") Preview Event
+                a.back-btn.secondary-btn(href="{{ event|eventUrl }}?preview") Preview Event
                 {% endif %}
         div#event-body.row
             div#event-content.medium-8.columns

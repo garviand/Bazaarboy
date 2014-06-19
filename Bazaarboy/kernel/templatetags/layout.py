@@ -61,9 +61,8 @@ def eventUrl(event):
     Return Slug or Event ID when appropriate
     """
     if event.slug:
-        return reverse('event-slug', kwargs={'id': event.slug})
-    else:
-        return reverse('event:index', kwargs={'id': event.id})
+        return reverse('event-slug', kwargs = {'id': event.slug})
+    return reverse('event:index', kwargs = {'id': event.id})
 
 @register.filter
 def sanitizeUrl(url):
