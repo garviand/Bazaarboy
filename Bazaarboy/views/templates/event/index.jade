@@ -402,7 +402,7 @@ append script
     script(type="text/javascript", src="https://checkout.stripe.com/v2/checkout.js")
     script(type="text/javascript").
         var eventId = {{ event.id }};
-        var eventUrl = {{ event|eventUrl }};
+        var eventUrl = '{{ event|eventUrl }}';
         var design = {% if design %}true{% else %}false{% endif %};
         $(window).load(function(){
             $('div#event-calendar-add').removeClass('hidden')

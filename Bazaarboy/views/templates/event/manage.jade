@@ -111,4 +111,5 @@ block content
 append script
     script(type="text/javascript").
         var eventId = {{ event.id }};
+        var eventUrl = '{{ event|eventUrl }}';
     script(type="text/javascript", src="{{ STATIC_URL }}js/event/manage.js")

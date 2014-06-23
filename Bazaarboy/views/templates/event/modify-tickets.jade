@@ -232,6 +232,6 @@ append script
     script(src="{{ STATIC_URL }}pikaday/pikaday.jquery.js")
     script.
         var eventId = {{ event.id }};
-        var eventUrl = {{ event|eventUrl }};
+        var eventUrl = '{{ event|eventUrl }}';
     script(src="{{ STATIC_URL }}js/event/modify.js")    
     script(src="{{ STATIC_URL }}js/event/modify-tickets.js")

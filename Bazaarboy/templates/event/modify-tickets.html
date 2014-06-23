@@ -21,4 +21,4 @@ var mediaUrl = '{{ MEDIA_URL }}';
 var staticUrl = '{{ STATIC_URL }}';
 var csrfToken = '{{ csrf_token }}';
 var loggedIn = {% if user %}true{% else %}false{% endif %};</script><script src="{{ STATIC_URL }}js/bazaarboy.js"></script><script src="{{ STATIC_URL }}jQueryUI/jquery-ui.min.js"></script><script src="{{ STATIC_URL }}jQueryUI/jquery-ui.autocomplete.html.js"></script><script src="{{ STATIC_URL }}timeautocomplete/jquery.timeAutocomplete.js"></script><script src="{{ STATIC_URL }}timeautocomplete/formatters/ampm.js"></script><script src="{{ STATIC_URL }}pikaday/pikaday.js"></script><script src="{{ STATIC_URL }}pikaday/pikaday.jquery.js"></script><script>var eventId = {{ event.id }};
-var eventUrl = {{ event|eventUrl }};</script><script src="{{ STATIC_URL }}js/event/modify.js">   </script><script src="{{ STATIC_URL }}js/event/modify-tickets.js"></script></div></body></html>
+var eventUrl = '{{ event|eventUrl }}';</script><script src="{{ STATIC_URL }}js/event/modify.js">   </script><script src="{{ STATIC_URL }}js/event/modify-tickets.js"></script></div></body></html>
