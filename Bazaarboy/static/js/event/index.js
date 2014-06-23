@@ -1,5 +1,6 @@
 (function() {
   Bazaarboy.event.index = {
+    aviary: void 0,
     savingInProgress: false,
     unsavedProgress: false,
     toLaunch: false,
@@ -224,7 +225,7 @@
       });
     },
     init: function() {
-      var add_organizer_debounce, geocoder, iconImage, latitude, latlng, longitude, map, mapCenter, mapOptions, mapStyles, marker, scope,
+      var add_organizer_debounce, geocoder, iconImage, latitude, latlng, longitude, map, mapCenter, mapOptions, mapStyles, marker, postData, scope,
         _this = this;
       scope = this;
       $(window).hashchange(function() {
@@ -464,6 +465,39 @@
           $('div.save-status').html('Unsaved Changes');
         });
         scope.redactorContent = $('div#event-description div.description div.inner').redactor('get');
+        postData = {
+          event: eventId
+        };
+        this.aviary = new Aviary.Feather({
+          apiKey: 'ce3b87fb1edaa22c',
+          apiVersion: 3,
+          postUrl: '/file/aviary/',
+          postData: JSON.stringify(postData),
+          enableCORS: true,
+          onSave: function(imageId, imageUrl) {
+            $("img#" + imageId).attr('src', imageUrl);
+          }
+        });
+        $('div#event-cover form.upload_cover input[name=image_file]').fileupload({
+          url: rootUrl + 'file/image/upload/',
+          type: 'POST',
+          add: function(event, data) {
+            data.submit();
+          },
+          done: function(event, data) {
+            var response;
+            response = jQuery.parseJSON(data.result);
+            if (response.status === 'OK') {
+              $('img#cover-image').attr('src', 'http://cold-eland-5294.vagrantshare.com' + mediaUrl + response.image.source);
+              _this.aviary.launch({
+                image: 'cover-image',
+                url: 'http://cold-eland-5294.vagrantshare.com' + mediaUrl + response.image.source
+              });
+            } else {
+              alert(response.message);
+            }
+          }
+        });
       }
       $("div.event-share a.share-btn").click(function() {
         $('div.event-rsvp, div.event-share, div.event-price').fadeOut(300, function() {
