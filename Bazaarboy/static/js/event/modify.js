@@ -19,7 +19,7 @@
           id: eventId
         }, function(response) {
           if (response.status === 'OK') {
-            window.location = '/event/' + eventId + '#launch';
+            window.location = eventUrl + '#launch';
           } else {
             alert(response.message);
           }

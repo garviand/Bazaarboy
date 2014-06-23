@@ -26,7 +26,7 @@ Bazaarboy.event.index =
                     if scope.toLaunch
                         Bazaarboy.post 'event/launch/', {id: eventId}, (response) =>
                             if response.status is 'OK'
-                                window.location = '/event/' + eventId + '#launch'
+                                window.location = eventUrl + '#launch'
                             else
                                 alert response.message
                                 $('div.event-launch a.launch-btn').html('Launch Event')

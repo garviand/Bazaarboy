@@ -31,7 +31,7 @@
                 id: eventId
               }, function(response) {
                 if (response.status === 'OK') {
-                  window.location = '/event/' + eventId + '#launch';
+                  window.location = eventUrl + '#launch';
                 } else {
                   alert(response.message);
                   $('div.event-launch a.launch-btn').html('Launch Event');
