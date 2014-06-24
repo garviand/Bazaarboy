@@ -8493,6 +8493,12 @@ div.add-organizer a {
   font-style: italic;
   text-decoration: underline;
 }
+div#event-cover div.image {
+  width: 100%;
+}
+div#event-cover div.image img {
+  width: 100%;
+}
 div#event-description > div.caption {
   height: 28px;
   font-size: 18px;

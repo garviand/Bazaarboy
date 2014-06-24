@@ -82,6 +82,7 @@ file_urlpatterns = patterns('src.controllers.file',
     url(r'^image/upload/$', 'upload_image', name = 'image-upload'),
     url(r'^image/crop/$', 'crop_image', name = 'image-crop'),
     url(r'^image/delete/$', 'delete_image', name = 'image-delete'),
+    url(r'^aviary/$', 'aviary', name = 'aviary'),
 )
 
 admin_urlpatterns = patterns('src.controllers.admin.admin', 
@@ -104,7 +105,7 @@ urlpatterns = patterns('',
     url(r'^bonus/', include(bonus_urlpatterns, namespace = 'bonus')), 
     url(r'^file/', include(file_urlpatterns, namespace = 'file')),
     url(r'^admin/', include(admin_urlpatterns, namespace = 'admin')),
-    url(r'^(?P<id>[A-Za-z0-9-]+)/$', 'src.controllers.event.index', name='event-slug'),
+    url(r'^(?P<id>[A-Za-z0-9-]+)/$', 'src.controllers.event.index', name = 'event-slug'),
 )
 
 handler404 = 'src.controllers.index.pageNotFound'

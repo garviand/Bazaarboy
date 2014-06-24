@@ -4,6 +4,7 @@ Controller for files
 
 import PIL.Image
 import uuid
+import requests
 from StringIO import StringIO
 from django.core.files.uploadedfile import InMemoryUploadedFile
 from django.http import HttpResponseBadRequest
@@ -141,6 +142,50 @@ def delete_image(request, params):
         }
         return json_response(response)
     image.delete()
+    response = {
+        'status':'OK'
+    }
+    return json_response(response)
+
+@csrf_exempt
+@validate('POST', ['url', 'postdata'])
+def aviary(request, params):
+    """
+    Aviary handler
+    """
+    data = json.loads(params['postdata'])
+    if not data.has_key('event'):
+        return HttpResponseBadRequest('Bad request.')
+    if not Event.objects.filter(id = data['event']).exists():
+        response = {
+            'status':'FAIL',
+            'error':'EVENT_NOT_FOUND',
+            'message':'The event does not exist.'
+        }
+        return json_response(response)
+    imageRequest = requests.get(params['url'])
+    if request.status_code != requests.codes.ok:
+        response = {
+            'status':'FAIL',
+            'error':'INVALID_URL',
+            'message':'The url is not valid.'
+        }
+        return json_response(response)
+    imageUid = uuid.uuid4().hex
+    imageExt = params['url'].split('.')[-1]
+    imageName = '%s.%s' % (imageUid, imageExt)
+    imageIO = StringIO(imageRequest.content)
+    aviaryImage = InMemoryUploadedFile(file = imageIO,
+                                       field_name = None, 
+                                       name = imageName, 
+                                       content_type = IMAGE_CONTENT_TYPES[imageExt],
+                                       size = imageIO.len, 
+                                       charset = None)
+    image = Image(source = aviaryImage, is_archived = True)
+    image.save()
+    event = Event.objects.get(id = data['event'])
+    event.cover = image
+    event.save()
     response = {
         'status':'OK'
     }

@@ -217,6 +217,16 @@ block body
                 {% endif %}
         div#event-body.row
             div#event-content.medium-8.columns
+                div#event-cover.row
+                    div.columns
+                        div.image
+                            img#cover-image
+                        {% if design %}
+                        div.upload
+                            form.upload_cover
+                                input(type="file", name="image_file")
+                                {% csrf_token %}
+                        {% endif %}
                 div#event-description.row
                     div.description.small-12.columns(style="margin-top:0;")
                         div.inner
@@ -381,6 +391,9 @@ block body
         div#wrapper-overlay.hide
 
 append script
+    {% if design %}
+    script(src="https://dme0ih8comzn4.cloudfront.net/js/feather.js")
+    {% endif %}
     script(type="text/javascript", src="{{ STATIC_URL }}hashchange/jquery.ba-hashchange.min.js")
     script.
         var switchTo5x = true;

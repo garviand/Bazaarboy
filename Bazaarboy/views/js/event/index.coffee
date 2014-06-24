@@ -1,4 +1,5 @@
 Bazaarboy.event.index = 
+    aviary: undefined
     savingInProgress: false
     unsavedProgress: false
     toLaunch: false
@@ -401,6 +402,34 @@ Bazaarboy.event.index =
                 $('div.save-status').html 'Unsaved Changes'
                 return
             scope.redactorContent = $('div#event-description div.description div.inner').redactor('get')
+            # Cover image
+            postData = 
+                event: eventId
+            @aviary = new Aviary.Feather
+                apiKey: 'ce3b87fb1edaa22c'
+                apiVersion: 3
+                postUrl: '/file/aviary/'
+                postData: JSON.stringify postData
+                enableCORS: true
+                onSave: (imageId, imageUrl) ->
+                    $("img##{imageId}").attr 'src', imageUrl
+                    return
+            $('div#event-cover form.upload_cover input[name=image_file]').fileupload
+                url: rootUrl + 'file/image/upload/'
+                type: 'POST'
+                add: (event, data) =>
+                    data.submit()
+                    return
+                done: (event, data) =>
+                    response = jQuery.parseJSON data.result
+                    if response.status is 'OK'
+                        $('img#cover-image').attr 'src', 'http://cold-eland-5294.vagrantshare.com' + mediaUrl + response.image.source
+                        @aviary.launch
+                            image: 'cover-image'
+                            url: 'http://cold-eland-5294.vagrantshare.com' + mediaUrl + response.image.source
+                    else
+                        alert response.message
+                    return
         $("div.event-share a.share-btn").click () ->
             $('div.event-rsvp, div.event-share, div.event-price').fadeOut 300, () ->
                 $("div.event-share-canvas").fadeIn 300
