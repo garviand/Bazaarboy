@@ -5610,6 +5610,21 @@ div#map-canvas img {
 .secondary-btn:hover {
   color: #FFFFFF;
 }
+.secondary-btn-inverse {
+  border: 1px solid #00BD84;
+  border-radius: 4px;
+  background: #FFFFFF;
+  -moz-box-shadow: inset 0px -2px 0px 0px #00bd84;
+  -webkit-box-shadow: inset 0px -2px 0px 0px #00bd84;
+  box-shadow: inset 0px -2px 0px 0px #00bd84;
+  color: #00BD84;
+  font-weight: 500;
+  text-align: center;
+  cursor: pointer;
+}
+.secondary-btn-inverse:hover {
+  color: #00BD84;
+}
 .blue-btn {
   border-radius: 4px;
   background: #879BFF;
@@ -5624,6 +5639,21 @@ div#map-canvas img {
 }
 .blue-btn:hover {
   color: #FFFFFF;
+}
+.blue-btn-inverse {
+  border: 1px solid #879BFF;
+  border-radius: 4px;
+  background: #FFFFFF;
+  -moz-box-shadow: inset 0px -2px 0px 0px #879bff;
+  -webkit-box-shadow: inset 0px -2px 0px 0px #879bff;
+  box-shadow: inset 0px -2px 0px 0px #879bff;
+  color: #879BFF;
+  font-weight: 400;
+  text-align: center;
+  cursor: pointer;
+}
+.blue-btn-inverse:hover {
+  color: #879BFF;
 }
 .grey-btn {
   border-radius: 4px;
@@ -8493,11 +8523,20 @@ div.add-organizer a {
   font-style: italic;
   text-decoration: underline;
 }
+div#event-cover {
+  margin-bottom: 35px;
+}
 div#event-cover div.image {
   width: 100%;
 }
 div#event-cover div.image img {
   width: 100%;
+}
+div#event-cover form.upload_cover a.blue-btn-inverse {
+  display: block;
+  width: 100%;
+  padding-top: 9px;
+  padding-bottom: 11px;
 }
 div#event-description > div.caption {
   height: 28px;

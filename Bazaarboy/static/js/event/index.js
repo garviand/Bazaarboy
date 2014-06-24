@@ -465,17 +465,40 @@
           $('div.save-status').html('Unsaved Changes');
         });
         scope.redactorContent = $('div#event-description div.description div.inner').redactor('get');
+        $('form.upload_cover a.upload_cover_btn').click(function() {
+          $('form.upload_cover input[name=image_file]').click();
+        });
+        $('form.upload_cover a.delete_cover_btn').click(function() {
+          if (confirm('Are you sure you want to delete your cover photo?')) {
+            Bazaarboy.post('event/edit/', {
+              id: eventId,
+              cover: 'delete'
+            }, function(response) {
+              if (response.status === 'OK') {
+                console.log(response);
+              } else {
+                alert(response.message);
+              }
+            });
+          }
+        });
         postData = {
           event: eventId
         };
         this.aviary = new Aviary.Feather({
           apiKey: 'ce3b87fb1edaa22c',
           apiVersion: 3,
-          postUrl: '/file/aviary/',
-          postData: JSON.stringify(postData),
           enableCORS: true,
           onSave: function(imageId, imageUrl) {
             $("img#" + imageId).attr('src', imageUrl);
+            $('img#cover-image').attr('src', imageUrl);
+            _this.aviary.close();
+            Bazaarboy.post('file/aviary/', {
+              event: eventId,
+              url: imageUrl
+            }, function(response) {
+              console.log(response);
+            });
           }
         });
         $('div#event-cover form.upload_cover input[name=image_file]').fileupload({
@@ -488,10 +511,9 @@
             var response;
             response = jQuery.parseJSON(data.result);
             if (response.status === 'OK') {
-              $('img#cover-image').attr('src', 'http://cold-eland-5294.vagrantshare.com' + mediaUrl + response.image.source);
               _this.aviary.launch({
                 image: 'cover-image',
-                url: 'http://cold-eland-5294.vagrantshare.com' + mediaUrl + response.image.source
+                url: mediaUrl + response.image.source
               });
             } else {
               alert(response.message);
