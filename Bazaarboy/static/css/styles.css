@@ -8538,6 +8538,9 @@ div#event-cover form.upload_cover a.blue-btn-inverse {
   padding-top: 9px;
   padding-bottom: 11px;
 }
+div#event-cover form.upload_cover a.blue-btn-inverse.hidden {
+  display: none !important;
+}
 div#event-description > div.caption {
   height: 28px;
   font-size: 18px;

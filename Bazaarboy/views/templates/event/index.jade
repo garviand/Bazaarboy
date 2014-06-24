@@ -224,18 +224,15 @@ block body
                             form.upload_cover
                                 div.row
                                     div.small-12.medium-4.columns
-                                        {% if event.cover %}
-                                        a.blue-btn-inverse.upload_cover_btn(href="javascript:;") Edit Cover Image
+                                        a.blue-btn-inverse.upload_cover_btn(href="javascript:;") {% if event.cover %}Edit Cover Image{% else %}Upload Cover Image{% endif %}
                                     div.small-12.medium-4.columns.end
-                                        a.blue-btn-inverse.delete_cover_btn(href="javascript:;") Delete Cover Image
-                                        {% else %}
-                                        a.blue-btn-inverse.upload_cover_btn(href="javascript:;") Upload Cover Image
-                                        {% endif %}
+                                        a.blue-btn-inverse.delete_cover_btn(href="javascript:;", class="{% if not event.cover %}hidden{% endif %}") Delete Cover Image
                                         input.hidden(type="file", name="image_file")
                                         {% csrf_token %}
                         {% endif %}
                         div.image
                             img#cover-image(src="{% if event.cover %}{{ event.cover.source.url }}{% endif %}")
+                            img#cover-image-placeholder.hidden
                 div#event-description.row
                     div.description.small-12.columns(style="margin-top:0;")
                         div.inner

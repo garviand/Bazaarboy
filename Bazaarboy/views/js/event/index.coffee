@@ -403,17 +403,19 @@ Bazaarboy.event.index =
                 return
             scope.redactorContent = $('div#event-description div.description div.inner').redactor('get')
             # Cover image
-            $('form.upload_cover a.upload_cover_btn').click () ->
-                $('form.upload_cover input[name=image_file]').click()
+            $('div#event-cover form.upload_cover a.upload_cover_btn').click () ->
+                $('div#event-cover form.upload_cover input[name=image_file]').click()
                 return
-            $('form.upload_cover a.delete_cover_btn').click () ->
-                if confirm 'Are you sure you want to delete your cover photo?'
+            $('div#event-cover form.upload_cover a.delete_cover_btn').click () ->
+                if confirm 'Are you sure you want to delete your cover image?'
                     Bazaarboy.post 'event/edit/', 
                         id: eventId,
                         cover: 'delete'
                     , (response) ->
                         if response.status is 'OK'
-                            console.log response
+                            $('img#cover-image').attr 'src', ''
+                            $('div#event-cover form.upload_cover a.delete_cover_btn').addClass 'hidden'
+                            $('div#event-cover form.upload_cover a.upload_cover_btn').html 'Upload Cover Image'
                         else
                             alert response.message
                         return
@@ -428,6 +430,8 @@ Bazaarboy.event.index =
                     $("img##{imageId}").attr 'src', imageUrl
                     $('img#cover-image').attr 'src', imageUrl
                     @aviary.close();
+                    $('div#event-cover form.upload_cover a.delete_cover_btn').removeClass 'hidden'
+                    $('div#event-cover form.upload_cover a.upload_cover_btn').html 'Edit Cover Image'
                     Bazaarboy.post 'file/aviary/', 
                         event: eventId,
                         url: imageUrl
@@ -444,8 +448,9 @@ Bazaarboy.event.index =
                 done: (event, data) =>
                     response = jQuery.parseJSON data.result
                     if response.status is 'OK'
+                        $('img#cover-image-placeholder').attr 'src', mediaUrl + response.image.source
                         @aviary.launch
-                            image: 'cover-image'
+                            image: 'cover-image-placeholder'
                             url: mediaUrl + response.image.source
                     else
                         alert response.message
