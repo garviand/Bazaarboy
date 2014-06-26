@@ -1271,14 +1271,6 @@ def purchase(request, params, user):
         }
         return json_response(response)
     user, created = User.objects.get_or_create(email = params['email'])
-    if (not REGEX_NAME.match(params['first_name']) or 
-        not REGEX_NAME.match(params['last_name'])):
-        response = {
-            'status':'FAIL',
-            'error':'INVALID_NAME',
-            'message':'Your first or last name contain illegal characters.'
-        }
-        return json_response(response)
     if len(params['first_name']) > 50 or len(params['last_name']) > 50:
         response = {
             'status':'FAIL',
