@@ -8523,9 +8523,6 @@ div.add-organizer a {
   font-style: italic;
   text-decoration: underline;
 }
-div#event-cover {
-  margin-bottom: 35px;
-}
 div#event-cover div.image {
   width: 100%;
 }

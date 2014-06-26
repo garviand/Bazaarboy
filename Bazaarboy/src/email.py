@@ -280,7 +280,7 @@ def sendEventConfirmationEmail(purchase):
             organizer_image = ''
         organizer_list_html += """
             <tr class="organizer" style="vertical-align: top; text-align: left; padding: 0;" align="left">
-                <td class="three sub-columns center text-pad-left" style="word-break: break-word; -webkit-hyphens: auto; -moz-hyphens: auto; hyphens: auto; border-collapse: collapse !important; vertical-align: top; text-align: center; min-width: 0px; width: 25%; line-height: 19px; font-size: 14px; color: #4A4A4A !important; margin: 0; padding: 0px 10px 10px;" align="center" valign="top">
+                <td width="40" class="three sub-columns center text-pad-left" style="word-break: break-word; -webkit-hyphens: auto; -moz-hyphens: auto; hyphens: auto; border-collapse: collapse !important; vertical-align: top; text-align: center; min-width: 0px; width: 25%; line-height: 19px; font-size: 14px; color: #4A4A4A !important; margin: 0; padding: 0px 10px 10px;" align="center" valign="top">
                     """ + organizer_image + """
                 </td>
                 <td class="nine sub-columns last" style="word-break: break-word; -webkit-hyphens: auto; -moz-hyphens: auto; hyphens: auto; border-collapse: collapse !important; vertical-align: top; text-align: left; min-width: 0px; width: 75%; line-height: 19px; font-size: 14px; color: #4A4A4A !important; margin: 0; padding: 0px 0px 10px;" align="left" valign="top">
