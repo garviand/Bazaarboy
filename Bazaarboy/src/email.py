@@ -274,7 +274,7 @@ def sendEventConfirmationEmail(purchase, manual=False, inviter=None):
     for organizer in organizers:
         if organizer.image:
             organizer_image = """
-                <img width="38" class="organizer_logo" src='""" + organizer.image.source.url + """' style="outline: none; text-decoration: none; -ms-interpolation-mode: bicubic; width: auto; max-width: 40px; float: left; clear: both; display: block;" align="left" />
+                <img width="38" class="organizer_logo" src='""" + organizer.image.source.url + """' style="outline: none; text-decoration: none; width:40px; max-width: 40px; float: left; display: block;" align="left" />
             """
         else:
             organizer_image = ''
