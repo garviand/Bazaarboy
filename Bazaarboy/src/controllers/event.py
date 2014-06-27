@@ -1573,7 +1573,7 @@ def add_purchase(request, params, user):
         }
         return json_response(response)
     else:
-        inviter = Organizer.objects.filter(event = event, profile__managers = user)[0]
+        inviter = Organizer.objects.filter(event = event, profile__managers = _user)[0]
     # Check if the tickets are valid
     _tickets = Ticket.objects.filter(event = event, is_deleted = False)
     tickets = {}
