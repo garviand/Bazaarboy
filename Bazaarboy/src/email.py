@@ -259,7 +259,7 @@ def sendEventInvite(event, email, inviter):
     return sendEmails(to, subject, template, mergeVars)
 
 @task()
-def sendEventConfirmationEmail(purchase):
+def sendEventConfirmationEmail(purchase, manual=False, inviter=None):
     """
     Send event confirmation
     """
@@ -296,8 +296,13 @@ def sendEventConfirmationEmail(purchase):
         'email':user.email, 
         'name':user.first_name + ' ' + user.last_name
     }]
-    subject = 'Confirmation for \'' + event.name + '\''
-    template = 'event-rsvp'
+    if manual:
+        subject = 'You\'re on the Guest List - \'' + event.name + '\'' 
+        header_text = 'You have been added to the guest list by <b>' + inviter.profile.name + '</b>'
+    else:  
+        subject = 'Confirmation for \'' + event.name + '\''
+        header_text = 'CONFIRMATION | Your tickets to <b>' + organizers[0].name + '\'s</b> Event'
+    template = 'confirm-rsvp'
     items = Purchase_item.objects.filter(purchase = purchase) \
                                  .prefetch_related('ticket')
     tickets = {}
@@ -351,7 +356,7 @@ def sendEventConfirmationEmail(purchase):
             </tr>
         """
     reciept_info = ''
-    if purchase.amount > 0:
+    if purchase.amount > 0 and not manual:
         reciept_info = 'TOTAL: $' + str(purchase.amount)
     if event.slug:
         event_url = 'https://bazaarboy.com/' + event.slug
@@ -385,8 +390,8 @@ def sendEventConfirmationEmail(purchase):
                 'content': event_url
             },
             {
-                'name': 'primary_organizer', 
-                'content': organizers[0].name
+                'name': 'header_text', 
+                'content': header_text
             },
             {
                 'name': 'event_name', 

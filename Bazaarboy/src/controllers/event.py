@@ -1565,6 +1565,15 @@ def add_purchase(request, params, user):
         }
         return json_response(response)
     event = Event.objects.get(id = params['event'])
+    if not Organizer.objects.filter(event = event, profile__managers = _user).exists():
+        response = {
+            'status':'FAIL',
+            'error':'NOT_A_MANAGER',
+            'message':'You don\'t have permission for the event.'
+        }
+        return json_response(response)
+    else:
+        inviter = Organizer.objects.filter(event = event, profile__managers = user)[0]
     # Check if the tickets are valid
     _tickets = Ticket.objects.filter(event = event, is_deleted = False)
     tickets = {}
@@ -1643,7 +1652,7 @@ def add_purchase(request, params, user):
                     'quantity': 1
                 }
         # Send confirmation email and sms
-        sendEventConfirmationEmail(purchase)
+        sendEventConfirmationEmail(purchase, True, inviter)
         sendEventConfirmationSMS(purchase)
         # Success
         response = {
