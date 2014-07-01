@@ -1087,7 +1087,7 @@ def create_promo(request, params, user):
             'message':'Code cannot contain spaces.'
         }
         return json_response(response)
-    if Promo.objects.filter(code = params['code'], event = event).exists():
+    if Promo.objects.filter(code = params['code'], ticket = ticket).exists():
         response = {
             'status':'FAIL',
             'error':'DUPLICATE_CODE',
