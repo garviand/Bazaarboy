@@ -1,0 +1,186 @@
+@import (reference) "vars.less";
+
+div#profile {
+	min-width: 100%;
+	min-height: 100%;
+	padding-top: 66px;
+	background: #F6F6F6;
+}
+
+div#profile-header {
+	position: absolute;
+	top: 0;
+	left: 0;
+	width: 100%;
+	min-height: 66px;
+	z-index: 20;
+	background: rgba(255, 255, 255, 0.96);
+	border-bottom: @grey thin solid;
+
+	div.profile-header-body {
+		position: relative;
+		min-height: 66px;
+
+		div.profile-icon {
+			position: absolute;
+			top: 0;
+			left: 0;
+			width: 66px;
+			min-height: 66px;
+			background: #F5A623;
+
+			div.inner {
+				width: 44px;
+				min-height: 44px;
+				margin: 11px;
+				border-radius: 22px;
+				background: @white;
+
+				&:hover {
+					box-shadow: 0 0 20px #FFFFFF;
+				}
+			}
+		}
+	}
+}
+
+div#profile-body {
+	margin-top: 24px;
+	margin-bottom: 48px;
+	padding-bottom: 40px;
+	background: @white;
+	div.profile-top{
+		margin-top: 50px;
+		padding-bottom: 50px;
+		div.profile-image{
+			border: thin solid #F6F6F6;
+			padding-left: 3px;
+			padding-right: 3px;
+			overflow: hidden;
+		}
+		div.profile-title-description{
+			margin-top: 10px;
+			padding-left: 20px;
+			div.profile-title{
+				font-size: 24px;
+				font-weight: 500;
+				margin-bottom: 10px;
+			}
+			div.profile-description{
+				line-height: 1.3em;
+			}
+		}
+	}
+	div.profile-content{
+		border-top: thin solid #F6F6F6;
+		div.profile-left{
+			padding-top: 50px;
+			@media only screen and (min-width: 40em){
+				padding-left: 60px;
+				padding-right: 40px;
+			}
+			border-right: thin solid #F6F6F6;
+			div.profile-location {
+				padding-bottom: 25px;
+
+				div.location {
+					font-weight: 500;
+				}
+
+				div.address{
+					line-height: 1.3rem;
+					margin-top: 5px;
+					font-size: 13px;
+				}
+
+				div.map-canvas {
+					margin-top: 15px;
+					height: 120px;
+
+					> div {
+					  width: 100%;
+					  height: 100%;
+					}
+
+					div#map-canvas {
+						width: 100%;
+						height: 100%;
+					}
+				}
+				a.directions{
+					display: block;
+					color: @orange !important;
+					font-size: 14px;
+					text-decoration: underline;
+					font-weight: normal;
+					margin-top: 10px;
+					margin-bottom: 10px;
+				}
+			}
+			hr{
+				border: none;
+				border-top: thin solid #F6F6F6;
+				margin: 20px 0;
+			}
+			div.profile-contact{
+				font-size: 14px;
+				div.title{
+					margin-bottom: 10px;
+					font-size: 16px;
+				}
+				> div{
+					margin-bottom: 5px;
+					line-height: 1.3em;
+					word-wrap:break-word;
+				}
+			}
+		}
+		div.profile-right{
+			padding-top: 50px;
+			@media only screen and (min-width: 40em){
+				padding-left: 40px;
+				padding-right: 60px;
+			}
+		}
+	}
+}
+
+div#profile-footer {
+	width: 100%;
+	height: 66px;
+	padding: 11px 0;
+	background: #D4D4D4;
+
+	div.inner {
+		width: 284px;
+		height: 44px;
+		margin: 0 auto;
+		font-size: 14px;
+		color: #FFFFFF;
+
+		a {
+			color: #FFFFFF;
+		}
+	}
+
+	div.poweredby {
+		width: 120px;
+		height: 44px;
+		padding: 15px 0;
+		text-align: center;
+	}
+
+	div.logo {
+		width: 44px;
+		height: 44px;
+		border-radius: 22px;
+		background: #FFFFFF;
+	}
+
+	div.links {
+		width: 120px;
+		height: 44px;
+		padding: 15px 0;
+		text-align: center;
+	}
+}

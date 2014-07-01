@@ -199,6 +199,10 @@ def sendEventInvite(event, email, inviter):
     event_day = event_day.format('j')
     organizers = event.organizers.all()
     organizer_list_html = ''
+    if event.slug:
+        event_url = 'https://bazaarboy.com/' + event.slug
+    else:
+        event_url = 'https://bazaarboy.com/event/' + str(event.id)
     for organizer in organizers:
         if organizer.image:
             organizer_image = """
@@ -233,6 +237,10 @@ def sendEventInvite(event, email, inviter):
             {
                 'name': 'inviter', 
                 'content': inviter
+            },
+            {
+                'name': 'event_link', 
+                'content': event_url
             },
             {
                 'name': 'event_id', 

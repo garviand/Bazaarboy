@@ -7566,6 +7566,177 @@ div#register div#footer .switch:hover {
   color: #ffffff;
   background: #F4A534;
 }
+div#profile {
+  min-width: 100%;
+  min-height: 100%;
+  padding-top: 66px;
+  background: #F6F6F6;
+}
+div#profile-header {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  min-height: 66px;
+  z-index: 20;
+  background: rgba(255, 255, 255, 0.96);
+  border-bottom: #f6f6f6 thin solid;
+}
+div#profile-header div.profile-header-body {
+  position: relative;
+  min-height: 66px;
+}
+div#profile-header div.profile-header-body div.profile-icon {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 66px;
+  min-height: 66px;
+  background: #F5A623;
+}
+div#profile-header div.profile-header-body div.profile-icon div.inner {
+  width: 44px;
+  min-height: 44px;
+  margin: 11px;
+  border-radius: 22px;
+  background: #ffffff;
+}
+div#profile-header div.profile-header-body div.profile-icon div.inner:hover {
+  box-shadow: 0 0 20px #FFFFFF;
+}
+div#profile-body {
+  margin-top: 24px;
+  margin-bottom: 48px;
+  padding-bottom: 40px;
+  background: #ffffff;
+}
+div#profile-body div.profile-top {
+  margin-top: 50px;
+  padding-bottom: 50px;
+}
+div#profile-body div.profile-top div.profile-image {
+  border: thin solid #F6F6F6;
+  padding-left: 3px;
+  padding-right: 3px;
+  overflow: hidden;
+}
+div#profile-body div.profile-top div.profile-title-description {
+  margin-top: 10px;
+  padding-left: 20px;
+}
+div#profile-body div.profile-top div.profile-title-description div.profile-title {
+  font-size: 24px;
+  font-weight: 500;
+  margin-bottom: 10px;
+}
+div#profile-body div.profile-top div.profile-title-description div.profile-description {
+  line-height: 1.3em;
+}
+div#profile-body div.profile-content {
+  border-top: thin solid #F6F6F6;
+}
+div#profile-body div.profile-content div.profile-left {
+  padding-top: 50px;
+  border-right: thin solid #F6F6F6;
+}
+@media only screen and (min-width: 40em) {
+  div#profile-body div.profile-content div.profile-left {
+    padding-left: 60px;
+    padding-right: 40px;
+  }
+}
+div#profile-body div.profile-content div.profile-left div.profile-location {
+  padding-bottom: 25px;
+}
+div#profile-body div.profile-content div.profile-left div.profile-location div.location {
+  font-weight: 500;
+}
+div#profile-body div.profile-content div.profile-left div.profile-location div.address {
+  line-height: 1.3rem;
+  margin-top: 5px;
+  font-size: 13px;
+}
+div#profile-body div.profile-content div.profile-left div.profile-location div.map-canvas {
+  margin-top: 15px;
+  height: 120px;
+}
+div#profile-body div.profile-content div.profile-left div.profile-location div.map-canvas > div {
+  width: 100%;
+  height: 100%;
+}
+div#profile-body div.profile-content div.profile-left div.profile-location div.map-canvas div#map-canvas {
+  width: 100%;
+  height: 100%;
+}
+div#profile-body div.profile-content div.profile-left div.profile-location a.directions {
+  display: block;
+  color: #faa638 !important;
+  font-size: 14px;
+  text-decoration: underline;
+  font-weight: normal;
+  margin-top: 10px;
+  margin-bottom: 10px;
+}
+div#profile-body div.profile-content div.profile-left hr {
+  border: none;
+  border-top: thin solid #F6F6F6;
+  margin: 20px 0;
+}
+div#profile-body div.profile-content div.profile-left div.profile-contact {
+  font-size: 14px;
+}
+div#profile-body div.profile-content div.profile-left div.profile-contact div.title {
+  margin-bottom: 10px;
+  font-size: 16px;
+}
+div#profile-body div.profile-content div.profile-left div.profile-contact > div {
+  margin-bottom: 5px;
+  line-height: 1.3em;
+  word-wrap: break-word;
+}
+div#profile-body div.profile-content div.profile-right {
+  padding-top: 50px;
+}
+@media only screen and (min-width: 40em) {
+  div#profile-body div.profile-content div.profile-right {
+    padding-left: 40px;
+    padding-right: 60px;
+  }
+}
+div#profile-footer {
+  width: 100%;
+  height: 66px;
+  padding: 11px 0;
+  background: #D4D4D4;
+}
+div#profile-footer div.inner {
+  width: 284px;
+  height: 44px;
+  margin: 0 auto;
+  font-size: 14px;
+  color: #FFFFFF;
+}
+div#profile-footer div.inner a {
+  color: #FFFFFF;
+}
+div#profile-footer div.poweredby {
+  width: 120px;
+  height: 44px;
+  padding: 15px 0;
+  text-align: center;
+}
+div#profile-footer div.logo {
+  width: 44px;
+  height: 44px;
+  border-radius: 22px;
+  background: #FFFFFF;
+}
+div#profile-footer div.links {
+  width: 120px;
+  height: 44px;
+  padding: 15px 0;
+  text-align: center;
+}
 div#wrapper-profile-new div.profile-new-container {
   overflow: hidden;
   margin-top: 50px;
