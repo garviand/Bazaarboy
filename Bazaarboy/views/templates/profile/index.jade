@@ -87,7 +87,7 @@ block body
                         {% endif %}
                         {% if pastEvents.count > 0 %}
                         {% for event in pastEvents %}
-                        a.past-event.hide(href="{{ event|eventUrl }}")
+                        a.past-event(href="{{ event|eventUrl }}", class="{% if currentEvents.count > 0 %}hide{% endif %}")
                             div.row.event
                                 div.medium-2.small-4.columns.event-date-container
                                     div.event-date
