@@ -7755,7 +7755,7 @@ div#profile-body div.profile-content div.profile-right div.event div.event-date 
   top: 8px;
   left: 15px;
   width: 40px;
-  height: 40px;
+  height: 41px;
   border-radius: 4px;
   box-shadow: inset 0px -2px 0px 0px #f5a623;
   background: #FEC84D;
@@ -7763,7 +7763,7 @@ div#profile-body div.profile-content div.profile-right div.event div.event-date 
 }
 div#profile-body div.profile-content div.profile-right div.event div.event-date div.month {
   width: 100%;
-  height: 9px;
+  height: 10px;
   margin-top: 2px;
   color: #ffffff;
   font-size: 11px;
