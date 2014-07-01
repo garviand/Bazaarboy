@@ -340,7 +340,9 @@ def edit(request, params, user):
             profile.email = params['email']
     if params['phone'] is not None:
         params['phone'] = re.compile(r'[^\d]+').sub('', params['phone'])
-        if len(params['phone']) != 10:
+        if len(params['phone']) == 0:
+            profile.phone = None
+        elif len(params['phone']) != 10:
             response = {
                 'status':'FAIL',
                 'error':'INVALID_PHONE',
@@ -350,6 +352,8 @@ def edit(request, params, user):
         else:
             profile.phone = params['phone']
     if params['link_website'] is not None:
+        if len(params['link_website']) == 0:
+            profile.link_website = None
         if ((len(params['link_website']) != 0) and 
             not REGEX_URL.match(params['link_website'])):
             response = {
@@ -361,6 +365,8 @@ def edit(request, params, user):
         else:
             profile.link_website = params['link_website']
     if params['link_facebook'] is not None:
+        if len(params['link_facebook']) == 0:
+            profile.link_facebook = None
         if ((len(params['link_facebook']) != 0) and 
             not REGEX_URL.match(params['link_facebook'])):
             response = {

@@ -70,21 +70,21 @@ block content
                     div.name.medium-2.columns
                         | Phone
                     div.medium-10.columns
-                        input.field(type="tel", name="phone", value="{{ profile.phone }}", placeholder="Profile Phone #")
+                        input.field(type="tel", name="phone", value="{% if profile.phone %}{{ profile.phone }}{% endif %}", placeholder="Profile Phone #")
                     div.text.medium-10.medium-offset-2.columns
                         p The phone number for your organization
                 div.row
                     div.name.medium-2.columns
                         | Website
                     div.medium-10.columns
-                        input.field(type="text", name="link_website", value="{{ profile.link_website }}", placeholder="Link To Your Website")
+                        input.field(type="text", name="link_website", value="{% if profile.link_website %}{{ profile.link_website }}{% endif %}", placeholder="Link To Your Website")
                     div.text.medium-10.medium-offset-2.columns
                         p The website url (ex. http://mycompany.com) for your organization
                 div.row
                     div.name.medium-2.columns
                         | Facebook
                     div.medium-10.columns
-                        input.field(type="text", name="link_facebook", value="{{ profile.link_facebook }}", placeholder="Link To Your Facebook")
+                        input.field(type="text", name="link_facebook", value="{% if profile.link_facebook %}{{ profile.link_facebook }}{% endif %}", placeholder="Link To Your Facebook")
                     div.text.medium-10.medium-offset-2.columns
                         p The facebook url (ex. https://facebook.com/mycompany) for your organization
                 div.row.logo

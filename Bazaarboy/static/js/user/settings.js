@@ -44,7 +44,7 @@
         console.log('Name is too long.');
       }
       $('div#user-settings div.status').html('Saving...');
-      optionals = ['location', 'phone', 'link_website', 'link_facebook'];
+      optionals = [];
       params = Bazaarboy.stripEmpty(save_data, optionals);
       console.log(save_data);
       this.save({
