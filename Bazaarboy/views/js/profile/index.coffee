@@ -1,5 +1,15 @@
 Bazaarboy.profile.index = 
     init: () ->
+        $('a.event-filter-btn').click () ->
+            eventType = $(this).data('type')
+            if eventType is 'current'
+                $('a.past-event').addClass 'hide'
+                $('a.current-event').removeClass 'hide'
+            if eventType is 'past'
+                $('a.current-event').addClass 'hide'
+                $('a.past-event').removeClass 'hide'
+            $('a.event-filter-btn').removeClass 'active'
+            $(this).addClass 'active'
         latitude = parseFloat $('div.map-canvas').attr('data-latitude')
         longitude = parseFloat $('div.map-canvas').attr('data-longitude')
         if not isNaN(latitude) and not isNaN(longitude)

@@ -7571,6 +7571,7 @@ div#profile {
   min-height: 100%;
   padding-top: 66px;
   background: #F6F6F6;
+  font-weight: 300;
 }
 div#profile-header {
   position: absolute;
@@ -7619,15 +7620,21 @@ div#profile-body div.profile-top div.profile-image {
   padding-left: 3px;
   padding-right: 3px;
   overflow: hidden;
+  text-align: center;
 }
 div#profile-body div.profile-top div.profile-title-description {
   margin-top: 10px;
   padding-left: 20px;
 }
+@media only screen and (max-width: 40em) {
+  div#profile-body div.profile-top div.profile-title-description {
+    margin-top: 40px;
+  }
+}
 div#profile-body div.profile-top div.profile-title-description div.profile-title {
-  font-size: 24px;
-  font-weight: 500;
-  margin-bottom: 10px;
+  font-size: 20px;
+  font-weight: bold;
+  margin-bottom: 15px;
 }
 div#profile-body div.profile-top div.profile-title-description div.profile-description {
   line-height: 1.3em;
@@ -7648,8 +7655,14 @@ div#profile-body div.profile-content div.profile-left {
 div#profile-body div.profile-content div.profile-left div.profile-location {
   padding-bottom: 25px;
 }
-div#profile-body div.profile-content div.profile-left div.profile-location div.location {
-  font-weight: 500;
+@media only screen and (max-width: 40em) {
+  div#profile-body div.profile-content div.profile-left div.profile-location {
+    padding-bottom: 50px;
+  }
+}
+div#profile-body div.profile-content div.profile-left div.profile-location div.location-title {
+  font-weight: bold;
+  margin-bottom: 20px;
 }
 div#profile-body div.profile-content div.profile-left div.profile-location div.address {
   line-height: 1.3rem;
@@ -7657,7 +7670,7 @@ div#profile-body div.profile-content div.profile-left div.profile-location div.a
   font-size: 13px;
 }
 div#profile-body div.profile-content div.profile-left div.profile-location div.map-canvas {
-  margin-top: 15px;
+  margin-top: 10px;
   height: 120px;
 }
 div#profile-body div.profile-content div.profile-left div.profile-location div.map-canvas > div {
@@ -7686,8 +7699,9 @@ div#profile-body div.profile-content div.profile-left div.profile-contact {
   font-size: 14px;
 }
 div#profile-body div.profile-content div.profile-left div.profile-contact div.title {
-  margin-bottom: 10px;
+  margin-bottom: 15px;
   font-size: 16px;
+  font-weight: bold;
 }
 div#profile-body div.profile-content div.profile-left div.profile-contact > div {
   margin-bottom: 5px;
@@ -7705,6 +7719,76 @@ div#profile-body div.profile-content div.profile-right {
     padding-left: 40px;
     padding-right: 60px;
   }
+}
+div#profile-body div.profile-content div.profile-right div.profile-events-title {
+  font-weight: bold;
+  margin-bottom: 10px;
+}
+div#profile-body div.profile-content div.profile-right a.event-filter-btn {
+  display: block;
+  width: 100%;
+  text-align: center;
+  padding: 15px 0;
+  color: #4a4a4a;
+  border: thin solid #F6F6F6;
+  font-weight: bold;
+  font-size: 15px;
+  text-transform: uppercase;
+}
+div#profile-body div.profile-content div.profile-right a.event-filter-btn:hover,
+div#profile-body div.profile-content div.profile-right a.event-filter-btn.active {
+  background: #F6F6F6;
+}
+div#profile-body div.profile-content div.profile-right div.event {
+  border: thin solid #F6F6F6;
+  margin-left: 0;
+  margin-right: 0;
+  margin-top: 10px;
+  color: #4a4a4a;
+  font-weight: 500;
+}
+div#profile-body div.profile-content div.profile-right div.event:hover {
+  background: #F6F6F6;
+}
+div#profile-body div.profile-content div.profile-right div.event div.event-date {
+  position: absolute;
+  top: 8px;
+  left: 15px;
+  width: 40px;
+  height: 40px;
+  border-radius: 4px;
+  box-shadow: inset 0px -2px 0px 0px #f5a623;
+  background: #FEC84D;
+  border: #faa638 thin solid;
+}
+div#profile-body div.profile-content div.profile-right div.event div.event-date div.month {
+  width: 100%;
+  height: 9px;
+  margin-top: 2px;
+  color: #ffffff;
+  font-size: 11px;
+  font-weight: 600;
+  text-align: center;
+  text-transform: uppercase;
+  letter-spacing: -1px;
+}
+div#profile-body div.profile-content div.profile-right div.event div.event-date div.day {
+  color: #4a4a4a;
+  width: 38px;
+  height: 24px;
+  background: #ffffff;
+  margin: 0 auto;
+  margin-top: 2px;
+  padding: 1px 0;
+  padding-top: 3px;
+  font-size: 20px;
+  font-weight: 700;
+  text-align: center;
+  border-bottom-left-radius: 1px;
+  border-bottom-right-radius: 1px;
+}
+div#profile-body div.profile-content div.profile-right div.event div.event-name {
+  padding: 20px 0;
 }
 div#profile-footer {
   width: 100%;

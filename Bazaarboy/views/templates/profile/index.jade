@@ -27,6 +27,8 @@ block body
                 div.row
                     div.profile-left.small-12.medium-4.columns
                         div.profile-location.row
+                            div.location-title.small-12.columns
+                                | LOCATION
                             div.location.small-12.columns
                                 {{ profile.location }}
                             div.map-canvas.small-12.columns.hide(data-latitude="{{ profile.latitude }}", data-longitude="{{ profile.longitude }}")
@@ -61,7 +63,41 @@ block body
                                 a(href="{{ profile.link_facebook }}", target="_blank") {{ profile.link_facebook|facebookProfile }}
                             {% endif %}
                     div.profile-right.small-12.medium-8.columns.end
-                        | Right
+                        div.row
+                            div.profile-events-title.small-12.columns
+                                | EVENTS
+                        {% if currentEvents.count > 0 and pastEvents.count > 0 %}
+                        div.row
+                            div.medium-4.small-6.columns
+                                a.event-filter-btn.active(href="javascript:;", data-type="current") Upcoming
+                            div.medium-4.small-6.columns.end
+                                a.event-filter-btn(href="javascript:;", data-type="past") Past
+                        {% endif %}
+                        {% if currentEvents.count > 0 %}
+                        {% for event in currentEvents %}
+                        a.current-event(href="{{ event|eventUrl }}")
+                            div.row.event
+                                div.medium-2.small-4.columns.event-date-container
+                                    div.event-date
+                                        div.month {{ event.start_time|date:'M' }}
+                                        div.day {{ event.start_time|date:'j' }}
+                                div.event-name.medium-10.small-8.columns
+                                    | {{ event.name }}
+                        {% endfor %}
+                        {% endif %}
+                        {% if pastEvents.count > 0 %}
+                        {% for event in pastEvents %}
+                        a.past-event.hide(href="{{ event|eventUrl }}")
+                            div.row.event
+                                div.medium-2.small-4.columns.event-date-container
+                                    div.event-date
+                                        div.month {{ event.start_time|date:'M' }}
+                                        div.day {{ event.start_time|date:'j' }}
+                                div.event-name.medium-10.small-8.columns
+                                    | {{ event.name }}
+                        {% endfor %}
+                        {% endif %}
+
         div#profile-footer
             div.inner.clearfix
                 div.poweredby.left

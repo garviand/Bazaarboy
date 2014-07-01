@@ -2,6 +2,20 @@
   Bazaarboy.profile.index = {
     init: function() {
       var geocoder, iconImage, latitude, latlng, longitude, map, mapCenter, mapOptions, mapStyles, marker;
+      $('a.event-filter-btn').click(function() {
+        var eventType;
+        eventType = $(this).data('type');
+        if (eventType === 'current') {
+          $('a.past-event').addClass('hide');
+          $('a.current-event').removeClass('hide');
+        }
+        if (eventType === 'past') {
+          $('a.current-event').addClass('hide');
+          $('a.past-event').removeClass('hide');
+        }
+        $('a.event-filter-btn').removeClass('active');
+        return $(this).addClass('active');
+      });
       latitude = parseFloat($('div.map-canvas').attr('data-latitude'));
       longitude = parseFloat($('div.map-canvas').attr('data-longitude'));
       if (!isNaN(latitude) && !isNaN(longitude)) {
