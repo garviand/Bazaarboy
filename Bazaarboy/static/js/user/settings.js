@@ -44,6 +44,7 @@
         console.log('Name is too long.');
       }
       $('div#user-settings div.status').html('Saving...');
+      console.log(save_data);
       this.save({
         id: profileId,
         name: save_data.name,
@@ -51,15 +52,17 @@
         description: save_data.description,
         location: save_data.location,
         latitude: save_data.latitude,
-        longitude: save_data.longitude
+        longitude: save_data.longitude,
+        phone: save_data.phone,
+        link_website: save_data.link_website,
+        link_facebook: save_data.link_facebook
       }, function(err, event) {
         if (!err) {
           setTimeout((function() {
             $('div#user-settings div.status').html('Saved');
           }), 1000);
         } else {
-          $('div#user-settings div.status').html('Failed to save');
-          console.log(err);
+          $('div#user-settings div.status').html(err.message);
         }
       });
     },

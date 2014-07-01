@@ -66,6 +66,27 @@ block content
                             {{ profile.description }}
                     div.text.medium-10.medium-offset-2.columns
                         p A description of your organization.
+                div.row
+                    div.name.medium-2.columns
+                        | Phone
+                    div.medium-10.columns
+                        input.field(type="tel", name="phone", value="{{ profile.phone }}", placeholder="Profile Phone #")
+                    div.text.medium-10.medium-offset-2.columns
+                        p The phone number for your organization
+                div.row
+                    div.name.medium-2.columns
+                        | Website
+                    div.medium-10.columns
+                        input.field(type="text", name="link_website", value="{{ profile.link_website }}", placeholder="Link To Your Website")
+                    div.text.medium-10.medium-offset-2.columns
+                        p The website url (ex. http://mycompany.com) for your organization
+                div.row
+                    div.name.medium-2.columns
+                        | Facebook
+                    div.medium-10.columns
+                        input.field(type="text", name="link_facebook", value="{{ profile.link_facebook }}", placeholder="Link To Your Facebook")
+                    div.text.medium-10.medium-offset-2.columns
+                        p The facebook url (ex. https://facebook.com/mycompany) for your organization
                 div.row.logo
                     div.name.medium-2.columns
                         | Logo

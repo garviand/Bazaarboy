@@ -7694,6 +7694,9 @@ div#profile-body div.profile-content div.profile-left div.profile-contact > div 
   line-height: 1.3em;
   word-wrap: break-word;
 }
+div#profile-body div.profile-content div.profile-left div.profile-contact > div a {
+  color: #4a4a4a;
+}
 div#profile-body div.profile-content div.profile-right {
   padding-top: 50px;
 }

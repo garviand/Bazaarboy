@@ -46,17 +46,19 @@ block body
                             {% if profile.phone %}
                             div.phone
                                 b p
-                                | &nbsp;&nbsp;{{ profile.phone }}
+                                | &nbsp;&nbsp;{{ profile.phone|phoneDisplay|safe }}
                             {% endif %}
                             {% if profile.link_website %}
                             div.website
                                 b w
-                                | &nbsp;&nbsp;{{ profile.link_website}}
+                                | &nbsp;&nbsp;
+                                a(href="{{ profile.link_website }}", target="_blank") {{ profile.link_website}}
                             {% endif %}
                             {% if profile.link_facebook %}
                             div.facebook
                                 b f
-                                | &nbsp;&nbsp;{{ profile.link_facebook }}
+                                | &nbsp;&nbsp;
+                                a(href="{{ profile.link_facebook }}", target="_blank") {{ profile.link_facebook|facebookProfile }}
                             {% endif %}
                     div.profile-right.small-12.medium-8.columns.end
                         | Right
