@@ -37,13 +37,15 @@
       });
     },
     saveSettings: function(autoSave) {
-      var save_data,
+      var optionals, params, save_data,
         _this = this;
       save_data = $('form.profile-settings').serializeObject();
       if (save_data.name.length > 100) {
         console.log('Name is too long.');
       }
       $('div#user-settings div.status').html('Saving...');
+      optionals = ['location', 'phone', 'link_website', 'link_facebook'];
+      params = Bazaarboy.stripEmpty(save_data, optionals);
       console.log(save_data);
       this.save({
         id: profileId,
