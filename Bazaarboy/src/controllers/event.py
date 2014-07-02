@@ -1353,20 +1353,21 @@ def purchase(request, params, user):
     if params['promos'] is not None:
         codes = params['promos'].split(',')
         for code in codes:
-            if Promo.objects.filter(code = code, event = event, 
-                                    is_deleted = False).exists():
-                promo = Promo.objects.get(code = code, event = event)
-                if not promo.ticket.is_deleted:
-                    l = len(promo.email_domain)
-                    if params['email'][-l:] == promo.email_domain or l == 0:
-                        promos[promo.ticket.id] = promo
-                        continue
-            response = {
-                'status':'FAIL',
-                'error':'INVALID_PROMO',
-                'message':'One of the promo codes is invalid.'
-            }
-            return json_response(response)
+            for detail in details:
+                if Promo.objects.filter(code = code, ticket__id = detail, 
+                                        is_deleted = False).exists():
+                    promo = Promo.objects.get(code = code, ticket__id = detail)
+                    if not promo.ticket.is_deleted:
+                        l = len(promo.email_domain)
+                        if params['email'][-l:] == promo.email_domain or l == 0:
+                            promos[promo.ticket.id] = promo
+                            continue
+                response = {
+                    'status':'FAIL',
+                    'error':'INVALID_PROMO',
+                    'message':'One of the promo codes is invalid.'
+                }
+                return json_response(response)
     # Check if there is an unfinished purchase
     if Purchase.objects.filter(Q(checkout__isnull = False, 
                                  checkout__is_charged = False), 
