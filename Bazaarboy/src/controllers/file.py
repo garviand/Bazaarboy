@@ -55,6 +55,7 @@ def upload_csv(request, params):
     response = {
         'status':'OK',
         'file':serialize_one(csv)
+    }
     return json_response(response)
 
 @csrf_exempt
