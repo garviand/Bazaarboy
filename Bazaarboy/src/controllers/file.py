@@ -26,6 +26,39 @@ IMAGE_SIZE_LIMIT = 2621440
 
 @csrf_exempt
 @validate('POST')
+def upload_csv(request, params):
+    """
+    Upload a image that is stored temporarily
+    """
+    if not request.FILES.has_key('file'):
+        return HttpResponseBadRequest('Bad request.')
+    rawCsv = request.FILES['file']
+    csvExt = str(rawImage.name).split('.')[-1].lower()
+    if not csvExt == 'csv':
+        response = {
+            'status':'FAIL',
+            'error':'INVALID_FORMAT',
+            'message':'The image format is not supported.'
+        }
+        return json_response(response)
+    if rawCsv._size > IMAGE_SIZE_LIMIT:
+        response = {
+            'status':'FAIL',
+            'error':'FILE_TOO_BIG',
+            'message':'The csv cannot be over 2.5MB.'
+        }
+        return json_response(response)
+    csvUid = uuid.uuid4().hex
+    rawCsv.name = '%s.%s' % (csvUid, csvExt)
+    csv = Csv(source = rawImage)
+    csv.save()
+    response = {
+        'status':'OK',
+        'file':serialize_one(csv)
+    return json_response(response)
+
+@csrf_exempt
+@validate('POST')
 def upload_image(request, params):
     """
     Upload a image that is stored temporarily

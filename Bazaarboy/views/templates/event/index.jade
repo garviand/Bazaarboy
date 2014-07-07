@@ -217,7 +217,7 @@ block body
                 {% endif %}
         div#event-body.row
             div#event-content.medium-8.columns
-                div#event-cover.row(style="{% if event.cover %}margin-bottom: 35px;{% else %}height: 0; overflow:hidden;{% endif %}")
+                div#event-cover.row(style="{% if event.cover %}margin-bottom: 35px;{% elif not design %}height: 0; overflow:hidden;{% endif %}")
                     div.columns
                         {% if design %}
                         div.upload

@@ -339,3 +339,18 @@ class Image(models.Model):
         """
         self.source.delete(save = False)
         super(Image, self).delete(*args, **kwargs)
+
+class Csv(models.Model):
+    """
+    CSV model
+    """
+    source = models.FileField(upload_to = 'uploads/csv/%Y-%m-%d/')
+    is_archived = models.BooleanField(default = False)
+    created_time = models.DateTimeField(auto_now_add = True)
+
+    def delete(self, *args, **kwargs):
+        """
+        Automatically delete the CSV file after model deletion
+        """
+        self.source.delete(save = False)
+        super(Csv, self).delete(*args, **kwargs)
