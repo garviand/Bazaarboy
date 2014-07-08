@@ -93,7 +93,48 @@
     init: function() {
       var scope;
       scope = this;
-      $("div.guest-add a.start-guest-add").click(function(e) {
+      $("div.guest-add-invite a.start-guest-invite").click(function(e) {
+        e.preventDefault();
+        return $('div#invite-modal').foundation('reveal', 'open');
+      });
+      $('div#invite-modal form.invite-form div.event-list').click(function() {
+        $(this).toggleClass('selected');
+      });
+      $('div#invite-modal form.invite-form a.send-invitation').click(function() {
+        var events, optionals, params;
+        $(this).html('Sending...');
+        params = $('form.invite-form').serializeObject();
+        events = '';
+        $('div#invite-modal form.invite-form div.event-list.selected').each(function() {
+          if (events !== '') {
+            events += ',';
+          }
+          events += $(this).data('id');
+        });
+        params['events'] = events;
+        optionals = ['emails', 'events'];
+        params = Bazaarboy.stripEmpty(params, optionals);
+        if (!scope.emailSending) {
+          scope.emailSending = true;
+          Bazaarboy.post('event/' + eventId + '/invite/', params, function(response) {
+            if (response.status === 'OK') {
+              $('div.invite-success span.invite-count').html(response.count);
+              $('form.invite-form').fadeOut(300, function() {
+                scope.emailSending = false;
+                $('div.invite-success').fadeIn(300);
+              });
+            } else {
+              scope.emailSending = false;
+              alert(response.message);
+              $(this).html('Send Invitations');
+            }
+          });
+        }
+      });
+      $('a.close-invite-modal').click(function() {
+        $('div#invite-modal').foundation('reveal', 'close');
+      });
+      $("div.guest-add-invite a.start-guest-add").click(function(e) {
         e.preventDefault();
         $('div.add-guest-container').removeClass('hidden');
       });

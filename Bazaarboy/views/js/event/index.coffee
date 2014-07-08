@@ -217,6 +217,7 @@ Bazaarboy.event.index =
             $(this).toggleClass 'selected'
             return
         $('div#invite-modal form.invite-form a.send-invitation').click () ->
+            $(this).html 'Sending...'
             params = $('form.invite-form').serializeObject()
             events = ''
             $('div#invite-modal form.invite-form div.event-list.selected').each () ->
@@ -239,6 +240,7 @@ Bazaarboy.event.index =
                     else
                         scope.emailSending = false
                         alert response.message
+                        $(this).html 'Send Invitations'
                     return
             return
         $('div.invite-success a.close-invite-modal').click () ->

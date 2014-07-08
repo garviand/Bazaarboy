@@ -140,6 +140,35 @@ def manage(request, id, params, user):
     if not Organizer.objects.filter(event = event, 
                                     profile__managers = user).exists():
         return redirect('index')
+    pastEventList = {}
+    profiles = Profile.objects.filter(managers = user)
+    pids = []
+    for profile in profiles:
+        pids.append(profile.id)
+    pastEvents = Event.objects.filter(Q(end_time = None, 
+                                        start_time__lt = timezone.now()) | 
+                                      Q(end_time__isnull = False, 
+                                        end_time__lt = timezone.now()), 
+                                      is_launched = True, 
+                                      organizers__in = pids) \
+                              .order_by('-start_time')
+    eids = []
+    for pastEvent in pastEvents:
+            eids.append(pastEvent.id)
+    purchases = Purchase.objects.filter(Q(checkout = None) | 
+                                    Q(checkout__is_charged = True, 
+                                      checkout__is_refunded = False), 
+                                    event__in = eids, 
+                                    is_expired = False)
+    for purchase in purchases:
+        if purchase.event.id in pastEventList:
+            pastEventList[purchase.event.id]['quantity'] += 1
+        else:
+            pastEventList[purchase.event.id] = {
+                'id': purchase.event.id,
+                'name': purchase.event.name,
+                'quantity': 1
+            }
     purchase_items = Purchase_item.objects.filter(Q(purchase__checkout = None) | 
                                         Q(purchase__checkout__is_charged = True, 
                                           purchase__checkout__is_refunded = False), 

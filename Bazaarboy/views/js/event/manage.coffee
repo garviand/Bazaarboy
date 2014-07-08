@@ -71,7 +71,44 @@ Bazaarboy.event.manage =
         return
     init: () ->
         scope = this
-        $("div.guest-add a.start-guest-add").click (e) ->
+        # INVITE MODAL INIT
+        $("div.guest-add-invite a.start-guest-invite").click (e) ->
+            e.preventDefault()
+            $('div#invite-modal').foundation('reveal', 'open')
+        $('div#invite-modal form.invite-form div.event-list').click () ->
+            $(this).toggleClass 'selected'
+            return
+        $('div#invite-modal form.invite-form a.send-invitation').click () ->
+            $(this).html 'Sending...'
+            params = $('form.invite-form').serializeObject()
+            events = ''
+            $('div#invite-modal form.invite-form div.event-list.selected').each () ->
+                if events isnt ''
+                    events += ','
+                events += $(this).data('id')
+                return
+            params['events'] = events
+            optionals = ['emails', 'events']
+            params = Bazaarboy.stripEmpty params, optionals
+            if not scope.emailSending
+                scope.emailSending = true
+                Bazaarboy.post 'event/'+eventId+'/invite/', params, (response) ->
+                    if response.status is 'OK'
+                        $('div.invite-success span.invite-count').html(response.count)
+                        $('form.invite-form').fadeOut 300, () ->
+                            scope.emailSending = false
+                            $('div.invite-success').fadeIn 300
+                            return
+                    else
+                        scope.emailSending = false
+                        alert response.message
+                        $(this).html 'Send Invitations'
+                    return
+            return
+        $('a.close-invite-modal').click () ->
+            $('div#invite-modal').foundation('reveal', 'close')
+            return
+        $("div.guest-add-invite a.start-guest-add").click (e) ->
             e.preventDefault()
             $('div.add-guest-container').removeClass 'hidden'
             return
