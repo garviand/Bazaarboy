@@ -30,15 +30,15 @@ def upload_csv(request, params):
     """
     Upload a image that is stored temporarily
     """
-    if not request.FILES.has_key('file'):
+    if not request.FILES.has_key('csv_file'):
         return HttpResponseBadRequest('Bad request.')
-    rawCsv = request.FILES['file']
-    csvExt = str(rawImage.name).split('.')[-1].lower()
+    rawCsv = request.FILES['csv_file']
+    csvExt = str(rawCsv.name).split('.')[-1].lower()
     if not csvExt == 'csv':
         response = {
             'status':'FAIL',
             'error':'INVALID_FORMAT',
-            'message':'The image format is not supported.'
+            'message':'Must Be A .csv File'
         }
         return json_response(response)
     if rawCsv._size > IMAGE_SIZE_LIMIT:
@@ -50,7 +50,7 @@ def upload_csv(request, params):
         return json_response(response)
     csvUid = uuid.uuid4().hex
     rawCsv.name = '%s.%s' % (csvUid, csvExt)
-    csv = Csv(source = rawImage)
+    csv = Csv(source = rawCsv)
     csv.save()
     response = {
         'status':'OK',

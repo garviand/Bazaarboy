@@ -6,6 +6,19 @@ import cgi
 from kernel.models import *
 from src.controllers.request import *
 from src.serializer import serialize_one
+from django.shortcuts import render, redirect
+import csv
+
+import pdb
+
+@login_required()
+def index(request, user):
+    """
+    User settings page
+    """
+    profiles = Profile.objects.filter(managers = user)
+    profile = profiles[0]
+    return render(request, 'list/index.html', locals())
 
 @login_required()
 @validate('POST', ['profile', 'name', 'is_hidden'])
@@ -48,7 +61,7 @@ def create(request, params, user):
     return json_response(response)
 
 @login_required()
-@validate('POST', ['id'], ['name']):
+@validate('POST', ['id'], ['name'])
 def edit(request, params, user):
     """
     Edit a list
@@ -209,6 +222,27 @@ def add_from_event(request, params, user):
     return json_response(response)
 
 @login_required()
+@validate('POST', ['csv'])
+def prepare_csv(request, params, user):
+    """
+    Prepare CSV For List Upload
+    """
+    if not Csv.objects.filter(id = params['csv']).exists():
+        response = {
+            'status':'FAIL',
+            'error':'EVENT_NOT_FOUND',
+            'message':'The event doesn\'t exist.'
+        }
+        return json_response(response)
+    csv = Csv.objects.get(id = params['csv'])
+    with open(csv.source.url, 'rb') as csvfile:
+        reader = csv.reader(csvfile)
+        for row in reader:
+            pdb.set_trace()
+        csvfile.close()
+    pass
+
+@login_required()
 @validate('POST', ['id', 'csv', 'format'])
 def add_from_csv(request, params, user):
     """
@@ -217,11 +251,11 @@ def add_from_csv(request, params, user):
     pass
 
 @login_required()
-@validate('POST', ['id', 'email']):
+@validate('POST', ['id', 'email'])
 def remove_item(request, params, user):
     pass
 
 @login_required()
-@validate('POST', ['id']):
+@validate('POST', ['id'])
 def delete(request, params, user):
     pass
