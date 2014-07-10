@@ -5942,19 +5942,19 @@ a.sidebar-item.sub:hover div.sidebar-item-text {
   background: #3c3c3c;
   color: #ffffff;
 }
+a.sidebar-item.sub:hover div.sidebar-item-icon div {
+  background: #ffffff;
+  color: #3c3c3c;
+}
 @media only screen and (min-width: 40.063em) and (max-width: 64em) {
   a.sidebar-item.sub:hover div.sidebar-item-icon {
     display: none !important;
   }
 }
-a.sidebar-item:hover {
-  background: #faa638;
-}
 a.sidebar-item:hover div.sidebar-item-icon {
   color: #ffffff !important;
 }
 a.sidebar-item:hover div.sidebar-item-text {
-  background: #faa638;
   color: #ffffff;
 }
 div.sidebar-item-icon {

@@ -263,6 +263,13 @@ a.sidebar-item {
                 color: @white;
             }
 
+            div.sidebar-item-icon {
+                div{
+                    background: @white;
+                    color: @darker;
+                }
+            }
+
             @media @media_medium {
                 div.sidebar-item-icon {
                     display: none !important;
@@ -272,13 +279,11 @@ a.sidebar-item {
     }
 
     &:hover {
-        background: @orange;
 
         div.sidebar-item-icon {
             color: @white !important;
         }
         div.sidebar-item-text {
-            background: @orange;
             color: @white;
         }
     }
