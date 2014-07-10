@@ -262,18 +262,18 @@ block content
             {% if currentEventsCount > 0 %}
             div.events-overview-title
                 div.title.left
-                    | Current Events
-                    span.pipe &nbsp;|
-                a.view-all.events-filter.events-filter-current(href="javascript:;") &nbsp;View All Current Events
+                    span.events-count {{ currentEventsCount }}
+                    | &nbsp;&nbsp;Current Events
                 div.clearfix &nbsp;
-            {% with event=currentEvents.0 %}
+            {% for event in currentEvents %}
             +currentEvent()
-            {% endwith %}
+            {% endfor %}
             {% endif %}
             {% if draftEventsCount > 0 %}
             div.events-overview-title
                 div.title.left
-                    | Draft Events
+                    span.events-count {{ draftEventsCount }}
+                    | &nbsp;&nbsp;Draft Events
                     span.pipe &nbsp;|
                 a.view-all.events-filter.events-filter-draft(href="javascript:;") &nbsp;View All Draft Events
                 div.clearfix &nbsp;
@@ -284,7 +284,8 @@ block content
             {% if pastEventsCount > 0 %}
             div.events-overview-title
                 div.title.left
-                    | Past Events
+                    span.events-count {{ pastEventsCount }}
+                    | &nbsp;&nbsp;Past Events
                     span.pipe &nbsp;|
                 a.view-all.events-filter.events-filter-past(href="javascript:;") &nbsp;View All Past Events
                 div.clearfix &nbsp;
