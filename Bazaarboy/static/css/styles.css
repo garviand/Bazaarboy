@@ -5969,7 +5969,7 @@ div.sidebar-item-icon div {
   width: 20px;
   height: 20px;
   font-size: 21px;
-  line-height: 28px;
+  line-height: 25px;
   text-align: center;
 }
 div.sidebar-item-icon div.text {
@@ -6402,8 +6402,8 @@ div.draft-event > div.tile div.header div.past-event-title,
 div.past-event > div.tile div.header div.past-event-title {
   padding: 22px 0;
   padding-left: 70px;
-  font-size: 20px;
-  font-weight: 500;
+  font-size: 18px;
+  font-weight: 600;
   line-height: 20px;
 }
 div.current-event > div.tile div.header div.current-event-view a,
@@ -6530,6 +6530,7 @@ div.draft-event > div.tile div.info div.inner div.past-event-datetime div.past-e
 div.past-event > div.tile div.info div.inner div.past-event-datetime div.past-event-time span {
   display: table-cell;
   vertical-align: middle;
+  font-weight: 600;
 }
 div.current-event > div.tile div.info div.inner div.current-event-datetime div.current-event-time span .ss-clock,
 div.draft-event > div.tile div.info div.inner div.current-event-datetime div.current-event-time span .ss-clock,
@@ -6613,7 +6614,7 @@ div.past-event > div.tile div.info div.inner div.past-event-location-container d
   left: 0;
   font-size: 13px;
   line-height: 18px;
-  font-weight: 500;
+  font-weight: 600;
 }
 div.current-event > div.tile div.info div.inner div.current-event-location-container div.current-event-location span,
 div.draft-event > div.tile div.info div.inner div.current-event-location-container div.current-event-location span,
@@ -7234,7 +7235,7 @@ div#wrapper-dashboard div.events-overview-title:first-child {
   margin-bottom: 25px;
 }
 div#wrapper-dashboard div.events-overview-title .title {
-  font-size: 18px;
+  font-size: 19px;
   font-weight: 600;
   text-transform: uppercase;
 }
