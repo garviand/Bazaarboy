@@ -114,6 +114,7 @@ append script
     script(type="text/javascript", src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAasW6vqPCn18g6UMaFWV90qGMSo6pErwo&sensor=false&libraries=places")
     script.
         var eventId = {{ event.id }};
+        var eventUrl = '{{ event|eventUrl }}';
     script(src="{{ STATIC_URL }}js/event/modify.js")
     script(src="{{ STATIC_URL }}js/event/modify-basics.js")
 

@@ -32,7 +32,7 @@
                 id: eventId
               }, function(response) {
                 if (response.status === 'OK') {
-                  window.location = '/event/' + eventId + '#launch';
+                  window.location = eventUrl + '#launch';
                 } else {
                   alert(response.message);
                   $('div.event-launch a.launch-btn').html('Launch Event');
@@ -269,6 +269,7 @@
       });
       $('div#invite-modal form.invite-form a.send-invitation').click(function() {
         var events, optionals, params;
+        $(this).html('Sending...');
         params = $('form.invite-form').serializeObject();
         events = '';
         $('div#invite-modal form.invite-form div.event-list.selected').each(function() {
@@ -292,6 +293,7 @@
             } else {
               scope.emailSending = false;
               alert(response.message);
+              $(this).html('Send Invitations');
             }
           });
         }
@@ -465,17 +467,44 @@
           $('div.save-status').html('Unsaved Changes');
         });
         scope.redactorContent = $('div#event-description div.description div.inner').redactor('get');
+        $('div#event-cover form.upload_cover a.upload_cover_btn').click(function() {
+          $('div#event-cover form.upload_cover input[name=image_file]').click();
+        });
+        $('div#event-cover form.upload_cover a.delete_cover_btn').click(function() {
+          if (confirm('Are you sure you want to delete your cover image?')) {
+            Bazaarboy.post('event/edit/', {
+              id: eventId,
+              cover: 'delete'
+            }, function(response) {
+              if (response.status === 'OK') {
+                $('img#cover-image').attr('src', '');
+                $('div#event-cover form.upload_cover a.delete_cover_btn').addClass('hidden');
+                $('div#event-cover form.upload_cover a.upload_cover_btn').html('Upload Cover Image');
+              } else {
+                alert(response.message);
+              }
+            });
+          }
+        });
         postData = {
           event: eventId
         };
         this.aviary = new Aviary.Feather({
           apiKey: 'ce3b87fb1edaa22c',
           apiVersion: 3,
-          postUrl: '/file/aviary/',
-          postData: JSON.stringify(postData),
           enableCORS: true,
           onSave: function(imageId, imageUrl) {
             $("img#" + imageId).attr('src', imageUrl);
+            $('img#cover-image').attr('src', imageUrl);
+            _this.aviary.close();
+            $('div#event-cover form.upload_cover a.delete_cover_btn').removeClass('hidden');
+            $('div#event-cover form.upload_cover a.upload_cover_btn').html('Edit Cover Image');
+            Bazaarboy.post('file/aviary/', {
+              event: eventId,
+              url: imageUrl
+            }, function(response) {
+              console.log(response);
+            });
           }
         });
         $('div#event-cover form.upload_cover input[name=image_file]').fileupload({
@@ -488,10 +517,10 @@
             var response;
             response = jQuery.parseJSON(data.result);
             if (response.status === 'OK') {
-              $('img#cover-image').attr('src', 'http://cold-eland-5294.vagrantshare.com' + mediaUrl + response.image.source);
+              $('img#cover-image-placeholder').attr('src', mediaUrl + response.image.source);
               _this.aviary.launch({
-                image: 'cover-image',
-                url: 'http://cold-eland-5294.vagrantshare.com' + mediaUrl + response.image.source
+                image: 'cover-image-placeholder',
+                url: mediaUrl + response.image.source
               });
             } else {
               alert(response.message);

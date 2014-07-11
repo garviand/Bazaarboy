@@ -27,7 +27,7 @@ Bazaarboy.event.index =
                     if scope.toLaunch
                         Bazaarboy.post 'event/launch/', {id: eventId}, (response) =>
                             if response.status is 'OK'
-                                window.location = '/event/' + eventId + '#launch'
+                                window.location = eventUrl + '#launch'
                             else
                                 alert response.message
                                 $('div.event-launch a.launch-btn').html('Launch Event')
@@ -217,6 +217,7 @@ Bazaarboy.event.index =
             $(this).toggleClass 'selected'
             return
         $('div#invite-modal form.invite-form a.send-invitation').click () ->
+            $(this).html 'Sending...'
             params = $('form.invite-form').serializeObject()
             events = ''
             $('div#invite-modal form.invite-form div.event-list.selected').each () ->
@@ -239,6 +240,7 @@ Bazaarboy.event.index =
                     else
                         scope.emailSending = false
                         alert response.message
+                        $(this).html 'Send Invitations'
                     return
             return
         $('div.invite-success a.close-invite-modal').click () ->
@@ -403,16 +405,41 @@ Bazaarboy.event.index =
                 return
             scope.redactorContent = $('div#event-description div.description div.inner').redactor('get')
             # Cover image
+            $('div#event-cover form.upload_cover a.upload_cover_btn').click () ->
+                $('div#event-cover form.upload_cover input[name=image_file]').click()
+                return
+            $('div#event-cover form.upload_cover a.delete_cover_btn').click () ->
+                if confirm 'Are you sure you want to delete your cover image?'
+                    Bazaarboy.post 'event/edit/', 
+                        id: eventId,
+                        cover: 'delete'
+                    , (response) ->
+                        if response.status is 'OK'
+                            $('img#cover-image').attr 'src', ''
+                            $('div#event-cover form.upload_cover a.delete_cover_btn').addClass 'hidden'
+                            $('div#event-cover form.upload_cover a.upload_cover_btn').html 'Upload Cover Image'
+                        else
+                            alert response.message
+                        return
+                return
             postData = 
                 event: eventId
             @aviary = new Aviary.Feather
                 apiKey: 'ce3b87fb1edaa22c'
                 apiVersion: 3
-                postUrl: '/file/aviary/'
-                postData: JSON.stringify postData
                 enableCORS: true
-                onSave: (imageId, imageUrl) ->
+                onSave: (imageId, imageUrl) =>
                     $("img##{imageId}").attr 'src', imageUrl
+                    $('img#cover-image').attr 'src', imageUrl
+                    @aviary.close();
+                    $('div#event-cover form.upload_cover a.delete_cover_btn').removeClass 'hidden'
+                    $('div#event-cover form.upload_cover a.upload_cover_btn').html 'Edit Cover Image'
+                    Bazaarboy.post 'file/aviary/', 
+                        event: eventId,
+                        url: imageUrl
+                    , (response) ->
+                        console.log response
+                        return
                     return
             $('div#event-cover form.upload_cover input[name=image_file]').fileupload
                 url: rootUrl + 'file/image/upload/'
@@ -423,10 +450,10 @@ Bazaarboy.event.index =
                 done: (event, data) =>
                     response = jQuery.parseJSON data.result
                     if response.status is 'OK'
-                        $('img#cover-image').attr 'src', 'http://cold-eland-5294.vagrantshare.com' + mediaUrl + response.image.source
+                        $('img#cover-image-placeholder').attr 'src', mediaUrl + response.image.source
                         @aviary.launch
-                            image: 'cover-image'
-                            url: 'http://cold-eland-5294.vagrantshare.com' + mediaUrl + response.image.source
+                            image: 'cover-image-placeholder'
+                            url: mediaUrl + response.image.source
                     else
                         alert response.message
                     return

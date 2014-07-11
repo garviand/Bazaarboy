@@ -193,12 +193,16 @@ def sendOrganizerAddedEmail(event, adder, profile):
 
 @task()
 def sendEventInvite(event, email, inviter):
-    event_month = DateFormat(event.start_time)
+    event_month = DateFormat(localize(event.start_time))
     event_month = event_month.format('M')
-    event_day = DateFormat(event.start_time)
+    event_day = DateFormat(localize(event.start_time))
     event_day = event_day.format('j')
     organizers = event.organizers.all()
     organizer_list_html = ''
+    if event.slug:
+        event_url = 'https://bazaarboy.com/' + event.slug
+    else:
+        event_url = 'https://bazaarboy.com/event/' + str(event.id)
     for organizer in organizers:
         if organizer.image:
             organizer_image = """
@@ -235,6 +239,10 @@ def sendEventInvite(event, email, inviter):
                 'content': inviter
             },
             {
+                'name': 'event_link', 
+                'content': event_url
+            },
+            {
                 'name': 'event_id', 
                 'content': event.id
             },
@@ -259,7 +267,7 @@ def sendEventInvite(event, email, inviter):
     return sendEmails(to, subject, template, mergeVars)
 
 @task()
-def sendEventConfirmationEmail(purchase):
+def sendEventConfirmationEmail(purchase, manual=False, inviter=None):
     """
     Send event confirmation
     """
@@ -274,13 +282,13 @@ def sendEventConfirmationEmail(purchase):
     for organizer in organizers:
         if organizer.image:
             organizer_image = """
-                <img class="organizer_logo" src='""" + organizer.image.source.url + """' style="outline: none; text-decoration: none; -ms-interpolation-mode: bicubic; width: auto; max-width: 100%; float: left; clear: both; display: block;" align="left" />
+                <img width="38" class="organizer_logo" src='""" + organizer.image.source.url + """' style="outline: none; text-decoration: none; width:40px; max-width: 40px; float: left; display: block;" align="left" />
             """
         else:
             organizer_image = ''
         organizer_list_html += """
             <tr class="organizer" style="vertical-align: top; text-align: left; padding: 0;" align="left">
-                <td class="three sub-columns center text-pad-left" style="word-break: break-word; -webkit-hyphens: auto; -moz-hyphens: auto; hyphens: auto; border-collapse: collapse !important; vertical-align: top; text-align: center; min-width: 0px; width: 25%; line-height: 19px; font-size: 14px; color: #4A4A4A !important; margin: 0; padding: 0px 10px 10px;" align="center" valign="top">
+                <td width="40" class="three sub-columns center text-pad-left" style="word-break: break-word; -webkit-hyphens: auto; -moz-hyphens: auto; hyphens: auto; border-collapse: collapse !important; vertical-align: top; text-align: center; min-width: 0px; width: 25%; line-height: 19px; font-size: 14px; color: #4A4A4A !important; margin: 0; padding: 0px 10px 10px;" align="center" valign="top">
                     """ + organizer_image + """
                 </td>
                 <td class="nine sub-columns last" style="word-break: break-word; -webkit-hyphens: auto; -moz-hyphens: auto; hyphens: auto; border-collapse: collapse !important; vertical-align: top; text-align: left; min-width: 0px; width: 75%; line-height: 19px; font-size: 14px; color: #4A4A4A !important; margin: 0; padding: 0px 0px 10px;" align="left" valign="top">
@@ -296,8 +304,13 @@ def sendEventConfirmationEmail(purchase):
         'email':user.email, 
         'name':user.first_name + ' ' + user.last_name
     }]
-    subject = 'Confirmation for \'' + event.name + '\''
-    template = 'event-rsvp'
+    if manual:
+        subject = 'You\'re on the Guest List - \'' + event.name + '\'' 
+        header_text = 'You have been added to the guest list by <b>' + inviter.profile.name + '</b>'
+    else:  
+        subject = 'Confirmation for \'' + event.name + '\''
+        header_text = 'CONFIRMATION | Your tickets to <b>' + organizers[0].name + '\'s</b> Event'
+    template = 'confirm-rsvp'
     items = Purchase_item.objects.filter(purchase = purchase) \
                                  .prefetch_related('ticket')
     tickets = {}
@@ -351,7 +364,7 @@ def sendEventConfirmationEmail(purchase):
             </tr>
         """
     reciept_info = ''
-    if purchase.amount > 0:
+    if purchase.amount > 0 and not manual:
         reciept_info = 'TOTAL: $' + str(purchase.amount)
     if event.slug:
         event_url = 'https://bazaarboy.com/' + event.slug
@@ -385,8 +398,8 @@ def sendEventConfirmationEmail(purchase):
                 'content': event_url
             },
             {
-                'name': 'primary_organizer', 
-                'content': organizers[0].name
+                'name': 'header_text', 
+                'content': header_text
             },
             {
                 'name': 'event_name', 

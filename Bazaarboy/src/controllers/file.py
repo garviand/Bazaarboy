@@ -7,11 +7,13 @@ import uuid
 import requests
 from StringIO import StringIO
 from django.core.files.uploadedfile import InMemoryUploadedFile
-from django.http import HttpResponseBadRequest
+from django.http import HttpResponse, HttpResponseBadRequest
 from django.views.decorators.csrf import csrf_exempt
 from kernel.models import *
 from src.controllers.request import validate, json_response
 from src.serializer import serialize_one
+
+import pdb
 
 IMAGE_TYPES = ['jpg', 'jpeg', 'png', 'gif']
 IMAGE_CONTENT_TYPES = {
@@ -148,15 +150,12 @@ def delete_image(request, params):
     return json_response(response)
 
 @csrf_exempt
-@validate('POST', ['url', 'postdata'])
+@validate('POST', ['url', 'event'])
 def aviary(request, params):
     """
     Aviary handler
     """
-    data = json.loads(params['postdata'])
-    if not data.has_key('event'):
-        return HttpResponseBadRequest('Bad request.')
-    if not Event.objects.filter(id = data['event']).exists():
+    if not Event.objects.filter(id = params['event']).exists():
         response = {
             'status':'FAIL',
             'error':'EVENT_NOT_FOUND',
@@ -164,13 +163,6 @@ def aviary(request, params):
         }
         return json_response(response)
     imageRequest = requests.get(params['url'])
-    if request.status_code != requests.codes.ok:
-        response = {
-            'status':'FAIL',
-            'error':'INVALID_URL',
-            'message':'The url is not valid.'
-        }
-        return json_response(response)
     imageUid = uuid.uuid4().hex
     imageExt = params['url'].split('.')[-1]
     imageName = '%s.%s' % (imageUid, imageExt)
@@ -183,7 +175,7 @@ def aviary(request, params):
                                        charset = None)
     image = Image(source = aviaryImage, is_archived = True)
     image.save()
-    event = Event.objects.get(id = data['event'])
+    event = Event.objects.get(id = params['event'])
     event.cover = image
     event.save()
     response = {

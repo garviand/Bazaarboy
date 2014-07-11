@@ -25,6 +25,7 @@ Bazaarboy.event.modify.tickets =
           if response.status isnt 'OK'
               alert response.message
           else
+              console.log response
               $('div#edit-ticket').removeClass('add').addClass 'edit'
               $('div#edit-ticket div.step-1').addClass 'hide'
               $('div#edit-ticket div.step-1 span.type').html 'Switch'

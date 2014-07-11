@@ -217,16 +217,22 @@ block body
                 {% endif %}
         div#event-body.row
             div#event-content.medium-8.columns
-                div#event-cover.row
+                div#event-cover.row(style="{% if event.cover %}margin-bottom: 35px;{% elif not design %}height: 0; overflow:hidden;{% else %}margin-bottom: 10px;{% endif %}")
                     div.columns
-                        div.image
-                            img#cover-image
                         {% if design %}
                         div.upload
                             form.upload_cover
-                                input(type="file", name="image_file")
-                                {% csrf_token %}
+                                div.row
+                                    div.small-12.medium-4.columns
+                                        a.blue-btn-inverse.upload_cover_btn(href="javascript:;") {% if event.cover %}Edit Cover Image{% else %}Upload Cover Image{% endif %}
+                                    div.small-12.medium-4.columns.end
+                                        a.blue-btn-inverse.delete_cover_btn(href="javascript:;", class="{% if not event.cover %}hidden{% endif %}") Delete Cover Image
+                                        input.hidden(type="file", name="image_file")
+                                        {% csrf_token %}
                         {% endif %}
+                        div.image
+                            img#cover-image(src="{% if event.cover %}{{ event.cover.source.url }}{% endif %}")
+                            img#cover-image-placeholder.hidden
                 div#event-description.row
                     div.description.small-12.columns(style="margin-top:0;")
                         div.inner
@@ -415,6 +421,7 @@ append script
     script(type="text/javascript", src="https://checkout.stripe.com/v2/checkout.js")
     script(type="text/javascript").
         var eventId = {{ event.id }};
+        var eventUrl = '{{ event|eventUrl }}';
         var design = {% if design %}true{% else %}false{% endif %};
         $(window).load(function(){
             $('div#event-calendar-add').removeClass('hidden')

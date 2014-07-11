@@ -140,6 +140,35 @@ def manage(request, id, params, user):
     if not Organizer.objects.filter(event = event, 
                                     profile__managers = user).exists():
         return redirect('index')
+    pastEventList = {}
+    profiles = Profile.objects.filter(managers = user)
+    pids = []
+    for profile in profiles:
+        pids.append(profile.id)
+    pastEvents = Event.objects.filter(Q(end_time = None, 
+                                        start_time__lt = timezone.now()) | 
+                                      Q(end_time__isnull = False, 
+                                        end_time__lt = timezone.now()), 
+                                      is_launched = True, 
+                                      organizers__in = pids) \
+                              .order_by('-start_time')
+    eids = []
+    for pastEvent in pastEvents:
+            eids.append(pastEvent.id)
+    purchases = Purchase.objects.filter(Q(checkout = None) | 
+                                    Q(checkout__is_charged = True, 
+                                      checkout__is_refunded = False), 
+                                    event__in = eids, 
+                                    is_expired = False)
+    for purchase in purchases:
+        if purchase.event.id in pastEventList:
+            pastEventList[purchase.event.id]['quantity'] += 1
+        else:
+            pastEventList[purchase.event.id] = {
+                'id': purchase.event.id,
+                'name': purchase.event.name,
+                'quantity': 1
+            }
     purchase_items = Purchase_item.objects.filter(Q(purchase__checkout = None) | 
                                         Q(purchase__checkout__is_charged = True, 
                                           purchase__checkout__is_refunded = False), 
@@ -1087,7 +1116,7 @@ def create_promo(request, params, user):
             'message':'Code cannot contain spaces.'
         }
         return json_response(response)
-    if Promo.objects.filter(code = params['code'], event = event).exists():
+    if Promo.objects.filter(code = params['code'], ticket = ticket).exists():
         response = {
             'status':'FAIL',
             'error':'DUPLICATE_CODE',
@@ -1271,14 +1300,6 @@ def purchase(request, params, user):
         }
         return json_response(response)
     user, created = User.objects.get_or_create(email = params['email'])
-    if (not REGEX_NAME.match(params['first_name']) or 
-        not REGEX_NAME.match(params['last_name'])):
-        response = {
-            'status':'FAIL',
-            'error':'INVALID_NAME',
-            'message':'Your first or last name contain illegal characters.'
-        }
-        return json_response(response)
     if len(params['first_name']) > 50 or len(params['last_name']) > 50:
         response = {
             'status':'FAIL',
@@ -1361,20 +1382,21 @@ def purchase(request, params, user):
     if params['promos'] is not None:
         codes = params['promos'].split(',')
         for code in codes:
-            if Promo.objects.filter(code = code, event = event, 
-                                    is_deleted = False).exists():
-                promo = Promo.objects.get(code = code, event = event)
-                if not promo.ticket.is_deleted:
-                    l = len(promo.email_domain)
-                    if params['email'][-l:] == promo.email_domain or l == 0:
-                        promos[promo.ticket.id] = promo
-                        continue
-            response = {
-                'status':'FAIL',
-                'error':'INVALID_PROMO',
-                'message':'One of the promo codes is invalid.'
-            }
-            return json_response(response)
+            for detail in details:
+                if Promo.objects.filter(code = code, ticket__id = detail, 
+                                        is_deleted = False).exists():
+                    promo = Promo.objects.get(code = code, ticket__id = detail)
+                    if not promo.ticket.is_deleted:
+                        l = len(promo.email_domain)
+                        if params['email'][-l:] == promo.email_domain or l == 0:
+                            promos[promo.ticket.id] = promo
+                            continue
+                response = {
+                    'status':'FAIL',
+                    'error':'INVALID_PROMO',
+                    'message':'One of the promo codes is invalid.'
+                }
+                return json_response(response)
     # Check if there is an unfinished purchase
     if Purchase.objects.filter(Q(checkout__isnull = False, 
                                  checkout__is_charged = False), 
@@ -1573,6 +1595,15 @@ def add_purchase(request, params, user):
         }
         return json_response(response)
     event = Event.objects.get(id = params['event'])
+    if not Organizer.objects.filter(event = event, profile__managers = _user).exists():
+        response = {
+            'status':'FAIL',
+            'error':'NOT_A_MANAGER',
+            'message':'You don\'t have permission for the event.'
+        }
+        return json_response(response)
+    else:
+        inviter = Organizer.objects.filter(event = event, profile__managers = _user)[0]
     # Check if the tickets are valid
     _tickets = Ticket.objects.filter(event = event, is_deleted = False)
     tickets = {}
@@ -1651,7 +1682,7 @@ def add_purchase(request, params, user):
                     'quantity': 1
                 }
         # Send confirmation email and sms
-        sendEventConfirmationEmail(purchase)
+        sendEventConfirmationEmail(purchase, True, inviter)
         sendEventConfirmationSMS(purchase)
         # Success
         response = {

@@ -70,3 +70,17 @@ def sanitizeUrl(url):
     Strip the parameters from the url
     """
     return url.split('?')[0]
+
+@register.filter
+def facebookProfile(fullURL):
+    """
+    Get Facebook Profile From URL
+    """
+    return fullURL.split(".com/")[1]
+
+@register.filter
+def phoneDisplay(number):
+    """
+    Pretty Phone Number Display
+    """
+    return number[0:3] + "&nbsp;&middot;&nbsp;" + number[3:6] + "&nbsp;&middot;&nbsp;" + number[6:10]
