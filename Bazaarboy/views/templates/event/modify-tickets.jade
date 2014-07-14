@@ -59,7 +59,7 @@ block content
                             div.large-5.medium-7.small-9
                                 a.new-ticket.primary-btn(href="javascript:;") + New Ticket
             mixin ticket-option(tags)
-                div.ticket-option.row(data-id!= tags ? "{{ ticket.id }}" : "")
+                div.ticket-option.row(data-id!= tags ? "{{ ticket.id }}" : "", class!= tags ? "" : "template")
                     div.top.small-12.columns
                         div.inner.small-12.columns
                             div.price.medium-2.columns
@@ -107,9 +107,13 @@ block content
                                         a.edit-promo(href="javascript:;", data-id="{{ promo.id }}") Edit/Delete Promo
                         {% endif %}
                         {% endfor %}
-                    {% if ticket.price != 0 %}
                     div.add-promos.small-12.columns
                         div.inner.small-12.columns.add-promo-container
+                            div.medium-2.columns.move-ticket(class="{% if forloop.first %}hide{% endif %}")
+                                a.move-ticket-btn.move-ticket-up(href="javascript:;") Move Up
+                            div.medium-2.columns.move-ticket.end(class="{% if forloop.last %}hide{% endif %}")
+                                a.move-ticket-btn.move-ticket-down(href="javascript:;") Move Down
+                            {% if ticket.price != 0 %}
                             div.action.medium-3.columns.right
                                 a.add-promo.blue-btn(href="javascript:;") Add Promo
                             div.add-promo-fields.hidden
@@ -136,7 +140,7 @@ block content
                                         div.small-12.medium-2.columns.text-center.text.or or
                                         div.small-12.medium-4.columns.text-center.text.cancel
                                             a.cancel-btn(href="javascript:;") cancel
-                    {% endif %}
+                            {% endif %}
             div#ticket-canvas.small-12.columns
                 {% for ticket in tickets %}
                 +ticket-option(true)

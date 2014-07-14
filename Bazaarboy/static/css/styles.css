@@ -9402,6 +9402,14 @@ div#event-modify-tickets div.ticket-option div.add-promos div.inner {
   min-height: 44px;
   padding: 0;
 }
+div#event-modify-tickets div.ticket-option div.add-promos div.inner div.move-ticket a {
+  padding: 8px 0;
+  color: #4963e4;
+  display: block;
+  width: 100%;
+  font-size: 12px;
+  text-align: center;
+}
 div#event-modify-tickets div.ticket-option div.add-promos div.inner div.action {
   padding-right: 5px;
   padding-left: 30px;

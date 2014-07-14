@@ -80,7 +80,7 @@ def index(request, id, params, user):
                     'name': purchase.event.name,
                     'quantity': 1
                 }
-    tickets = Ticket.objects.filter(event = event, is_deleted = False)
+    tickets = Ticket.objects.filter(event = event, is_deleted = False).order_by('order', '-id')
     promos = Promo.objects.filter(event = event, is_deleted = False)
     organizers = Organizer.objects.filter(event = event)
     rsvp = True
@@ -112,7 +112,7 @@ def modify(request, id, step, params, user):
                                     profile__managers = user).exists():
         return redirect('index')
     if step == 'tickets':
-        tickets = Ticket.objects.filter(event = event, is_deleted = False)
+        tickets = Ticket.objects.filter(event = event, is_deleted = False).order_by('order', '-id')
         tickets = list(tickets)
         ticketCount = len(tickets)
         ticketExists = ticketCount > 0
@@ -1070,6 +1070,54 @@ def delete_ticket(request, params, user):
     # Mark the ticket as deleted
     ticket.is_deleted = True
     ticket.save()
+    response = {
+        'status':'OK'
+    }
+    return json_response(response)
+
+@login_required()
+@validate('POST', ['event', 'details'])
+def reorder_tickets(request, params, user):
+    """
+    Reorder Tickers
+
+    @details: {'#ticket1.id':#order, '#ticket2.id':#order, ...}
+    """
+    # Check if user has permission for the event
+    if not Organizer.objects.filter(event__id = params['event'], 
+                                    profile__managers = user).exists():
+        response = {
+            'status':'FAIL',
+            'error':'NOT_A_MANAGER',
+            'message':'You don\'t have permission for the event.'
+        }
+        return json_response(response)
+    details = None
+    try:
+        details = json.loads(params['details'])
+    except ValueError:
+        response = {
+            'status':'FAIL',
+            'error':'INVALID_DETAILS',
+            'message':'The ticket details are not in legal format.'
+        }
+        return json_response(response)
+    _details = {}
+    for tid in details:
+        _details[int(tid)] = int(details[tid])
+    details = _details
+    for tid in details:
+        if Ticket.objects.filter(event__id = params['event'], id = tid).exists():
+            ticket = Ticket.objects.get(event__id = params['event'], id = tid)
+            ticket.order = details[tid]
+            ticket.save()
+        else:
+            response = {
+                'status':'FAIL',
+                'error':'TICKET_DOESNT_EXIST',
+                'message':'One of the tickets does not belong to this event'
+            }
+            return json_response(response)
     response = {
         'status':'OK'
     }
