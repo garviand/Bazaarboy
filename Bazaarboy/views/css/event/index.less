@@ -10,6 +10,10 @@ div#event {
 div#confirmation-modal{
     margin-left: -25%;
     width: 50%;
+    @media @media_small {
+        margin-left: -45%;
+        width: 90%;
+    }
     div.confirmation-title{
         font-size: 18px;
         font-weight: 600;
@@ -17,6 +21,7 @@ div#confirmation-modal{
         margin-bottom: 40px;
     }
     div.organizers{
+        margin-bottom: 20px;
         div.title{
             padding-left: 0;
             font-size: 14px;
@@ -87,6 +92,11 @@ div#confirmation-modal{
                 font-weight: 700;
             }
         }
+    }
+    div.confirmation-note{
+        margin-top: 10px;
+        font-size: 12px;
+        line-height: 1.5em;
     }
 }
 

@@ -8170,11 +8170,20 @@ div#confirmation-modal {
   margin-left: -25%;
   width: 50%;
 }
+@media only screen and (max-width: 40em) {
+  div#confirmation-modal {
+    margin-left: -45%;
+    width: 90%;
+  }
+}
 div#confirmation-modal div.confirmation-title {
   font-size: 18px;
   font-weight: 600;
   text-transform: uppercase;
   margin-bottom: 40px;
+}
+div#confirmation-modal div.organizers {
+  margin-bottom: 20px;
 }
 div#confirmation-modal div.organizers div.title {
   padding-left: 0;
@@ -8237,6 +8246,11 @@ div#confirmation-modal div.tickets div.ticket div.name {
   font-size: 14px;
   line-height: 18px;
   font-weight: 700;
+}
+div#confirmation-modal div.confirmation-note {
+  margin-top: 10px;
+  font-size: 12px;
+  line-height: 1.5em;
 }
 div#launch-modal div.empty-state-container {
   border: #F6F6F6 thin solid;
