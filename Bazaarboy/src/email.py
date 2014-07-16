@@ -114,7 +114,7 @@ def sendResetRequestEmail(resetCode):
     user = resetCode.user
     to = [{
         'email':user.email, 
-        'name':user.user.first_name + ' ' + user.last_name
+        'name':user.first_name + ' ' + user.last_name
     }]
     subject = 'Reset Your Password'
     template = 'reset-password'
@@ -123,7 +123,7 @@ def sendResetRequestEmail(resetCode):
         'vars': [
             {
                 'name':'user_name', 
-                'content':user.first_name + ' ' + user.last_name
+                'content':user.first_name
             }, 
             {
                 'name': 'reset_code', 
@@ -131,7 +131,7 @@ def sendResetRequestEmail(resetCode):
             }
         ]
     }]
-    return self.sendEmail(to, subject, template, mergeVars)
+    return sendEmails(to, subject, template, mergeVars)
 
 @task()
 def sendProfileMessageEmail(name, email, message, profile, event):
@@ -167,7 +167,7 @@ def sendProfileMessageEmail(name, email, message, profile, event):
 @task()
 def sendOrganizerAddedEmail(event, adder, profile):
     to = [{
-        'email':profile.email, 
+        'email':profile.email,
         'name':profile.name
     }]
     subject = 'Added as organizer - ' + event.name

@@ -1,6 +1,6 @@
 @import (reference) "vars.less";
 
-div#login, div#register {
+div#login, div#register, div#reset {
     min-width: 100%;
     min-height: 100%;
     background: #F6F6F6;
@@ -99,6 +99,67 @@ div#login, div#register {
                     padding: 8px 0px 10px;
                     position: relative;
                     top: -10px;
+                }
+            }
+        }
+    }
+    div#reset-container{
+        background: @white;
+        margin-top: 75px;
+        form#reset-form, form#password-form{
+            div.logo-small{
+                margin: 0 auto;
+                margin-top: 50px;
+                height: 50px;
+                width: 50px;
+                border-radius: 50%;
+                background: url(/static/images/logo-big.png);
+                background-size: cover;
+            }
+            div.title{
+                font-weight: 500;
+                text-transform: uppercase;
+                margin-top: 16px;
+                div.site-title{
+                    font-size: 1.5em;
+                }
+                span.page-title{
+                    color: #9B9B9B;
+                }
+            }
+            hr.separator{
+                margin-top: 24px;
+                margin-bottom: 26px;
+            }
+            .reset-inputs{
+                input[type=text], input[type=password]{
+                    border-radius: 3px;
+                    box-shadow: none;
+                }
+            }
+            div.reset-bottom{
+                margin-top: 16px;
+                padding-bottom: 16px;
+                .submit-reset, .submit-password{
+                    width: 100%;
+                    font-weight: 400;
+                    padding: 8px 0px 10px;
+                    position: relative;
+                    top: -10px;
+                }
+            }
+            div.password-form-confirmation, div.reset-form-confirmation{
+                div.message{
+                    width: 100%;
+                    text-align: center;
+                    margin: 20px 0;
+                    font-size: 18px;
+                }
+                div.details{
+                    width: 100%;
+                    text-align: center;
+                    font-size: 13px;
+                    margin-bottom: 40px;
                 }
             }
         }

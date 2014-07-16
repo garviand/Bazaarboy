@@ -10,9 +10,10 @@ index_urlpatterns = patterns('src.controllers.index',
 )
 
 user_urlpatterns = patterns('src.controllers.user', 
-    url(r'^register/$', 'register', name = 'register'),
     url(r'^create/$', 'create', name = 'create'),
-    url(r'^login/$', 'login', name = 'login'),
+    url(r'^reset/$', 'reset', name = 'reset'),
+    url(r'^reset/create/$', 'create_reset', name = 'create_reset'),
+    url(r'^password/change/$', 'change_password', name = 'change_password'),
     url(r'^auth/$', 'auth', name = 'auth'),
     url(r'^settings/$', 'settings', name = 'settings'),
     url(r'^logout/$', 'logout', name = 'logout'),

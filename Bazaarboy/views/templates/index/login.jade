@@ -24,19 +24,19 @@ block body
                                     div.small-12.columns
                                         input(name="email", type="text", name="email", placeholder="Email")
                                     div.small-12.columns
-                                        input(type="password", name="password", placeholder="Password", autocomplete="off")
+                                        input(type="password", name="password", placeholder="Password")
                                 div.row.login-bottom
                                     //div.small-8.columns
                                         input(id="savepw", type="checkbox")
                                         label(for="savepw") Keep me signed in.
-                                    div.small-12.medium-4.columns
+                                    div.small-12.medium-4.medium-offset-8.columns
                                         input.primary-btn.submit-login(type="submit", value="SIGN IN")
                 div#footer
                     div.row
                         div.small-10.small-offset-1.columns
                             div.row
-                                div.small-8.columns
-                                    //a.trouble(href="javascript:;") Trouble Logging in?
+                                div.small-12.medium-8.columns
+                                    a.trouble(href="{% url user:reset %}") Forgot your password?
                                 div.small-12.medium-4.columns
                                     a.switch(href="{% url index:register %}") Register
 

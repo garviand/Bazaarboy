@@ -4,6 +4,7 @@ Controller for all user related actions
 
 import hashlib
 import os
+import random
 from datetime import timedelta
 from django.db.models import Q
 from django.http import HttpResponse, HttpResponseForbidden
@@ -226,8 +227,9 @@ def create_reset(request, params, user):
         return json_response(response)
     user = User.objects.get(email = params['email'])
     expirationTime = timezone.now() + timedelta(days = 3)
+    randomCode = ''.join(random.choice('0123456789ABCDEF') for i in range(32))
     resetCode = User_reset_code(user = user, 
-                                code = os.urandom(128).encode('base_64')[:128], 
+                                code = randomCode, 
                                 expiration_time = expirationTime)
     resetCode.save()
     sendResetRequestEmail(resetCode)

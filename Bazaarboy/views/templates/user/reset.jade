@@ -1,0 +1,70 @@
+// User.Reset
+
+extends ../layout
+
+block body
+    div#reset
+        div.row
+            div#container
+                div#reset-container
+                    {% if not isCodeValid %}
+                    form#reset-form
+                        div.row
+                            div.small-10.small-offset-1.columns
+                                div.row
+                                    div.small-12.medium-7.columns.text-center
+                                        div.logo-small &nbsp;
+                                div.row.title
+                                    div.small-12.columns.text-center.site-title 
+                                        | Reset Password
+                                hr.separator
+                                div.reset-form-content
+                                    div.row.reset-inputs
+                                        div.small-12.columns
+                                            input(name="email", type="text", name="email", placeholder="Email")
+                                    div.row.reset-bottom
+                                        div.small-12.columns
+                                            input.primary-btn.submit-reset(type="submit", value="Send Reset Request")
+                                div.reset-form-confirmation.hide
+                                    div.message Your reset request has been sent!
+                                    div.details
+                                        | Check your email for further instructions.
+                    {% else %}
+                    form#password-form
+                        div.row
+                            div.small-10.small-offset-1.columns
+                                div.row
+                                    div.small-12.medium-7.columns.text-center
+                                        div.logo-small &nbsp;
+                                div.row.title
+                                    div.small-12.columns.text-center.site-title 
+                                        | Reset Password
+                                hr.separator
+                                div.password-form-content
+                                    div.row.reset-inputs
+                                        div.small-12.columns
+                                            input(name="password", type="password", placeholder="New Password")
+                                    div.row.reset-inputs
+                                        div.small-12.columns
+                                            input(name="confirm", type="password", placeholder="Confirm Password")
+                                    div.row.reset-bottom
+                                        div.small-12.columns
+                                            input.primary-btn.submit-password(type="submit", value="Reset Password")
+                                            input(name="code", type="hidden", value="{{ resetCode.code }}")
+                                div.password-form-confirmation.hide
+                                    div.message Your password has been changed!
+                                    div.details
+                                        | You can now
+                                        a(href="{% url index:login %}") &nbsp;login&nbsp;
+                                        | with your new credentials.
+                    {% endif %}
+                div#footer
+                    div.row
+                        div.small-10.small-offset-1.columns
+                            div.row
+                                div.small-12.medium-4.medium-offset-8.columns
+                                    a.switch(href="{% url index:login %}") Login
+
+append script
+    script(type="text/javascript", src="{{ STATIC_URL }}hashchange/jquery.ba-hashchange.min.js")
+    script(type="text/javascript", src="{{ STATIC_URL }}js/user/reset.js")

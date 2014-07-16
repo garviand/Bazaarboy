@@ -7459,24 +7459,28 @@ div#wrapper-pricing div#pricing div#what_else .contact .primary-btn:hover {
   color: #ffffff;
 }
 div#login,
-div#register {
+div#register,
+div#reset {
   min-width: 100%;
   min-height: 100%;
   background: #F6F6F6;
 }
 div#login div#container,
-div#register div#container {
+div#register div#container,
+div#reset div#container {
   width: 450px;
   max-width: 98%;
   margin: 0 auto;
 }
 div#login div#login-container,
-div#register div#login-container {
+div#register div#login-container,
+div#reset div#login-container {
   background: #ffffff;
   margin-top: 75px;
 }
 div#login div#login-container form#login-form div.logo-small,
-div#register div#login-container form#login-form div.logo-small {
+div#register div#login-container form#login-form div.logo-small,
+div#reset div#login-container form#login-form div.logo-small {
   margin: 0 auto;
   margin-top: 50px;
   height: 50px;
@@ -7486,38 +7490,46 @@ div#register div#login-container form#login-form div.logo-small {
   background-size: cover;
 }
 div#login div#login-container form#login-form div.title,
-div#register div#login-container form#login-form div.title {
+div#register div#login-container form#login-form div.title,
+div#reset div#login-container form#login-form div.title {
   font-weight: 500;
   text-transform: uppercase;
   margin-top: 16px;
 }
 div#login div#login-container form#login-form div.title div.site-title,
-div#register div#login-container form#login-form div.title div.site-title {
+div#register div#login-container form#login-form div.title div.site-title,
+div#reset div#login-container form#login-form div.title div.site-title {
   font-size: 1.5em;
 }
 div#login div#login-container form#login-form div.title span.page-title,
-div#register div#login-container form#login-form div.title span.page-title {
+div#register div#login-container form#login-form div.title span.page-title,
+div#reset div#login-container form#login-form div.title span.page-title {
   color: #9B9B9B;
 }
 div#login div#login-container form#login-form hr.separator,
-div#register div#login-container form#login-form hr.separator {
+div#register div#login-container form#login-form hr.separator,
+div#reset div#login-container form#login-form hr.separator {
   margin-top: 24px;
   margin-bottom: 26px;
 }
 div#login div#login-container form#login-form .login-inputs input[type=text],
 div#register div#login-container form#login-form .login-inputs input[type=text],
+div#reset div#login-container form#login-form .login-inputs input[type=text],
 div#login div#login-container form#login-form .login-inputs input[type=password],
-div#register div#login-container form#login-form .login-inputs input[type=password] {
+div#register div#login-container form#login-form .login-inputs input[type=password],
+div#reset div#login-container form#login-form .login-inputs input[type=password] {
   border-radius: 3px;
   box-shadow: none;
 }
 div#login div#login-container form#login-form div.login-bottom,
-div#register div#login-container form#login-form div.login-bottom {
+div#register div#login-container form#login-form div.login-bottom,
+div#reset div#login-container form#login-form div.login-bottom {
   margin-top: 16px;
   padding-bottom: 16px;
 }
 div#login div#login-container form#login-form div.login-bottom .submit-login,
-div#register div#login-container form#login-form div.login-bottom .submit-login {
+div#register div#login-container form#login-form div.login-bottom .submit-login,
+div#reset div#login-container form#login-form div.login-bottom .submit-login {
   width: 100%;
   font-weight: 400;
   padding: 8px 0px 10px;
@@ -7525,12 +7537,14 @@ div#register div#login-container form#login-form div.login-bottom .submit-login 
   top: -10px;
 }
 div#login div#register-container,
-div#register div#register-container {
+div#register div#register-container,
+div#reset div#register-container {
   background: #ffffff;
   margin-top: 75px;
 }
 div#login div#register-container form#register-form div.logo-small,
-div#register div#register-container form#register-form div.logo-small {
+div#register div#register-container form#register-form div.logo-small,
+div#reset div#register-container form#register-form div.logo-small {
   margin: 0 auto;
   margin-top: 50px;
   height: 50px;
@@ -7540,56 +7554,198 @@ div#register div#register-container form#register-form div.logo-small {
   background-size: cover;
 }
 div#login div#register-container form#register-form div.title,
-div#register div#register-container form#register-form div.title {
+div#register div#register-container form#register-form div.title,
+div#reset div#register-container form#register-form div.title {
   font-weight: 500;
   text-transform: uppercase;
   margin-top: 16px;
 }
 div#login div#register-container form#register-form div.title div.site-title,
-div#register div#register-container form#register-form div.title div.site-title {
+div#register div#register-container form#register-form div.title div.site-title,
+div#reset div#register-container form#register-form div.title div.site-title {
   font-size: 1.5em;
 }
 div#login div#register-container form#register-form div.title span.page-title,
-div#register div#register-container form#register-form div.title span.page-title {
+div#register div#register-container form#register-form div.title span.page-title,
+div#reset div#register-container form#register-form div.title span.page-title {
   color: #9B9B9B;
 }
 div#login div#register-container form#register-form hr.separator,
-div#register div#register-container form#register-form hr.separator {
+div#register div#register-container form#register-form hr.separator,
+div#reset div#register-container form#register-form hr.separator {
   margin-top: 24px;
   margin-bottom: 26px;
 }
 div#login div#register-container form#register-form .register-inputs input[type=text],
 div#register div#register-container form#register-form .register-inputs input[type=text],
+div#reset div#register-container form#register-form .register-inputs input[type=text],
 div#login div#register-container form#register-form .register-inputs input[type=password],
-div#register div#register-container form#register-form .register-inputs input[type=password] {
+div#register div#register-container form#register-form .register-inputs input[type=password],
+div#reset div#register-container form#register-form .register-inputs input[type=password] {
   border-radius: 3px;
   box-shadow: none;
 }
 div#login div#register-container form#register-form div.register-bottom,
-div#register div#register-container form#register-form div.register-bottom {
+div#register div#register-container form#register-form div.register-bottom,
+div#reset div#register-container form#register-form div.register-bottom {
   margin-top: 16px;
   padding-bottom: 16px;
 }
 div#login div#register-container form#register-form div.register-bottom .submit-register,
-div#register div#register-container form#register-form div.register-bottom .submit-register {
+div#register div#register-container form#register-form div.register-bottom .submit-register,
+div#reset div#register-container form#register-form div.register-bottom .submit-register {
   width: 100%;
   font-weight: 400;
   padding: 8px 0px 10px;
   position: relative;
   top: -10px;
 }
+div#login div#reset-container,
+div#register div#reset-container,
+div#reset div#reset-container {
+  background: #ffffff;
+  margin-top: 75px;
+}
+div#login div#reset-container form#reset-form div.logo-small,
+div#register div#reset-container form#reset-form div.logo-small,
+div#reset div#reset-container form#reset-form div.logo-small,
+div#login div#reset-container form#password-form div.logo-small,
+div#register div#reset-container form#password-form div.logo-small,
+div#reset div#reset-container form#password-form div.logo-small {
+  margin: 0 auto;
+  margin-top: 50px;
+  height: 50px;
+  width: 50px;
+  border-radius: 50%;
+  background: url(/static/images/logo-big.png);
+  background-size: cover;
+}
+div#login div#reset-container form#reset-form div.title,
+div#register div#reset-container form#reset-form div.title,
+div#reset div#reset-container form#reset-form div.title,
+div#login div#reset-container form#password-form div.title,
+div#register div#reset-container form#password-form div.title,
+div#reset div#reset-container form#password-form div.title {
+  font-weight: 500;
+  text-transform: uppercase;
+  margin-top: 16px;
+}
+div#login div#reset-container form#reset-form div.title div.site-title,
+div#register div#reset-container form#reset-form div.title div.site-title,
+div#reset div#reset-container form#reset-form div.title div.site-title,
+div#login div#reset-container form#password-form div.title div.site-title,
+div#register div#reset-container form#password-form div.title div.site-title,
+div#reset div#reset-container form#password-form div.title div.site-title {
+  font-size: 1.5em;
+}
+div#login div#reset-container form#reset-form div.title span.page-title,
+div#register div#reset-container form#reset-form div.title span.page-title,
+div#reset div#reset-container form#reset-form div.title span.page-title,
+div#login div#reset-container form#password-form div.title span.page-title,
+div#register div#reset-container form#password-form div.title span.page-title,
+div#reset div#reset-container form#password-form div.title span.page-title {
+  color: #9B9B9B;
+}
+div#login div#reset-container form#reset-form hr.separator,
+div#register div#reset-container form#reset-form hr.separator,
+div#reset div#reset-container form#reset-form hr.separator,
+div#login div#reset-container form#password-form hr.separator,
+div#register div#reset-container form#password-form hr.separator,
+div#reset div#reset-container form#password-form hr.separator {
+  margin-top: 24px;
+  margin-bottom: 26px;
+}
+div#login div#reset-container form#reset-form .reset-inputs input[type=text],
+div#register div#reset-container form#reset-form .reset-inputs input[type=text],
+div#reset div#reset-container form#reset-form .reset-inputs input[type=text],
+div#login div#reset-container form#password-form .reset-inputs input[type=text],
+div#register div#reset-container form#password-form .reset-inputs input[type=text],
+div#reset div#reset-container form#password-form .reset-inputs input[type=text],
+div#login div#reset-container form#reset-form .reset-inputs input[type=password],
+div#register div#reset-container form#reset-form .reset-inputs input[type=password],
+div#reset div#reset-container form#reset-form .reset-inputs input[type=password],
+div#login div#reset-container form#password-form .reset-inputs input[type=password],
+div#register div#reset-container form#password-form .reset-inputs input[type=password],
+div#reset div#reset-container form#password-form .reset-inputs input[type=password] {
+  border-radius: 3px;
+  box-shadow: none;
+}
+div#login div#reset-container form#reset-form div.reset-bottom,
+div#register div#reset-container form#reset-form div.reset-bottom,
+div#reset div#reset-container form#reset-form div.reset-bottom,
+div#login div#reset-container form#password-form div.reset-bottom,
+div#register div#reset-container form#password-form div.reset-bottom,
+div#reset div#reset-container form#password-form div.reset-bottom {
+  margin-top: 16px;
+  padding-bottom: 16px;
+}
+div#login div#reset-container form#reset-form div.reset-bottom .submit-reset,
+div#register div#reset-container form#reset-form div.reset-bottom .submit-reset,
+div#reset div#reset-container form#reset-form div.reset-bottom .submit-reset,
+div#login div#reset-container form#password-form div.reset-bottom .submit-reset,
+div#register div#reset-container form#password-form div.reset-bottom .submit-reset,
+div#reset div#reset-container form#password-form div.reset-bottom .submit-reset,
+div#login div#reset-container form#reset-form div.reset-bottom .submit-password,
+div#register div#reset-container form#reset-form div.reset-bottom .submit-password,
+div#reset div#reset-container form#reset-form div.reset-bottom .submit-password,
+div#login div#reset-container form#password-form div.reset-bottom .submit-password,
+div#register div#reset-container form#password-form div.reset-bottom .submit-password,
+div#reset div#reset-container form#password-form div.reset-bottom .submit-password {
+  width: 100%;
+  font-weight: 400;
+  padding: 8px 0px 10px;
+  position: relative;
+  top: -10px;
+}
+div#login div#reset-container form#reset-form div.password-form-confirmation div.message,
+div#register div#reset-container form#reset-form div.password-form-confirmation div.message,
+div#reset div#reset-container form#reset-form div.password-form-confirmation div.message,
+div#login div#reset-container form#password-form div.password-form-confirmation div.message,
+div#register div#reset-container form#password-form div.password-form-confirmation div.message,
+div#reset div#reset-container form#password-form div.password-form-confirmation div.message,
+div#login div#reset-container form#reset-form div.reset-form-confirmation div.message,
+div#register div#reset-container form#reset-form div.reset-form-confirmation div.message,
+div#reset div#reset-container form#reset-form div.reset-form-confirmation div.message,
+div#login div#reset-container form#password-form div.reset-form-confirmation div.message,
+div#register div#reset-container form#password-form div.reset-form-confirmation div.message,
+div#reset div#reset-container form#password-form div.reset-form-confirmation div.message {
+  width: 100%;
+  text-align: center;
+  margin: 20px 0;
+  font-size: 18px;
+}
+div#login div#reset-container form#reset-form div.password-form-confirmation div.details,
+div#register div#reset-container form#reset-form div.password-form-confirmation div.details,
+div#reset div#reset-container form#reset-form div.password-form-confirmation div.details,
+div#login div#reset-container form#password-form div.password-form-confirmation div.details,
+div#register div#reset-container form#password-form div.password-form-confirmation div.details,
+div#reset div#reset-container form#password-form div.password-form-confirmation div.details,
+div#login div#reset-container form#reset-form div.reset-form-confirmation div.details,
+div#register div#reset-container form#reset-form div.reset-form-confirmation div.details,
+div#reset div#reset-container form#reset-form div.reset-form-confirmation div.details,
+div#login div#reset-container form#password-form div.reset-form-confirmation div.details,
+div#register div#reset-container form#password-form div.reset-form-confirmation div.details,
+div#reset div#reset-container form#password-form div.reset-form-confirmation div.details {
+  width: 100%;
+  text-align: center;
+  font-size: 13px;
+  margin-bottom: 40px;
+}
 div#login div#footer,
-div#register div#footer {
+div#register div#footer,
+div#reset div#footer {
   margin-top: 32px;
 }
 div#login div#footer .trouble,
-div#register div#footer .trouble {
+div#register div#footer .trouble,
+div#reset div#footer .trouble {
   text-decoration: underline;
   font-size: .8em;
   color: #F4A534;
 }
 div#login div#footer .switch,
-div#register div#footer .switch {
+div#register div#footer .switch,
+div#reset div#footer .switch {
   display: block;
   width: 100%;
   text-align: center;
@@ -7604,7 +7760,8 @@ div#register div#footer .switch {
   transition: background .2s;
 }
 div#login div#footer .switch:hover,
-div#register div#footer .switch:hover {
+div#register div#footer .switch:hover,
+div#reset div#footer .switch:hover {
   color: #ffffff;
   background: #F4A534;
 }
