@@ -133,6 +133,45 @@ def sendResetRequestEmail(resetCode):
     }]
     return sendEmails(to, subject, template, mergeVars)
 
+def sendRefundConfirmationEmail(purchase, amount):
+    """
+    Email refund reciept
+    """
+    refund_amount = '$' + '{0:.02f}'.format(float(amount) / 100.0)
+    user = purchase.owner
+    if purchase.event.slug:
+        event_url = 'https://bazaarboy.com/' + purchase.event.slug
+    else:
+        event_url = 'https://bazaarboy.com/event/' + str(purchase.event.id)
+    subject = 'You Have Been Refunded - Bazaarboy'
+    template = 'refund'
+    to = [{
+        'email':user.email, 
+        'name':user.first_name + ' ' + user.last_name
+    }]
+    mergeVars = [{
+        'rcpt': user.email,
+        'vars': [
+            {
+                'name':'user_name', 
+                'content':user.first_name
+            }, 
+            {
+                'name':'event_name', 
+                'content':purchase.event.name
+            },
+            {
+                'name':'refund_amount', 
+                'content':refund_amount
+            },
+            {
+                'name':'event_link', 
+                'content':event_url
+            }
+        ]
+    }]
+    return sendEmails(to, subject, template, mergeVars)
+
 @task()
 def sendProfileMessageEmail(name, email, message, profile, event):
     to = [{

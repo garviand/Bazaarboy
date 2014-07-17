@@ -190,12 +190,18 @@ def manage(request, id, params, user):
                     }
                 })
         else:
+            if item.purchase.amount > 0 and item.purchase.checkout.checkout_id.strip() != '':
+                refundable = True
+            else:
+                refundable = False
             if item.is_checked_in:
                 checkedIn = True
             else:
                 checkedIn = False
             purchases[item.purchase.id] = {
                 'id': item.id,
+                'purchase_id': item.purchase.id,
+                'refundable': refundable,
                 'name': item.purchase.owner.first_name + ' ' + item.purchase.owner.last_name,
                 'code': item.purchase.code,
                 'checked_in': checkedIn,

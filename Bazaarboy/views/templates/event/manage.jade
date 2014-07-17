@@ -79,7 +79,9 @@ block content
                                 div.checkin.medium-2.columns Status
                                 div.confirmation.medium-2.columns Conf. #
                                 div.ticket_name.medium-4.columns Ticket Type(s)
-                                div.name.medium-4.columns Name
+                                div.name.medium-2.columns Name
+                                div.refund.medium-2.hide-for-small-only.columns
+                                    a.show-refunds(href="javascript:;") Refunds?
                             div.guest.guest_template.hidden.row
                                 div.checkin.medium-2.columns
                                     a.secondary-btn(href="javascript:;") Check In
@@ -101,6 +103,12 @@ block content
                                 div.spacer.show-for-small-only
                                 div.name.medium-4.small-6.columns
                                     {{ purchase.name }}
+                                div.refund.medium-2.hide-for-small-only.columns.hide
+                                    {% if purchase.refundable %}
+                                    a.refund-btn(href="javascript:;", data-purchase="{{ purchase.purchase_id }}") refund
+                                    {% else %}
+                                    span n/a
+                                    {% endif %}
                                 div.checkin.small-6.columns.show-for-small-only
                                     a.secondary-btn(href="javascript:;") 
                                         {% if purchase.checked_in %}Arrived{% else %}Check In{% endif %}

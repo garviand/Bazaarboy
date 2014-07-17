@@ -8254,6 +8254,19 @@ div#event-manage .add-guest-container input[type=submit] {
   padding-top: 6px;
   padding-bottom: 9px;
 }
+div#event-manage .refund {
+  text-align: center;
+}
+div#event-manage .refund a {
+  font-size: 12px;
+  color: #4963e4;
+}
+div#event-manage .refund span {
+  font-size: 12px;
+}
+div#event-manage .refund.hide {
+  display: none !important;
+}
 div#event-manage .guests .list_headers {
   color: #4a4a4a;
   font-weight: 500;
@@ -8265,6 +8278,9 @@ div#event-manage .guests .list_headers > div {
 }
 div#event-manage .guests .list_headers > div:last-child {
   border-right: none;
+}
+div#event-manage .guests .list_headers .name {
+  border-right: 0;
 }
 div#event-manage .guests .guest {
   color: #4a4a4a;

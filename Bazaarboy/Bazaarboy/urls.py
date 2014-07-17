@@ -22,6 +22,7 @@ user_urlpatterns = patterns('src.controllers.user',
 payment_urlpatterns = patterns('src.controllers.payment', 
     url(r'^connect/$', 'connect', name = 'connect'),
     url(r'^charge/$', 'charge', name = 'charge'),
+    url(r'^refund/$', 'refund', name = 'refund'),
 )
 
 profile_urlpatterns = patterns('src.controllers.profile', 

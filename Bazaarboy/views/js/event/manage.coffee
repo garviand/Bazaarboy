@@ -117,6 +117,24 @@ Bazaarboy.event.manage =
             if not scope.purchaseInProgress
                 scope.add_purchase()
             return
+        # REFUNDS
+        $('a.show-refunds').click () ->
+            $('div.list_guests div.name').removeClass('medium-4').addClass('medium-2')
+            $('div.refund').removeClass 'hide'
+            return
+        $('div.refund a.refund-btn').click () ->
+            container = $(this).parents('div.guest')
+            if confirm('Are you sure you want to refund this purchase?')
+                $(this).html 'refunding...'
+                Bazaarboy.post 'payment/refund/', {purchase:$(this).data('purchase')}, (response) ->
+                    if response.status is 'OK'
+                        container.fadeOut 300, () ->
+                            $(this).remove()
+                            return
+                    else
+                        alert response.message
+                    return
+            return
         $('form input[name=guest_name]').keyup (e) ->
             e.preventDefault()
             if $(this).val() == ''

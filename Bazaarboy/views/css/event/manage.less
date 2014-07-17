@@ -111,6 +111,19 @@ div#event-manage {
             padding-bottom: 9px;
         }
     }
+    .refund{
+        text-align: center;
+        a{
+            font-size: 12px;
+            color: @blue;
+        }
+        span{
+            font-size: 12px;
+        }
+        &.hide{
+            display: none !important;
+        }
+    }
     .guests{
         .list_headers{
             color: @dark;
@@ -122,6 +135,9 @@ div#event-manage {
                 &:last-child{
                     border-right: none;
                 }
+            }
+            .name{
+                border-right: 0;
             }
         }
         .guest{
