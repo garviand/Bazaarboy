@@ -1563,36 +1563,41 @@ def purchase(request, params, user):
         }
         return json_response(response)
     # Check if the promo codes are valid
-    promos = {}
+    promos = []
     if params['promos'] is not None:
         codes = params['promos'].split(',')
         for code in codes:
-            for detail in details:
-                if Promo.objects.filter(code = code, ticket__id = detail, 
-                                        is_deleted = False).exists():
-                    promo = Promo.objects.get(code = code, ticket__id = detail)
-                    if promo.start_time is None or promo.start_time <= timezone.now():
-                        if promo.expiration_time is None or promo.expiration_time >= timezone.now():
-                            if not promo.ticket.is_deleted:
-                                l = len(promo.email_domain)
-                                if params['email'][-l:] == promo.email_domain or l == 0:
-                                    promos[promo.ticket.id] = {
-                                        'promo':promo,
-                                        'quantity':0
-                                    }
-                                    continue
-                response = {
-                    'status':'FAIL',
-                    'error':'INVALID_PROMO',
-                    'message':'One of the promo codes is invalid.'
-                }
-                return json_response(response)
+            if Promo.objects.filter(code = code, 
+                                    event = event.id, 
+                                    is_deleted = False).exists():
+                promo = Promo.objects.get(code = code)
+                if promo.start_time is None or promo.start_time <= timezone.now():
+                    if promo.expiration_time is None or promo.expiration_time >= timezone.now():
+                        l = len(promo.email_domain)
+                        if params['email'][-l:] == promo.email_domain or l == 0:
+                            pTIds = []
+                            pTickets = promo.tickets.all()
+                            for pTicket in pTickets:
+                                pTIds.append(pTicket.id)
+                            promos.append({
+                                'promo':promo,
+                                'tickets':pTIds,
+                                'quantity':0
+                            })
+                            continue
+            response = {
+                'status':'FAIL',
+                'error':'INVALID_PROMO',
+                'message':'One of the promo codes is invalid.'
+            }
+            return json_response(response)
     # Sum up the quantities needed for promos
     for tid, quantity in details.itervalues():
-        if promos.has_key(tid):
-            promos[tid]['quantity'] += quantity
+        for i in range(0, len(promos)):
+            if tid in promos[i]['tickets']:
+                promos[i]['quantity'] += quantity
     # Check if it exceeds the limit of the promo codes
-    for tid, promo in promos:
+    for promo in promos:
         if promo['promo'].quantity is not None:
             if promo['promo'].quantity - promo['quantity'] < 0:
                 response = {
@@ -1630,10 +1635,19 @@ def purchase(request, params, user):
                     'message':'There aren\'t enough tickets left.'
                 }
                 return json_response(response)
-            price = ticket.price
-            if promos.has_key(ticket.id):
-                price -= promos[ticket.id]['promo'].amount
-            amount += price * details[ticket.id]
+            priceA = ticket.price
+            priceB = ticket.price
+            for promo in promos:
+                if ticket.id in promo['tickets']:
+                    if promo['promo'].amount is not None:
+                        priceA -= promo['promo'].amount
+                    elif promo['promo'].discount is not None:
+                        if ticket.price * promo['promo'].discount < priceB:
+                            priceB = ticket.price * promo['promo'].discount
+            if priceA < priceB:
+                amount += priceA * details[ticket.id]
+            else:
+                amount += priceB * details[ticket.id]
         # All checks done, save user information
         user.save()
         # Check if the purchase is in fact an RSVP action (free)
