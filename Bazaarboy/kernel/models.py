@@ -197,6 +197,7 @@ class Ticket(models.Model):
     quantity = models.IntegerField(null = True, default = None)
     start_time = models.DateTimeField(null = True, default = None)
     end_time = models.DateTimeField(null = True, default = None)
+    request_address = models.BooleanField(default = False)
     is_deleted = models.BooleanField(default = False)
 
 class Promo(models.Model):
@@ -204,10 +205,14 @@ class Promo(models.Model):
     Promo code model
     """
     event = models.ForeignKey('Event')
-    ticket = models.ForeignKey('Ticket')
+    tickets = models.ManyToManyField('Ticket')
     code = models.CharField(max_length = 20)
-    amount = models.FloatField()
+    amount = models.FloatField(null = True, default = None)
+    discount = models.IntegerField(null = True, default = None)
     email_domain = models.CharField(max_length = 20)
+    quantity = models.IntegerField(null = True, default = None)
+    start_time = models.DateTimeField(null = True, default = None)
+    expiration_time = models.DateTimeField(null = True, default = None)
     is_deleted = models.BooleanField(default = False)
     created_time = models.DateTimeField(auto_now_add = True)
 
@@ -240,8 +245,17 @@ class Purchase_item(models.Model):
     purchase = models.ForeignKey('Purchase')
     ticket = models.ForeignKey('Ticket')
     price = models.FloatField()
+    address = models.TextField()
     is_checked_in = models.BooleanField(default = False)
     checked_in_time = models.DateTimeField(null = True, default = None)
+
+class Purchase_promo(models.Model):
+    """
+    Relationship model for purchase and promo code
+    """
+    purchase = models.ForeignKey('Purchase')
+    promo = models.ForeignKey('Promo')
+    quantity = models.IntegerField(default = 1)
 
 class Criteria(models.Model):
     """

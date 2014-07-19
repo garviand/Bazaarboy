@@ -1076,22 +1076,22 @@ def delete_ticket(request, params, user):
     return json_response(response)
 
 @login_required()
-@validate('POST', ['ticket', 'code', 'amount'], ['email_domain'])
+@validate('POST', ['event', 'code'], 
+          ['amount', 'discount', 'email_domain', 'quantity', 'start_time', 'expiration_time'])
 def create_promo(request, params, user):
     """
     Create a promo code
     """
-    # Check if the ticket is valid
-    if not Ticket.objects.filter(id = params['ticket'], 
-                                 is_deleted = False).exists():
+    # Check if event is valid
+    if not Event.objects.filter(id = params['event'], 
+                                is_deleted = False).exists():
         response = {
             'status':'FAIL',
-            'error':'TICKET_NOT_FOUND',
-            'message':'The ticket doesn\'t exist.'
+            'error':'EVENT_NOT_FOUND',
+            'message':'The event doesn\'t exist.'
         }
         return json_response(response)
-    ticket = Ticket.objects.get(id = params['ticket'])
-    event = ticket.event
+    event = Event.objects.get(id = params['event'])
     # Check if user has permission for the event
     if not Organizer.objects.filter(event = event, 
                                     profile__managers = user).exists():
@@ -1116,19 +1116,42 @@ def create_promo(request, params, user):
             'message':'Code cannot contain spaces.'
         }
         return json_response(response)
-    if Promo.objects.filter(code = params['code'], ticket = ticket).exists():
+    if Promo.objects.filter(code = params['code'], event = event).exists():
         response = {
             'status':'FAIL',
             'error':'DUPLICATE_CODE',
             'message':'You cannot have two identical promo codes.'
         }
         return json_response(response)
-    params['amount'] = float(params['amount'])
-    if params['amount'] < 0 or ticket.price - params['amount'] < 0:
+    amount = None
+    if params['amount']:
+        params['amount'] = float(params['amount'])
+        if params['amount'] < 0:
+            response = {
+                'status':'FAIL',
+                'error':'INVALID_AMOUNT',
+                'message':'The discount amount must be a positive number.'
+            }
+            return json_response(response)
+        else:
+            amount = params['amount']
+    discount = None
+    if params['discount']:
+        params['discount'] = float(params['discount'])
+        if not (0 <= params['discount'] <= 1):
+            response = {
+                'status':'FAIL',
+                'error':'INVALID_DISCOUNT',
+                'message':'THe discount percentage must between 0 and 100 percent.'
+            }
+            return
+        else:
+            discount = params['discount']
+    if amount is None and discount is None:
         response = {
             'status':'FAIL',
-            'error':'INVALID_AMOUNT',
-            'message':'The discount amount can be at most the ticket price.'
+            'error':'MISSING_AMOUNT',
+            'message':'You must have either a concrete amount or a percentage discount.'
         }
         return json_response(response)
     if params['email_domain']:
@@ -1142,10 +1165,33 @@ def create_promo(request, params, user):
             return json_response(response)
     else:
         params['email_domain'] = ''
-    promo = Promo(event = event, ticket = ticket, 
+    if params['quantity']:
+        params['quantity'] = int(params['quantity'])
+        if params['quantity'] < 0:
+            response = {
+                'status':'FAIL',
+                'error':'INVALID_QUANTITY',
+                'message':'The quantity must be a non-negative integer.'
+            }
+            return json_response(response)
+    else:
+        params['quantity'] = None
+    if params['start_time'] and params['expiration_time']:
+        if params['start_time'] >= params['expiration_time']:
+            response = {
+                'status':'FAIL',
+                'error':'INVALID_TIMING',
+                'message':'The timing is invalid.'
+            }
+            return json_response(response)
+    promo = Promo(event = event, 
                   code = params['code'], 
-                  amount = params['amount'], 
-                  email_domain = params['email_domain'])
+                  amount = amount, 
+                  discount = discount,
+                  email_domain = params['email_domain'], 
+                  quantity = params['quantity'], 
+                  start_time = params['start_time'], 
+                  expiration_time = params['expiration_time'])
     promo.save()
     response = {
         'status':'OK',
@@ -1154,7 +1200,8 @@ def create_promo(request, params, user):
     return json_response(response)
 
 @login_required()
-@validate('POST', ['id', 'code', 'amount'], ['email_domain'])
+@validate('POST', ['id'], 
+          ['code', 'amount', 'discount', 'email_domain', 'quantity', 'start_time', 'expiration_time'])
 def edit_promo(request, params, user):
     """
     Edit a promo code
@@ -1168,7 +1215,6 @@ def edit_promo(request, params, user):
         return json_response(response)
     promo = Promo.objects.get(id = params['id'])
     event = promo.event
-    ticket = promo.ticket
     # Check if user has permission for the event
     if not Organizer.objects.filter(event = event, 
                                     profile__managers = user).exists():
@@ -1195,16 +1241,35 @@ def edit_promo(request, params, user):
             }
             return json_response(response)
         promo.code = params['code']
-    if params['amount'] is not None:
+    if params['amount']:
         params['amount'] = float(params['amount'])
-        if params['amount'] < 0 or ticket.price - params['amount'] < 0:
+        if params['amount'] < 0:
             response = {
                 'status':'FAIL',
                 'error':'INVALID_AMOUNT',
-                'message':'The discount amount can be at most the ticket price.'
+                'message':'The discount amount must be a positive number.'
             }
             return json_response(response)
-        promo.amount = params['amount']
+        else:
+            promo.amount = params['amount']
+    if params['discount']:
+        params['discount'] = float(params['discount'])
+        if not (0 <= params['discount'] <= 1):
+            response = {
+                'status':'FAIL',
+                'error':'INVALID_DISCOUNT',
+                'message':'THe discount percentage must between 0 and 100 percent.'
+            }
+            return
+        else:
+            promo.discount = params['discount']
+    if promo.amount is None and promo.discount is None:
+        response = {
+            'status':'FAIL',
+            'error':'MISSING_AMOUNT',
+            'message':'You must have either a concrete amount or a percentage discount.'
+        }
+        return json_response(response)
     if params['email_domain'] is not None:
         params['email_domain'] = cgi.escape(params['email_domain'])
         if len(params['email_domain']) > 20:
@@ -1215,10 +1280,117 @@ def edit_promo(request, params, user):
             }
             return json_response(response)
         promo.email_domain = params['email_domain']
+    if params['start_time']:
+        if params['start_time'] == 'none':
+            promo.start_time = None
+        else:
+            promo.start_time = params['start_time']
+    if params['expiration_time']:
+        if params['expiration_time'] == 'none':
+            promo.expiration_time = None
+        else:
+            promo.expiration_time = None
+    if promo.start_time is not None and promo.expiration_time is not None:
+        if promo.start_time >= promo.expiration_time:
+            response = {
+                'status':'FAIL',
+                'error':'INVALID_TIMING',
+                'message':'The timing is invalid.'
+            }
+            return json_response(response)
     promo.save()
     response = {
         'status':'OK',
         'promo':serialize_one(promo)
+    }
+    return json_response(response)
+
+@login_required()
+@validate('POST', ['id', 'ticket'])
+def link_promo(request, params, user):
+    """
+    Link a ticket with a promo code
+    """
+    if not Promo.objects.filter(id = params['id']).exists():
+        response = {
+            'status':'FAIL',
+            'error':'PROMO_NOT_FOUND',
+            'message':'The promo code does not exist.'
+        }
+        return json_response(response)
+    promo = Promo.objects.get(id = params['id'])
+    event = promo.event
+    # Check if user has permission for the event
+    if not Organizer.objects.filter(event = event, 
+                                    profile__managers = user).exists():
+        response = {
+            'status':'FAIL',
+            'error':'NOT_A_MANAGER',
+            'message':'You don\'t have permission for the event.'
+        }
+        return json_response(response)
+    # Check if the ticket is valid
+    if not Ticket.objects.filter(id = params['ticket'], 
+                                 event = event, is_deleted = False).exists():
+        response = {
+            'status':'FAIL',
+            'error':'INVALID_TICKET',
+            'message':'The ticket is invalid for this promo code.'
+        }
+        return json_response(response)
+    ticket = Ticket.objects.get(id = params['ticket'])
+    tickets = promo.tickets.all()
+    for _ticket in tickets:
+        if _ticket.id == ticket.id:
+            response = {
+                'status':'FAIL',
+                'error':'ALREADY_LINKED',
+                'message':'The ticket is already linked with this promo code.'
+            }
+            return json_response(response)
+    promo.tickets.add(ticket)
+    response = {
+        'status':'OK'
+    }
+    return json_response(response)
+
+@login_required()
+@validate('POST', ['id', 'ticket'])
+def unlink_promo(request, params, user):
+    """
+    Unlink a ticket from a promo code
+    """
+    if not Promo.objects.filter(id = params['id']).exists():
+        response = {
+            'status':'FAIL',
+            'error':'PROMO_NOT_FOUND',
+            'message':'The promo code does not exist.'
+        }
+        return json_response(response)
+    promo = Promo.objects.get(id = params['id'])
+    event = promo.event
+    # Check if user has permission for the event
+    if not Organizer.objects.filter(event = event, 
+                                    profile__managers = user).exists():
+        response = {
+            'status':'FAIL',
+            'error':'NOT_A_MANAGER',
+            'message':'You don\'t have permission for the event.'
+        }
+        return json_response(response)
+    # Check if the ticket is valid
+    if not Ticket.objects.filter(id = params['ticket'], 
+                                 event = event).exists():
+        response = {
+            'status':'FAIL',
+            'error':'INVALID_TICKET',
+            'message':'The ticket is invalid for this promo code.'
+        }
+        return json_response(response)
+    ticket = Ticket.objects.get(id = params['ticket'])
+    promo.tickets.remove(ticket)
+    response = {
+        'status':'OK'
     }
     return json_response(response)
 
@@ -1283,7 +1455,7 @@ def mark_purchase_as_expired(purchase, immediate=False):
 @login_check()
 @validate('POST', 
           ['event', 'email', 'first_name', 'last_name', 'details'], 
-          ['phone', 'promos'])
+          ['phone', 'promos', 'address'])
 def purchase(request, params, user):
     """
     Make purchase for an event
@@ -1345,10 +1517,23 @@ def purchase(request, params, user):
         return json_response(response)
     event = Event.objects.get(id = params['event'])
     # Check if the tickets are valid
+    requestAddress = False
     _tickets = Ticket.objects.filter(event = event, is_deleted = False)
     tickets = {}
     for _ticket in _tickets:
         tickets[_ticket.id] = _ticket
+        if _ticket.request_address:
+            requestAddress = True
+    address = ''
+    if requestAddress and (params['address'] is None or len(params['address']) == 0):
+        response = {
+            'status':'FAIL',
+            'error':'INVALID_ADDRESS',
+            'message':'An address is needed for certain tickets.'
+        }
+        return json_response(response)
+    else:
+        address = params['address']
     _details = {}
     for tid in details:
         _details[int(tid)] = int(details[tid])
@@ -1386,15 +1571,34 @@ def purchase(request, params, user):
                 if Promo.objects.filter(code = code, ticket__id = detail, 
                                         is_deleted = False).exists():
                     promo = Promo.objects.get(code = code, ticket__id = detail)
-                    if not promo.ticket.is_deleted:
-                        l = len(promo.email_domain)
-                        if params['email'][-l:] == promo.email_domain or l == 0:
-                            promos[promo.ticket.id] = promo
-                            continue
+                    if promo.start_time is None or promo.start_time <= timezone.now():
+                        if promo.expiration_time is None or promo.expiration_time >= timezone.now():
+                            if not promo.ticket.is_deleted:
+                                l = len(promo.email_domain)
+                                if params['email'][-l:] == promo.email_domain or l == 0:
+                                    promos[promo.ticket.id] = {
+                                        'promo':promo,
+                                        'quantity':0
+                                    }
+                                    continue
                 response = {
                     'status':'FAIL',
                     'error':'INVALID_PROMO',
                     'message':'One of the promo codes is invalid.'
+                }
+                return json_response(response)
+    # Sum up the quantities needed for promos
+    for tid, quantity in details.itervalues():
+        if promos.has_key(tid):
+            promos[tid]['quantity'] += quantity
+    # Check if it exceeds the limit of the promo codes
+    for tid, promo in promos:
+        if promo['promo'].quantity is not None:
+            if promo['promo'].quantity - promo['quantity'] < 0:
+                response = {
+                    'status': 'FAIL',
+                    'error': 'INSUFFICIENT_QUANTITY',
+                    'message': 'Some of the promo codes are no longer valid.'
                 }
                 return json_response(response)
     # Check if there is an unfinished purchase
@@ -1428,7 +1632,7 @@ def purchase(request, params, user):
                 return json_response(response)
             price = ticket.price
             if promos.has_key(ticket.id):
-                price -= promos[ticket.id].amount
+                price -= promos[ticket.id]['promo'].amount
             amount += price * details[ticket.id]
         # All checks done, save user information
         user.save()
@@ -1437,14 +1641,13 @@ def purchase(request, params, user):
             # Create the purchase
             purchase = Purchase(owner = user, event = event, amount = 0)
             purchase.save()
-            for promo in promos.itervalues():
-                purchase.promos.add(promo)
-            purchase.save()
             for ticket in tickets:
                 for i in range(0, details[ticket.id]):
+
                     item = Purchase_item(purchase = purchase, 
                                          ticket = ticket, 
-                                         price = ticket.price)
+                                         price = ticket.price, 
+                                         address = address)
                     item.save()
                 # If the ticket has a quantity limit
                 if ticket.quantity is not None:
@@ -1452,6 +1655,14 @@ def purchase(request, params, user):
                     Ticket.objects \
                           .filter(id = ticket.id) \
                           .update(quantity = F('quantity') - details[ticket.id])
+            for tid, promo in promos:
+                item = Purchase_promo(purchase = purchase, 
+                                      promo = promo['promo'], 
+                                      quantity = promo['quantity'])
+                item.save()
+                if promo['promo'].quantity is not None:
+                    Promo.objects.filter(id = promo['promo'].id) \
+                                 .update(quantity = F('quantity') - promo['quantity'])
             items = {}
             for ticket in purchase.items.all():
                 if ticket.id in items:
@@ -1493,7 +1704,8 @@ def purchase(request, params, user):
             for i in range(0, details[ticket.id]):
                 item = Purchase_item(purchase = purchase, 
                                      ticket = ticket, 
-                                     price = ticket.price)
+                                     price = ticket.price, 
+                                     address = address)
                 item.save()
             # If the ticket has a quantity limit
             if ticket.quantity is not None:
@@ -1501,6 +1713,14 @@ def purchase(request, params, user):
                 Ticket.objects \
                       .filter(id = ticket.id) \
                       .update(quantity = F('quantity') - details[ticket.id])
+        for tid, promo in promos:
+            item = Purchase_promo(purchase = purchase, 
+                                  promo = promo['promo'], 
+                                  quantity = promo['quantity'])
+            item.save()
+            if promo['promo'].quantity is not None:
+                Promo.objects.filter(id = promo['promo'].id) \
+                             .update(quantity = F('quantity') - promo['quantity'])
         # Create an async task to restore quantities if necessary
         expiration = timezone.now() + timedelta(minutes = BBOY_TRANSACTION_EXPIRATION)
         mark_purchase_as_expired.apply_async(args = [purchase], eta = expiration)
@@ -1526,7 +1746,8 @@ def purchase(request, params, user):
     return json_response(response)
 
 @login_required()
-@validate('POST', ['event', 'details', 'email', 'first_name', 'last_name'], ['phone'])
+@validate('POST', ['event', 'details', 'email', 'first_name', 'last_name'], 
+          ['phone', 'address'])
 def add_purchase(request, params, user):
     """
     Manually add purchase by organizer
@@ -1609,6 +1830,18 @@ def add_purchase(request, params, user):
     tickets = {}
     for _ticket in _tickets:
         tickets[_ticket.id] = _ticket
+        if _ticket.request_address:
+            requestAddress = True
+    address = ''
+    if requestAddress and (params['address'] is None or len(params['address']) == 0):
+        response = {
+            'status':'FAIL',
+            'error':'INVALID_ADDRESS',
+            'message':'An address is needed for certain tickets.'
+        }
+        return json_response(response)
+    else:
+        address = params['address']
     _details = {}
     for tid in details:
         _details[int(tid)] = int(details[tid])
@@ -1664,7 +1897,8 @@ def add_purchase(request, params, user):
             for i in range(0, details[ticket.id]):
                 item = Purchase_item(purchase = purchase, 
                                      ticket = ticket, 
-                                     price = ticket.price)
+                                     price = ticket.price, 
+                                     address = address)
                 item.save()
             # If the ticket has a quantity limit
             if ticket.quantity is not None:
@@ -1691,6 +1925,13 @@ def add_purchase(request, params, user):
             'tickets': items
         }
         return json_response(response)
+    # If it gets here, there is a transaction failure
+    response = {
+        'status':'FAIL',
+        'error':'FAILED_TRANSACTION',
+        'message':'The transaction failed, please try again.'
+    }
+    return json_response(response)
 
 @login_required()
 @validate('GET', ['id'])
