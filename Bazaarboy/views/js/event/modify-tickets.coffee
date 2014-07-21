@@ -1,5 +1,6 @@
 Bazaarboy.event.modify.tickets =
     ticketSubmitting: false
+    promoSubmitting: false
     newTicket: () ->
         $('div#edit-ticket div.step-2').hide()
         $('div#edit-ticket div.step-1').show()
@@ -25,7 +26,6 @@ Bazaarboy.event.modify.tickets =
           if response.status isnt 'OK'
               alert response.message
           else
-              console.log response
               $('div#edit-ticket').removeClass('add').addClass 'edit'
               $('div#edit-ticket div.step-1').addClass 'hide'
               $('div#edit-ticket div.step-1 span.type').html 'Switch'
@@ -71,8 +71,6 @@ Bazaarboy.event.modify.tickets =
               $('body').animate {scrollTop: 0}, 300
           return
         return
-    newPromo: () ->
-      return
     initDateTimeAutoComplete: (form) ->
         # Time auto-complete
         originalStartTime = $(form).find('input[name=start_time]').val()
@@ -92,123 +90,115 @@ Bazaarboy.event.modify.tickets =
         $(form).find('input[name=end_date]').pikaday
             format: 'MM/DD/YYYY'
         return
+    savePromo: (newPromo) ->
+        if not @promoSubmitting
+            params = $('form#promo-form').serializeObject()
+            params.start_time = params.promo_start_time
+            optionals = ['quantity', 'start_time', 'expiration_time', 'email_domain']
+            params = Bazaarboy.stripEmpty params, optionals
+            params.event = eventId
+            if params.start_time isnt undefined and params.start_time.trim().length != 0
+                params.start_time = moment(params.start_time.trim(), 'MM/DD/YYYY').utc().format('YYYY-MM-DD HH:mm:ss')
+                if not params.start_time
+                    alert 'Invalid Start Date'
+            if params.expiration_time isnt undefined and params.expiration_time.trim().length != 0
+                params.expiration_time = moment(params.expiration_time.trim(), 'MM/DD/YYYY').utc().format('YYYY-MM-DD HH:mm:ss')
+                if not params.expiration_time
+                    alert 'Invalid Expiration Date'
+            if isNaN(parseInt(params.discount))
+                alert 'Discount Amount Must Be A Number'
+                return
+            if $('div#promos form#promo-form a.promo-type.active').data('type') is 'number'
+                params.amount = parseInt(params.discount)
+                params.discount = ''
+            else
+                params.discount = parseFloat(params.discount) / 100
+                if params.discount > 1
+                    alert 'Percentage Must Be Between 1 and 100'
+                    return
+            selectedTickets = $('form#promo-form div.promo-form-tickets a.select-ticket.selected').length
+            linkedTickets = 0
+            failedLinks = 0
+            if selectedTickets > 0
+                if newPromo
+                    Bazaarboy.post 'event/promo/create/', params, (response) ->
+                        if response.status is 'OK'
+                            promo_id = response.promo.pk
+                            promo_code = response.promo.code
+                            $('form#promo-form div.promo-form-tickets a.select-ticket.selected').each () ->
+                                Bazaarboy.post 'event/promo/link/', {id:promo_id, ticket:$(this).data('id')}, (response) ->
+                                    if response.status isnt 'OK'
+                                        alert response.message
+                                    linkedTickets++
+                                    if linkedTickets == selectedTickets
+                                        newPromo = $('div.promo-template').clone()
+                                        newPromo.find('div.promo-name').html promo_code
+                                        newPromo.attr('data-id', promo_id)
+                                        newPromo.find('a.edit-promo').attr('data-id', promo_id)
+                                        $('div.promo-template').after newPromo
+                                        newPromo.removeClass 'promo-template'
+                                        newPromo.removeClass 'hide'
+                                        $('div#promos div.edit').fadeOut 300, () ->
+                                            $('div#promos form#promo-form a.promo-type').removeClass 'active'
+                                            $('div#promos form#promo-form a.promo-type').eq(0).addClass 'active'
+                                            $('div#promos form#promo-form input').val ''
+                                            $('div#promos div.promo-form-tickets a.select-ticket').removeClass 'selected'
+                                            $('div#promos div.content').fadeIn 300
+                                        return
+                                    return
+                                return
+                        else
+                            alert response.message
+                        return
+                else
+                    $("div.promo").each () ->
+                        if $(this).data('id') is $('form#promo-form').data('id')
+                            $(this).remove()
+                        return
+                    params.id = $('form#promo-form').data('id')
+                    console.log params
+                    Bazaarboy.post 'event/promo/edit/', params, (response) ->
+                        if response.status is 'OK'
+                            amount_claimed = response.claimed
+                            promo_id = response.promo.pk
+                            promo_code = response.promo.code
+                            $('form#promo-form div.promo-form-tickets a.select-ticket:not(.selected)').each () ->
+                                Bazaarboy.post 'event/promo/unlink/', {id:promo_id, ticket:$(this).data('id')}, (response) ->
+                                    if response.status isnt 'OK'
+                                        alert response.message
+                            $('form#promo-form div.promo-form-tickets a.select-ticket.selected').each () ->
+                                Bazaarboy.post 'event/promo/link/', {id:promo_id, ticket:$(this).data('id')}, (response) ->
+                                    if response.status isnt 'OK'
+                                        alert response.message
+                                    linkedTickets++
+                                    if linkedTickets == selectedTickets
+                                        newPromo = $('div.promo-template').clone()
+                                        newPromo.find('div.promo-name').html promo_code
+                                        newPromo.find('div.promo-stats').html(amount_claimed + " Claimed")
+                                        newPromo.attr('data-id', promo_id)
+                                        newPromo.find('a.edit-promo').attr('data-id', promo_id)
+                                        $('div.promo-template').after newPromo
+                                        newPromo.removeClass 'promo-template'
+                                        newPromo.removeClass 'hide'
+                                        $('div#promos div.edit').fadeOut 300, () ->
+                                            $('div#promos form#promo-form a.promo-type').removeClass 'active'
+                                            $('div#promos form#promo-form a.promo-type').eq(0).addClass 'active'
+                                            $('div#promos form#promo-form input').val ''
+                                            $('div#promos div.promo-form-tickets a.select-ticket').removeClass 'selected'
+                                            $('div#promos div.content').fadeIn 300
+                                        return
+                                    return
+                                return
+                        else
+                            alert response.message
+                        return
+            else
+                alert 'Must Select At Least One Ticket'
+        return
     init: () ->
         scope = this
         $('a.new-ticket').click () =>
             @newTicket()
-            return
-        #ADD PROMO START
-        $('body').on 'click', 'a.add-promo', () ->
-            $(this).fadeOut 300, () ->
-                container = $(this).parents('div.add-promo-container')
-                container.find('form.edit-promo').removeClass('edit-promo').addClass('add-promo')
-                container.find('div.title span.text').html('Add Promo&nbsp;&nbsp;&nbsp;')
-                container.find('form.add-promo .submit').removeClass('medium-4').addClass('medium-6')
-                container.find('form.add-promo .delete').addClass('hidden')
-                container.find('form.add-promo .or').removeClass('hidden')
-                container.find('div.add-promo-fields').fadeIn 300
-                return
-            return
-        #EDIT PROMO START
-        $('body').on 'click', 'a.edit-promo', () ->
-            promoId = $(this).data('id')
-            $('.promo-editing').fadeIn 300
-            $(this).parents('div.promo').fadeOut 300, () ->
-                $(this).addClass('promo-editing')
-                container = $(this).parents('div.ticket-option').find('div.add-promos')
-                $("html, body").animate
-                    scrollTop: container.offset().top
-                , 500
-                container.find('div.action').hide()
-                container.find('form.add-promo').removeClass('add-promo').addClass('edit-promo')
-                container.find('form.edit-promo .submit').removeClass('medium-6').addClass('medium-4')
-                container.find('form.edit-promo .delete').removeClass('hidden')
-                container.find('form.edit-promo .or').addClass('hidden')
-                container.find('div.title span.text').html('Edit Promo&nbsp;&nbsp;&nbsp;')
-                container.find('div.add-promo-fields').fadeIn 300
-                container.find('input[name=id]').val(promoId)
-                container.find('input[name=code]').val($(this).data('code'))
-                container.find('input[name=amount]').val($(this).data('amount'))
-                container.find('input[name=email_domain]').val($(this).data('domain'))
-                return
-            return
-        #ADD PROMO SUBMIT
-        $('body').on 'submit', 'form.add-promo', (e) ->
-            e.preventDefault()
-            params = $(this).serializeObject()
-            form = $(this)
-            Bazaarboy.post 'event/promo/create/', params, (response) ->
-                if response.status is 'OK'
-                    form.parents('div.add-promo-fields').fadeOut 300, () ->
-                        form.find('input[type=text]').val('')
-                        form.parents('div.add-promo-container').find('a.add-promo').fadeIn 300
-                        newPromo = $('div.templates div.promo').clone()
-                        newPromo.find('span.amount').html('$' + response.promo.amount + ' OFF')
-                        newPromo.find('span.code').html(response.promo.code)
-                        newPromo.find('a.edit-promo').attr('data-id' , response.promo.pk)
-                        newPromo.attr('data-code', response.promo.code)
-                        newPromo.attr('data-amount', response.promo.amount)
-                        newPromo.attr('data-domain', response.promo.email_domain)
-                        form.parents('div.ticket-option').find('div.promos').append(newPromo)
-                else
-                    form.find('span.promo-error').html(response.message)
-                return
-            return
-        #EDIT PROMO SUBMIT
-        $('body').on 'submit', 'form.edit-promo', (e) ->
-            e.preventDefault()
-            params = $(this).serializeObject()
-            form = $(this)
-            Bazaarboy.post 'event/promo/edit/', params, (response) ->
-                if response.status is 'OK'
-                    form.removeClass('edit-promo').addClass('add-promo')
-                    form.parents('div.add-promo-fields').fadeOut 300, () ->
-                        $('.promo-editing').remove()
-                        form.find('input[type=text]').val('')
-                        form.parents('div.add-promo-container').find('a.add-promo').fadeIn 300
-                        newPromo = $('div.templates div.promo').clone()
-                        newPromo.find('span.amount').html('$' + response.promo.amount + ' OFF')
-                        newPromo.find('span.code').html(response.promo.code)
-                        newPromo.find('a.edit-promo').attr('data-id' , response.promo.pk)
-                        newPromo.attr('data-code', response.promo.code)
-                        newPromo.attr('data-amount', response.promo.amount)
-                        newPromo.attr('data-domain', response.promo.email_domain)
-                        form.parents('div.ticket-option').find('div.promos').append(newPromo)
-                        form.parents('div.ticket-option').find('div.add-promo-container div.action').fadeIn 300
-                else
-                    form.find('span.promo-error').html(response.message)
-                return
-            return
-        #CANCEL ADD PROMO
-        $('body').on 'click', 'form.add-promo a.cancel-btn', () ->
-            $(this).parents('div.add-promo-fields').fadeOut 300, () ->
-                $(this).find('input[type=text]').val('')
-                $('span.promo-error').html('&nbsp;')
-                $(this).parents('div.add-promo-container').find('a.add-promo').fadeIn 300
-                return
-            return
-        #CANCEL EDIT PROMO
-        $('body').on 'click', 'form.edit-promo a.cancel-btn', () ->
-            $(this).parents('div.add-promo-fields').fadeOut 300, () ->
-                $(this).find('input[type=text]').val('')
-                $('span.promo-error').html('&nbsp;')
-                $(this).parents('div.add-promo-container').find('div.action').fadeIn 300
-                $('.promo-editing').fadeIn 300
-                return
-            return
-        #DELETE PROMO
-        $('body').on 'click', 'form.edit-promo a.delete-promo', () ->
-            form = $(this).parents('form.edit-promo')
-            params = form.serializeObject()
-            Bazaarboy.post 'event/promo/delete/', {id:params.id}, (response) ->
-                if response.status is 'OK'
-                    form.parents('div.add-promo-fields').fadeOut 300, () ->
-                        form.find('input[type=text]').val('')
-                        $('span.promo-error').html('&nbsp;')
-                        form.parents('div.add-promo-container').find('a.add-promo').show()
-                        form.parents('div.add-promo-container').find('div.action').fadeIn 300
-                        $('.promo-editing').remove()
-                return
             return
         $('div.ticket-option div.top div.secondary-btn').click () ->
             ticket = $(this).closest('div.ticket-option').attr('data-id')
@@ -264,7 +254,6 @@ Bazaarboy.event.modify.tickets =
         $('div#edit-ticket form').submit (event) ->
             event.preventDefault()
             if not scope.ticketSubmitting
-                console.log scope.ticketSubmitting
                 scope.ticketSubmitting = true
                 isNew = $('div#edit-ticket').hasClass 'add'
                 ticketId = $('div#edit-ticket').attr 'data-id'
@@ -378,6 +367,114 @@ Bazaarboy.event.modify.tickets =
         $('div#edit-ticket input[name=name], div#edit-ticket textarea[name=description]').keypress () ->
             if $(this).val().trim() != ''
                 $(this).removeClass('warning')
+            return
+        # PROMO CODES
+        # Date auto-complete
+        $('form#promo-form').find('input[name=promo_start_time]').pikaday
+            format: 'MM/DD/YYYY'
+            onSelect: () ->
+                $('form#promo-form').find('input[name=expiration_time]').pikaday 'gotoDate', this.getDate()
+                $('form#promo-form').find('input[name=expiration_time]').pikaday 'setMinDate', this.getDate()
+                return
+        $('form#promo-form').find('input[name=expiration_time]').pikaday
+            format: 'MM/DD/YYYY'
+        $('div#promos div.new-promo-controls a.save-promo').click () ->
+            scope.savePromo(true)
+            return
+        $('div#promos div.edit-promo-controls a.save-promo').click () ->
+            scope.savePromo(false)
+            return
+        $('div#promos').on 'click', 'a.add-promo',  () ->
+            $('div#promos form#promo-form a.promo-type').removeClass 'active'
+            $('div#promos form#promo-form a.promo-type').eq(0).addClass 'active'
+            $('div#promos form#promo-form input').val ''
+            $('div#promos div.promo-form-tickets a.select-ticket').removeClass 'selected'
+            $('div#promos div.edit div.title').html 'Add Promo Code'
+            $('div#promos div.new-promo-controls').removeClass 'hide'
+            $('div#promos div.edit-promo-controls').addClass 'hide'
+            $('div#promos form#promo-form span.discount-identifier').html '($)'
+            $('div#promos form#promo-form input.discount-input').attr('placeholder', 'Discount Amount (between $0 and price of ticket)')
+            $('div#promos div.content').fadeOut 300, () ->
+                $('div#promos div.edit').fadeIn 300
+                return
+            return
+        $('div#promos').on 'click', 'a.edit-promo',  () ->
+            $('form#promo-form').attr('data-id', $(this).data('id'))
+            $('div#promos div.promo-form-tickets a.select-ticket').removeClass 'selected'
+            Bazaarboy.get 'event/promo/', {id: $(this).data('id')}, (response) ->
+                promo = response.promo
+                console.log promo
+                tickets = promo.tickets
+                $('div#promos div.edit div.title').html 'Edit Promo Code: ' + promo.code
+                $('div#promos div.new-promo-controls').addClass 'hide'
+                $('div#promos div.edit-promo-controls').removeClass 'hide'
+                $('form#promo-form input[name=code]').val promo.code
+                $('form#promo-form a.promo-type').removeClass 'active'
+                if promo.amount
+                    $('form#promo-form a.promo-type').eq(0).addClass 'active'
+                    $('form#promo-form input[name=discount]').val promo.amount
+                    $('div#promos form#promo-form span.discount-identifier').html '($)'
+                    $('div#promos form#promo-form input.discount-input').attr('placeholder', 'Discount Amount (between $0 and price of ticket)')
+                else
+                    $('form#promo-form a.promo-type').eq(1).addClass 'active'
+                    $('form#promo-form input[name=discount]').val(promo.discount*100)
+                    $('div#promos form#promo-form span.discount-identifier').html '(%)'
+                    $('div#promos form#promo-form input.discount-input').attr('placeholder', 'Discount Percentage (1-100)')
+                $('form#promo-form input[name=email_domain]').val promo.email_domain
+                if promo.quantity
+                    $('form#promo-form input[name=quantity]').val promo.quantity
+                else
+                    $('form#promo-form input[name=quantity]').val ''
+                if promo.start_time
+                    $('form#promo-form input[name=promo_start_time]').val promo.start_time
+                else
+                    $('form#promo-form input[name=promo_start_time]').val ''
+                if promo.expiration_time
+                    $('form#promo-form input[name=expiration_time]').val promo.expiration_time
+                else
+                    $('form#promo-form input[name=expiration_time]').val ''
+                $('div#promos div.promo-form-tickets a.select-ticket').each () ->
+                    if tickets.indexOf($(this).data('id')) > -1
+                        $(this).addClass 'selected'
+                    return
+                $('div#promos div.content').fadeOut 300, () ->
+                    $('div#promos div.edit').fadeIn 300
+                    return
+                return
+            return
+        $('div#promos').on 'click', 'a.cancel-promo',  () ->
+            $('div#promos div.edit').fadeOut 300, () ->
+                $('div#promos div.content').fadeIn 300
+                return
+            return
+        $('div#promos').on 'click', 'a.delete-promo',  () ->
+            Bazaarboy.get 'event/promo/', {id: $('form#promo-form').data('id')}, (response) ->
+                if confirm("Are you sure you want to delete the promo code: '" + response.promo.code + "'?")
+                    Bazaarboy.post 'event/promo/delete/', {id: $('form#promo-form').data('id')}, (response) ->
+                        if response.status is 'OK'
+                            $("div.promo").each () ->
+                                if $(this).data('id') is $('form#promo-form').data('id')
+                                    $(this).remove()
+                                return
+                            $('div#promos div.edit').fadeOut 300, () ->
+                                $('div#promos div.content').fadeIn 300
+                        else
+                            alert response.message
+                        return
+                return
+            return
+        $('div#promos form#promo-form a.promo-type').click () ->
+            $('div#promos form#promo-form a.promo-type').removeClass 'active'
+            $(this).addClass 'active'
+            if $(this).data('type') is 'number'
+                $('div#promos form#promo-form span.discount-identifier').html '($)'
+                $('div#promos form#promo-form input.discount-input').attr('placeholder', 'Discount Amount (between $0 and price of ticket)')
+            else
+                $('div#promos form#promo-form span.discount-identifier').html '(%)'
+                $('div#promos form#promo-form input.discount-input').attr('placeholder', 'Discount Percentage (1-100)')
+            return
+        $('div#promos div.promo-form-tickets a.select-ticket').click () ->
+            $(this).toggleClass 'selected'
             return
         return
 

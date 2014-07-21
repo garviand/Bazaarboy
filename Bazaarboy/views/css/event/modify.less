@@ -129,6 +129,142 @@ div#event-modify-tickets {
         }
     }
 
+    div#promos {
+        margin-top: 30px;
+        margin-bottom: 60px;
+        border-radius: 4px;
+        background: @grey;
+        div.top{
+            padding: 0 24px;
+            padding-top: 10px;
+            div.inner{
+                padding: 0 5px;
+                border-top-left-radius: 4px;
+                border-top-right-radius: 4px;
+                background: @white;
+                div.title{
+                    font-weight: 500;
+                    padding: 14px 10px;
+                    font-size: 16px;
+                }
+            }
+        }
+        div.bottom {
+            padding: 0 24px;
+            padding-bottom: 10px;
+            div.inner {
+                padding: 0 5px;
+                border-bottom-left-radius: 4px;
+                border-bottom-right-radius: 4px;
+                background: #ECEFFC;
+                div.promo{
+                    padding: 10px 10px;
+                    border-bottom: @grey thin solid;
+                    div.promo-name, div.promo-stats{
+                        color: #4963e4;
+                        font-weight: 500;
+                        font-size: 14px;
+                    }
+                    div.promo-stats{
+                        font-weight: normal;
+                    }
+                    div.edit-promo-container{
+                        text-align: right;
+                        a.edit-promo{
+                            font-size: 12px;
+                            color: #4963e4;
+                            text-decoration: underline;
+                        }
+                    }
+                }
+            }
+            form#promo-form{
+                margin-bottom: 0;
+                div.promo-form-row{
+                    margin-top: 10px;
+                }
+                div.promo-form-label{
+                    padding: 0.6rem;
+                    text-align: center;
+                    &.types{
+                        position: relative;
+                        top: -10px;
+                    }
+                }
+                a.promo-type{
+                    position: relative;
+                    top: -10px;
+                    display: block;
+                    width: 100%;
+                    color: @dark;
+                    padding: 0.6rem;
+                    text-align: center;
+                    &.active{
+                        font-weight: bold;
+                        text-decoration: underline;
+                    }
+                }
+                div.promo-form-tickets{
+                    margin-bottom: 20px;
+                }
+                div.promo-form-ticket{
+                    a.select-ticket{
+                        display: block;
+                        width: 100%;
+                        padding: 10px 15px;
+                        border-radius: 2px;
+                        margin-bottom: 5px;
+                        background: @white;
+                        color: @dark;
+                        &:hover{
+                            background: @dark;
+                            color: @white;
+                        }
+                        &.selected{
+                            background: @blue !important;
+                            color: @white !important;
+                            font-weight: bold;
+                        }
+                        div.event{
+                            user-select: none;
+                        }
+                    }
+                }
+            }
+            div.add-promo-container, div.new-promo-controls, div.edit-promo-controls{
+                margin: 7px 0;
+                a{
+                    text-align: center;
+                    padding-top:7px;
+                    padding-bottom: 9px;
+                    &.save-promo{
+                        position: relative;
+                        left: -10px;
+                        @media @media_small {
+                            left: 0;
+                        }
+                    }
+                }
+            }
+            div.edit-promo-controls{
+                a.save-promo{
+                    position: relative;
+                    left: -20px !important;
+                    @media @media_small {
+                        left: 0;
+                    }
+                }
+                a.delete-promo{
+                    position: relative;
+                    left: -10px;
+                    @media @media_small {
+                        left: 0;
+                    }
+                }
+            }
+        }
+    }
+
     div.ticket-option {
         margin-bottom: 20px;
         border-radius: 4px;
@@ -232,115 +368,6 @@ div#event-modify-tickets {
                 }
             }
         }
-        div.promos-title{
-            margin-top: 5px;
-            margin-bottom: 13px;
-            font-weight: 300;
-        }
-        div.promos{
-            padding: 0 10px;
-            padding-bottom: 10px;
-            div.promo{
-                padding: 0;
-                background: #FAFAFA;
-                border-top: #F7F7F7 thin solid;
-                font-size: 12px;
-                font-weight: 600;
-                &:last-child{
-                    border-bottom-left-radius: 4px;
-                    border-bottom-right-radius: 4px;
-                }
-                div.promo-details{
-                    div.text{
-                        margin-top: 23px;
-                        span.subtitle{
-                            color: #D4D4D4;
-                        }
-                        span.claims{
-                            color: @blue;
-                        }
-                    }
-                }
-                div.action{
-                    padding-right: 5px;
-                    padding-left: 30px;
-                    a.edit-promo{
-                        color: @blue;
-                        display: block;
-                        width: 100%;
-                        height: 35px;
-                        padding-top: 13px;
-                        padding-bottom: 13px;
-                        text-align: center;
-                        margin: 10px 0;
-                        font-weight: 400;
-                        text-decoration: underline;
-                        font-style: italic;
-                    }
-                }
-            }
-        }
-        div.add-promos{
-            padding: 0 10px;
-            padding-bottom: 3px;
-            div.inner {
-                min-height: 44px;
-                padding: 0;
-                div.action{
-                    padding-right: 5px;
-                    padding-left: 30px;
-                    a.add-promo{
-                        display: block;
-                        height: 35px;
-                        padding-top: 8px;
-                        padding-bottom: 13px;
-                        width: 100%;
-                        text-align: center;
-                        &:hover{
-                            color: @white;
-                        }
-                    }
-                }
-                div.add-promo-fields{
-                    form.add-promo, form.edit-promo{
-                        margin-bottom: 0;
-                        div.title{
-                            margin-top: 3px;
-                            font-weight: bold;
-                            span.promo-error{
-                                font-weight: normal;
-                                font-style: italic;
-                            }
-                        }
-                        div.text{
-                            margin-top: 10px;
-                            a.cancel-btn{
-                                color: #4963e4;
-                            }
-                        }
-                    }
-                    form div.row > div{
-                        margin-bottom: 10px;
-                    }
-                    input[type=text]{
-                        padding: 5px;
-                        border-radius: 4px;
-                        width: 100%;
-                        border: @grey thin solid;
-                        outline: none;
-                        margin-bottom: 0;
-                    }
-                    input.blue-btn, a.delete-promo{
-                        display: block;
-                        width: 100%;
-                        padding-top: 8px;
-                        padding-bottom: 13px;
-                        width: 100%;
-                        height: 37px;
-                    }
-                }
-            }
-        }
     }
 
     div.next-step{
@@ -356,12 +383,6 @@ div#event-modify-tickets {
                 color: @white;
             }
         }
-    }
-
-    div.promo-option {
-        margin-bottom: 20px;
-        border-radius: 4px;
-        background: @grey;
     }
 
     div#edit-ticket {

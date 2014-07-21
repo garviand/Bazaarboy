@@ -8,7 +8,7 @@ import os
 import re
 from datetime import timedelta
 from django.db import transaction, IntegrityError
-from django.db.models import F, Q, Count
+from django.db.models import F, Q, Count, Sum
 from django.http import Http404
 from django.shortcuts import render, redirect
 from django.http import HttpResponse
@@ -113,6 +113,10 @@ def modify(request, id, step, params, user):
         return redirect('index')
     if step == 'tickets':
         tickets = Ticket.objects.filter(event = event, is_deleted = False)
+        cheapest = float('inf')
+        for ticket in tickets:
+            if ticket.price < cheapest:
+                cheapest = ticket.price
         tickets = list(tickets)
         ticketCount = len(tickets)
         ticketExists = ticketCount > 0
@@ -122,13 +126,13 @@ def modify(request, id, step, params, user):
                                                   purchase__checkout__is_refunded = False), 
                                                 ticket = tickets[i]).count()
             tickets[i].sold = sold
-        promos = Promo.objects.filter(event = event, is_deleted = False)
-
+        promos = Promo.objects.filter(event = event, is_deleted = False).order_by('-id')
         for promo in promos:
-            promo.purchase_count = Purchase_item.objects.filter(Q(purchase__checkout = None) | 
-                                                Q(purchase__checkout__is_charged = True, 
-                                                  purchase__checkout__is_refunded = False), 
-                                                purchase__promos__id__contains = promo.id).count()
+            if Purchase_promo.objects.filter(promo = promo).exists():
+                amount_claimed = Purchase_promo.objects.filter(promo = promo).aggregate(Sum('quantity'))['quantity__sum']
+                promo.claimed = amount_claimed
+            else:
+                promo.claimed = 0
     return render(request, 'event/modify-' + step + '.html', locals())
 
 @login_required()
@@ -1076,6 +1080,54 @@ def delete_ticket(request, params, user):
     return json_response(response)
 
 @login_required()
+@validate('GET', ['id'])
+def promo(request, params, user):
+    """
+    Returns serialized data about the promo
+    """
+    if not Promo.objects.filter(id = params['id']).exists():
+        response = {
+            'status':'FAIL',
+            'error':'PROMO_NOT_FOUND',
+            'message':'The promo code does not exist.'
+        }
+        return json_response(response)
+    promo = Promo.objects.get(id = params['id'])
+    event = promo.event
+    # Check if user has permission for the event
+    if not Organizer.objects.filter(event = event, 
+                                    profile__managers = user).exists():
+        response = {
+            'status':'FAIL',
+            'error':'NOT_A_MANAGER',
+            'message':'You don\'t have permission for the event.'
+        }
+        return json_response(response)
+    response_promo = {}
+    response_promo['id'] = promo.id
+    response_promo['code'] = promo.code
+    response_promo['amount'] = promo.amount
+    response_promo['discount'] = promo.discount
+    response_promo['email_domain'] = promo.email_domain
+    response_promo['quantity'] = promo.quantity
+    if promo.start_time:
+        response_promo['start_time'] = promo.start_time.strftime('%m/%d/%Y')
+    else:
+        response_promo['start_time'] = None
+    if promo.expiration_time:
+        response_promo['expiration_time'] = promo.expiration_time.strftime('%m/%d/%Y')
+    else:
+        response_promo['expiration_time'] = None
+    response_promo['tickets'] = []
+    for ticket in promo.tickets.all():
+        response_promo['tickets'].extend([ticket.id])
+    response = {
+        'status':'OK',
+        'promo':response_promo
+    }
+    return json_response(response)
+
+@login_required()
 @validate('POST', ['event', 'code'], 
           ['amount', 'discount', 'email_domain', 'quantity', 'start_time', 'expiration_time'])
 def create_promo(request, params, user):
@@ -1280,6 +1332,16 @@ def edit_promo(request, params, user):
             }
             return json_response(response)
         promo.email_domain = params['email_domain']
+    if params['quantity'] is not None:
+        params['quantity'] = int(params['quantity'])
+        if params['quantity'] < 0:
+            response = {
+                'status':'FAIL',
+                'error':'INVALID_QUANTITY',
+                'message':'The quantity must be a non-negative integer.'
+            }
+            return json_response(response)
+        promo.quantity = params['quantity']
     if params['start_time']:
         if params['start_time'] == 'none':
             promo.start_time = None
@@ -1289,7 +1351,7 @@ def edit_promo(request, params, user):
         if params['expiration_time'] == 'none':
             promo.expiration_time = None
         else:
-            promo.expiration_time = None
+            promo.expiration_time = params['expiration_time']
     if promo.start_time is not None and promo.expiration_time is not None:
         if promo.start_time >= promo.expiration_time:
             response = {
@@ -1299,9 +1361,14 @@ def edit_promo(request, params, user):
             }
             return json_response(response)
     promo.save()
+    if Purchase_promo.objects.filter(promo = promo).exists():
+        amount_claimed = Purchase_promo.objects.filter(promo = promo).aggregate(Sum('quantity'))['quantity__sum']
+    else:
+        amount_claimed = 0
     response = {
         'status':'OK',
-        'promo':serialize_one(promo)
+        'promo':serialize_one(promo),
+        'claimed':amount_claimed
     }
     return json_response(response)
 
@@ -1343,7 +1410,7 @@ def link_promo(request, params, user):
     for _ticket in tickets:
         if _ticket.id == ticket.id:
             response = {
-                'status':'FAIL',
+                'status':'OK',
                 'error':'ALREADY_LINKED',
                 'message':'The ticket is already linked with this promo code.'
             }
@@ -1592,7 +1659,7 @@ def purchase(request, params, user):
             }
             return json_response(response)
     # Sum up the quantities needed for promos
-    for tid, quantity in details.itervalues():
+    for tid, quantity in details.items():
         for i in range(0, len(promos)):
             if tid in promos[i]['tickets']:
                 promos[i]['quantity'] += quantity
@@ -1711,8 +1778,8 @@ def purchase(request, params, user):
         purchase = Purchase(owner = user, event = event, amount = amount, 
                             checkout = checkout)
         purchase.save()
-        for promo in promos.itervalues():
-            purchase.promos.add(promo)
+        for promo in promos:
+            purchase.promos.add(promo['promo'])
         purchase.save()
         for ticket in tickets:
             for i in range(0, details[ticket.id]):
@@ -1727,7 +1794,7 @@ def purchase(request, params, user):
                 Ticket.objects \
                       .filter(id = ticket.id) \
                       .update(quantity = F('quantity') - details[ticket.id])
-        for tid, promo in promos:
+        for promo in promos:
             item = Purchase_promo(purchase = purchase, 
                                   promo = promo['promo'], 
                                   quantity = promo['quantity'])

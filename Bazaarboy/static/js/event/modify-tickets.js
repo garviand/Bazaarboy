@@ -1,6 +1,7 @@
 (function() {
   Bazaarboy.event.modify.tickets = {
     ticketSubmitting: false,
+    promoSubmitting: false,
     newTicket: function() {
       $('div#edit-ticket div.step-2').hide();
       $('div#edit-ticket div.step-1').show();
@@ -25,7 +26,6 @@
         if (response.status !== 'OK') {
           alert(response.message);
         } else {
-          console.log(response);
           $('div#edit-ticket').removeClass('add').addClass('edit');
           $('div#edit-ticket div.step-1').addClass('hide');
           $('div#edit-ticket div.step-1 span.type').html('Switch');
@@ -72,7 +72,6 @@
         }
       });
     },
-    newPromo: function() {},
     initDateTimeAutoComplete: function(form) {
       var originalEndTime, originalStartTime;
       originalStartTime = $(form).find('input[name=start_time]').val();
@@ -94,134 +93,151 @@
         format: 'MM/DD/YYYY'
       });
     },
+    savePromo: function(newPromo) {
+      var failedLinks, linkedTickets, optionals, params, selectedTickets;
+      if (!this.promoSubmitting) {
+        params = $('form#promo-form').serializeObject();
+        params.start_time = params.promo_start_time;
+        optionals = ['quantity', 'start_time', 'expiration_time', 'email_domain'];
+        params = Bazaarboy.stripEmpty(params, optionals);
+        params.event = eventId;
+        if (params.start_time !== void 0 && params.start_time.trim().length !== 0) {
+          params.start_time = moment(params.start_time.trim(), 'MM/DD/YYYY').utc().format('YYYY-MM-DD HH:mm:ss');
+          if (!params.start_time) {
+            alert('Invalid Start Date');
+          }
+        }
+        if (params.expiration_time !== void 0 && params.expiration_time.trim().length !== 0) {
+          params.expiration_time = moment(params.expiration_time.trim(), 'MM/DD/YYYY').utc().format('YYYY-MM-DD HH:mm:ss');
+          if (!params.expiration_time) {
+            alert('Invalid Expiration Date');
+          }
+        }
+        if (isNaN(parseInt(params.discount))) {
+          alert('Discount Amount Must Be A Number');
+          return;
+        }
+        if ($('div#promos form#promo-form a.promo-type.active').data('type') === 'number') {
+          params.amount = parseInt(params.discount);
+          params.discount = '';
+        } else {
+          params.discount = parseFloat(params.discount) / 100;
+          if (params.discount > 1) {
+            alert('Percentage Must Be Between 1 and 100');
+            return;
+          }
+        }
+        selectedTickets = $('form#promo-form div.promo-form-tickets a.select-ticket.selected').length;
+        linkedTickets = 0;
+        failedLinks = 0;
+        if (selectedTickets > 0) {
+          if (newPromo) {
+            Bazaarboy.post('event/promo/create/', params, function(response) {
+              var promo_code, promo_id;
+              if (response.status === 'OK') {
+                promo_id = response.promo.pk;
+                promo_code = response.promo.code;
+                $('form#promo-form div.promo-form-tickets a.select-ticket.selected').each(function() {
+                  Bazaarboy.post('event/promo/link/', {
+                    id: promo_id,
+                    ticket: $(this).data('id')
+                  }, function(response) {
+                    if (response.status !== 'OK') {
+                      alert(response.message);
+                    }
+                    linkedTickets++;
+                    if (linkedTickets === selectedTickets) {
+                      newPromo = $('div.promo-template').clone();
+                      newPromo.find('div.promo-name').html(promo_code);
+                      newPromo.attr('data-id', promo_id);
+                      newPromo.find('a.edit-promo').attr('data-id', promo_id);
+                      $('div.promo-template').after(newPromo);
+                      newPromo.removeClass('promo-template');
+                      newPromo.removeClass('hide');
+                      $('div#promos div.edit').fadeOut(300, function() {
+                        $('div#promos form#promo-form a.promo-type').removeClass('active');
+                        $('div#promos form#promo-form a.promo-type').eq(0).addClass('active');
+                        $('div#promos form#promo-form input').val('');
+                        $('div#promos div.promo-form-tickets a.select-ticket').removeClass('selected');
+                        return $('div#promos div.content').fadeIn(300);
+                      });
+                      return;
+                    }
+                  });
+                });
+              } else {
+                alert(response.message);
+              }
+            });
+          } else {
+            $("div.promo").each(function() {
+              if ($(this).data('id') === $('form#promo-form').data('id')) {
+                $(this).remove();
+              }
+            });
+            params.id = $('form#promo-form').data('id');
+            console.log(params);
+            Bazaarboy.post('event/promo/edit/', params, function(response) {
+              var amount_claimed, promo_code, promo_id;
+              if (response.status === 'OK') {
+                amount_claimed = response.claimed;
+                promo_id = response.promo.pk;
+                promo_code = response.promo.code;
+                $('form#promo-form div.promo-form-tickets a.select-ticket:not(.selected)').each(function() {
+                  return Bazaarboy.post('event/promo/unlink/', {
+                    id: promo_id,
+                    ticket: $(this).data('id')
+                  }, function(response) {
+                    if (response.status !== 'OK') {
+                      return alert(response.message);
+                    }
+                  });
+                });
+                $('form#promo-form div.promo-form-tickets a.select-ticket.selected').each(function() {
+                  Bazaarboy.post('event/promo/link/', {
+                    id: promo_id,
+                    ticket: $(this).data('id')
+                  }, function(response) {
+                    if (response.status !== 'OK') {
+                      alert(response.message);
+                    }
+                    linkedTickets++;
+                    if (linkedTickets === selectedTickets) {
+                      newPromo = $('div.promo-template').clone();
+                      newPromo.find('div.promo-name').html(promo_code);
+                      newPromo.find('div.promo-stats').html(amount_claimed + " Claimed");
+                      newPromo.attr('data-id', promo_id);
+                      newPromo.find('a.edit-promo').attr('data-id', promo_id);
+                      $('div.promo-template').after(newPromo);
+                      newPromo.removeClass('promo-template');
+                      newPromo.removeClass('hide');
+                      $('div#promos div.edit').fadeOut(300, function() {
+                        $('div#promos form#promo-form a.promo-type').removeClass('active');
+                        $('div#promos form#promo-form a.promo-type').eq(0).addClass('active');
+                        $('div#promos form#promo-form input').val('');
+                        $('div#promos div.promo-form-tickets a.select-ticket').removeClass('selected');
+                        return $('div#promos div.content').fadeIn(300);
+                      });
+                      return;
+                    }
+                  });
+                });
+              } else {
+                alert(response.message);
+              }
+            });
+          }
+        } else {
+          alert('Must Select At Least One Ticket');
+        }
+      }
+    },
     init: function() {
       var isEditTicketInAnimation, scope,
         _this = this;
       scope = this;
       $('a.new-ticket').click(function() {
         _this.newTicket();
-      });
-      $('body').on('click', 'a.add-promo', function() {
-        $(this).fadeOut(300, function() {
-          var container;
-          container = $(this).parents('div.add-promo-container');
-          container.find('form.edit-promo').removeClass('edit-promo').addClass('add-promo');
-          container.find('div.title span.text').html('Add Promo&nbsp;&nbsp;&nbsp;');
-          container.find('form.add-promo .submit').removeClass('medium-4').addClass('medium-6');
-          container.find('form.add-promo .delete').addClass('hidden');
-          container.find('form.add-promo .or').removeClass('hidden');
-          container.find('div.add-promo-fields').fadeIn(300);
-        });
-      });
-      $('body').on('click', 'a.edit-promo', function() {
-        var promoId;
-        promoId = $(this).data('id');
-        $('.promo-editing').fadeIn(300);
-        $(this).parents('div.promo').fadeOut(300, function() {
-          var container;
-          $(this).addClass('promo-editing');
-          container = $(this).parents('div.ticket-option').find('div.add-promos');
-          $("html, body").animate({
-            scrollTop: container.offset().top
-          }, 500);
-          container.find('div.action').hide();
-          container.find('form.add-promo').removeClass('add-promo').addClass('edit-promo');
-          container.find('form.edit-promo .submit').removeClass('medium-6').addClass('medium-4');
-          container.find('form.edit-promo .delete').removeClass('hidden');
-          container.find('form.edit-promo .or').addClass('hidden');
-          container.find('div.title span.text').html('Edit Promo&nbsp;&nbsp;&nbsp;');
-          container.find('div.add-promo-fields').fadeIn(300);
-          container.find('input[name=id]').val(promoId);
-          container.find('input[name=code]').val($(this).data('code'));
-          container.find('input[name=amount]').val($(this).data('amount'));
-          container.find('input[name=email_domain]').val($(this).data('domain'));
-        });
-      });
-      $('body').on('submit', 'form.add-promo', function(e) {
-        var form, params;
-        e.preventDefault();
-        params = $(this).serializeObject();
-        form = $(this);
-        Bazaarboy.post('event/promo/create/', params, function(response) {
-          if (response.status === 'OK') {
-            form.parents('div.add-promo-fields').fadeOut(300, function() {
-              var newPromo;
-              form.find('input[type=text]').val('');
-              form.parents('div.add-promo-container').find('a.add-promo').fadeIn(300);
-              newPromo = $('div.templates div.promo').clone();
-              newPromo.find('span.amount').html('$' + response.promo.amount + ' OFF');
-              newPromo.find('span.code').html(response.promo.code);
-              newPromo.find('a.edit-promo').attr('data-id', response.promo.pk);
-              newPromo.attr('data-code', response.promo.code);
-              newPromo.attr('data-amount', response.promo.amount);
-              newPromo.attr('data-domain', response.promo.email_domain);
-              return form.parents('div.ticket-option').find('div.promos').append(newPromo);
-            });
-          } else {
-            form.find('span.promo-error').html(response.message);
-          }
-        });
-      });
-      $('body').on('submit', 'form.edit-promo', function(e) {
-        var form, params;
-        e.preventDefault();
-        params = $(this).serializeObject();
-        form = $(this);
-        Bazaarboy.post('event/promo/edit/', params, function(response) {
-          if (response.status === 'OK') {
-            form.removeClass('edit-promo').addClass('add-promo');
-            form.parents('div.add-promo-fields').fadeOut(300, function() {
-              var newPromo;
-              $('.promo-editing').remove();
-              form.find('input[type=text]').val('');
-              form.parents('div.add-promo-container').find('a.add-promo').fadeIn(300);
-              newPromo = $('div.templates div.promo').clone();
-              newPromo.find('span.amount').html('$' + response.promo.amount + ' OFF');
-              newPromo.find('span.code').html(response.promo.code);
-              newPromo.find('a.edit-promo').attr('data-id', response.promo.pk);
-              newPromo.attr('data-code', response.promo.code);
-              newPromo.attr('data-amount', response.promo.amount);
-              newPromo.attr('data-domain', response.promo.email_domain);
-              form.parents('div.ticket-option').find('div.promos').append(newPromo);
-              return form.parents('div.ticket-option').find('div.add-promo-container div.action').fadeIn(300);
-            });
-          } else {
-            form.find('span.promo-error').html(response.message);
-          }
-        });
-      });
-      $('body').on('click', 'form.add-promo a.cancel-btn', function() {
-        $(this).parents('div.add-promo-fields').fadeOut(300, function() {
-          $(this).find('input[type=text]').val('');
-          $('span.promo-error').html('&nbsp;');
-          $(this).parents('div.add-promo-container').find('a.add-promo').fadeIn(300);
-        });
-      });
-      $('body').on('click', 'form.edit-promo a.cancel-btn', function() {
-        $(this).parents('div.add-promo-fields').fadeOut(300, function() {
-          $(this).find('input[type=text]').val('');
-          $('span.promo-error').html('&nbsp;');
-          $(this).parents('div.add-promo-container').find('div.action').fadeIn(300);
-          $('.promo-editing').fadeIn(300);
-        });
-      });
-      $('body').on('click', 'form.edit-promo a.delete-promo', function() {
-        var form, params;
-        form = $(this).parents('form.edit-promo');
-        params = form.serializeObject();
-        Bazaarboy.post('event/promo/delete/', {
-          id: params.id
-        }, function(response) {
-          if (response.status === 'OK') {
-            form.parents('div.add-promo-fields').fadeOut(300, function() {
-              form.find('input[type=text]').val('');
-              $('span.promo-error').html('&nbsp;');
-              form.parents('div.add-promo-container').find('a.add-promo').show();
-              form.parents('div.add-promo-container').find('div.action').fadeIn(300);
-              return $('.promo-editing').remove();
-            });
-          }
-        });
       });
       $('div.ticket-option div.top div.secondary-btn').click(function() {
         var ticket;
@@ -288,7 +304,6 @@
         var endDate, endTime, endpoint, isNew, params, startDate, startTime, ticketId;
         event.preventDefault();
         if (!scope.ticketSubmitting) {
-          console.log(scope.ticketSubmitting);
           scope.ticketSubmitting = true;
           isNew = $('div#edit-ticket').hasClass('add');
           ticketId = $('div#edit-ticket').attr('data-id');
@@ -423,6 +438,131 @@
         if ($(this).val().trim() !== '') {
           $(this).removeClass('warning');
         }
+      });
+      $('form#promo-form').find('input[name=promo_start_time]').pikaday({
+        format: 'MM/DD/YYYY',
+        onSelect: function() {
+          $('form#promo-form').find('input[name=expiration_time]').pikaday('gotoDate', this.getDate());
+          $('form#promo-form').find('input[name=expiration_time]').pikaday('setMinDate', this.getDate());
+        }
+      });
+      $('form#promo-form').find('input[name=expiration_time]').pikaday({
+        format: 'MM/DD/YYYY'
+      });
+      $('div#promos div.new-promo-controls a.save-promo').click(function() {
+        scope.savePromo(true);
+      });
+      $('div#promos div.edit-promo-controls a.save-promo').click(function() {
+        scope.savePromo(false);
+      });
+      $('div#promos').on('click', 'a.add-promo', function() {
+        $('div#promos form#promo-form a.promo-type').removeClass('active');
+        $('div#promos form#promo-form a.promo-type').eq(0).addClass('active');
+        $('div#promos form#promo-form input').val('');
+        $('div#promos div.promo-form-tickets a.select-ticket').removeClass('selected');
+        $('div#promos div.edit div.title').html('Add Promo Code');
+        $('div#promos div.new-promo-controls').removeClass('hide');
+        $('div#promos div.edit-promo-controls').addClass('hide');
+        $('div#promos form#promo-form span.discount-identifier').html('($)');
+        $('div#promos form#promo-form input.discount-input').attr('placeholder', 'Discount Amount (between $0 and price of ticket)');
+        $('div#promos div.content').fadeOut(300, function() {
+          $('div#promos div.edit').fadeIn(300);
+        });
+      });
+      $('div#promos').on('click', 'a.edit-promo', function() {
+        $('form#promo-form').attr('data-id', $(this).data('id'));
+        $('div#promos div.promo-form-tickets a.select-ticket').removeClass('selected');
+        Bazaarboy.get('event/promo/', {
+          id: $(this).data('id')
+        }, function(response) {
+          var promo, tickets;
+          promo = response.promo;
+          console.log(promo);
+          tickets = promo.tickets;
+          $('div#promos div.edit div.title').html('Edit Promo Code: ' + promo.code);
+          $('div#promos div.new-promo-controls').addClass('hide');
+          $('div#promos div.edit-promo-controls').removeClass('hide');
+          $('form#promo-form input[name=code]').val(promo.code);
+          $('form#promo-form a.promo-type').removeClass('active');
+          if (promo.amount) {
+            $('form#promo-form a.promo-type').eq(0).addClass('active');
+            $('form#promo-form input[name=discount]').val(promo.amount);
+            $('div#promos form#promo-form span.discount-identifier').html('($)');
+            $('div#promos form#promo-form input.discount-input').attr('placeholder', 'Discount Amount (between $0 and price of ticket)');
+          } else {
+            $('form#promo-form a.promo-type').eq(1).addClass('active');
+            $('form#promo-form input[name=discount]').val(promo.discount * 100);
+            $('div#promos form#promo-form span.discount-identifier').html('(%)');
+            $('div#promos form#promo-form input.discount-input').attr('placeholder', 'Discount Percentage (1-100)');
+          }
+          $('form#promo-form input[name=email_domain]').val(promo.email_domain);
+          if (promo.quantity) {
+            $('form#promo-form input[name=quantity]').val(promo.quantity);
+          } else {
+            $('form#promo-form input[name=quantity]').val('');
+          }
+          if (promo.start_time) {
+            $('form#promo-form input[name=promo_start_time]').val(promo.start_time);
+          } else {
+            $('form#promo-form input[name=promo_start_time]').val('');
+          }
+          if (promo.expiration_time) {
+            $('form#promo-form input[name=expiration_time]').val(promo.expiration_time);
+          } else {
+            $('form#promo-form input[name=expiration_time]').val('');
+          }
+          $('div#promos div.promo-form-tickets a.select-ticket').each(function() {
+            if (tickets.indexOf($(this).data('id')) > -1) {
+              $(this).addClass('selected');
+            }
+          });
+          $('div#promos div.content').fadeOut(300, function() {
+            $('div#promos div.edit').fadeIn(300);
+          });
+        });
+      });
+      $('div#promos').on('click', 'a.cancel-promo', function() {
+        $('div#promos div.edit').fadeOut(300, function() {
+          $('div#promos div.content').fadeIn(300);
+        });
+      });
+      $('div#promos').on('click', 'a.delete-promo', function() {
+        Bazaarboy.get('event/promo/', {
+          id: $('form#promo-form').data('id')
+        }, function(response) {
+          if (confirm("Are you sure you want to delete the promo code: '" + response.promo.code + "'?")) {
+            Bazaarboy.post('event/promo/delete/', {
+              id: $('form#promo-form').data('id')
+            }, function(response) {
+              if (response.status === 'OK') {
+                $("div.promo").each(function() {
+                  if ($(this).data('id') === $('form#promo-form').data('id')) {
+                    $(this).remove();
+                  }
+                });
+                $('div#promos div.edit').fadeOut(300, function() {
+                  return $('div#promos div.content').fadeIn(300);
+                });
+              } else {
+                alert(response.message);
+              }
+            });
+          }
+        });
+      });
+      $('div#promos form#promo-form a.promo-type').click(function() {
+        $('div#promos form#promo-form a.promo-type').removeClass('active');
+        $(this).addClass('active');
+        if ($(this).data('type') === 'number') {
+          $('div#promos form#promo-form span.discount-identifier').html('($)');
+          $('div#promos form#promo-form input.discount-input').attr('placeholder', 'Discount Amount (between $0 and price of ticket)');
+        } else {
+          $('div#promos form#promo-form span.discount-identifier').html('(%)');
+          $('div#promos form#promo-form input.discount-input').attr('placeholder', 'Discount Percentage (1-100)');
+        }
+      });
+      $('div#promos div.promo-form-tickets a.select-ticket').click(function() {
+        $(this).toggleClass('selected');
       });
     }
   };
