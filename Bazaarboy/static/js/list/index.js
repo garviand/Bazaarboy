@@ -1,40 +1,34 @@
 (function() {
-  Bazaarboy.list = {
-    uploads: {
-      csv: void 0
-    },
+  Bazaarboy.list.index = {
     init: function() {
-      var scope,
-        _this = this;
+      var scope;
       scope = this;
-      $('div#list-management form.upload_csv input[name=csv_file]').fileupload({
-        url: rootUrl + 'file/csv/upload/',
-        type: 'POST',
-        add: function(event, data) {
-          data.submit();
-        },
-        done: function(event, data) {
-          var response;
-          response = jQuery.parseJSON(data.result);
-          if (response.status === 'OK') {
-            scope.uploads.csv = response.file;
-            Bazaarboy.post('list/csv/prepare/', {
-              csv: response.file.pk
-            }, function(response) {
-              if (response.status === 'OK') {
-                console.log(response);
-              } else {
-                alert(response.message);
-              }
-            });
-          } else {
-            alert(response.message);
-          }
+      $("a.new-list-btn").click(function() {
+        $("div#new-list-modal").foundation('reveal', 'open');
+      });
+      $("a.close-list-modal").click(function() {
+        $("div#new-list-modal").foundation('reveal', 'close');
+      });
+      $("div#new-list-modal div.controls a.create-list").click(function() {
+        var list_name;
+        list_name = $("div#new-list-modal div.new-list-inputs input[name=list_name]").val();
+        if (list_name.trim() !== '') {
+          Bazaarboy.post('list/create/', {
+            profile: profileId,
+            name: list_name,
+            is_hidden: 1
+          }, function(response) {
+            if (response.status === 'OK') {
+              Bazaarboy.redirect('list/' + response.list.pk);
+            }
+          });
+        } else {
+          alert('List name can\'t be empty');
         }
       });
     }
   };
 
-  Bazaarboy.list.init();
+  Bazaarboy.list.index.init();
 
 }).call(this);

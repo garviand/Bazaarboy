@@ -1,27 +1,22 @@
-Bazaarboy.list =
-    uploads:
-        csv: undefined
+Bazaarboy.list.index =
     init: () ->
         scope = this
-        $('div#list-management form.upload_csv input[name=csv_file]').fileupload
-            url: rootUrl + 'file/csv/upload/'
-            type: 'POST'
-            add: (event, data) =>
-                data.submit()
-                return
-            done: (event, data) =>
-                response = jQuery.parseJSON data.result
-                if response.status is 'OK'
-                    scope.uploads.csv = response.file
-                    Bazaarboy.post 'list/csv/prepare/', {csv: response.file.pk}, (response) =>
-                        if response.status is 'OK'
-                            console.log response
-                        else
-                            alert response.message
-                        return
-                else
-                    alert response.message
-                return
+        $("a.new-list-btn").click () ->
+        	$("div#new-list-modal").foundation('reveal', 'open')
+        	return
+        $("a.close-list-modal").click () ->
+        	$("div#new-list-modal").foundation('reveal', 'close')
+        	return
+        $("div#new-list-modal div.controls a.create-list").click () ->
+        	list_name = $("div#new-list-modal div.new-list-inputs input[name=list_name]").val()
+        	if list_name.trim() isnt ''
+        		Bazaarboy.post 'list/create/', {profile:profileId, name:list_name, is_hidden:1}, (response) ->
+        			if response.status is 'OK'
+        				Bazaarboy.redirect 'list/' + response.list.pk
+        			return
+        	else
+        		alert 'List name can\'t be empty'
+        	return
         return
 
-Bazaarboy.list.init()
+Bazaarboy.list.index.init()

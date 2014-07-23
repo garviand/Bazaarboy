@@ -1,0 +1,47 @@
+extends ../layout
+
+block title
+    | List Management
+
+block sidebar
+    +sidebarItem('ss-newspaper')(href="{% url index %}")
+        | Events
+    +sidebarItem('ss-database')(href="{% url list:index %}", class="selected")
+        | Lists
+    +sidebarItem('ss-share')(href="{% url user:settings %}")
+        | Settings
+
+block header
+    div.header-title.large-9.medium-10.columns.small-centered
+        div.row.clearfix
+            div.icon.left
+                span.ss-file
+            div.text.left
+                | List Management | 
+                span.sub {{ lt.name }}
+
+block content
+    div#wrapper-list-management.large-9.medium-10.columns.small-centered
+        div#list-management.small-12.columns
+            div.row
+                form.upload_csv.small-12.columns
+                    input(type="file", name="csv_file")
+                    {% csrf_token %}
+            div.csv_upload_interface.row.hide
+                div.small-12.columns.upload_rows
+                    div.upload_row.template.row.hide
+                        div.col-1.small-12.medium-3.columns
+                        div.col-2.small-12.medium-3.columns
+                        div.col-3.small-12.medium-3.columns
+                        div.choices.small-12.medium-3.columns
+                            select(name='field')
+                                option(value="none") -- Field Type --
+                                option(value="none") None
+                                option(value="email") Email
+                                option(value="first_name") First Name
+                                option(value="last_name") Last Name
+
+append script
+    script.
+        var profileId = {{ profile.id }};
+    script(src="{{ STATIC_URL }}js/list/list.js")

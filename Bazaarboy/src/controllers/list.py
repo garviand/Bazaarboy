@@ -14,12 +14,27 @@ import pdb
 @login_required()
 def index(request, user):
     """
-    User settings page
+    List Dashboard
     """
     profiles = Profile.objects.filter(managers = user)
     profile = profiles[0]
+    lists = List.objects.filter(owner = profile)
     return render(request, 'list/index.html', locals())
 
+@login_required()
+def list(request, lt, user):
+    """
+    Single List Page
+    """
+    profiles = Profile.objects.filter(managers = user)
+    profile = profiles[0]
+    if List.objects.filter(id = lt).exists():
+        lt = List.objects.get(id = lt)
+    else:
+        redirect('index')
+    if not Profile_manager.objects.filter(profile = lt.owner, user = user).exists():
+        redirect('index')
+    return render(request, 'list/list.html', locals())
 @login_required()
 @validate('POST', ['profile', 'name', 'is_hidden'])
 def create(request, params, user):
@@ -234,13 +249,18 @@ def prepare_csv(request, params, user):
             'message':'The event doesn\'t exist.'
         }
         return json_response(response)
-    csv = Csv.objects.get(id = params['csv'])
-    with open(csv.source.url, 'rb') as csvfile:
-        reader = csv.reader(csvfile)
-        for row in reader:
-            pdb.set_trace()
-        csvfile.close()
-    pass
+    csv_file = Csv.objects.get(id = params['csv'])
+    csvfile = csv_file.source.file
+    reader = csv.reader(csvfile)
+    results = {}
+    for num, row in enumerate(reader):
+        results[num] = row
+    csvfile.close()
+    response = {
+        'status':'OK',
+        'results': results
+    }
+    return json_response(response)
 
 @login_required()
 @validate('POST', ['id', 'csv', 'format'])

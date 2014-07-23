@@ -1,0 +1,47 @@
+@import (reference) "vars.less";
+
+div#list-dashboard{
+    margin-top: 40px;
+    a.new-list-btn {
+        display: block;
+        padding-top: 9px;
+        padding-bottom: 12px;
+        color: @white;
+        font-size: 15px;
+        text-transform: uppercase;
+    }
+    div.lists{
+        margin-top: 80px;
+        > a{
+            color: @dark;
+        }
+        div.list{
+            padding: 10px;
+            margin-bottom: 10px;
+            border-radius: 3px;
+            border: @grey thin solid;
+        }
+    }
+}
+
+div#new-list-modal{
+    div.name-label{
+        margin-top: 7px;
+    }
+    input{
+        display: block;
+        width: 100%;
+        padding: 5px 10px;
+    }
+    div.controls{
+        margin-top: 20px;
+        a.secondary-btn{
+            display: block;
+            padding-top: 9px;
+            padding-bottom: 12px;
+            color: #ffffff;
+            font-size: 15px;
+            text-transform: uppercase;
+        }
+    }
+}

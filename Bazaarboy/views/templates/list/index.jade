@@ -1,17 +1,9 @@
 extends ../layout
 
 block title
-    | List Management
-
-append head
-    link(rel="stylesheet", href="{{ STATIC_URL }}jQueryUI/jquery-ui.css")
+    | List Dashboard
 
 block sidebar
-    div.create-event(data-profile-id="{{ profiles.0.id }}")
-        div.primary-btn.hide-for-medium-only
-            | <span class="plus">+</span> Create Event
-        div.primary-btn.show-for-medium-only
-            | <span class="plus">+</span>
     +sidebarItem('ss-newspaper')(href="{% url index %}")
         | Events
     +sidebarItem('ss-database')(href="{% url list:index %}", class="selected")
@@ -25,15 +17,34 @@ block header
             div.icon.left
                 span.ss-file
             div.text.left
-                | List Management | 
+                | List Dashboard |
                 span.sub {{ profile.name }}
 
 block content
-    div#wrapper-list-management.large-9.medium-10.columns.small-centered
-        div#list-management.small-12.columns
-            form.upload_csv
-                input(type="file", name="csv_file")
-                {% csrf_token %}
+    div#wrapper-list-dashboard.large-9.medium-10.columns.small-centered
+        div#list-dashboard.small-12.columns
+            div.row
+                div.medium-3.columns.new-list
+                    a.new-list-btn.primary-btn(href="javascript:;") + New List
+            div.row
+                div.small-12.columns.lists
+                    {% for list in lists %}
+                    a(href="{% url list:list list.id %}")
+                        div.row.list
+                            div.small-12.columns
+                                {{ list.name }}
+                    {% endfor %}
+    div#new-list-modal.reveal-modal.text-center.medium(data-reveal)
+        div.row.new-list-inputs
+            div.medium-3.columns.hide-for-small-only.name-label List Name
+            div.medium-9.small-12.columns
+                input(name="list_name", placeholder="Name Of The List")
+        div.row.controls
+            div.small-12.medium-3.medium-offset-6.columns
+                a.create-list.secondary-btn(href="javascript:;") Create
+            div.small-12.medium-3.columns
+                a.close-list-modal.secondary-btn(href="javascript:;") Cancel
+
 
 append script
     script.

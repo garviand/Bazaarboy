@@ -7,6 +7,7 @@
     event: {
         modify: {}
     }
+    list: {}
     admin: {}
     # Shortcut for endpoint redirect
     redirect: (endpoint) ->

@@ -9570,6 +9570,48 @@ div#event-modify-tickets div#edit-ticket form input.primary-btn {
   font-size: 15px;
   text-transform: uppercase;
 }
+div#list-dashboard {
+  margin-top: 40px;
+}
+div#list-dashboard a.new-list-btn {
+  display: block;
+  padding-top: 9px;
+  padding-bottom: 12px;
+  color: #ffffff;
+  font-size: 15px;
+  text-transform: uppercase;
+}
+div#list-dashboard div.lists {
+  margin-top: 80px;
+}
+div#list-dashboard div.lists > a {
+  color: #4a4a4a;
+}
+div#list-dashboard div.lists div.list {
+  padding: 10px;
+  margin-bottom: 10px;
+  border-radius: 3px;
+  border: #f6f6f6 thin solid;
+}
+div#new-list-modal div.name-label {
+  margin-top: 7px;
+}
+div#new-list-modal input {
+  display: block;
+  width: 100%;
+  padding: 5px 10px;
+}
+div#new-list-modal div.controls {
+  margin-top: 20px;
+}
+div#new-list-modal div.controls a.secondary-btn {
+  display: block;
+  padding-top: 9px;
+  padding-bottom: 12px;
+  color: #ffffff;
+  font-size: 15px;
+  text-transform: uppercase;
+}
 div#wrapper-user-settings {
   padding-top: 40px;
 }

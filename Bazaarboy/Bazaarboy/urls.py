@@ -34,7 +34,9 @@ profile_urlpatterns = patterns('src.controllers.profile',
 )
 
 list_urlpatterns = patterns('src.controllers.list', 
-    url(r'^$', 'index', name = 'index'),
+    url(r'^manage/$', 'index', name = 'index'),
+    url(r'^(?P<lt>\d+)/$', 'list', name = 'list'),
+    url(r'^create/$', 'create', name = 'create'),
     url(r'^csv/prepare/$', 'prepare_csv', name = 'prepare_csv'),
 )
 
