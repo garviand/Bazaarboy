@@ -1,6 +1,7 @@
 (function() {
   Bazaarboy.event.modify.tickets = {
     ticketSubmitting: false,
+    reordering: false,
     newTicket: function() {
       $('div#edit-ticket div.step-2').hide();
       $('div#edit-ticket div.step-1').show();
@@ -100,6 +101,50 @@
       scope = this;
       $('a.new-ticket').click(function() {
         _this.newTicket();
+      });
+      $('body').on('click', 'a.move-ticket-btn', function() {
+        var originalHTML, params, swapTicket, thisButton, thisTicket,
+          _this = this;
+        if (!scope.reordering || true) {
+          scope.reordering = true;
+          thisButton = $(this);
+          originalHTML = thisButton.html();
+          thisButton.html('Moving...');
+          thisTicket = $(this).parents('.ticket-option');
+          if ($(this).hasClass('move-ticket-up')) {
+            swapTicket = thisTicket.prev('.ticket-option');
+            swapTicket.before(thisTicket);
+          }
+          if ($(this).hasClass('move-ticket-down')) {
+            swapTicket = thisTicket.next('.ticket-option');
+            swapTicket.after(thisTicket);
+          }
+          params = {
+            event: eventId,
+            details: {}
+          };
+          $('.ticket-option:not(.template)').each(function() {
+            $(this).find('.move-ticket-up').parent().removeClass('hide');
+            $(this).find('.move-ticket-down').parent().removeClass('hide');
+            if ($(this).index() === 0) {
+              $(this).find('.move-ticket-up').parent().addClass('hide');
+            }
+            if ($(this).index() === ($('.ticket-option:not(.template)').length - 1)) {
+              $(this).find('.move-ticket-down').parent().addClass('hide');
+            }
+            params.details[$(this).data('id')] = $(this).index();
+          });
+          params.details = JSON.stringify(params.details);
+          Bazaarboy.post('event/tickets/reorder/', params, function(response) {
+            if (response.status !== 'OK') {
+              alert(response.message);
+            } else {
+              console.log(response);
+            }
+            thisButton.html(originalHTML);
+            scope.reordering = false;
+          });
+        }
       });
       $('body').on('click', 'a.add-promo', function() {
         $(this).fadeOut(300, function() {
@@ -353,7 +398,9 @@
                 if (isNew) {
                   ticketOption = $('div.templates div.ticket-option').clone();
                   $(ticketOption).attr('data-id', response.ticket.pk);
-                  $(ticketOption).appendTo('div#ticket-canvas');
+                  $(ticketOption).prependTo('div#ticket-canvas');
+                  $(ticketOption).find('.move-ticket-up').parent().addClass('hide');
+                  $(ticketOption).next('.ticket-option').find('.move-ticket-up').parent().removeClass('hide');
                   $(ticketOption).find('div.top div.secondary-btn').click(function() {
                     var ticket;
                     ticket = $(this).closest('div.ticket-option').attr('data-id');

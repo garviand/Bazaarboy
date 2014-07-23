@@ -144,6 +144,28 @@
           scope.add_purchase();
         }
       });
+      $('a.show-refunds').click(function() {
+        $('div.list_guests div.name').removeClass('medium-4').addClass('medium-2');
+        $('div.refund').removeClass('hide');
+      });
+      $('div.refund a.refund-btn').click(function() {
+        var container;
+        container = $(this).parents('div.guest');
+        if (confirm('Are you sure you want to refund this purchase?')) {
+          $(this).html('refunding...');
+          Bazaarboy.post('payment/refund/', {
+            purchase: $(this).data('purchase')
+          }, function(response) {
+            if (response.status === 'OK') {
+              container.fadeOut(300, function() {
+                $(this).remove();
+              });
+            } else {
+              alert(response.message);
+            }
+          });
+        }
+      });
       $('form input[name=guest_name]').keyup(function(e) {
         e.preventDefault();
         if ($(this).val() === '') {

@@ -25,10 +25,10 @@ block body
     include ../components/facebook
     div#confirmation-modal.reveal-modal(data-reveal)
         div.row
-            div.medium-12.text-center.columns.confirmation-title
+            div.small-12.text-center.columns.confirmation-title
                 | Confirmation - Thank You!
         div.row
-            div.medium-5.columns.organizers.text-left
+            div.medium-5.small-12.columns.organizers.text-left
                 div.row
                     div.medium-12.title.columns
                         | Organizer{{ organizers|length|pluralize }}
@@ -38,16 +38,19 @@ block body
                     div.organizer-name
                         span {{ organizer.profile.name }}
                 {% endfor %}
-            div.medium-7.columns.tickets
+            div.medium-7.small-12.columns.tickets
                 div.row
-                    div.medium-12.title.columns
+                    div.medium-12.title.columns.small-only-text-center
                         | Your Tickets
                 div.ticket-model.hidden
                     div.ticket.row
-                        div.medium-4.columns
+                        div.medium-4.small-12.columns.small-only-text-center
                             div.quantity x0
-                        div.medium-8.columns
+                        div.medium-8.small-12.columns.small-only-text-center
                             div.name Ticket Name
+        div.row
+            div.confirmation-note
+                | A confirmation email will be sent with RSVP details and a PDF ticket attachment
     div#launch-modal.reveal-modal.text-center.medium(data-reveal)
         div.empty-state-container(class="{% if ticketExists %}hide{% endif %}")
             div.row

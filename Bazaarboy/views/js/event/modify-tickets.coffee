@@ -1,5 +1,6 @@
 Bazaarboy.event.modify.tickets =
     ticketSubmitting: false
+    reordering: false
     newTicket: () ->
         $('div#edit-ticket div.step-2').hide()
         $('div#edit-ticket div.step-1').show()
@@ -96,6 +97,42 @@ Bazaarboy.event.modify.tickets =
         scope = this
         $('a.new-ticket').click () =>
             @newTicket()
+            return
+        #MOVE TICKET START
+        $('body').on 'click', 'a.move-ticket-btn', () ->
+            if not scope.reordering or true
+                scope.reordering = true
+                thisButton = $(this)
+                originalHTML = thisButton.html()
+                thisButton.html 'Moving...'
+                thisTicket = $(this).parents('.ticket-option')
+                if $(this).hasClass 'move-ticket-up'
+                    swapTicket = thisTicket.prev('.ticket-option')
+                    swapTicket.before(thisTicket)
+                if $(this).hasClass 'move-ticket-down'
+                    swapTicket = thisTicket.next('.ticket-option')
+                    swapTicket.after(thisTicket)
+                params = 
+                    event: eventId
+                    details: {}
+                $('.ticket-option:not(.template)').each () ->
+                    $(this).find('.move-ticket-up').parent().removeClass 'hide'
+                    $(this).find('.move-ticket-down').parent().removeClass 'hide'
+                    if $(this).index() is 0
+                        $(this).find('.move-ticket-up').parent().addClass 'hide'
+                    if $(this).index() is ($('.ticket-option:not(.template)').length - 1)
+                        $(this).find('.move-ticket-down').parent().addClass 'hide'
+                    params.details[$(this).data('id')] = $(this).index()
+                    return
+                params.details = JSON.stringify params.details
+                Bazaarboy.post 'event/tickets/reorder/', params, (response) =>
+                    if response.status isnt 'OK'
+                        alert response.message
+                    else
+                        console.log response
+                    thisButton.html originalHTML
+                    scope.reordering = false
+                    return
             return
         #ADD PROMO START
         $('body').on 'click', 'a.add-promo', () ->
@@ -320,7 +357,9 @@ Bazaarboy.event.modify.tickets =
                             if isNew
                                 ticketOption = $('div.templates div.ticket-option').clone()
                                 $(ticketOption).attr 'data-id', response.ticket.pk
-                                $(ticketOption).appendTo 'div#ticket-canvas'
+                                $(ticketOption).prependTo 'div#ticket-canvas'
+                                $(ticketOption).find('.move-ticket-up').parent().addClass 'hide'
+                                $(ticketOption).next('.ticket-option').find('.move-ticket-up').parent().removeClass 'hide'
                                 $(ticketOption).find('div.top div.secondary-btn').click () ->
                                     ticket = $(this).closest('div.ticket-option').attr('data-id')
                                     scope.editTicket ticket

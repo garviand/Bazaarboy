@@ -5731,7 +5731,7 @@ div#wrapper-sidebar {
 }
 @media only screen and (min-width: 40.063em) and (max-width: 64em) {
   div#wrapper-sidebar {
-    width: 54px;
+    width: 50px;
   }
 }
 div#wrapper-main {
@@ -5752,12 +5752,12 @@ div#wrapper-main {
 }
 @media only screen and (min-width: 40.063em) and (max-width: 64em) {
   div#wrapper-main {
-    padding-left: 54px;
+    padding-left: 50px;
   }
 }
 /* Sidebar */
 div#wrapper-sidebar div#sidebar-logo {
-  margin-bottom: 20px;
+  margin-bottom: 11px;
 }
 @media only screen and (min-width: 40.063em) and (max-width: 64em) {
   div#wrapper-sidebar div#sidebar-logo {
@@ -5769,11 +5769,10 @@ div#wrapper-sidebar div#sidebar-logo a {
   width: 180px;
   height: 44px;
   margin: 10px;
-  border: 3px solid #F5A623;
 }
 @media only screen and (min-width: 40.063em) and (max-width: 64em) {
   div#wrapper-sidebar div#sidebar-logo a {
-    width: 54px;
+    width: 50px;
     height: 64px;
     margin: 0;
     border: none;
@@ -5786,7 +5785,7 @@ div#wrapper-sidebar div#sidebar-logo a div.logo {
 }
 @media only screen and (min-width: 40.063em) and (max-width: 64em) {
   div#wrapper-sidebar div#sidebar-logo a div.logo {
-    width: 54px;
+    width: 50px;
     height: 64px;
   }
 }
@@ -5807,7 +5806,8 @@ div#wrapper-sidebar div#sidebar-logo a div.text {
   padding: 11px 0;
   color: #F5A623;
   font-size: 16px;
-  line-height: 16px;
+  font-weight: 500;
+  line-height: 18px;
   text-align: center;
   text-transform: uppercase;
 }
@@ -5825,10 +5825,11 @@ div#wrapper-sidebar div.launch-event {
 div#wrapper-sidebar div.create-event div.primary-btn,
 div#wrapper-sidebar div.launch-event div.primary-btn {
   margin: 12px 0;
-  margin-top: 22px;
+  margin-bottom: 20px;
   padding-top: 11px;
-  padding-bottom: 14px;
-  font-size: 15px;
+  padding-bottom: 11px;
+  font-size: 14px;
+  font-weight: 600;
   text-transform: uppercase;
 }
 @media only screen and (min-width: 40.063em) and (max-width: 64em) {
@@ -5841,14 +5842,14 @@ div#wrapper-sidebar div.launch-event div.primary-btn {
 }
 div#wrapper-sidebar div.create-event div.primary-btn span.plus,
 div#wrapper-sidebar div.launch-event div.primary-btn span.plus {
-  font-size: 18px;
+  font-size: 15px;
   line-height: 12px;
 }
 a.sidebar-item {
   display: block;
   position: relative;
   width: 200px;
-  height: 54px;
+  height: 50px;
   background: #4a4a4a;
   margin-top: 2px;
   margin-bottom: 2px;
@@ -5859,7 +5860,7 @@ a.sidebar-item.sidebar-separate {
 }
 @media only screen and (min-width: 40.063em) and (max-width: 64em) {
   a.sidebar-item {
-    width: 54px;
+    width: 50px;
   }
   a.sidebar-item:hover.selected:after {
     display: none;
@@ -5869,7 +5870,7 @@ a.sidebar-item.sidebar-separate {
   }
 }
 a.sidebar-item.selected div.sidebar-item-icon {
-  color: #faa638;
+  color: #ffffff !important;
 }
 a.sidebar-item.selected div.sidebar-item-icon .text {
   color: #ffffff;
@@ -5882,7 +5883,7 @@ a.sidebar-item.selected:after {
   content: '';
   width: 0;
   height: 0;
-  top: 15px;
+  top: 13px;
   right: 0;
   border-style: solid;
   border-width: 12px 12px 12px 0;
@@ -5892,67 +5893,96 @@ a.sidebar-item.selected:after {
 a.sidebar-item.sub.selected div.sidebar-item-icon {
   display: block !important;
 }
+a.sidebar-item.sub.selected div.sidebar-item-icon div {
+  color: #3c3c3c;
+  background: #ffffff;
+}
 a.sidebar-item.sub.selected div.sidebar-item-text {
-  left: 54px !important;
+  left: 30px !important;
 }
 a.sidebar-item.sub {
-  height: 56px;
+  position: relative;
+  height: 52px;
+  width: 100%;
   margin-top: 0;
   margin-bottom: 0;
   border-top: 2px solid #4a4a4a;
   background: #3c3c3c;
 }
 a.sidebar-item.sub.first {
-  height: 54px;
+  height: 50px;
   border-top: 0;
 }
 @media only screen and (min-width: 40.063em) and (max-width: 64em) {
   a.sidebar-item.sub div.sidebar-item-icon {
+    color: #FFF;
     display: block !important;
+    right: 0 !important;
   }
 }
 a.sidebar-item.sub div.sidebar-item-icon {
-  display: none;
+  color: #3c3c3c;
+  position: absolute;
+  right: 10px;
+  left: inherit;
 }
 a.sidebar-item.sub div.sidebar-item-icon div {
   border-radius: 3px;
   background: #9C9C9C;
+  font-weight: 600;
 }
 a.sidebar-item.sub div.sidebar-item-text {
   background: #3c3c3c;
   left: 22px;
 }
-a.sidebar-item:hover {
-  background: #faa638;
+a.sidebar-item.sub:hover {
+  background: #3c3c3c;
+}
+a.sidebar-item.sub:hover div.sidebar-item-text {
+  background: #3c3c3c;
+  color: #ffffff;
+}
+a.sidebar-item.sub:hover div.sidebar-item-icon div {
+  background: #ffffff;
+  color: #3c3c3c;
+}
+@media only screen and (min-width: 40.063em) and (max-width: 64em) {
+  a.sidebar-item.sub:hover div.sidebar-item-icon {
+    display: none !important;
+  }
+}
+a.sidebar-item:hover div.sidebar-item-icon {
+  color: #ffffff !important;
 }
 a.sidebar-item:hover div.sidebar-item-text {
-  background: #faa638;
   color: #ffffff;
 }
 div.sidebar-item-icon {
+  color: #A4A4A4;
   position: absolute;
-  width: 54px;
-  height: 54px;
-  top: -1px;
+  width: 50px;
+  height: 50px;
+  line-height: 10px;
   left: 0;
 }
 div.sidebar-item-icon div {
-  width: 22px;
-  height: 22px;
-  font-size: 22px;
-  line-height: 30px;
+  width: 20px;
+  height: 20px;
+  font-size: 21px;
+  line-height: 25px;
   text-align: center;
 }
 div.sidebar-item-icon div.text {
-  font-size: 16px;
-  line-height: 24px;
+  font-size: 14px;
+  line-height: 21px;
+  font-weight: 500;
 }
 div.sidebar-item-text {
   position: absolute;
-  width: 146px;
-  height: 54px;
+  width: 150px;
+  height: 50px;
   top: 0;
-  left: 54px;
+  left: 47px;
   background: #4a4a4a;
   color: #7A7A7A;
   font-weight: 600;
@@ -5969,7 +5999,7 @@ div.sidebar-item-text > div {
 }
 div.sidebar-item-text > div > div {
   display: table-cell;
-  font-size: 16px;
+  font-size: 13px;
   vertical-align: middle;
 }
 /* Main */
@@ -6372,8 +6402,8 @@ div.draft-event > div.tile div.header div.past-event-title,
 div.past-event > div.tile div.header div.past-event-title {
   padding: 22px 0;
   padding-left: 70px;
-  font-size: 20px;
-  font-weight: 500;
+  font-size: 18px;
+  font-weight: 600;
   line-height: 20px;
 }
 div.current-event > div.tile div.header div.current-event-view a,
@@ -6500,6 +6530,7 @@ div.draft-event > div.tile div.info div.inner div.past-event-datetime div.past-e
 div.past-event > div.tile div.info div.inner div.past-event-datetime div.past-event-time span {
   display: table-cell;
   vertical-align: middle;
+  font-weight: 600;
 }
 div.current-event > div.tile div.info div.inner div.current-event-datetime div.current-event-time span .ss-clock,
 div.draft-event > div.tile div.info div.inner div.current-event-datetime div.current-event-time span .ss-clock,
@@ -6583,7 +6614,7 @@ div.past-event > div.tile div.info div.inner div.past-event-location-container d
   left: 0;
   font-size: 13px;
   line-height: 18px;
-  font-weight: 500;
+  font-weight: 600;
 }
 div.current-event > div.tile div.info div.inner div.current-event-location-container div.current-event-location span,
 div.draft-event > div.tile div.info div.inner div.current-event-location-container div.current-event-location span,
@@ -7201,11 +7232,22 @@ div#wrapper-dashboard div.empty-state-container div.empty-state-content div.prim
 }
 div#wrapper-dashboard div.events-overview-title:first-child {
   margin-top: 40px;
+  margin-bottom: 25px;
 }
 div#wrapper-dashboard div.events-overview-title .title {
-  font-size: 18px;
+  font-size: 19px;
   font-weight: 600;
   text-transform: uppercase;
+}
+div#wrapper-dashboard div.events-overview-title .title .events-count {
+  position: relative;
+  top: -1px;
+  background: #faa638;
+  color: #FFF;
+  font-size: 16px;
+  font-weight: 600;
+  padding: 2px 6px;
+  border-radius: 3px;
 }
 div#wrapper-dashboard div.events-overview-title .title .pipe {
   color: #9B9B9B;
@@ -7417,24 +7459,28 @@ div#wrapper-pricing div#pricing div#what_else .contact .primary-btn:hover {
   color: #ffffff;
 }
 div#login,
-div#register {
+div#register,
+div#reset {
   min-width: 100%;
   min-height: 100%;
   background: #F6F6F6;
 }
 div#login div#container,
-div#register div#container {
+div#register div#container,
+div#reset div#container {
   width: 450px;
   max-width: 98%;
   margin: 0 auto;
 }
 div#login div#login-container,
-div#register div#login-container {
+div#register div#login-container,
+div#reset div#login-container {
   background: #ffffff;
   margin-top: 75px;
 }
 div#login div#login-container form#login-form div.logo-small,
-div#register div#login-container form#login-form div.logo-small {
+div#register div#login-container form#login-form div.logo-small,
+div#reset div#login-container form#login-form div.logo-small {
   margin: 0 auto;
   margin-top: 50px;
   height: 50px;
@@ -7444,38 +7490,46 @@ div#register div#login-container form#login-form div.logo-small {
   background-size: cover;
 }
 div#login div#login-container form#login-form div.title,
-div#register div#login-container form#login-form div.title {
+div#register div#login-container form#login-form div.title,
+div#reset div#login-container form#login-form div.title {
   font-weight: 500;
   text-transform: uppercase;
   margin-top: 16px;
 }
 div#login div#login-container form#login-form div.title div.site-title,
-div#register div#login-container form#login-form div.title div.site-title {
+div#register div#login-container form#login-form div.title div.site-title,
+div#reset div#login-container form#login-form div.title div.site-title {
   font-size: 1.5em;
 }
 div#login div#login-container form#login-form div.title span.page-title,
-div#register div#login-container form#login-form div.title span.page-title {
+div#register div#login-container form#login-form div.title span.page-title,
+div#reset div#login-container form#login-form div.title span.page-title {
   color: #9B9B9B;
 }
 div#login div#login-container form#login-form hr.separator,
-div#register div#login-container form#login-form hr.separator {
+div#register div#login-container form#login-form hr.separator,
+div#reset div#login-container form#login-form hr.separator {
   margin-top: 24px;
   margin-bottom: 26px;
 }
 div#login div#login-container form#login-form .login-inputs input[type=text],
 div#register div#login-container form#login-form .login-inputs input[type=text],
+div#reset div#login-container form#login-form .login-inputs input[type=text],
 div#login div#login-container form#login-form .login-inputs input[type=password],
-div#register div#login-container form#login-form .login-inputs input[type=password] {
+div#register div#login-container form#login-form .login-inputs input[type=password],
+div#reset div#login-container form#login-form .login-inputs input[type=password] {
   border-radius: 3px;
   box-shadow: none;
 }
 div#login div#login-container form#login-form div.login-bottom,
-div#register div#login-container form#login-form div.login-bottom {
+div#register div#login-container form#login-form div.login-bottom,
+div#reset div#login-container form#login-form div.login-bottom {
   margin-top: 16px;
   padding-bottom: 16px;
 }
 div#login div#login-container form#login-form div.login-bottom .submit-login,
-div#register div#login-container form#login-form div.login-bottom .submit-login {
+div#register div#login-container form#login-form div.login-bottom .submit-login,
+div#reset div#login-container form#login-form div.login-bottom .submit-login {
   width: 100%;
   font-weight: 400;
   padding: 8px 0px 10px;
@@ -7483,12 +7537,14 @@ div#register div#login-container form#login-form div.login-bottom .submit-login 
   top: -10px;
 }
 div#login div#register-container,
-div#register div#register-container {
+div#register div#register-container,
+div#reset div#register-container {
   background: #ffffff;
   margin-top: 75px;
 }
 div#login div#register-container form#register-form div.logo-small,
-div#register div#register-container form#register-form div.logo-small {
+div#register div#register-container form#register-form div.logo-small,
+div#reset div#register-container form#register-form div.logo-small {
   margin: 0 auto;
   margin-top: 50px;
   height: 50px;
@@ -7498,56 +7554,198 @@ div#register div#register-container form#register-form div.logo-small {
   background-size: cover;
 }
 div#login div#register-container form#register-form div.title,
-div#register div#register-container form#register-form div.title {
+div#register div#register-container form#register-form div.title,
+div#reset div#register-container form#register-form div.title {
   font-weight: 500;
   text-transform: uppercase;
   margin-top: 16px;
 }
 div#login div#register-container form#register-form div.title div.site-title,
-div#register div#register-container form#register-form div.title div.site-title {
+div#register div#register-container form#register-form div.title div.site-title,
+div#reset div#register-container form#register-form div.title div.site-title {
   font-size: 1.5em;
 }
 div#login div#register-container form#register-form div.title span.page-title,
-div#register div#register-container form#register-form div.title span.page-title {
+div#register div#register-container form#register-form div.title span.page-title,
+div#reset div#register-container form#register-form div.title span.page-title {
   color: #9B9B9B;
 }
 div#login div#register-container form#register-form hr.separator,
-div#register div#register-container form#register-form hr.separator {
+div#register div#register-container form#register-form hr.separator,
+div#reset div#register-container form#register-form hr.separator {
   margin-top: 24px;
   margin-bottom: 26px;
 }
 div#login div#register-container form#register-form .register-inputs input[type=text],
 div#register div#register-container form#register-form .register-inputs input[type=text],
+div#reset div#register-container form#register-form .register-inputs input[type=text],
 div#login div#register-container form#register-form .register-inputs input[type=password],
-div#register div#register-container form#register-form .register-inputs input[type=password] {
+div#register div#register-container form#register-form .register-inputs input[type=password],
+div#reset div#register-container form#register-form .register-inputs input[type=password] {
   border-radius: 3px;
   box-shadow: none;
 }
 div#login div#register-container form#register-form div.register-bottom,
-div#register div#register-container form#register-form div.register-bottom {
+div#register div#register-container form#register-form div.register-bottom,
+div#reset div#register-container form#register-form div.register-bottom {
   margin-top: 16px;
   padding-bottom: 16px;
 }
 div#login div#register-container form#register-form div.register-bottom .submit-register,
-div#register div#register-container form#register-form div.register-bottom .submit-register {
+div#register div#register-container form#register-form div.register-bottom .submit-register,
+div#reset div#register-container form#register-form div.register-bottom .submit-register {
   width: 100%;
   font-weight: 400;
   padding: 8px 0px 10px;
   position: relative;
   top: -10px;
 }
+div#login div#reset-container,
+div#register div#reset-container,
+div#reset div#reset-container {
+  background: #ffffff;
+  margin-top: 75px;
+}
+div#login div#reset-container form#reset-form div.logo-small,
+div#register div#reset-container form#reset-form div.logo-small,
+div#reset div#reset-container form#reset-form div.logo-small,
+div#login div#reset-container form#password-form div.logo-small,
+div#register div#reset-container form#password-form div.logo-small,
+div#reset div#reset-container form#password-form div.logo-small {
+  margin: 0 auto;
+  margin-top: 50px;
+  height: 50px;
+  width: 50px;
+  border-radius: 50%;
+  background: url(/static/images/logo-big.png);
+  background-size: cover;
+}
+div#login div#reset-container form#reset-form div.title,
+div#register div#reset-container form#reset-form div.title,
+div#reset div#reset-container form#reset-form div.title,
+div#login div#reset-container form#password-form div.title,
+div#register div#reset-container form#password-form div.title,
+div#reset div#reset-container form#password-form div.title {
+  font-weight: 500;
+  text-transform: uppercase;
+  margin-top: 16px;
+}
+div#login div#reset-container form#reset-form div.title div.site-title,
+div#register div#reset-container form#reset-form div.title div.site-title,
+div#reset div#reset-container form#reset-form div.title div.site-title,
+div#login div#reset-container form#password-form div.title div.site-title,
+div#register div#reset-container form#password-form div.title div.site-title,
+div#reset div#reset-container form#password-form div.title div.site-title {
+  font-size: 1.5em;
+}
+div#login div#reset-container form#reset-form div.title span.page-title,
+div#register div#reset-container form#reset-form div.title span.page-title,
+div#reset div#reset-container form#reset-form div.title span.page-title,
+div#login div#reset-container form#password-form div.title span.page-title,
+div#register div#reset-container form#password-form div.title span.page-title,
+div#reset div#reset-container form#password-form div.title span.page-title {
+  color: #9B9B9B;
+}
+div#login div#reset-container form#reset-form hr.separator,
+div#register div#reset-container form#reset-form hr.separator,
+div#reset div#reset-container form#reset-form hr.separator,
+div#login div#reset-container form#password-form hr.separator,
+div#register div#reset-container form#password-form hr.separator,
+div#reset div#reset-container form#password-form hr.separator {
+  margin-top: 24px;
+  margin-bottom: 26px;
+}
+div#login div#reset-container form#reset-form .reset-inputs input[type=text],
+div#register div#reset-container form#reset-form .reset-inputs input[type=text],
+div#reset div#reset-container form#reset-form .reset-inputs input[type=text],
+div#login div#reset-container form#password-form .reset-inputs input[type=text],
+div#register div#reset-container form#password-form .reset-inputs input[type=text],
+div#reset div#reset-container form#password-form .reset-inputs input[type=text],
+div#login div#reset-container form#reset-form .reset-inputs input[type=password],
+div#register div#reset-container form#reset-form .reset-inputs input[type=password],
+div#reset div#reset-container form#reset-form .reset-inputs input[type=password],
+div#login div#reset-container form#password-form .reset-inputs input[type=password],
+div#register div#reset-container form#password-form .reset-inputs input[type=password],
+div#reset div#reset-container form#password-form .reset-inputs input[type=password] {
+  border-radius: 3px;
+  box-shadow: none;
+}
+div#login div#reset-container form#reset-form div.reset-bottom,
+div#register div#reset-container form#reset-form div.reset-bottom,
+div#reset div#reset-container form#reset-form div.reset-bottom,
+div#login div#reset-container form#password-form div.reset-bottom,
+div#register div#reset-container form#password-form div.reset-bottom,
+div#reset div#reset-container form#password-form div.reset-bottom {
+  margin-top: 16px;
+  padding-bottom: 16px;
+}
+div#login div#reset-container form#reset-form div.reset-bottom .submit-reset,
+div#register div#reset-container form#reset-form div.reset-bottom .submit-reset,
+div#reset div#reset-container form#reset-form div.reset-bottom .submit-reset,
+div#login div#reset-container form#password-form div.reset-bottom .submit-reset,
+div#register div#reset-container form#password-form div.reset-bottom .submit-reset,
+div#reset div#reset-container form#password-form div.reset-bottom .submit-reset,
+div#login div#reset-container form#reset-form div.reset-bottom .submit-password,
+div#register div#reset-container form#reset-form div.reset-bottom .submit-password,
+div#reset div#reset-container form#reset-form div.reset-bottom .submit-password,
+div#login div#reset-container form#password-form div.reset-bottom .submit-password,
+div#register div#reset-container form#password-form div.reset-bottom .submit-password,
+div#reset div#reset-container form#password-form div.reset-bottom .submit-password {
+  width: 100%;
+  font-weight: 400;
+  padding: 8px 0px 10px;
+  position: relative;
+  top: -10px;
+}
+div#login div#reset-container form#reset-form div.password-form-confirmation div.message,
+div#register div#reset-container form#reset-form div.password-form-confirmation div.message,
+div#reset div#reset-container form#reset-form div.password-form-confirmation div.message,
+div#login div#reset-container form#password-form div.password-form-confirmation div.message,
+div#register div#reset-container form#password-form div.password-form-confirmation div.message,
+div#reset div#reset-container form#password-form div.password-form-confirmation div.message,
+div#login div#reset-container form#reset-form div.reset-form-confirmation div.message,
+div#register div#reset-container form#reset-form div.reset-form-confirmation div.message,
+div#reset div#reset-container form#reset-form div.reset-form-confirmation div.message,
+div#login div#reset-container form#password-form div.reset-form-confirmation div.message,
+div#register div#reset-container form#password-form div.reset-form-confirmation div.message,
+div#reset div#reset-container form#password-form div.reset-form-confirmation div.message {
+  width: 100%;
+  text-align: center;
+  margin: 20px 0;
+  font-size: 18px;
+}
+div#login div#reset-container form#reset-form div.password-form-confirmation div.details,
+div#register div#reset-container form#reset-form div.password-form-confirmation div.details,
+div#reset div#reset-container form#reset-form div.password-form-confirmation div.details,
+div#login div#reset-container form#password-form div.password-form-confirmation div.details,
+div#register div#reset-container form#password-form div.password-form-confirmation div.details,
+div#reset div#reset-container form#password-form div.password-form-confirmation div.details,
+div#login div#reset-container form#reset-form div.reset-form-confirmation div.details,
+div#register div#reset-container form#reset-form div.reset-form-confirmation div.details,
+div#reset div#reset-container form#reset-form div.reset-form-confirmation div.details,
+div#login div#reset-container form#password-form div.reset-form-confirmation div.details,
+div#register div#reset-container form#password-form div.reset-form-confirmation div.details,
+div#reset div#reset-container form#password-form div.reset-form-confirmation div.details {
+  width: 100%;
+  text-align: center;
+  font-size: 13px;
+  margin-bottom: 40px;
+}
 div#login div#footer,
-div#register div#footer {
+div#register div#footer,
+div#reset div#footer {
   margin-top: 32px;
 }
 div#login div#footer .trouble,
-div#register div#footer .trouble {
+div#register div#footer .trouble,
+div#reset div#footer .trouble {
   text-decoration: underline;
   font-size: .8em;
   color: #F4A534;
 }
 div#login div#footer .switch,
-div#register div#footer .switch {
+div#register div#footer .switch,
+div#reset div#footer .switch {
   display: block;
   width: 100%;
   text-align: center;
@@ -7562,7 +7760,8 @@ div#register div#footer .switch {
   transition: background .2s;
 }
 div#login div#footer .switch:hover,
-div#register div#footer .switch:hover {
+div#register div#footer .switch:hover,
+div#reset div#footer .switch:hover {
   color: #ffffff;
   background: #F4A534;
 }
@@ -8055,6 +8254,19 @@ div#event-manage .add-guest-container input[type=submit] {
   padding-top: 6px;
   padding-bottom: 9px;
 }
+div#event-manage .refund {
+  text-align: center;
+}
+div#event-manage .refund a {
+  font-size: 12px;
+  color: #4963e4;
+}
+div#event-manage .refund span {
+  font-size: 12px;
+}
+div#event-manage .refund.hide {
+  display: none !important;
+}
 div#event-manage .guests .list_headers {
   color: #4a4a4a;
   font-weight: 500;
@@ -8066,6 +8278,9 @@ div#event-manage .guests .list_headers > div {
 }
 div#event-manage .guests .list_headers > div:last-child {
   border-right: none;
+}
+div#event-manage .guests .list_headers .name {
+  border-right: 0;
 }
 div#event-manage .guests .guest {
   color: #4a4a4a;
@@ -8128,11 +8343,20 @@ div#confirmation-modal {
   margin-left: -25%;
   width: 50%;
 }
+@media only screen and (max-width: 40em) {
+  div#confirmation-modal {
+    margin-left: -45%;
+    width: 90%;
+  }
+}
 div#confirmation-modal div.confirmation-title {
   font-size: 18px;
   font-weight: 600;
   text-transform: uppercase;
   margin-bottom: 40px;
+}
+div#confirmation-modal div.organizers {
+  margin-bottom: 20px;
 }
 div#confirmation-modal div.organizers div.title {
   padding-left: 0;
@@ -8195,6 +8419,11 @@ div#confirmation-modal div.tickets div.ticket div.name {
   font-size: 14px;
   line-height: 18px;
   font-weight: 700;
+}
+div#confirmation-modal div.confirmation-note {
+  margin-top: 10px;
+  font-size: 12px;
+  line-height: 1.5em;
 }
 div#launch-modal div.empty-state-container {
   border: #F6F6F6 thin solid;
@@ -9359,6 +9588,14 @@ div#event-modify-tickets div.ticket-option div.add-promos {
 div#event-modify-tickets div.ticket-option div.add-promos div.inner {
   min-height: 44px;
   padding: 0;
+}
+div#event-modify-tickets div.ticket-option div.add-promos div.inner div.move-ticket a {
+  padding: 8px 0;
+  color: #4963e4;
+  display: block;
+  width: 100%;
+  font-size: 12px;
+  text-align: center;
 }
 div#event-modify-tickets div.ticket-option div.add-promos div.inner div.action {
   padding-right: 5px;

@@ -42,7 +42,6 @@ def index(request, params, user):
                                          organizers__in = pids) \
                                  .order_by('start_time')
     currentEventsCount = currentEvents.count()
-    currentEvents = currentEvents.filter()[:10]
     currentEvents = list(currentEvents)
     for i in range(0, len(currentEvents)):
         stats = Purchase.objects.filter(Q(checkout = None) | 

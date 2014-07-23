@@ -198,6 +198,7 @@ class Ticket(models.Model):
     start_time = models.DateTimeField(null = True, default = None)
     end_time = models.DateTimeField(null = True, default = None)
     is_deleted = models.BooleanField(default = False)
+    order = models.IntegerField(null = False, default = 0)
 
 class Promo(models.Model):
     """
