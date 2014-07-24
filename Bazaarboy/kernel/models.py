@@ -321,6 +321,7 @@ class List_item(models.Model):
     email = models.CharField(max_length = 50)
     first_name = models.CharField(max_length = 50)
     last_name = models.CharField(max_length = 50)
+    note = models.TextField()
 
     class Meta:
         unique_together = ('_list', 'email')

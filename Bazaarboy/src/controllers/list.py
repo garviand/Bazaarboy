@@ -6,7 +6,9 @@ import cgi
 from kernel.models import *
 from src.controllers.request import *
 from src.serializer import serialize_one
+from src.regex import REGEX_EMAIL, REGEX_NAME, REGEX_SLUG
 from django.shortcuts import render, redirect
+from django.db.models import F, Q, Count
 import csv
 
 import pdb
@@ -19,6 +21,9 @@ def index(request, user):
     profiles = Profile.objects.filter(managers = user)
     profile = profiles[0]
     lists = List.objects.filter(owner = profile)
+    for lt in lists:
+        list_items = List_item.objects.filter(_list = lt)
+        lt.items = list_items.count()
     return render(request, 'list/index.html', locals())
 
 @login_required()
@@ -30,6 +35,36 @@ def list(request, lt, user):
     profile = profiles[0]
     if List.objects.filter(id = lt).exists():
         lt = List.objects.get(id = lt)
+        list_items = List_item.objects.filter(_list = lt).order_by('-id')
+        pastEventList = {}
+        profiles = Profile.objects.filter(managers = user)
+        pids = []
+        for profile in profiles:
+            pids.append(profile.id)
+        pastEvents = Event.objects.filter(Q(end_time = None, 
+                                            start_time__lt = timezone.now()) | 
+                                          Q(end_time__isnull = False, 
+                                            end_time__lt = timezone.now()), 
+                                          is_launched = True, 
+                                          organizers__in = pids) \
+                                  .order_by('-start_time')
+        eids = []
+        for pastEvent in pastEvents:
+            eids.append(pastEvent.id)
+        purchases = Purchase.objects.filter(Q(checkout = None) | 
+                                    Q(checkout__is_charged = True, 
+                                      checkout__is_refunded = False), 
+                                    event__in = eids, 
+                                    is_expired = False)
+        for purchase in purchases:
+            if purchase.event.id in pastEventList:
+                pastEventList[purchase.event.id]['quantity'] += 1
+            else:
+                pastEventList[purchase.event.id] = {
+                    'id': purchase.event.id,
+                    'name': purchase.event.name,
+                    'quantity': 1
+                }
     else:
         redirect('index')
     if not Profile_manager.objects.filter(profile = lt.owner, user = user).exists():
@@ -118,7 +153,7 @@ def edit(request, params, user):
     return json_response(response)
 
 @login_required()
-@validate('POST', ['id', 'first_name', 'last_name', 'email'])
+@validate('POST', ['id', 'first_name', 'last_name', 'email'], ['note'])
 def add_item(request, params, user):
     """
     Add an item to a list
@@ -169,6 +204,8 @@ def add_item(request, params, user):
                                                     email = params['email'])
     item.first_name = params['first_name']
     item.last_name = params['last_name']
+    if params['note']:
+        item.note = params['note']
     item.save()
     response = {
         'status':'OK',
@@ -223,7 +260,7 @@ def add_from_event(request, params, user):
                                         event = event, 
                                         is_expired = False) \
                                 .prefetch_related('owner')
-    for purchase in purchase:
+    for purchase in purchases:
         item, created = List_item.objects \
                                  .get_or_create(_list = lt, 
                                                 email = purchase.owner.email)
@@ -268,7 +305,51 @@ def add_from_csv(request, params, user):
     """
     Add items from a csv file
     """
-    pass
+    if not List.objects.filter(id = params['id']).exists():
+        response = {
+            'status':'FAIL',
+            'error':'LIST_NOT_FOUND',
+            'message':'The list doesn\'t exist.'
+        }
+        return json_response(response)
+    lt = List.objects.get(id = params['id'])
+    profile = lt.owner
+    # Check if the user is a manager of the profile
+    if not Profile_manager.objects.filter(profile = profile, 
+                                          user = user).exists():
+        response = {
+            'status':'FAIL',
+            'error':'NOT_A_MANAGER',
+            'message':'You don\'t have permission for the list.'
+        }
+        return json_response(response)
+    # Check if CSV Exists
+    if not Csv.objects.filter(id = params['csv']).exists():
+        response = {
+            'status':'FAIL',
+            'error':'CSV_NOT_FOUND',
+            'message':'The csv doesn\'t exist.'
+        }
+        return json_response(response)
+    csv_file = Csv.objects.get(id = params['csv'])
+    csvfile = csv_file.source.file
+    reader = csv.reader(csvfile)
+    # Load Format {field_type:col}
+    format = json.loads(params['format'])
+    for num, row in enumerate(reader):
+        if 'email' in format and REGEX_EMAIL.match(row[format['email']]):
+            item, created = List_item.objects \
+                                     .get_or_create(_list = lt, 
+                                                    email = row[format['email']])
+            item.first_name = row[format['first_name']]
+            if 'last_name' in format:
+                item.last_name = row[format['last_name']]
+            item.save()
+    response = {
+        'status':'OK',
+        'list':serialize_one(lt)
+    }
+    return json_response(response)
 
 @login_required()
 @validate('POST', ['id', 'email'])

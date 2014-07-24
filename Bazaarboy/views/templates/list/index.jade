@@ -31,8 +31,10 @@ block content
                     {% for list in lists %}
                     a(href="{% url list:list list.id %}")
                         div.row.list
-                            div.small-12.columns
-                                {{ list.name }}
+                            div.small-8.columns.list-name
+                                | {{ list.name }}
+                            div.small-4.columns.text-right
+                                | {{ list.items }} Members
                     {% endfor %}
     div#new-list-modal.reveal-modal.text-center.medium(data-reveal)
         div.row.new-list-inputs

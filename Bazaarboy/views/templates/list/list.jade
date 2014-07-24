@@ -21,27 +21,123 @@ block header
                 span.sub {{ lt.name }}
 
 block content
+    div#add-item-modal.reveal-modal.text-center.medium(data-reveal)
+        form.add-item-form(name="item", data-abide, data-abide="ajax")
+            div.row
+                div.medium-12.columns.title.text-center Add Member To '{{ lt.name }}'
+            div.inputs
+                div.row
+                    div.input-label.medium-3.hide-for-small-only.columns First Name
+                    div.small-12.medium-9.columns
+                        input(name="first_name", placeholder="First Name", required)
+                        small.error First Name is required.
+                div.row
+                    div.input-label.medium-3.hide-for-small-only.columns Last Name
+                    div.small-12.medium-9.columns
+                        input(name="last_name", placeholder="Last Name", required)
+                        small.error Last Name is required.
+                div.row
+                    div.input-label.medium-3.hide-for-small-only.columns Email
+                    div.small-12.medium-9.columns
+                        input(name="email", type="email", placeholder="Email Address", required)
+                        small.error An email address is required.
+                div.row
+                    div.input-label.medium-3.hide-for-small-only.columns Notes
+                    div.small-12.medium-9.columns
+                        textarea(name="note", placeholder="Any Additional Info")
+            div.row.submit-add-item
+                div.medium-3.columns.text-center
+                    div.message &nbsp;
+                div.medium-4.columns
+                    a.blue-btn.add-item-submit(href="javascript:;") Add To List
+                div.medium-1.columns.text-center.move-down
+                    | or
+                div.medium-2.columns.end.move-down
+                    a.add-item-close(href="javascript:;") Close
+    div#add-event-modal.reveal-modal.text-center.medium(data-reveal)
+        form.add-event-form(name="event")
+            div.row
+                div.medium-12.columns.title.text-center Add To '{{ lt.name }}' From Event
+            {% if pastEventList.items.count > 0 %}
+            div.row
+                div.medium-3.columns
+                    label.right.inline Select Previous Attendee Lists To Add To '{{ lt.name }}'
+                div.medium-9.columns
+                    {% for k, event in pastEventList.items %}
+                    div.row.event-list(data-id="{{ event.id }}")
+                        div.medium-12.columns
+                            div.event {{ event.name }} ({{ event.quantity }} emails)
+                    {% endfor %}
+                    div.row.subtext
+                        div.medium-12.columns
+                            small * duplicate emails will not receive multiple messages
+            {% endif %}
+            div.row.submit-add-event
+                div.medium-4.medium-offset-3.columns
+                    a.blue-btn.add-event-submit(href="javascript:;") Add To List
+                div.medium-1.columns.text-center.move-down
+                    | or
+                div.medium-2.columns.end.move-down
+                    a.add-event-close(href="javascript:;") Close
+        div.add-event-success.hide
+            div.row
+                div.medium-12.column.congrats
+                    | Congratulations, the event attendees have been added to {{ lt.name }}
+                div.medium-12.columns.remember *duplicate emails will not be added twice
+                div.medium-12.columns.close
+                    | Loading New List...
     div#wrapper-list-management.large-9.medium-10.columns.small-centered
         div#list-management.small-12.columns
-            div.row
-                form.upload_csv.small-12.columns
+            div.row.controls
+                form.upload_csv.small-12.columns.hide
                     input(type="file", name="csv_file")
                     {% csrf_token %}
+                div.add-label.small-12.medium-3.columns Add To List
+                div.small-12.medium-3.columns.from-csv
+                    a.secondary-btn.upload-csv-btn(href="javascript:;") Upload CSV
+                div.small-12.medium-3.columns.from-event
+                    a.add-from-event.secondary-btn(href="javascript:;") From Event
+                div.small-12.medium-3.columns.from-manual
+                    a.add-single-item.secondary-btn(href="javascript:;") Manual Entry
             div.csv_upload_interface.row.hide
+                div.small-12.medium-9.columns.upload_title
+                    | Format CSV For Upload
+                div.medium-3.columns.text-center.hide-for-small-only.upload_title
+                    | Field Type
                 div.small-12.columns.upload_rows
                     div.upload_row.template.row.hide
-                        div.col-1.small-12.medium-3.columns
-                        div.col-2.small-12.medium-3.columns
-                        div.col-3.small-12.medium-3.columns
+                        div.col.col-1.small-12.medium-3.columns
+                        div.col.col-2.small-12.medium-3.columns
+                        div.col.col-3.small-12.medium-3.columns
                         div.choices.small-12.medium-3.columns
                             select(name='field')
-                                option(value="none") -- Field Type --
                                 option(value="none") None
                                 option(value="email") Email
                                 option(value="first_name") First Name
                                 option(value="last_name") Last Name
+                                option(value="note") Note
+                div.small-12.columns
+                    div.row.csv-controls
+                        div.small-12.medium-6.error-message.columns &nbsp;
+                        div.small-12.medium-3.columns
+                            a.blue-btn.submit-csv-btn(href="javascript:;") Submit
+                        div.small-12.medium-3.columns
+                            a.blue-btn.cancel-csv-btn(href="javascript:;") Cancel
+            div.row.list
+                div.small-12.columns.list-items
+                    div.row.list-item.template.hide
+                        div.medium-4.small-12.columns.name
+                        div.medium-6.small-12.columns.email
+                        div.medium-2.small-12.columns View/Edit
+                    {% for item in list_items %}
+                    div.row.list-item
+                        div.medium-4.small-12.columns {{ item.first_name }} {{ item.last_name }}
+                        div.medium-6.small-12.columns {{ item.email }}
+                        div.medium-2.small-12.columns View/Edit
+                    {% endfor %}
 
 append script
     script.
+        var listId = {{ lt.id }};
         var profileId = {{ profile.id }};
     script(src="{{ STATIC_URL }}js/list/list.js")

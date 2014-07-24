@@ -11,15 +11,22 @@ div#list-dashboard{
         text-transform: uppercase;
     }
     div.lists{
-        margin-top: 80px;
+        margin-top: 40px;
         > a{
             color: @dark;
         }
         div.list{
-            padding: 10px;
+            padding: 15px 10px;
             margin-bottom: 10px;
             border-radius: 3px;
             border: @grey thin solid;
+            &:hover{
+                background: @grey;
+            }
+            div.list-name{
+                font-size: 16px;
+                font-weight: 500;
+            }
         }
     }
 }
