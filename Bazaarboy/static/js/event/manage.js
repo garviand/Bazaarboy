@@ -24,7 +24,38 @@
       $('form[name=add-guest] input[name=submit]').val('Adding...');
       Bazaarboy.post('event/purchase/add/', params, function(response) {
         var newGuest;
-        if (response.status === 'OK') {
+        if (response.status === 'WAIT') {
+          if (confirm(response.message)) {
+            params.force = true;
+            Bazaarboy.post('event/purchase/add/', params, function(response) {
+              var newGuest;
+              if (response.status === 'OK') {
+                $('form[name=add-guest] input[name=first_name]').val('');
+                $('form[name=add-guest] input[name=last_name]').val('');
+                $('form[name=add-guest] input[name=email]').val('');
+                $('form[name=add-guest] input[name=quantity]').val('');
+                $('form[name=add-guest] input[name=submit]').val('Add Guest(s)');
+                newGuest = $('div.guest_template').clone();
+                newGuest.find('div.confirmation').html(response.purchase.code + '&nbsp;');
+                newGuest.find('div.ticket_name').html(response.tickets[ticketId]['name'] + ' (' + response.tickets[ticketId]['quantity'] + ')');
+                newGuest.find('div.name').html(params.first_name + ' ' + params.last_name);
+                newGuest.data('id', response.purchase.id);
+                newGuest.data('ticket', ticketId);
+                newGuest.removeClass('guest_template').removeClass('hidden');
+                $('div.list_headers').after(newGuest);
+                return _this.purchaseInProgress = false;
+              } else {
+                alert(response.message);
+                $('form[name=add-guest] input[name=submit]').val('Add Guest(s)');
+                return _this.purchaseInProgress = false;
+              }
+            });
+          } else {
+            alert('Add Guest Canceled');
+            $('form[name=add-guest] input[name=submit]').val('Add Guest(s)');
+            _this.purchaseInProgress = false;
+          }
+        } else if (response.status === 'OK') {
           $('form[name=add-guest] input[name=first_name]').val('');
           $('form[name=add-guest] input[name=last_name]').val('');
           $('form[name=add-guest] input[name=email]').val('');
@@ -41,6 +72,7 @@
           _this.purchaseInProgress = false;
         } else {
           alert(response.message);
+          $('form[name=add-guest] input[name=submit]').val('Add Guest(s)');
           _this.purchaseInProgress = false;
         }
       });

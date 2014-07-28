@@ -1041,9 +1041,15 @@ def edit_ticket(request, params, user):
             return json_response(response)
     # Save the changes
     ticket.save()
+    sold = Purchase_item.objects.filter(Q(purchase__checkout = None) | 
+                                        Q(purchase__checkout__is_charged = True, 
+                                          purchase__checkout__is_refunded = False), 
+                                        ticket = ticket).count()
+    serialized = serialize_one(ticket)
+    serialized['sold'] = sold
     response = {
         'status':'OK',
-        'ticket':serialize_one(ticket)
+        'ticket':serialized
     }
     return json_response(response)
 
@@ -1580,7 +1586,7 @@ def purchase(request, params, user):
     return json_response(response)
 
 @login_required()
-@validate('POST', ['event', 'details', 'email', 'first_name', 'last_name'], ['phone'])
+@validate('POST', ['event', 'details', 'email', 'first_name', 'last_name'], ['phone', 'force'])
 def add_purchase(request, params, user):
     """
     Manually add purchase by organizer
@@ -1658,6 +1664,15 @@ def add_purchase(request, params, user):
         return json_response(response)
     else:
         inviter = Organizer.objects.filter(event = event, profile__managers = _user)[0]
+    # Check for duplicate email
+    if Purchase.objects.filter(event = event, owner__email = params['email']).exists():
+        if not params['force'] or params['force'] != 'true':
+            response = {
+                'status':'WAIT',
+                'error':'DUPLICATE_EMAIL',
+                'message':'This email is already registered for the event. Would you like to add the guest anyways?'
+            }
+            return json_response(response)
     # Check if the tickets are valid
     _tickets = Ticket.objects.filter(event = event, is_deleted = False)
     tickets = {}
@@ -1790,12 +1805,17 @@ def export(request, params, user):
                     }
                 })
         else:
+            if item.is_checked_in:
+                checked_in = 'yes'
+            else:
+                checked_in = ''
             items[item.purchase.id] = {
                 'id': item.id,
                 'email': item.purchase.owner.email,
                 'first_name': item.purchase.owner.first_name,
                 'last_name': item.purchase.owner.last_name,
                 'code': item.purchase.code,
+                'checked_in': checked_in,
                 'tickets': {
                     item.ticket.id:{
                         'name':item.ticket.name,
@@ -1808,7 +1828,7 @@ def export(request, params, user):
     csvName = re.sub(r'\W+', '-', event.name) + '.csv'
     response['Content-Disposition'] = 'attachment; filename="' + csvName + '"'
     writer = UnicodeWriter(response)
-    headers = ['id', 'email', 'first_name', 'last_name', 'ticket', 'quantity', 'code']
+    headers = ['id', 'email', 'first_name', 'last_name', 'ticket', 'quantity', 'code', 'checked in']
     writer.writerow(headers)
     # Write to csv
     count = 1
@@ -1821,7 +1841,8 @@ def export(request, params, user):
                 item['last_name'], 
                 ticket['name'], 
                 str(ticket['quantity']), 
-                item['code']
+                item['code'],
+                item['checked_in']
             ]
             writer.writerow(row)
             count += 1

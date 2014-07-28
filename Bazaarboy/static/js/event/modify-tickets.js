@@ -414,6 +414,7 @@
                 $(ticketOption).find('div.name').html(response.ticket.name);
                 $(ticketOption).find('div.description').html(response.ticket.description);
                 sold = response.ticket.sold != null ? response.ticket.sold : 0;
+                console.log(response);
                 $(ticketOption).find('span.sold').html(sold);
                 quantity = response.ticket.quantity ? '/' + response.ticket.quantity : '';
                 $(ticketOption).find('span.quantity').html(quantity);

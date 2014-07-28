@@ -371,6 +371,7 @@ Bazaarboy.event.modify.tickets =
                             $(ticketOption).find('div.name').html response.ticket.name
                             $(ticketOption).find('div.description').html response.ticket.description
                             sold = if response.ticket.sold? then response.ticket.sold else 0
+                            console.log response
                             $(ticketOption).find('span.sold').html sold
                             quantity = if response.ticket.quantity then '/' + response.ticket.quantity else ''
                             $(ticketOption).find('span.quantity').html quantity

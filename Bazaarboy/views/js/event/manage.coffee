@@ -17,7 +17,34 @@ Bazaarboy.event.manage =
         params.details = JSON.stringify params.details
         $('form[name=add-guest] input[name=submit]').val('Adding...')
         Bazaarboy.post 'event/purchase/add/', params, (response) =>
-            if response.status is 'OK'
+            if response.status is 'WAIT'
+                if confirm response.message
+                    params.force = true
+                    Bazaarboy.post 'event/purchase/add/', params, (response) =>
+                        if response.status is 'OK'
+                            $('form[name=add-guest] input[name=first_name]').val('')
+                            $('form[name=add-guest] input[name=last_name]').val('')
+                            $('form[name=add-guest] input[name=email]').val('')
+                            $('form[name=add-guest] input[name=quantity]').val('')
+                            $('form[name=add-guest] input[name=submit]').val('Add Guest(s)')
+                            newGuest = $('div.guest_template').clone()
+                            newGuest.find('div.confirmation').html(response.purchase.code + '&nbsp;')
+                            newGuest.find('div.ticket_name').html(response.tickets[ticketId]['name'] + ' (' + response.tickets[ticketId]['quantity'] + ')')
+                            newGuest.find('div.name').html(params.first_name + ' ' + params.last_name)
+                            newGuest.data('id', response.purchase.id)
+                            newGuest.data('ticket', ticketId)
+                            newGuest.removeClass('guest_template').removeClass('hidden')
+                            $('div.list_headers').after(newGuest)
+                            @purchaseInProgress = false
+                        else
+                            alert response.message
+                            $('form[name=add-guest] input[name=submit]').val('Add Guest(s)')
+                            @purchaseInProgress = false
+                else
+                    alert 'Add Guest Canceled'
+                    $('form[name=add-guest] input[name=submit]').val('Add Guest(s)')
+                    @purchaseInProgress = false
+            else if response.status is 'OK'
                 $('form[name=add-guest] input[name=first_name]').val('')
                 $('form[name=add-guest] input[name=last_name]').val('')
                 $('form[name=add-guest] input[name=email]').val('')
@@ -34,6 +61,7 @@ Bazaarboy.event.manage =
                 @purchaseInProgress = false
             else
                 alert response.message
+                $('form[name=add-guest] input[name=submit]').val('Add Guest(s)')
                 @purchaseInProgress = false
             return
         return
