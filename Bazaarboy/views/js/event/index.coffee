@@ -151,6 +151,8 @@ Bazaarboy.event.index =
                 $(this).addClass('hide')
                 scope.overlayAnimationInProgress = false
                 return
+            $('.ticket').find('div.ticket-middle').slideUp 100
+            $('.ticket.active').removeClass 'active'
             $('a#tickets-confirm').html 'Confirm RSVP'
             $('input[name=quantity]').val(0)
             $('input[name=first_name]').val('')

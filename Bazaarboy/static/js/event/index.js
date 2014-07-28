@@ -186,6 +186,8 @@
           $(this).addClass('hide');
           scope.overlayAnimationInProgress = false;
         });
+        $('.ticket').find('div.ticket-middle').slideUp(100);
+        $('.ticket.active').removeClass('active');
         $('a#tickets-confirm').html('Confirm RSVP');
         $('input[name=quantity]').val(0);
         $('input[name=first_name]').val('');
