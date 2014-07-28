@@ -6035,7 +6035,7 @@ div#wrapper-overlay {
   top: 0;
   left: 0;
   z-index: 5;
-  background: rgba(255, 255, 255, 0.7);
+  background: rgba(250, 250, 250, 0.8);
   cursor: pointer;
 }
 div#show404 div.background {
@@ -9109,234 +9109,230 @@ div#event-footer div.links {
 }
 div#tickets {
   position: absolute;
-  width: 440px;
+  width: 500px;
+  max-width: 100%;
   margin-left: auto;
   margin-right: auto;
+  margin-bottom: 60px;
   left: 0;
   right: 0;
   top: 100px;
   z-index: 10;
+  border: #f6f6f6 thin solid;
   border-radius: 4px;
-  background: #FDE7B5;
-  background-image: -o-linear-gradient(top, #fde7b5, #fde7b5, #fcc75a);
-  background-image: -moz-linear-gradient(top, #fde7b5, #fde7b5, #fcc75a);
-  background-image: -webkit-linear-gradient(top, #fde7b5, #fde7b5, #fcc75a);
-  background-image: -ms-linear-gradient(top, #fde7b5, #fde7b5, #fcc75a);
-  background-image: linear-gradient(top, #fde7b5, #fde7b5, #fcc75a);
+  background: #ffffff;
 }
 div#tickets-header {
   width: 100%;
-  height: 40px;
-  padding: 12px 0;
-  font-size: 16px;
+  padding: 25px 0;
+  font-size: 14px;
+  font-weight: 600;
   text-align: center;
   text-transform: uppercase;
 }
 div#tickets-body {
-  width: 428px;
-  margin: 0 auto;
+  width: 100%;
+}
+div#tickets-body div#tickets-canvas {
+  padding-left: 0.9375rem;
+  padding-right: 0.9375rem;
+}
+div#tickets-body div#tickets-canvas div.ticket {
+  border: #D7D7D7 thin solid;
   border-radius: 4px;
-  border: 2px solid #FEC84D;
+  margin-bottom: 10px;
 }
-div#tickets-body > div.inner {
-  padding-left: 4px;
-  background: #FFFFFF;
+div#tickets-body div#tickets-canvas div.ticket.active div.ticket-top {
+  background: #FEC84D !important;
 }
-div#tickets-body > div.inner > div.caption {
-  width: 100%;
-  height: 40px;
-  padding: 13px 10px;
-  font-size: 14px;
-  text-transform: uppercase;
+div#tickets-body div#tickets-canvas div.ticket.active div.ticket-top div.check div.check-inner {
+  display: block !important;
 }
-div#tickets-body div.ticket {
-  display: table;
-  width: 100%;
-  min-height: 108px;
-  background: #F5F5F5;
-  border-top: 1px solid #dddddd;
+div#tickets-body div#tickets-canvas div.ticket.hover,
+div#tickets-body div#tickets-canvas div.ticket.active {
+  border: #faa638 thin solid;
+}
+div#tickets-body div#tickets-canvas div.ticket.hover div.ticket-top,
+div#tickets-body div#tickets-canvas div.ticket.active div.ticket-top {
+  background: #FFF4DB;
   cursor: pointer;
-  -webkit-user-select: none;
-  -moz-user-select: none;
-  -ms-user-select: none;
-  user-select: none;
 }
-div#tickets-body div.ticket.last {
-  min-height: 109px;
-  border-bottom: 1px solid #dddddd;
+div#tickets-body div#tickets-canvas div.ticket.hover div.ticket-top div.check,
+div#tickets-body div#tickets-canvas div.ticket.active div.ticket-top div.check {
+  border: #faa638 thin solid !important;
 }
-div#tickets-body div.ticket:hover,
-div#tickets-body div.ticket.on {
-  background: #FFE6B0;
+div#tickets-body div#tickets-canvas div.ticket.hover div.ticket-bottom,
+div#tickets-body div#tickets-canvas div.ticket.active div.ticket-bottom {
+  border-top: #faa638 thin solid;
 }
-div#tickets-body div.ticket:hover > div.inner > div.info,
-div#tickets-body div.ticket.on > div.inner > div.info {
-  background: #FFF1D2;
+div#tickets-body div#tickets-canvas div.ticket div.ticket-top {
+  background: #f6f6f6;
+  border-top-left-radius: 4px;
+  border-top-right-radius: 4px;
 }
-div#tickets-body div.ticket:hover > div.inner > div.info div.top div.price,
-div#tickets-body div.ticket.on > div.inner > div.info div.top div.price {
-  background: #F5A639;
+div#tickets-body div#tickets-canvas div.ticket div.ticket-top div.container {
+  min-height: 60px;
+  padding: 10px 0;
 }
-div#tickets-body div.ticket.soldout {
-  background: #F5F5F5;
+div#tickets-body div#tickets-canvas div.ticket div.ticket-top div.container div.ticket-price {
+  padding-left: 0.9375rem;
 }
-div#tickets-body div.ticket.soldout > div.inner > div.info {
-  background: #FFFFFF;
-  color: #929292;
+div#tickets-body div#tickets-canvas div.ticket div.ticket-top div.container div.ticket-price div.check {
+  float: left;
+  position: absolute;
+  top: 50%;
+  -webkit-transform: translateY(-50%);
+  -ms-transform: translateY(-50%);
+  transform: translateY(-50%);
+  height: 20px;
+  width: 20px;
+  background: #ffffff;
+  border: #D7D7D7 thin solid;
+  border-radius: 2px;
 }
-div#tickets-body div.ticket.soldout > div.inner > div.info div.top div.price {
-  background: #929292;
+div#tickets-body div#tickets-canvas div.ticket div.ticket-top div.container div.ticket-price div.check div.check-inner {
+  background: #faa638;
+  display: none;
+  margin: 2px;
+  border-radius: 2px;
+  height: 14px;
+  width: 14px;
 }
-div#tickets-body div.ticket > div.inner {
-  display: table-row;
-  width: 100%;
+div#tickets-body div#tickets-canvas div.ticket div.ticket-top div.container div.ticket-price div.price {
+  padding-left: 30px;
+  float: left;
+  font-size: 22px;
+  font-weight: 600;
 }
-div#tickets-body div.ticket > div.inner > div.action {
-  position: relative;
-  display: table-cell;
-  width: 64px;
-  height: 100%;
-  vertical-align: middle;
+div#tickets-body div#tickets-canvas div.ticket div.ticket-top div.container div.ticket-name {
+  font-weight: 600;
+  font-size: 15px;
+  line-height: 1.1rem;
 }
-div#tickets-body div.ticket > div.inner > div.action div.wrapper {
-  width: 40px;
-  margin: auto;
+div#tickets-body div#tickets-canvas div.ticket div.ticket-top div.container div.ticket-price,
+div#tickets-body div#tickets-canvas div.ticket div.ticket-top div.container div.ticket-name {
+  position: absolute;
+  top: 50%;
+  -webkit-transform: translateY(-50%);
+  -ms-transform: translateY(-50%);
+  transform: translateY(-50%);
 }
-div#tickets-body div.ticket > div.inner > div.action div.wrapper div.top input {
+div#tickets-body div#tickets-canvas div.ticket div.ticket-middle {
+  display: none;
+  background: #FFF4DB;
+}
+div#tickets-body div#tickets-canvas div.ticket div.ticket-middle div.container {
+  min-height: 60px;
+  padding: 10px 0;
+}
+div#tickets-body div#tickets-canvas div.ticket div.ticket-middle div.container div.info-label {
+  position: absolute;
+  top: 50%;
+  -webkit-transform: translateY(-50%);
+  -ms-transform: translateY(-50%);
+  transform: translateY(-50%);
+  font-size: 13px;
+  font-weight: 600;
+  padding-left: 0.9375rem;
+}
+div#tickets-body div#tickets-canvas div.ticket div.ticket-middle div.container input.ticket-quantity {
+  border: #faa638 thin solid;
+  padding: 0;
   display: block;
-  margin: 0 auto;
-}
-div#tickets-body div.ticket > div.inner > div.action div.wrapper div.bottom {
-  margin-top: 10px;
-}
-div#tickets-body div.ticket > div.inner > div.action div.wrapper div.bottom input {
-  width: 40px;
-  height: 24px;
-  margin: 0;
+  margin-bottom: 0;
+  width: 30px;
+  height: 25px;
+  position: absolute;
+  top: 50%;
+  -webkit-transform: translateY(-50%);
+  -ms-transform: translateY(-50%);
+  transform: translateY(-50%);
   text-align: center;
-  border-radius: 3px;
-}
-div#tickets-body div.ticket > div.inner > div.action div.wrapper div.soldout {
-  width: 44px;
-  height: 44px;
-  background: #FFFFFF;
-  color: #4a4a4a;
-  font-size: 14px;
-  line-height: 22px;
-  text-align: center;
-}
-div#tickets-body div.ticket > div.inner > div.info {
-  display: table-cell;
-  min-height: 107px;
-  padding: 20px 25px;
-  background: #FFFFFF;
-}
-div#tickets-body div.ticket > div.inner > div.info div.top {
-  width: 100%;
-  height: 40px;
-}
-div#tickets-body div.ticket > div.inner > div.info div.top div.price {
-  width: 40px;
-  height: 40px;
-  padding: 13px 0;
   border-radius: 4px;
-  background: #4963E4;
-  color: #FFFFFF;
-  font-size: 14px;
-  text-align: center;
+  font-weight: 300;
+  box-shadow: none;
+  transition: none;
 }
-div#tickets-body div.ticket > div.inner > div.info div.top div.name {
-  display: table;
-  width: 255px;
-  height: 40px;
-  padding-left: 10px;
+div#tickets-body div#tickets-canvas div.ticket div.ticket-bottom {
+  border-top: #D7D7D7 thin solid;
+  font-size: 12px;
 }
-div#tickets-body div.ticket > div.inner > div.info div.top div.name div {
-  display: table-cell;
-  vertical-align: middle;
-  font-size: 14px;
-  line-height: 18px;
-  font-weight: 700;
+div#tickets-body div#tickets-canvas div.ticket div.ticket-bottom div.ticket-description-container {
+  padding: 10px 0;
+  padding-left: 0.9375rem;
+  padding-right: 0.9375rem;
+  min-height: 60px;
 }
-div#tickets-body div.ticket > div.inner > div.info div.bottom {
-  width: 100%;
-  margin-top: 10px;
-  font-size: 14px;
-  line-height: 18px;
+div#tickets-body div#tickets-canvas div.ticket div.ticket-bottom div.ticket-description {
+  position: absolute;
+  top: 50%;
+  -webkit-transform: translateY(-50%);
+  -ms-transform: translateY(-50%);
+  transform: translateY(-50%);
+  line-height: 1.1rem;
 }
 div#tickets-details {
   width: 100%;
-  padding: 10px 0;
-  border-top: 1px solid #f6f6f6;
 }
-div#tickets-details > div.inner {
+div#tickets-details div.title {
   width: 100%;
-  background: #F5F5F5;
+  padding: 20px 0;
+  font-size: 14px;
+  font-weight: 600;
+  text-align: center;
+  text-transform: uppercase;
 }
-div#tickets-details div.left {
-  width: 64px;
-}
-div#tickets-details div.right {
-  width: 336px;
-  background: #FFFFFF;
-}
-div#tickets-details div.right > div {
-  width: 336px;
-  height: 40px;
-  padding: 4px;
-}
-div#tickets-details div.right > div input:not(.promo-input) {
-  width: 328px;
-  height: 32px;
-  margin: 0;
+div#tickets-details input {
   border-radius: 4px;
+  font-weight: 300;
+  box-shadow: none;
+  transition: none;
 }
-div#tickets-details div.right > div div.start-promo {
-  margin-top: 8px;
+@media only screen and (min-width: 40.063em) {
+  div#tickets-details div.top .columns:first-child,
+  div#tickets-details div.middle .columns:first-child {
+    padding-right: 7px;
+  }
+  div#tickets-details div.top .columns:last-child,
+  div#tickets-details div.middle .columns:last-child {
+    padding-left: 7px;
+  }
 }
-div#tickets-details div.right > div div.start-promo a.start-promo-btn {
-  font-size: .8rem;
-  margin-right: 8px;
+div#tickets-details div.bottom div.start-promo {
+  padding-bottom: 20px;
+}
+div#tickets-details div.bottom div.start-promo a {
   color: #faa638;
-  font-style: italic;
+  font-weight: 300;
   text-decoration: underline;
-}
-div#tickets-details div.right > div input.promo-input {
-  border-radius: 4px;
-  margin-bottom: 0;
-}
-div#tickets-details div.right > div a.postfix {
-  background: #4963e4;
-  border-top-right-radius: 4px;
-  border-bottom-right-radius: 4px;
-  margin-bottom: 0;
-}
-div#tickets-details div.right div.top input {
-  width: 160px;
-}
-div#tickets-details div.right div.promo-container {
-  padding-left: 0;
+  font-style: italic;
+  font-size: 12px;
 }
 div#tickets-footer {
+  padding: 20px 0;
   position: relative;
   width: 100%;
-  height: 60px;
+  border-top: #F6F6F6 thin solid;
 }
 div#tickets-subtotal {
-  width: 100%;
-  height: 60px;
-  padding: 23px 12px;
   font-size: 14px;
+  padding-top: 14px;
+}
+@media only screen and (max-width: 40em) {
+  div#tickets-subtotal {
+    text-align: center;
+    margin-bottom: 20px;
+  }
 }
 a#tickets-confirm {
-  position: absolute;
-  width: 140px;
-  height: 41px;
-  top: 10px;
-  right: 10px;
+  display: block;
+  width: 100%;
   padding-top: 10px;
-  padding-bottom: 10px;
-  color: #FFFFFF;
+  padding-bottom: 11px;
+  color: #ffffff;
+}
+a#tickets-confirm:hover {
+  color: #ffffff;
 }
 div#wrapper-event-modify.full {
   width: 100%;

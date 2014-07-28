@@ -1451,12 +1451,6 @@ def purchase(request, params, user):
                         if params['email'][-l:] == promo.email_domain or l == 0:
                             promos[promo.ticket.id] = promo
                             continue
-                response = {
-                    'status':'FAIL',
-                    'error':'INVALID_PROMO',
-                    'message':'One of the promo codes is invalid.'
-                }
-                return json_response(response)
     # Check if there is an unfinished purchase
     if Purchase.objects.filter(Q(checkout__isnull = False, 
                                  checkout__is_charged = False), 

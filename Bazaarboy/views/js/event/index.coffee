@@ -38,14 +38,13 @@ Bazaarboy.event.index =
             return
         return
     updateSubtotal: () ->
-        tickets = $('div#tickets-canvas div.ticket')
+        tickets = $('div#tickets-canvas div.ticket.active')
         totalPrice = 0
         totalQuantity = 0
         for ticket in tickets
-            if $(ticket).find('input.ticket-selected').is ':checked'
-                quantity = parseInt $(ticket).find('input.ticket-quantity').val()
-                totalQuantity += quantity
-                totalPrice += quantity * parseFloat $(ticket).attr('data-price')
+            quantity = parseInt $(ticket).find('input.ticket-quantity').val()
+            totalQuantity += quantity
+            totalPrice += quantity * parseFloat $(ticket).attr('data-price')
         $('div#tickets-subtotal span.total').html totalPrice.toFixed(2)
         if totalPrice isnt 0
             $('div#tickets-subtotal span.fee').removeClass 'hide'
@@ -72,7 +71,7 @@ Bazaarboy.event.index =
         tickets = $('div#tickets-canvas div.ticket')
         ticketSelected = false
         for ticket in tickets
-            if $(ticket).find('input.ticket-selected').is ':checked'
+            if $(ticket).hasClass('active')
                 ticketSelected = true
                 quantity = parseInt $(ticket).find('input.ticket-quantity').val()
                 params.details[$(ticket).attr('data-id')] = quantity
@@ -117,6 +116,9 @@ Bazaarboy.event.index =
                             panelLabel: 'Checkout'
                             email: params.email
                             image: response.logo
+                            closed: () ->
+                                $('a#tickets-confirm').html 'Confirm RSVP'
+                                return
                             token: (token) =>
                                 Bazaarboy.post 'payment/charge/', 
                                     checkout: response.purchase.checkout
@@ -490,22 +492,19 @@ Bazaarboy.event.index =
                     scope.overlayAnimationInProgress = false
                     return
             return
-        $('div#tickets-canvas div.ticket').click () ->
-            $(this).find('.ticket-selected').click()
-            return
-        $('.ticket-selected').click (e) ->
-            e.stopPropagation()
-            return
-        $('input.ticket-quantity').click (e) ->
-            e.stopPropagation()
-            return
-        $('input.ticket-selected').click () ->
-            wrapper = $(this).closest('div.wrapper')
-            if $(this).is ':checked'
-                if parseInt($(wrapper).find('input.ticket-quantity').val()) is 0
-                    $(wrapper).find('input.ticket-quantity').val 1
+        $('div#tickets-canvas div.ticket div.ticket-top').hover ->
+            $(this).parents('div.ticket').addClass 'hover' 
+        , ->
+            $(this).parents('div.ticket').removeClass 'hover'
+        $('div#tickets-canvas div.ticket-top').click () ->
+            $(this).parents('.ticket').toggleClass 'active'
+            if $(this).parents('.ticket').hasClass('active')
+                $(this).parents('.ticket').find('div.ticket-middle').slideDown 100
+                quant = $(this).parents('.ticket').find('input.ticket-quantity')
+                if quant.val().trim() is '' or parseInt(quant.val()) is 0
+                    quant.val 1
             else
-                $(wrapper).find('input.ticket-quantity').val 0
+                $(this).parents('.ticket').find('div.ticket-middle').slideUp 100
             scope.updateSubtotal()
             return
         $('input.ticket-quantity').keyup () ->
@@ -517,8 +516,10 @@ Bazaarboy.event.index =
             scope.updateSubtotal()
             return
         $('input.ticket-quantity').blur () ->
-            if $(this).val().trim() is ''
+            if $(this).val().trim() is '' or parseInt($(this).val()) is 0
                 $(this).val 0
+                $(this).parents('.ticket').removeClass 'active'
+                $(this).parents('.ticket').find('div.ticket-middle').slideUp 100
             scope.updateSubtotal()
             return
         $('a#tickets-confirm').click () =>

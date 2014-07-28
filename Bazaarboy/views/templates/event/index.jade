@@ -338,57 +338,58 @@ block body
                     | &nbsp;&nbsp;&nbsp;
                     a(href="http://blog.bazaarboy.com") Blog
         div#tickets.hide
-            div#tickets-header Ticket Options
+            div#tickets-header Choose Your Tickets
             div#tickets-body
                 div.inner
-                    div.caption Choose Your Tickets
                     div#tickets-canvas
                         {% for ticket in tickets %}
-                        div.ticket(class="{% if forloop.last %}last{% endif %} {% if ticket.quantity == 0 %}soldout{% endif %}", data-id="{{ ticket.id }}", data-price="{{ ticket.price }}")
-                            div.inner.clearfix
-                                div.action
-                                    div.wrapper
-                                        {% if ticket.quantity != 0 %} 
-                                        div.top
-                                            input.ticket-selected(type="checkbox")
-                                        div.bottom
-                                            input.ticket-quantity(type="text", name="quantity", value="0")
-                                        {% else %}
-                                        div.soldout Sold Out
-                                        {% endif %}
-                                div.info
-                                    div.top.clearfix
-                                        div.price.left {% if ticket.price == 0 %}Free{% else %}${{ ticket.price|floatformat:"-2" }}{% endif %}
-                                        div.name.right 
-                                            div {{ ticket.name }}
-                                    div.bottom
-                                        {{ ticket.description }}
+                        div.ticket.row(class="{% if forloop.last %}last{% endif %} {% if ticket.quantity == 0 %}soldout{% endif %}", data-id="{{ ticket.id }}", data-price="{{ ticket.price }}")
+                            div.small-12.columns
+                                div.ticket-top.row
+                                    div.small-4.columns.container
+                                        div.ticket-price
+                                            div.check
+                                                div.check-inner
+                                            div.price {% if ticket.price == 0 %}Free{% else %}${{ ticket.price|floatformat:"-2" }}{% endif %}
+                                    div.small-8.columns.container
+                                        div.ticket-name {{ ticket.name }}
+                                div.ticket-middle.row
+                                    div.small-4.columns.container
+                                        div.info-label Quantity
+                                    div.small-8.columns.container
+                                        input.ticket-quantity(type="text", name="quantity", value="0")
+                                div.ticket-bottom.row
+                                    div.small-12.columns.ticket-description-container
+                                        div.ticket-description {{ ticket.description }}
+
                         {% endfor %}
-                    div.caption Details About You
-                    div#tickets-details
-                        div.inner.clearfix
-                            div.left
-                            div.right
-                                div.top.clearfix
-                                    input.left(type="text", name="first_name", placeholder="First Name")
-                                    input.right(type="text", name="last_name", placeholder="Last Name")
-                                div.middle
-                                    input(type="text", name="email", placeholder="Email")
-                                div.bottom
-                                    input(type="text", name="phone", placeholder="Phone (Optional)")
-                                {% if promos.count > 0 %}
-                                div.bottom
-                                    div.row.collapse.start-promo
-                                        div.small-12.columns.text-right
-                                            a.start-promo-btn(href="javascript:;") Enter Promo Code
-                                    div.row.collapse.enter-promo.hidden
-                                        div.small-12.columns.promo-container
-                                            input.promo-input(type="text", name="promos", placeholder="Promo Code (applies on confirm)")
-                                        //div.small-4.columns
-                                            a.button.postfix(href="javascript:;") Apply Promo
-                                {% endif %}
-            div#tickets-footer
-                div#tickets-subtotal
+            div#tickets-details
+                div.row
+                    div.small-12.columns
+                        div.title Some Details About You
+                div.row
+                    div.small-12.columns
+                        div.top.row
+                            div.small-12.medium-6.columns
+                                input(type="text", name="first_name", placeholder="First Name")
+                            div.small-12.medium-6.columns
+                                input(type="text", name="last_name", placeholder="Last Name")
+                        div.middle.row
+                            div.small-12.medium-6.columns
+                                input(type="text", name="email", placeholder="Email")
+                            div.small-12.medium-6.columns
+                                input(type="text", name="phone", placeholder="Phone (Optional)")
+                        {% if promos.count > 0 %}
+                        div.bottom
+                            div.row.collapse.start-promo
+                                div.small-12.columns.text-right
+                                    a.start-promo-btn(href="javascript:;") Enter Promo Code
+                            div.row.collapse.enter-promo.hidden
+                                div.small-12.columns.promo-container
+                                    input.promo-input(type="text", name="promos", placeholder="Promo Code (applies on confirm)")
+                        {% endif %}
+            div#tickets-footer.row
+                div#tickets-subtotal.small-12.small-only-text-center.medium-8.columns
                     | Subtotal | $
                     span.total 0
                     span.fee.hide  + Fee
@@ -396,7 +397,8 @@ block body
                     span.count 0
                     |  Ticket
                     span.plural s
-                a#tickets-confirm.primary-btn(href="javascript:;") Confirm RSVP
+                div.small-12.medium-4.columns
+                    a#tickets-confirm.primary-btn(href="javascript:;") Confirm RSVP
         div#wrapper-overlay.hide
 
 append script
