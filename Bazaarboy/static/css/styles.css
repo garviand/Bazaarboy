@@ -9116,7 +9116,7 @@ div#tickets {
   margin-bottom: 60px;
   left: 0;
   right: 0;
-  top: 100px;
+  top: 125px;
   z-index: 10;
   border: #f6f6f6 thin solid;
   border-radius: 4px;
@@ -9317,6 +9317,7 @@ div#tickets-footer {
 div#tickets-subtotal {
   font-size: 14px;
   padding-top: 14px;
+  font-weight: bold;
 }
 @media only screen and (max-width: 40em) {
   div#tickets-subtotal {
