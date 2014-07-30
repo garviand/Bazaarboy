@@ -99,10 +99,25 @@ Bazaarboy.event.manage =
         return
     init: () ->
         scope = this
+        # RAFFLE
+        $("div.guest-add-invite a.raffle-btn").click (e) ->
+            e.preventDefault()
+            winner_id = Math.floor(Math.random()*($("div.guest").length - 1))
+            winner = $("div.list_guests div.guest").eq(winner_id)
+            winner_name = winner.find("div.name").html()
+            winner_email = winner.attr('data-email')
+            $('div#raffle-modal div.subtext-name').html(winner_name)
+            $('div#raffle-modal div.subtext-email').html(winner_email)
+            $('div#raffle-modal').foundation('reveal', 'open')
+            return
         # INVITE MODAL INIT
         $("div.guest-add-invite a.start-guest-invite").click (e) ->
             e.preventDefault()
             $('div#invite-modal').foundation('reveal', 'open')
+            return
+        $("div#raffle-modal a.back-to-list").click () ->
+            $('div#invite-modal').foundation('reveal', 'close')
+            return
         $('div#invite-modal form.invite-form div.event-list').click () ->
             $(this).toggleClass 'selected'
             return

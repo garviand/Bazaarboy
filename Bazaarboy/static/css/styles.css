@@ -8145,6 +8145,66 @@ div#wrapper-profile-new div.profile-new-container div.next-prev a.finish-btn.hid
     display: none;
   }
 }
+div#raffle-modal div.empty-state-container {
+  border: #F6F6F6 thin solid;
+  border-radius: 4px;
+  background: url('../images/emptystates/champagne_bg.jpg');
+  background-size: 80%;
+  background-position: left center;
+  background-repeat: no-repeat;
+}
+div#raffle-modal div.empty-state-container div.empty-state-content {
+  margin: 60px 0;
+}
+div#raffle-modal div.empty-state-container div.empty-state-content div.text {
+  text-align: left;
+  font-size: 1.3rem;
+  font-weight: 600;
+  color: #4a4a4a;
+}
+div#raffle-modal div.empty-state-container div.empty-state-content hr {
+  margin: 10px 0;
+}
+div#raffle-modal div.empty-state-container div.empty-state-content div.subtext {
+  font-weight: 500;
+  text-align: left;
+}
+div#raffle-modal div.empty-state-container div.empty-state-content div.subtext.subtext-name {
+  margin-top: 25px;
+}
+div#raffle-modal div.empty-state-container div.empty-state-content div.subtext.subtext-email {
+  margin-top: 10px;
+  margin-bottom: 10px;
+}
+div#raffle-modal div.empty-state-container div.empty-state-content div.to-dash {
+  margin-left: 0;
+  padding-right: 0;
+}
+div#raffle-modal div.empty-state-container div.empty-state-content a.primary-btn {
+  display: block;
+  width: 100%;
+  margin-top: 20px;
+  padding-top: 11px;
+  padding-bottom: 14px;
+  font-size: 15px;
+  text-transform: uppercase;
+}
+div#raffle-modal div.empty-state-container div.empty-state-content a.primary-btn:hover {
+  color: #FFF;
+}
+div#raffle-modal div.empty-state-container div.empty-state-content div.close-launch-modal {
+  text-align: left;
+  margin-top: 30px;
+}
+div#raffle-modal div.empty-state-container div.empty-state-content div.close-launch-modal a.close-reveal-modal {
+  font-size: 1rem;
+  line-height: inherit;
+  position: relative;
+  top: 0;
+  right: 0;
+  color: #faa638;
+  font-weight: normal;
+}
 #wrapper-sidebar div.checkin_numbers {
   width: 100%;
   text-align: center;

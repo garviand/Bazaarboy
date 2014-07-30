@@ -6,6 +6,69 @@
     }
 }
 
+div#raffle-modal{
+    div.empty-state-container{
+        border: #F6F6F6 thin solid;
+        border-radius: 4px;
+        background: url('../images/emptystates/champagne_bg.jpg');
+        background-size: 80%;
+        background-position: left center;
+        background-repeat: no-repeat;
+        div.empty-state-content{
+            margin: 60px 0;
+            div.text{
+                text-align: left;
+                font-size: 1.3rem;
+                font-weight: 600;
+                color: @dark;
+            }
+            hr{
+                margin: 10px 0;
+            }
+            div.subtext{
+                font-weight: 500;
+                text-align: left;
+                &.subtext-name{
+                    margin-top: 25px;
+                }
+                &.subtext-email{
+                    margin-top: 10px;
+                    margin-bottom: 10px;
+                }
+            }
+            div.to-dash{
+                margin-left: 0;
+                padding-right: 0;
+            }
+            a.primary-btn{
+                display: block;
+                width: 100%;
+                margin-top: 20px;
+                padding-top: 11px;
+                padding-bottom: 14px;
+                font-size: 15px;
+                text-transform: uppercase;
+                &:hover{
+                    color: #FFF;
+                }
+            }
+            div.close-launch-modal{
+                text-align: left;
+                margin-top: 30px;
+                a.close-reveal-modal{
+                    font-size: 1rem;
+                    line-height: inherit;
+                    position: relative;
+                    top: 0;
+                    right: 0;
+                    color: @orange;
+                    font-weight: normal;
+                }
+            }
+        }
+    }
+}
+
 #wrapper-sidebar{
     div.checkin_numbers{
         width: 100%;

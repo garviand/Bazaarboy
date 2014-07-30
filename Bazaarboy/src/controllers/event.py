@@ -203,6 +203,7 @@ def manage(request, id, params, user):
                 'purchase_id': item.purchase.id,
                 'refundable': refundable,
                 'name': item.purchase.owner.first_name + ' ' + item.purchase.owner.last_name,
+                'email': item.purchase.owner.email,
                 'code': item.purchase.code,
                 'checked_in': checkedIn,
                 'tickets': {

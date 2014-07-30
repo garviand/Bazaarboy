@@ -21,6 +21,7 @@ block sidebar
         div.guest-add-invite.show-for-large-only
             a.start-guest-add(href="javascript:;") Manually Add a Guest
             a.start-guest-invite(href="javascript:;") Invite Guests
+            a.raffle-btn(href="javascript:;") Generate Random Raffle
         div.ticket-filters-container.show-for-large-only
             label Filter Tickets
             div.ticket_filters
@@ -90,7 +91,7 @@ block content
                                 div.name.medium-4.columns &nbsp;
                             {% for k, purchase in purchases.items %}
                             {% with tickets=purchase.tickets.items %}
-                            div.guest.row(class="{% if purchase.checked_in %}checked_in{% endif %}", data-ticket="{% for k, ticket in tickets %}{% if not forloop.first %},{% endif %}{{ ticket.id }}{% endfor %}", data-id="{{ purchase.id }}")
+                            div.guest.row(class="{% if purchase.checked_in %}checked_in{% endif %}", data-ticket="{% for k, ticket in tickets %}{% if not forloop.first %},{% endif %}{{ ticket.id }}{% endfor %}", data-id="{{ purchase.id }}", data-email="{{ purchase.email }}")
                                 div.checkin.medium-2.small-12.columns.hide-for-small-only
                                     a.secondary-btn(href="javascript:;") 
                                         {% if purchase.checked_in %}Arrived{% else %}Check In{% endif %}
@@ -114,6 +115,19 @@ block content
                                         {% if purchase.checked_in %}Arrived{% else %}Check In{% endif %}
                             {% endwith %}
                             {% endfor %}
+    div#raffle-modal.reveal-modal.text-center.medium(data-reveal)
+        div.empty-state-container
+            div.row
+                div.medium-5.columns
+                    | &nbsp;
+                div.medium-6.columns.end.empty-state-content
+                    div.text AND THE WINNER IS...
+                    hr
+                    div.subtext.subtext-name Example Person
+                    div.subtext.subtext-email example@example.com
+                    div.row
+                        div.large-7.medium-7.small-8.columns.to-dash
+                            a.back-to-list.primary-btn(href="javascript:;") Back To List
     div#invite-modal.reveal-modal.medium(data-reveal)
         form.invite-form(name="invite")
             div.row
@@ -152,7 +166,6 @@ block content
                     | &nbsp;invitations!
                 div.medium-12.columns.close
                     a.blue-btn.close-invite-modal Back To List
-
 
 
 append script

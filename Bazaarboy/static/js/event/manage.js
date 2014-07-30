@@ -125,9 +125,23 @@
     init: function() {
       var scope;
       scope = this;
+      $("div.guest-add-invite a.raffle-btn").click(function(e) {
+        var winner, winner_email, winner_id, winner_name;
+        e.preventDefault();
+        winner_id = Math.floor(Math.random() * ($("div.guest").length - 1));
+        winner = $("div.list_guests div.guest").eq(winner_id);
+        winner_name = winner.find("div.name").html();
+        winner_email = winner.attr('data-email');
+        $('div#raffle-modal div.subtext-name').html(winner_name);
+        $('div#raffle-modal div.subtext-email').html(winner_email);
+        $('div#raffle-modal').foundation('reveal', 'open');
+      });
       $("div.guest-add-invite a.start-guest-invite").click(function(e) {
         e.preventDefault();
-        return $('div#invite-modal').foundation('reveal', 'open');
+        $('div#invite-modal').foundation('reveal', 'open');
+      });
+      $("div#raffle-modal a.back-to-list").click(function() {
+        $('div#invite-modal').foundation('reveal', 'close');
       });
       $('div#invite-modal form.invite-form div.event-list').click(function() {
         $(this).toggleClass('selected');
