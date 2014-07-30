@@ -94,21 +94,23 @@ Bazaarboy.event.modify.tickets =
         if not @promoSubmitting
             params = $('form#promo-form').serializeObject()
             params.start_time = params.promo_start_time
-            optionals = ['quantity', 'start_time', 'expiration_time', 'email_domain']
-            params = Bazaarboy.stripEmpty params, optionals
             params.event = eventId
             if params.start_time isnt undefined and params.start_time.trim().length != 0
                 params.start_time = moment(params.start_time.trim(), 'MM/DD/YYYY').utc().format('YYYY-MM-DD HH:mm:ss')
                 if not params.start_time
                     alert 'Invalid Start Date'
+            else if params.start_time.trim().length == 0
+                params.start_time = 'none'
             if params.expiration_time isnt undefined and params.expiration_time.trim().length != 0
                 params.expiration_time = moment(params.expiration_time.trim(), 'MM/DD/YYYY').utc().format('YYYY-MM-DD HH:mm:ss')
                 if not params.expiration_time
                     alert 'Invalid Expiration Date'
+            else if params.expiration_time.trim().length == 0
+                params.expiration_time = 'none'
             if isNaN(parseInt(params.discount))
                 alert 'Discount Amount Must Be A Number'
                 return
-            if $('div#promos form#promo-form a.promo-type.active').data('type') is 'number'
+            if $('div#promos form#promo-form a.promo-type.active').attr('data-type') is 'number'
                 params.amount = parseInt(params.discount)
                 params.discount = ''
             else
@@ -126,7 +128,8 @@ Bazaarboy.event.modify.tickets =
                             promo_id = response.promo.pk
                             promo_code = response.promo.code
                             $('form#promo-form div.promo-form-tickets a.select-ticket.selected').each () ->
-                                Bazaarboy.post 'event/promo/link/', {id:promo_id, ticket:$(this).data('id')}, (response) ->
+                                ticket_id = parseInt($(this).attr('data-id'))
+                                Bazaarboy.post 'event/promo/link/', {id:promo_id, ticket:ticket_id}, (response) ->
                                     if response.status isnt 'OK'
                                         alert response.message
                                     linkedTickets++
@@ -152,10 +155,11 @@ Bazaarboy.event.modify.tickets =
                         return
                 else
                     $("div.promo").each () ->
-                        if $(this).data('id') is $('form#promo-form').data('id')
+                        if parseInt($(this).attr('data-id')) is parseInt($('form#promo-form').attr('data-id'))
                             $(this).remove()
                         return
-                    params.id = $('form#promo-form').data('id')
+                    params.id = $('form#promo-form').attr('data-id')
+                    params.id = parseInt(params.id)
                     console.log params
                     Bazaarboy.post 'event/promo/edit/', params, (response) ->
                         if response.status is 'OK'
@@ -163,11 +167,13 @@ Bazaarboy.event.modify.tickets =
                             promo_id = response.promo.pk
                             promo_code = response.promo.code
                             $('form#promo-form div.promo-form-tickets a.select-ticket:not(.selected)').each () ->
-                                Bazaarboy.post 'event/promo/unlink/', {id:promo_id, ticket:$(this).data('id')}, (response) ->
+                                ticket_id = parseInt($(this).attr('data-id'))
+                                Bazaarboy.post 'event/promo/unlink/', {id:promo_id, ticket:ticket_id}, (response) ->
                                     if response.status isnt 'OK'
                                         alert response.message
                             $('form#promo-form div.promo-form-tickets a.select-ticket.selected').each () ->
-                                Bazaarboy.post 'event/promo/link/', {id:promo_id, ticket:$(this).data('id')}, (response) ->
+                                ticket_id = parseInt($(this).attr('data-id'))
+                                Bazaarboy.post 'event/promo/link/', {id:promo_id, ticket:ticket_id}, (response) ->
                                     if response.status isnt 'OK'
                                         alert response.message
                                     linkedTickets++
@@ -399,9 +405,9 @@ Bazaarboy.event.modify.tickets =
                 return
             return
         $('div#promos').on 'click', 'a.edit-promo',  () ->
-            $('form#promo-form').attr('data-id', $(this).data('id'))
+            $('form#promo-form').attr('data-id', $(this).attr('data-id'))
             $('div#promos div.promo-form-tickets a.select-ticket').removeClass 'selected'
-            Bazaarboy.get 'event/promo/', {id: $(this).data('id')}, (response) ->
+            Bazaarboy.get 'event/promo/', {id: parseInt($(this).attr('data-id'))}, (response) ->
                 promo = response.promo
                 console.log promo
                 tickets = promo.tickets
@@ -434,7 +440,7 @@ Bazaarboy.event.modify.tickets =
                 else
                     $('form#promo-form input[name=expiration_time]').val ''
                 $('div#promos div.promo-form-tickets a.select-ticket').each () ->
-                    if tickets.indexOf($(this).data('id')) > -1
+                    if tickets.indexOf(parseInt($(this).attr('data-id'))) > -1
                         $(this).addClass 'selected'
                     return
                 $('div#promos div.content').fadeOut 300, () ->
@@ -448,12 +454,12 @@ Bazaarboy.event.modify.tickets =
                 return
             return
         $('div#promos').on 'click', 'a.delete-promo',  () ->
-            Bazaarboy.get 'event/promo/', {id: $('form#promo-form').data('id')}, (response) ->
+            Bazaarboy.get 'event/promo/', {id: parseInt($('form#promo-form').attr('data-id'))}, (response) ->
                 if confirm("Are you sure you want to delete the promo code: '" + response.promo.code + "'?")
-                    Bazaarboy.post 'event/promo/delete/', {id: $('form#promo-form').data('id')}, (response) ->
+                    Bazaarboy.post 'event/promo/delete/', {id: parseInt($('form#promo-form').attr('data-id'))}, (response) ->
                         if response.status is 'OK'
                             $("div.promo").each () ->
-                                if $(this).data('id') is $('form#promo-form').data('id')
+                                if parseInt($(this).attr('data-id')) is parseInt($('form#promo-form').attr('data-id'))
                                     $(this).remove()
                                 return
                             $('div#promos div.edit').fadeOut 300, () ->
@@ -466,7 +472,7 @@ Bazaarboy.event.modify.tickets =
         $('div#promos form#promo-form a.promo-type').click () ->
             $('div#promos form#promo-form a.promo-type').removeClass 'active'
             $(this).addClass 'active'
-            if $(this).data('type') is 'number'
+            if $(this).attr('data-type') is 'number'
                 $('div#promos form#promo-form span.discount-identifier').html '($)'
                 $('div#promos form#promo-form input.discount-input').attr('placeholder', 'Discount Amount (between $0 and price of ticket)')
             else

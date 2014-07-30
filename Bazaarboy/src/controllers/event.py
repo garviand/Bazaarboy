@@ -1277,6 +1277,13 @@ def edit_promo(request, params, user):
         }
         return json_response(response)
     if params['code'] is not None:
+        if Promo.objects.filter(code = params['code'], event = event).exists() and promo.code != params['code']:
+            response = {
+                'status':'FAIL',
+                'error':'DUPLICATE_CODE',
+                'message':'You cannot have two identical promo codes.'
+            }
+            return json_response(response)
         params['code'] = cgi.escape(params['code'])
         if len(params['code']) > 20:
             response = {
@@ -1303,6 +1310,7 @@ def edit_promo(request, params, user):
             }
             return json_response(response)
         else:
+            promo.discount = None
             promo.amount = params['amount']
     if params['discount']:
         params['discount'] = float(params['discount'])
@@ -1314,6 +1322,7 @@ def edit_promo(request, params, user):
             }
             return
         else:
+            promo.amount = None
             promo.discount = params['discount']
     if promo.amount is None and promo.discount is None:
         response = {
