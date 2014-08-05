@@ -11,6 +11,7 @@ Bazaarboy.event.manage =
             first_name: $('form[name=add-guest] input[name=first_name]').val().trim()
             last_name: $('form[name=add-guest] input[name=last_name]').val().trim()
             email: $('form[name=add-guest] input[name=email]').val().trim()
+            send_email: $('form[name=add-guest] input[name=send_email]').is(':checked')
             details: {}
         ticketId = parseInt($('form[name=add-guest] select[name=ticket]').val())
         params.details[ticketId] = parseInt($('form[name=add-guest] input[name=quantity]').val())
@@ -151,6 +152,7 @@ Bazaarboy.event.manage =
         $('a.close-invite-modal').click () ->
             $('div#invite-modal').foundation('reveal', 'close')
             return
+        # ADD GUEST
         $("div.guest-add-invite a.start-guest-add").click (e) ->
             e.preventDefault()
             $('div.add-guest-container').removeClass 'hidden'

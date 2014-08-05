@@ -578,23 +578,29 @@
         }
       });
       $('div#tickets-canvas div.ticket div.ticket-top').hover(function() {
-        return $(this).parents('div.ticket').addClass('hover');
+        if (!$(this).parents('div.ticket').hasClass('soldout')) {
+          $(this).parents('div.ticket').addClass('hover');
+        }
       }, function() {
-        return $(this).parents('div.ticket').removeClass('hover');
+        if (!$(this).parents('div.ticket').hasClass('soldout')) {
+          $(this).parents('div.ticket').removeClass('hover');
+        }
       });
       $('div#tickets-canvas div.ticket-top').click(function() {
         var quant;
-        $(this).parents('.ticket').toggleClass('active');
-        if ($(this).parents('.ticket').hasClass('active')) {
-          $(this).parents('.ticket').find('div.ticket-middle').slideDown(100);
-          quant = $(this).parents('.ticket').find('input.ticket-quantity');
-          if (quant.val().trim() === '' || parseInt(quant.val()) === 0) {
-            quant.val(1);
+        if (!$(this).parents('div.ticket').hasClass('soldout')) {
+          $(this).parents('.ticket').toggleClass('active');
+          if ($(this).parents('.ticket').hasClass('active')) {
+            $(this).parents('.ticket').find('div.ticket-middle').slideDown(100);
+            quant = $(this).parents('.ticket').find('input.ticket-quantity');
+            if (quant.val().trim() === '' || parseInt(quant.val()) === 0) {
+              quant.val(1);
+            }
+          } else {
+            $(this).parents('.ticket').find('div.ticket-middle').slideUp(100);
           }
-        } else {
-          $(this).parents('.ticket').find('div.ticket-middle').slideUp(100);
+          scope.updateSubtotal();
         }
-        scope.updateSubtotal();
       });
       $('input.ticket-quantity').keyup(function() {
         var wrapper;
@@ -616,6 +622,36 @@
       });
       $('a#tickets-confirm').click(function() {
         _this.purchase();
+      });
+      $('a.issue-btn').click(function() {
+        $('div#issue-modal').foundation('reveal', 'open');
+      });
+      $('a.issue-close').click(function() {
+        $('div#issue-modal').foundation('reveal', 'close');
+      });
+      $('div.send-issue a.send-issue-btn').click(function() {
+        $(this).html('Sending...');
+        $('form.issue-form').submit();
+      });
+      $('form.issue-form').submit(function(event) {
+        event.preventDefault();
+      });
+      $('form.issue-form').on('valid', function() {
+        var optionals, params;
+        params = $(this).serializeObject();
+        optionals = [];
+        params = Bazaarboy.stripEmpty(params, optionals);
+        console.log(params);
+        Bazaarboy.post('event/issue/', params, function(response) {
+          if (response.status === 'OK') {
+            return $('form.issue-form').fadeOut(300, function() {
+              $('div.row.issue-success').fadeIn(300);
+            });
+          } else {
+            alert(response.message);
+            return $('div.send-issue a.send-message').html('Send Message');
+          }
+        });
       });
       $('a.contact-organizer-btn').click(function() {
         $('div#contact-organizer-modal').foundation('reveal', 'open');

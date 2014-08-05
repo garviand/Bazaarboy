@@ -16,6 +16,7 @@
         first_name: $('form[name=add-guest] input[name=first_name]').val().trim(),
         last_name: $('form[name=add-guest] input[name=last_name]').val().trim(),
         email: $('form[name=add-guest] input[name=email]').val().trim(),
+        send_email: $('form[name=add-guest] input[name=send_email]').is(':checked'),
         details: {}
       };
       ticketId = parseInt($('form[name=add-guest] select[name=ticket]').val());

@@ -8314,6 +8314,10 @@ div#event-manage .add-guest-container input[type=submit] {
   padding-top: 6px;
   padding-bottom: 9px;
 }
+div#event-manage .add-guest-container div.send-email-input {
+  position: relative;
+  top: 11px;
+}
 div#event-manage .refund {
   text-align: center;
 }
@@ -8631,6 +8635,45 @@ div#contact-organizer-modal div.contact-organizer-success a.contact-organizer-cl
   padding-bottom: 11px;
 }
 div#contact-organizer-modal div.contact-organizer-success a.contact-organizer-close:hover {
+  color: #FFF;
+}
+div#issue-modal div.issue-title {
+  margin-bottom: 10px;
+}
+div#issue-modal div.issue-subtitle {
+  margin-bottom: 15px;
+  line-height: 1.3rem;
+  font-size: 12px;
+}
+div#issue-modal form > div {
+  margin-top: 15px;
+}
+div#issue-modal span.underline {
+  text-decoration: underline;
+}
+div#issue-modal div.send-issue a.send-issue-btn {
+  display: block;
+  width: 100%;
+  padding-top: 9px;
+  padding-bottom: 11px;
+}
+div#issue-modal div.send-issue a.send-issue-btn:hover,
+div#issue-modal div.send-issue a.send-issue-btn:focus {
+  color: #FFF;
+}
+div#issue-modal div.send-issue div.move-down {
+  margin-top: 10px;
+}
+div#issue-modal div.issue-success {
+  display: none;
+}
+div#issue-modal div.issue-success a.issue-close {
+  display: block;
+  width: 100%;
+  padding-top: 9px;
+  padding-bottom: 11px;
+}
+div#issue-modal div.issue-success a.issue-close:hover {
   color: #FFF;
 }
 div#add-organizer-modal div.add-organizer-title {
@@ -9323,6 +9366,9 @@ div#tickets-body div#tickets-canvas div.ticket div.ticket-bottom div.ticket-desc
   padding-right: 0.9375rem;
   min-height: 60px;
 }
+div#tickets-body div#tickets-canvas div.ticket div.ticket-bottom div.ticket-description-container div.ticket-sold-out {
+  font-weight: bold;
+}
 div#tickets-body div#tickets-canvas div.ticket div.ticket-bottom div.ticket-description {
   position: absolute;
   top: 50%;
@@ -9378,6 +9424,14 @@ div#tickets-subtotal {
   font-size: 14px;
   padding-top: 14px;
   font-weight: bold;
+}
+div#tickets-subtotal div.issues a {
+  display: block;
+  margin-top: 10px;
+  font-size: 10px;
+  color: #faa638;
+  font-weight: 300;
+  font-style: italic;
 }
 @media only screen and (max-width: 40em) {
   div#tickets-subtotal {

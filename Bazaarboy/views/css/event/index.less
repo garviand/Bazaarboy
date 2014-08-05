@@ -263,6 +263,51 @@ div#contact-organizer-modal{
     }
 }
 
+div#issue-modal{
+    div.issue-title{
+        margin-bottom: 10px;
+    }
+    div.issue-subtitle{
+        margin-bottom: 15px;
+        line-height: 1.3rem;
+        font-size: 12px;
+    }
+    form{
+        > div{
+            margin-top: 15px;
+        }
+    }
+    span.underline{
+        text-decoration: underline;
+    }
+    div.send-issue{
+        a.send-issue-btn{
+            display: block;
+            width: 100%;
+            padding-top: 9px;
+            padding-bottom: 11px;
+            &:hover, &:focus{
+                color: #FFF;
+                    }
+        }
+        div.move-down{
+            margin-top: 10px;
+        }
+    }
+    div.issue-success{
+        display: none;
+        a.issue-close{
+            display: block;
+            width: 100%;
+            padding-top: 9px;
+            padding-bottom: 11px;
+            &:hover{
+                color:#FFF;
+            }
+        }
+    }
+}
+
 div#add-organizer-modal{
     div.add-organizer-title{
         margin-bottom: 20px;
@@ -1020,6 +1065,9 @@ div#tickets-body {
                     padding-left: 0.9375rem;
                     padding-right: 0.9375rem;
                     min-height: 60px;
+                    div.ticket-sold-out{
+                        font-weight: bold;
+                    }
                 }
                 div.ticket-description{
                     position: absolute;
@@ -1087,6 +1135,16 @@ div#tickets-subtotal {
     font-size: 14px;
     padding-top: 14px;
     font-weight: bold;
+    div.issues{
+        a{
+            display: block;
+            margin-top: 10px;
+            font-size: 10px;
+            color: @orange;
+            font-weight: 300;
+            font-style: italic;
+        }
+    }
 }
 
 @media @media_small{

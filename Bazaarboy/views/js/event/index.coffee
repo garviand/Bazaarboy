@@ -495,19 +495,24 @@ Bazaarboy.event.index =
                     return
             return
         $('div#tickets-canvas div.ticket div.ticket-top').hover ->
-            $(this).parents('div.ticket').addClass 'hover' 
+            if not $(this).parents('div.ticket').hasClass 'soldout'
+                $(this).parents('div.ticket').addClass 'hover'
+            return
         , ->
-            $(this).parents('div.ticket').removeClass 'hover'
+            if not $(this).parents('div.ticket').hasClass 'soldout'
+                $(this).parents('div.ticket').removeClass 'hover'
+            return
         $('div#tickets-canvas div.ticket-top').click () ->
-            $(this).parents('.ticket').toggleClass 'active'
-            if $(this).parents('.ticket').hasClass('active')
-                $(this).parents('.ticket').find('div.ticket-middle').slideDown 100
-                quant = $(this).parents('.ticket').find('input.ticket-quantity')
-                if quant.val().trim() is '' or parseInt(quant.val()) is 0
-                    quant.val 1
-            else
-                $(this).parents('.ticket').find('div.ticket-middle').slideUp 100
-            scope.updateSubtotal()
+            if not $(this).parents('div.ticket').hasClass 'soldout'
+                $(this).parents('.ticket').toggleClass 'active'
+                if $(this).parents('.ticket').hasClass('active')
+                    $(this).parents('.ticket').find('div.ticket-middle').slideDown 100
+                    quant = $(this).parents('.ticket').find('input.ticket-quantity')
+                    if quant.val().trim() is '' or parseInt(quant.val()) is 0
+                        quant.val 1
+                else
+                    $(this).parents('.ticket').find('div.ticket-middle').slideUp 100
+                scope.updateSubtotal()
             return
         $('input.ticket-quantity').keyup () ->
             wrapper = $(this).closest('div.wrapper')
@@ -526,6 +531,34 @@ Bazaarboy.event.index =
             return
         $('a#tickets-confirm').click () =>
             @purchase()
+            return
+        # SEND RSVP ISSUE
+        $('a.issue-btn').click () ->
+            $('div#issue-modal').foundation('reveal', 'open')
+            return
+        $('a.issue-close').click () ->
+            $('div#issue-modal').foundation('reveal', 'close')
+            return
+        $('div.send-issue a.send-issue-btn').click () ->
+            $(this).html('Sending...')
+            $('form.issue-form').submit()
+            return
+        $('form.issue-form').submit (event) ->
+            event.preventDefault()
+            return
+        $('form.issue-form').on 'valid', () ->
+            params = $(this).serializeObject()
+            optionals = []
+            params = Bazaarboy.stripEmpty params, optionals
+            console.log params
+            Bazaarboy.post 'event/issue/', params, (response) ->
+                if response.status is 'OK'
+                    $('form.issue-form').fadeOut 300, () ->
+                        $('div.row.issue-success').fadeIn 300
+                        return
+                else
+                    alert response.message
+                    $('div.send-issue a.send-message').html('Send Message')
             return
         # CONTACT ORGANIZER
         $('a.contact-organizer-btn').click () ->

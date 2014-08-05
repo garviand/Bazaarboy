@@ -173,6 +173,45 @@ def sendRefundConfirmationEmail(purchase, amount):
     return sendEmails(to, subject, template, mergeVars)
 
 @task()
+def sendIssueEmail(name, email, message, event):
+    if event.slug:
+        event_url = 'https://bazaarboy.com/' + event.slug
+    else:
+        event_url = 'https://bazaarboy.com/event/' + str(event.id)
+    to = [{
+        'email': 'andy@bazaarboy.com', 
+        'name': 'Bazaarboy'
+    }]
+    subject = event.name + ' - RSVP issue from ' + name
+    template = 'issue'
+    mergeVars = [{
+        'rcpt': 'andy@bazaarboy.com',
+        'vars': [
+            {
+                'name': 'user_name', 
+                'content': name
+            },
+            {
+                'name': 'user_email', 
+                'content': email
+            },
+            {
+                'name': 'event_name', 
+                'content': event.name
+            },
+            {
+                'name': 'event_url', 
+                'content': event_url
+            },
+            {
+                'name': 'user_message', 
+                'content': message
+            }
+        ]
+    }]
+    return sendEmails(to, subject, template, mergeVars)
+
+@task()
 def sendProfileMessageEmail(name, email, message, profile, event):
     to = [{
         'email':profile.email, 

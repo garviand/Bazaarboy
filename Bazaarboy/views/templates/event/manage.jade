@@ -73,6 +73,11 @@ block content
                                     input(type="text", name="quantity", placeholder="Quantity")
                                 div.medium-4.small-12.columns
                                     input.primary-btn(type="submit", name="submit", value="Add Guest(s)")
+                            div.row
+                                div.medium-12.small-12.text-right.columns.send-email-input
+                                    input#send-email(type="checkbox", name="send_email", checked)
+                                    label(for="send-email") Send Confirmation Email
+                            hr
                 div.row
                     div.small-12.columns.guests
                         div.list_guests

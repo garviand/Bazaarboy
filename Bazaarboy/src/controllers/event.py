@@ -21,7 +21,7 @@ from src.config import *
 from src.controllers.request import *
 from src.ordereddict import OrderedDict
 from src.csvutils import UnicodeWriter
-from src.email import sendEventConfirmationEmail, sendEventInvite, sendOrganizerAddedEmail
+from src.email import sendEventConfirmationEmail, sendEventInvite, sendOrganizerAddedEmail, sendIssueEmail
 from src.regex import REGEX_EMAIL, REGEX_NAME, REGEX_SLUG
 from src.sanitizer import sanitize_redactor_input
 from src.serializer import serialize, serialize_one
@@ -296,6 +296,29 @@ def search(request, params):
     response = {
         'status':'OK',
         'events':serialize(events)
+    }
+    return json_response(response)
+
+@validate('POST', ['name', 'useremail', 'message', 'event'])
+def issue(request, params):
+    if not Event.objects.filter(id = params['event']).exists():
+        response = {
+            'status':'FAIL',
+            'error':'EVENT_NOT_FOUND',
+            'message':'The event doesn\'t exist.'
+        }
+        return json_response(response)
+    if not REGEX_EMAIL.match(params['useremail']):
+        response = {
+            'status':'FAIL',
+            'error':'INVALID_EMAIL',
+            'message':'Email format is invalid.'
+        }
+        return json_response(response)
+    event = Event.objects.get(id = params['event'])
+    sendIssueEmail(params['name'], params['useremail'], params['message'], event)
+    response = {
+                'status':'OK'
     }
     return json_response(response)
 
@@ -1581,7 +1604,7 @@ def purchase(request, params, user):
     return json_response(response)
 
 @login_required()
-@validate('POST', ['event', 'details', 'email', 'first_name', 'last_name'], ['phone', 'force'])
+@validate('POST', ['event', 'details', 'email', 'first_name', 'last_name'], ['phone', 'force', 'send_email'])
 def add_purchase(request, params, user):
     """
     Manually add purchase by organizer
@@ -1746,8 +1769,9 @@ def add_purchase(request, params, user):
                     'quantity': 1
                 }
         # Send confirmation email and sms
-        sendEventConfirmationEmail(purchase, True, inviter)
-        sendEventConfirmationSMS(purchase)
+        if params['send_email'] and params['send_email'] == 'true':
+            sendEventConfirmationEmail(purchase, True, inviter)
+            sendEventConfirmationSMS(purchase)
         # Success
         response = {
             'status':'OK',
