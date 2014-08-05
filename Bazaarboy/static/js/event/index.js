@@ -95,9 +95,12 @@
         if ($(ticket).find('input.ticket-selected').is(':checked')) {
           ticketSelected = true;
           quantity = parseInt($(ticket).find('input.ticket-quantity').val());
-          params.details[$(ticket).attr('data-id')] = quantity;
+          params.details[$(ticket).attr('data-id')] = {
+            'quantity': quantity
+          };
         }
       }
+      console.log(params);
       params.details = JSON.stringify(params.details);
       if (params.phone.length === 0) {
         delete params.phone;

@@ -198,6 +198,7 @@ class Ticket(models.Model):
     start_time = models.DateTimeField(null = True, default = None)
     end_time = models.DateTimeField(null = True, default = None)
     request_address = models.BooleanField(default = False)
+    extra_fields = models.TextField()
     is_deleted = models.BooleanField(default = False)
 
 class Promo(models.Model):
@@ -246,6 +247,7 @@ class Purchase_item(models.Model):
     ticket = models.ForeignKey('Ticket')
     price = models.FloatField()
     address = models.TextField(null = True, default = None)
+    extra_fields = models.TextField()
     is_checked_in = models.BooleanField(default = False)
     checked_in_time = models.DateTimeField(null = True, default = None)
 

@@ -855,7 +855,7 @@ def ticket(request, params, user):
 @login_required()
 @validate('POST', 
           ['event', 'name', 'description'], 
-          ['price', 'quantity', 'start_time', 'end_time', 'request_address'])
+          ['price', 'quantity', 'start_time', 'end_time', 'request_address', 'extra_fields'])
 def create_ticket(request, params, user):
     """
     Create a ticket for an event
@@ -942,6 +942,19 @@ def create_ticket(request, params, user):
             ticket.request_address = True
         if params['request_address'] == 'false':
             ticket.request_address = False
+    # Extra fields
+    if params['extra_fields'] is not None:
+        try:
+            fields = json.loads(params['extra_fields'])
+        except:
+            response = {
+                'status':'FAIL',
+                'error':'INVALID_FIELD_FORMAT',
+                'message':'The extra field format is not correct.'
+            }
+            return json_response(response)
+        finally:
+            ticket.extra_fields = fields
     # All checks passed, write to database
     ticket.save()
     response = {
@@ -954,7 +967,7 @@ def create_ticket(request, params, user):
 @validate('POST', 
           ['id'], 
           ['name', 'description', 'price', 'quantity', 'start_time', 
-           'end_time', 'request_address'])
+           'end_time', 'request_address', 'extra_fields'])
 def edit_ticket(request, params, user):
     """
     Edit a ticket
@@ -1051,6 +1064,19 @@ def edit_ticket(request, params, user):
             ticket.request_address = True
         if params['request_address'] == 'false':
             ticket.request_address = False
+    # Extra fields
+    if params['extra_fields'] is not None:
+        try:
+            fields = json.loads(params['extra_fields'])
+        except:
+            response = {
+                'status':'FAIL',
+                'error':'INVALID_FIELD_FORMAT',
+                'message':'The extra field format is not correct.'
+            }
+            return json_response(response)
+        finally:
+            ticket.extra_fields = fields
     # Save the changes
     ticket.save()
     response = {
@@ -1560,7 +1586,17 @@ def purchase(request, params, user):
     """
     Make purchase for an event
 
-    @details: {'#ticket1.id':#quantity, '#ticket2.id':#quantity, ...}
+    @details: {
+        '#ticket1.id': {
+            'quantity': #quantity,
+            'extra_fields': {...} 
+        },
+        '#ticket2.id': {
+            'quantity': #quantity,
+            'extra_fields': {...}
+        }
+        ...
+    }
     """
     _user = user
     # Check purchaser information
@@ -1621,34 +1657,59 @@ def purchase(request, params, user):
     _tickets = Ticket.objects.filter(event = event, is_deleted = False)
     tickets = {}
     for _ticket in _tickets:
+        if len(_ticket.extra_fields) == 0:
+            _ticket.extra_fields = None
+        else:
+            _ticket.extra_fields = json.loads(_ticket.extra_fields)
         tickets[_ticket.id] = _ticket
-        if _ticket.request_address:
-            requestAddress = True
     address = ''
-    if requestAddress and (params['address'] is None or len(params['address']) == 0):
-        response = {
-            'status':'FAIL',
-            'error':'INVALID_ADDRESS',
-            'message':'An address is needed for certain tickets.'
-        }
-        return json_response(response)
-    else:
+    if params['address']:
         address = params['address']
     _details = {}
     for tid in details:
-        _details[int(tid)] = int(details[tid])
+        _details[int(tid)] = details[tid]
     details = _details
     for tid in details:
         # Check if the ticket belongs to the event
         if tickets.has_key(tid):
             ticket = tickets[tid]
+            if ticket.request_address and (params['address'] is None or len(params['address']) == 0):
+                response = {
+                    'status':'FAIL',
+                    'error':'INVALID_ADDRESS',
+                    'message':'An address is needed for certain tickets.'
+                }
+                return json_response(response)
             now = timezone.now()
             # Check timing
             if ((ticket.start_time is None or ticket.start_time <= now) and 
                 (ticket.end_time is None or ticket.end_time >= now)):
                 # Check quantity
-                if details[tid] > 0:
-                    continue
+                if details[tid]['quantity'] > 0:
+                    # Check extra fields
+                    if ticket.extra_fields is not None:
+                        for fieldName, fieldValue in ticket.extra_fields.iteritems():
+                            if not details[tid]['extra_fields'].has_key(fieldName):
+                                response = {
+                                    'status':'FAIL',
+                                    'error':'MISSING_EXTRA_FIELDS',
+                                    'message':'The extra fields are incomplete for some tickets.'
+                                }
+                                return json_response(response)
+                            if len(fieldValue) != 0:
+                                options = fieldValue.split(',')
+                                if details[tid]['extra_fields'][fieldName] not in options:
+                                    response = {
+                                        'status':'FAIL',
+                                        'error':'EXTRA_FIELDS_MISMATCH',
+                                        'message':'Some field values do not match the field options.'
+                                    }
+                                    return json_response(response)
+                            details[tid]['extra_fields'] = json.dumps(details[tid]['extra_fields'])
+                            continue
+                    else:
+                        details[tid]['extra_fields'] = ''
+                        continue
                 else:
                     response = {
                         'status':'FAIL',
@@ -1692,10 +1753,10 @@ def purchase(request, params, user):
             }
             return json_response(response)
     # Sum up the quantities needed for promos
-    for tid, quantity in details.items():
+    for tid, detail in details.items():
         for i in range(0, len(promos)):
             if tid in promos[i]['tickets']:
-                promos[i]['quantity'] += quantity
+                promos[i]['quantity'] += detail['quantity']
     # Check if it exceeds the limit of the promo codes
     for promo in promos:
         if promo['promo'].quantity is not None:
@@ -1745,9 +1806,9 @@ def purchase(request, params, user):
                         if ticket.price * promo['promo'].discount < priceB:
                             priceB = ticket.price * promo['promo'].discount
             if priceA < priceB:
-                amount += priceA * details[ticket.id]
+                amount += priceA * details[ticket.id]['quantity']
             else:
-                amount += priceB * details[ticket.id]
+                amount += priceB * details[ticket.id]['quantity']
         # All checks done, save user information
         user.save()
         # Check if the purchase is in fact an RSVP action (free)
@@ -1756,19 +1817,19 @@ def purchase(request, params, user):
             purchase = Purchase(owner = user, event = event, amount = 0)
             purchase.save()
             for ticket in tickets:
-                for i in range(0, details[ticket.id]):
-
+                for i in range(0, details[ticket.id]['quantity']):
                     item = Purchase_item(purchase = purchase, 
                                          ticket = ticket, 
                                          price = ticket.price, 
-                                         address = address)
+                                         address = address, 
+                                         extra_fields = details[ticket.id]['extra_fields'])
                     item.save()
                 # If the ticket has a quantity limit
                 if ticket.quantity is not None:
                     # Update the ticket quantity
                     Ticket.objects \
                           .filter(id = ticket.id) \
-                          .update(quantity = F('quantity') - details[ticket.id])
+                          .update(quantity = F('quantity') - details[ticket.id]['quantity'])
             for tid, promo in promos:
                 item = Purchase_promo(purchase = purchase, 
                                       promo = promo['promo'], 
@@ -1815,18 +1876,19 @@ def purchase(request, params, user):
             purchase.promos.add(promo['promo'])
         purchase.save()
         for ticket in tickets:
-            for i in range(0, details[ticket.id]):
+            for i in range(0, details[ticket.id]['quantity']):
                 item = Purchase_item(purchase = purchase, 
                                      ticket = ticket, 
                                      price = ticket.price, 
-                                     address = address)
+                                     address = address, 
+                                     extra_fields = details[ticket.id]['extra_fields'])
                 item.save()
             # If the ticket has a quantity limit
             if ticket.quantity is not None:
                 # Update the ticket quantity
                 Ticket.objects \
                       .filter(id = ticket.id) \
-                      .update(quantity = F('quantity') - details[ticket.id])
+                      .update(quantity = F('quantity') - details[ticket.id]['quantity'])
         for promo in promos:
             item = Purchase_promo(purchase = purchase, 
                                   promo = promo['promo'], 
