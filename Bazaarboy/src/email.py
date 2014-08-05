@@ -179,7 +179,7 @@ def sendIssueEmail(name, email, message, event):
     else:
         event_url = 'https://bazaarboy.com/event/' + str(event.id)
     to = [{
-        'email': 'andy@bazaarboy.com', 
+        'email': 'eric@bazaarboy.com', 
         'name': 'Bazaarboy'
     }]
     subject = event.name + ' - RSVP issue from ' + name
