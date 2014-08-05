@@ -228,11 +228,17 @@ block content
                                     input#request-address(type="checkbox", name="request_address")
                                     label(for="request-address") This Ticket Requires An Address
                             div.row.custom-fields-container
+                                div.small-12.columns.custom-field-container.template.hide
+                                    div.row
+                                        div.small-12.medium-4.columns
+                                            input.field_name(type="text", placeholder="Field Name")
+                                        div.small-12.medium-8.columns
+                                            input.field_options(type="text", placeholder="Choices (ex. - Red, Green, Blue) **Optional")
                                 div.small-12.columns
                                     a.add-custom-field-btn(href="javascript:;") + Add Custom Field
                             div.row
                                 div.small-12.columns
-                                    p Timing Options (Optional, leave blank if not needed) :
+                                    p Timing Options (Optional, leave blank if not needed):
                                 div.medium-3.columns
                                     input.field(type="text", name="start_date", placeholder="Start Date")
                                 div.medium-3.columns

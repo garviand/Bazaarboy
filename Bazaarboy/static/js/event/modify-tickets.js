@@ -3,6 +3,7 @@
     ticketSubmitting: false,
     promoSubmitting: false,
     newTicket: function() {
+      $('div.custom-field-container:not(.template)').remove();
       $('div#edit-ticket div.step-2').hide();
       $('div#edit-ticket div.step-1').show();
       $('div#edit-ticket').removeAttr('data-id').removeClass('edit').addClass('add');
@@ -22,10 +23,25 @@
       Bazaarboy.get('event/ticket/', {
         id: ticket
       }, function(response) {
-        var endDate, endTime, quantity, startDate, startTime;
+        var endDate, endTime, extraFields, field_name, field_options, newField, quantity, startDate, startTime;
         if (response.status !== 'OK') {
           alert(response.message);
         } else {
+          $('div.custom-field-container:not(.template)').remove();
+          if (response.ticket.extra_fields.length > 0) {
+            extraFields = response.ticket.extra_fields.replace(new RegExp("u'", "g"), "'");
+            extraFields = extraFields.replace(new RegExp("\'", "g"), "\"");
+            extraFields = JSON.parse(extraFields);
+            for (field_name in extraFields) {
+              field_options = extraFields[field_name];
+              newField = $('div.custom-fields-container div.custom-field-container.template').clone();
+              newField.find('input.field_name').val(field_name);
+              newField.find('input.field_options').val(field_options);
+              newField.removeClass('hide');
+              newField.removeClass('template');
+              $('div.custom-fields-container').prepend(newField);
+            }
+          }
           $('div#edit-ticket').removeClass('add').addClass('edit');
           $('div#edit-ticket div.step-1').addClass('hide');
           $('div#edit-ticket div.step-1 span.type').html('Switch');
@@ -250,6 +266,13 @@
       var isEditTicketInAnimation, scope,
         _this = this;
       scope = this;
+      $('body').on('click', 'a.add-custom-field-btn', function() {
+        var newField;
+        newField = $('div.custom-fields-container div.custom-field-container.template').clone();
+        $('div.custom-fields-container').prepend(newField);
+        newField.removeClass('hide');
+        newField.removeClass('template');
+      });
       $('a.new-ticket').click(function() {
         _this.newTicket();
       });
@@ -315,7 +338,7 @@
         }
       });
       $('div#edit-ticket form').submit(function(event) {
-        var endDate, endTime, endpoint, isNew, params, startDate, startTime, ticketId;
+        var endDate, endTime, endpoint, extraFields, isNew, params, startDate, startTime, ticketId;
         event.preventDefault();
         if (!scope.ticketSubmitting) {
           scope.ticketSubmitting = true;
@@ -373,6 +396,16 @@
               params.end_time = 'None';
             }
           }
+          extraFields = {};
+          $('div.custom-field-container:not(.template)').each(function() {
+            var fieldName, fieldOptions;
+            fieldName = $(this).find('input.field_name').val();
+            fieldOptions = $(this).find('input.field_options').val();
+            if (fieldName.trim() !== '') {
+              extraFields[fieldName] = fieldOptions;
+            }
+          });
+          params.extra_fields = JSON.stringify(extraFields);
           endpoint = 'event/ticket/edit/';
           if (isNew) {
             endpoint = 'event/ticket/create/';

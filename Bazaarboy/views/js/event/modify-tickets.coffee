@@ -2,6 +2,7 @@ Bazaarboy.event.modify.tickets =
     ticketSubmitting: false
     promoSubmitting: false
     newTicket: () ->
+        $('div.custom-field-container:not(.template)').remove()
         $('div#edit-ticket div.step-2').hide()
         $('div#edit-ticket div.step-1').show()
         $('div#edit-ticket').removeAttr('data-id').removeClass('edit').addClass 'add'
@@ -26,6 +27,18 @@ Bazaarboy.event.modify.tickets =
           if response.status isnt 'OK'
               alert response.message
           else
+              $('div.custom-field-container:not(.template)').remove()
+              if response.ticket.extra_fields.length > 0
+                  extraFields = response.ticket.extra_fields.replace(new RegExp("u'", "g"),"'")
+                  extraFields = extraFields.replace(new RegExp("\'", "g"),"\"")
+                  extraFields = JSON.parse extraFields
+                  for field_name, field_options of extraFields
+                      newField = $('div.custom-fields-container div.custom-field-container.template').clone()
+                      newField.find('input.field_name').val field_name
+                      newField.find('input.field_options').val field_options
+                      newField.removeClass 'hide'
+                      newField.removeClass 'template'
+                      $('div.custom-fields-container').prepend(newField)
               $('div#edit-ticket').removeClass('add').addClass 'edit'
               $('div#edit-ticket div.step-1').addClass 'hide'
               $('div#edit-ticket div.step-1 span.type').html 'Switch'
@@ -207,6 +220,12 @@ Bazaarboy.event.modify.tickets =
         return
     init: () ->
         scope = this
+        $('body').on 'click', 'a.add-custom-field-btn', () ->
+            newField = $('div.custom-fields-container div.custom-field-container.template').clone()
+            $('div.custom-fields-container').prepend(newField)
+            newField.removeClass 'hide'
+            newField.removeClass 'template'
+            return
         $('a.new-ticket').click () =>
             @newTicket()
             return
@@ -311,6 +330,14 @@ Bazaarboy.event.modify.tickets =
                         delete params.end_time
                     else
                         params.end_time = 'None'
+                extraFields = {}
+                $('div.custom-field-container:not(.template)').each () ->
+                    fieldName = $(this).find('input.field_name').val()
+                    fieldOptions = $(this).find('input.field_options').val()
+                    if fieldName.trim() isnt ''
+                        extraFields[fieldName] = fieldOptions
+                    return
+                params.extra_fields = JSON.stringify extraFields
                 endpoint = 'event/ticket/edit/'
                 if isNew
                     endpoint = 'event/ticket/create/'
