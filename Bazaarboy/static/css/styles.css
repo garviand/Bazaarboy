@@ -9561,7 +9561,18 @@ div#event-modify-tickets div#edit-ticket form input[name="name"] {
   margin-top: 24px;
 }
 div#event-modify-tickets div#edit-ticket form div.address-container {
-  margin: 10px 0;
+  margin-top: 10px;
+}
+div#event-modify-tickets div#edit-ticket form div.address-container input {
+  margin-bottom: 0;
+}
+div#event-modify-tickets div#edit-ticket form div.custom-fields-container {
+  margin-top: 20px;
+  margin-bottom: 20px;
+}
+div#event-modify-tickets div#edit-ticket form div.custom-fields-container a {
+  font-size: 13px;
+  color: #4963e4;
 }
 div#event-modify-tickets div#edit-ticket form div.price {
   position: relative;

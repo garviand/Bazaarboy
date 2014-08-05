@@ -192,6 +192,7 @@
         $('input[name=last_name]').val('');
         $('input[name=email]').val('');
         $('input[name=phone]').val('');
+        $('input[name=address]').val('');
         $('input.ticket-selected').prop('checked', false);
         $('div#confirmation-modal').foundation('reveal', 'open');
       }
