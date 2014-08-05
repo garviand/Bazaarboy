@@ -81,6 +81,10 @@ def index(request, id, params, user):
                     'quantity': 1
                 }
     tickets = Ticket.objects.filter(event = event, is_deleted = False)
+    requiresAddress = False
+    for ticket in tickets:
+        if ticket.request_address:
+            requiresAddress = True
     promos = Promo.objects.filter(event = event, is_deleted = False)
     organizers = Organizer.objects.filter(event = event)
     rsvp = True
@@ -851,7 +855,7 @@ def ticket(request, params, user):
 @login_required()
 @validate('POST', 
           ['event', 'name', 'description'], 
-          ['price', 'quantity', 'start_time', 'end_time'])
+          ['price', 'quantity', 'start_time', 'end_time', 'request_address'])
 def create_ticket(request, params, user):
     """
     Create a ticket for an event
@@ -933,6 +937,11 @@ def create_ticket(request, params, user):
                 'message':'End time cannot be before start time.'
             }
             return json_response(response)
+    if params['request_address']:
+        if params['request_address'] == 'true':
+            ticket.request_address = True
+        if params['request_address'] == 'false':
+            ticket.request_address = False
     # All checks passed, write to database
     ticket.save()
     response = {
@@ -945,7 +954,7 @@ def create_ticket(request, params, user):
 @validate('POST', 
           ['id'], 
           ['name', 'description', 'price', 'quantity', 'start_time', 
-           'end_time'])
+           'end_time', 'request_address'])
 def edit_ticket(request, params, user):
     """
     Edit a ticket
@@ -1037,6 +1046,11 @@ def edit_ticket(request, params, user):
                 'message':'End time cannot be before start time.'
             }
             return json_response(response)
+    if params['request_address']:
+        if params['request_address'] == 'true':
+            ticket.request_address = True
+        if params['request_address'] == 'false':
+            ticket.request_address = False
     # Save the changes
     ticket.save()
     response = {
@@ -1228,7 +1242,17 @@ def create_promo(request, params, user):
             return json_response(response)
     else:
         params['quantity'] = None
-    if params['start_time'] and params['expiration_time']:
+    if params['start_time']:
+        if params['start_time'] == 'none':
+            params['start_time'] = None
+        else:
+            params['start_time'] = params['start_time']
+    if params['expiration_time']:
+        if params['expiration_time'] == 'none':
+            params['expiration_time'] = None
+        else:
+            params['expiration_time'] = params['expiration_time']
+    if params['start_time'] is not None and params['expiration_time'] is not None:
         if params['start_time'] >= params['expiration_time']:
             response = {
                 'status':'FAIL',

@@ -371,6 +371,8 @@ block body
                                     input.right(type="text", name="last_name", placeholder="Last Name")
                                 div.middle
                                     input(type="text", name="email", placeholder="Email")
+                                div.bottom.address-container(class="{% if not requiresAddress %}hide{% endif %}")
+                                    input(type="text", name="address", placeholder="Address (Required)")
                                 div.bottom
                                     input(type="text", name="phone", placeholder="Phone (Optional)")
                                 {% if promos.count > 0 %}

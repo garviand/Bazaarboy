@@ -65,6 +65,7 @@ Bazaarboy.event.index =
             last_name: $('input[name=last_name]').val().trim()
             email: $('input[name=email]').val().trim()
             phone: $('input[name=phone]').val().trim()
+            address: $('input[name=address]').val().trim()
             details: {}
         if $('input[name=promos]').length > 0
             if $('input[name=promos]').val().trim() isnt ''

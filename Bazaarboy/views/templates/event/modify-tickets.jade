@@ -57,7 +57,7 @@ block content
                             div.large-5.medium-7.small-9
                                 a.new-ticket.primary-btn(href="javascript:;") + New Ticket
             div.small-12.columns
-                div#promos.row(class="{% if cheapest == 0 or rsvp %}hide{% endif %}")
+                div#promos.row(class="{% if not ticketExists %}hide {% endif %}{% if cheapest == 0 or rsvp %}hide{% endif %}")
                     div.content
                         div.top.small-12.columns
                             div.inner.row
@@ -128,6 +128,9 @@ block content
                                             div.promo-form-label.medium-12.columns Select Tickets for Promo
                                         div.promo-form-row.row
                                             div.promo-form-tickets.small-12.columns
+                                                div.promo-form-ticket.row.hide.template
+                                                    div.small-12.columns
+                                                        a.select-ticket(href="javascript:;")
                                                 {% for ticket in tickets %}
                                                 {% if ticket.price > 0 %}
                                                 div.promo-form-ticket.row
@@ -220,6 +223,10 @@ block content
                             div.row
                                 div.small-12.columns
                                     textarea.field(name="description", placeholder="Ticket description, maximum 250 characters.")
+                            div.row.address-container
+                                div.small-12.columns
+                                    input#request-address(type="checkbox", name="request_address")
+                                    label(for="request-address") This Ticket Requires An Address
                             div.row
                                 div.small-12.columns
                                     p Timing Options (Optional, leave blank if not needed) :

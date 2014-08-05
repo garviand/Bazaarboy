@@ -9560,6 +9560,9 @@ div#event-modify-tickets div#edit-ticket form .warning {
 div#event-modify-tickets div#edit-ticket form input[name="name"] {
   margin-top: 24px;
 }
+div#event-modify-tickets div#edit-ticket form div.address-container {
+  margin: 10px 0;
+}
 div#event-modify-tickets div#edit-ticket form div.price {
   position: relative;
 }

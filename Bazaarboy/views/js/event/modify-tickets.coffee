@@ -32,6 +32,10 @@ Bazaarboy.event.modify.tickets =
               $('div#edit-ticket div.step-2').removeClass 'hide'
               $('div#edit-ticket div.step-2 span.type').html 'Edit'
               $('div#edit-ticket input[name=name]').val response.ticket.name
+              if response.ticket.request_address
+                  $('div#edit-ticket input[name=request_address]').prop('checked', true)
+              else
+                  $('div#edit-ticket input[name=request_address]').prop('checked', false)
               if response.ticket.price is 0
                   $('div#edit-ticket div.price input').val 0
                   $('div#edit-ticket div.price').addClass 'hide'
@@ -118,7 +122,7 @@ Bazaarboy.event.modify.tickets =
                 if params.discount > 1
                     alert 'Percentage Must Be Between 1 and 100'
                     return
-            selectedTickets = $('form#promo-form div.promo-form-tickets a.select-ticket.selected').length
+            selectedTickets = $('form#promo-form div.promo-form-tickets:not(.template) a.select-ticket.selected').length
             linkedTickets = 0
             failedLinks = 0
             if selectedTickets > 0
@@ -127,7 +131,7 @@ Bazaarboy.event.modify.tickets =
                         if response.status is 'OK'
                             promo_id = response.promo.pk
                             promo_code = response.promo.code
-                            $('form#promo-form div.promo-form-tickets a.select-ticket.selected').each () ->
+                            $('form#promo-form div.promo-form-tickets:not(.template) a.select-ticket.selected').each () ->
                                 ticket_id = parseInt($(this).attr('data-id'))
                                 Bazaarboy.post 'event/promo/link/', {id:promo_id, ticket:ticket_id}, (response) ->
                                     if response.status isnt 'OK'
@@ -145,7 +149,7 @@ Bazaarboy.event.modify.tickets =
                                             $('div#promos form#promo-form a.promo-type').removeClass 'active'
                                             $('div#promos form#promo-form a.promo-type').eq(0).addClass 'active'
                                             $('div#promos form#promo-form input').val ''
-                                            $('div#promos div.promo-form-tickets a.select-ticket').removeClass 'selected'
+                                            $('div#promos div.promo-form-tickets:not(.template) a.select-ticket').removeClass 'selected'
                                             $('div#promos div.content').fadeIn 300
                                         return
                                     return
@@ -166,12 +170,12 @@ Bazaarboy.event.modify.tickets =
                             amount_claimed = response.claimed
                             promo_id = response.promo.pk
                             promo_code = response.promo.code
-                            $('form#promo-form div.promo-form-tickets a.select-ticket:not(.selected)').each () ->
+                            $('form#promo-form div.promo-form-tickets:not(.template) a.select-ticket:not(.selected)').each () ->
                                 ticket_id = parseInt($(this).attr('data-id'))
                                 Bazaarboy.post 'event/promo/unlink/', {id:promo_id, ticket:ticket_id}, (response) ->
                                     if response.status isnt 'OK'
                                         alert response.message
-                            $('form#promo-form div.promo-form-tickets a.select-ticket.selected').each () ->
+                            $('form#promo-form div.promo-form-tickets:not(.template) a.select-ticket.selected').each () ->
                                 ticket_id = parseInt($(this).attr('data-id'))
                                 Bazaarboy.post 'event/promo/link/', {id:promo_id, ticket:ticket_id}, (response) ->
                                     if response.status isnt 'OK'
@@ -190,7 +194,7 @@ Bazaarboy.event.modify.tickets =
                                             $('div#promos form#promo-form a.promo-type').removeClass 'active'
                                             $('div#promos form#promo-form a.promo-type').eq(0).addClass 'active'
                                             $('div#promos form#promo-form input').val ''
-                                            $('div#promos div.promo-form-tickets a.select-ticket').removeClass 'selected'
+                                            $('div#promos div.promo-form-tickets:not(.template) a.select-ticket').removeClass 'selected'
                                             $('div#promos div.content').fadeIn 300
                                         return
                                     return
@@ -264,6 +268,10 @@ Bazaarboy.event.modify.tickets =
                 isNew = $('div#edit-ticket').hasClass 'add'
                 ticketId = $('div#edit-ticket').attr 'data-id'
                 params = $(this).serializeObject()
+                if $('div#edit-ticket form input[name=request_address]').is(':checked')
+                    params.request_address = true
+                else
+                    params.request_address = false
                 if isNew
                     params.event = eventId
                 else
@@ -307,10 +315,11 @@ Bazaarboy.event.modify.tickets =
                 if isNew
                     endpoint = 'event/ticket/create/'
                 if params.name.trim() != '' and params.description.trim() != ''
+                    console.log params
                     Bazaarboy.post endpoint, params, (response) ->
                         if response.status is 'OK'
-                            $('div#event-modify-tickets div.empty-state-container').addClass('hide')
-                            $('div#event-modify-tickets div#action-canvas').removeClass('hide')
+                            $('div#event-modify-tickets div.empty-state-container').addClass 'hide'
+                            $('div#event-modify-tickets div#action-canvas').removeClass 'hide'
                             ticketOption = null
                             if isNew
                                 ticketOption = $('div.templates div.ticket-option').clone()
@@ -333,6 +342,13 @@ Bazaarboy.event.modify.tickets =
                             wording = 'RSVP\'d'
                             wordingObject = 'RSVPs'
                             if response.ticket.price > 0
+                                $('div#event-modify-tickets div#promos').removeClass 'hide'
+                                newPromosTicket = $('div.promo-form-ticket.template').clone()
+                                newPromosTicket.find('a.select-ticket').attr('data-id', response.ticket.pk)
+                                newPromosTicket.find('a.select-ticket').html response.ticket.name + ' ($' + response.ticket.price + ')'
+                                newPromosTicket.removeClass 'hide'
+                                newPromosTicket.removeClass 'template'
+                                $('div.promo-form-tickets').append(newPromosTicket)
                                 wording = 'Sold'
                                 wordingObject = 'Ticket Holders'
                             $(ticketOption).find('span.wording').html wording
@@ -394,7 +410,7 @@ Bazaarboy.event.modify.tickets =
             $('div#promos form#promo-form a.promo-type').removeClass 'active'
             $('div#promos form#promo-form a.promo-type').eq(0).addClass 'active'
             $('div#promos form#promo-form input').val ''
-            $('div#promos div.promo-form-tickets a.select-ticket').removeClass 'selected'
+            $('div#promos div.promo-form-tickets:not(.template) a.select-ticket').removeClass 'selected'
             $('div#promos div.edit div.title').html 'Add Promo Code'
             $('div#promos div.new-promo-controls').removeClass 'hide'
             $('div#promos div.edit-promo-controls').addClass 'hide'
@@ -406,7 +422,7 @@ Bazaarboy.event.modify.tickets =
             return
         $('div#promos').on 'click', 'a.edit-promo',  () ->
             $('form#promo-form').attr('data-id', $(this).attr('data-id'))
-            $('div#promos div.promo-form-tickets a.select-ticket').removeClass 'selected'
+            $('div#promos div.promo-form-tickets:not(.template) a.select-ticket').removeClass 'selected'
             Bazaarboy.get 'event/promo/', {id: parseInt($(this).attr('data-id'))}, (response) ->
                 promo = response.promo
                 console.log promo
@@ -439,7 +455,7 @@ Bazaarboy.event.modify.tickets =
                     $('form#promo-form input[name=expiration_time]').val promo.expiration_time
                 else
                     $('form#promo-form input[name=expiration_time]').val ''
-                $('div#promos div.promo-form-tickets a.select-ticket').each () ->
+                $('div#promos div.promo-form-tickets:not(.template) a.select-ticket').each () ->
                     if tickets.indexOf(parseInt($(this).attr('data-id'))) > -1
                         $(this).addClass 'selected'
                     return
@@ -479,7 +495,7 @@ Bazaarboy.event.modify.tickets =
                 $('div#promos form#promo-form span.discount-identifier').html '(%)'
                 $('div#promos form#promo-form input.discount-input').attr('placeholder', 'Discount Percentage (1-100)')
             return
-        $('div#promos div.promo-form-tickets a.select-ticket').click () ->
+        $('div#promos').on 'click', 'div.promo-form-tickets:not(.template) a.select-ticket', () ->
             $(this).toggleClass 'selected'
             return
         return
