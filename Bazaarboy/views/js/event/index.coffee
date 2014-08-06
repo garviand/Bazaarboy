@@ -75,9 +75,22 @@ Bazaarboy.event.index =
             if $(ticket).hasClass('active')
                 ticketSelected = true
                 quantity = parseInt $(ticket).find('input.ticket-quantity').val()
-                params.details[$(ticket).attr('data-id')] = {'quantity':quantity}
-        console.log params
+                params.details[$(ticket).attr('data-id')] = {'quantity':quantity, 'extra_fields': {}}
+                if $(ticket).find('div.custom-option-group').length > 0
+                    options = $(ticket).find('div.custom-option-group')
+                    $.each options, (target) ->
+                        if $(this).find('a.custom-option.active').length > 0
+                            params.details[$(ticket).attr('data-id')]['extra_fields'][$(this).data('field')] = $(this).find('a.custom-option.active').data('option')
+                        return
+                if $(ticket).find('div.custom-field-group').length > 0
+                    fields = $(ticket).find('div.custom-field-group')
+                    $.each fields, (target) ->
+                        fieldValue = $(this).find('input.custom-field-input').val()
+                        if String(fieldValue).trim() isnt ''
+                            params.details[$(ticket).attr('data-id')]['extra_fields'][$(this).data('field')] = String(fieldValue).trim()
+                        return
         params.details = JSON.stringify params.details
+        console.log params.details
         if params.phone.length is 0
             delete params.phone
         if not ticketSelected
@@ -201,6 +214,10 @@ Bazaarboy.event.index =
                 $('div#confirmation-modal').foundation('reveal', 'open')
                 return
         $(window).hashchange()
+        $('div.custom-option-group a.custom-option').click () ->
+            $(this).parents('div.custom-option-group').find('a.custom-option').removeClass 'active'
+            $(this).addClass 'active'
+            return
         # MOBILE HEADER FIX
         if $('div#event-header').height() > 66
             $('div#event-header').css('position', 'absolute')

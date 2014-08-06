@@ -9356,6 +9356,25 @@ div#tickets-body div#tickets-canvas div.ticket div.ticket-middle div.container i
   box-shadow: none;
   transition: none;
 }
+div#tickets-body div#tickets-canvas div.ticket div.ticket-middle div.container div.custom-field-container input {
+  outline: none;
+  border: #4a4a4a thin solid;
+  border-radius: 3px;
+  box-shadow: none;
+}
+div#tickets-body div#tickets-canvas div.ticket div.ticket-middle div.container div.custom-option-container {
+  margin-top: 13px;
+}
+div#tickets-body div#tickets-canvas div.ticket div.ticket-middle div.container div.custom-option-container a {
+  color: #4a4a4a;
+}
+div#tickets-body div#tickets-canvas div.ticket div.ticket-middle div.container div.custom-option-container a.active {
+  text-decoration: underline;
+}
+div#tickets-body div#tickets-canvas div.ticket div.ticket-middle div.container div.custom-option-container a:hover,
+div#tickets-body div#tickets-canvas div.ticket div.ticket-middle div.container div.custom-option-container a.active {
+  font-weight: bold;
+}
 div#tickets-body div#tickets-canvas div.ticket div.ticket-bottom {
   border-top: #D7D7D7 thin solid;
   font-size: 12px;

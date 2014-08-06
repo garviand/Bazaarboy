@@ -85,6 +85,15 @@ def index(request, id, params, user):
     for ticket in tickets:
         if ticket.request_address:
             requiresAddress = True
+        if ticket.extra_fields:
+            custom_fields = json.loads(ticket.extra_fields)
+            fields = {}
+            for field_name, field_options in custom_fields.iteritems():
+                fields[field_name] = []
+                if field_options.strip() != '':
+                    for option in field_options.split(','):
+                        fields[field_name].append(option.strip())
+            ticket.custom_fields = fields
     promos = Promo.objects.filter(event = event, is_deleted = False)
     organizers = Organizer.objects.filter(event = event)
     rsvp = True
@@ -984,7 +993,7 @@ def create_ticket(request, params, user):
             }
             return json_response(response)
         finally:
-            ticket.extra_fields = fields
+            ticket.extra_fields = json.dumps(fields)
     # All checks passed, write to database
     ticket.save()
     response = {
@@ -1106,7 +1115,7 @@ def edit_ticket(request, params, user):
             }
             return json_response(response)
         finally:
-            ticket.extra_fields = fields
+            ticket.extra_fields = json.dumps(fields)
     # Save the changes
     ticket.save()
     sold = Purchase_item.objects.filter(Q(purchase__checkout = None) | 
@@ -1782,14 +1791,14 @@ def purchase(request, params, user):
                                 return json_response(response)
                             if len(fieldValue) != 0:
                                 options = fieldValue.split(',')
-                                if details[tid]['extra_fields'][fieldName] not in options:
+                                options = [x.lstrip() for x in options]
+                                if str(details[tid]['extra_fields'][fieldName]) not in options:
                                     response = {
                                         'status':'FAIL',
                                         'error':'EXTRA_FIELDS_MISMATCH',
                                         'message':'Some field values do not match the field options.'
                                     }
                                     return json_response(response)
-                            details[tid]['extra_fields'] = json.dumps(details[tid]['extra_fields'])
                             continue
                     else:
                         details[tid]['extra_fields'] = ''
@@ -1801,12 +1810,13 @@ def purchase(request, params, user):
                         'message':'Quantity must be a positive number.'
                     }
                     return json_response(response)
-        response = {
-            'status':'FAIL',
-            'error':'INVALID_TICKET',
-            'message':'One of the ticket is invalid.'
-        }
-        return json_response(response)
+        else:
+            response = {
+                'status':'FAIL',
+                'error':'INVALID_TICKET',
+                'message':'One of the ticket is invalid.'
+            }
+            return json_response(response)
     # Check if the promo codes are valid
     promos = []
     if params['promos'] is not None:
@@ -1873,7 +1883,7 @@ def purchase(request, params, user):
         for ticket in tickets:
             # Check if the ticket has enough quantity left
             if (ticket.quantity is not None and 
-                ticket.quantity < details[ticket.id]):
+                ticket.quantity < details[ticket.id]['quantity']):
                 response = {
                     'status':'FAIL',
                     'error':'INSUFFICIENT_QUANTITY',
@@ -1906,7 +1916,7 @@ def purchase(request, params, user):
                                          ticket = ticket, 
                                          price = ticket.price, 
                                          address = address, 
-                                         extra_fields = details[ticket.id]['extra_fields'])
+                                         extra_fields = json.dumps(details[ticket.id]['extra_fields']))
                     item.save()
                 # If the ticket has a quantity limit
                 if ticket.quantity is not None:

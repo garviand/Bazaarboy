@@ -1055,6 +1055,26 @@ div#tickets-body {
                         box-shadow: none;
                         transition: none;
                     }
+                    div.custom-field-container{
+                        input{
+                            outline: none;
+                            border: @dark thin solid;
+                            border-radius: 3px;
+                            box-shadow: none;
+                        }
+                    }
+                    div.custom-option-container{
+                        margin-top: 13px;
+                        a{
+                            color: @dark;
+                            &.active{
+                                text-decoration: underline;
+                            }
+                            &:hover, &.active{
+                                font-weight: bold;
+                            }
+                        }
+                    }
                 }
             }
             div.ticket-bottom{

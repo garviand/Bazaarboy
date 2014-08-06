@@ -398,6 +398,22 @@ block body
                                         div.info-label Quantity
                                     div.small-8.columns.container
                                         input.ticket-quantity(type="text", name="quantity", value="0")
+                                {% for field_name, field_options in ticket.custom_fields.items %}
+                                div.ticket-middle.row
+                                    div.small-4.columns.container
+                                        div.info-label {{ field_name }}
+                                    {% if field_options|length == 0 %}
+                                    div.small-8.columns.container.custom-field-group(data-field="{{ field_name }}")
+                                        div.small-12.columns.custom-field-container
+                                            input.custom-field-input(href="javascript:;", type="text", data-option="{{ option }}")
+                                    {% else %}
+                                    div.small-8.columns.container.custom-option-group(data-field="{{ field_name }}")
+                                        {% for option in field_options %}
+                                        div.small-12.medium-6.text-center.columns.custom-option-container(class="{% if forloop.last %}end{% endif %}")
+                                            a.custom-option(href="javascript:;", data-option="{{ option }}") {{ option }}
+                                        {% endfor %}
+                                    {% endif %}
+                                {% endfor %}
                                 div.ticket-bottom.row
                                     div.small-12.columns.ticket-description-container
                                         {% if ticket.quantity == 0 %}

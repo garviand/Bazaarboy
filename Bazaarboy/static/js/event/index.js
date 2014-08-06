@@ -69,7 +69,7 @@
       }
     },
     purchase: function() {
-      var params, quantity, ticket, ticketSelected, tickets, _i, _len,
+      var fields, options, params, quantity, ticket, ticketSelected, tickets, _i, _len,
         _this = this;
       $('a#tickets-confirm').html('Processing...');
       params = {
@@ -94,12 +94,31 @@
           ticketSelected = true;
           quantity = parseInt($(ticket).find('input.ticket-quantity').val());
           params.details[$(ticket).attr('data-id')] = {
-            'quantity': quantity
+            'quantity': quantity,
+            'extra_fields': {}
           };
+          if ($(ticket).find('div.custom-option-group').length > 0) {
+            options = $(ticket).find('div.custom-option-group');
+            $.each(options, function(target) {
+              if ($(this).find('a.custom-option.active').length > 0) {
+                params.details[$(ticket).attr('data-id')]['extra_fields'][$(this).data('field')] = $(this).find('a.custom-option.active').data('option');
+              }
+            });
+          }
+          if ($(ticket).find('div.custom-field-group').length > 0) {
+            fields = $(ticket).find('div.custom-field-group');
+            $.each(fields, function(target) {
+              var fieldValue;
+              fieldValue = $(this).find('input.custom-field-input').val();
+              if (String(fieldValue).trim() !== '') {
+                params.details[$(ticket).attr('data-id')]['extra_fields'][$(this).data('field')] = String(fieldValue).trim();
+              }
+            });
+          }
         }
       }
-      console.log(params);
       params.details = JSON.stringify(params.details);
+      console.log(params.details);
       if (params.phone.length === 0) {
         delete params.phone;
       }
@@ -254,6 +273,10 @@
         }
       });
       $(window).hashchange();
+      $('div.custom-option-group a.custom-option').click(function() {
+        $(this).parents('div.custom-option-group').find('a.custom-option').removeClass('active');
+        $(this).addClass('active');
+      });
       if ($('div#event-header').height() > 66) {
         $('div#event-header').css('position', 'absolute');
         $('div#event').css('padding-top', $('div#event-header').height() + 'px');
