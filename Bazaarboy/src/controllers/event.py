@@ -28,6 +28,7 @@ from src.serializer import serialize, serialize_one
 from src.sms import sendEventConfirmationSMS
 
 import pdb
+import operator
 
 @cache_page(60 * 5)
 @login_check()
@@ -2243,59 +2244,93 @@ def export(request, params, user):
                                         Q(purchase__checkout__is_charged = True, 
                                           purchase__checkout__is_refunded = False), 
                                         purchase__event = event, 
-                                        purchase__is_expired = False).order_by('-id')
-    items = {}
+                                        purchase__is_expired = False).order_by('ticket__id')
+    items = {
+        'tickets': {}
+    }
     for item in purchase_items:
-        if item.purchase.id in items:
-            if item.ticket.id in items[item.purchase.id]['tickets']:
-                items[item.purchase.id]['tickets'][item.ticket.id]['quantity'] += 1
+        if item.ticket.id in items['tickets']:
+            if item.purchase.id in items['tickets'][item.ticket.id]['purchases']:
+                items['tickets'][item.ticket.id]['purchases'][item.purchase.id]['quantity'] += 1
             else:
-                items[item.purchase.id]['tickets'].update({
-                    item.ticket.id:{
-                        'name':item.ticket.name,
-                        'quantity':1
-                    }
-                })
+                if item.is_checked_in:
+                    checked_in = 'yes'
+                else:
+                    checked_in = ''
+                items['tickets'][item.ticket.id]['purchases'][item.purchase.id] = {
+                    'id': item.id,
+                    'email': item.purchase.owner.email,
+                    'first_name': item.purchase.owner.first_name,
+                    'last_name': item.purchase.owner.last_name,
+                    'code': item.purchase.code,
+                    'checked_in': checked_in,
+                    'quantity': 1
+                }
+                try:
+                    extra_fields = json.loads(item.extra_fields)
+                finally:
+                    items['tickets'][item.ticket.id]['purchases'][item.purchase.id]['extra_fields'] = {}
+                    for fieldName, fieldValue in extra_fields.iteritems():
+                        items['tickets'][item.ticket.id]['purchases'][item.purchase.id]['extra_fields'][fieldName] = fieldValue
         else:
             if item.is_checked_in:
                 checked_in = 'yes'
             else:
                 checked_in = ''
-            items[item.purchase.id] = {
-                'id': item.id,
-                'email': item.purchase.owner.email,
-                'first_name': item.purchase.owner.first_name,
-                'last_name': item.purchase.owner.last_name,
-                'code': item.purchase.code,
-                'checked_in': checked_in,
-                'tickets': {
-                    item.ticket.id:{
-                        'name':item.ticket.name,
-                        'quantity':1
+            items['tickets'][item.ticket.id] = {
+                'id': item.ticket.id,
+                'name': item.ticket.name,
+                'purchases': {
+                    item.purchase.id: {
+                        'id': item.id,
+                        'email': item.purchase.owner.email,
+                        'first_name': item.purchase.owner.first_name,
+                        'last_name': item.purchase.owner.last_name,
+                        'code': item.purchase.code,
+                        'checked_in': checked_in,
+                        'quantity': 1
                     }
                 }
             }
+            try:
+                extra_fields = json.loads(item.ticket.extra_fields)
+            finally:
+                items['tickets'][item.ticket.id]['extra_fields'] = {}
+                for fieldName, fieldValue in extra_fields.iteritems():
+                    items['tickets'][item.ticket.id]['extra_fields'][fieldName] = fieldName
+            try:
+                extra_fields = json.loads(item.extra_fields)
+            finally:
+                items['tickets'][item.ticket.id]['purchases'][item.purchase.id]['extra_fields'] = {}
+                for fieldName, fieldValue in extra_fields.iteritems():
+                    items['tickets'][item.ticket.id]['purchases'][item.purchase.id]['extra_fields'][fieldName] = fieldValue
     # Prepare csv writer and the response headers
     response = HttpResponse(mimetype = 'text/csv')
     csvName = re.sub(r'\W+', '-', event.name) + '.csv'
     response['Content-Disposition'] = 'attachment; filename="' + csvName + '"'
     writer = UnicodeWriter(response)
-    headers = ['id', 'email', 'first_name', 'last_name', 'ticket', 'quantity', 'code', 'checked in']
-    writer.writerow(headers)
     # Write to csv
     count = 1
-    for k, item in items.iteritems():
-        for k, ticket in item['tickets'].iteritems():
+    for k, ticket in items['tickets'].iteritems():
+        headers = ['id', 'email', 'first_name', 'last_name', 'ticket', 'quantity', 'code', 'checked in']
+        for k, field in ticket['extra_fields'].iteritems():
+            headers.append(field)
+        if count > 1:
+            writer.writerow([])
+        writer.writerow(headers)
+        for k, item in ticket['purchases'].iteritems():
             row = [
                 str(count),
                 item['email'],
                 item['first_name'],
                 item['last_name'], 
                 ticket['name'], 
-                str(ticket['quantity']), 
+                str(item['quantity']), 
                 item['code'],
                 item['checked_in']
             ]
+            for fieldName, fieldValue in item['extra_fields'].iteritems():
+                row.append(fieldValue)
             writer.writerow(row)
             count += 1
     return response
