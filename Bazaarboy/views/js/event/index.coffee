@@ -38,14 +38,13 @@ Bazaarboy.event.index =
             return
         return
     updateSubtotal: () ->
-        tickets = $('div#tickets-canvas div.ticket')
+        tickets = $('div#tickets-canvas div.ticket.active')
         totalPrice = 0
         totalQuantity = 0
         for ticket in tickets
-            if $(ticket).find('input.ticket-selected').is ':checked'
-                quantity = parseInt $(ticket).find('input.ticket-quantity').val()
-                totalQuantity += quantity
-                totalPrice += quantity * parseFloat $(ticket).attr('data-price')
+            quantity = parseInt $(ticket).find('input.ticket-quantity').val()
+            totalQuantity += quantity
+            totalPrice += quantity * parseFloat $(ticket).attr('data-price')
         $('div#tickets-subtotal span.total').html totalPrice.toFixed(2)
         if totalPrice isnt 0
             $('div#tickets-subtotal span.fee').removeClass 'hide'
@@ -73,7 +72,7 @@ Bazaarboy.event.index =
         tickets = $('div#tickets-canvas div.ticket')
         ticketSelected = false
         for ticket in tickets
-            if $(ticket).find('input.ticket-selected').is ':checked'
+            if $(ticket).hasClass('active')
                 ticketSelected = true
                 quantity = parseInt $(ticket).find('input.ticket-quantity').val()
                 params.details[$(ticket).attr('data-id')] = {'quantity':quantity}
@@ -119,6 +118,9 @@ Bazaarboy.event.index =
                             panelLabel: 'Checkout'
                             email: params.email
                             image: response.logo
+                            closed: () ->
+                                $('a#tickets-confirm').html 'Confirm RSVP'
+                                return
                             token: (token) =>
                                 Bazaarboy.post 'payment/charge/', 
                                     checkout: response.purchase.checkout
@@ -151,6 +153,8 @@ Bazaarboy.event.index =
                 $(this).addClass('hide')
                 scope.overlayAnimationInProgress = false
                 return
+            $('.ticket').find('div.ticket-middle').slideUp 100
+            $('.ticket.active').removeClass 'active'
             $('a#tickets-confirm').html 'Confirm RSVP'
             $('input[name=quantity]').val(0)
             $('input[name=first_name]').val('')
@@ -493,23 +497,25 @@ Bazaarboy.event.index =
                     scope.overlayAnimationInProgress = false
                     return
             return
-        $('div#tickets-canvas div.ticket').click () ->
-            $(this).find('.ticket-selected').click()
+        $('div#tickets-canvas div.ticket div.ticket-top').hover ->
+            if not $(this).parents('div.ticket').hasClass 'soldout'
+                $(this).parents('div.ticket').addClass 'hover'
             return
-        $('.ticket-selected').click (e) ->
-            e.stopPropagation()
+        , ->
+            if not $(this).parents('div.ticket').hasClass 'soldout'
+                $(this).parents('div.ticket').removeClass 'hover'
             return
-        $('input.ticket-quantity').click (e) ->
-            e.stopPropagation()
-            return
-        $('input.ticket-selected').click () ->
-            wrapper = $(this).closest('div.wrapper')
-            if $(this).is ':checked'
-                if parseInt($(wrapper).find('input.ticket-quantity').val()) is 0
-                    $(wrapper).find('input.ticket-quantity').val 1
-            else
-                $(wrapper).find('input.ticket-quantity').val 0
-            scope.updateSubtotal()
+        $('div#tickets-canvas div.ticket-top').click () ->
+            if not $(this).parents('div.ticket').hasClass 'soldout'
+                $(this).parents('.ticket').toggleClass 'active'
+                if $(this).parents('.ticket').hasClass('active')
+                    $(this).parents('.ticket').find('div.ticket-middle').slideDown 100
+                    quant = $(this).parents('.ticket').find('input.ticket-quantity')
+                    if quant.val().trim() is '' or parseInt(quant.val()) is 0
+                        quant.val 1
+                else
+                    $(this).parents('.ticket').find('div.ticket-middle').slideUp 100
+                scope.updateSubtotal()
             return
         $('input.ticket-quantity').keyup () ->
             wrapper = $(this).closest('div.wrapper')
@@ -520,12 +526,42 @@ Bazaarboy.event.index =
             scope.updateSubtotal()
             return
         $('input.ticket-quantity').blur () ->
-            if $(this).val().trim() is ''
+            if $(this).val().trim() is '' or parseInt($(this).val()) is 0
                 $(this).val 0
+                $(this).parents('.ticket').removeClass 'active'
+                $(this).parents('.ticket').find('div.ticket-middle').slideUp 100
             scope.updateSubtotal()
             return
         $('a#tickets-confirm').click () =>
             @purchase()
+            return
+        # SEND RSVP ISSUE
+        $('a.issue-btn').click () ->
+            $('div#issue-modal').foundation('reveal', 'open')
+            return
+        $('a.issue-close').click () ->
+            $('div#issue-modal').foundation('reveal', 'close')
+            return
+        $('div.send-issue a.send-issue-btn').click () ->
+            $(this).html('Sending...')
+            $('form.issue-form').submit()
+            return
+        $('form.issue-form').submit (event) ->
+            event.preventDefault()
+            return
+        $('form.issue-form').on 'valid', () ->
+            params = $(this).serializeObject()
+            optionals = []
+            params = Bazaarboy.stripEmpty params, optionals
+            console.log params
+            Bazaarboy.post 'event/issue/', params, (response) ->
+                if response.status is 'OK'
+                    $('form.issue-form').fadeOut 300, () ->
+                        $('div.row.issue-success').fadeIn 300
+                        return
+                else
+                    alert response.message
+                    $('div.send-issue a.send-message').html('Send Message')
             return
         # CONTACT ORGANIZER
         $('a.contact-organizer-btn').click () ->

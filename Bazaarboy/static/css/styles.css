@@ -5731,7 +5731,7 @@ div#wrapper-sidebar {
 }
 @media only screen and (min-width: 40.063em) and (max-width: 64em) {
   div#wrapper-sidebar {
-    width: 54px;
+    width: 50px;
   }
 }
 div#wrapper-main {
@@ -5752,12 +5752,12 @@ div#wrapper-main {
 }
 @media only screen and (min-width: 40.063em) and (max-width: 64em) {
   div#wrapper-main {
-    padding-left: 54px;
+    padding-left: 50px;
   }
 }
 /* Sidebar */
 div#wrapper-sidebar div#sidebar-logo {
-  margin-bottom: 20px;
+  margin-bottom: 11px;
 }
 @media only screen and (min-width: 40.063em) and (max-width: 64em) {
   div#wrapper-sidebar div#sidebar-logo {
@@ -5769,11 +5769,10 @@ div#wrapper-sidebar div#sidebar-logo a {
   width: 180px;
   height: 44px;
   margin: 10px;
-  border: 3px solid #F5A623;
 }
 @media only screen and (min-width: 40.063em) and (max-width: 64em) {
   div#wrapper-sidebar div#sidebar-logo a {
-    width: 54px;
+    width: 50px;
     height: 64px;
     margin: 0;
     border: none;
@@ -5786,7 +5785,7 @@ div#wrapper-sidebar div#sidebar-logo a div.logo {
 }
 @media only screen and (min-width: 40.063em) and (max-width: 64em) {
   div#wrapper-sidebar div#sidebar-logo a div.logo {
-    width: 54px;
+    width: 50px;
     height: 64px;
   }
 }
@@ -5807,7 +5806,8 @@ div#wrapper-sidebar div#sidebar-logo a div.text {
   padding: 11px 0;
   color: #F5A623;
   font-size: 16px;
-  line-height: 16px;
+  font-weight: 500;
+  line-height: 18px;
   text-align: center;
   text-transform: uppercase;
 }
@@ -5825,10 +5825,11 @@ div#wrapper-sidebar div.launch-event {
 div#wrapper-sidebar div.create-event div.primary-btn,
 div#wrapper-sidebar div.launch-event div.primary-btn {
   margin: 12px 0;
-  margin-top: 22px;
+  margin-bottom: 20px;
   padding-top: 11px;
-  padding-bottom: 14px;
-  font-size: 15px;
+  padding-bottom: 11px;
+  font-size: 14px;
+  font-weight: 600;
   text-transform: uppercase;
 }
 @media only screen and (min-width: 40.063em) and (max-width: 64em) {
@@ -5841,14 +5842,14 @@ div#wrapper-sidebar div.launch-event div.primary-btn {
 }
 div#wrapper-sidebar div.create-event div.primary-btn span.plus,
 div#wrapper-sidebar div.launch-event div.primary-btn span.plus {
-  font-size: 18px;
+  font-size: 15px;
   line-height: 12px;
 }
 a.sidebar-item {
   display: block;
   position: relative;
   width: 200px;
-  height: 54px;
+  height: 50px;
   background: #4a4a4a;
   margin-top: 2px;
   margin-bottom: 2px;
@@ -5859,7 +5860,7 @@ a.sidebar-item.sidebar-separate {
 }
 @media only screen and (min-width: 40.063em) and (max-width: 64em) {
   a.sidebar-item {
-    width: 54px;
+    width: 50px;
   }
   a.sidebar-item:hover.selected:after {
     display: none;
@@ -5869,7 +5870,7 @@ a.sidebar-item.sidebar-separate {
   }
 }
 a.sidebar-item.selected div.sidebar-item-icon {
-  color: #faa638;
+  color: #ffffff !important;
 }
 a.sidebar-item.selected div.sidebar-item-icon .text {
   color: #ffffff;
@@ -5882,7 +5883,7 @@ a.sidebar-item.selected:after {
   content: '';
   width: 0;
   height: 0;
-  top: 15px;
+  top: 13px;
   right: 0;
   border-style: solid;
   border-width: 12px 12px 12px 0;
@@ -5892,67 +5893,96 @@ a.sidebar-item.selected:after {
 a.sidebar-item.sub.selected div.sidebar-item-icon {
   display: block !important;
 }
+a.sidebar-item.sub.selected div.sidebar-item-icon div {
+  color: #3c3c3c;
+  background: #ffffff;
+}
 a.sidebar-item.sub.selected div.sidebar-item-text {
-  left: 54px !important;
+  left: 30px !important;
 }
 a.sidebar-item.sub {
-  height: 56px;
+  position: relative;
+  height: 52px;
+  width: 100%;
   margin-top: 0;
   margin-bottom: 0;
   border-top: 2px solid #4a4a4a;
   background: #3c3c3c;
 }
 a.sidebar-item.sub.first {
-  height: 54px;
+  height: 50px;
   border-top: 0;
 }
 @media only screen and (min-width: 40.063em) and (max-width: 64em) {
   a.sidebar-item.sub div.sidebar-item-icon {
+    color: #FFF;
     display: block !important;
+    right: 0 !important;
   }
 }
 a.sidebar-item.sub div.sidebar-item-icon {
-  display: none;
+  color: #3c3c3c;
+  position: absolute;
+  right: 10px;
+  left: inherit;
 }
 a.sidebar-item.sub div.sidebar-item-icon div {
   border-radius: 3px;
   background: #9C9C9C;
+  font-weight: 600;
 }
 a.sidebar-item.sub div.sidebar-item-text {
   background: #3c3c3c;
   left: 22px;
 }
-a.sidebar-item:hover {
-  background: #faa638;
+a.sidebar-item.sub:hover {
+  background: #3c3c3c;
+}
+a.sidebar-item.sub:hover div.sidebar-item-text {
+  background: #3c3c3c;
+  color: #ffffff;
+}
+a.sidebar-item.sub:hover div.sidebar-item-icon div {
+  background: #ffffff;
+  color: #3c3c3c;
+}
+@media only screen and (min-width: 40.063em) and (max-width: 64em) {
+  a.sidebar-item.sub:hover div.sidebar-item-icon {
+    display: none !important;
+  }
+}
+a.sidebar-item:hover div.sidebar-item-icon {
+  color: #ffffff !important;
 }
 a.sidebar-item:hover div.sidebar-item-text {
-  background: #faa638;
   color: #ffffff;
 }
 div.sidebar-item-icon {
+  color: #A4A4A4;
   position: absolute;
-  width: 54px;
-  height: 54px;
-  top: -1px;
+  width: 50px;
+  height: 50px;
+  line-height: 10px;
   left: 0;
 }
 div.sidebar-item-icon div {
-  width: 22px;
-  height: 22px;
-  font-size: 22px;
-  line-height: 30px;
+  width: 20px;
+  height: 20px;
+  font-size: 21px;
+  line-height: 25px;
   text-align: center;
 }
 div.sidebar-item-icon div.text {
-  font-size: 16px;
-  line-height: 24px;
+  font-size: 14px;
+  line-height: 21px;
+  font-weight: 500;
 }
 div.sidebar-item-text {
   position: absolute;
-  width: 146px;
-  height: 54px;
+  width: 150px;
+  height: 50px;
   top: 0;
-  left: 54px;
+  left: 47px;
   background: #4a4a4a;
   color: #7A7A7A;
   font-weight: 600;
@@ -5969,7 +5999,7 @@ div.sidebar-item-text > div {
 }
 div.sidebar-item-text > div > div {
   display: table-cell;
-  font-size: 16px;
+  font-size: 13px;
   vertical-align: middle;
 }
 /* Main */
@@ -6005,7 +6035,7 @@ div#wrapper-overlay {
   top: 0;
   left: 0;
   z-index: 5;
-  background: rgba(255, 255, 255, 0.7);
+  background: rgba(250, 250, 250, 0.8);
   cursor: pointer;
 }
 div#show404 div.background {
@@ -6372,8 +6402,8 @@ div.draft-event > div.tile div.header div.past-event-title,
 div.past-event > div.tile div.header div.past-event-title {
   padding: 22px 0;
   padding-left: 70px;
-  font-size: 20px;
-  font-weight: 500;
+  font-size: 18px;
+  font-weight: 600;
   line-height: 20px;
 }
 div.current-event > div.tile div.header div.current-event-view a,
@@ -6500,6 +6530,7 @@ div.draft-event > div.tile div.info div.inner div.past-event-datetime div.past-e
 div.past-event > div.tile div.info div.inner div.past-event-datetime div.past-event-time span {
   display: table-cell;
   vertical-align: middle;
+  font-weight: 600;
 }
 div.current-event > div.tile div.info div.inner div.current-event-datetime div.current-event-time span .ss-clock,
 div.draft-event > div.tile div.info div.inner div.current-event-datetime div.current-event-time span .ss-clock,
@@ -6583,7 +6614,7 @@ div.past-event > div.tile div.info div.inner div.past-event-location-container d
   left: 0;
   font-size: 13px;
   line-height: 18px;
-  font-weight: 500;
+  font-weight: 600;
 }
 div.current-event > div.tile div.info div.inner div.current-event-location-container div.current-event-location span,
 div.draft-event > div.tile div.info div.inner div.current-event-location-container div.current-event-location span,
@@ -7201,11 +7232,22 @@ div#wrapper-dashboard div.empty-state-container div.empty-state-content div.prim
 }
 div#wrapper-dashboard div.events-overview-title:first-child {
   margin-top: 40px;
+  margin-bottom: 25px;
 }
 div#wrapper-dashboard div.events-overview-title .title {
-  font-size: 18px;
+  font-size: 19px;
   font-weight: 600;
   text-transform: uppercase;
+}
+div#wrapper-dashboard div.events-overview-title .title .events-count {
+  position: relative;
+  top: -1px;
+  background: #faa638;
+  color: #FFF;
+  font-size: 16px;
+  font-weight: 600;
+  padding: 2px 6px;
+  border-radius: 3px;
 }
 div#wrapper-dashboard div.events-overview-title .title .pipe {
   color: #9B9B9B;
@@ -7417,24 +7459,28 @@ div#wrapper-pricing div#pricing div#what_else .contact .primary-btn:hover {
   color: #ffffff;
 }
 div#login,
-div#register {
+div#register,
+div#reset {
   min-width: 100%;
   min-height: 100%;
   background: #F6F6F6;
 }
 div#login div#container,
-div#register div#container {
+div#register div#container,
+div#reset div#container {
   width: 450px;
   max-width: 98%;
   margin: 0 auto;
 }
 div#login div#login-container,
-div#register div#login-container {
+div#register div#login-container,
+div#reset div#login-container {
   background: #ffffff;
   margin-top: 75px;
 }
 div#login div#login-container form#login-form div.logo-small,
-div#register div#login-container form#login-form div.logo-small {
+div#register div#login-container form#login-form div.logo-small,
+div#reset div#login-container form#login-form div.logo-small {
   margin: 0 auto;
   margin-top: 50px;
   height: 50px;
@@ -7444,38 +7490,46 @@ div#register div#login-container form#login-form div.logo-small {
   background-size: cover;
 }
 div#login div#login-container form#login-form div.title,
-div#register div#login-container form#login-form div.title {
+div#register div#login-container form#login-form div.title,
+div#reset div#login-container form#login-form div.title {
   font-weight: 500;
   text-transform: uppercase;
   margin-top: 16px;
 }
 div#login div#login-container form#login-form div.title div.site-title,
-div#register div#login-container form#login-form div.title div.site-title {
+div#register div#login-container form#login-form div.title div.site-title,
+div#reset div#login-container form#login-form div.title div.site-title {
   font-size: 1.5em;
 }
 div#login div#login-container form#login-form div.title span.page-title,
-div#register div#login-container form#login-form div.title span.page-title {
+div#register div#login-container form#login-form div.title span.page-title,
+div#reset div#login-container form#login-form div.title span.page-title {
   color: #9B9B9B;
 }
 div#login div#login-container form#login-form hr.separator,
-div#register div#login-container form#login-form hr.separator {
+div#register div#login-container form#login-form hr.separator,
+div#reset div#login-container form#login-form hr.separator {
   margin-top: 24px;
   margin-bottom: 26px;
 }
 div#login div#login-container form#login-form .login-inputs input[type=text],
 div#register div#login-container form#login-form .login-inputs input[type=text],
+div#reset div#login-container form#login-form .login-inputs input[type=text],
 div#login div#login-container form#login-form .login-inputs input[type=password],
-div#register div#login-container form#login-form .login-inputs input[type=password] {
+div#register div#login-container form#login-form .login-inputs input[type=password],
+div#reset div#login-container form#login-form .login-inputs input[type=password] {
   border-radius: 3px;
   box-shadow: none;
 }
 div#login div#login-container form#login-form div.login-bottom,
-div#register div#login-container form#login-form div.login-bottom {
+div#register div#login-container form#login-form div.login-bottom,
+div#reset div#login-container form#login-form div.login-bottom {
   margin-top: 16px;
   padding-bottom: 16px;
 }
 div#login div#login-container form#login-form div.login-bottom .submit-login,
-div#register div#login-container form#login-form div.login-bottom .submit-login {
+div#register div#login-container form#login-form div.login-bottom .submit-login,
+div#reset div#login-container form#login-form div.login-bottom .submit-login {
   width: 100%;
   font-weight: 400;
   padding: 8px 0px 10px;
@@ -7483,12 +7537,14 @@ div#register div#login-container form#login-form div.login-bottom .submit-login 
   top: -10px;
 }
 div#login div#register-container,
-div#register div#register-container {
+div#register div#register-container,
+div#reset div#register-container {
   background: #ffffff;
   margin-top: 75px;
 }
 div#login div#register-container form#register-form div.logo-small,
-div#register div#register-container form#register-form div.logo-small {
+div#register div#register-container form#register-form div.logo-small,
+div#reset div#register-container form#register-form div.logo-small {
   margin: 0 auto;
   margin-top: 50px;
   height: 50px;
@@ -7498,56 +7554,198 @@ div#register div#register-container form#register-form div.logo-small {
   background-size: cover;
 }
 div#login div#register-container form#register-form div.title,
-div#register div#register-container form#register-form div.title {
+div#register div#register-container form#register-form div.title,
+div#reset div#register-container form#register-form div.title {
   font-weight: 500;
   text-transform: uppercase;
   margin-top: 16px;
 }
 div#login div#register-container form#register-form div.title div.site-title,
-div#register div#register-container form#register-form div.title div.site-title {
+div#register div#register-container form#register-form div.title div.site-title,
+div#reset div#register-container form#register-form div.title div.site-title {
   font-size: 1.5em;
 }
 div#login div#register-container form#register-form div.title span.page-title,
-div#register div#register-container form#register-form div.title span.page-title {
+div#register div#register-container form#register-form div.title span.page-title,
+div#reset div#register-container form#register-form div.title span.page-title {
   color: #9B9B9B;
 }
 div#login div#register-container form#register-form hr.separator,
-div#register div#register-container form#register-form hr.separator {
+div#register div#register-container form#register-form hr.separator,
+div#reset div#register-container form#register-form hr.separator {
   margin-top: 24px;
   margin-bottom: 26px;
 }
 div#login div#register-container form#register-form .register-inputs input[type=text],
 div#register div#register-container form#register-form .register-inputs input[type=text],
+div#reset div#register-container form#register-form .register-inputs input[type=text],
 div#login div#register-container form#register-form .register-inputs input[type=password],
-div#register div#register-container form#register-form .register-inputs input[type=password] {
+div#register div#register-container form#register-form .register-inputs input[type=password],
+div#reset div#register-container form#register-form .register-inputs input[type=password] {
   border-radius: 3px;
   box-shadow: none;
 }
 div#login div#register-container form#register-form div.register-bottom,
-div#register div#register-container form#register-form div.register-bottom {
+div#register div#register-container form#register-form div.register-bottom,
+div#reset div#register-container form#register-form div.register-bottom {
   margin-top: 16px;
   padding-bottom: 16px;
 }
 div#login div#register-container form#register-form div.register-bottom .submit-register,
-div#register div#register-container form#register-form div.register-bottom .submit-register {
+div#register div#register-container form#register-form div.register-bottom .submit-register,
+div#reset div#register-container form#register-form div.register-bottom .submit-register {
   width: 100%;
   font-weight: 400;
   padding: 8px 0px 10px;
   position: relative;
   top: -10px;
 }
+div#login div#reset-container,
+div#register div#reset-container,
+div#reset div#reset-container {
+  background: #ffffff;
+  margin-top: 75px;
+}
+div#login div#reset-container form#reset-form div.logo-small,
+div#register div#reset-container form#reset-form div.logo-small,
+div#reset div#reset-container form#reset-form div.logo-small,
+div#login div#reset-container form#password-form div.logo-small,
+div#register div#reset-container form#password-form div.logo-small,
+div#reset div#reset-container form#password-form div.logo-small {
+  margin: 0 auto;
+  margin-top: 50px;
+  height: 50px;
+  width: 50px;
+  border-radius: 50%;
+  background: url(/static/images/logo-big.png);
+  background-size: cover;
+}
+div#login div#reset-container form#reset-form div.title,
+div#register div#reset-container form#reset-form div.title,
+div#reset div#reset-container form#reset-form div.title,
+div#login div#reset-container form#password-form div.title,
+div#register div#reset-container form#password-form div.title,
+div#reset div#reset-container form#password-form div.title {
+  font-weight: 500;
+  text-transform: uppercase;
+  margin-top: 16px;
+}
+div#login div#reset-container form#reset-form div.title div.site-title,
+div#register div#reset-container form#reset-form div.title div.site-title,
+div#reset div#reset-container form#reset-form div.title div.site-title,
+div#login div#reset-container form#password-form div.title div.site-title,
+div#register div#reset-container form#password-form div.title div.site-title,
+div#reset div#reset-container form#password-form div.title div.site-title {
+  font-size: 1.5em;
+}
+div#login div#reset-container form#reset-form div.title span.page-title,
+div#register div#reset-container form#reset-form div.title span.page-title,
+div#reset div#reset-container form#reset-form div.title span.page-title,
+div#login div#reset-container form#password-form div.title span.page-title,
+div#register div#reset-container form#password-form div.title span.page-title,
+div#reset div#reset-container form#password-form div.title span.page-title {
+  color: #9B9B9B;
+}
+div#login div#reset-container form#reset-form hr.separator,
+div#register div#reset-container form#reset-form hr.separator,
+div#reset div#reset-container form#reset-form hr.separator,
+div#login div#reset-container form#password-form hr.separator,
+div#register div#reset-container form#password-form hr.separator,
+div#reset div#reset-container form#password-form hr.separator {
+  margin-top: 24px;
+  margin-bottom: 26px;
+}
+div#login div#reset-container form#reset-form .reset-inputs input[type=text],
+div#register div#reset-container form#reset-form .reset-inputs input[type=text],
+div#reset div#reset-container form#reset-form .reset-inputs input[type=text],
+div#login div#reset-container form#password-form .reset-inputs input[type=text],
+div#register div#reset-container form#password-form .reset-inputs input[type=text],
+div#reset div#reset-container form#password-form .reset-inputs input[type=text],
+div#login div#reset-container form#reset-form .reset-inputs input[type=password],
+div#register div#reset-container form#reset-form .reset-inputs input[type=password],
+div#reset div#reset-container form#reset-form .reset-inputs input[type=password],
+div#login div#reset-container form#password-form .reset-inputs input[type=password],
+div#register div#reset-container form#password-form .reset-inputs input[type=password],
+div#reset div#reset-container form#password-form .reset-inputs input[type=password] {
+  border-radius: 3px;
+  box-shadow: none;
+}
+div#login div#reset-container form#reset-form div.reset-bottom,
+div#register div#reset-container form#reset-form div.reset-bottom,
+div#reset div#reset-container form#reset-form div.reset-bottom,
+div#login div#reset-container form#password-form div.reset-bottom,
+div#register div#reset-container form#password-form div.reset-bottom,
+div#reset div#reset-container form#password-form div.reset-bottom {
+  margin-top: 16px;
+  padding-bottom: 16px;
+}
+div#login div#reset-container form#reset-form div.reset-bottom .submit-reset,
+div#register div#reset-container form#reset-form div.reset-bottom .submit-reset,
+div#reset div#reset-container form#reset-form div.reset-bottom .submit-reset,
+div#login div#reset-container form#password-form div.reset-bottom .submit-reset,
+div#register div#reset-container form#password-form div.reset-bottom .submit-reset,
+div#reset div#reset-container form#password-form div.reset-bottom .submit-reset,
+div#login div#reset-container form#reset-form div.reset-bottom .submit-password,
+div#register div#reset-container form#reset-form div.reset-bottom .submit-password,
+div#reset div#reset-container form#reset-form div.reset-bottom .submit-password,
+div#login div#reset-container form#password-form div.reset-bottom .submit-password,
+div#register div#reset-container form#password-form div.reset-bottom .submit-password,
+div#reset div#reset-container form#password-form div.reset-bottom .submit-password {
+  width: 100%;
+  font-weight: 400;
+  padding: 8px 0px 10px;
+  position: relative;
+  top: -10px;
+}
+div#login div#reset-container form#reset-form div.password-form-confirmation div.message,
+div#register div#reset-container form#reset-form div.password-form-confirmation div.message,
+div#reset div#reset-container form#reset-form div.password-form-confirmation div.message,
+div#login div#reset-container form#password-form div.password-form-confirmation div.message,
+div#register div#reset-container form#password-form div.password-form-confirmation div.message,
+div#reset div#reset-container form#password-form div.password-form-confirmation div.message,
+div#login div#reset-container form#reset-form div.reset-form-confirmation div.message,
+div#register div#reset-container form#reset-form div.reset-form-confirmation div.message,
+div#reset div#reset-container form#reset-form div.reset-form-confirmation div.message,
+div#login div#reset-container form#password-form div.reset-form-confirmation div.message,
+div#register div#reset-container form#password-form div.reset-form-confirmation div.message,
+div#reset div#reset-container form#password-form div.reset-form-confirmation div.message {
+  width: 100%;
+  text-align: center;
+  margin: 20px 0;
+  font-size: 18px;
+}
+div#login div#reset-container form#reset-form div.password-form-confirmation div.details,
+div#register div#reset-container form#reset-form div.password-form-confirmation div.details,
+div#reset div#reset-container form#reset-form div.password-form-confirmation div.details,
+div#login div#reset-container form#password-form div.password-form-confirmation div.details,
+div#register div#reset-container form#password-form div.password-form-confirmation div.details,
+div#reset div#reset-container form#password-form div.password-form-confirmation div.details,
+div#login div#reset-container form#reset-form div.reset-form-confirmation div.details,
+div#register div#reset-container form#reset-form div.reset-form-confirmation div.details,
+div#reset div#reset-container form#reset-form div.reset-form-confirmation div.details,
+div#login div#reset-container form#password-form div.reset-form-confirmation div.details,
+div#register div#reset-container form#password-form div.reset-form-confirmation div.details,
+div#reset div#reset-container form#password-form div.reset-form-confirmation div.details {
+  width: 100%;
+  text-align: center;
+  font-size: 13px;
+  margin-bottom: 40px;
+}
 div#login div#footer,
-div#register div#footer {
+div#register div#footer,
+div#reset div#footer {
   margin-top: 32px;
 }
 div#login div#footer .trouble,
-div#register div#footer .trouble {
+div#register div#footer .trouble,
+div#reset div#footer .trouble {
   text-decoration: underline;
   font-size: .8em;
   color: #F4A534;
 }
 div#login div#footer .switch,
-div#register div#footer .switch {
+div#register div#footer .switch,
+div#reset div#footer .switch {
   display: block;
   width: 100%;
   text-align: center;
@@ -7562,7 +7760,8 @@ div#register div#footer .switch {
   transition: background .2s;
 }
 div#login div#footer .switch:hover,
-div#register div#footer .switch:hover {
+div#register div#footer .switch:hover,
+div#reset div#footer .switch:hover {
   color: #ffffff;
   background: #F4A534;
 }
@@ -7946,6 +8145,66 @@ div#wrapper-profile-new div.profile-new-container div.next-prev a.finish-btn.hid
     display: none;
   }
 }
+div#raffle-modal div.empty-state-container {
+  border: #F6F6F6 thin solid;
+  border-radius: 4px;
+  background: url('../images/emptystates/champagne_bg.jpg');
+  background-size: 80%;
+  background-position: left center;
+  background-repeat: no-repeat;
+}
+div#raffle-modal div.empty-state-container div.empty-state-content {
+  margin: 60px 0;
+}
+div#raffle-modal div.empty-state-container div.empty-state-content div.text {
+  text-align: left;
+  font-size: 1.3rem;
+  font-weight: 600;
+  color: #4a4a4a;
+}
+div#raffle-modal div.empty-state-container div.empty-state-content hr {
+  margin: 10px 0;
+}
+div#raffle-modal div.empty-state-container div.empty-state-content div.subtext {
+  font-weight: 500;
+  text-align: left;
+}
+div#raffle-modal div.empty-state-container div.empty-state-content div.subtext.subtext-name {
+  margin-top: 25px;
+}
+div#raffle-modal div.empty-state-container div.empty-state-content div.subtext.subtext-email {
+  margin-top: 10px;
+  margin-bottom: 10px;
+}
+div#raffle-modal div.empty-state-container div.empty-state-content div.to-dash {
+  margin-left: 0;
+  padding-right: 0;
+}
+div#raffle-modal div.empty-state-container div.empty-state-content a.primary-btn {
+  display: block;
+  width: 100%;
+  margin-top: 20px;
+  padding-top: 11px;
+  padding-bottom: 14px;
+  font-size: 15px;
+  text-transform: uppercase;
+}
+div#raffle-modal div.empty-state-container div.empty-state-content a.primary-btn:hover {
+  color: #FFF;
+}
+div#raffle-modal div.empty-state-container div.empty-state-content div.close-launch-modal {
+  text-align: left;
+  margin-top: 30px;
+}
+div#raffle-modal div.empty-state-container div.empty-state-content div.close-launch-modal a.close-reveal-modal {
+  font-size: 1rem;
+  line-height: inherit;
+  position: relative;
+  top: 0;
+  right: 0;
+  color: #faa638;
+  font-weight: normal;
+}
 #wrapper-sidebar div.checkin_numbers {
   width: 100%;
   text-align: center;
@@ -8055,6 +8314,23 @@ div#event-manage .add-guest-container input[type=submit] {
   padding-top: 6px;
   padding-bottom: 9px;
 }
+div#event-manage .add-guest-container div.send-email-input {
+  position: relative;
+  top: 11px;
+}
+div#event-manage .refund {
+  text-align: center;
+}
+div#event-manage .refund a {
+  font-size: 12px;
+  color: #4963e4;
+}
+div#event-manage .refund span {
+  font-size: 12px;
+}
+div#event-manage .refund.hide {
+  display: none !important;
+}
 div#event-manage .guests .list_headers {
   color: #4a4a4a;
   font-weight: 500;
@@ -8066,6 +8342,9 @@ div#event-manage .guests .list_headers > div {
 }
 div#event-manage .guests .list_headers > div:last-child {
   border-right: none;
+}
+div#event-manage .guests .list_headers .name {
+  border-right: 0;
 }
 div#event-manage .guests .guest {
   color: #4a4a4a;
@@ -8128,11 +8407,20 @@ div#confirmation-modal {
   margin-left: -25%;
   width: 50%;
 }
+@media only screen and (max-width: 40em) {
+  div#confirmation-modal {
+    margin-left: -45%;
+    width: 90%;
+  }
+}
 div#confirmation-modal div.confirmation-title {
   font-size: 18px;
   font-weight: 600;
   text-transform: uppercase;
   margin-bottom: 40px;
+}
+div#confirmation-modal div.organizers {
+  margin-bottom: 20px;
 }
 div#confirmation-modal div.organizers div.title {
   padding-left: 0;
@@ -8195,6 +8483,11 @@ div#confirmation-modal div.tickets div.ticket div.name {
   font-size: 14px;
   line-height: 18px;
   font-weight: 700;
+}
+div#confirmation-modal div.confirmation-note {
+  margin-top: 10px;
+  font-size: 12px;
+  line-height: 1.5em;
 }
 div#launch-modal div.empty-state-container {
   border: #F6F6F6 thin solid;
@@ -8342,6 +8635,45 @@ div#contact-organizer-modal div.contact-organizer-success a.contact-organizer-cl
   padding-bottom: 11px;
 }
 div#contact-organizer-modal div.contact-organizer-success a.contact-organizer-close:hover {
+  color: #FFF;
+}
+div#issue-modal div.issue-title {
+  margin-bottom: 10px;
+}
+div#issue-modal div.issue-subtitle {
+  margin-bottom: 15px;
+  line-height: 1.3rem;
+  font-size: 12px;
+}
+div#issue-modal form > div {
+  margin-top: 15px;
+}
+div#issue-modal span.underline {
+  text-decoration: underline;
+}
+div#issue-modal div.send-issue a.send-issue-btn {
+  display: block;
+  width: 100%;
+  padding-top: 9px;
+  padding-bottom: 11px;
+}
+div#issue-modal div.send-issue a.send-issue-btn:hover,
+div#issue-modal div.send-issue a.send-issue-btn:focus {
+  color: #FFF;
+}
+div#issue-modal div.send-issue div.move-down {
+  margin-top: 10px;
+}
+div#issue-modal div.issue-success {
+  display: none;
+}
+div#issue-modal div.issue-success a.issue-close {
+  display: block;
+  width: 100%;
+  padding-top: 9px;
+  padding-bottom: 11px;
+}
+div#issue-modal div.issue-success a.issue-close:hover {
   color: #FFF;
 }
 div#add-organizer-modal div.add-organizer-title {
@@ -8880,234 +9212,242 @@ div#event-footer div.links {
 }
 div#tickets {
   position: absolute;
-  width: 440px;
+  width: 500px;
+  max-width: 100%;
   margin-left: auto;
   margin-right: auto;
+  margin-bottom: 60px;
   left: 0;
   right: 0;
-  top: 100px;
+  top: 125px;
   z-index: 10;
+  border: #f6f6f6 thin solid;
   border-radius: 4px;
-  background: #FDE7B5;
-  background-image: -o-linear-gradient(top, #fde7b5, #fde7b5, #fcc75a);
-  background-image: -moz-linear-gradient(top, #fde7b5, #fde7b5, #fcc75a);
-  background-image: -webkit-linear-gradient(top, #fde7b5, #fde7b5, #fcc75a);
-  background-image: -ms-linear-gradient(top, #fde7b5, #fde7b5, #fcc75a);
-  background-image: linear-gradient(top, #fde7b5, #fde7b5, #fcc75a);
+  background: #ffffff;
 }
 div#tickets-header {
   width: 100%;
-  height: 40px;
-  padding: 12px 0;
-  font-size: 16px;
+  padding: 25px 0;
+  font-size: 14px;
+  font-weight: 600;
   text-align: center;
   text-transform: uppercase;
 }
 div#tickets-body {
-  width: 428px;
-  margin: 0 auto;
+  width: 100%;
+}
+div#tickets-body div#tickets-canvas {
+  padding-left: 0.9375rem;
+  padding-right: 0.9375rem;
+}
+div#tickets-body div#tickets-canvas div.ticket {
+  border: #D7D7D7 thin solid;
   border-radius: 4px;
-  border: 2px solid #FEC84D;
+  margin-bottom: 10px;
 }
-div#tickets-body > div.inner {
-  padding-left: 4px;
-  background: #FFFFFF;
+div#tickets-body div#tickets-canvas div.ticket.active div.ticket-top {
+  background: #FEC84D !important;
 }
-div#tickets-body > div.inner > div.caption {
-  width: 100%;
-  height: 40px;
-  padding: 13px 10px;
-  font-size: 14px;
-  text-transform: uppercase;
+div#tickets-body div#tickets-canvas div.ticket.active div.ticket-top div.check div.check-inner {
+  display: block !important;
 }
-div#tickets-body div.ticket {
-  display: table;
-  width: 100%;
-  min-height: 108px;
-  background: #F5F5F5;
-  border-top: 1px solid #dddddd;
+div#tickets-body div#tickets-canvas div.ticket.hover,
+div#tickets-body div#tickets-canvas div.ticket.active {
+  border: #faa638 thin solid;
+}
+div#tickets-body div#tickets-canvas div.ticket.hover div.ticket-top,
+div#tickets-body div#tickets-canvas div.ticket.active div.ticket-top {
+  background: #FFF4DB;
   cursor: pointer;
-  -webkit-user-select: none;
-  -moz-user-select: none;
-  -ms-user-select: none;
-  user-select: none;
 }
-div#tickets-body div.ticket.last {
-  min-height: 109px;
-  border-bottom: 1px solid #dddddd;
+div#tickets-body div#tickets-canvas div.ticket.hover div.ticket-top div.check,
+div#tickets-body div#tickets-canvas div.ticket.active div.ticket-top div.check {
+  border: #faa638 thin solid !important;
 }
-div#tickets-body div.ticket:hover,
-div#tickets-body div.ticket.on {
-  background: #FFE6B0;
+div#tickets-body div#tickets-canvas div.ticket.hover div.ticket-bottom,
+div#tickets-body div#tickets-canvas div.ticket.active div.ticket-bottom {
+  border-top: #faa638 thin solid;
 }
-div#tickets-body div.ticket:hover > div.inner > div.info,
-div#tickets-body div.ticket.on > div.inner > div.info {
-  background: #FFF1D2;
+div#tickets-body div#tickets-canvas div.ticket div.ticket-top {
+  background: #f6f6f6;
+  border-top-left-radius: 4px;
+  border-top-right-radius: 4px;
 }
-div#tickets-body div.ticket:hover > div.inner > div.info div.top div.price,
-div#tickets-body div.ticket.on > div.inner > div.info div.top div.price {
-  background: #F5A639;
+div#tickets-body div#tickets-canvas div.ticket div.ticket-top div.container {
+  min-height: 60px;
+  padding: 10px 0;
 }
-div#tickets-body div.ticket.soldout {
-  background: #F5F5F5;
+div#tickets-body div#tickets-canvas div.ticket div.ticket-top div.container div.ticket-price {
+  padding-left: 0.9375rem;
 }
-div#tickets-body div.ticket.soldout > div.inner > div.info {
-  background: #FFFFFF;
-  color: #929292;
+div#tickets-body div#tickets-canvas div.ticket div.ticket-top div.container div.ticket-price div.check {
+  float: left;
+  position: absolute;
+  top: 50%;
+  -webkit-transform: translateY(-50%);
+  -ms-transform: translateY(-50%);
+  transform: translateY(-50%);
+  height: 20px;
+  width: 20px;
+  background: #ffffff;
+  border: #D7D7D7 thin solid;
+  border-radius: 2px;
 }
-div#tickets-body div.ticket.soldout > div.inner > div.info div.top div.price {
-  background: #929292;
+div#tickets-body div#tickets-canvas div.ticket div.ticket-top div.container div.ticket-price div.check div.check-inner {
+  background: #faa638;
+  display: none;
+  margin: 2px;
+  border-radius: 2px;
+  height: 14px;
+  width: 14px;
 }
-div#tickets-body div.ticket > div.inner {
-  display: table-row;
-  width: 100%;
+div#tickets-body div#tickets-canvas div.ticket div.ticket-top div.container div.ticket-price div.price {
+  padding-left: 30px;
+  float: left;
+  font-size: 22px;
+  font-weight: 600;
 }
-div#tickets-body div.ticket > div.inner > div.action {
-  position: relative;
-  display: table-cell;
-  width: 64px;
-  height: 100%;
-  vertical-align: middle;
+div#tickets-body div#tickets-canvas div.ticket div.ticket-top div.container div.ticket-name {
+  font-weight: 600;
+  font-size: 15px;
+  line-height: 1.1rem;
 }
-div#tickets-body div.ticket > div.inner > div.action div.wrapper {
-  width: 40px;
-  margin: auto;
+div#tickets-body div#tickets-canvas div.ticket div.ticket-top div.container div.ticket-price,
+div#tickets-body div#tickets-canvas div.ticket div.ticket-top div.container div.ticket-name {
+  position: absolute;
+  top: 50%;
+  -webkit-transform: translateY(-50%);
+  -ms-transform: translateY(-50%);
+  transform: translateY(-50%);
 }
-div#tickets-body div.ticket > div.inner > div.action div.wrapper div.top input {
+div#tickets-body div#tickets-canvas div.ticket div.ticket-middle {
+  display: none;
+  background: #FFF4DB;
+}
+div#tickets-body div#tickets-canvas div.ticket div.ticket-middle div.container {
+  min-height: 60px;
+  padding: 10px 0;
+}
+div#tickets-body div#tickets-canvas div.ticket div.ticket-middle div.container div.info-label {
+  position: absolute;
+  top: 50%;
+  -webkit-transform: translateY(-50%);
+  -ms-transform: translateY(-50%);
+  transform: translateY(-50%);
+  font-size: 13px;
+  font-weight: 600;
+  padding-left: 0.9375rem;
+}
+div#tickets-body div#tickets-canvas div.ticket div.ticket-middle div.container input.ticket-quantity {
+  border: #faa638 thin solid;
+  padding: 0;
   display: block;
-  margin: 0 auto;
-}
-div#tickets-body div.ticket > div.inner > div.action div.wrapper div.bottom {
-  margin-top: 10px;
-}
-div#tickets-body div.ticket > div.inner > div.action div.wrapper div.bottom input {
-  width: 40px;
-  height: 24px;
-  margin: 0;
+  margin-bottom: 0;
+  width: 30px;
+  height: 25px;
+  position: absolute;
+  top: 50%;
+  -webkit-transform: translateY(-50%);
+  -ms-transform: translateY(-50%);
+  transform: translateY(-50%);
   text-align: center;
-  border-radius: 3px;
-}
-div#tickets-body div.ticket > div.inner > div.action div.wrapper div.soldout {
-  width: 44px;
-  height: 44px;
-  background: #FFFFFF;
-  color: #4a4a4a;
-  font-size: 14px;
-  line-height: 22px;
-  text-align: center;
-}
-div#tickets-body div.ticket > div.inner > div.info {
-  display: table-cell;
-  min-height: 107px;
-  padding: 20px 25px;
-  background: #FFFFFF;
-}
-div#tickets-body div.ticket > div.inner > div.info div.top {
-  width: 100%;
-  height: 40px;
-}
-div#tickets-body div.ticket > div.inner > div.info div.top div.price {
-  width: 40px;
-  height: 40px;
-  padding: 13px 0;
   border-radius: 4px;
-  background: #4963E4;
-  color: #FFFFFF;
-  font-size: 14px;
-  text-align: center;
+  font-weight: 300;
+  box-shadow: none;
+  transition: none;
 }
-div#tickets-body div.ticket > div.inner > div.info div.top div.name {
-  display: table;
-  width: 255px;
-  height: 40px;
-  padding-left: 10px;
+div#tickets-body div#tickets-canvas div.ticket div.ticket-bottom {
+  border-top: #D7D7D7 thin solid;
+  font-size: 12px;
 }
-div#tickets-body div.ticket > div.inner > div.info div.top div.name div {
-  display: table-cell;
-  vertical-align: middle;
-  font-size: 14px;
-  line-height: 18px;
-  font-weight: 700;
+div#tickets-body div#tickets-canvas div.ticket div.ticket-bottom div.ticket-description-container {
+  padding: 10px 0;
+  padding-left: 0.9375rem;
+  padding-right: 0.9375rem;
+  min-height: 60px;
 }
-div#tickets-body div.ticket > div.inner > div.info div.bottom {
-  width: 100%;
-  margin-top: 10px;
-  font-size: 14px;
-  line-height: 18px;
+div#tickets-body div#tickets-canvas div.ticket div.ticket-bottom div.ticket-description-container div.ticket-sold-out {
+  font-weight: bold;
+}
+div#tickets-body div#tickets-canvas div.ticket div.ticket-bottom div.ticket-description {
+  position: absolute;
+  top: 50%;
+  -webkit-transform: translateY(-50%);
+  -ms-transform: translateY(-50%);
+  transform: translateY(-50%);
+  line-height: 1.1rem;
 }
 div#tickets-details {
   width: 100%;
-  padding: 10px 0;
-  border-top: 1px solid #f6f6f6;
 }
-div#tickets-details > div.inner {
+div#tickets-details div.title {
   width: 100%;
-  background: #F5F5F5;
+  padding: 20px 0;
+  font-size: 14px;
+  font-weight: 600;
+  text-align: center;
+  text-transform: uppercase;
 }
-div#tickets-details div.left {
-  width: 64px;
-}
-div#tickets-details div.right {
-  width: 336px;
-  background: #FFFFFF;
-}
-div#tickets-details div.right > div {
-  width: 336px;
-  height: 40px;
-  padding: 4px;
-}
-div#tickets-details div.right > div input:not(.promo-input) {
-  width: 328px;
-  height: 32px;
-  margin: 0;
+div#tickets-details input {
   border-radius: 4px;
+  font-weight: 300;
+  box-shadow: none;
+  transition: none;
 }
-div#tickets-details div.right > div div.start-promo {
-  margin-top: 8px;
+@media only screen and (min-width: 40.063em) {
+  div#tickets-details div.top .columns:first-child,
+  div#tickets-details div.middle .columns:first-child {
+    padding-right: 7px;
+  }
+  div#tickets-details div.top .columns:last-child,
+  div#tickets-details div.middle .columns:last-child {
+    padding-left: 7px;
+  }
 }
-div#tickets-details div.right > div div.start-promo a.start-promo-btn {
-  font-size: .8rem;
-  margin-right: 8px;
+div#tickets-details div.bottom div.start-promo {
+  padding-bottom: 20px;
+}
+div#tickets-details div.bottom div.start-promo a {
   color: #faa638;
-  font-style: italic;
+  font-weight: 300;
   text-decoration: underline;
-}
-div#tickets-details div.right > div input.promo-input {
-  border-radius: 4px;
-  margin-bottom: 0;
-}
-div#tickets-details div.right > div a.postfix {
-  background: #4963e4;
-  border-top-right-radius: 4px;
-  border-bottom-right-radius: 4px;
-  margin-bottom: 0;
-}
-div#tickets-details div.right div.top input {
-  width: 160px;
-}
-div#tickets-details div.right div.promo-container {
-  padding-left: 0;
+  font-style: italic;
+  font-size: 12px;
 }
 div#tickets-footer {
+  padding: 20px 0;
   position: relative;
   width: 100%;
-  height: 60px;
+  border-top: #F6F6F6 thin solid;
 }
 div#tickets-subtotal {
-  width: 100%;
-  height: 60px;
-  padding: 23px 12px;
   font-size: 14px;
+  padding-top: 14px;
+  font-weight: bold;
+}
+div#tickets-subtotal div.issues a {
+  display: block;
+  margin-top: 10px;
+  font-size: 10px;
+  color: #faa638;
+  font-weight: 300;
+  font-style: italic;
+}
+@media only screen and (max-width: 40em) {
+  div#tickets-subtotal {
+    text-align: center;
+    margin-bottom: 20px;
+  }
 }
 a#tickets-confirm {
-  position: absolute;
-  width: 140px;
-  height: 41px;
-  top: 10px;
-  right: 10px;
+  display: block;
+  width: 100%;
   padding-top: 10px;
-  padding-bottom: 10px;
-  color: #FFFFFF;
+  padding-bottom: 11px;
+  color: #ffffff;
+}
+a#tickets-confirm:hover {
+  color: #ffffff;
 }
 div#wrapper-event-modify.full {
   width: 100%;
@@ -9451,6 +9791,22 @@ div#event-modify-tickets div.ticket-option div.bottom div.inner div.description 
   padding: 15px;
   font-size: 14px;
   line-height: 18px;
+}
+div#event-modify-tickets div.ticket-option div.move-tickets {
+  padding: 0 10px;
+  padding-bottom: 3px;
+}
+div#event-modify-tickets div.ticket-option div.move-tickets div.inner {
+  min-height: 40px;
+  padding: 0;
+}
+div#event-modify-tickets div.ticket-option div.move-tickets div.inner div.move-ticket a {
+  padding: 10px 0;
+  color: #4963e4;
+  display: block;
+  width: 100%;
+  font-size: 12px;
+  text-align: center;
 }
 div#event-modify-tickets div.next-step a.primary-btn {
   width: 100%;

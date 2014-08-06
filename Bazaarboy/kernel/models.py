@@ -200,6 +200,7 @@ class Ticket(models.Model):
     request_address = models.BooleanField(default = False)
     extra_fields = models.TextField()
     is_deleted = models.BooleanField(default = False)
+    order = models.IntegerField(null = False, default = 0)
 
 class Promo(models.Model):
     """

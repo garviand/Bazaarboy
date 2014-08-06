@@ -114,7 +114,7 @@ def sendResetRequestEmail(resetCode):
     user = resetCode.user
     to = [{
         'email':user.email, 
-        'name':user.user.first_name + ' ' + user.last_name
+        'name':user.first_name + ' ' + user.last_name
     }]
     subject = 'Reset Your Password'
     template = 'reset-password'
@@ -123,7 +123,7 @@ def sendResetRequestEmail(resetCode):
         'vars': [
             {
                 'name':'user_name', 
-                'content':user.first_name + ' ' + user.last_name
+                'content':user.first_name
             }, 
             {
                 'name': 'reset_code', 
@@ -131,7 +131,85 @@ def sendResetRequestEmail(resetCode):
             }
         ]
     }]
-    return self.sendEmail(to, subject, template, mergeVars)
+    return sendEmails(to, subject, template, mergeVars)
+
+def sendRefundConfirmationEmail(purchase, amount):
+    """
+    Email refund reciept
+    """
+    refund_amount = '$' + '{0:.02f}'.format(float(amount) / 100.0)
+    user = purchase.owner
+    if purchase.event.slug:
+        event_url = 'https://bazaarboy.com/' + purchase.event.slug
+    else:
+        event_url = 'https://bazaarboy.com/event/' + str(purchase.event.id)
+    subject = 'You Have Been Refunded - Bazaarboy'
+    template = 'refund'
+    to = [{
+        'email':user.email, 
+        'name':user.first_name + ' ' + user.last_name
+    }]
+    mergeVars = [{
+        'rcpt': user.email,
+        'vars': [
+            {
+                'name':'user_name', 
+                'content':user.first_name
+            }, 
+            {
+                'name':'event_name', 
+                'content':purchase.event.name
+            },
+            {
+                'name':'refund_amount', 
+                'content':refund_amount
+            },
+            {
+                'name':'event_link', 
+                'content':event_url
+            }
+        ]
+    }]
+    return sendEmails(to, subject, template, mergeVars)
+
+@task()
+def sendIssueEmail(name, email, message, event):
+    if event.slug:
+        event_url = 'https://bazaarboy.com/' + event.slug
+    else:
+        event_url = 'https://bazaarboy.com/event/' + str(event.id)
+    to = [{
+        'email': 'eric@bazaarboy.com', 
+        'name': 'Bazaarboy'
+    }]
+    subject = event.name + ' - RSVP issue from ' + name
+    template = 'issue'
+    mergeVars = [{
+        'rcpt': 'andy@bazaarboy.com',
+        'vars': [
+            {
+                'name': 'user_name', 
+                'content': name
+            },
+            {
+                'name': 'user_email', 
+                'content': email
+            },
+            {
+                'name': 'event_name', 
+                'content': event.name
+            },
+            {
+                'name': 'event_url', 
+                'content': event_url
+            },
+            {
+                'name': 'user_message', 
+                'content': message
+            }
+        ]
+    }]
+    return sendEmails(to, subject, template, mergeVars)
 
 @task()
 def sendProfileMessageEmail(name, email, message, profile, event):
@@ -167,7 +245,7 @@ def sendProfileMessageEmail(name, email, message, profile, event):
 @task()
 def sendOrganizerAddedEmail(event, adder, profile):
     to = [{
-        'email':profile.email, 
+        'email':profile.email,
         'name':profile.name
     }]
     subject = 'Added as organizer - ' + event.name

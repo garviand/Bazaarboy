@@ -21,7 +21,7 @@ from src.config import *
 from src.controllers.request import *
 from src.ordereddict import OrderedDict
 from src.csvutils import UnicodeWriter
-from src.email import sendEventConfirmationEmail, sendEventInvite, sendOrganizerAddedEmail
+from src.email import sendEventConfirmationEmail, sendEventInvite, sendOrganizerAddedEmail, sendIssueEmail
 from src.regex import REGEX_EMAIL, REGEX_NAME, REGEX_SLUG
 from src.sanitizer import sanitize_redactor_input
 from src.serializer import serialize, serialize_one
@@ -80,7 +80,7 @@ def index(request, id, params, user):
                     'name': purchase.event.name,
                     'quantity': 1
                 }
-    tickets = Ticket.objects.filter(event = event, is_deleted = False)
+    tickets = Ticket.objects.filter(event = event, is_deleted = False).order_by('order', '-id')
     requiresAddress = False
     for ticket in tickets:
         if ticket.request_address:
@@ -198,13 +198,20 @@ def manage(request, id, params, user):
                     }
                 })
         else:
+            if item.purchase.amount > 0 and item.purchase.checkout.checkout_id.strip() != '':
+                refundable = True
+            else:
+                refundable = False
             if item.is_checked_in:
                 checkedIn = True
             else:
                 checkedIn = False
             purchases[item.purchase.id] = {
                 'id': item.id,
+                'purchase_id': item.purchase.id,
+                'refundable': refundable,
                 'name': item.purchase.owner.first_name + ' ' + item.purchase.owner.last_name,
+                'email': item.purchase.owner.email,
                 'code': item.purchase.code,
                 'checked_in': checkedIn,
                 'tickets': {
@@ -297,6 +304,29 @@ def search(request, params):
     response = {
         'status':'OK',
         'events':serialize(events)
+    }
+    return json_response(response)
+
+@validate('POST', ['name', 'useremail', 'message', 'event'])
+def issue(request, params):
+    if not Event.objects.filter(id = params['event']).exists():
+        response = {
+            'status':'FAIL',
+            'error':'EVENT_NOT_FOUND',
+            'message':'The event doesn\'t exist.'
+        }
+        return json_response(response)
+    if not REGEX_EMAIL.match(params['useremail']):
+        response = {
+            'status':'FAIL',
+            'error':'INVALID_EMAIL',
+            'message':'Email format is invalid.'
+        }
+        return json_response(response)
+    event = Event.objects.get(id = params['event'])
+    sendIssueEmail(params['name'], params['useremail'], params['message'], event)
+    response = {
+                'status':'OK'
     }
     return json_response(response)
 
@@ -1079,9 +1109,15 @@ def edit_ticket(request, params, user):
             ticket.extra_fields = fields
     # Save the changes
     ticket.save()
+    sold = Purchase_item.objects.filter(Q(purchase__checkout = None) | 
+                                        Q(purchase__checkout__is_charged = True, 
+                                          purchase__checkout__is_refunded = False), 
+                                        ticket = ticket).count()
+    serialized = serialize_one(ticket)
+    serialized['sold'] = sold
     response = {
         'status':'OK',
-        'ticket':serialize_one(ticket)
+        'ticket':serialized
     }
     return json_response(response)
 
@@ -1114,6 +1150,54 @@ def delete_ticket(request, params, user):
     # Mark the ticket as deleted
     ticket.is_deleted = True
     ticket.save()
+    response = {
+        'status':'OK'
+    }
+    return json_response(response)
+
+@login_required()
+@validate('POST', ['event', 'details'])
+def reorder_tickets(request, params, user):
+    """
+    Reorder Tickers
+
+    @details: {'#ticket1.id':#order, '#ticket2.id':#order, ...}
+    """
+    # Check if user has permission for the event
+    if not Organizer.objects.filter(event__id = params['event'], 
+                                    profile__managers = user).exists():
+        response = {
+            'status':'FAIL',
+            'error':'NOT_A_MANAGER',
+            'message':'You don\'t have permission for the event.'
+        }
+        return json_response(response)
+    details = None
+    try:
+        details = json.loads(params['details'])
+    except ValueError:
+        response = {
+            'status':'FAIL',
+            'error':'INVALID_DETAILS',
+            'message':'The ticket details are not in legal format.'
+        }
+        return json_response(response)
+    _details = {}
+    for tid in details:
+        _details[int(tid)] = int(details[tid])
+    details = _details
+    for tid in details:
+        if Ticket.objects.filter(event__id = params['event'], id = tid).exists():
+            ticket = Ticket.objects.get(event__id = params['event'], id = tid)
+            ticket.order = details[tid]
+            ticket.save()
+        else:
+            response = {
+                'status':'FAIL',
+                'error':'TICKET_DOESNT_EXIST',
+                'message':'One of the tickets does not belong to this event'
+            }
+            return json_response(response)
     response = {
         'status':'OK'
     }
@@ -1923,7 +2007,7 @@ def purchase(request, params, user):
 
 @login_required()
 @validate('POST', ['event', 'details', 'email', 'first_name', 'last_name'], 
-          ['phone', 'address'])
+          ['phone', 'address', 'force', 'send_email'])
 def add_purchase(request, params, user):
     """
     Manually add purchase by organizer
@@ -2001,6 +2085,15 @@ def add_purchase(request, params, user):
         return json_response(response)
     else:
         inviter = Organizer.objects.filter(event = event, profile__managers = _user)[0]
+    # Check for duplicate email
+    if Purchase.objects.filter(event = event, owner__email = params['email']).exists():
+        if not params['force'] or params['force'] != 'true':
+            response = {
+                'status':'WAIT',
+                'error':'DUPLICATE_EMAIL',
+                'message':'This email is already registered for the event. Would you like to add the guest anyways?'
+            }
+            return json_response(response)
     # Check if the tickets are valid
     _tickets = Ticket.objects.filter(event = event, is_deleted = False)
     tickets = {}
@@ -2092,8 +2185,9 @@ def add_purchase(request, params, user):
                     'quantity': 1
                 }
         # Send confirmation email and sms
-        sendEventConfirmationEmail(purchase, True, inviter)
-        sendEventConfirmationSMS(purchase)
+        if params['send_email'] and params['send_email'] == 'true':
+            sendEventConfirmationEmail(purchase, True, inviter)
+            sendEventConfirmationSMS(purchase)
         # Success
         response = {
             'status':'OK',
@@ -2153,12 +2247,17 @@ def export(request, params, user):
                     }
                 })
         else:
+            if item.is_checked_in:
+                checked_in = 'yes'
+            else:
+                checked_in = ''
             items[item.purchase.id] = {
                 'id': item.id,
                 'email': item.purchase.owner.email,
                 'first_name': item.purchase.owner.first_name,
                 'last_name': item.purchase.owner.last_name,
                 'code': item.purchase.code,
+                'checked_in': checked_in,
                 'tickets': {
                     item.ticket.id:{
                         'name':item.ticket.name,
@@ -2171,7 +2270,7 @@ def export(request, params, user):
     csvName = re.sub(r'\W+', '-', event.name) + '.csv'
     response['Content-Disposition'] = 'attachment; filename="' + csvName + '"'
     writer = UnicodeWriter(response)
-    headers = ['id', 'email', 'first_name', 'last_name', 'ticket', 'quantity', 'code']
+    headers = ['id', 'email', 'first_name', 'last_name', 'ticket', 'quantity', 'code', 'checked in']
     writer.writerow(headers)
     # Write to csv
     count = 1
@@ -2184,7 +2283,8 @@ def export(request, params, user):
                 item['last_name'], 
                 ticket['name'], 
                 str(ticket['quantity']), 
-                item['code']
+                item['code'],
+                item['checked_in']
             ]
             writer.writerow(row)
             count += 1

@@ -12,8 +12,11 @@ from django.shortcuts import render, redirect
 from kernel.models import *
 from src.config import *
 from src.controllers.request import *
-from src.email import sendEventConfirmationEmail
+from src.email import sendEventConfirmationEmail, sendRefundConfirmationEmail
 from src.sms import sendEventConfirmationSMS
+from src.serializer import serialize, serialize_one
+
+import pdb
 
 @login_required('index')
 @validate('GET', [], ['code', 'error', 'error_description'])
@@ -106,6 +109,7 @@ def charge(request, params, user):
             application_fee = fee,
             api_key = checkout.payee.access_token
         )
+        checkout.checkout_id = charge.id
         checkout.is_charged = True
         checkout.save()
     except stripe.CardError, e:
@@ -121,5 +125,77 @@ def charge(request, params, user):
         response = {
             'status':'OK',
             'tickets': items
+        }
+        return json_response(response)
+
+@login_check()
+@validate('POST', ['purchase'])
+def refund(request, params, user):
+    """
+    Refund the purchase
+    """
+    if not Purchase.objects.filter(id = params['purchase']).exists():
+        response = {
+            'status':'FAIL',
+            'error':'PURCHASE_NOT_FOUND',
+            'message':'The purchase doesn\'t exist.'
+        }
+        return json_response(response)
+    purchase = Purchase.objects.get(id = params['purchase'])
+    if not Organizer.objects.filter(event = purchase.event, 
+                                    profile__managers = user).exists():
+        response = {
+            'status':'FAIL',
+            'error':'NOT_A_MANAGER',
+            'message':'You don\'t have permission for the event.'
+        }
+        return json_response(response)
+    if not purchase.checkout:
+        response = {
+            'status':'FAIL',
+            'error':'HEADLESS_PURCHASE',
+            'message':'This purchase doesn\'t have a checkout.'
+        }
+        return json_response(response)
+    checkout = purchase.checkout
+    stripe.api_key = checkout.payee.access_token
+    if not checkout.is_charged:
+        response = {
+            'status':'FAIL',
+            'error':'NOT_CHARGED',
+            'message':'The checkout has not been charged. There is nothing to refund.'
+        }
+        return json_response(response)
+    if checkout.is_refunded:
+        response = {
+            'status':'FAIL',
+            'error':'ALREADY_REFUNDED',
+            'message':'The checkout has already been refunded.'
+        }
+        return json_response(response)
+    if checkout.amount == 0:
+        response = {
+            'status':'FAIL',
+            'error':'FREE_CHECKOUT',
+            'message':'The checkout has an amount of 0. There is nothing to refund.'
+        }
+        return json_response(response)
+    try:
+        ch = stripe.Charge.retrieve(checkout.checkout_id)
+        re = ch.refund()
+    except stripe.CardError, e:
+        response = {
+            'status':'FAIL',
+            'error':'REFUND_FAILED',
+            'message':'The refund did not go through.'
+        }
+        return json_response(response)
+    else:
+        checkout.is_refunded = True
+        checkout.save()
+        sendRefundConfirmationEmail(purchase, re.amount_refunded)
+        response = {
+            'status':'OK',
+            'purchase': serialize_one(purchase)
         }
         return json_response(response)

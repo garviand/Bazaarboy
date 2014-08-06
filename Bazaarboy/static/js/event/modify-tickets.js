@@ -1,7 +1,7 @@
 (function() {
   Bazaarboy.event.modify.tickets = {
     ticketSubmitting: false,
-    promoSubmitting: false,
+    reordering: false,
     newTicket: function() {
       $('div.custom-field-container:not(.template)').remove();
       $('div#edit-ticket div.step-2').hide();
@@ -276,6 +276,50 @@
       $('a.new-ticket').click(function() {
         _this.newTicket();
       });
+      $('body').on('click', 'a.move-ticket-btn', function() {
+        var originalHTML, params, swapTicket, thisButton, thisTicket,
+          _this = this;
+        if (!scope.reordering || true) {
+          scope.reordering = true;
+          thisButton = $(this);
+          originalHTML = thisButton.html();
+          thisButton.html('Moving...');
+          thisTicket = $(this).parents('.ticket-option');
+          if ($(this).hasClass('move-ticket-up')) {
+            swapTicket = thisTicket.prev('.ticket-option');
+            swapTicket.before(thisTicket);
+          }
+          if ($(this).hasClass('move-ticket-down')) {
+            swapTicket = thisTicket.next('.ticket-option');
+            swapTicket.after(thisTicket);
+          }
+          params = {
+            event: eventId,
+            details: {}
+          };
+          $('.ticket-option:not(.template)').each(function() {
+            $(this).find('.move-ticket-up').parent().removeClass('hide');
+            $(this).find('.move-ticket-down').parent().removeClass('hide');
+            if ($(this).index() === 0) {
+              $(this).find('.move-ticket-up').parent().addClass('hide');
+            }
+            if ($(this).index() === ($('.ticket-option:not(.template)').length - 1)) {
+              $(this).find('.move-ticket-down').parent().addClass('hide');
+            }
+            params.details[$(this).data('id')] = $(this).index();
+          });
+          params.details = JSON.stringify(params.details);
+          Bazaarboy.post('event/tickets/reorder/', params, function(response) {
+            if (response.status !== 'OK') {
+              alert(response.message);
+            } else {
+              console.log(response);
+            }
+            thisButton.html(originalHTML);
+            scope.reordering = false;
+          });
+        }
+      });
       $('div.ticket-option div.top div.secondary-btn').click(function() {
         var ticket;
         ticket = $(this).closest('div.ticket-option').attr('data-id');
@@ -421,7 +465,9 @@
                 if (isNew) {
                   ticketOption = $('div.templates div.ticket-option').clone();
                   $(ticketOption).attr('data-id', response.ticket.pk);
-                  $(ticketOption).appendTo('div#ticket-canvas');
+                  $(ticketOption).prependTo('div#ticket-canvas');
+                  $(ticketOption).find('.move-ticket-up').parent().addClass('hide');
+                  $(ticketOption).next('.ticket-option').find('.move-ticket-up').parent().removeClass('hide');
                   $(ticketOption).find('div.top div.secondary-btn').click(function() {
                     var ticket;
                     ticket = $(this).closest('div.ticket-option').attr('data-id');
@@ -435,19 +481,22 @@
                 $(ticketOption).find('div.name').html(response.ticket.name);
                 $(ticketOption).find('div.description').html(response.ticket.description);
                 sold = response.ticket.sold != null ? response.ticket.sold : 0;
+                console.log(response);
                 $(ticketOption).find('span.sold').html(sold);
                 quantity = response.ticket.quantity ? '/' + response.ticket.quantity : '';
                 $(ticketOption).find('span.quantity').html(quantity);
                 wording = 'RSVP\'d';
                 wordingObject = 'RSVPs';
                 if (response.ticket.price > 0) {
-                  $('div#event-modify-tickets div#promos').removeClass('hide');
-                  newPromosTicket = $('div.promo-form-ticket.template').clone();
-                  newPromosTicket.find('a.select-ticket').attr('data-id', response.ticket.pk);
-                  newPromosTicket.find('a.select-ticket').html(response.ticket.name + ' ($' + response.ticket.price + ')');
-                  newPromosTicket.removeClass('hide');
-                  newPromosTicket.removeClass('template');
-                  $('div.promo-form-tickets').append(newPromosTicket);
+                  if (isNew) {
+                    $('div#event-modify-tickets div#promos').removeClass('hide');
+                    newPromosTicket = $('div.promo-form-ticket.template').clone();
+                    newPromosTicket.find('a.select-ticket').attr('data-id', response.ticket.pk);
+                    newPromosTicket.find('a.select-ticket').html(response.ticket.name + ' ($' + response.ticket.price + ')');
+                    newPromosTicket.removeClass('hide');
+                    newPromosTicket.removeClass('template');
+                    $('div.promo-form-tickets').append(newPromosTicket);
+                  }
                   wording = 'Sold';
                   wordingObject = 'Ticket Holders';
                 }

@@ -16,6 +16,7 @@
         first_name: $('form[name=add-guest] input[name=first_name]').val().trim(),
         last_name: $('form[name=add-guest] input[name=last_name]').val().trim(),
         email: $('form[name=add-guest] input[name=email]').val().trim(),
+        send_email: $('form[name=add-guest] input[name=send_email]').is(':checked'),
         details: {}
       };
       ticketId = parseInt($('form[name=add-guest] select[name=ticket]').val());
@@ -24,7 +25,38 @@
       $('form[name=add-guest] input[name=submit]').val('Adding...');
       Bazaarboy.post('event/purchase/add/', params, function(response) {
         var newGuest;
-        if (response.status === 'OK') {
+        if (response.status === 'WAIT') {
+          if (confirm(response.message)) {
+            params.force = true;
+            Bazaarboy.post('event/purchase/add/', params, function(response) {
+              var newGuest;
+              if (response.status === 'OK') {
+                $('form[name=add-guest] input[name=first_name]').val('');
+                $('form[name=add-guest] input[name=last_name]').val('');
+                $('form[name=add-guest] input[name=email]').val('');
+                $('form[name=add-guest] input[name=quantity]').val('');
+                $('form[name=add-guest] input[name=submit]').val('Add Guest(s)');
+                newGuest = $('div.guest_template').clone();
+                newGuest.find('div.confirmation').html(response.purchase.code + '&nbsp;');
+                newGuest.find('div.ticket_name').html(response.tickets[ticketId]['name'] + ' (' + response.tickets[ticketId]['quantity'] + ')');
+                newGuest.find('div.name').html(params.first_name + ' ' + params.last_name);
+                newGuest.data('id', response.purchase.id);
+                newGuest.data('ticket', ticketId);
+                newGuest.removeClass('guest_template').removeClass('hidden');
+                $('div.list_headers').after(newGuest);
+                return _this.purchaseInProgress = false;
+              } else {
+                alert(response.message);
+                $('form[name=add-guest] input[name=submit]').val('Add Guest(s)');
+                return _this.purchaseInProgress = false;
+              }
+            });
+          } else {
+            alert('Add Guest Canceled');
+            $('form[name=add-guest] input[name=submit]').val('Add Guest(s)');
+            _this.purchaseInProgress = false;
+          }
+        } else if (response.status === 'OK') {
           $('form[name=add-guest] input[name=first_name]').val('');
           $('form[name=add-guest] input[name=last_name]').val('');
           $('form[name=add-guest] input[name=email]').val('');
@@ -41,6 +73,7 @@
           _this.purchaseInProgress = false;
         } else {
           alert(response.message);
+          $('form[name=add-guest] input[name=submit]').val('Add Guest(s)');
           _this.purchaseInProgress = false;
         }
       });
@@ -93,9 +126,23 @@
     init: function() {
       var scope;
       scope = this;
+      $("div.guest-add-invite a.raffle-btn").click(function(e) {
+        var winner, winner_email, winner_id, winner_name;
+        e.preventDefault();
+        winner_id = Math.floor(Math.random() * ($("div.guest").length - 1));
+        winner = $("div.list_guests div.guest").eq(winner_id);
+        winner_name = winner.find("div.name").html();
+        winner_email = winner.attr('data-email');
+        $('div#raffle-modal div.subtext-name').html(winner_name);
+        $('div#raffle-modal div.subtext-email').html(winner_email);
+        $('div#raffle-modal').foundation('reveal', 'open');
+      });
       $("div.guest-add-invite a.start-guest-invite").click(function(e) {
         e.preventDefault();
-        return $('div#invite-modal').foundation('reveal', 'open');
+        $('div#invite-modal').foundation('reveal', 'open');
+      });
+      $("div#raffle-modal a.back-to-list").click(function() {
+        $('div#invite-modal').foundation('reveal', 'close');
       });
       $('div#invite-modal form.invite-form div.event-list').click(function() {
         $(this).toggleClass('selected');
@@ -142,6 +189,28 @@
         e.preventDefault();
         if (!scope.purchaseInProgress) {
           scope.add_purchase();
+        }
+      });
+      $('a.show-refunds').click(function() {
+        $('div.list_guests div.name').removeClass('medium-4').addClass('medium-2');
+        $('div.refund').removeClass('hide');
+      });
+      $('div.refund a.refund-btn').click(function() {
+        var container;
+        container = $(this).parents('div.guest');
+        if (confirm('Are you sure you want to refund this purchase?')) {
+          $(this).html('refunding...');
+          Bazaarboy.post('payment/refund/', {
+            purchase: $(this).data('purchase')
+          }, function(response) {
+            if (response.status === 'OK') {
+              container.fadeOut(300, function() {
+                $(this).remove();
+              });
+            } else {
+              alert(response.message);
+            }
+          });
         }
       });
       $('form input[name=guest_name]').keyup(function(e) {

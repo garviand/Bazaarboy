@@ -11,13 +11,41 @@ Bazaarboy.event.manage =
             first_name: $('form[name=add-guest] input[name=first_name]').val().trim()
             last_name: $('form[name=add-guest] input[name=last_name]').val().trim()
             email: $('form[name=add-guest] input[name=email]').val().trim()
+            send_email: $('form[name=add-guest] input[name=send_email]').is(':checked')
             details: {}
         ticketId = parseInt($('form[name=add-guest] select[name=ticket]').val())
         params.details[ticketId] = parseInt($('form[name=add-guest] input[name=quantity]').val())
         params.details = JSON.stringify params.details
         $('form[name=add-guest] input[name=submit]').val('Adding...')
         Bazaarboy.post 'event/purchase/add/', params, (response) =>
-            if response.status is 'OK'
+            if response.status is 'WAIT'
+                if confirm response.message
+                    params.force = true
+                    Bazaarboy.post 'event/purchase/add/', params, (response) =>
+                        if response.status is 'OK'
+                            $('form[name=add-guest] input[name=first_name]').val('')
+                            $('form[name=add-guest] input[name=last_name]').val('')
+                            $('form[name=add-guest] input[name=email]').val('')
+                            $('form[name=add-guest] input[name=quantity]').val('')
+                            $('form[name=add-guest] input[name=submit]').val('Add Guest(s)')
+                            newGuest = $('div.guest_template').clone()
+                            newGuest.find('div.confirmation').html(response.purchase.code + '&nbsp;')
+                            newGuest.find('div.ticket_name').html(response.tickets[ticketId]['name'] + ' (' + response.tickets[ticketId]['quantity'] + ')')
+                            newGuest.find('div.name').html(params.first_name + ' ' + params.last_name)
+                            newGuest.data('id', response.purchase.id)
+                            newGuest.data('ticket', ticketId)
+                            newGuest.removeClass('guest_template').removeClass('hidden')
+                            $('div.list_headers').after(newGuest)
+                            @purchaseInProgress = false
+                        else
+                            alert response.message
+                            $('form[name=add-guest] input[name=submit]').val('Add Guest(s)')
+                            @purchaseInProgress = false
+                else
+                    alert 'Add Guest Canceled'
+                    $('form[name=add-guest] input[name=submit]').val('Add Guest(s)')
+                    @purchaseInProgress = false
+            else if response.status is 'OK'
                 $('form[name=add-guest] input[name=first_name]').val('')
                 $('form[name=add-guest] input[name=last_name]').val('')
                 $('form[name=add-guest] input[name=email]').val('')
@@ -34,6 +62,7 @@ Bazaarboy.event.manage =
                 @purchaseInProgress = false
             else
                 alert response.message
+                $('form[name=add-guest] input[name=submit]').val('Add Guest(s)')
                 @purchaseInProgress = false
             return
         return
@@ -71,10 +100,25 @@ Bazaarboy.event.manage =
         return
     init: () ->
         scope = this
+        # RAFFLE
+        $("div.guest-add-invite a.raffle-btn").click (e) ->
+            e.preventDefault()
+            winner_id = Math.floor(Math.random()*($("div.guest").length - 1))
+            winner = $("div.list_guests div.guest").eq(winner_id)
+            winner_name = winner.find("div.name").html()
+            winner_email = winner.attr('data-email')
+            $('div#raffle-modal div.subtext-name').html(winner_name)
+            $('div#raffle-modal div.subtext-email').html(winner_email)
+            $('div#raffle-modal').foundation('reveal', 'open')
+            return
         # INVITE MODAL INIT
         $("div.guest-add-invite a.start-guest-invite").click (e) ->
             e.preventDefault()
             $('div#invite-modal').foundation('reveal', 'open')
+            return
+        $("div#raffle-modal a.back-to-list").click () ->
+            $('div#invite-modal').foundation('reveal', 'close')
+            return
         $('div#invite-modal form.invite-form div.event-list').click () ->
             $(this).toggleClass 'selected'
             return
@@ -108,6 +152,7 @@ Bazaarboy.event.manage =
         $('a.close-invite-modal').click () ->
             $('div#invite-modal').foundation('reveal', 'close')
             return
+        # ADD GUEST
         $("div.guest-add-invite a.start-guest-add").click (e) ->
             e.preventDefault()
             $('div.add-guest-container').removeClass 'hidden'
@@ -116,6 +161,24 @@ Bazaarboy.event.manage =
             e.preventDefault()
             if not scope.purchaseInProgress
                 scope.add_purchase()
+            return
+        # REFUNDS
+        $('a.show-refunds').click () ->
+            $('div.list_guests div.name').removeClass('medium-4').addClass('medium-2')
+            $('div.refund').removeClass 'hide'
+            return
+        $('div.refund a.refund-btn').click () ->
+            container = $(this).parents('div.guest')
+            if confirm('Are you sure you want to refund this purchase?')
+                $(this).html 'refunding...'
+                Bazaarboy.post 'payment/refund/', {purchase:$(this).data('purchase')}, (response) ->
+                    if response.status is 'OK'
+                        container.fadeOut 300, () ->
+                            $(this).remove()
+                            return
+                    else
+                        alert response.message
+                    return
             return
         $('form input[name=guest_name]').keyup (e) ->
             e.preventDefault()

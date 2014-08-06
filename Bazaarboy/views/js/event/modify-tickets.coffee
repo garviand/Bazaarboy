@@ -1,6 +1,6 @@
 Bazaarboy.event.modify.tickets =
     ticketSubmitting: false
-    promoSubmitting: false
+    reordering: false
     newTicket: () ->
         $('div.custom-field-container:not(.template)').remove()
         $('div#edit-ticket div.step-2').hide()
@@ -229,6 +229,42 @@ Bazaarboy.event.modify.tickets =
         $('a.new-ticket').click () =>
             @newTicket()
             return
+        #MOVE TICKET START
+        $('body').on 'click', 'a.move-ticket-btn', () ->
+            if not scope.reordering or true
+                scope.reordering = true
+                thisButton = $(this)
+                originalHTML = thisButton.html()
+                thisButton.html 'Moving...'
+                thisTicket = $(this).parents('.ticket-option')
+                if $(this).hasClass 'move-ticket-up'
+                    swapTicket = thisTicket.prev('.ticket-option')
+                    swapTicket.before(thisTicket)
+                if $(this).hasClass 'move-ticket-down'
+                    swapTicket = thisTicket.next('.ticket-option')
+                    swapTicket.after(thisTicket)
+                params = 
+                    event: eventId
+                    details: {}
+                $('.ticket-option:not(.template)').each () ->
+                    $(this).find('.move-ticket-up').parent().removeClass 'hide'
+                    $(this).find('.move-ticket-down').parent().removeClass 'hide'
+                    if $(this).index() is 0
+                        $(this).find('.move-ticket-up').parent().addClass 'hide'
+                    if $(this).index() is ($('.ticket-option:not(.template)').length - 1)
+                        $(this).find('.move-ticket-down').parent().addClass 'hide'
+                    params.details[$(this).data('id')] = $(this).index()
+                    return
+                params.details = JSON.stringify params.details
+                Bazaarboy.post 'event/tickets/reorder/', params, (response) =>
+                    if response.status isnt 'OK'
+                        alert response.message
+                    else
+                        console.log response
+                    thisButton.html originalHTML
+                    scope.reordering = false
+                    return
+            return
         $('div.ticket-option div.top div.secondary-btn').click () ->
             ticket = $(this).closest('div.ticket-option').attr('data-id')
             scope.editTicket ticket
@@ -351,7 +387,9 @@ Bazaarboy.event.modify.tickets =
                             if isNew
                                 ticketOption = $('div.templates div.ticket-option').clone()
                                 $(ticketOption).attr 'data-id', response.ticket.pk
-                                $(ticketOption).appendTo 'div#ticket-canvas'
+                                $(ticketOption).prependTo 'div#ticket-canvas'
+                                $(ticketOption).find('.move-ticket-up').parent().addClass 'hide'
+                                $(ticketOption).next('.ticket-option').find('.move-ticket-up').parent().removeClass 'hide'
                                 $(ticketOption).find('div.top div.secondary-btn').click () ->
                                     ticket = $(this).closest('div.ticket-option').attr('data-id')
                                     scope.editTicket ticket
@@ -363,19 +401,21 @@ Bazaarboy.event.modify.tickets =
                             $(ticketOption).find('div.name').html response.ticket.name
                             $(ticketOption).find('div.description').html response.ticket.description
                             sold = if response.ticket.sold? then response.ticket.sold else 0
+                            console.log response
                             $(ticketOption).find('span.sold').html sold
                             quantity = if response.ticket.quantity then '/' + response.ticket.quantity else ''
                             $(ticketOption).find('span.quantity').html quantity
                             wording = 'RSVP\'d'
                             wordingObject = 'RSVPs'
                             if response.ticket.price > 0
-                                $('div#event-modify-tickets div#promos').removeClass 'hide'
-                                newPromosTicket = $('div.promo-form-ticket.template').clone()
-                                newPromosTicket.find('a.select-ticket').attr('data-id', response.ticket.pk)
-                                newPromosTicket.find('a.select-ticket').html response.ticket.name + ' ($' + response.ticket.price + ')'
-                                newPromosTicket.removeClass 'hide'
-                                newPromosTicket.removeClass 'template'
-                                $('div.promo-form-tickets').append(newPromosTicket)
+                                if isNew
+                                  $('div#event-modify-tickets div#promos').removeClass 'hide'
+                                  newPromosTicket = $('div.promo-form-ticket.template').clone()
+                                  newPromosTicket.find('a.select-ticket').attr('data-id', response.ticket.pk)
+                                  newPromosTicket.find('a.select-ticket').html response.ticket.name + ' ($' + response.ticket.price + ')'
+                                  newPromosTicket.removeClass 'hide'
+                                  newPromosTicket.removeClass 'template'
+                                  $('div.promo-form-tickets').append(newPromosTicket)
                                 wording = 'Sold'
                                 wordingObject = 'Ticket Holders'
                             $(ticketOption).find('span.wording').html wording

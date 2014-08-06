@@ -57,7 +57,7 @@ block content
                             div.large-5.medium-7.small-9
                                 a.new-ticket.primary-btn(href="javascript:;") + New Ticket
             div.small-12.columns
-                div#promos.row(class="{% if not ticketExists %}hide {% endif %}{% if cheapest == 0 or rsvp %}hide{% endif %}")
+                div#promos.row(class="{% if not ticketExists %}hide {% endif %}{% if rsvp %}hide{% endif %}")
                     div.content
                         div.top.small-12.columns
                             div.inner.row
@@ -148,7 +148,7 @@ block content
                                         a.delete-promo.small-12.medium-3.columns.blue-btn(href="javascript:;") Delete
                                         a.cancel-promo.small-12.medium-3.columns.blue-btn(href="javascript:;") Cancel
             mixin ticket-option(tags)
-                div.ticket-option.row(data-id!= tags ? "{{ ticket.id }}" : "")
+                div.ticket-option.row(data-id!= tags ? "{{ ticket.id }}" : "", class!= tags ? "" : "template")
                     div.top.small-12.columns
                         div.inner.small-12.columns
                             div.price.medium-2.columns
@@ -164,7 +164,7 @@ block content
                                     span.sold
                                         != tags ? '{{ ticket.sold }}' : ''
                                     span.quantity 
-                                        != tags ? '{% if ticket.quantity %}/&nbsp;{{ ticket.quantity|add:ticket.sold }}{% endif %}' : ''
+                                        != tags ? '{% if not ticket.quantity == None %}/&nbsp;{{ ticket.quantity|add:ticket.sold }}{% endif %}' : ''
                                     | &nbsp;
                                     span.wording 
                                         != tags ? "{% if ticket.price == 0 %}RSVP'd{% else %}Sold{% endif %}" : ""
@@ -179,6 +179,12 @@ block content
                         div.inner.small-12.columns
                             div.description.small-12.columns
                                 != tags ? '{{ ticket.description }}' : ''
+                    div.move-tickets.small-12.columns
+                        div.inner.small-12.columns.move-tickets-container
+                            div.medium-2.columns.move-ticket(class="{% if forloop.first %}hide{% endif %}")
+                                a.move-ticket-btn.move-ticket-up(href="javascript:;") Move Up
+                            div.medium-2.columns.move-ticket.end(class="{% if forloop.last %}hide{% endif %}")
+                                a.move-ticket-btn.move-ticket-down(href="javascript:;") Move Down
             div#ticket-canvas.small-12.columns
                 {% for ticket in tickets %}
                 +ticket-option(true)
@@ -238,7 +244,7 @@ block content
                                     a.add-custom-field-btn(href="javascript:;") + Add Custom Field
                             div.row
                                 div.small-12.columns
-                                    p Timing Options (Optional, leave blank if not needed):
+                                    p Is this ticket on sale for only a specific amount of time? (optional)
                                 div.medium-3.columns
                                     input.field(type="text", name="start_date", placeholder="Start Date")
                                 div.medium-3.columns

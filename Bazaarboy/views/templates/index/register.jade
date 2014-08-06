@@ -31,17 +31,13 @@ block body
                                     div.small-12.columns
                                         input(type="password", name="confirm", placeholder="Confirm Password", autocomplete="off")
                                 div.row.register-bottom
-                                    div.small-8.columns
-                                        &nbsp;
-                                    div.small-12.medium-4.columns
+                                    div.small-12.medium-4.medium-offset-8.columns.end
                                         input.primary-btn.submit-register(type="submit", value="REGISTER")
                 div#footer
                     div.row
                         div.small-10.small-offset-1.columns
                             div.row
-                                div.small-8.columns
-                                    //a.trouble(href="javascript:;") Trouble Logging in?
-                                div.small-12.medium-4.columns
+                                div.small-12.medium-4.medium-offset-8.columns.end
                                     a.switch(href="{% url index:login %}") Login
 
 append script

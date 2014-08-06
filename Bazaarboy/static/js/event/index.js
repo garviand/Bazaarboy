@@ -46,16 +46,14 @@
     },
     updateSubtotal: function() {
       var quantity, ticket, tickets, totalPrice, totalQuantity, _i, _len;
-      tickets = $('div#tickets-canvas div.ticket');
+      tickets = $('div#tickets-canvas div.ticket.active');
       totalPrice = 0;
       totalQuantity = 0;
       for (_i = 0, _len = tickets.length; _i < _len; _i++) {
         ticket = tickets[_i];
-        if ($(ticket).find('input.ticket-selected').is(':checked')) {
-          quantity = parseInt($(ticket).find('input.ticket-quantity').val());
-          totalQuantity += quantity;
-          totalPrice += quantity * parseFloat($(ticket).attr('data-price'));
-        }
+        quantity = parseInt($(ticket).find('input.ticket-quantity').val());
+        totalQuantity += quantity;
+        totalPrice += quantity * parseFloat($(ticket).attr('data-price'));
       }
       $('div#tickets-subtotal span.total').html(totalPrice.toFixed(2));
       if (totalPrice !== 0) {
@@ -92,7 +90,7 @@
       ticketSelected = false;
       for (_i = 0, _len = tickets.length; _i < _len; _i++) {
         ticket = tickets[_i];
-        if ($(ticket).find('input.ticket-selected').is(':checked')) {
+        if ($(ticket).hasClass('active')) {
           ticketSelected = true;
           quantity = parseInt($(ticket).find('input.ticket-quantity').val());
           params.details[$(ticket).attr('data-id')] = {
@@ -144,6 +142,9 @@
                 panelLabel: 'Checkout',
                 email: params.email,
                 image: response.logo,
+                closed: function() {
+                  $('a#tickets-confirm').html('Confirm RSVP');
+                },
                 token: function(token) {
                   Bazaarboy.post('payment/charge/', {
                     checkout: response.purchase.checkout,
@@ -189,6 +190,8 @@
           $(this).addClass('hide');
           scope.overlayAnimationInProgress = false;
         });
+        $('.ticket').find('div.ticket-middle').slideUp(100);
+        $('.ticket.active').removeClass('active');
         $('a#tickets-confirm').html('Confirm RSVP');
         $('input[name=quantity]').val(0);
         $('input[name=first_name]').val('');
@@ -579,26 +582,30 @@
           });
         }
       });
-      $('div#tickets-canvas div.ticket').click(function() {
-        $(this).find('.ticket-selected').click();
-      });
-      $('.ticket-selected').click(function(e) {
-        e.stopPropagation();
-      });
-      $('input.ticket-quantity').click(function(e) {
-        e.stopPropagation();
-      });
-      $('input.ticket-selected').click(function() {
-        var wrapper;
-        wrapper = $(this).closest('div.wrapper');
-        if ($(this).is(':checked')) {
-          if (parseInt($(wrapper).find('input.ticket-quantity').val()) === 0) {
-            $(wrapper).find('input.ticket-quantity').val(1);
-          }
-        } else {
-          $(wrapper).find('input.ticket-quantity').val(0);
+      $('div#tickets-canvas div.ticket div.ticket-top').hover(function() {
+        if (!$(this).parents('div.ticket').hasClass('soldout')) {
+          $(this).parents('div.ticket').addClass('hover');
         }
-        scope.updateSubtotal();
+      }, function() {
+        if (!$(this).parents('div.ticket').hasClass('soldout')) {
+          $(this).parents('div.ticket').removeClass('hover');
+        }
+      });
+      $('div#tickets-canvas div.ticket-top').click(function() {
+        var quant;
+        if (!$(this).parents('div.ticket').hasClass('soldout')) {
+          $(this).parents('.ticket').toggleClass('active');
+          if ($(this).parents('.ticket').hasClass('active')) {
+            $(this).parents('.ticket').find('div.ticket-middle').slideDown(100);
+            quant = $(this).parents('.ticket').find('input.ticket-quantity');
+            if (quant.val().trim() === '' || parseInt(quant.val()) === 0) {
+              quant.val(1);
+            }
+          } else {
+            $(this).parents('.ticket').find('div.ticket-middle').slideUp(100);
+          }
+          scope.updateSubtotal();
+        }
       });
       $('input.ticket-quantity').keyup(function() {
         var wrapper;
@@ -611,13 +618,45 @@
         scope.updateSubtotal();
       });
       $('input.ticket-quantity').blur(function() {
-        if ($(this).val().trim() === '') {
+        if ($(this).val().trim() === '' || parseInt($(this).val()) === 0) {
           $(this).val(0);
+          $(this).parents('.ticket').removeClass('active');
+          $(this).parents('.ticket').find('div.ticket-middle').slideUp(100);
         }
         scope.updateSubtotal();
       });
       $('a#tickets-confirm').click(function() {
         _this.purchase();
+      });
+      $('a.issue-btn').click(function() {
+        $('div#issue-modal').foundation('reveal', 'open');
+      });
+      $('a.issue-close').click(function() {
+        $('div#issue-modal').foundation('reveal', 'close');
+      });
+      $('div.send-issue a.send-issue-btn').click(function() {
+        $(this).html('Sending...');
+        $('form.issue-form').submit();
+      });
+      $('form.issue-form').submit(function(event) {
+        event.preventDefault();
+      });
+      $('form.issue-form').on('valid', function() {
+        var optionals, params;
+        params = $(this).serializeObject();
+        optionals = [];
+        params = Bazaarboy.stripEmpty(params, optionals);
+        console.log(params);
+        Bazaarboy.post('event/issue/', params, function(response) {
+          if (response.status === 'OK') {
+            return $('form.issue-form').fadeOut(300, function() {
+              $('div.row.issue-success').fadeIn(300);
+            });
+          } else {
+            alert(response.message);
+            return $('div.send-issue a.send-message').html('Send Message');
+          }
+        });
       });
       $('a.contact-organizer-btn').click(function() {
         $('div#contact-organizer-modal').foundation('reveal', 'open');
