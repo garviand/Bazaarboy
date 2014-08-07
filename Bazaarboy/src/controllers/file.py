@@ -179,6 +179,7 @@ def aviary(request, params):
     event.cover = image
     event.save()
     response = {
-        'status':'OK'
+        'status':'OK',
+        'image': image.source.url
     }
     return json_response(response)
