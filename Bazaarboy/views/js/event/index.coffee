@@ -432,6 +432,11 @@ Bazaarboy.event.index =
             $('div#event-cover form.upload_cover a.upload_cover_btn').click () ->
                 $('div#event-cover form.upload_cover input[name=image_file]').click()
                 return
+            $('div#event-cover form.upload_cover a.edit_cover_btn').click () ->
+                scope.aviary.launch
+                    image: 'cover-image'
+                    url: $("#cover-image").attr('src')
+                return
             $('div#event-cover form.upload_cover a.delete_cover_btn').click () ->
                 if confirm 'Are you sure you want to delete your cover image?'
                     Bazaarboy.post 'event/edit/', 
@@ -441,7 +446,8 @@ Bazaarboy.event.index =
                         if response.status is 'OK'
                             $('img#cover-image').attr 'src', ''
                             $('div#event-cover form.upload_cover a.delete_cover_btn').addClass 'hidden'
-                            $('div#event-cover form.upload_cover a.upload_cover_btn').html 'Upload Cover Image'
+                            $('div#event-cover form.upload_cover a.edit_cover_btn').addClass 'hidden'
+                            $('div#event-cover form.upload_cover a.upload_cover_btn').removeClass 'hidden'
                         else
                             alert response.message
                         return
@@ -457,7 +463,8 @@ Bazaarboy.event.index =
                     $('img#cover-image').attr 'src', imageUrl
                     @aviary.close();
                     $('div#event-cover form.upload_cover a.delete_cover_btn').removeClass 'hidden'
-                    $('div#event-cover form.upload_cover a.upload_cover_btn').html 'Edit Cover Image'
+                    $('div#event-cover form.upload_cover a.edit_cover_btn').removeClass 'hidden'
+                    $('div#event-cover form.upload_cover a.upload_cover_btn').addClass 'hidden'
                     Bazaarboy.post 'file/aviary/', 
                         event: eventId,
                         url: imageUrl
