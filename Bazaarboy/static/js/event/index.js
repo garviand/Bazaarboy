@@ -533,7 +533,6 @@
           enableCORS: true,
           onSave: function(imageId, imageUrl) {
             $("img#" + imageId).attr('src', imageUrl);
-            $('img#cover-image').attr('src', imageUrl);
             _this.aviary.close();
             $('div#event-cover form.upload_cover a.delete_cover_btn').removeClass('hidden');
             $('div#event-cover form.upload_cover a.edit_cover_btn').removeClass('hidden');
@@ -542,7 +541,7 @@
               event: eventId,
               url: imageUrl
             }, function(response) {
-              console.log(response);
+              $('img#cover-image').attr('src', response.image);
             });
           }
         });
@@ -557,6 +556,7 @@
             response = jQuery.parseJSON(data.result);
             if (response.status === 'OK') {
               $('img#cover-image-placeholder').attr('src', mediaUrl + response.image.source);
+              $('img#cover-image').attr('src', mediaUrl + response.image.source);
               _this.aviary.launch({
                 image: 'cover-image-placeholder',
                 url: mediaUrl + response.image.source

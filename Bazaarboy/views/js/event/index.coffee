@@ -460,7 +460,6 @@ Bazaarboy.event.index =
                 enableCORS: true
                 onSave: (imageId, imageUrl) =>
                     $("img##{imageId}").attr 'src', imageUrl
-                    $('img#cover-image').attr 'src', imageUrl
                     @aviary.close();
                     $('div#event-cover form.upload_cover a.delete_cover_btn').removeClass 'hidden'
                     $('div#event-cover form.upload_cover a.edit_cover_btn').removeClass 'hidden'
@@ -469,7 +468,7 @@ Bazaarboy.event.index =
                         event: eventId,
                         url: imageUrl
                     , (response) ->
-                        console.log response
+                        $('img#cover-image').attr 'src', response.image
                         return
                     return
             $('div#event-cover form.upload_cover input[name=image_file]').fileupload
@@ -482,6 +481,7 @@ Bazaarboy.event.index =
                     response = jQuery.parseJSON data.result
                     if response.status is 'OK'
                         $('img#cover-image-placeholder').attr 'src', mediaUrl + response.image.source
+                        $('img#cover-image').attr 'src', mediaUrl + response.image.source
                         @aviary.launch
                             image: 'cover-image-placeholder'
                             url: mediaUrl + response.image.source
