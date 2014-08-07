@@ -87,6 +87,13 @@ block content
                         input.field(type="text", name="link_facebook", value="{% if profile.link_facebook %}{{ profile.link_facebook }}{% endif %}", placeholder="Link To Your Facebook")
                     div.text.medium-10.medium-offset-2.columns
                         p The facebook url (ex. https://facebook.com/mycompany) for your organization
+                div.row
+                    div.name.medium-2.columns
+                        | EIN
+                    div.medium-10.columns
+                        input.field(type="text", name="ein", value="{% if profile.EIN %}{{ profile.EIN }}{% endif %}", placeholder="Employee Identification Number")
+                    div.text.medium-10.medium-offset-2.columns
+                        p Enter your Employee Identification Number to be verified as Non-Profit
                 div.row.logo
                     div.name.medium-2.columns
                         | Logo

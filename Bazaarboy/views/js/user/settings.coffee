@@ -45,6 +45,7 @@ Bazaarboy.user.settings =
             phone: save_data.phone
             link_website: save_data.link_website
             link_facebook: save_data.link_facebook
+            EIN: save_data.ein
         , (err, event) =>
             unless err
                 setTimeout (() ->
