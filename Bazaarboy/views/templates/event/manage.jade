@@ -73,6 +73,15 @@ block content
                                     input(type="text", name="quantity", placeholder="Quantity")
                                 div.medium-4.small-12.columns
                                     input.primary-btn(type="submit", name="submit", value="Add Guest(s)")
+                            div.row.custom-fields.custom-fields-container.hide
+                                div.small-12.columns
+                                    div.add-guest-title Custom Fields
+                            div.row.custom-fields.hide
+                                div.small-12.columns.custom-fields-inputs
+                                    div.row.address-field.hide
+                                        div.small-12.medium-4.columns.custom-field-input-label Address
+                                        div.small-12.medium-8.end.columns.custom-fields-text-input-container
+                                            input.custom-fields-address-input(type="text")
                             div.row
                                 div.medium-12.small-12.text-right.columns.send-email-input
                                     input#send-email(type="checkbox", name="send_email", checked)

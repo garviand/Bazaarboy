@@ -8314,6 +8314,18 @@ div#event-manage .add-guest-container input[type=submit] {
   padding-top: 6px;
   padding-bottom: 9px;
 }
+div#event-manage .add-guest-container div.custom-fields.custom-fields-container {
+  margin-top: 10px;
+}
+div#event-manage .add-guest-container div.custom-fields div.custom-field-input-label {
+  padding-top: 10px;
+  font-weight: 500;
+  text-align: center;
+}
+div#event-manage .add-guest-container div.custom-fields div.custom-fields-text-input-container {
+  padding-left: 0.9375rem !important;
+  padding-right: 0.9375rem !important;
+}
 div#event-manage .add-guest-container div.send-email-input {
   position: relative;
   top: 11px;

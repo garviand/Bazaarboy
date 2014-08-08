@@ -1747,7 +1747,6 @@ def purchase(request, params, user):
         return json_response(response)
     event = Event.objects.get(id = params['event'])
     # Check if the tickets are valid
-    requestAddress = False
     _tickets = Ticket.objects.filter(event = event, is_deleted = False)
     tickets = {}
     for _ticket in _tickets:
@@ -2023,7 +2022,17 @@ def add_purchase(request, params, user):
     """
     Manually add purchase by organizer
 
-    @details: {'#ticket1.id':#quantity, '#ticket2.id':#quantity, ...}
+    @details: {
+        '#ticket1.id': {
+            'quantity': #quantity,
+            'extra_fields': {...} 
+        },
+        '#ticket2.id': {
+            'quantity': #quantity,
+            'extra_fields': {...}
+        }
+        ...
+    }
     """
     _user = user
     # Check purchaser information
@@ -2109,34 +2118,59 @@ def add_purchase(request, params, user):
     _tickets = Ticket.objects.filter(event = event, is_deleted = False)
     tickets = {}
     for _ticket in _tickets:
+        if len(_ticket.extra_fields) == 0:
+            _ticket.extra_fields = None
+        else:
+            _ticket.extra_fields = json.loads(_ticket.extra_fields)
         tickets[_ticket.id] = _ticket
-        if _ticket.request_address:
-            requestAddress = True
     address = ''
-    if requestAddress and (params['address'] is None or len(params['address']) == 0):
-        response = {
-            'status':'FAIL',
-            'error':'INVALID_ADDRESS',
-            'message':'An address is needed for certain tickets.'
-        }
-        return json_response(response)
-    else:
+    if params['address']:
         address = params['address']
     _details = {}
     for tid in details:
-        _details[int(tid)] = int(details[tid])
+        _details[int(tid)] = details[tid]
     details = _details
     for tid in details:
         # Check if the ticket belongs to the event
         if tickets.has_key(tid):
             ticket = tickets[tid]
+            if ticket.request_address and (params['address'] is None or len(params['address']) == 0):
+                response = {
+                    'status':'FAIL',
+                    'error':'INVALID_ADDRESS',
+                    'message':'An address is needed for certain tickets.'
+                }
+                return json_response(response)
             now = timezone.now()
             # Check timing
             if ((ticket.start_time is None or ticket.start_time <= now) and 
                 (ticket.end_time is None or ticket.end_time >= now)):
                 # Check quantity
-                if details[tid] > 0:
-                    continue
+                if details[tid]['quantity'] > 0:
+                    # Check extra fields
+                    if ticket.extra_fields is not None:
+                        for fieldName, fieldValue in ticket.extra_fields.iteritems():
+                            if not details[tid]['extra_fields'].has_key(fieldName):
+                                response = {
+                                    'status':'FAIL',
+                                    'error':'MISSING_EXTRA_FIELDS',
+                                    'message':'The extra fields are incomplete for some tickets.'
+                                }
+                                return json_response(response)
+                            if len(fieldValue) != 0:
+                                options = fieldValue.split(',')
+                                options = [x.lstrip() for x in options]
+                                if str(details[tid]['extra_fields'][fieldName]) not in options:
+                                    response = {
+                                        'status':'FAIL',
+                                        'error':'EXTRA_FIELDS_MISMATCH',
+                                        'message':'Some field values do not match the field options.'
+                                    }
+                                    return json_response(response)
+                            continue
+                    else:
+                        details[tid]['extra_fields'] = ''
+                        continue
                 else:
                     response = {
                         'status':'FAIL',
@@ -2144,12 +2178,13 @@ def add_purchase(request, params, user):
                         'message':'Quantity must be a positive number.'
                     }
                     return json_response(response)
-        response = {
-            'status':'FAIL',
-            'error':'INVALID_TICKET',
-            'message':'One of the ticket is invalid.'
-        }
-        return json_response(response)
+        else:
+            response = {
+                'status':'FAIL',
+                'error':'INVALID_TICKET',
+                'message':'One of the ticket is invalid.'
+            }
+            return json_response(response)
     # Start a database transaction
     with transaction.commit_on_success():
         # Place a lock on the ticket information (quantity)
@@ -2172,20 +2207,20 @@ def add_purchase(request, params, user):
         # Create the purchase
         purchase = Purchase(owner = user, event = event, amount = 0)
         purchase.save()
-        purchase.save()
         for ticket in tickets:
-            for i in range(0, details[ticket.id]):
+            for i in range(0, details[ticket.id]['quantity']):
                 item = Purchase_item(purchase = purchase, 
                                      ticket = ticket, 
                                      price = ticket.price, 
-                                     address = address)
+                                     address = address, 
+                                     extra_fields = json.dumps(details[ticket.id]['extra_fields']))
                 item.save()
             # If the ticket has a quantity limit
             if ticket.quantity is not None:
                 # Update the ticket quantity
                 Ticket.objects \
                       .filter(id = ticket.id) \
-                      .update(quantity = F('quantity') - details[ticket.id])
+                      .update(quantity = F('quantity') - details[ticket.id]['quantity'])
         items = {}
         for ticket in purchase.items.all():
             if ticket.id in items:
@@ -2266,6 +2301,11 @@ def export(request, params, user):
                     'checked_in': checked_in,
                     'quantity': 1
                 }
+                if item.ticket.request_address:
+                    if item.address:
+                        items['tickets'][item.ticket.id]['purchases'][item.purchase.id]['address'] = item.address
+                    else:
+                        items['tickets'][item.ticket.id]['purchases'][item.purchase.id]['address'] = ''
                 try:
                     extra_fields = json.loads(item.extra_fields)
                 finally:
@@ -2280,6 +2320,7 @@ def export(request, params, user):
             items['tickets'][item.ticket.id] = {
                 'id': item.ticket.id,
                 'name': item.ticket.name,
+                'request_address': item.ticket.request_address,
                 'purchases': {
                     item.purchase.id: {
                         'id': item.id,
@@ -2292,6 +2333,11 @@ def export(request, params, user):
                     }
                 }
             }
+            if item.ticket.request_address:
+                if item.address:
+                    items['tickets'][item.ticket.id]['purchases'][item.purchase.id]['address'] = item.address
+                else:
+                    items['tickets'][item.ticket.id]['purchases'][item.purchase.id]['address'] = ''
             try:
                 extra_fields = json.loads(item.ticket.extra_fields)
             finally:
@@ -2300,6 +2346,12 @@ def export(request, params, user):
                     items['tickets'][item.ticket.id]['extra_fields'][fieldName] = fieldName
             try:
                 extra_fields = json.loads(item.extra_fields)
+            except:
+                response = {
+                    'status':'FAIL',
+                    'error':'NO_EXTRA_FIELDS'
+                }
+                return json_response(response)
             finally:
                 items['tickets'][item.ticket.id]['purchases'][item.purchase.id]['extra_fields'] = {}
                 for fieldName, fieldValue in extra_fields.iteritems():
@@ -2313,6 +2365,8 @@ def export(request, params, user):
     count = 1
     for k, ticket in items['tickets'].iteritems():
         headers = ['id', 'email', 'first_name', 'last_name', 'ticket', 'quantity', 'code', 'checked in']
+        if ticket['request_address']:
+            headers.append('address')
         for k, field in ticket['extra_fields'].iteritems():
             headers.append(field)
         if count > 1:
@@ -2329,6 +2383,8 @@ def export(request, params, user):
                 item['code'],
                 item['checked_in']
             ]
+            if ticket['request_address']:
+                row.append(item['address'])
             for fieldName, fieldValue in item['extra_fields'].iteritems():
                 row.append(fieldValue)
             writer.writerow(row)

@@ -6,7 +6,7 @@
     checkinStatus: 'all',
     purchaseInProgress: false,
     add_purchase: function() {
-      var params, ticketId,
+      var params, quantity, ticketId,
         _this = this;
       this.purchaseInProgress = true;
       $('div#rsvp div.action a.confirm').css('display', 'none');
@@ -20,7 +20,21 @@
         details: {}
       };
       ticketId = parseInt($('form[name=add-guest] select[name=ticket]').val());
-      params.details[ticketId] = parseInt($('form[name=add-guest] input[name=quantity]').val());
+      quantity = parseInt($('form[name=add-guest] input[name=quantity]').val());
+      params.details[ticketId] = {
+        'quantity': quantity,
+        'extra_fields': {}
+      };
+      if (!$('form[name=add-guest] div.address-field').hasClass('hide')) {
+        params.address = $('form[name=add-guest] div.address-field input.custom-fields-address-input').val();
+      }
+      if ($('form[name=add-guest] div.custom-field-container').length > 0) {
+        $.each($('form[name=add-guest] div.custom-field-container'), function() {
+          return $.each($(this).find('select.custom-fields-option-input, input.custom-fields-text-input'), function() {
+            return params.details[ticketId]['extra_fields'][$(this).data('field')] = String($(this).val()).trim();
+          });
+        });
+      }
       params.details = JSON.stringify(params.details);
       $('form[name=add-guest] input[name=submit]').val('Adding...');
       Bazaarboy.post('event/purchase/add/', params, function(response) {
@@ -129,7 +143,7 @@
       $("div.guest-add-invite a.raffle-btn").click(function(e) {
         var winner, winner_email, winner_id, winner_name;
         e.preventDefault();
-        winner_id = Math.floor(Math.random() * ($("div.guest").length - 1));
+        winner_id = Math.floor(Math.random() * ($("div.guest").length));
         winner = $("div.list_guests div.guest").eq(winner_id);
         winner_name = winner.find("div.name").html();
         winner_email = winner.attr('data-email');
@@ -189,6 +203,63 @@
         e.preventDefault();
         if (!scope.purchaseInProgress) {
           scope.add_purchase();
+        }
+      });
+      $('form[name=add-guest] select[name=ticket]').change(function(e) {
+        if ($(this).val() === '-1') {
+          $('form[name=add-guest] div.custom-fields').addClass('hide');
+        } else {
+          Bazaarboy.get('event/ticket/', {
+            id: $(this).val()
+          }, function(response) {
+            var allOptions, extra_fields, fieldName, fieldOptions, newInput, option, _i, _len;
+            extra_fields = JSON.parse(response.ticket.extra_fields);
+            $('form[name=add-guest] div.custom-fields-inputs div.row:not(.address-field)').remove();
+            if ($.isEmptyObject(extra_fields) && response.ticket.request_address !== true) {
+              $('form[name=add-guest] div.custom-fields').addClass('hide');
+            } else {
+              if (response.ticket.request_address === true) {
+                $('form[name=add-guest] div.custom-fields div.address-field').removeClass('hide');
+              } else {
+                $('form[name=add-guest] div.custom-fields div.address-field').addClass('hide');
+              }
+              if (!$.isEmptyObject(extra_fields)) {
+                for (fieldName in extra_fields) {
+                  fieldOptions = extra_fields[fieldName];
+                  if (fieldOptions.length === 0) {
+                    newInput = "<div class='row custom-field-container'>";
+                    newInput += "<div class='small-12 medium-4 columns custom-field-input-label'>";
+                    newInput += fieldName;
+                    newInput += "</div>";
+                    newInput += "<div class='small-12 medium-4 end columns custom-fields-text-input-container'>";
+                    newInput += "<input class='custom-fields-text-input' type='text' data-field='" + fieldName.trim() + "' />";
+                    newInput += "</div>";
+                    newInput += "</div>";
+                    newInput = $(newInput);
+                    $('form[name=add-guest] div.custom-fields-inputs').append(newInput);
+                  } else {
+                    newInput = "<div class='row custom-field-container'>";
+                    newInput += "<div class='small-12 medium-4 columns custom-field-input-label'>";
+                    newInput += fieldName;
+                    newInput += "</div>";
+                    newInput += "<div class='small-12 medium-4 end columns custom-fields-text-input-container'>";
+                    newInput += "<select class='custom-fields-option-input' data-field='" + fieldName.trim() + "'>";
+                    allOptions = fieldOptions.split(',');
+                    for (_i = 0, _len = allOptions.length; _i < _len; _i++) {
+                      option = allOptions[_i];
+                      newInput += "<option value='" + option.trim() + "'>" + option.trim() + "</option>";
+                    }
+                    newInput += "</select>";
+                    newInput += "</div>";
+                    newInput += "</div>";
+                    newInput = $(newInput);
+                    $('form[name=add-guest] div.custom-fields-inputs').append(newInput);
+                  }
+                }
+              }
+              $('form[name=add-guest] div.custom-fields').removeClass('hide');
+            }
+          });
         }
       });
       $('a.show-refunds').click(function() {
