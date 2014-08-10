@@ -96,6 +96,7 @@
         timezone: getTimezoneName()
       });
       $(document).foundation();
+      FastClick.attach(document.body);
       /*
       $(document).ready () =>
           @adjustBottomPosition()

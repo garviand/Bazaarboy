@@ -49,7 +49,7 @@ _gaq.push(['_trackPageview']);
 var mediaUrl = '{{ MEDIA_URL }}';
 var staticUrl = '{{ STATIC_URL }}';
 var csrfToken = '{{ csrf_token }}';
-var loggedIn = {% if user %}true{% else %}false{% endif %};</script><script src="{{ STATIC_URL }}js/bazaarboy.js"></script>{% if design %}<script src="https://dme0ih8comzn4.cloudfront.net/js/feather.js"></script>{% endif %}<script type="text/javascript" src="{{ STATIC_URL }}hashchange/jquery.ba-hashchange.min.js"></script><script>var switchTo5x = true;</script><script type="text/javascript" src="https://ws.sharethis.com/button/buttons.js"></script><script>stLight.options({
+var loggedIn = {% if user %}true{% else %}false{% endif %};</script><script src="{{ STATIC_URL }}fastclick/fastclick.js"></script><script src="{{ STATIC_URL }}js/bazaarboy.js"></script>{% if design %}<script src="https://dme0ih8comzn4.cloudfront.net/js/feather.js"></script>{% endif %}<script type="text/javascript" src="{{ STATIC_URL }}hashchange/jquery.ba-hashchange.min.js"></script><script>var switchTo5x = true;</script><script type="text/javascript" src="https://ws.sharethis.com/button/buttons.js"></script><script>stLight.options({
     publisher: "7bffe644-d542-4b4d-affe-420a0175f3c0", 
     doNotHash: false, 
     doNotCopy: false, 

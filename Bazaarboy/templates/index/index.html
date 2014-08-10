@@ -23,4 +23,4 @@ View Event</a></div></div></div></div><div class="info small-12 columns"><div cl
 var mediaUrl = '{{ MEDIA_URL }}';
 var staticUrl = '{{ STATIC_URL }}';
 var csrfToken = '{{ csrf_token }}';
-var loggedIn = {% if user %}true{% else %}false{% endif %};</script><script src="{{ STATIC_URL }}js/bazaarboy.js"></script><script src="{{ STATIC_URL }}js/index/index.js"></script></div></body></html>
+var loggedIn = {% if user %}true{% else %}false{% endif %};</script><script src="{{ STATIC_URL }}fastclick/fastclick.js"></script><script src="{{ STATIC_URL }}js/bazaarboy.js"></script><script src="{{ STATIC_URL }}js/index/index.js"></script></div></body></html>

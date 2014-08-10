@@ -53,4 +53,5 @@ html(lang="en")
                     var staticUrl = '{{ STATIC_URL }}';
                     var csrfToken = '{{ csrf_token }}';
                     var loggedIn = {% if user %}true{% else %}false{% endif %};
+                script(src="{{ STATIC_URL }}fastclick/fastclick.js")
                 script(src="{{ STATIC_URL }}js/bazaarboy.js")

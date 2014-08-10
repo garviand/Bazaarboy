@@ -9368,9 +9368,12 @@ div#tickets-body div#tickets-canvas div.ticket div.ticket-middle div.container i
   box-shadow: none;
   transition: none;
 }
+div#tickets-body div#tickets-canvas div.ticket div.ticket-middle div.container div.custom-field-container {
+  padding-left: 0;
+}
 div#tickets-body div#tickets-canvas div.ticket div.ticket-middle div.container div.custom-field-container input {
   outline: none;
-  border: #4a4a4a thin solid;
+  border: #D7D7D7 thin solid;
   border-radius: 3px;
   box-shadow: none;
 }
@@ -9954,8 +9957,8 @@ div#event-modify-tickets div#edit-ticket form div.address-container input {
   margin-bottom: 0;
 }
 div#event-modify-tickets div#edit-ticket form div.custom-fields-container {
-  margin-top: 20px;
-  margin-bottom: 20px;
+  margin-top: 23px;
+  margin-bottom: 21px;
 }
 div#event-modify-tickets div#edit-ticket form div.custom-fields-container a {
   font-size: 13px;

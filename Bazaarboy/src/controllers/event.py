@@ -1485,7 +1485,7 @@ def edit_promo(request, params, user):
             }
             return json_response(response)
         promo.email_domain = params['email_domain']
-    if params['quantity'] is not None:
+    if params['quantity'] is not None and params['quantity'] != '':
         params['quantity'] = int(params['quantity'])
         if params['quantity'] < 0:
             response = {
@@ -1495,6 +1495,8 @@ def edit_promo(request, params, user):
             }
             return json_response(response)
         promo.quantity = params['quantity']
+    elif params['quantity'] == '':
+        promo.quantity = None
     if params['start_time']:
         if params['start_time'] == 'none':
             promo.start_time = None
@@ -1897,8 +1899,8 @@ def purchase(request, params, user):
                     if promo['promo'].amount is not None:
                         priceA -= promo['promo'].amount
                     elif promo['promo'].discount is not None:
-                        if ticket.price * promo['promo'].discount < priceB:
-                            priceB = ticket.price * promo['promo'].discount
+                        if ticket.price * promo['promo'].discount <= priceB:
+                            priceB = ticket.price * (1 - promo['promo'].discount)
             if priceA < priceB:
                 amount += priceA * details[ticket.id]['quantity']
             else:
@@ -1924,7 +1926,7 @@ def purchase(request, params, user):
                     Ticket.objects \
                           .filter(id = ticket.id) \
                           .update(quantity = F('quantity') - details[ticket.id]['quantity'])
-            for tid, promo in promos:
+            for promo in promos:
                 item = Purchase_promo(purchase = purchase, 
                                       promo = promo['promo'], 
                                       quantity = promo['quantity'])
