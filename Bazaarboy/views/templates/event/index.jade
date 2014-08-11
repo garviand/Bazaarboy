@@ -387,12 +387,12 @@ block body
                         div.ticket.row(class="{% if forloop.last %}last{% endif %} {% if ticket.quantity == 0 %}soldout{% endif %}", data-id="{{ ticket.id }}", data-price="{{ ticket.price }}")
                             div.small-12.columns
                                 div.ticket-top.row
-                                    div.small-4.columns.container
+                                    div.small-5.medium-4.columns.container
                                         div.ticket-price
                                             div.check
                                                 div.check-inner
                                             div.price {% if ticket.price == 0 %}Free{% else %}${{ ticket.price|floatformat:"-2" }}{% endif %}
-                                    div.small-8.columns.container
+                                    div.small-7.medium-8.columns.container
                                         div.ticket-name {{ ticket.name }}
                                 div.ticket-middle.row
                                     div.small-4.columns.container
@@ -410,7 +410,7 @@ block body
                                     {% else %}
                                     div.small-8.columns.container.custom-option-group(data-field="{{ field_name }}")
                                         {% for option in field_options %}
-                                        div.small-12.medium-6.text-center.columns.custom-option-container(class="{% if forloop.last %}end{% endif %}")
+                                        div.small-12.medium-6.columns.custom-option-container(class="{% if forloop.last %}end{% endif %}")
                                             a.custom-option(href="javascript:;", data-option="{{ option }}") {{ option }}
                                         {% endfor %}
                                     {% endif %}
@@ -441,9 +441,19 @@ block body
                                 input(type="text", name="email", placeholder="Email")
                             div.small-12.medium-6.columns
                                 input(type="text", name="phone", placeholder="Phone (Optional)")
+                        {% if requiresAddress %}
+                        hr
+                        {% endif %}
                         div.collapse.row.address-container(class="{% if not requiresAddress %}hide{% endif %}")
                             div.small-12.columns
-                                input(type="text", name="address", placeholder="Address (Required)")
+                                input(type="text", name="address", placeholder="Address")
+                        div.middle.collapse.row.address-container(class="{% if not requiresAddress %}hide{% endif %}")
+                            div.small-12.medium-6.columns
+                                input(type="text", name="city", placeholder="City")
+                            div.small-12.medium-3.columns
+                                input(type="text", name="state", placeholder="State")
+                            div.small-12.medium-3.columns
+                                input(type="text", name="zip", placeholder="Zip")
                         {% if promos.count > 0 %}
                         div.bottom
                             div.row.collapse.start-promo

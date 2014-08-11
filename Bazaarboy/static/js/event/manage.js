@@ -228,10 +228,10 @@
                   fieldOptions = extra_fields[fieldName];
                   if (fieldOptions.length === 0) {
                     newInput = "<div class='row custom-field-container'>";
-                    newInput += "<div class='small-12 medium-4 columns custom-field-input-label'>";
+                    newInput += "<div class='small-12 medium-6 columns custom-field-input-label'>";
                     newInput += fieldName;
                     newInput += "</div>";
-                    newInput += "<div class='small-12 medium-4 end columns custom-fields-text-input-container'>";
+                    newInput += "<div class='small-12 medium-6 end columns custom-fields-text-input-container'>";
                     newInput += "<input class='custom-fields-text-input' type='text' data-field='" + fieldName.trim() + "' />";
                     newInput += "</div>";
                     newInput += "</div>";
@@ -239,10 +239,10 @@
                     $('form[name=add-guest] div.custom-fields-inputs').append(newInput);
                   } else {
                     newInput = "<div class='row custom-field-container'>";
-                    newInput += "<div class='small-12 medium-4 columns custom-field-input-label'>";
+                    newInput += "<div class='small-12 medium-6 columns custom-field-input-label'>";
                     newInput += fieldName;
                     newInput += "</div>";
-                    newInput += "<div class='small-12 medium-4 end columns custom-fields-text-input-container'>";
+                    newInput += "<div class='small-12 medium-6 end columns custom-fields-text-input-container'>";
                     newInput += "<select class='custom-fields-option-input' data-field='" + fieldName.trim() + "'>";
                     allOptions = fieldOptions.split(',');
                     for (_i = 0, _len = allOptions.length; _i < _len; _i++) {

@@ -276,6 +276,13 @@
       $('a.new-ticket').click(function() {
         _this.newTicket();
       });
+      $('input#ticket-time-range').change(function() {
+        if ($(this).is(':checked')) {
+          $('div.time-range-inputs').removeClass('hide');
+        } else {
+          $('div.time-range-inputs').addClass('hide');
+        }
+      });
       $('body').on('click', 'a.move-ticket-btn', function() {
         var originalHTML, params, swapTicket, thisButton, thisTicket,
           _this = this;

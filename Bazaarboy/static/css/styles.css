@@ -8319,8 +8319,7 @@ div#event-manage .add-guest-container div.custom-fields.custom-fields-container 
 }
 div#event-manage .add-guest-container div.custom-fields div.custom-field-input-label {
   padding-top: 10px;
-  font-weight: 500;
-  text-align: center;
+  font-weight: 400;
 }
 div#event-manage .add-guest-container div.custom-fields div.custom-fields-text-input-container {
   padding-left: 0.9375rem !important;
@@ -8329,6 +8328,9 @@ div#event-manage .add-guest-container div.custom-fields div.custom-fields-text-i
 div#event-manage .add-guest-container div.send-email-input {
   position: relative;
   top: 11px;
+}
+div#event-manage .add-guest-container .add-guest-inputs {
+  border-right: #DDDDDD thin solid;
 }
 div#event-manage .refund {
   text-align: center;
@@ -9339,6 +9341,7 @@ div#tickets-body div#tickets-canvas div.ticket div.ticket-middle {
 div#tickets-body div#tickets-canvas div.ticket div.ticket-middle div.container {
   min-height: 60px;
   padding: 10px 0;
+  padding-bottom: 20px;
 }
 div#tickets-body div#tickets-canvas div.ticket div.ticket-middle div.container div.info-label {
   position: absolute;
@@ -9379,6 +9382,7 @@ div#tickets-body div#tickets-canvas div.ticket div.ticket-middle div.container d
 }
 div#tickets-body div#tickets-canvas div.ticket div.ticket-middle div.container div.custom-option-container {
   margin-top: 13px;
+  padding-left: 0;
 }
 div#tickets-body div#tickets-canvas div.ticket div.ticket-middle div.container div.custom-option-container a {
   color: #4a4a4a;
@@ -9427,6 +9431,9 @@ div#tickets-details input {
   font-weight: 300;
   box-shadow: none;
   transition: none;
+}
+div#tickets-details hr {
+  margin-top: 4px;
 }
 @media only screen and (min-width: 40.063em) {
   div#tickets-details div.top .columns:first-child,
@@ -9950,15 +9957,11 @@ div#event-modify-tickets div#edit-ticket form .warning {
 div#event-modify-tickets div#edit-ticket form input[name="name"] {
   margin-top: 24px;
 }
-div#event-modify-tickets div#edit-ticket form div.address-container {
-  margin-top: 10px;
-}
 div#event-modify-tickets div#edit-ticket form div.address-container input {
-  margin-bottom: 0;
+  margin-bottom: 16px;
 }
 div#event-modify-tickets div#edit-ticket form div.custom-fields-container {
-  margin-top: 23px;
-  margin-bottom: 21px;
+  margin-bottom: 16px;
 }
 div#event-modify-tickets div#edit-ticket form div.custom-fields-container a {
   font-size: 13px;
@@ -9998,7 +10001,7 @@ div#event-modify-tickets div#edit-ticket form a.blue-btn {
 }
 div#event-modify-tickets div#edit-ticket form input.primary-btn {
   width: 100%;
-  margin-top: -3px;
+  margin-top: 5px;
   padding-top: 9px;
   padding-bottom: 12px;
   border: none;

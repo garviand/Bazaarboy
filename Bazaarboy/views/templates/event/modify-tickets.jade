@@ -229,10 +229,6 @@ block content
                             div.row
                                 div.small-12.columns
                                     textarea.field(name="description", placeholder="Ticket description, maximum 250 characters.")
-                            div.row.address-container
-                                div.small-12.columns
-                                    input#request-address(type="checkbox", name="request_address")
-                                    label(for="request-address") This Ticket Requires An Address
                             div.row.custom-fields-container
                                 div.small-12.columns.custom-field-container.template.hide
                                     div.row
@@ -242,9 +238,15 @@ block content
                                             input.field_options(type="text", placeholder="Choices (ex. - Red, Green, Blue) **Optional")
                                 div.small-12.columns
                                     a.add-custom-field-btn(href="javascript:;") + Add Custom Field
+                            div.row.address-container
+                                div.small-12.columns
+                                    input#request-address(type="checkbox", name="request_address")
+                                    label(for="request-address") Does this ticket require an address?
                             div.row
                                 div.small-12.columns
-                                    p Is this ticket on sale for only a specific amount of time? (optional)
+                                    input#ticket-time-range(type="checkbox", name="ticket-time-range")
+                                    label(for="ticket-time-range") Is this ticket on sale for only a specific amount of time?
+                            div.row.time-range-inputs.hide
                                 div.medium-3.columns
                                     input.field(type="text", name="start_date", placeholder="Start Date")
                                 div.medium-3.columns

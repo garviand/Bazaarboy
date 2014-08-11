@@ -229,6 +229,12 @@ Bazaarboy.event.modify.tickets =
         $('a.new-ticket').click () =>
             @newTicket()
             return
+        $('input#ticket-time-range').change () ->
+          if $(this).is(':checked')
+            $('div.time-range-inputs').removeClass 'hide'
+          else
+            $('div.time-range-inputs').addClass 'hide'
+          return
         #MOVE TICKET START
         $('body').on 'click', 'a.move-ticket-btn', () ->
             if not scope.reordering or true

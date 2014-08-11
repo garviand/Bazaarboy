@@ -56,36 +56,41 @@ block content
                                 div.small-12.columns
                                     div.add-guest-title Add Guest
                             div.row
+                                div.medium-8.small-12.columns.add-guest-inputs
+                                    div.row
+                                        div.medium-6.small-12.columns
+                                            input(type="text", name="first_name", placeholder="First Name")
+                                        div.medium-6.small-12.columns
+                                            input(type="text", name="last_name", placeholder="Last Name")
+                                    div.row
+                                        div.medium-6.small-12.columns
+                                            input(type="text", name="email", placeholder="Email")
+                                        div.medium-6.small-12.columns.send-email-input
+                                            input#send-email(type="checkbox", name="send_email", checked)
+                                            label(for="send-email") Send Confirmation
+                                    div.row.custom-fields.custom-fields-container.hide
+                                        div.small-12.columns
+                                            div.add-guest-title Custom Fields
+                                    div.row.custom-fields.hide
+                                        div.small-12.columns.custom-fields-inputs
+                                            div.row.address-field.hide
+                                                div.small-12.medium-6.columns.custom-field-input-label Address
+                                                div.small-12.medium-6.end.columns.custom-fields-text-input-container
+                                                    input.custom-fields-address-input(type="text")
                                 div.medium-4.small-12.columns
-                                    input(type="text", name="first_name", placeholder="First Name")
-                                div.medium-4.small-12.columns
-                                    input(type="text", name="last_name", placeholder="Last Name")
-                                div.medium-4.small-12.columns
-                                    input(type="text", name="email", placeholder="Email")
-                            div.row
-                                div.medium-4.small-12.columns
-                                    select(name="ticket")
-                                        option(value="-1") - Choose a Ticket -
-                                        {% for ticket in tickets %}
-                                        option(value="{{ ticket.id }}") {{ ticket.name }}
-                                        {% endfor %}
-                                div.medium-4.small-12.columns
-                                    input(type="text", name="quantity", placeholder="Quantity")
-                                div.medium-4.small-12.columns
-                                    input.primary-btn(type="submit", name="submit", value="Add Guest(s)")
-                            div.row.custom-fields.custom-fields-container.hide
-                                div.small-12.columns
-                                    div.add-guest-title Custom Fields
-                            div.row.custom-fields.hide
-                                div.small-12.columns.custom-fields-inputs
-                                    div.row.address-field.hide
-                                        div.small-12.medium-4.columns.custom-field-input-label Address
-                                        div.small-12.medium-8.end.columns.custom-fields-text-input-container
-                                            input.custom-fields-address-input(type="text")
-                            div.row
-                                div.medium-12.small-12.text-right.columns.send-email-input
-                                    input#send-email(type="checkbox", name="send_email", checked)
-                                    label(for="send-email") Send Confirmation Email
+                                    div.row
+                                        div.small-12.columns
+                                            select(name="ticket")
+                                                option(value="-1") - Choose a Ticket -
+                                                {% for ticket in tickets %}
+                                                option(value="{{ ticket.id }}") {{ ticket.name }}
+                                                {% endfor %}
+                                    div.row
+                                        div.small-12.columns
+                                            input(type="text", name="quantity", placeholder="Quantity")
+                                    div.row
+                                        div.small-12.columns
+                                            input.primary-btn(type="submit", name="submit", value="Add Guest(s)")
                             hr
                 div.row
                     div.small-12.columns.guests
