@@ -6,6 +6,7 @@ Bazaarboy.event.index =
     overlayAnimationInProgress: false
     redactorContent: undefined
     emailSending: false
+    requiresAddress: false
     saveDescription: () ->
         scope = this
         description = $('div#event-description div.description div.inner').redactor('get')
@@ -64,8 +65,20 @@ Bazaarboy.event.index =
             last_name: $('input[name=last_name]').val().trim()
             email: $('input[name=email]').val().trim()
             phone: $('input[name=phone]').val().trim()
-            address: $('input[name=address]').val().trim()
             details: {}
+        if @requiresAddress
+            if $('input[name=address]').val().trim() == '' or $('input[name=state]').val().trim() == '' or $('input[name=city]').val().trim() == '' or $('input[name=zip]').val().trim() == ''
+                alert 'All Address Fields Are Required'
+                $('a#tickets-confirm').html 'Confirm RSVP'
+                return
+        address = $('input[name=address]').val().trim()
+        if $('input[name=city]').val().trim() != ''
+            address += ', ' + $('input[name=city]').val().trim()
+        if $('input[name=state]').val().trim() != ''
+            address += ', ' + $('input[name=state]').val().trim()
+        if $('input[name=zip]').val().trim() != ''
+            address += ' ' + $('input[name=zip]').val().trim()
+        params.address = address
         if $('input[name=promos]').length > 0
             if $('input[name=promos]').val().trim() isnt ''
                 params['promos'] = $('input[name=promos]').val().trim()
@@ -79,8 +92,8 @@ Bazaarboy.event.index =
                 if $(ticket).find('div.custom-option-group').length > 0
                     options = $(ticket).find('div.custom-option-group')
                     $.each options, (target) ->
-                        if $(this).find('a.custom-option.active').length > 0
-                            params.details[$(ticket).attr('data-id')]['extra_fields'][$(this).data('field')] = $(this).find('a.custom-option.active').data('option')
+                        if $(this).find('div.custom-option.active').length > 0
+                            params.details[$(ticket).attr('data-id')]['extra_fields'][$(this).data('field')] = $(this).find('div.custom-option.active').data('option')
                         return
                 if $(ticket).find('div.custom-field-group').length > 0
                     fields = $(ticket).find('div.custom-field-group')
@@ -175,6 +188,9 @@ Bazaarboy.event.index =
             $('input[name=email]').val('')
             $('input[name=phone]').val('')
             $('input[name=address]').val('')
+            $('input[name=state]').val('')
+            $('input[name=city]').val('')
+            $('input[name=zip]').val('')
             $('input.ticket-selected').prop('checked', false)
             $('div#confirmation-modal').foundation('reveal', 'open')
         return
@@ -214,8 +230,8 @@ Bazaarboy.event.index =
                 $('div#confirmation-modal').foundation('reveal', 'open')
                 return
         $(window).hashchange()
-        $('div.custom-option-group a.custom-option').click () ->
-            $(this).parents('div.custom-option-group').find('a.custom-option').removeClass 'active'
+        $('div.custom-option-group div.custom-option').click () ->
+            $(this).parents('div.custom-option-group').find('div.custom-option').removeClass 'active'
             $(this).addClass 'active'
             return
         # MOBILE HEADER FIX
@@ -539,6 +555,12 @@ Bazaarboy.event.index =
                         quant.val 1
                 else
                     $(this).parents('.ticket').find('div.ticket-middle').slideUp 100
+                $('.address-container').addClass 'hide'
+                scope.requiresAddress = false
+                $('div.ticket').each () ->
+                    if $(this).data('address') == 'yes' and $(this).hasClass('active')
+                        $('.address-container').removeClass 'hide'
+                        scope.requiresAddress = true
                 scope.updateSubtotal()
             return
         $('input.ticket-quantity').keyup () ->

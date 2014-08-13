@@ -9338,6 +9338,20 @@ div#tickets-body div#tickets-canvas div.ticket div.ticket-middle {
   display: none;
   background: #FFF4DB;
 }
+div#tickets-body div#tickets-canvas div.ticket div.ticket-middle div.custom-option-group {
+  margin-top: 13px;
+  font-size: 13px;
+  margin-bottom: 20px;
+  padding: 0 !important;
+  padding-bottom: 0 !important;
+  background: #ffffff;
+  border: #D7D7D7 thin solid;
+  border-radius: 3px;
+}
+div#tickets-body div#tickets-canvas div.ticket div.ticket-middle div.custom-option-group div.title {
+  padding: 10px;
+  border-bottom: #D7D7D7 thin solid;
+}
 div#tickets-body div#tickets-canvas div.ticket div.ticket-middle div.container {
   min-height: 60px;
   padding: 10px 0;
@@ -9372,27 +9386,59 @@ div#tickets-body div#tickets-canvas div.ticket div.ticket-middle div.container i
   transition: none;
 }
 div#tickets-body div#tickets-canvas div.ticket div.ticket-middle div.container div.custom-field-container {
+  font-size: 13px;
   padding-left: 0;
 }
 div#tickets-body div#tickets-canvas div.ticket div.ticket-middle div.container div.custom-field-container input {
+  font-size: 13px;
   outline: none;
   border: #D7D7D7 thin solid;
   border-radius: 3px;
   box-shadow: none;
 }
-div#tickets-body div#tickets-canvas div.ticket div.ticket-middle div.container div.custom-option-container {
-  margin-top: 13px;
+div#tickets-body div#tickets-canvas div.ticket div.ticket-middle div.container div.custom-option {
+  cursor: pointer;
+  padding: 7px 0;
   padding-left: 0;
-}
-div#tickets-body div#tickets-canvas div.ticket div.ticket-middle div.container div.custom-option-container a {
   color: #4a4a4a;
 }
-div#tickets-body div#tickets-canvas div.ticket div.ticket-middle div.container div.custom-option-container a.active {
+div#tickets-body div#tickets-canvas div.ticket div.ticket-middle div.container div.custom-option.active {
   text-decoration: underline;
 }
-div#tickets-body div#tickets-canvas div.ticket div.ticket-middle div.container div.custom-option-container a:hover,
-div#tickets-body div#tickets-canvas div.ticket div.ticket-middle div.container div.custom-option-container a.active {
+div#tickets-body div#tickets-canvas div.ticket div.ticket-middle div.container div.custom-option:hover {
   font-weight: bold;
+}
+div#tickets-body div#tickets-canvas div.ticket div.ticket-middle div.container div.custom-option:hover div.radio {
+  border-color: #faa638;
+}
+div#tickets-body div#tickets-canvas div.ticket div.ticket-middle div.container div.custom-option.active {
+  font-weight: bold;
+}
+div#tickets-body div#tickets-canvas div.ticket div.ticket-middle div.container div.custom-option.active div.radio {
+  border-color: #faa638;
+}
+div#tickets-body div#tickets-canvas div.ticket div.ticket-middle div.container div.custom-option.active div.radio div.radio-inner {
+  background: #faa638;
+}
+div#tickets-body div#tickets-canvas div.ticket div.ticket-middle div.container div.custom-option div.radio {
+  padding: 1px;
+  width: 16px;
+  height: 16px;
+  border: #D7D7D7 thin solid;
+  border-radius: 8px;
+  background: #ffffff;
+  margin: 0 auto;
+}
+div#tickets-body div#tickets-canvas div.ticket div.ticket-middle div.container div.custom-option div.radio div.radio-inner {
+  width: 12px;
+  height: 12px;
+  border-radius: 6px;
+  background: #ffffff;
+}
+div#tickets-body div#tickets-canvas div.ticket div.ticket-middle div.container div.custom-option div.option-text {
+  padding-left: 0;
+  position: relative;
+  top: 2px;
 }
 div#tickets-body div#tickets-canvas div.ticket div.ticket-bottom {
   border-top: #D7D7D7 thin solid;

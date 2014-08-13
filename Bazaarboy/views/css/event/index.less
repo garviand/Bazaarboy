@@ -1024,6 +1024,20 @@ div#tickets-body {
             div.ticket-middle{
                 display: none;
                 background: #FFF4DB;
+                div.custom-option-group{
+                    margin-top: 13px;
+                    font-size: 13px;
+                    div.title{
+                        padding: 10px;
+                        border-bottom: #D7D7D7 thin solid; 
+                    }
+                    margin-bottom: 20px;
+                    padding: 0 !important;
+                    padding-bottom: 0 !important;
+                    background: @white;
+                    border: #D7D7D7 thin solid;
+                    border-radius: 3px;
+                }
                 div.container{
                     min-height: 60px;
                     padding: 10px 0;
@@ -1057,25 +1071,59 @@ div#tickets-body {
                         transition: none;
                     }
                     div.custom-field-container{
+                        font-size: 13px;
                         padding-left: 0;
                         input{
+                            font-size: 13px;
                             outline: none;
                             border: #D7D7D7 thin solid;
                             border-radius: 3px;
                             box-shadow: none;
                         }
                     }
-                    div.custom-option-container{
-                        margin-top: 13px;
+
+                    div.custom-option{
+                        cursor: pointer;
+                        padding: 7px 0;
                         padding-left: 0;
-                        a{
-                            color: @dark;
-                            &.active{
-                                text-decoration: underline;
+                        color: @dark;
+                        &.active{
+                            text-decoration: underline;
+                        }
+                        &:hover{
+                            font-weight: bold;
+                            div.radio{
+                                border-color: @orange;
                             }
-                            &:hover, &.active{
-                                font-weight: bold;
+                        }
+                        &.active{
+                            font-weight: bold;
+                            div.radio{
+                                border-color: @orange;
+                                div.radio-inner{
+                                    background: @orange;
+                                }
                             }
+                        }
+                        div.radio{
+                            padding: 1px;
+                            width: 16px;
+                            height: 16px;
+                            border: #D7D7D7 thin solid;
+                            border-radius: 8px;
+                            background: @white;
+                            margin: 0 auto;
+                            div.radio-inner{
+                                width: 12px;
+                                height: 12px;
+                                border-radius: 6px;
+                                background: @white;
+                            }
+                        }
+                        div.option-text{
+                            padding-left: 0;
+                            position: relative;
+                            top: 2px;
                         }
                     }
                 }
