@@ -199,6 +199,7 @@ class Ticket(models.Model):
     end_time = models.DateTimeField(null = True, default = None)
     request_address = models.BooleanField(default = False)
     extra_fields = models.TextField()
+    attachment = models.FileField(upload_to = 'uploads/attachment/%Y-%m-%d', null = True, default = None)
     is_deleted = models.BooleanField(default = False)
     order = models.IntegerField(null = False, default = 0)
 
