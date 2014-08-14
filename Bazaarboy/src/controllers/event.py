@@ -1827,7 +1827,7 @@ def purchase(request, params, user):
             if Promo.objects.filter(code = code, 
                                     event = event.id, 
                                     is_deleted = False).exists():
-                promo = Promo.objects.get(code = code)
+                promo = Promo.objects.get(code = code, is_deleted = False)
                 if promo.start_time is None or promo.start_time <= timezone.now():
                     if promo.expiration_time is None or promo.expiration_time >= timezone.now():
                         l = len(promo.email_domain)
