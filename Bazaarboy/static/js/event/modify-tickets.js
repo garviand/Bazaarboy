@@ -29,8 +29,8 @@
         } else {
           $('div.custom-field-container:not(.template)').remove();
           if (response.ticket.extra_fields.length > 0) {
-            extraFields = response.ticket.extra_fields.replace(new RegExp("u'", "g"), "'");
-            extraFields = extraFields.replace(new RegExp("\'", "g"), "\"");
+            extraFields = response.ticket.extra_fields;
+            console.log(extraFields);
             extraFields = JSON.parse(extraFields);
             for (field_name in extraFields) {
               field_options = extraFields[field_name];
