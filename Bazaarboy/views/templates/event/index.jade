@@ -384,7 +384,7 @@ block body
                 div.inner
                     div#tickets-canvas
                         {% for ticket in tickets %}
-                        div.ticket.row(class="{% if forloop.last %}last{% endif %} {% if ticket.quantity == 0 %}soldout{% endif %}", data-id="{{ ticket.id }}", data-price="{{ ticket.price }}")
+                        div.ticket.row(class="{% if forloop.last %}last{% endif %} {% if ticket.quantity == 0 %}soldout{% endif %}", data-id="{{ ticket.id }}", data-price="{{ ticket.price }}", data-address="{% if ticket.request_address %}yes{% endif %}")
                             div.small-12.columns
                                 div.ticket-top.row
                                     div.small-5.medium-4.columns.container
@@ -408,10 +408,15 @@ block body
                                         div.small-12.columns.custom-field-container
                                             input.custom-field-input(href="javascript:;", type="text", data-option="{{ option }}")
                                     {% else %}
-                                    div.small-8.columns.container.custom-option-group(data-field="{{ field_name }}")
+                                    div.small-7.end.columns.container.custom-option-group(data-field="{{ field_name }}")
+                                        div.title Select One Option
                                         {% for option in field_options %}
-                                        div.small-12.medium-6.columns.custom-option-container(class="{% if forloop.last %}end{% endif %}")
-                                            a.custom-option(href="javascript:;", data-option="{{ option }}") {{ option }}
+                                        div.small-12.columns.custom-option(class="{% if forloop.last %}end{% endif %}", data-option="{{ option }}")
+                                            div.row
+                                                div.small-3.columns.option-radio
+                                                    div.radio
+                                                        div.radio-inner
+                                                div.small-9.columns.option-text {{ option }}
                                         {% endfor %}
                                     {% endif %}
                                 {% endfor %}
@@ -441,13 +446,11 @@ block body
                                 input(type="text", name="email", placeholder="Email")
                             div.small-12.medium-6.columns
                                 input(type="text", name="phone", placeholder="Phone (Optional)")
-                        {% if requiresAddress %}
-                        hr
-                        {% endif %}
-                        div.collapse.row.address-container(class="{% if not requiresAddress %}hide{% endif %}")
+                        hr.address-container.hide
+                        div.collapse.row.address-container.hide
                             div.small-12.columns
                                 input(type="text", name="address", placeholder="Address")
-                        div.middle.collapse.row.address-container(class="{% if not requiresAddress %}hide{% endif %}")
+                        div.middle.collapse.row.address-container.hide
                             div.small-12.medium-6.columns
                                 input(type="text", name="city", placeholder="City")
                             div.small-12.medium-3.columns

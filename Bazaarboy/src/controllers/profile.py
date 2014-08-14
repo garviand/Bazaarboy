@@ -395,7 +395,9 @@ def edit(request, params, user):
         else:
             profile.link_facebook = params['link_facebook']
     if params['EIN'] is not None:
-        if not REGEX_EIN.match(params['EIN']):
+        if params['EIN'] == '':
+            profile.EIN = None
+        elif not REGEX_EIN.match(params['EIN']):
             response = {
                 'status':'FAIL',
                 'error':'INVALID_EIN',

@@ -7,6 +7,7 @@
     overlayAnimationInProgress: false,
     redactorContent: void 0,
     emailSending: false,
+    requiresAddress: false,
     saveDescription: function() {
       var description, scope;
       scope = this;
@@ -69,7 +70,7 @@
       }
     },
     purchase: function() {
-      var fields, options, params, quantity, ticket, ticketSelected, tickets, _i, _len,
+      var address, fields, options, params, quantity, ticket, ticketSelected, tickets, _i, _len,
         _this = this;
       $('a#tickets-confirm').html('Processing...');
       params = {
@@ -78,9 +79,26 @@
         last_name: $('input[name=last_name]').val().trim(),
         email: $('input[name=email]').val().trim(),
         phone: $('input[name=phone]').val().trim(),
-        address: $('input[name=address]').val().trim(),
         details: {}
       };
+      if (this.requiresAddress) {
+        if ($('input[name=address]').val().trim() === '' || $('input[name=state]').val().trim() === '' || $('input[name=city]').val().trim() === '' || $('input[name=zip]').val().trim() === '') {
+          alert('All Address Fields Are Required');
+          $('a#tickets-confirm').html('Confirm RSVP');
+          return;
+        }
+      }
+      address = $('input[name=address]').val().trim();
+      if ($('input[name=city]').val().trim() !== '') {
+        address += ', ' + $('input[name=city]').val().trim();
+      }
+      if ($('input[name=state]').val().trim() !== '') {
+        address += ', ' + $('input[name=state]').val().trim();
+      }
+      if ($('input[name=zip]').val().trim() !== '') {
+        address += ' ' + $('input[name=zip]').val().trim();
+      }
+      params.address = address;
       if ($('input[name=promos]').length > 0) {
         if ($('input[name=promos]').val().trim() !== '') {
           params['promos'] = $('input[name=promos]').val().trim();
@@ -100,8 +118,8 @@
           if ($(ticket).find('div.custom-option-group').length > 0) {
             options = $(ticket).find('div.custom-option-group');
             $.each(options, function(target) {
-              if ($(this).find('a.custom-option.active').length > 0) {
-                params.details[$(ticket).attr('data-id')]['extra_fields'][$(this).data('field')] = $(this).find('a.custom-option.active').data('option');
+              if ($(this).find('div.custom-option.active').length > 0) {
+                params.details[$(ticket).attr('data-id')]['extra_fields'][$(this).data('field')] = $(this).find('div.custom-option.active').data('option');
               }
             });
           }
@@ -218,6 +236,9 @@
         $('input[name=email]').val('');
         $('input[name=phone]').val('');
         $('input[name=address]').val('');
+        $('input[name=state]').val('');
+        $('input[name=city]').val('');
+        $('input[name=zip]').val('');
         $('input.ticket-selected').prop('checked', false);
         $('div#confirmation-modal').foundation('reveal', 'open');
       }
@@ -273,8 +294,8 @@
         }
       });
       $(window).hashchange();
-      $('div.custom-option-group a.custom-option').click(function() {
-        $(this).parents('div.custom-option-group').find('a.custom-option').removeClass('active');
+      $('div.custom-option-group div.custom-option').click(function() {
+        $(this).parents('div.custom-option-group').find('div.custom-option').removeClass('active');
         $(this).addClass('active');
       });
       if ($('div#event-header').height() > 66) {
@@ -635,6 +656,14 @@
           } else {
             $(this).parents('.ticket').find('div.ticket-middle').slideUp(100);
           }
+          $('.address-container').addClass('hide');
+          scope.requiresAddress = false;
+          $('div.ticket').each(function() {
+            if ($(this).data('address') === 'yes' && $(this).hasClass('active')) {
+              $('.address-container').removeClass('hide');
+              return scope.requiresAddress = true;
+            }
+          });
           scope.updateSubtotal();
         }
       });
