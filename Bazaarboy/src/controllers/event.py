@@ -2308,12 +2308,13 @@ def export(request, params, user):
                         items['tickets'][item.ticket.id]['purchases'][item.purchase.id]['address'] = item.address
                     else:
                         items['tickets'][item.ticket.id]['purchases'][item.purchase.id]['address'] = ''
-                try:
-                    extra_fields = json.loads(item.extra_fields)
-                finally:
-                    items['tickets'][item.ticket.id]['purchases'][item.purchase.id]['extra_fields'] = {}
-                    for fieldName, fieldValue in extra_fields.iteritems():
-                        items['tickets'][item.ticket.id]['purchases'][item.purchase.id]['extra_fields'][fieldName] = fieldValue
+                if item.ticket.extra_fields != '':
+                    try:
+                        extra_fields = json.loads(item.extra_fields)
+                    finally:
+                        items['tickets'][item.ticket.id]['purchases'][item.purchase.id]['extra_fields'] = {}
+                        for fieldName, fieldValue in extra_fields.iteritems():
+                            items['tickets'][item.ticket.id]['purchases'][item.purchase.id]['extra_fields'][fieldName] = fieldValue
         else:
             if item.is_checked_in:
                 checked_in = 'yes'
@@ -2340,24 +2341,27 @@ def export(request, params, user):
                     items['tickets'][item.ticket.id]['purchases'][item.purchase.id]['address'] = item.address
                 else:
                     items['tickets'][item.ticket.id]['purchases'][item.purchase.id]['address'] = ''
-            try:
-                extra_fields = json.loads(item.ticket.extra_fields)
-            finally:
-                items['tickets'][item.ticket.id]['extra_fields'] = {}
-                for fieldName, fieldValue in extra_fields.iteritems():
-                    items['tickets'][item.ticket.id]['extra_fields'][fieldName] = fieldName
-            try:
-                extra_fields = json.loads(item.extra_fields)
-            except:
-                response = {
-                    'status':'FAIL',
-                    'error':'NO_EXTRA_FIELDS'
-                }
-                return json_response(response)
-            finally:
-                items['tickets'][item.ticket.id]['purchases'][item.purchase.id]['extra_fields'] = {}
-                for fieldName, fieldValue in extra_fields.iteritems():
-                    items['tickets'][item.ticket.id]['purchases'][item.purchase.id]['extra_fields'][fieldName] = fieldValue
+            if item.ticket.extra_fields != '':
+                try:
+                    extra_fields = json.loads(item.ticket.extra_fields)
+                finally:
+                    items['tickets'][item.ticket.id]['extra_fields'] = {}
+                    for fieldName, fieldValue in extra_fields.iteritems():
+                        items['tickets'][item.ticket.id]['extra_fields'][fieldName] = fieldName
+                try:
+                    extra_fields = json.loads(item.extra_fields)
+                except:
+                    response = {
+                        'status':'FAIL',
+                        'error':'NO_EXTRA_FIELDS'
+                    }
+                    return json_response(response)
+                finally:
+                    items['tickets'][item.ticket.id]['purchases'][item.purchase.id]['extra_fields'] = {}
+                    for fieldName, fieldValue in extra_fields.iteritems():
+                        items['tickets'][item.ticket.id]['purchases'][item.purchase.id]['extra_fields'][fieldName] = fieldValue
+            else:
+                items['tickets'][item.ticket.id]['extra_fields'] = None
     # Prepare csv writer and the response headers
     response = HttpResponse(mimetype = 'text/csv')
     csvName = re.sub(r'\W+', '-', event.name) + '.csv'
@@ -2369,8 +2373,9 @@ def export(request, params, user):
         headers = ['id', 'email', 'first_name', 'last_name', 'ticket', 'quantity', 'code', 'checked in']
         if ticket['request_address']:
             headers.append('address')
-        for k, field in ticket['extra_fields'].iteritems():
-            headers.append(field)
+        if ticket['extra_fields'] is not None:
+            for k, field in ticket['extra_fields'].iteritems():
+                headers.append(field)
         if count > 1:
             writer.writerow([])
         writer.writerow(headers)
@@ -2387,8 +2392,9 @@ def export(request, params, user):
             ]
             if ticket['request_address']:
                 row.append(item['address'])
-            for fieldName, fieldValue in item['extra_fields'].iteritems():
-                row.append(fieldValue)
+            if ticket['extra_fields'] is not None:
+                for fieldName, fieldValue in item['extra_fields'].iteritems():
+                    row.append(str(fieldValue))
             writer.writerow(row)
             count += 1
     return response
