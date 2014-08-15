@@ -39,7 +39,7 @@
               newField.find('input.field_options').val(field_options);
               newField.removeClass('hide');
               newField.removeClass('template');
-              $('div.custom-fields-container').prepend(newField);
+              $('div.add-custom-field-container').before(newField);
             }
           }
           $('div#edit-ticket').removeClass('add').addClass('edit');
@@ -269,7 +269,7 @@
       $('body').on('click', 'a.add-custom-field-btn', function() {
         var newField;
         newField = $('div.custom-fields-container div.custom-field-container.template').clone();
-        $('div.custom-fields-container').prepend(newField);
+        $('div.add-custom-field-container').before(newField);
         newField.removeClass('hide');
         newField.removeClass('template');
       });
@@ -457,12 +457,12 @@
             }
           });
           params.extra_fields = JSON.stringify(extraFields);
+          console.log(params.extra_fields);
           endpoint = 'event/ticket/edit/';
           if (isNew) {
             endpoint = 'event/ticket/create/';
           }
           if (params.name.trim() !== '' && params.description.trim() !== '') {
-            console.log(params);
             Bazaarboy.post(endpoint, params, function(response) {
               var newPromosTicket, price, quantity, sold, ticketOption, wording, wordingObject;
               if (response.status === 'OK') {

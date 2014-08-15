@@ -38,7 +38,7 @@ Bazaarboy.event.modify.tickets =
                       newField.find('input.field_options').val field_options
                       newField.removeClass 'hide'
                       newField.removeClass 'template'
-                      $('div.custom-fields-container').prepend(newField)
+                      $('div.add-custom-field-container').before(newField)
               $('div#edit-ticket').removeClass('add').addClass 'edit'
               $('div#edit-ticket div.step-1').addClass 'hide'
               $('div#edit-ticket div.step-1 span.type').html 'Switch'
@@ -222,7 +222,7 @@ Bazaarboy.event.modify.tickets =
         scope = this
         $('body').on 'click', 'a.add-custom-field-btn', () ->
             newField = $('div.custom-fields-container div.custom-field-container.template').clone()
-            $('div.custom-fields-container').prepend(newField)
+            $('div.add-custom-field-container').before(newField)
             newField.removeClass 'hide'
             newField.removeClass 'template'
             return
@@ -380,11 +380,11 @@ Bazaarboy.event.modify.tickets =
                         extraFields[fieldName] = fieldOptions
                     return
                 params.extra_fields = JSON.stringify extraFields
+                console.log params.extra_fields
                 endpoint = 'event/ticket/edit/'
                 if isNew
                     endpoint = 'event/ticket/create/'
                 if params.name.trim() != '' and params.description.trim() != ''
-                    console.log params
                     Bazaarboy.post endpoint, params, (response) ->
                         if response.status is 'OK'
                             $('div#event-modify-tickets div.empty-state-container').addClass 'hide'
