@@ -6,7 +6,6 @@ import cgi
 import json
 import os
 import re
-import collections
 from datetime import timedelta
 from django.db import transaction, IntegrityError
 from django.db.models import F, Q, Count, Sum
@@ -88,8 +87,8 @@ def index(request, id, params, user):
         if ticket.request_address:
             requiresAddress = True
         if ticket.extra_fields:
-            custom_fields = json.loads(ticket.extra_fields, object_pairs_hook=collections.OrderedDict)
-            fields = collections.OrderedDict()
+            custom_fields = json.loads(ticket.extra_fields)
+            fields = {}
             for field_name, field_options in custom_fields.iteritems():
                 fields[field_name] = []
                 if field_options.strip() != '':
@@ -1108,7 +1107,7 @@ def edit_ticket(request, params, user):
     # Extra fields
     if params['extra_fields'] is not None:
         try:
-            fields = json.loads(params['extra_fields'], object_pairs_hook=collections.OrderedDict)
+            fields = json.loads(params['extra_fields'])
         except:
             response = {
                 'status':'FAIL',
