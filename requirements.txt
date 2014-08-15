@@ -43,4 +43,3 @@ tinycss==0.3
 twilio==3.6.2
 unittest2==0.5.1
 wsgiref==0.1.2
-ordereddict==1.1
