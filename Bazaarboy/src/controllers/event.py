@@ -4,6 +4,7 @@ Controller for events
 
 import cgi
 import json
+import simplejson
 import os
 import re
 import ordereddict
@@ -88,7 +89,7 @@ def index(request, id, params, user):
         if ticket.request_address:
             requiresAddress = True
         if ticket.extra_fields:
-            custom_fields = json.loads(ticket.extra_fields, object_pairs_hook=ordereddict.OrderedDict)
+            custom_fields = simplejson.loads(ticket.extra_fields, object_pairs_hook=ordereddict.OrderedDict)
             fields = ordereddict.OrderedDict()
             for field_name, field_options in custom_fields.iteritems():
                 fields[field_name] = []
@@ -1108,7 +1109,7 @@ def edit_ticket(request, params, user):
     # Extra fields
     if params['extra_fields'] is not None:
         try:
-            fields = json.loads(params['extra_fields'], object_pairs_hook=ordereddict.OrderedDict)
+            fields = simplejson.loads(params['extra_fields'], object_pairs_hook=ordereddict.OrderedDict)
         except:
             response = {
                 'status':'FAIL',
