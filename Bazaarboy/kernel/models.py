@@ -192,7 +192,7 @@ class Ticket(models.Model):
     """
     event = models.ForeignKey('Event')
     name = models.CharField(max_length = 50)
-    description = models.CharField(max_length = 250)
+    description = models.CharField(max_length = 400)
     price = models.FloatField()
     quantity = models.IntegerField(null = True, default = None)
     start_time = models.DateTimeField(null = True, default = None)

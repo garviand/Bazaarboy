@@ -930,11 +930,11 @@ def create_ticket(request, params, user):
         return json_response(response)
     # Check if the description is too long
     params['description'] = cgi.escape(params['description'])
-    if len(params['description']) > 250:
+    if len(params['description']) > 400:
         response = {
             'status':'FAIL',
             'error':'INVALID_DESCRIPTION',
-            'message':'Ticket description cannot be over 150 characters.'
+            'message':'Ticket description cannot be over 400 characters.'
         }
         return json_response(response)
     ticket = Ticket(event = event, name = params['name'], 
@@ -1046,11 +1046,11 @@ def edit_ticket(request, params, user):
             ticket.name = params['name']
     if params['description'] is not None:
         params['description'] = cgi.escape(params['description'])
-        if not (0 < len(params['description']) <= 250):
+        if not (0 < len(params['description']) <= 400):
             response = {
                 'status':'FAIL',
                 'error':'INVALID_DESCRIPTION',
-                'message':'Ticket description must be between 0-250 characters.'
+                'message':'Ticket description must be between 0-400 characters.'
             }
             return json_response(response)
         else:
