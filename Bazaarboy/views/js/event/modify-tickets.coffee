@@ -415,13 +415,13 @@ Bazaarboy.event.modify.tickets =
                             wordingObject = 'RSVPs'
                             if response.ticket.price > 0
                                 if isNew
-                                  $('div#event-modify-tickets div#promos').removeClass 'hide'
-                                  newPromosTicket = $('div.promo-form-ticket.template').clone()
-                                  newPromosTicket.find('a.select-ticket').attr('data-id', response.ticket.pk)
-                                  newPromosTicket.find('a.select-ticket').html response.ticket.name + ' ($' + response.ticket.price + ')'
-                                  newPromosTicket.removeClass 'hide'
-                                  newPromosTicket.removeClass 'template'
-                                  $('div.promo-form-tickets').append(newPromosTicket)
+                                    $('div#event-modify-tickets div#promos').removeClass 'hide'
+                                    newPromosTicket = $('div.promo-form-ticket.template').clone()
+                                    newPromosTicket.find('a.select-ticket').attr('data-id', response.ticket.pk)
+                                    newPromosTicket.find('a.select-ticket').html response.ticket.name + ' ($' + response.ticket.price + ')'
+                                    newPromosTicket.removeClass 'hide'
+                                    newPromosTicket.removeClass 'template'
+                                    $('div.promo-form-tickets').append(newPromosTicket)
                                 wording = 'Sold'
                                 wordingObject = 'Ticket Holders'
                             $(ticketOption).find('span.wording').html wording
@@ -429,28 +429,29 @@ Bazaarboy.event.modify.tickets =
                             $('div#edit-ticket').fadeOut 300, () ->
                                 scope.ticketSubmitting = false
                                 return
+                            price = if response.ticket.price > 0 then '$' + response.ticket.price.toFixed(2) else 'Free'
+                            $(ticketOption).find('div.price').html price
+                            $(ticketOption).find('div.name').html response.ticket.name
+                            $(ticketOption).find('div.description').html response.ticket.description
+                            sold = if response.ticket.sold? then response.ticket.sold else 0
+                            $(ticketOption).find('span.sold').html sold
+                            quantity = if response.ticket.quantity then '/' + response.ticket.quantity else ''
+                            $(ticketOption).find('span.quantity').html quantity
+                            wording = 'RSVP\'d'
+                            wordingObject = 'RSVPs'
+                            if response.ticket.price > 0
+                                wording = 'Sold'
+                                wordingObject = 'Ticket Holders'
+                            $(ticketOption).find('span.wording').html wording
+                            $(ticketOption).find('span.wording-object').html wordingObject
+                            $(ticketOption).find('input[name=ticket]').val(response.ticket.pk)
+                            $('div#edit-ticket').fadeOut 300, () ->
+                                scope.ticketSubmitting = false
+                                if response.status isnt 'OK'
+                                    alert response.message
                         else
-                            ticketOption = $('div.ticket-option[data-id="' + ticketId + '"]')
-                        price = if response.ticket.price > 0 then '$' + response.ticket.price.toFixed(2) else 'Free'
-                        $(ticketOption).find('div.price').html price
-                        $(ticketOption).find('div.name').html response.ticket.name
-                        $(ticketOption).find('div.description').html response.ticket.description
-                        sold = if response.ticket.sold? then response.ticket.sold else 0
-                        $(ticketOption).find('span.sold').html sold
-                        quantity = if response.ticket.quantity then '/' + response.ticket.quantity else ''
-                        $(ticketOption).find('span.quantity').html quantity
-                        wording = 'RSVP\'d'
-                        wordingObject = 'RSVPs'
-                        if response.ticket.price > 0
-                            wording = 'Sold'
-                            wordingObject = 'Ticket Holders'
-                        $(ticketOption).find('span.wording').html wording
-                        $(ticketOption).find('span.wording-object').html wordingObject
-                        $(ticketOption).find('input[name=ticket]').val(response.ticket.pk)
-                        $('div#edit-ticket').fadeOut 300, () ->
                             scope.ticketSubmitting = false
-                            if response.status isnt 'OK'
-                                alert response.message
+                            alert response.message
                         return
                 else
                     scope.ticketSubmitting = false

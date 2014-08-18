@@ -128,7 +128,7 @@ def modify(request, id, step, params, user):
                                     profile__managers = user).exists():
         return redirect('index')
     if step == 'tickets':
-        tickets = Ticket.objects.filter(event = event, is_deleted = False)
+        tickets = Ticket.objects.filter(event = event, is_deleted = False).order_by('order')
         cheapest = float('inf')
         for ticket in tickets:
             if ticket.price < cheapest:
