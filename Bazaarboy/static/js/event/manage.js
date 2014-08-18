@@ -162,8 +162,9 @@
         $(this).toggleClass('selected');
       });
       $('div#invite-modal form.invite-form a.send-invitation').click(function() {
-        var events, optionals, params;
-        $(this).html('Sending...');
+        var button, events, optionals, params;
+        button = $(this);
+        button.html('Sending...');
         params = $('form.invite-form').serializeObject();
         events = '';
         $('div#invite-modal form.invite-form div.event-list.selected').each(function() {
@@ -187,7 +188,7 @@
             } else {
               scope.emailSending = false;
               alert(response.message);
-              $(this).html('Send Invitations');
+              button.html('Send Invitations');
             }
           });
         }

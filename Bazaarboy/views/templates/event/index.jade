@@ -71,7 +71,7 @@ block body
             div.row
                 div.medium-12.columns.title.text-center Invite Guests
             {% if pastEventList.items.count > 0 %}
-            div.row
+            div.row.previous-events
                 div.medium-3.columns
                     label.right.inline Select Previous Attendee Lists To Invite
                 div.medium-9.columns
@@ -84,6 +84,11 @@ block body
                         div.medium-12.columns
                             small * duplicate emails will not receive multiple messages
             {% endif %}
+            div.row.inviter.hide
+                div.medium-3.columns.text-center
+                    label.right.inline(for="additional-emails") Name
+                div.medium-9.columns
+                    input#inviter-name(type="text", name="inviter", placeholder="Your Name")
             div.row
                 div.medium-3.columns.text-center
                     label.right.inline(for="additional-emails") Subject
@@ -257,7 +262,7 @@ block body
                     | <span class='st_twitter_large' displayText='Tweet'></span>
                     | <span class='st_googleplus_large' displayText='Google +'></span>
                     | <span class='st_pinterest_large' displayText='Pinterest'></span>
-                    | <span class='st_email_large' displayText='Email'></span>
+                    | <span class='email-invite' displayText='Email'></span>
                     | <span class='close-share ss-delete'></span>
                 {% endif %}
                 {% if design %}
@@ -505,7 +510,8 @@ append script
             doNotHash: false, 
             doNotCopy: false, 
             hashAddressBar: false,
-            popup: false
+            popup: false,
+            onhover: false
         });
     script(type="text/javascript", src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAasW6vqPCn18g6UMaFWV90qGMSo6pErwo&sensor=false&libraries=places")
     {% if editable %}

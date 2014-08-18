@@ -130,7 +130,8 @@ Bazaarboy.event.manage =
             $(this).toggleClass 'selected'
             return
         $('div#invite-modal form.invite-form a.send-invitation').click () ->
-            $(this).html 'Sending...'
+            button = $(this)
+            button.html 'Sending...'
             params = $('form.invite-form').serializeObject()
             events = ''
             $('div#invite-modal form.invite-form div.event-list.selected').each () ->
@@ -153,7 +154,7 @@ Bazaarboy.event.manage =
                     else
                         scope.emailSending = false
                         alert response.message
-                        $(this).html 'Send Invitations'
+                        button.html 'Send Invitations'
                     return
             return
         $('a.close-invite-modal').click () ->

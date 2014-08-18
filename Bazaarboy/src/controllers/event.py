@@ -342,8 +342,8 @@ def issue(request, params):
     }
     return json_response(response)
 
-@login_required()
-@validate('POST', [], ['subject', 'events', 'emails', 'message'])
+@login_check()
+@validate('POST', [], ['subject', 'events', 'emails', 'message', 'inviter'])
 def invite(request, id, params, user):
     if not Event.objects.filter(id = id, 
                                 is_deleted = False).exists():
@@ -358,26 +358,38 @@ def invite(request, id, params, user):
         response = {
             'status':'FAIL',
             'error':'NO_EMAILS',
-            'message':'You need to select at least one email.'
+            'message':'You need to send at least one email.'
         }
         return json_response(response)
-    profiles = Profile.objects.filter(managers = user)
-    inviter = profiles.all()[0].name
-    pids = []
-    for profile in profiles:
-        pids.append(profile.id)
     emails = []
-    if params['events']:
-        eids = params['events'].replace(" ", "").split(",")
-        purchases = Purchase.objects.filter(Q(checkout = None) | 
-                                        Q(checkout__is_charged = True, 
-                                          checkout__is_refunded = False), 
-                                        event__in = eids,
-                                        event__organizers__in = pids, 
-                                        is_expired = False)
-        for purchase in purchases.all():
-            if not any(purchase.owner.email.lower() == val.lower() for val in emails):
-                emails.append(purchase.owner.email)
+    if not params['inviter']:
+        profiles = Profile.objects.filter(managers = user)
+        inviter = profiles.all()[0].name
+        pids = []
+        for profile in profiles:
+            pids.append(profile.id)
+        if params['events']:
+            eids = params['events'].replace(" ", "").split(",")
+            for event_id in eids:
+                if not Organizer.objects.filter(event = event_id, 
+                                        profile__managers = user).exists():
+                    response = {
+                        'status':'FAIL',
+                        'events':'NOT_AN_ORGANIZER',
+                        'message': 'You were not an organizer on at least one of the chosen events'
+                    }
+                    return json_response(response)
+            purchases = Purchase.objects.filter(Q(checkout = None) | 
+                                            Q(checkout__is_charged = True, 
+                                              checkout__is_refunded = False), 
+                                            event__in = eids,
+                                            event__organizers__in = pids, 
+                                            is_expired = False)
+            for purchase in purchases.all():
+                if not any(purchase.owner.email.lower() == val.lower() for val in emails):
+                    emails.append(purchase.owner.email)
+    else:
+        inviter = params['inviter']
     if params['emails']:
         additional_emails = params['emails'].replace(" ", "").split(",")
         for email in additional_emails:

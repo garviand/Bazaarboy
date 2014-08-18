@@ -331,7 +331,7 @@
           events += $(this).data('id');
         });
         params['events'] = events;
-        optionals = ['emails', 'events'];
+        optionals = ['emails', 'events', 'inviter', 'message', 'subject'];
         params = Bazaarboy.stripEmpty(params, optionals);
         if (!scope.emailSending) {
           scope.emailSending = true;
@@ -788,6 +788,11 @@
             return alert(response.message);
           }
         });
+      });
+      $("span.email-invite").click(function(e) {
+        $('div#invite-modal').foundation('reveal', 'open');
+        $('div#invite-modal div.previous-events').addClass('hide');
+        $('div#invite-modal div.inviter').removeClass('hide');
       });
     }
   };

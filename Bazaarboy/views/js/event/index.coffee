@@ -266,7 +266,7 @@ Bazaarboy.event.index =
                 events += $(this).data('id')
                 return
             params['events'] = events
-            optionals = ['emails', 'events']
+            optionals = ['emails', 'events', 'inviter', 'message', 'subject']
             params = Bazaarboy.stripEmpty params, optionals
             if not scope.emailSending
                 scope.emailSending = true
@@ -669,6 +669,11 @@ Bazaarboy.event.index =
                         return
                 else
                     alert response.message
+            return
+        $("span.email-invite").click (e) ->
+            $('div#invite-modal').foundation('reveal', 'open')
+            $('div#invite-modal div.previous-events').addClass 'hide'
+            $('div#invite-modal div.inviter').removeClass 'hide'
             return
         return
 

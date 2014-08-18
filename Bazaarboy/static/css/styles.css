@@ -8871,6 +8871,14 @@ div#event-header div.event-share-canvas {
   margin-bottom: 10px;
   text-align: center;
 }
+div#event-header div.event-share-canvas span.email-invite {
+  background-image: url(http://w.sharethis.com/images/email_32.png);
+  cursor: pointer;
+  display: inline-block;
+  height: 32px;
+  width: 32px;
+  position: relative;
+}
 div#event-header div.event-share-canvas span.close-share {
   font-size: 1.9rem;
   color: #000;
