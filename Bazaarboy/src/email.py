@@ -21,7 +21,7 @@ from django.utils.dateformat import DateFormat
 
 import pdb
 
-def sendEmails(to, subject, template, mergeVars, attachments=[]):
+def sendEmails(to, from_name, subject, template, mergeVars, attachments=[]):
     """
     Send an email
     """
@@ -29,7 +29,7 @@ def sendEmails(to, subject, template, mergeVars, attachments=[]):
         client = Mandrill(MANDRILL_API_KEY)
         message = {
             'from_email':MANDRILL_FROM_EMAIL,
-            'from_name':MANDRILL_FROM_NAME,
+            'from_name':from_name,
             'headers':{
                 'Reply-To':MANDRILL_FROM_EMAIL
             },
@@ -79,7 +79,7 @@ def sendNewAccountEmail(profile):
             }
         ]
     }]
-    return sendEmails(to, subject, template, mergeVars)
+    return sendEmails(to, MANDRILL_FROM_NAME, subject, template, mergeVars)
 
 def sendConfirmationEmail(confirmationCode):
     """
@@ -105,7 +105,7 @@ def sendConfirmationEmail(confirmationCode):
             }
         ]
     }]
-    return sendEmails(to, subject, template, mergeVars)
+    return sendEmails(to, MANDRILL_FROM_NAME, subject, template, mergeVars)
 
 def sendResetRequestEmail(resetCode):
     """
@@ -131,7 +131,7 @@ def sendResetRequestEmail(resetCode):
             }
         ]
     }]
-    return sendEmails(to, subject, template, mergeVars)
+    return sendEmails(to, MANDRILL_FROM_NAME, subject, template, mergeVars)
 
 def sendRefundConfirmationEmail(purchase, amount):
     """
@@ -170,7 +170,7 @@ def sendRefundConfirmationEmail(purchase, amount):
             }
         ]
     }]
-    return sendEmails(to, subject, template, mergeVars)
+    return sendEmails(to, MANDRILL_FROM_NAME, subject, template, mergeVars)
 
 @task()
 def sendIssueEmail(name, email, message, event):
@@ -209,7 +209,7 @@ def sendIssueEmail(name, email, message, event):
             }
         ]
     }]
-    return sendEmails(to, subject, template, mergeVars)
+    return sendEmails(to, MANDRILL_FROM_NAME, subject, template, mergeVars)
 
 @task()
 def sendProfileMessageEmail(name, email, message, profile, event):
@@ -240,7 +240,7 @@ def sendProfileMessageEmail(name, email, message, profile, event):
             }
         ]
     }]
-    return sendEmails(to, subject, template, mergeVars)
+    return sendEmails(to, MANDRILL_FROM_NAME, subject, template, mergeVars)
 
 @task()
 def sendOrganizerAddedEmail(event, adder, profile):
@@ -267,7 +267,7 @@ def sendOrganizerAddedEmail(event, adder, profile):
             }
         ]
     }]
-    return sendEmails(to, subject, template, mergeVars)
+    return sendEmails(to, MANDRILL_FROM_NAME, subject, template, mergeVars)
 
 @task()
 def sendEventInvite(event, email, inviter):
@@ -342,7 +342,7 @@ def sendEventInvite(event, email, inviter):
             }
         ]
     }]
-    return sendEmails(to, subject, template, mergeVars)
+    return sendEmails(to, inviter, subject, template, mergeVars)
 
 @task()
 def sendEventConfirmationEmail(purchase, manual=False, inviter=None):
@@ -385,9 +385,11 @@ def sendEventConfirmationEmail(purchase, manual=False, inviter=None):
     if manual:
         subject = 'You\'re on the Guest List - \'' + event.name + '\'' 
         header_text = 'You have been added to the guest list by <b>' + inviter.profile.name + '</b>'
+        from_name = inviter.profile.name
     else:  
         subject = 'Confirmation for \'' + event.name + '\''
         header_text = 'CONFIRMATION | Your tickets to <b>' + organizers[0].name + '\'s</b> Event'
+        from_name = organizers[0].name
     template = 'confirm-rsvp'
     items = Purchase_item.objects.filter(purchase = purchase) \
                                  .prefetch_related('ticket')
@@ -506,7 +508,7 @@ def sendEventConfirmationEmail(purchase, manual=False, inviter=None):
         ]
     }]
     attachments = Ticket_attachment.getTicketAttachments(purchase, items)
-    return sendEmails(to, subject, template, mergeVars, attachments)
+    return sendEmails(to, from_name, subject, template, mergeVars, attachments)
 
 def sendBonusEmails():
     """
