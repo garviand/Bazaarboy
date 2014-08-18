@@ -23,7 +23,7 @@ from src.config import *
 from src.controllers.request import *
 from src.ordereddict import OrderedDict
 from src.csvutils import UnicodeWriter
-from src.email import sendEventConfirmationEmail, sendEventInvite, sendOrganizerAddedEmail, sendIssueEmail
+from src.email import sendEventConfirmationEmail, sendEventInvite, sendOrganizerAddedEmail, sendIssueEmail, sendEventReminder
 from src.regex import REGEX_EMAIL, REGEX_NAME, REGEX_SLUG
 from src.sanitizer import sanitize_redactor_input
 from src.serializer import serialize, serialize_one
@@ -1670,6 +1670,11 @@ def delete_promo(request, params, user):
     return json_response(response)
 
 @task()
+def send_event_reminder(purchase):
+    sendEventReminder(purchase)
+    return True
+
+@task()
 def mark_purchase_as_expired(purchase, immediate=False):
     """
     Expires a purchase and release the tickets
@@ -1967,6 +1972,8 @@ def purchase(request, params, user):
                     }
             # Send confirmation email and sms
             sendEventConfirmationEmail(purchase)
+            dayBefore = event.start_time - timedelta(days = 1)
+            send_event_reminder.apply_async(args = [purchase], eta = dayBefore)
             sendEventConfirmationSMS(purchase)
             # Success
             response = {

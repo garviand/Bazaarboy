@@ -18,6 +18,7 @@ from kernel.models import *
 from src.config import *
 from src.timezone import localize
 from django.utils.dateformat import DateFormat
+from pygeocoder import Geocoder
 
 import pdb
 
@@ -350,6 +351,92 @@ def sendEventInvite(event, email, subject, inviter, custom_message=''):
         ]
     }]
     return sendEmails(to, inviter, subject, template, mergeVars)
+
+def sendEventReminder(purchase):
+    """
+    Send event reminder 24 hours before event
+    """
+    user = purchase.owner
+    event = purchase.event
+    event_month = DateFormat(localize(event.start_time))
+    event_month = event_month.format('M')
+    event_day = DateFormat(localize(event.start_time))
+    event_day = event_day.format('j')
+    organizers = event.organizers.all()
+    to = [{
+        'email':user.email, 
+        'name':user.first_name + ' ' + user.last_name
+    }] 
+    subject = 'Reminder for ' + event.name
+    from_name = organizers[0].name
+    template = 'event-reminder'
+    reciept_info = ''
+    if event.slug:
+        event_url = 'https://bazaarboy.com/' + event.slug
+    else:
+        event_url = 'https://bazaarboy.com/event/' + str(event.id)
+    startTime = localize(event.start_time)
+    if event.end_time:
+        endTime = localize(event.end_time)
+        if endTime.day == startTime.day:
+            event_date = '<span style="font-weight: 600;">' + startTime.strftime('%A') + '</span>, '
+            event_date += startTime.strftime('%I:%M%p').lower() + ' - ' + endTime.strftime('%I:%M%p').lower()
+        else:
+            event_date = startTime.strftime('%A') + ', ' + startTime.strftime('%I:%M%p').lower() + ' - '
+            event_date += endTime.strftime('%A') + ', ' + endTime.strftime('%I:%M%p').lower()
+    else:
+        event_date = '<span style="font-weight: 600;">' + startTime.strftime('%A') + '</span>, '
+        event_date += startTime.strftime('%I:%M%p').lower()
+    event_address = ''
+    event_map = ''
+    if event.latitude and event.longitude:
+        address = Geocoder.reverse_geocode(event.latitude, event.longitude)
+        address = [x.strip() for x in address[0].formatted_address.split(',')]
+        for address_component in address:
+            event_address += str(address_component) + "<br />"
+        event_map = u'<a href="https://maps.google.com/?saddr=' + str(event.latitude) + ',' + str(event.longitude) + '"><img src="http://maps.google.com/maps/api/staticmap?center=' + str(event.latitude) + ',' + str(event.longitude) + '&zoom=15&size=300x150&markers=' + str(event.latitude) + ',' + str(event.longitude) + '" /></a>'
+    mergeVars = [{
+        'rcpt': user.email,
+        'vars': [
+            {
+                'name': 'first_name', 
+                'content': user.first_name
+            },
+            {
+                'name': 'event_link', 
+                'content': event_url
+            },
+            {
+                'name': 'event_name', 
+                'content': event.name
+            },
+            {
+                'name': 'event_month', 
+                'content': event_month
+            },
+            {
+                'name': 'event_day', 
+                'content': event_day
+            },
+            {
+                'name': 'event_date', 
+                'content': event_date
+            },
+            {
+                'name': 'event_location', 
+                'content': event.location
+            },
+            {
+                'name': 'event_address', 
+                'content': event_address
+            },
+            {
+                'name': 'event_map', 
+                'content': event_map
+            }
+        ]
+    }]
+    return sendEmails(to, from_name, subject, template, mergeVars)
 
 @task()
 def sendEventConfirmationEmail(purchase, manual=False, inviter=None):

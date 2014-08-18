@@ -20,6 +20,10 @@ BBOY_EVENT_CATEGORIES = [
     'Nightlife', 'Charity', 'Other'
 ]
 
+# Google
+
+GOOGLE_MAPS_KEY = 'AIzaSyAasW6vqPCn18g6UMaFWV90qGMSo6pErwo'
+
 # Stripe
 
 STRIPE_CLIENT_ID = os.getenv('STRIPE_CLIENT_ID', 'ca_2Zvu0dHwuN2dHPaiYc1bwqNRbPfvNwMX')
