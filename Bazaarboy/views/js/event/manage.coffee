@@ -139,7 +139,7 @@ Bazaarboy.event.manage =
                 events += $(this).data('id')
                 return
             params['events'] = events
-            optionals = ['emails', 'events']
+            optionals = ['emails', 'events', 'message']
             params = Bazaarboy.stripEmpty params, optionals
             if not scope.emailSending
                 scope.emailSending = true

@@ -173,7 +173,7 @@
           events += $(this).data('id');
         });
         params['events'] = events;
-        optionals = ['emails', 'events'];
+        optionals = ['emails', 'events', 'message'];
         params = Bazaarboy.stripEmpty(params, optionals);
         if (!scope.emailSending) {
           scope.emailSending = true;

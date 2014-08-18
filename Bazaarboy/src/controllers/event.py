@@ -343,7 +343,7 @@ def issue(request, params):
     return json_response(response)
 
 @login_required()
-@validate('POST', [], ['events', 'emails'])
+@validate('POST', [], ['subject', 'events', 'emails', 'message'])
 def invite(request, id, params, user):
     if not Event.objects.filter(id = id, 
                                 is_deleted = False).exists():
@@ -383,8 +383,16 @@ def invite(request, id, params, user):
         for email in additional_emails:
             if not any(email.lower() == val.lower() for val in emails) and REGEX_EMAIL.match(email):
                 emails.append(email)
+    if params['subject']:
+        subject = params['subject']
+    else:
+        subject = ''
+    if params['message']:
+        message = params['message']
+    else:
+        message = ''
     for email in emails:
-        sendEventInvite(event, email, inviter)
+        sendEventInvite(event, email, subject, inviter, message)
     response = {
         'status':'OK',
         'count': str(len(emails))

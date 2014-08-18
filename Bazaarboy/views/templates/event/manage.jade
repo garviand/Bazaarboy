@@ -167,9 +167,19 @@ block content
             {% endif %}
             div.row
                 div.medium-3.columns.text-center
+                    label.right.inline(for="additional-emails") Subject
+                div.medium-9.columns
+                    input#email-subject(type="text", name="subject", placeholder="Email Subject")
+            div.row
+                div.medium-3.columns.text-center
                     label.right.inline(for="additional-emails") Add Emails
                 div.medium-9.columns
                     textarea#additional-emails(name="emails", placeholder="Separated By Commas (x@email.com, y@email.com)")
+            div.row
+                div.medium-3.columns.text-center
+                    label.right.inline(for="additional-emails") Add Message
+                div.medium-9.columns
+                    textarea#custom-message(name="message", placeholder="Add a custom message to the invitation (optional)")
             div.row.send-invite
                 div.medium-4.medium-offset-3.columns
                     a.blue-btn.send-invitation(href="javascript:;") Send Invitations

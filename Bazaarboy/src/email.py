@@ -270,7 +270,7 @@ def sendOrganizerAddedEmail(event, adder, profile):
     return sendEmails(to, MANDRILL_FROM_NAME, subject, template, mergeVars)
 
 @task()
-def sendEventInvite(event, email, inviter):
+def sendEventInvite(event, email, subject, inviter, custom_message=''):
     event_month = DateFormat(localize(event.start_time))
     event_month = event_month.format('M')
     event_day = DateFormat(localize(event.start_time))
@@ -300,11 +300,14 @@ def sendEventInvite(event, email, inviter):
                 </tr>
             </table>
         """
+    if custom_message.strip() != '':
+        custom_message = "<i>" + custom_message + "</i>"
     to = [{
         'email':email
     }]
-    subject = 'Invitation to \'' + event.name + '\''
-    template = 'event-invitation-1'
+    if subject.strip() == '':
+        subject = 'Invitation to \'' + event.name + '\''
+    template = 'event-invitation-message'
     mergeVars = [{
         'rcpt': email,
         'vars': [
@@ -315,6 +318,10 @@ def sendEventInvite(event, email, inviter):
             {
                 'name': 'inviter', 
                 'content': inviter
+            },
+            {
+                'name': 'custom_message', 
+                'content': custom_message
             },
             {
                 'name': 'event_link', 
