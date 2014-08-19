@@ -186,7 +186,7 @@ def sendIssueEmail(name, email, message, event):
     subject = event.name + ' - RSVP issue from ' + name
     template = 'issue'
     mergeVars = [{
-        'rcpt': 'andy@bazaarboy.com',
+        'rcpt': 'eric@bazaarboy.com',
         'vars': [
             {
                 'name': 'user_name', 

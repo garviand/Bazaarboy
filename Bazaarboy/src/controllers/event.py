@@ -1972,8 +1972,8 @@ def purchase(request, params, user):
                     }
             # Send confirmation email and sms
             sendEventConfirmationEmail(purchase)
-            dayBefore = event.start_time - timedelta(days = 1)
-            send_event_reminder.apply_async(args = [purchase], eta = dayBefore)
+            #dayBefore = event.start_time - timedelta(days = 1)
+            #send_event_reminder.apply_async(args = [purchase], eta = dayBefore)
             sendEventConfirmationSMS(purchase)
             # Success
             response = {
@@ -2340,6 +2340,8 @@ def export(request, params, user):
                 if item.ticket.extra_fields != '':
                     try:
                         extra_fields = json.loads(item.extra_fields)
+                    except:
+                        pass
                     finally:
                         items['tickets'][item.ticket.id]['purchases'][item.purchase.id]['extra_fields'] = {}
                         for fieldName, fieldValue in extra_fields.iteritems():
@@ -2380,11 +2382,7 @@ def export(request, params, user):
                 try:
                     extra_fields = json.loads(item.extra_fields)
                 except:
-                    response = {
-                        'status':'FAIL',
-                        'error':'NO_EXTRA_FIELDS'
-                    }
-                    return json_response(response)
+                    pass
                 finally:
                     items['tickets'][item.ticket.id]['purchases'][item.purchase.id]['extra_fields'] = {}
                     for fieldName, fieldValue in extra_fields.iteritems():
