@@ -352,7 +352,7 @@ def sendEventInvite(event, email, subject, inviter, custom_message=''):
     }]
     return sendEmails(to, inviter, subject, template, mergeVars)
 
-def sendEventReminder(purchase):
+def sendEventReminder(purchase, tz):
     """
     Send event reminder 24 hours before event
     """
@@ -375,9 +375,11 @@ def sendEventReminder(purchase):
         event_url = 'https://bazaarboy.com/' + event.slug
     else:
         event_url = 'https://bazaarboy.com/event/' + str(event.id)
-    startTime = localize(event.start_time)
+    startTime = event.start_time.astimezone(tz)
+    startTime = tz.normalize(startTime)
     if event.end_time:
-        endTime = localize(event.end_time)
+        endTime = event.end_time.astimezone(tz)
+        endTime = tz.normalize(endTime)
         if endTime.day == startTime.day:
             event_date = '<span style="font-weight: 600;">' + startTime.strftime('%A') + '</span>, '
             event_date += startTime.strftime('%I:%M%p').lower() + ' - ' + endTime.strftime('%I:%M%p').lower()

@@ -1670,8 +1670,8 @@ def delete_promo(request, params, user):
     return json_response(response)
 
 @task()
-def send_event_reminder(purchase):
-    sendEventReminder(purchase)
+def send_event_reminder(purchase, tz):
+    sendEventReminder(purchase, tz)
     return True
 
 @task()
@@ -1972,8 +1972,9 @@ def purchase(request, params, user):
                     }
             # Send confirmation email and sms
             sendEventConfirmationEmail(purchase)
-            #dayBefore = event.start_time - timedelta(days = 1)
-            #send_event_reminder.apply_async(args = [purchase], eta = dayBefore)
+            #if timezone.now() < (event.start_time - timedelta(days = 1)):
+                #dayBefore = event.start_time - timedelta(days = 1)
+                #send_event_reminder.apply_async(args = [purchase, timezone.get_current_timezone()], eta = dayBefore)
             sendEventConfirmationSMS(purchase)
             # Success
             response = {
@@ -2225,8 +2226,9 @@ def add_purchase(request, params, user):
         amount = 0
         for ticket in tickets:
             # Check if the ticket has enough quantity left
+            pdb.set_trace()
             if (ticket.quantity is not None and 
-                ticket.quantity < details[ticket.id]):
+                ticket.quantity < details[ticket.id]['quantity']):
                 response = {
                     'status':'FAIL',
                     'error':'INSUFFICIENT_QUANTITY',
