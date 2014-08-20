@@ -2226,7 +2226,6 @@ def add_purchase(request, params, user):
         amount = 0
         for ticket in tickets:
             # Check if the ticket has enough quantity left
-            pdb.set_trace()
             if (ticket.quantity is not None and 
                 ticket.quantity < details[ticket.id]['quantity']):
                 response = {
