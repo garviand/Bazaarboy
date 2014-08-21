@@ -1972,9 +1972,9 @@ def purchase(request, params, user):
                     }
             # Send confirmation email and sms
             sendEventConfirmationEmail(purchase)
-            #if timezone.now() < (event.start_time - timedelta(days = 1)):
-                #dayBefore = event.start_time - timedelta(days = 1)
-                #send_event_reminder.apply_async(args = [purchase, timezone.get_current_timezone()], eta = dayBefore)
+            if timezone.now() < (event.start_time - timedelta(days = 1)):
+                dayBefore = event.start_time - timedelta(days = 1)
+                send_event_reminder.apply_async(args = [purchase, timezone.get_current_timezone()], eta = dayBefore)
             sendEventConfirmationSMS(purchase)
             # Success
             response = {

@@ -369,7 +369,12 @@ def sendEventReminder(purchase, tz):
     }] 
     subject = 'Reminder for ' + event.name
     from_name = organizers[0].name
+    from_email = ''
+    if organizers[0].email:
+        from_email = organizers[0].email
     template = 'event-reminder'
+    items = Purchase_item.objects.filter(purchase = purchase) \
+                                 .prefetch_related('ticket')
     reciept_info = ''
     if event.slug:
         event_url = 'https://bazaarboy.com/' + event.slug
@@ -392,10 +397,12 @@ def sendEventReminder(purchase, tz):
     event_address = ''
     event_map = ''
     if event.latitude and event.longitude:
+        event_address += "<div style='margin-bottom:5px; text-decoration:underline;'>Event Address</div>"
         address = Geocoder.reverse_geocode(event.latitude, event.longitude)
         address = [x.strip() for x in address[0].formatted_address.split(',')]
         for address_component in address:
-            event_address += str(address_component) + "<br />"
+            if address_component != 'USA':
+                event_address += str(address_component) + "<br />"
         event_map = u'<a href="https://maps.google.com/?saddr=' + str(event.latitude) + ',' + str(event.longitude) + '"><img src="http://maps.google.com/maps/api/staticmap?center=' + str(event.latitude) + ',' + str(event.longitude) + '&zoom=15&size=300x150&markers=' + str(event.latitude) + ',' + str(event.longitude) + '" /></a>'
     mergeVars = [{
         'rcpt': user.email,
@@ -403,6 +410,10 @@ def sendEventReminder(purchase, tz):
             {
                 'name': 'first_name', 
                 'content': user.first_name
+            },
+            {
+                'name': 'organizer_email', 
+                'content': from_email
             },
             {
                 'name': 'event_link', 
@@ -438,7 +449,8 @@ def sendEventReminder(purchase, tz):
             }
         ]
     }]
-    return sendEmails(to, from_name, subject, template, mergeVars)
+    attachments = Ticket_attachment.getTicketAttachments(purchase, items)
+    return sendEmails(to, from_name, subject, template, mergeVars, attachments)
 
 @task()
 def sendEventConfirmationEmail(purchase, manual=False, inviter=None):
