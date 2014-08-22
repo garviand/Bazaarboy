@@ -2025,7 +2025,7 @@ def purchase(request, params, user):
                              .update(quantity = F('quantity') - promo['quantity'])
         # Create an async task to restore quantities if necessary
         expiration = timezone.now() + timedelta(minutes = BBOY_TRANSACTION_EXPIRATION)
-        mark_purchase_as_expired.apply_async(args = [purchase], eta = expiration)
+        print(mark_purchase_as_expired.apply_async(args = [purchase], eta = expiration))
         # Check for creator logo
         if creator.image:
             creator_logo = creator.image.source.url.split("?")[0]
