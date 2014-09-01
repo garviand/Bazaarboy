@@ -188,7 +188,6 @@ CELERY_IMPORTS = (
 )
 
 BROKER_URL = os.getenv('CELERY_BROKER_URL', 'redis://localhost:6379/0')
-print BROKER_URL
 
 # Cache
 
