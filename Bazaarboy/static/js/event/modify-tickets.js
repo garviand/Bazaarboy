@@ -266,6 +266,48 @@
       var isEditTicketInAnimation, scope,
         _this = this;
       scope = this;
+      $('.attach-pdf-container .attach-pdf-btn').click(function() {
+        $(this).parent().find('input[name=attachment]').click();
+      });
+      $('.attach-pdf-container input[name=attachment]').fileupload({
+        url: rootUrl + 'event/set_attachment/',
+        type: 'POST',
+        add: function(event, data) {
+          var csrfmiddlewaretoken, ticketId;
+          ticketId = $(data.fileInput[0]).data('ticket');
+          csrfmiddlewaretoken = $('input[name=csrfmiddlewaretoken]').val();
+          data.formData = {
+            id: ticketId,
+            csrfmiddlewaretoken: csrfmiddlewaretoken
+          };
+          if (data.files[0].type !== 'application/pdf') {
+            alert('Must Be A PDF File');
+            $('.attach-pdf-container input[name=attachment]').wrap('<form>').parent('form').trigger('reset');
+            $('.attach-pdf-container input[name=attachment]').unwrap();
+          } else {
+            data.submit();
+          }
+        },
+        done: function(event, data) {
+          var response;
+          response = jQuery.parseJSON(data.result);
+          if (response.status === 'OK') {
+            console.log(response);
+          } else {
+            alert(response.message);
+          }
+        }
+      });
+      $('a.new-ticket').click(function() {
+        _this.newTicket();
+      });
+      $('input#ticket-time-range').change(function() {
+        if ($(this).is(':checked')) {
+          $('div.time-range-inputs').removeClass('hide');
+        } else {
+          $('div.time-range-inputs').addClass('hide');
+        }
+      });
       $('body').on('click', 'a.add-custom-field-btn', function() {
         var newField;
         newField = $('div.custom-fields-container div.custom-field-container.template').clone();

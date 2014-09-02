@@ -9205,7 +9205,7 @@ div#event-footer {
   background: #D4D4D4;
 }
 div#event-footer div.inner {
-  width: 284px;
+  width: 350px;
   height: 44px;
   margin: 0 auto;
   font-size: 14px;
@@ -9227,7 +9227,7 @@ div#event-footer div.logo {
   background: #FFFFFF;
 }
 div#event-footer div.links {
-  width: 120px;
+  width: 165px;
   height: 44px;
   padding: 15px 0;
   text-align: center;
@@ -9902,6 +9902,13 @@ div#event-modify-tickets div.ticket-option div.move-tickets div.inner div.move-t
   width: 100%;
   font-size: 12px;
   text-align: center;
+}
+div#event-modify-tickets div.ticket-option div.attach-pdf-container a.attach-pdf-btn {
+  padding: 10px 0;
+  color: #4963e4;
+  display: block;
+  width: 100%;
+  font-size: 12px;
 }
 div#event-modify-tickets div.next-step a.primary-btn {
   width: 100%;

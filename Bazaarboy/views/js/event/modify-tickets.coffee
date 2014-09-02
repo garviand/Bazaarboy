@@ -220,6 +220,39 @@ Bazaarboy.event.modify.tickets =
         return
     init: () ->
         scope = this
+        $('.attach-pdf-container .attach-pdf-btn').click () ->
+            $(this).parent().find('input[name=attachment]').click()
+            return
+        $('.attach-pdf-container input[name=attachment]').fileupload
+          url: rootUrl + 'event/set_attachment/'
+          type: 'POST'
+          add: (event, data) =>
+            ticketId = $(data.fileInput[0]).data('ticket')
+            csrfmiddlewaretoken = $('input[name=csrfmiddlewaretoken]').val()
+            data.formData = {id: ticketId, csrfmiddlewaretoken: csrfmiddlewaretoken}
+            if data.files[0].type isnt 'application/pdf'
+              alert 'Must Be A PDF File'
+              $('.attach-pdf-container input[name=attachment]').wrap('<form>').parent('form').trigger('reset');
+              $('.attach-pdf-container input[name=attachment]').unwrap();
+            else
+              data.submit()
+            return
+          done: (event, data) =>
+            response = jQuery.parseJSON data.result
+            if response.status is 'OK'
+              console.log response
+            else
+              alert response.message
+            return
+        $('a.new-ticket').click () =>
+            @newTicket()
+            return
+        $('input#ticket-time-range').change () ->
+          if $(this).is(':checked')
+            $('div.time-range-inputs').removeClass 'hide'
+          else
+            $('div.time-range-inputs').addClass 'hide'
+          return
         $('body').on 'click', 'a.add-custom-field-btn', () ->
             newField = $('div.custom-fields-container div.custom-field-container.template').clone()
             $('div.add-custom-field-container').before(newField)

@@ -622,7 +622,10 @@ def sendEventConfirmationEmail(purchase, manual=False, inviter=None):
     attachments = Ticket_attachment.getTicketAttachments(purchase, items)
     for f in attFiles:
         parts = f.split('/')
-        content = urllib2.urlopen(f).read().encode('base64')
+        if settings.BBOY_ENV == 'development':
+            content = open(f.lstrip('/')).read().encode('base64')
+        else:
+            content = urllib2.urlopen(f).read().encode('base64')
         attachments.append({
             'type':mimetypes.guess_type(f)[0], 
             'name':parts[-1],

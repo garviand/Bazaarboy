@@ -180,11 +180,15 @@ block content
                             div.description.small-12.columns
                                 != tags ? '{{ ticket.description }}' : ''
                     div.move-tickets.small-12.columns
-                        div.inner.small-12.columns.move-tickets-container
-                            div.medium-2.columns.move-ticket(class="{% if forloop.first %}hide{% endif %}")
+                        div.inner.small-12.medium-6.columns.move-tickets-container
+                            div.medium-4.columns.move-ticket(class="{% if forloop.first %}hide{% endif %}")
                                 a.move-ticket-btn.move-ticket-up(href="javascript:;") Move Up
-                            div.medium-2.columns.move-ticket.end(class="{% if forloop.last %}hide{% endif %}")
+                            div.medium-4.columns.move-ticket.end(class="{% if forloop.last %}hide{% endif %}")
                                 a.move-ticket-btn.move-ticket-down(href="javascript:;") Move Down
+                        //div.small-12.medium-6.columns.attach-pdf-container.text-right
+                            a.attach-pdf-btn(href="javascript:;") + Attach PDF To Confirmation Email
+                            input.hidden(type="file", name="attachment", data-ticket="{{ ticket.id }}")
+                            {% csrf_token %}
             div#ticket-canvas.small-12.columns
                 {% for ticket in tickets %}
                 +ticket-option(true)
