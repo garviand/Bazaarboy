@@ -4,8 +4,10 @@ Email utilities
 
 import cStringIO
 import base64
+import mimetypes
 import qrcode
 import urllib
+import urllib2
 import weasyprint
 import logging
 from datetime import datetime
@@ -501,6 +503,7 @@ def sendEventConfirmationEmail(purchase, manual=False, inviter=None):
     template = 'confirm-rsvp'
     items = Purchase_item.objects.filter(purchase = purchase) \
                                  .prefetch_related('ticket')
+    attFiles = []
     tickets = {}
     ticket_list_html = ''
     for item in items:
@@ -513,6 +516,7 @@ def sendEventConfirmationEmail(purchase, manual=False, inviter=None):
                 'price': item.ticket.price,
                 'quantity': 1
             }
+            attFiles.append(item.ticket.attachment.url)
     for k, ticket in tickets.iteritems():
         if ticket['price'] == 0:
             ticket_price = 'Free'
@@ -616,6 +620,14 @@ def sendEventConfirmationEmail(purchase, manual=False, inviter=None):
         ]
     }]
     attachments = Ticket_attachment.getTicketAttachments(purchase, items)
+    for f in attFiles:
+        parts = f.split('/')
+        content = urllib2.urlopen(f).read().encode('base64')
+        attachments.append({
+            'type':mimetypes.guess_type(f)[0], 
+            'name':parts[-1],
+            'content':content
+        })
     return sendEmails(to, from_name, subject, template, mergeVars, attachments)
 
 def sendBonusEmails():

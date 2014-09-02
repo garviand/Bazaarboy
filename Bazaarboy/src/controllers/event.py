@@ -13,7 +13,7 @@ from django.db import transaction, IntegrityError
 from django.db.models import F, Q, Count, Sum
 from django.http import Http404
 from django.shortcuts import render, redirect
-from django.http import HttpResponse
+from django.http import HttpResponse, HttpResponseBadRequest
 from django.utils import timezone
 from django.views.decorators.cache import cache_page
 from django.core.serializers.json import DjangoJSONEncoder
@@ -1664,6 +1664,31 @@ def delete_promo(request, params, user):
         return json_response(response)
     promo.is_deleted = True
     promo.save()
+    response = {
+        'status':'OK'
+    }
+    return json_response(response)
+
+@login_required()
+@validate('POST', ['id'])
+def set_attachment(request, params, user):
+    """
+    Set the attachment for a ticket
+    """
+    if not Ticket.objects.filter(id = params['id']).exists():
+        response = {
+            'status':'FAIL',
+            'error':'TICKET_NOT_FOUND',
+            'message':'The ticket does not exist.'
+        }
+        return json_response(response)
+    ticket = Ticket.objects.get(id = params['id'])
+    if not request.FILES.has_key('attachment'):
+        ticket.attachment = None
+    else:
+        # Validate the MIME type of the file
+        ticket.attachment = request.FILES['attachment']
+    ticket.save()
     response = {
         'status':'OK'
     }
