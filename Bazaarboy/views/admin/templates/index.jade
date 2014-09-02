@@ -31,7 +31,7 @@ block main
                 tr
                 {% endif %}
                 td
-                   a(href="{% url event:index event.id %}?preview"){{ event.name }}
+                   a(href="{{ event|eventUrl }}"){{ event.name }}
                 {% endfor %}
         div.clear
     div.summary.box
