@@ -516,7 +516,8 @@ def sendEventConfirmationEmail(purchase, manual=False, inviter=None):
                 'price': item.ticket.price,
                 'quantity': 1
             }
-            attFiles.append(item.ticket.attachment.url)
+            if item.ticket.attachment:
+                attFiles.append(item.ticket.attachment.url)
     for k, ticket in tickets.iteritems():
         if ticket['price'] == 0:
             ticket_price = 'Free'
