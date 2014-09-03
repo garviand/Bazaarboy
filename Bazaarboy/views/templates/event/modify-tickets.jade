@@ -185,8 +185,13 @@ block content
                                 a.move-ticket-btn.move-ticket-up(href="javascript:;") Move Up
                             div.medium-4.columns.move-ticket.end(class="{% if forloop.last %}hide{% endif %}")
                                 a.move-ticket-btn.move-ticket-down(href="javascript:;") Move Down
-                        //div.small-12.medium-6.columns.attach-pdf-container.text-right
-                            a.attach-pdf-btn(href="javascript:;") + Attach PDF To Confirmation Email
+                        div.small-12.medium-6.columns.attach-pdf-container.text-right
+                            a.attach-pdf-btn(href="javascript:;")
+                                {% if not ticket.attachment %}
+                                | + Attach PDF To Confirmation Email
+                                {% else %}
+                                | Change PDF Attachment
+                                {% endif %}
                             input.hidden(type="file", name="attachment", data-ticket="{{ ticket.id }}")
                             {% csrf_token %}
             div#ticket-canvas.small-12.columns

@@ -226,21 +226,19 @@ Bazaarboy.event.modify.tickets =
         $('.attach-pdf-container input[name=attachment]').fileupload
           url: rootUrl + 'event/set_attachment/'
           type: 'POST'
-          add: (event, data) =>
-            ticketId = $(data.fileInput[0]).data('ticket')
-            csrfmiddlewaretoken = $('input[name=csrfmiddlewaretoken]').val()
+          add: (event, data) ->
+            ticketId = $(this).data('ticket')
+            csrfmiddlewaretoken = $(this).parent().find('input[name=csrfmiddlewaretoken]').val()
             data.formData = {id: ticketId, csrfmiddlewaretoken: csrfmiddlewaretoken}
             if data.files[0].type isnt 'application/pdf'
               alert 'Must Be A PDF File'
-              $('.attach-pdf-container input[name=attachment]').wrap('<form>').parent('form').trigger('reset');
-              $('.attach-pdf-container input[name=attachment]').unwrap();
             else
               data.submit()
             return
-          done: (event, data) =>
+          done: (event, data) ->
             response = jQuery.parseJSON data.result
             if response.status is 'OK'
-              console.log response
+              $(this).parent().find('a.attach-pdf-btn').html('Change PDF Attachment')
             else
               alert response.message
             return
@@ -427,6 +425,7 @@ Bazaarboy.event.modify.tickets =
                                 ticketOption = $('div.templates div.ticket-option').clone()
                                 $(ticketOption).attr 'data-id', response.ticket.pk
                                 $(ticketOption).prependTo 'div#ticket-canvas'
+                                $(ticketOption).find('a.attach-pdf-btn').html('+ Attach PDF To Confirmation Email')
                                 $(ticketOption).find('.move-ticket-up').parent().addClass 'hide'
                                 $(ticketOption).next('.ticket-option').find('.move-ticket-up').parent().removeClass 'hide'
                                 $(ticketOption).find('div.top div.secondary-btn').click () ->
