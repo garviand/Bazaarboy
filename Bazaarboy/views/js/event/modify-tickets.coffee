@@ -223,6 +223,17 @@ Bazaarboy.event.modify.tickets =
         $('.attach-pdf-container .attach-pdf-btn').click () ->
             $(this).parent().find('input[name=attachment]').click()
             return
+        $('.attach-pdf-container .remove-pdf-btn').click () ->
+          container = $(this).parents('div.pdf-container')
+          ticketId = $(this).data('ticket')
+          Bazaarboy.post 'event/remove_attachment/', {id:ticketId}, (response) ->
+            if response.status is 'OK'
+              container.find('a.attach-pdf-btn').removeClass 'hide'
+              container.find('a.remove-pdf-btn').addClass 'hide'
+              container.find('a.view-pdf-btn').attr 'href', response.url
+              container.find('div.view-pdf-container').addClass 'hide'
+            return
+          return
         $('.attach-pdf-container input[name=attachment]').fileupload
           url: rootUrl + 'event/set_attachment/'
           type: 'POST'
@@ -238,7 +249,10 @@ Bazaarboy.event.modify.tickets =
           done: (event, data) ->
             response = jQuery.parseJSON data.result
             if response.status is 'OK'
-              $(this).parent().find('a.attach-pdf-btn').html('Change PDF Attachment')
+              $(this).parents('div.pdf-container').find('a.attach-pdf-btn').addClass 'hide'
+              $(this).parents('div.pdf-container').find('a.remove-pdf-btn').removeClass 'hide'
+              $(this).parents('div.pdf-container').find('a.view-pdf-btn').attr 'href', response.url
+              $(this).parents('div.pdf-container').find('div.view-pdf-container').removeClass 'hide'
             else
               alert response.message
             return

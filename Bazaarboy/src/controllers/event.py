@@ -1690,6 +1690,28 @@ def set_attachment(request, params, user):
         ticket.attachment = request.FILES['attachment']
     ticket.save()
     response = {
+        'status':'OK',
+        'url': ticket.attachment.url
+    }
+    return json_response(response)
+
+@login_required()
+@validate('POST', ['id'])
+def remove_attachment(request, params, user):
+    """
+    Remove the attachment for a ticket
+    """
+    if not Ticket.objects.filter(id = params['id']).exists():
+        response = {
+            'status':'FAIL',
+            'error':'TICKET_NOT_FOUND',
+            'message':'The ticket does not exist.'
+        }
+        return json_response(response)
+    ticket = Ticket.objects.get(id = params['id'])
+    ticket.attachment = None
+    ticket.save()
+    response = {
         'status':'OK'
     }
     return json_response(response)

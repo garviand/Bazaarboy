@@ -9903,11 +9903,11 @@ div#event-modify-tickets div.ticket-option div.move-tickets div.inner div.move-t
   font-size: 12px;
   text-align: center;
 }
-div#event-modify-tickets div.ticket-option div.attach-pdf-container a.attach-pdf-btn {
-  padding: 10px 0;
+div#event-modify-tickets div.ticket-option div.attach-pdf-container {
+  padding-top: 9px;
+}
+div#event-modify-tickets div.ticket-option div.attach-pdf-container a {
   color: #4963e4;
-  display: block;
-  width: 100%;
   font-size: 12px;
 }
 div#event-modify-tickets div.next-step a.primary-btn {

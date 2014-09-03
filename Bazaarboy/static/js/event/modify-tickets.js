@@ -269,6 +269,21 @@
       $('.attach-pdf-container .attach-pdf-btn').click(function() {
         $(this).parent().find('input[name=attachment]').click();
       });
+      $('.attach-pdf-container .remove-pdf-btn').click(function() {
+        var container, ticketId;
+        container = $(this).parents('div.pdf-container');
+        ticketId = $(this).data('ticket');
+        Bazaarboy.post('event/remove_attachment/', {
+          id: ticketId
+        }, function(response) {
+          if (response.status === 'OK') {
+            container.find('a.attach-pdf-btn').removeClass('hide');
+            container.find('a.remove-pdf-btn').addClass('hide');
+            container.find('a.view-pdf-btn').attr('href', response.url);
+            container.find('div.view-pdf-container').addClass('hide');
+          }
+        });
+      });
       $('.attach-pdf-container input[name=attachment]').fileupload({
         url: rootUrl + 'event/set_attachment/',
         type: 'POST',
@@ -290,7 +305,10 @@
           var response;
           response = jQuery.parseJSON(data.result);
           if (response.status === 'OK') {
-            $(this).parent().find('a.attach-pdf-btn').html('Change PDF Attachment');
+            $(this).parents('div.pdf-container').find('a.attach-pdf-btn').addClass('hide');
+            $(this).parents('div.pdf-container').find('a.remove-pdf-btn').removeClass('hide');
+            $(this).parents('div.pdf-container').find('a.view-pdf-btn').attr('href', response.url);
+            $(this).parents('div.pdf-container').find('div.view-pdf-container').removeClass('hide');
           } else {
             alert(response.message);
           }

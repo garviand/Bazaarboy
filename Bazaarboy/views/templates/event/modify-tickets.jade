@@ -185,15 +185,17 @@ block content
                                 a.move-ticket-btn.move-ticket-up(href="javascript:;") Move Up
                             div.medium-4.columns.move-ticket.end(class="{% if forloop.last %}hide{% endif %}")
                                 a.move-ticket-btn.move-ticket-down(href="javascript:;") Move Down
-                        div.small-12.medium-6.columns.attach-pdf-container.text-right
-                            a.attach-pdf-btn(href="javascript:;")
-                                {% if not ticket.attachment %}
-                                | + Attach PDF To Confirmation Email
-                                {% else %}
-                                | Change PDF Attachment
-                                {% endif %}
-                            input.hidden(type="file", name="attachment", data-ticket="{{ ticket.id }}")
-                            {% csrf_token %}
+                        div.small-12.medium-6.columns.attach-pdf-container
+                            div.row.pdf-container
+                                div.small-12.medium-4.columns.view-pdf-container.text-right(class="{% if not ticket.attachment %}hide{% endif %}")
+                                    a.view-pdf-btn(href="{% if ticket.attachment %}{{ ticket.attachment.url }}{% endif %}") View PDF
+                                div.small-12.medium-8.columns.text-right
+                                    a.attach-pdf-btn(href="javascript:;", class="{% if ticket.attachment %}hide{% endif %}")
+                                        | + Add PDF to Confirmation
+                                    a.remove-pdf-btn(href="javascript:;", data-ticket="{{ ticket.id }}", class="{% if not ticket.attachment %}hide{% endif %}")
+                                        | Remove PDF Attachment
+                                    input.hidden(type="file", name="attachment", data-ticket="{{ ticket.id }}")
+                                    {% csrf_token %}
             div#ticket-canvas.small-12.columns
                 {% for ticket in tickets %}
                 +ticket-option(true)
