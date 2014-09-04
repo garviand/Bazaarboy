@@ -35,6 +35,16 @@ profile_urlpatterns = patterns('src.controllers.profile',
     url(r'^message/$', 'message', name = 'message'),
 )
 
+list_urlpatterns = patterns('src.controllers.list', 
+    url(r'^manage/$', 'index', name = 'index'),
+    url(r'^(?P<lt>\d+)/$', 'list', name = 'list'),
+    url(r'^create/$', 'create', name = 'create'),
+    url(r'^add/item/$', 'add_item', name = 'add_item'),
+    url(r'^add/event/$', 'add_from_event', name = 'add_from_event'),
+    url(r'^add/csv/$', 'add_from_csv', name = 'add_from_csv'),
+    url(r'^csv/prepare/$', 'prepare_csv', name = 'prepare_csv'),
+)
+
 event_urlpatterns = patterns('src.controllers.event', 
     url(r'^(?P<id>\d+)/$', 'index', name = 'index'),
     url(r'^(?P<id>\d+)/(?P<step>(basics)|(design)|(tickets)|(bonus)|(emails))/$', 
@@ -91,6 +101,7 @@ file_urlpatterns = patterns('src.controllers.file',
     url(r'^image/upload/$', 'upload_image', name = 'image-upload'),
     url(r'^image/crop/$', 'crop_image', name = 'image-crop'),
     url(r'^image/delete/$', 'delete_image', name = 'image-delete'),
+    url(r'^csv/upload/$', 'upload_csv', name = 'csv-upload'),
     url(r'^aviary/$', 'aviary', name = 'aviary'),
 )
 
@@ -108,6 +119,7 @@ urlpatterns = patterns('',
     url(r'^user/', include(user_urlpatterns, namespace = 'user')),
     url(r'^payment/', include(payment_urlpatterns, namespace = 'payment')),
     url(r'^profile/', include(profile_urlpatterns, namespace = 'profile')),
+    url(r'^list/', include(list_urlpatterns, namespace = 'list')),
     url(r'^event/', include(event_urlpatterns, namespace = 'event')),
     url(r'^sponsorship/', 
         include(sponsorship_urlpatterns, namespace = 'sponsorship')),

@@ -1,0 +1,199 @@
+@import (reference) "vars.less";
+
+div#add-item-modal{
+    form.add-item-form{
+        text-align: left;
+        div.title{
+            font-size: 1.3rem;
+            font-weight: bold;
+            margin: 40px 0;
+        }
+        div.inputs{
+            div.row{
+                div.input-label{
+                    padding-top: 8px;
+                }
+                margin-bottom: 20px;
+                input, textarea{
+                    display: block;
+                    width: 100%;
+                    padding: 5px 10px;
+                }
+            }
+        }
+        label{
+            line-height: 1.3rem;
+        }
+        div.subtext{
+            margin-top: 5px;
+            margin-bottom: 20px;
+        }
+    }
+    div.submit-add-item{
+        margin-top: 20px;
+        a.add-item-submit{
+            display: block;
+            width: 100%;
+            padding-top: 9px;
+            padding-bottom: 11px;
+            text-align: center;
+            &:hover, &:focus{
+                color: #FFF;
+            }
+        }
+        div.move-down{
+            margin-top: 10px;
+        }
+    }
+}
+
+div#add-event-modal{
+    form.add-event-form{
+        text-align: left;
+        div.title{
+            font-size: 1.3rem;
+            font-weight: bold;
+            margin: 40px 0;
+        }
+        label{
+            line-height: 1.3rem;
+        }
+        div.event-list{
+            cursor: pointer;
+            padding: 10px 15px;
+            margin-bottom: 5px;
+            border-radius: 3px;
+            background: @grey;
+            &:hover{
+                background: @dark;
+                color: @white;
+            }
+            &.selected{
+                background: @blue !important;
+                color: @white !important;
+                font-weight: bold;
+            }
+            div.event{
+                user-select: none;
+            }
+        }
+        div.subtext{
+            margin-top: 5px;
+            margin-bottom: 20px;
+        }
+    }
+    div.submit-add-event{
+        margin-top: 20px;
+        a.add-event-submit{
+            display: block;
+            width: 100%;
+            padding-top: 9px;
+            padding-bottom: 11px;
+            text-align: center;
+            &:hover, &:focus{
+                color: #FFF;
+            }
+        }
+        div.move-down{
+            margin-top: 10px;
+        }
+    }
+    div.add-event-success{
+        text-align: left;
+        div.close{
+            font-weight: 500;
+            margin-top: 20px;
+            text-align: center;
+            a.blue-btn{
+                display: inline;
+                padding: 15px;
+                padding-top: 9px;
+                padding-bottom: 11px;
+                color: @white;
+            }
+        }
+        div.congrats{
+            font-weight: 300;
+            font-size: 18px;
+            line-height: 1.4rem;
+        }
+        div.remember{
+            font-size: 60%;
+            display: block;
+            width: 100%;
+            text-align: left;
+            margin-top: 10px;
+        }
+    }
+}
+
+div#list-management{
+    div.controls{
+        margin: 40px 0;
+        div.add-label{
+            padding-top: 9px;
+            font-weight: bold;
+        }
+        a{
+            display: block;
+            width: 100%;
+            padding-top: 8px;
+            padding-bottom: 9px;
+        }
+    }
+    div.csv_upload_interface{
+        font-size: 13px;
+        margin-bottom: 20px;
+        border: @grey thin solid;
+        border-radius: 3px;
+        word-wrap: break-word;
+        div.upload_title{
+            margin-top: 20px;
+            padding-bottom: 20px;
+            font-size: 16px;
+            font-weight: 500;
+            border-bottom: @grey thin solid;
+        }
+        div.upload_row{
+            border-bottom: @grey thin solid;
+            padding-top: 10px;
+            &.active{
+                background: @grey;
+            }
+            div.col{
+                margin-top: 12px;
+            }
+            div.choices{
+                select{
+                    margin-bottom: 10px;
+                }
+            }
+        }
+        div.csv-controls{
+            margin: 10px 0;
+            a{
+                display: block;
+                text-align: center;
+                color: @white;
+                width: 100%;
+                padding-top: 9px;
+                padding-bottom: 9px;
+                &:hover{
+                    color: @white;
+                }
+            }
+            div.error-message{
+                padding-top: 10px;
+                padding-bottom: 10px;
+            }
+        }
+    }
+    div.list{
+        div.list-item{
+            border: @grey thin solid;
+            padding: 10px 5px;
+            border-radius: 3px;
+            margin-bottom: 20px;
+        }
+    }
+}

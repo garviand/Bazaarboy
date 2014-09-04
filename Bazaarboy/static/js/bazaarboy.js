@@ -6,6 +6,7 @@
     event: {
       modify: {}
     },
+    list: {},
     admin: {},
     redirect: function(endpoint) {
       var redirectUrl;

@@ -1,0 +1,54 @@
+extends ../layout
+
+block title
+    | List Dashboard
+
+block sidebar
+    +sidebarItem('ss-newspaper')(href="{% url index %}")
+        | Events
+    +sidebarItem('ss-database')(href="{% url list:index %}", class="selected")
+        | Lists
+    +sidebarItem('ss-share')(href="{% url user:settings %}")
+        | Settings
+
+block header
+    div.header-title.large-9.medium-10.columns.small-centered
+        div.row.clearfix
+            div.icon.left
+                span.ss-file
+            div.text.left
+                | List Dashboard |
+                span.sub {{ profile.name }}
+
+block content
+    div#wrapper-list-dashboard.large-9.medium-10.columns.small-centered
+        div#list-dashboard.small-12.columns
+            div.row
+                div.medium-3.columns.new-list
+                    a.new-list-btn.primary-btn(href="javascript:;") + New List
+            div.row
+                div.small-12.columns.lists
+                    {% for list in lists %}
+                    a(href="{% url list:list list.id %}")
+                        div.row.list
+                            div.small-8.columns.list-name
+                                | {{ list.name }}
+                            div.small-4.columns.text-right
+                                | {{ list.items }} Members
+                    {% endfor %}
+    div#new-list-modal.reveal-modal.text-center.medium(data-reveal)
+        div.row.new-list-inputs
+            div.medium-3.columns.hide-for-small-only.name-label List Name
+            div.medium-9.small-12.columns
+                input(name="list_name", placeholder="Name Of The List")
+        div.row.controls
+            div.small-12.medium-3.medium-offset-6.columns
+                a.create-list.secondary-btn(href="javascript:;") Create
+            div.small-12.medium-3.columns
+                a.close-list-modal.secondary-btn(href="javascript:;") Cancel
+
+
+append script
+    script.
+        var profileId = {{ profile.id }};
+    script(src="{{ STATIC_URL }}js/list/index.js")
