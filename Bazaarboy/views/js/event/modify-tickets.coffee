@@ -439,7 +439,7 @@ Bazaarboy.event.modify.tickets =
                                 ticketOption = $('div.templates div.ticket-option').clone()
                                 $(ticketOption).attr 'data-id', response.ticket.pk
                                 $(ticketOption).prependTo 'div#ticket-canvas'
-                                $(ticketOption).find('a.attach-pdf-btn').html('+ Attach PDF To Confirmation Email')
+                                $(ticketOption).find('a.attach-pdf-btn').html('+ Add PDF To Confirmation')
                                 $(ticketOption).find('.move-ticket-up').parent().addClass 'hide'
                                 $(ticketOption).next('.ticket-option').find('.move-ticket-up').parent().removeClass 'hide'
                                 $(ticketOption).find('div.top div.secondary-btn').click () ->

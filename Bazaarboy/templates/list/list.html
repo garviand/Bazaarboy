@@ -10,5 +10,5 @@ _gaq.push(['_trackPageview']);
 var mediaUrl = '{{ MEDIA_URL }}';
 var staticUrl = '{{ STATIC_URL }}';
 var csrfToken = '{{ csrf_token }}';
-var loggedIn = {% if user %}true{% else %}false{% endif %};</script><script src="{{ STATIC_URL }}js/bazaarboy.js"></script><script>var listId = {{ lt.id }};
+var loggedIn = {% if user %}true{% else %}false{% endif %};</script><script src="{{ STATIC_URL }}fastclick/fastclick.js"></script><script src="{{ STATIC_URL }}js/bazaarboy.js"></script><script>var listId = {{ lt.id }};
 var profileId = {{ profile.id }};</script><script src="{{ STATIC_URL }}js/list/list.js"></script></div></body></html>

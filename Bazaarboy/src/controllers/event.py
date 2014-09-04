@@ -2363,7 +2363,9 @@ def export(request, params, user):
         'tickets': {}
     }
     for item in purchase_items:
+        # If ticket in tickets
         if item.ticket.id in items['tickets']:
+            # If purchase in ticket
             if item.purchase.id in items['tickets'][item.ticket.id]['purchases']:
                 items['tickets'][item.ticket.id]['purchases'][item.purchase.id]['quantity'] += 1
             else:
@@ -2387,13 +2389,23 @@ def export(request, params, user):
                         items['tickets'][item.ticket.id]['purchases'][item.purchase.id]['address'] = ''
                 if item.ticket.extra_fields != '':
                     try:
-                        extra_fields = json.loads(item.extra_fields)
+                        extra_fields = json.loads(item.ticket.extra_fields)
                     except:
                         pass
                     finally:
-                        items['tickets'][item.ticket.id]['purchases'][item.purchase.id]['extra_fields'] = {}
-                        for fieldName, fieldValue in extra_fields.iteritems():
-                            items['tickets'][item.ticket.id]['purchases'][item.purchase.id]['extra_fields'][fieldName] = fieldValue
+                        try:
+                            item_fields = json.loads(item.extra_fields)
+                        except:
+                            pass
+                        finally:
+                            if type(item_fields) is dict:
+                                items['tickets'][item.ticket.id]['purchases'][item.purchase.id]['extra_fields'] = {}
+                                for fieldName, fieldValue in extra_fields.iteritems():
+                                    if fieldName in item_fields:
+                                        items['tickets'][item.ticket.id]['purchases'][item.purchase.id]['extra_fields'][fieldName] = item_fields[fieldName]
+                                    else:
+                                        items['tickets'][item.ticket.id]['purchases'][item.purchase.id]['extra_fields'][fieldName] = 'N/A'
+        # If ticket NOT in tickets
         else:
             if item.is_checked_in:
                 checked_in = 'yes'
@@ -2428,13 +2440,16 @@ def export(request, params, user):
                     for fieldName, fieldValue in extra_fields.iteritems():
                         items['tickets'][item.ticket.id]['extra_fields'][fieldName] = fieldName
                 try:
-                    extra_fields = json.loads(item.extra_fields)
+                    item_fields = json.loads(item.extra_fields)
                 except:
                     pass
                 finally:
                     items['tickets'][item.ticket.id]['purchases'][item.purchase.id]['extra_fields'] = {}
                     for fieldName, fieldValue in extra_fields.iteritems():
-                        items['tickets'][item.ticket.id]['purchases'][item.purchase.id]['extra_fields'][fieldName] = fieldValue
+                        if fieldName in item_fields:
+                            items['tickets'][item.ticket.id]['purchases'][item.purchase.id]['extra_fields'][fieldName] = item_fields[fieldName]
+                        else:
+                            items['tickets'][item.ticket.id]['purchases'][item.purchase.id]['extra_fields'][fieldName] = 'N/A'
             else:
                 items['tickets'][item.ticket.id]['extra_fields'] = None
     # Prepare csv writer and the response headers
@@ -2459,17 +2474,18 @@ def export(request, params, user):
                 str(count),
                 item['email'],
                 item['first_name'],
-                item['last_name'], 
-                ticket['name'], 
-                str(item['quantity']), 
+                item['last_name'],
+                ticket['name'],
+                str(item['quantity']),
                 item['code'],
                 item['checked_in']
             ]
             if ticket['request_address']:
                 row.append(item['address'])
             if ticket['extra_fields'] is not None:
-                for fieldName, fieldValue in item['extra_fields'].iteritems():
-                    row.append(str(fieldValue))
+                if 'extra_fields' in item:
+                    for fieldName, fieldValue in item['extra_fields'].iteritems():
+                        row.append(str(fieldValue))
             writer.writerow(row)
             count += 1
     return response
