@@ -337,7 +337,7 @@ def add_from_csv(request, params, user):
     # Load Format {field_type:col}
     format = json.loads(params['format'])
     for num, row in enumerate(reader):
-        if 'email' in format and REGEX_EMAIL.match(row[format['email']]):
+        if 'email' in format and len(row) >= format['email'] and REGEX_EMAIL.match(row[format['email']]):
             item, created = List_item.objects \
                                      .get_or_create(_list = lt, 
                                                     email = row[format['email']])
