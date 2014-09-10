@@ -8745,6 +8745,11 @@ div#event-header div.event-header-body {
   position: relative;
   min-height: 66px;
 }
+@media only screen and (max-width: 40em) {
+  div#event-header div.event-header-body {
+    border-bottom: #F6F6F6 thin solid;
+  }
+}
 div#event-header div.event-header-body div.profile-icon {
   position: absolute;
   top: 0;
@@ -8752,6 +8757,11 @@ div#event-header div.event-header-body div.profile-icon {
   width: 66px;
   min-height: 66px;
   background: #F5A623;
+}
+@media only screen and (max-width: 40em) {
+  div#event-header div.event-header-body div.profile-icon {
+    background: none !important;
+  }
 }
 div#event-header div.event-header-body div.profile-icon div.inner {
   width: 44px;
@@ -8789,6 +8799,12 @@ div#event-header div.event-price {
 @media only screen and (max-width: 40em) {
   div#event-header div.event-price {
     text-align: center !important;
+  }
+  div#event-header div.event-rsvp {
+    padding-left: .5rem;
+  }
+  div#event-header span.ss-bookmark {
+    display: none !important;
   }
 }
 div#event-header div.event-rsvp,
@@ -8899,8 +8915,18 @@ div#event-body div#event-content {
   padding-top: 70px;
   padding-left: 2rem;
 }
+@media only screen and (min-width: 40em) {
+  div#event-body div#event-content {
+    float: left !important;
+  }
+}
 div#event-body div#event-sidebar {
   border-left: #F6F6F6 thin solid;
+}
+@media only screen and (min-width: 40em) {
+  div#event-body div#event-sidebar {
+    float: right !important;
+  }
 }
 div#event-body div#event-sidebar hr {
   border: solid #F6F6F6;
@@ -9205,7 +9231,7 @@ div#event-footer {
   background: #D4D4D4;
 }
 div#event-footer div.inner {
-  width: 350px;
+  width: 284px;
   height: 44px;
   margin: 0 auto;
   font-size: 14px;
@@ -9227,9 +9253,10 @@ div#event-footer div.logo {
   background: #FFFFFF;
 }
 div#event-footer div.links {
-  width: 165px;
+  width: 120px;
   height: 44px;
   padding: 15px 0;
+  padding-left: 10px;
   text-align: center;
 }
 div#tickets {

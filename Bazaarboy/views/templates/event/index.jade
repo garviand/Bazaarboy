@@ -85,23 +85,23 @@ block body
                             small * duplicate emails will not receive multiple messages
             {% endif %}
             div.row.inviter.hide
-                div.medium-3.columns.text-center
-                    label.right.inline(for="additional-emails") Name
+                div.medium-3.columns.text-left
+                    label.inline(for="additional-emails") Name
                 div.medium-9.columns
                     input#inviter-name(type="text", name="inviter", placeholder="Your Name")
             div.row
-                div.medium-3.columns.text-center
-                    label.right.inline(for="additional-emails") Subject
+                div.medium-3.columns.text-left
+                    label.inline(for="additional-emails") Subject
                 div.medium-9.columns
                     input#email-subject(type="text", name="subject", placeholder="Email Subject")
             div.row
-                div.medium-3.columns.text-center
-                    label.right.inline(for="additional-emails") Add Emails
+                div.medium-3.columns.text-left
+                    label.inline(for="additional-emails") Add Emails
                 div.medium-9.columns
-                    textarea#additional-emails(name="emails", placeholder="Separated By Commas (x@email.com, y@email.com)")
+                    textarea#additional-emails(name="emails", placeholder="Separated By Commas (a@xyz.com, b@xyz.com)")
             div.row
-                div.medium-3.columns.text-center
-                    label.right.inline(for="additional-emails") Add Message
+                div.medium-3.columns.text-left
+                    label.inline(for="additional-emails") Add Message
                 div.medium-9.columns
                     textarea#custom-message(name="message", placeholder="Add a custom message to the invitation (optional)")
             div.row.send-invite
@@ -109,7 +109,7 @@ block body
                     a.blue-btn.send-invitation(href="javascript:;") Send Invitations
                 div.medium-1.columns.text-center.move-down
                     | or
-                div.medium-2.columns.end.move-down
+                div.medium-2.small-12.text-center.columns.end.move-down
                     a.close-invite-modal(href="javascript:;") Close
         div.invite-success.hidden
             div.row
@@ -234,11 +234,11 @@ block body
                     span {{ event.name }}
                 {% if not design %}
                 {% if preview and editable %}
-            div.event-design.medium-1.columns
+            div.event-design.medium-1.columns.hide-for-small-only
                 a(href="{{ event|eventUrl }}?design") Back to Page Design
                 {% endif %}
                 {% if not hasEnded %}
-            div.event-price.medium-1.columns
+            div.event-price.medium-1.small-4.columns
                 span
                     {% spaceless %}
                     {% if rsvp %}
@@ -247,14 +247,14 @@ block body
                     | {% if cheapest != 0 %}${{ cheapest|floatformat:-2 }}{% else %}Free{% endif %}{% if tickets|length != 1 %}+{% endif %}
                     {% endif %}
                     {% endspaceless %}
-            div.event-rsvp.medium-2.columns
+            div.event-rsvp.medium-2.small-4.columns
                 a#rsvp-button.primary-btn(href="javascript:;")
                     span.ss-bookmark &nbsp;
                     | RSVP
                 {% else %}
-            div.event-rsvp.medium-3.columns &nbsp;    
+            div.event-rsvp.medium-3.small-4.columns &nbsp;    
                 {% endif %}
-            div.event-share.medium-1.columns
+            div.event-share.medium-1.small-4.columns
                 a.share-btn.secondary-btn {% if hasEnded %}Share{% else %}Invite{% endif %}
             div.event-share-canvas.medium-3.small-12.columns.hidden
                 div.share-canvas
@@ -274,37 +274,7 @@ block body
                 a.back-btn.secondary-btn(href="{{ event|eventUrl }}?preview") Preview Event
                 {% endif %}
         div#event-body.row
-            div#event-content.medium-8.columns
-                div#event-cover.row(style="{% if event.cover %}margin-bottom: 35px;{% elif not design %}height: 0; overflow:hidden;{% else %}margin-bottom: 10px;{% endif %}")
-                    div.columns
-                        {% if design %}
-                        div.upload
-                            form.upload_cover
-                                div.row
-                                    div.small-12.medium-4.columns
-                                        a.blue-btn-inverse.edit_cover_btn(href="javascript:;", class="{% if not event.cover %}hidden{% endif %}") Edit Cover Image
-                                        a.blue-btn-inverse.upload_cover_btn(href="javascript:;", class="{% if event.cover %}hidden{% endif %}") Upload Cover Image
-                                    div.small-12.medium-4.columns.end
-                                        a.blue-btn-inverse.delete_cover_btn(href="javascript:;", class="{% if not event.cover %}hidden{% endif %}") Delete Cover Image
-                                        input.hidden(type="file", name="image_file")
-                                        {% csrf_token %}
-                        {% endif %}
-                        div.image
-                            img#cover-image(src="{% if event.cover %}{{ event.cover.source.url }}{% endif %}")
-                            img#cover-image-placeholder.hidden
-                div#event-description.row
-                    div.description.small-12.columns(style="margin-top:0;")
-                        div.inner
-                            {{ event.description|safe }}
-                    {% if design %}
-                    div.actions.small-12.columns
-                        div.row.save-container
-                            div.save-status.medium-4.columns.text-center
-                                | Saved
-                            div.medium-4.end.columns
-                                a.save.primary-btn(href="javascript:;") Save description
-                    {% endif %}
-            div#event-sidebar.medium-4.columns
+            div#event-sidebar.medium-4.small-12.columns
                 div.row.event-info
                     div.medium-10.columns
                         div#event-datetime.row
@@ -382,6 +352,36 @@ block body
                                 a.add-organizer-btn(href="javascript:;") Add Organizer
                         {% endif %}
                         div#event-sponsors.row
+            div#event-content.medium-8.small-12.columns
+                div#event-cover.row(style="{% if event.cover %}margin-bottom: 35px;{% elif not design %}height: 0; overflow:hidden;{% else %}margin-bottom: 10px;{% endif %}")
+                    div.columns
+                        {% if design %}
+                        div.upload
+                            form.upload_cover
+                                div.row
+                                    div.small-12.medium-4.columns
+                                        a.blue-btn-inverse.edit_cover_btn(href="javascript:;", class="{% if not event.cover %}hidden{% endif %}") Edit Cover Image
+                                        a.blue-btn-inverse.upload_cover_btn(href="javascript:;", class="{% if event.cover %}hidden{% endif %}") Upload Cover Image
+                                    div.small-12.medium-4.columns.end
+                                        a.blue-btn-inverse.delete_cover_btn(href="javascript:;", class="{% if not event.cover %}hidden{% endif %}") Delete Cover Image
+                                        input.hidden(type="file", name="image_file")
+                                        {% csrf_token %}
+                        {% endif %}
+                        div.image
+                            img#cover-image(src="{% if event.cover %}{{ event.cover.source.url }}{% endif %}")
+                            img#cover-image-placeholder.hidden
+                div#event-description.row
+                    div.description.small-12.columns(style="margin-top:0;")
+                        div.inner
+                            {{ event.description|safe }}
+                    {% if design %}
+                    div.actions.small-12.columns
+                        div.row.save-container
+                            div.save-status.medium-4.columns.text-center
+                                | Saved
+                            div.medium-4.end.columns
+                                a.save.primary-btn(href="javascript:;") Save description
+                    {% endif %}
         div#event-footer
             div.inner.clearfix
                 div.poweredby.left
@@ -391,8 +391,6 @@ block body
                         img(src="{{ STATIC_URL }}images/logo-inverse.png")
                 div.links.left
                     a(href="{% url index:pricing %}") Pricing
-                    | &nbsp;&nbsp;&nbsp;
-                    a(href="http://blog.bazaarboy.com") Blog
                     | &nbsp;&nbsp;&nbsp;
                     a(href="{{ STATIC_URL }}bboy-terms.pdf") Terms
         div#tickets.hide

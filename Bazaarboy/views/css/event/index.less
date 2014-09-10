@@ -369,6 +369,9 @@ div#event-header {
     div.event-header-body {
         position: relative;
         min-height: 66px;
+        @media @media_small{
+            border-bottom: #F6F6F6 thin solid;
+        }
 
         div.profile-icon {
             position: absolute;
@@ -377,6 +380,10 @@ div#event-header {
             width: 66px;
             min-height: 66px;
             background: #F5A623;
+
+            @media @media_small {
+                background: none !important;
+            }
 
             div.inner {
                 width: 44px;
@@ -422,7 +429,15 @@ div#event-header {
         div.event-price{
             text-align: center !important;
         }
+        div.event-rsvp{
+            padding-left: .5rem;
+        }
+        span.ss-bookmark{
+            display: none !important;
+        }
     }
+
+
 
     div.event-rsvp, div.event-share{
         padding-top: 13px;
@@ -530,11 +545,17 @@ div#event-body {
     padding-bottom: 40px;
     background: @white;
     div#event-content{
+        @media only screen and (min-width: 40em){
+            float: left !important;
+        }
         padding-right: 2rem;
         padding-top: 70px;
         padding-left: 2rem;
     }
     div#event-sidebar{
+        @media only screen and (min-width: 40em){
+            float: right !important;
+        }
         border-left: #F6F6F6 thin solid;
         hr{
             border: solid #F6F6F6;
@@ -887,7 +908,7 @@ div#event-footer {
     background: #D4D4D4;
 
     div.inner {
-        width: 350px;
+        width: 284px;
         height: 44px;
         margin: 0 auto;
         font-size: 14px;
@@ -913,9 +934,10 @@ div#event-footer {
     }
 
     div.links {
-        width: 165px;
+        width: 120px;
         height: 44px;
         padding: 15px 0;
+        padding-left: 10px;
         text-align: center;
     }
 }

@@ -283,7 +283,7 @@ Bazaarboy.event.index =
                         $(this).html 'Send Invitations'
                     return
             return
-        $('div.invite-success a.close-invite-modal').click () ->
+        $('.close-invite-modal').click () ->
             $('div#invite-modal').foundation('reveal', 'close')
             return
         # PROMOS

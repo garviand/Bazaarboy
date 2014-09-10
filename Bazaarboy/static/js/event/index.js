@@ -350,7 +350,7 @@
           });
         }
       });
-      $('div.invite-success a.close-invite-modal').click(function() {
+      $('.close-invite-modal').click(function() {
         $('div#invite-modal').foundation('reveal', 'close');
       });
       $('div#tickets-details a.start-promo-btn').click(function() {
