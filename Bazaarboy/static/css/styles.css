@@ -8996,6 +8996,11 @@ div#event-body div#event-sidebar div#event-datetime {
   margin-top: 70px;
   position: relative;
 }
+@media only screen and (max-width: 40em) {
+  div#event-body div#event-sidebar div#event-datetime {
+    margin-top: 20px;
+  }
+}
 div#event-info {
   position: relative;
 }
