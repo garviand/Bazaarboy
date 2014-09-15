@@ -2442,7 +2442,7 @@ def export(request, params, user):
                 try:
                     item_fields = json.loads(item.extra_fields)
                 except:
-                    pass
+                    item_fields = {}
                 finally:
                     items['tickets'][item.ticket.id]['purchases'][item.purchase.id]['extra_fields'] = {}
                     for fieldName, fieldValue in extra_fields.iteritems():
