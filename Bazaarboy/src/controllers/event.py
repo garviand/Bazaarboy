@@ -2440,6 +2440,8 @@ def export(request, params, user):
                     for fieldName, fieldValue in extra_fields.iteritems():
                         items['tickets'][item.ticket.id]['extra_fields'][fieldName] = fieldName
                 try:
+                    item.extra_fields = item.extra_fields.replace("\'", "\"")
+                    item.extra_fields = item.extra_fields.replace("u\"", "\"")
                     item_fields = json.loads(item.extra_fields)
                 except:
                     item_fields = {}
