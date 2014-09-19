@@ -61,14 +61,17 @@ Bazaarboy.event.index =
     stripeResponseHandler: (status, response) ->
         if status == 200
             Bazaarboy.post 'payment/charge/', 
-                checkout: Bazaarboy.event.index.currentCheckout
+                checkout: @currentCheckout
                 stripe_token: response.id
                 , (response) =>
                     if response.status is 'OK'
-                        Bazaarboy.event.index.completePurchase(response.tickets)
+                        @completePurchase response.tickets
                     else
                         alert response.message
+                        $('a#tickets-confirm').html 'Confirm RSVP'
                     return
+        else
+            console.log response
         return
     purchase: () ->
         $('a#tickets-confirm').html 'Processing...'
@@ -148,7 +151,9 @@ Bazaarboy.event.index =
                         total = Math.round(Math.min(a, b))
                         @currentCheckout = response.purchase.checkout
                         Stripe.setPublishableKey response.publishable_key
-                        Stripe.card.createToken $("form#payment-form"), @stripeResponseHandler
+                        Stripe.card.createToken $("form#payment-form"), (status, response) =>
+                            @stripeResponseHandler status, response
+                            return
             return
         return
     completePurchase: (tickets) ->

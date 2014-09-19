@@ -74,15 +74,18 @@
       var _this = this;
       if (status === 200) {
         Bazaarboy.post('payment/charge/', {
-          checkout: Bazaarboy.event.index.currentCheckout,
+          checkout: this.currentCheckout,
           stripe_token: response.id
         }, function(response) {
           if (response.status === 'OK') {
-            Bazaarboy.event.index.completePurchase(response.tickets);
+            _this.completePurchase(response.tickets);
           } else {
             alert(response.message);
+            $('a#tickets-confirm').html('Confirm RSVP');
           }
         });
+      } else {
+        console.log(response);
       }
     },
     purchase: function() {
@@ -186,7 +189,9 @@
               total = Math.round(Math.min(a, b));
               _this.currentCheckout = response.purchase.checkout;
               Stripe.setPublishableKey(response.publishable_key);
-              return Stripe.card.createToken($("form#payment-form"), _this.stripeResponseHandler);
+              return Stripe.card.createToken($("form#payment-form"), function(status, response) {
+                _this.stripeResponseHandler(status, response);
+              });
             }
           }
         });
