@@ -9521,6 +9521,11 @@ div#tickets-details input {
 div#tickets-details hr {
   margin-top: 4px;
 }
+div#tickets-details div.top .cc-container,
+div#tickets-details div.middle .cc-container {
+  padding-left: 0 !important;
+  padding-right: 0 !important;
+}
 @media only screen and (min-width: 40.063em) {
   div#tickets-details div.top .columns:first-child,
   div#tickets-details div.middle .columns:first-child {

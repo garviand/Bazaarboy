@@ -8,6 +8,7 @@
     redactorContent: void 0,
     emailSending: false,
     requiresAddress: false,
+    currentCheckout: 'HI',
     saveDescription: function() {
       var description, scope;
       scope = this;
@@ -67,6 +68,21 @@
         $('div#tickets-subtotal span.plural').addClass('hide');
       } else {
         $('div#tickets-subtotal span.plural').removeClass('hide');
+      }
+    },
+    stripeResponseHandler: function(status, response) {
+      var _this = this;
+      if (status === 200) {
+        Bazaarboy.post('payment/charge/', {
+          checkout: Bazaarboy.event.index.currentCheckout,
+          stripe_token: response.id
+        }, function(response) {
+          if (response.status === 'OK') {
+            Bazaarboy.event.index.completePurchase(response.tickets);
+          } else {
+            alert(response.message);
+          }
+        });
       }
     },
     purchase: function() {
@@ -136,7 +152,6 @@
         }
       }
       params.details = JSON.stringify(params.details);
-      console.log(params.details);
       if (params.phone.length === 0) {
         delete params.phone;
       }
@@ -169,32 +184,9 @@
               a = (1 + 0.05) * total + 50;
               b = (1 + 0.029) * total + 30 + 1000;
               total = Math.round(Math.min(a, b));
-              return StripeCheckout.open({
-                key: response.publishable_key,
-                address: false,
-                amount: total,
-                currency: 'usd',
-                name: response.purchase.event.name,
-                description: 'Tickets for ' + response.purchase.event.name,
-                panelLabel: 'Checkout',
-                email: params.email,
-                image: response.logo,
-                closed: function() {
-                  $('a#tickets-confirm').html('Confirm RSVP');
-                },
-                token: function(token) {
-                  Bazaarboy.post('payment/charge/', {
-                    checkout: response.purchase.checkout,
-                    stripe_token: token.id
-                  }, function(response) {
-                    if (response.status === 'OK') {
-                      _this.completePurchase(response.tickets);
-                    } else {
-                      alert(response.message);
-                    }
-                  });
-                }
-              });
+              _this.currentCheckout = response.purchase.checkout;
+              Stripe.setPublishableKey(response.publishable_key);
+              return Stripe.card.createToken($("form#payment-form"), _this.stripeResponseHandler);
             }
           }
         });
@@ -657,11 +649,15 @@
             $(this).parents('.ticket').find('div.ticket-middle').slideUp(100);
           }
           $('.address-container').addClass('hide');
+          $('.payment-container').addClass('hide');
           scope.requiresAddress = false;
           $('div.ticket').each(function() {
             if ($(this).data('address') === 'yes' && $(this).hasClass('active')) {
               $('.address-container').removeClass('hide');
-              return scope.requiresAddress = true;
+              scope.requiresAddress = true;
+            }
+            if (parseInt($(this).data('price')) !== 0 && $(this).hasClass('active')) {
+              return $('.payment-container').removeClass('hide');
             }
           });
           scope.updateSubtotal();

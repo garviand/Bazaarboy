@@ -472,6 +472,18 @@ block body
                                 input(type="text", name="state", placeholder="State")
                             div.small-12.medium-3.columns
                                 input(type="text", name="zip", placeholder="Zip")
+                        hr.payment-container.hide
+                        form#payment-form
+                            div.middle.collapse.row.payment-container.hide
+                                div.small-12.medium-12.columns.cc-container
+                                    input(type="text", size="20", data-stripe="number", placeholder="Card Number")
+                            div.middle.collapse.row.payment-container.hide
+                                div.small-12.medium-4.columns
+                                    input(type="text", size="4", data-stripe="cvc", placeholder="CVC")
+                                div.small-12.medium-4.columns
+                                    input(type="text", size="2", data-stripe="exp-month", placeholder="Month (MM)")
+                                div.small-12.medium-4.columns
+                                    input(type="text", size="4", data-stripe="exp-year", placeholder="Year (YYYY)")
                         {% if promos.count > 0 %}
                         div.bottom
                             div.row.collapse.start-promo
@@ -519,7 +531,7 @@ append script
     {% endif %}
     script(type="text/javascript", src="{{ STATIC_URL }}debounce/jquery.debounce.js")
     script(type="text/javascript", src="{{ STATIC_URL }}addthisevent/atemay.js")
-    script(type="text/javascript", src="https://checkout.stripe.com/v2/checkout.js")
+    script(type="text/javascript", src="https://js.stripe.com/v2/")
     script(type="text/javascript").
         var eventId = {{ event.id }};
         var eventUrl = '{{ event|eventUrl }}';

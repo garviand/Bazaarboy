@@ -7,6 +7,7 @@ Bazaarboy.event.index =
     redactorContent: undefined
     emailSending: false
     requiresAddress: false
+    currentCheckout: 'HI'
     saveDescription: () ->
         scope = this
         description = $('div#event-description div.description div.inner').redactor('get')
@@ -57,6 +58,18 @@ Bazaarboy.event.index =
         else
             $('div#tickets-subtotal span.plural').removeClass 'hide'
         return
+    stripeResponseHandler: (status, response) ->
+        if status == 200
+            Bazaarboy.post 'payment/charge/', 
+                checkout: Bazaarboy.event.index.currentCheckout
+                stripe_token: response.id
+                , (response) =>
+                    if response.status is 'OK'
+                        Bazaarboy.event.index.completePurchase(response.tickets)
+                    else
+                        alert response.message
+                    return
+        return
     purchase: () ->
         $('a#tickets-confirm').html 'Processing...'
         params = 
@@ -103,7 +116,6 @@ Bazaarboy.event.index =
                             params.details[$(ticket).attr('data-id')]['extra_fields'][$(this).data('field')] = String(fieldValue).trim()
                         return
         params.details = JSON.stringify params.details
-        console.log params.details
         if params.phone.length is 0
             delete params.phone
         if not ticketSelected
@@ -134,30 +146,9 @@ Bazaarboy.event.index =
                         a = (1 + 0.05) * total + 50
                         b = (1 + 0.029) * total + 30 + 1000
                         total = Math.round(Math.min(a, b))
-                        StripeCheckout.open
-                            key: response.publishable_key
-                            address: false
-                            amount: total
-                            currency: 'usd'
-                            name: response.purchase.event.name
-                            description: 'Tickets for ' + response.purchase.event.name
-                            panelLabel: 'Checkout'
-                            email: params.email
-                            image: response.logo
-                            closed: () ->
-                                $('a#tickets-confirm').html 'Confirm RSVP'
-                                return
-                            token: (token) =>
-                                Bazaarboy.post 'payment/charge/', 
-                                    checkout: response.purchase.checkout
-                                    stripe_token: token.id
-                                , (response) =>
-                                    if response.status is 'OK'
-                                        @completePurchase(response.tickets)
-                                    else
-                                        alert response.message
-                                    return
-                                return
+                        @currentCheckout = response.purchase.checkout
+                        Stripe.setPublishableKey response.publishable_key
+                        Stripe.card.createToken $("form#payment-form"), @stripeResponseHandler
             return
         return
     completePurchase: (tickets) ->
@@ -556,11 +547,14 @@ Bazaarboy.event.index =
                 else
                     $(this).parents('.ticket').find('div.ticket-middle').slideUp 100
                 $('.address-container').addClass 'hide'
+                $('.payment-container').addClass 'hide'
                 scope.requiresAddress = false
                 $('div.ticket').each () ->
                     if $(this).data('address') == 'yes' and $(this).hasClass('active')
                         $('.address-container').removeClass 'hide'
                         scope.requiresAddress = true
+                    if parseInt($(this).data('price')) != 0 and $(this).hasClass('active')
+                        $('.payment-container').removeClass 'hide'
                 scope.updateSubtotal()
             return
         $('input.ticket-quantity').keyup () ->
