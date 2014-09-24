@@ -55,11 +55,11 @@ Bazaarboy.event.modify.tickets =
                 $('div#edit-ticket input[name=ticket-time-range]').prop('checked', false)
                 $('div.time-range-inputs').addClass 'hide'
               if response.ticket.start_time
-                startTime = moment(response.ticket.start_time)
+                startTime = moment.utc(response.ticket.start_time).local()
                 $('div#edit-ticket input[name=start_date]').val startTime.format('MM/DD/YYYY')
                 $('div#edit-ticket input[name=start_time]').val startTime.format('h:mm A')
               if response.ticket.end_time
-                endTime = moment(response.ticket.end_time)
+                endTime = moment.utc(response.ticket.end_time).local()
                 $('div#edit-ticket input[name=end_date]').val endTime.format('MM/DD/YYYY')
                 $('div#edit-ticket input[name=end_time]').val endTime.format('h:mm A')
               if response.ticket.request_address
