@@ -38,15 +38,18 @@ def validateTiming(obj):
     """
     Validate an object to make sure it has started and hasn't ended
     """
-    return obj.start_time <= timezone.now() and obj.end_time > timezone.now()
+    if obj.start_time and obj.end_time:
+        return obj.start_time <= timezone.now() and obj.end_time > timezone.now()
+    else:
+        return True
 
-#@register.filter
-#def ticketSaleTiming(ticket):
-#    if ticket.end_time < timezone.now():
-#        return "Ticket sale has ended"
-#    if ticket.start_time >= timezone.now():
-#        return "Ticket is not on sale yet"
-#    return "Ticket is not on sale"
+@register.filter
+def ticketSaleTiming(ticket):
+    if ticket.end_time < timezone.now():
+        return "Ticket sale has ended"
+    if ticket.start_time >= timezone.now():
+        return "Ticket is not on sale yet"
+    return "Ticket is not on sale"
 
 @register.filter
 def isOnSaleSoon(ticket):
