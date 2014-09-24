@@ -22,7 +22,7 @@
             params = Bazaarboy.trim params
             if params.email.length isnt 0 and
                 params.password.length isnt 0
-                    Bazaarboy.get 'user/auth/', params, (response) ->
+                    Bazaarboy.post 'user/auth/', params, (response) ->
                         if response.status is 'OK'
                             Bazaarboy.redirect 'index'
                         else
@@ -38,6 +38,7 @@
                 $('form#register-form').submit()
             return
         $('form#register-form').submit (event) ->
+            console.log 'Submit Register Form'
             event.preventDefault()
             scope.rotateLogo(0)
             params = $('form#register-form').serializeObject()
@@ -48,11 +49,25 @@
                 params.first_name.length isnt 0 and
                 params.last_name.length isnt 0
                     Bazaarboy.post 'user/create/', params, (response) ->
+                        console.log response
                         if response.status is 'OK'
                             Bazaarboy.redirect 'index'
                         else
                             alert response.message
+                            window.clearTimeout(scope.timer)
+                            $('div.logo-small').css({ WebkitTransform: 'none'}) 
+                            $('div.logo-small').css({ '-moz-transform': 'none'})
                         return
+            else if params.password isnt params.confirm
+                alert "Passwords do not match"
+                window.clearTimeout(scope.timer)
+                $('div.logo-small').css({ WebkitTransform: 'none'}) 
+                $('div.logo-small').css({ '-moz-transform': 'none'})
+            else
+                alert "All fields must be filled out"
+                window.clearTimeout(scope.timer)
+                $('div.logo-small').css({ WebkitTransform: 'none'}) 
+                $('div.logo-small').css({ '-moz-transform': 'none'})
             return
         return
 

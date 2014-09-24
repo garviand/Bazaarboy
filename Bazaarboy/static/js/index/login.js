@@ -29,7 +29,7 @@
         params = $('form#login-form').serializeObject();
         params = Bazaarboy.trim(params);
         if (params.email.length !== 0 && params.password.length !== 0) {
-          Bazaarboy.get('user/auth/', params, function(response) {
+          Bazaarboy.post('user/auth/', params, function(response) {
             if (response.status === 'OK') {
               Bazaarboy.redirect('index');
             } else {
@@ -53,17 +53,44 @@
       });
       $('form#register-form').submit(function(event) {
         var params;
+        console.log('Submit Register Form');
         event.preventDefault();
         scope.rotateLogo(0);
         params = $('form#register-form').serializeObject();
         params = Bazaarboy.trim(params);
         if (params.email.length !== 0 && params.password.length !== 0 && params.password === params.confirm && params.first_name.length !== 0 && params.last_name.length !== 0) {
           Bazaarboy.post('user/create/', params, function(response) {
+            console.log(response);
             if (response.status === 'OK') {
               Bazaarboy.redirect('index');
             } else {
               alert(response.message);
+              window.clearTimeout(scope.timer);
+              $('div.logo-small').css({
+                WebkitTransform: 'none'
+              });
+              $('div.logo-small').css({
+                '-moz-transform': 'none'
+              });
             }
+          });
+        } else if (params.password !== params.confirm) {
+          alert("Passwords do not match");
+          window.clearTimeout(scope.timer);
+          $('div.logo-small').css({
+            WebkitTransform: 'none'
+          });
+          $('div.logo-small').css({
+            '-moz-transform': 'none'
+          });
+        } else {
+          alert("All fields must be filled out");
+          window.clearTimeout(scope.timer);
+          $('div.logo-small').css({
+            WebkitTransform: 'none'
+          });
+          $('div.logo-small').css({
+            '-moz-transform': 'none'
           });
         }
       });

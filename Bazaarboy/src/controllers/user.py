@@ -169,7 +169,7 @@ def create(request, params, user):
     return json_response(response)
 
 @login_check()
-@validate('GET', ['email', 'password'])
+@validate('POST', ['email', 'password'])
 def auth(request, params, user):
     """
     Authenticate a user using email and password
@@ -183,7 +183,7 @@ def auth(request, params, user):
         if user.password is None:
             response = {
                 'status':'FAIL',
-                'message':'You must log in using facebook.'
+                'message':'There is no account associated with this email.'
             }
             return json_response(response)
         saltedPassword = user.salt + params['password']

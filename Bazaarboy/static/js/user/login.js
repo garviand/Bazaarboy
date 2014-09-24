@@ -7,7 +7,7 @@
         var params;
         event.preventDefault();
         params = $('form[name=login]').serialize();
-        Bazaarboy.get('user/auth/', params, function(response) {
+        Bazaarboy.post('user/auth/', params, function(response) {
           if (response.status === 'OK') {
             return Bazaarboy.redirect('index');
           } else {

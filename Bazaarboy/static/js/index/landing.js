@@ -13,7 +13,7 @@
         params = $('form.login').serializeObject();
         params = Bazaarboy.trim(params);
         if (params.email.length !== 0 && params.password.length !== 0) {
-          Bazaarboy.get('user/auth/', params, function(response) {
+          Bazaarboy.post('user/auth/', params, function(response) {
             if (response.status === 'OK') {
               Bazaarboy.redirect('index');
             } else {

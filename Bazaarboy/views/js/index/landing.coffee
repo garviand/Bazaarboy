@@ -11,7 +11,7 @@
             params = Bazaarboy.trim params
             if params.email.length isnt 0 and
                 params.password.length isnt 0
-                    Bazaarboy.get 'user/auth/', params, (response) ->
+                    Bazaarboy.post 'user/auth/', params, (response) ->
                         if response.status is 'OK'
                             Bazaarboy.redirect 'index'
                         else
