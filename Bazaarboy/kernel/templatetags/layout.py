@@ -42,10 +42,10 @@ def validateTiming(obj):
 
 @register.filter
 def ticketSaleTiming(ticket):
-    if ticket.start_time >= timezone.now():
-        return "Ticket is not on sale yet"
     if ticket.end_time < timezone.now():
         return "Ticket sale has ended"
+    if ticket.start_time >= timezone.now():
+        return "Ticket is not on sale yet"
     return "Ticket is not on sale"
 
 @register.filter
