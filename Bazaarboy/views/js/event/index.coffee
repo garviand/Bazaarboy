@@ -149,11 +149,35 @@ Bazaarboy.event.index =
                         a = (1 + 0.05) * total + 50
                         b = (1 + 0.029) * total + 30 + 1000
                         total = Math.round(Math.min(a, b))
-                        @currentCheckout = response.purchase.checkout
-                        Stripe.setPublishableKey response.publishable_key
-                        Stripe.card.createToken $("form#payment-form"), (status, response) =>
-                            @stripeResponseHandler status, response
-                            return
+                        StripeCheckout.open
+                            key: response.publishable_key
+                            address: false
+                            amount: total
+                            currency: 'usd'
+                            name: response.purchase.event.name
+                            description: 'Tickets for ' + response.purchase.event.name
+                            panelLabel: 'Checkout'
+                            email: params.email
+                            image: response.logo
+                            closed: () ->
+                                $('a#tickets-confirm').html 'Confirm RSVP'
+                                return
+                            token: (token) =>
+                                Bazaarboy.post 'payment/charge/', 
+                                    checkout: response.purchase.checkout
+                                    stripe_token: token.id
+                                , (response) =>
+                                    if response.status is 'OK'
+                                        @completePurchase(response.tickets)
+                                    else
+                                        alert response.message
+                                    return
+                                return
+                        #@currentCheckout = response.purchase.checkout
+                        #Stripe.setPublishableKey response.publishable_key
+                        #Stripe.card.createToken $("form#payment-form"), (status, response) =>
+                            #@stripeResponseHandler status, response
+                            #return
             return
         return
     completePurchase: (tickets) ->
@@ -533,7 +557,7 @@ Bazaarboy.event.index =
                     scope.overlayAnimationInProgress = false
                     return
             return
-        $('div#tickets-canvas div.ticket div.ticket-top').hover ->
+        $('div#tickets-canvas div.ticket.valid div.ticket-top').hover ->
             if not $(this).parents('div.ticket').hasClass 'soldout'
                 $(this).parents('div.ticket').addClass 'hover'
             return
@@ -541,7 +565,7 @@ Bazaarboy.event.index =
             if not $(this).parents('div.ticket').hasClass 'soldout'
                 $(this).parents('div.ticket').removeClass 'hover'
             return
-        $('div#tickets-canvas div.ticket-top').click () ->
+        $('div#tickets-canvas div.ticket.valid div.ticket-top').click () ->
             if not $(this).parents('div.ticket').hasClass 'soldout'
                 $(this).parents('.ticket').toggleClass 'active'
                 if $(this).parents('.ticket').hasClass('active')
@@ -558,8 +582,8 @@ Bazaarboy.event.index =
                     if $(this).data('address') == 'yes' and $(this).hasClass('active')
                         $('.address-container').removeClass 'hide'
                         scope.requiresAddress = true
-                    if parseInt($(this).data('price')) != 0 and $(this).hasClass('active')
-                        $('.payment-container').removeClass 'hide'
+                    #if parseInt($(this).data('price')) != 0 and $(this).hasClass('active')
+                        #$('.payment-container').removeClass 'hide'
                 scope.updateSubtotal()
             return
         $('input.ticket-quantity').keyup () ->

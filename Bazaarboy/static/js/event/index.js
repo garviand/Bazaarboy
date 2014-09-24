@@ -187,10 +187,31 @@
               a = (1 + 0.05) * total + 50;
               b = (1 + 0.029) * total + 30 + 1000;
               total = Math.round(Math.min(a, b));
-              _this.currentCheckout = response.purchase.checkout;
-              Stripe.setPublishableKey(response.publishable_key);
-              return Stripe.card.createToken($("form#payment-form"), function(status, response) {
-                _this.stripeResponseHandler(status, response);
+              return StripeCheckout.open({
+                key: response.publishable_key,
+                address: false,
+                amount: total,
+                currency: 'usd',
+                name: response.purchase.event.name,
+                description: 'Tickets for ' + response.purchase.event.name,
+                panelLabel: 'Checkout',
+                email: params.email,
+                image: response.logo,
+                closed: function() {
+                  $('a#tickets-confirm').html('Confirm RSVP');
+                },
+                token: function(token) {
+                  Bazaarboy.post('payment/charge/', {
+                    checkout: response.purchase.checkout,
+                    stripe_token: token.id
+                  }, function(response) {
+                    if (response.status === 'OK') {
+                      _this.completePurchase(response.tickets);
+                    } else {
+                      alert(response.message);
+                    }
+                  });
+                }
               });
             }
           }
@@ -631,7 +652,7 @@
           });
         }
       });
-      $('div#tickets-canvas div.ticket div.ticket-top').hover(function() {
+      $('div#tickets-canvas div.ticket.valid div.ticket-top').hover(function() {
         if (!$(this).parents('div.ticket').hasClass('soldout')) {
           $(this).parents('div.ticket').addClass('hover');
         }
@@ -640,7 +661,7 @@
           $(this).parents('div.ticket').removeClass('hover');
         }
       });
-      $('div#tickets-canvas div.ticket-top').click(function() {
+      $('div#tickets-canvas div.ticket.valid div.ticket-top').click(function() {
         var quant;
         if (!$(this).parents('div.ticket').hasClass('soldout')) {
           $(this).parents('.ticket').toggleClass('active');
@@ -659,10 +680,7 @@
           $('div.ticket').each(function() {
             if ($(this).data('address') === 'yes' && $(this).hasClass('active')) {
               $('.address-container').removeClass('hide');
-              scope.requiresAddress = true;
-            }
-            if (parseInt($(this).data('price')) !== 0 && $(this).hasClass('active')) {
-              return $('.payment-container').removeClass('hide');
+              return scope.requiresAddress = true;
             }
           });
           scope.updateSubtotal();

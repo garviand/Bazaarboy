@@ -30,7 +30,6 @@
           $('div.custom-field-container:not(.template)').remove();
           if (response.ticket.extra_fields.length > 0) {
             extraFields = response.ticket.extra_fields;
-            console.log(extraFields);
             extraFields = JSON.parse(extraFields);
             for (field_name in extraFields) {
               field_options = extraFields[field_name];
@@ -48,6 +47,27 @@
           $('div#edit-ticket div.step-2').removeClass('hide');
           $('div#edit-ticket div.step-2 span.type').html('Edit');
           $('div#edit-ticket input[name=name]').val(response.ticket.name);
+          $('div#edit-ticket input[name=start_date]').val('');
+          $('div#edit-ticket input[name=start_time]').val('');
+          $('div#edit-ticket input[name=end_date]').val('');
+          $('div#edit-ticket input[name=end_time]').val('');
+          if (response.ticket.start_time || response.ticket.end_time) {
+            $('div#edit-ticket input[name=ticket-time-range]').prop('checked', true);
+            $('div.time-range-inputs').removeClass('hide');
+          } else {
+            $('div#edit-ticket input[name=ticket-time-range]').prop('checked', false);
+            $('div.time-range-inputs').addClass('hide');
+          }
+          if (response.ticket.start_time) {
+            startTime = moment(response.ticket.start_time);
+            $('div#edit-ticket input[name=start_date]').val(startTime.format('MM/DD/YYYY'));
+            $('div#edit-ticket input[name=start_time]').val(startTime.format('h:mm A'));
+          }
+          if (response.ticket.end_time) {
+            endTime = moment(response.ticket.end_time);
+            $('div#edit-ticket input[name=end_date]').val(endTime.format('MM/DD/YYYY'));
+            $('div#edit-ticket input[name=end_time]').val(endTime.format('h:mm A'));
+          }
           if (response.ticket.request_address) {
             $('div#edit-ticket input[name=request_address]').prop('checked', true);
           } else {
@@ -202,7 +222,6 @@
             });
             params.id = $('form#promo-form').attr('data-id');
             params.id = parseInt(params.id);
-            console.log(params);
             Bazaarboy.post('event/promo/edit/', params, function(response) {
               var amount_claimed, promo_code, promo_id;
               if (response.status === 'OK') {
@@ -377,8 +396,6 @@
           Bazaarboy.post('event/tickets/reorder/', params, function(response) {
             if (response.status !== 'OK') {
               alert(response.message);
-            } else {
-              console.log(response);
             }
             thisButton.html(originalHTML);
             scope.reordering = false;
@@ -471,14 +488,20 @@
               params.quantity = 'None';
             }
           }
-          if (params.start_date.trim().length !== 0 && params.start_time.trim().length !== 0) {
+          if (params.start_date.trim().length !== 0) {
             startDate = moment(params.start_date.trim(), 'MM/DD/YYYY');
             if (!startDate.isValid()) {
+              alert('Invalid Ticket Start Date');
               return;
             }
-            startTime = moment(params.start_time.trim(), 'h:mm A');
-            if (!startTime.isValid()) {
-              return;
+            if (params.start_time.trim().length !== 0) {
+              startTime = moment(params.start_time.trim(), 'h:mm A');
+              if (!startTime.isValid()) {
+                alert('Invalid Ticket Start Time');
+                return;
+              }
+            } else {
+              startTime = moment('12:00 AM', 'h:mm A');
             }
             params.start_time = moment(params.start_date.trim() + ' ' + params.start_time.trim(), 'MM/DD/YYYY h:mm A').utc().format('YYYY-MM-DD HH:mm:ss');
           } else {
@@ -488,14 +511,20 @@
               params.start_time = 'None';
             }
           }
-          if (params.end_date.trim().length !== 0 && params.end_time.trim().length !== 0) {
+          if (params.end_date.trim().length !== 0) {
             endDate = moment(params.end_date.trim(), 'MM/DD/YYYY');
             if (!endDate.isValid()) {
+              alert('Invalid Ticket End Date');
               return;
             }
-            endTime = moment(params.end_time.trim(), 'h:mm A');
-            if (!endTime.isValid()) {
-              return;
+            if (params.end_time.trim().length !== 0) {
+              endTime = moment(params.end_time.trim(), 'h:mm A');
+              if (!endTime.isValid()) {
+                alert('Invalid Ticket End Time');
+                return;
+              }
+            } else {
+              endTime = moment('12:00 AM', 'h:mm A');
             }
             params.end_time = moment(params.end_date.trim() + ' ' + params.end_time.trim(), 'MM/DD/YYYY h:mm A').utc().format('YYYY-MM-DD HH:mm:ss');
           } else {
@@ -515,14 +544,13 @@
             }
           });
           params.extra_fields = JSON.stringify(extraFields);
-          console.log(params.extra_fields);
           endpoint = 'event/ticket/edit/';
           if (isNew) {
             endpoint = 'event/ticket/create/';
           }
           if (params.name.trim() !== '' && params.description.trim() !== '') {
             Bazaarboy.post(endpoint, params, function(response) {
-              var newPromosTicket, price, quantity, sold, ticketOption, wording, wordingObject;
+              var newPromosTicket, oldHtml, price, quantity, sold, ticketOption, wording, wordingObject;
               if (response.status === 'OK') {
                 $('div#event-modify-tickets div.empty-state-container').addClass('hide');
                 $('div#event-modify-tickets div#action-canvas').removeClass('hide');
@@ -547,7 +575,6 @@
                 $(ticketOption).find('div.name').html(response.ticket.name);
                 $(ticketOption).find('div.description').html(response.ticket.description);
                 sold = response.ticket.sold != null ? response.ticket.sold : 0;
-                console.log(response);
                 $(ticketOption).find('span.sold').html(sold);
                 quantity = response.ticket.quantity ? '/' + response.ticket.quantity : '';
                 $(ticketOption).find('span.quantity').html(quantity);
@@ -588,6 +615,14 @@
                 $(ticketOption).find('span.wording').html(wording);
                 $(ticketOption).find('span.wording-object').html(wordingObject);
                 $(ticketOption).find('input[name=ticket]').val(response.ticket.pk);
+                if (response.ticket.start_time) {
+                  console.log(moment(response.ticket.start_time).format('M/D/YYYY'));
+                  $(ticketOption).find('.dates').html('&nbsp;|&nbsp;' + moment(response.ticket.start_time).format('M/D/YYYY'));
+                }
+                if (response.ticket.end_time) {
+                  oldHtml = $(ticketOption).find('.dates').html();
+                  $(ticketOption).find('.dates').html(oldHtml + ' - ' + moment(response.ticket.end_time).format('M/D/YYYY'));
+                }
                 $('div#edit-ticket').fadeOut(300, function() {
                   scope.ticketSubmitting = false;
                   if (response.status !== 'OK') {
@@ -653,7 +688,6 @@
         }, function(response) {
           var promo, tickets;
           promo = response.promo;
-          console.log(promo);
           tickets = promo.tickets;
           $('div#promos div.edit div.title').html('Edit Promo Code: ' + promo.code);
           $('div#promos div.new-promo-controls').addClass('hide');

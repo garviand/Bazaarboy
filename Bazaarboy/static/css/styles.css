@@ -9327,6 +9327,11 @@ div#tickets-body div#tickets-canvas div.ticket div.ticket-top {
   border-top-left-radius: 4px;
   border-top-right-radius: 4px;
 }
+div#tickets-body div#tickets-canvas div.ticket div.ticket-top div.timing-container {
+  text-decoration: underline;
+  font-size: 12px;
+  margin-bottom: 20px;
+}
 div#tickets-body div#tickets-canvas div.ticket div.ticket-top div.container {
   min-height: 60px;
   padding: 10px 0;

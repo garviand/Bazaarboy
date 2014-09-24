@@ -41,6 +41,14 @@ def validateTiming(obj):
     return obj.start_time <= timezone.now() and obj.end_time > timezone.now()
 
 @register.filter
+def ticketSaleTiming(ticket):
+    if ticket.start_time >= timezone.now():
+        return "Ticket is not on sale yet"
+    if ticket.end_time < timezone.now():
+        return "Ticket sale has ended"
+    return "Ticket is not on sale"
+
+@register.filter
 def isOnSaleSoon(ticket):
     """
     Check if a ticket is on sale soon or its sale period has ended

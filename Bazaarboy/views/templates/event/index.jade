@@ -399,7 +399,7 @@ block body
                 div.inner
                     div#tickets-canvas
                         {% for ticket in tickets %}
-                        div.ticket.row(class="{% if forloop.last %}last{% endif %} {% if ticket.quantity == 0 %}soldout{% endif %}", data-id="{{ ticket.id }}", data-price="{{ ticket.price }}", data-address="{% if ticket.request_address %}yes{% endif %}")
+                        div.ticket.row(class="{% if forloop.last %}last{% endif %} {% if ticket|validateTiming %}valid{% else %}invalid{% endif %} {% if ticket.quantity == 0 %}soldout{% endif %}", data-id="{{ ticket.id }}", data-price="{{ ticket.price }}", data-address="{% if ticket.request_address %}yes{% endif %}")
                             div.small-12.columns
                                 div.ticket-top.row
                                     div.small-5.medium-4.columns.container
@@ -409,6 +409,11 @@ block body
                                             div.price {% if ticket.price == 0 %}Free{% else %}${{ ticket.price|floatformat:"-2" }}{% endif %}
                                     div.small-7.medium-8.columns.container
                                         div.ticket-name {{ ticket.name }}
+                                {% if not ticket|validateTiming %}
+                                div.ticket-top.row
+                                    div.small-12.columns.timing-container
+                                        | {{ ticket|ticketSaleTiming }}
+                                {% endif %}
                                 div.ticket-middle.row
                                     div.small-4.columns.container
                                         div.info-label Quantity
@@ -531,6 +536,7 @@ append script
     {% endif %}
     script(type="text/javascript", src="{{ STATIC_URL }}debounce/jquery.debounce.js")
     script(type="text/javascript", src="{{ STATIC_URL }}addthisevent/atemay.js")
+    script(type="text/javascript", src="https://checkout.stripe.com/v2/checkout.js")
     script(type="text/javascript", src="https://js.stripe.com/v2/")
     script(type="text/javascript").
         var eventId = {{ event.id }};

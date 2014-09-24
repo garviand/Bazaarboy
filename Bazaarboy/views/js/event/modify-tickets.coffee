@@ -30,7 +30,6 @@ Bazaarboy.event.modify.tickets =
               $('div.custom-field-container:not(.template)').remove()
               if response.ticket.extra_fields.length > 0
                   extraFields = response.ticket.extra_fields
-                  console.log extraFields
                   extraFields = JSON.parse extraFields
                   for field_name, field_options of extraFields
                       newField = $('div.custom-fields-container div.custom-field-container.template').clone()
@@ -45,18 +44,36 @@ Bazaarboy.event.modify.tickets =
               $('div#edit-ticket div.step-2').removeClass 'hide'
               $('div#edit-ticket div.step-2 span.type').html 'Edit'
               $('div#edit-ticket input[name=name]').val response.ticket.name
+              $('div#edit-ticket input[name=start_date]').val ''
+              $('div#edit-ticket input[name=start_time]').val ''
+              $('div#edit-ticket input[name=end_date]').val ''
+              $('div#edit-ticket input[name=end_time]').val ''
+              if response.ticket.start_time or response.ticket.end_time
+                $('div#edit-ticket input[name=ticket-time-range]').prop('checked', true)
+                $('div.time-range-inputs').removeClass 'hide'
+              else
+                $('div#edit-ticket input[name=ticket-time-range]').prop('checked', false)
+                $('div.time-range-inputs').addClass 'hide'
+              if response.ticket.start_time
+                startTime = moment(response.ticket.start_time)
+                $('div#edit-ticket input[name=start_date]').val startTime.format('MM/DD/YYYY')
+                $('div#edit-ticket input[name=start_time]').val startTime.format('h:mm A')
+              if response.ticket.end_time
+                endTime = moment(response.ticket.end_time)
+                $('div#edit-ticket input[name=end_date]').val endTime.format('MM/DD/YYYY')
+                $('div#edit-ticket input[name=end_time]').val endTime.format('h:mm A')
               if response.ticket.request_address
-                  $('div#edit-ticket input[name=request_address]').prop('checked', true)
+                $('div#edit-ticket input[name=request_address]').prop('checked', true)
               else
-                  $('div#edit-ticket input[name=request_address]').prop('checked', false)
+                $('div#edit-ticket input[name=request_address]').prop('checked', false)
               if response.ticket.price is 0
-                  $('div#edit-ticket div.price input').val 0
-                  $('div#edit-ticket div.price').addClass 'hide'
-                  $('div#edit-ticket div.quantity').removeClass('medium-6').addClass('medium-12')
+                $('div#edit-ticket div.price input').val 0
+                $('div#edit-ticket div.price').addClass 'hide'
+                $('div#edit-ticket div.quantity').removeClass('medium-6').addClass('medium-12')
               else
-                  $('div#edit-ticket input[name=price]').val response.ticket.price
-                  $('div#edit-ticket div.price').removeClass 'hide'
-                  $('div#edit-ticket div.quantity').removeClass('medium-12').addClass('medium-6')
+                $('div#edit-ticket input[name=price]').val response.ticket.price
+                $('div#edit-ticket div.price').removeClass 'hide'
+                $('div#edit-ticket div.quantity').removeClass('medium-12').addClass('medium-6')
               quantity = if response.ticket.quantity? then response.ticket.quantity else ''
               $('div#edit-ticket input[name=quantity]').val quantity
               $('div#edit-ticket textarea[name=description]').val response.ticket.description
@@ -177,7 +194,6 @@ Bazaarboy.event.modify.tickets =
                         return
                     params.id = $('form#promo-form').attr('data-id')
                     params.id = parseInt(params.id)
-                    console.log params
                     Bazaarboy.post 'event/promo/edit/', params, (response) ->
                         if response.status is 'OK'
                             amount_claimed = response.claimed
@@ -310,8 +326,6 @@ Bazaarboy.event.modify.tickets =
                 Bazaarboy.post 'event/tickets/reorder/', params, (response) =>
                     if response.status isnt 'OK'
                         alert response.message
-                    else
-                        console.log response
                     thisButton.html originalHTML
                     scope.reordering = false
                     return
@@ -387,29 +401,37 @@ Bazaarboy.event.modify.tickets =
                         delete params.quantity
                     else
                         params.quantity = 'None'
-                if params.start_date.trim().length != 0 and 
-                   params.start_time.trim().length != 0
+                if params.start_date.trim().length != 0
                     startDate = moment(params.start_date.trim(), 'MM/DD/YYYY')
                     if not startDate.isValid()
+                      alert 'Invalid Ticket Start Date'
+                      return
+                    if params.start_time.trim().length != 0
+                      startTime = moment(params.start_time.trim(), 'h:mm A')
+                      if not startTime.isValid()
+                        alert 'Invalid Ticket Start Time'
                         return
-                    startTime = moment(params.start_time.trim(), 'h:mm A')
-                    if not startTime.isValid()
-                        return
+                    else
+                      startTime = moment('12:00 AM', 'h:mm A')
                     params.start_time = moment(params.start_date.trim() + ' ' + params.start_time.trim(), 
                                                'MM/DD/YYYY h:mm A').utc().format('YYYY-MM-DD HH:mm:ss')
                 else
-                    if isNew
-                        delete params.start_time
-                    else
-                        params.start_time = 'None'
-                if params.end_date.trim().length != 0 and
-                   params.end_time.trim().length != 0
+                  if isNew
+                      delete params.start_time
+                  else
+                      params.start_time = 'None'
+                if params.end_date.trim().length != 0
                     endDate = moment(params.end_date.trim(), 'MM/DD/YYYY')
                     if not endDate.isValid()
+                      alert 'Invalid Ticket End Date'
+                      return
+                    if params.end_time.trim().length != 0
+                      endTime = moment(params.end_time.trim(), 'h:mm A')
+                      if not endTime.isValid()
+                        alert 'Invalid Ticket End Time'
                         return
-                    endTime = moment(params.end_time.trim(), 'h:mm A')
-                    if not endTime.isValid()
-                        return
+                    else
+                      endTime = moment('12:00 AM', 'h:mm A')
                     params.end_time = moment(params.end_date.trim() + ' ' + params.end_time.trim(), 
                                              'MM/DD/YYYY h:mm A').utc().format('YYYY-MM-DD HH:mm:ss')
                 else
@@ -425,7 +447,6 @@ Bazaarboy.event.modify.tickets =
                         extraFields[fieldName] = fieldOptions
                     return
                 params.extra_fields = JSON.stringify extraFields
-                console.log params.extra_fields
                 endpoint = 'event/ticket/edit/'
                 if isNew
                     endpoint = 'event/ticket/create/'
@@ -436,24 +457,23 @@ Bazaarboy.event.modify.tickets =
                             $('div#event-modify-tickets div#action-canvas').removeClass 'hide'
                             ticketOption = null
                             if isNew
-                                ticketOption = $('div.templates div.ticket-option').clone()
-                                $(ticketOption).attr 'data-id', response.ticket.pk
-                                $(ticketOption).prependTo 'div#ticket-canvas'
-                                $(ticketOption).find('a.attach-pdf-btn').html('+ Add PDF To Confirmation')
-                                $(ticketOption).find('.move-ticket-up').parent().addClass 'hide'
-                                $(ticketOption).next('.ticket-option').find('.move-ticket-up').parent().removeClass 'hide'
-                                $(ticketOption).find('div.top div.secondary-btn').click () ->
-                                    ticket = $(this).closest('div.ticket-option').attr('data-id')
-                                    scope.editTicket ticket
-                                    return
+                              ticketOption = $('div.templates div.ticket-option').clone()
+                              $(ticketOption).attr 'data-id', response.ticket.pk
+                              $(ticketOption).prependTo 'div#ticket-canvas'
+                              $(ticketOption).find('a.attach-pdf-btn').html('+ Add PDF To Confirmation')
+                              $(ticketOption).find('.move-ticket-up').parent().addClass 'hide'
+                              $(ticketOption).next('.ticket-option').find('.move-ticket-up').parent().removeClass 'hide'
+                              $(ticketOption).find('div.top div.secondary-btn').click () ->
+                                ticket = $(this).closest('div.ticket-option').attr('data-id')
+                                scope.editTicket ticket
+                                return
                             else
-                                ticketOption = $('div.ticket-option[data-id="' + ticketId + '"]')
+                              ticketOption = $('div.ticket-option[data-id="' + ticketId + '"]')
                             price = if response.ticket.price > 0 then '$' + response.ticket.price.toFixed(2) else 'Free'
                             $(ticketOption).find('div.price').html price
                             $(ticketOption).find('div.name').html response.ticket.name
                             $(ticketOption).find('div.description').html response.ticket.description
                             sold = if response.ticket.sold? then response.ticket.sold else 0
-                            console.log response
                             $(ticketOption).find('span.sold').html sold
                             quantity = if response.ticket.quantity then '/' + response.ticket.quantity else ''
                             $(ticketOption).find('span.quantity').html quantity
@@ -491,6 +511,12 @@ Bazaarboy.event.modify.tickets =
                             $(ticketOption).find('span.wording').html wording
                             $(ticketOption).find('span.wording-object').html wordingObject
                             $(ticketOption).find('input[name=ticket]').val(response.ticket.pk)
+                            if response.ticket.start_time
+                              console.log moment(response.ticket.start_time).format('M/D/YYYY')
+                              $(ticketOption).find('.dates').html '&nbsp;|&nbsp;' + moment(response.ticket.start_time).format('M/D/YYYY')
+                            if response.ticket.end_time
+                              oldHtml = $(ticketOption).find('.dates').html()
+                              $(ticketOption).find('.dates').html oldHtml + ' - ' + moment(response.ticket.end_time).format('M/D/YYYY')
                             $('div#edit-ticket').fadeOut 300, () ->
                                 scope.ticketSubmitting = false
                                 if response.status isnt 'OK'
@@ -545,7 +571,6 @@ Bazaarboy.event.modify.tickets =
             $('div#promos div.promo-form-tickets:not(.template) a.select-ticket').removeClass 'selected'
             Bazaarboy.get 'event/promo/', {id: parseInt($(this).attr('data-id'))}, (response) ->
                 promo = response.promo
-                console.log promo
                 tickets = promo.tickets
                 $('div#promos div.edit div.title').html 'Edit Promo Code: ' + promo.code
                 $('div#promos div.new-promo-controls').addClass 'hide'
