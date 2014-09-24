@@ -652,6 +652,15 @@
           });
         }
       });
+      $('div#tickets-canvas div.ticket.invalid div.ticket-top').hover(function() {
+        if (!$(this).parents('div.ticket').hasClass('soldout')) {
+          $(this).parents('div.ticket').find('.timing-container').addClass('underline');
+        }
+      }, function() {
+        if (!$(this).parents('div.ticket').hasClass('soldout')) {
+          $(this).parents('div.ticket').find('.timing-container').removeClass('underline');
+        }
+      });
       $('div#tickets-canvas div.ticket.valid div.ticket-top').hover(function() {
         if (!$(this).parents('div.ticket').hasClass('soldout')) {
           $(this).parents('div.ticket').addClass('hover');
