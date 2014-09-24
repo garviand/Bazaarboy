@@ -412,7 +412,8 @@ block body
                                 {% if not ticket|validateTiming %}
                                 div.ticket-top.row
                                     div.small-12.columns.timing-container
-                                        | {{ ticket|ticketSaleTiming }}
+                                        //| {{ ticket|ticketSaleTiming }}
+                                        | Ticket is not currently available
                                 {% endif %}
                                 div.ticket-middle.row
                                     div.small-4.columns.container
