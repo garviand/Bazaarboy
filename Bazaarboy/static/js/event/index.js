@@ -148,7 +148,9 @@
               var fieldValue;
               fieldValue = $(this).find('input.custom-field-input').val();
               if (String(fieldValue).trim() !== '') {
-                params.details[$(ticket).attr('data-id')]['extra_fields'][$(this).data('field')] = String(fieldValue).trim();
+                return params.details[$(ticket).attr('data-id')]['extra_fields'][$(this).data('field')] = String(fieldValue).trim();
+              } else {
+                return params.details[$(ticket).attr('data-id')]['extra_fields'][$(this).data('field')] = ' ';
               }
             });
           }

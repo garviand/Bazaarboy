@@ -117,7 +117,8 @@ Bazaarboy.event.index =
                         fieldValue = $(this).find('input.custom-field-input').val()
                         if String(fieldValue).trim() isnt ''
                             params.details[$(ticket).attr('data-id')]['extra_fields'][$(this).data('field')] = String(fieldValue).trim()
-                        return
+                        else
+                            params.details[$(ticket).attr('data-id')]['extra_fields'][$(this).data('field')] = ' '
         params.details = JSON.stringify params.details
         if params.phone.length is 0
             delete params.phone
