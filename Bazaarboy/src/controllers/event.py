@@ -2394,6 +2394,10 @@ def export(request, params, user):
                         pass
                     finally:
                         try:
+                            item.extra_fields = item.extra_fields.replace("\'", "\"")
+                            item.extra_fields = item.extra_fields.replace("u\"", "\"")
+                            item.extra_fields = item.extra_fields.replace("\"d", "\'d")
+                            item.extra_fields = item.extra_fields.replace("\"s", "\'s")
                             item_fields = json.loads(item.extra_fields)
                         except:
                             pass
@@ -2442,6 +2446,8 @@ def export(request, params, user):
                 try:
                     item.extra_fields = item.extra_fields.replace("\'", "\"")
                     item.extra_fields = item.extra_fields.replace("u\"", "\"")
+                    item.extra_fields = item.extra_fields.replace("\"d", "\'d")
+                    item.extra_fields = item.extra_fields.replace("\"s", "\'s")
                     item_fields = json.loads(item.extra_fields)
                 except:
                     item_fields = {}
