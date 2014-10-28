@@ -1,0 +1,111 @@
+extends layout
+
+block body
+	div#designs-index
+		div#top
+			div.header.row
+				div.small-12.medium-4.columns.logo-container
+					a(href="{% url index %}")
+						img.logo(src="{{ STATIC_URL }}images/designs/logo1.png")
+				div.small-12.medium-8.columns.links-container.hide-for-small-only
+					{% if not user %}
+					a.orange-btn(href="{% url index:register %}?next=designs") Sign Up
+					a(href="{% url index:login %}?next=designs") Log In
+					{% else %}
+					a.orange-btn(href="{% url designs:create %}") Create Project
+					{% endif %}
+					a(href="mailto:build@bazaarboy.com", target="_blank") Contact
+					a.active(href="{% url designs:index %}") Designs
+					a(href="{% url index:pricing %}") Pricing
+			div.tagline-container.row
+				div.small-12.medium-10.medium-offset-1.columns.tagline
+					| Create beautiful marketing materials with Bazaarboy
+			div.subtagline-container.row
+				div.small-12.medium-6.medium-offset-3.columns.subtagline
+					| Expert local designers are ready to create your next banner or poster in under 72 hours.
+			div.get-started.row
+				div.small-12.medium-3.medium-centered.columns
+					a.orange-btn(href="{% url designs:create %}") Get Started
+		div#steps
+			div.row.title-container
+				div.small-12.columns.title How It Works
+			div.row.step
+				div.hide-for-small-only.medium-2.columns.icon-container
+					img.logo(src="{{ STATIC_URL }}images/designs/step-1-icon.png")
+				div.small-12.medium-10.columns.step-description
+					div.row.top
+						div.small-12.columns
+							span.step-title Step One:&nbsp;&nbsp;
+							| Select which graphic formats you'll need.
+					div.row.bottom
+						div.small-12.columns
+							| You have the option of purchasing an event banner or an event poster. 100% money back guarantee.
+			div.row.step
+				div.hide-for-small-only.medium-2.columns.icon-container
+					img.logo(src="{{ STATIC_URL }}images/designs/step-2-icon.png")
+				div.small-12.medium-10.columns.step-description
+					div.row.top
+						div.small-12.columns
+							span.step-title Step Two:&nbsp;&nbsp;
+							| Our designers will begin working!
+					div.row.bottom
+						div.small-12.columns
+							| They will fulfill three revisions and respond to your direction.
+			div.row.step
+				div.hide-for-small-only.medium-2.columns.icon-container
+					img.logo(src="{{ STATIC_URL }}images/designs/step-3-icon.png")
+				div.small-12.medium-10.columns.step-description
+					div.row.top
+						div.small-12.columns
+							span.step-title Step Three:&nbsp;&nbsp;
+							| Your materials are delivered.
+					div.row.bottom
+						div.small-12.columns
+							| Within 72 hours, your banner or poster will be delivered in appropriate file formats.
+		div#examples
+			div.row.images
+				div.small-6.medium-3.columns.image-container
+					a(href="{{ STATIC_URL }}images/designs/ex-image-1.jpg", data-lightbox="examples")
+						img.logo(src="{{ STATIC_URL }}images/designs/ex-image-1.jpg")
+				div.small-6.medium-3.columns.image-container
+					a(href="{{ STATIC_URL }}images/designs/ex-image-2.jpg", data-lightbox="examples")
+						img.logo(src="{{ STATIC_URL }}images/designs/ex-image-2.jpg")
+				div.small-6.medium-3.columns.image-container
+					a(href="{{ STATIC_URL }}images/designs/ex-image-3.jpg", data-lightbox="examples")
+						img.logo(src="{{ STATIC_URL }}images/designs/ex-image-3.jpg")
+				div.small-6.medium-3.columns.image-container
+					a(href="{{ STATIC_URL }}images/designs/ex-image-4.jpg", data-lightbox="examples")
+						img.logo(src="{{ STATIC_URL }}images/designs/ex-image-4.jpg")
+		div#testimonials
+			div.row.testimonial
+				div.picture.small-12.medium-3.columns
+					img(src="{{ STATIC_URL }}images/designs/amanda-dever.png")
+				div.description.small-12.medium-9.columns
+					div.top
+						| Bazaarboy helped me get a professional poster designed on incredibly short notice
+					div.bottom
+						| - Amanda Dever, The Central West End Association
+		div#go
+			div.row.go-container
+				div.small-12.medium-3.medium-centered.columns
+					a.orange-btn.go-btn(href="{% url designs:create %}") Let's go!
+		div#footer
+			div.row.footer-container
+				div.small-12.medium-3.columns.copyright.small-only-text-center
+					| &copy; 2014 Bazaarboy, LLC
+				div.small-12.medium-9.hide-for-small-only.columns.footer-links
+					{% if not user %}
+					a.sign-up(href="{% url index:register %}?next=designs") Sign Up
+					a(href="{% url index:login %}?next=designs") Log In
+					{% endif %}
+					a(href="mailto:build@bazaarboy.com") Contact
+					a(href="{% url designs:index %}") Designs
+					a(href="{% url index:pricing %}") Pricing
+
+
+
+
+
+append script
+	script(type="text/javascript", src="{{ STATIC_URL }}lightbox/lightbox.min.js")
+	script(type="text/javascript", src="{{ STATIC_URL }}designs/js/index.js")

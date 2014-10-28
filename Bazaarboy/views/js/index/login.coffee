@@ -24,7 +24,14 @@
                 params.password.length isnt 0
                     Bazaarboy.post 'user/auth/', params, (response) ->
                         if response.status is 'OK'
-                            Bazaarboy.redirect 'index'
+                            if redirect
+                                if redirect is 'designs'
+                                    if code
+                                        window.location.href = "/designs/finalize?code=" + code
+                                    else
+                                        window.location.href = "/designs?auth=true"
+                            else
+                                Bazaarboy.redirect 'index'
                         else
                             alert response.message
                             window.clearTimeout(scope.timer)
@@ -51,7 +58,14 @@
                     Bazaarboy.post 'user/create/', params, (response) ->
                         console.log response
                         if response.status is 'OK'
-                            Bazaarboy.redirect 'index'
+                            if redirect
+                                if redirect is 'designs'
+                                    if code
+                                        window.location.href = "/designs/finalize?code=" + code
+                                    else
+                                        window.location.href = "/designs?auth=true"
+                            else
+                                Bazaarboy.redirect 'index'
                         else
                             alert response.message
                             window.clearTimeout(scope.timer)

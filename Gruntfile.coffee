@@ -20,6 +20,12 @@ module.exports = (grunt) ->
                     'Bazaarboy/static/admin/css/layout.css'
                 ]
                 dest: 'Bazaarboy/static/admin/css/layout.css'
+            css_designs:
+                src: [
+                    'Bazaarboy/static/css/normalize.css'
+                    'Bazaarboy/static/designs/css/layout.css'
+                ]
+                dest: 'Bazaarboy/static/designs/css/layout.css'
             js:
                 src: [
                     'Bazaarboy/static/js/libraries/jquery.min.js'
@@ -61,6 +67,18 @@ module.exports = (grunt) ->
                     dest: 'Bazaarboy/templates/admin/'
                     ext: '.html'
                 ]
+            designs:
+                options:
+                    data:
+                        debug: false
+                        pretty: false
+                files: [
+                    expand: true
+                    cwd: 'Bazaarboy/views/designs/templates/'
+                    src: ['**/*.jade']
+                    dest: 'Bazaarboy/templates/designs/'
+                    ext: '.html'
+                ]
         coffee:
             compile:
                 files: [
@@ -74,6 +92,12 @@ module.exports = (grunt) ->
                     cwd: 'Bazaarboy/views/admin/js/'
                     src: ['**/*.coffee']
                     dest: 'Bazaarboy/static/admin/js/'
+                    ext: '.js'
+                ,
+                    expand: true
+                    cwd: 'Bazaarboy/views/designs/js/'
+                    src: ['**/*.coffee']
+                    dest: 'Bazaarboy/static/designs/js/'
                     ext: '.js'
                 ]
         uglify:
@@ -89,6 +113,12 @@ module.exports = (grunt) ->
                     cwd: 'Bazaarboy/static/admin/js/'
                     src: ['**/*.js']
                     dest: 'Bazaarboy/static/admin/js/'
+                    ext: '.js'
+                ,
+                    expand: true
+                    cwd: 'Bazaarboy/static/designs/js/'
+                    src: ['**/*.js']
+                    dest: 'Bazaarboy/static/designs/js/'
                     ext: '.js'
                 ]
         less:
@@ -108,6 +138,14 @@ module.exports = (grunt) ->
                     dest: 'Bazaarboy/static/admin/css/'
                     ext: '.css'
                 ]
+            compile_designs:
+                files: [
+                    expand: true
+                    cwd: 'Bazaarboy/views/designs/css/'
+                    src: ['**/*.less']
+                    dest: 'Bazaarboy/static/designs/css/'
+                    ext: '.css'
+                ]
         watch:
             jade:
                 options:
@@ -124,12 +162,20 @@ module.exports = (grunt) ->
                     'Bazaarboy/views/admin/templates/**/*.jade'
                 ]
                 tasks: ['jade:admin']
+            jade_designs:
+                options:
+                    nospawn: true
+                files: [
+                    'Bazaarboy/views/designs/templates/**/*.jade'
+                ]
+                tasks: ['jade:designs']
             coffee:
                 options:
                     nospawn: true
                 files: [
                     'Bazaarboy/views/js/**/*.coffee',
                     'Bazaarboy/views/admin/js/**/*.coffee'
+                    'Bazaarboy/views/designs/js/**/*.coffee'
                 ]
                 tasks: ['coffee']
             less:
@@ -146,6 +192,13 @@ module.exports = (grunt) ->
                     'Bazaarboy/views/admin/css/**/*.less'
                 ]
                 tasks: ['less:compile_admin', 'concat:css_admin']
+            less_designs:
+                options:
+                    nospawn: true
+                files: [
+                    'Bazaarboy/views/designs/css/**/*.less'
+                ]
+                tasks: ['less:compile_designs', 'concat:css_designs']
             libraries:
                 options:
                     nospawn: true
@@ -166,6 +219,10 @@ module.exports = (grunt) ->
                 if filepath.indexOf('Bazaarboy/views/admin/templates') isnt -1
                     output = filepath.replace(/Bazaarboy\/views\/admin\/templates/, 
                                               'Bazaarboy/templates/admin')
+                                     .replace(/\.jade/, '.html')
+                if filepath.indexOf('Bazaarboy/views/designs/templates') isnt -1
+                    output = filepath.replace(/Bazaarboy\/views\/designs\/templates/, 
+                                              'Bazaarboy/templates/designs')
                                      .replace(/\.jade/, '.html')
                 opts = {}
                 opts[output] = filepath

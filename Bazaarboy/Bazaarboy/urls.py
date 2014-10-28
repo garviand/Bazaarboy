@@ -113,6 +113,23 @@ admin_urlpatterns = patterns('src.controllers.admin.admin',
     url(r'^login/profile/$', 'login_profile', name = 'login_profile'),
 )
 
+designs_urlpatterns = patterns('src.controllers.designs.designs', 
+    url(r'^$', 'index', name = 'index'),
+    url(r'^create/$', 'create', name = 'create'),
+    url(r'^project/create/$', 'create_project', name = 'create_project'),
+    url(r'^project/charge/$', 'charge', name = 'charge'),
+    url(r'^project/finalize/$', 'finalize_project', name = 'finalize_project'),
+    url(r'^finalize/$', 'finalize', name = 'finalize'),
+    url(r'^asset/upload/$', 'upload_asset', name = 'upload_asset'),
+    url(r'^assets/download/$', 'download_zip', name = 'download_zip'),
+    url(r'^designer/$', 'designer', name = 'designer'),
+    url(r'^designer/project/(?P<project>\d+)$', 'designer_project', name = 'designer_project'),
+    url(r'^designer/submit/(?P<project>\d+)$', 'designer_submit', name = 'designer_submit'),
+    url(r'^designer/create/$', 'create_designer', name = 'create_designer'),
+    url(r'^designer/auth/$', 'auth_designer', name = 'auth_designer'),
+    url(r'^designer/login/$', 'login_designer', name = 'login_designer'),
+)
+
 urlpatterns = patterns('',
     url(r'^$', 'src.controllers.index.index', name = 'index'),
     url(r'^', include(index_urlpatterns, namespace = 'index')),
@@ -126,6 +143,7 @@ urlpatterns = patterns('',
     url(r'^bonus/', include(bonus_urlpatterns, namespace = 'bonus')), 
     url(r'^file/', include(file_urlpatterns, namespace = 'file')),
     url(r'^admin/', include(admin_urlpatterns, namespace = 'admin')),
+    url(r'^designs/', include(designs_urlpatterns, namespace = 'designs')),
     url(r'^(?P<id>[A-Za-z0-9-]+)/$', 'src.controllers.event.index', name = 'event-slug'),
 )
 

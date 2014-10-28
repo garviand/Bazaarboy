@@ -1,0 +1,34 @@
+// Designer.Login
+
+extends ../layout
+
+block body
+    div#login
+        div.row
+            div#container
+                div#login-container
+                    form#login-form
+                        div.row
+                            div.small-10.small-offset-1.columns
+                                div.row
+                                    div.small-12.medium-7.columns.text-center
+                                        div.logo-small &nbsp;
+                                div.row.title
+                                    div.small-12.columns.text-center.site-title 
+                                        | Designer Login
+                                hr.separator
+                                div.row.login-inputs
+                                    div.small-12.columns
+                                        input(name="email", type="text", name="email", placeholder="Email")
+                                    div.small-12.columns
+                                        input(type="password", name="password", placeholder="Password")
+                                div.row.login-bottom
+                                    div.small-12.medium-4.medium-offset-8.columns
+                                        input.primary-btn.submit-login(type="submit", value="SIGN IN")
+
+append script
+    script(type="text/javascript", src="{{ STATIC_URL }}hashchange/jquery.ba-hashchange.min.js")
+    script(type="text/javascript").
+        redirect = {% if next %}'{{ next }}'{% else %}false{% endif %};
+        code = {% if code %}'{{ code }}'{% else %}false{% endif %};
+    script(type="text/javascript", src="{{ STATIC_URL }}designs/js/designer/login.js")

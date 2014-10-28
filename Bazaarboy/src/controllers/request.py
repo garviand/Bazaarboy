@@ -121,6 +121,23 @@ def login_check():
         return wraps(controller)(login_checked_controller)
     return login_check_decorator
 
+def designer_check():
+    """
+    A decorator to check the login status
+    """
+    def designer_check_decorator(controller):
+        def designer_checked_controller(request=None, *args, **kwargs):
+            if request is None:
+                request = kwargs['request']
+            # Check if session exists
+            if request.session.has_key('designer'):
+                kwargs['designer'] = User.objects.get(id = request.session['designer'])
+            else:
+                kwargs['designer'] = None
+            return controller(request, *args, **kwargs)
+        return wraps(controller)(designer_checked_controller)
+    return designer_check_decorator
+
 def admin_required(roleRequirement=None):
     """
     A decorator to force admin login

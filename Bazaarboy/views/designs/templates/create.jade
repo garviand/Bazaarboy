@@ -1,0 +1,80 @@
+extends layout
+
+block body
+    div#designs-create
+        div#top
+            div.header.row
+                div.small-12.medium-4.columns.logo-container
+                    a(href="{% url index %}")
+                        img.logo(src="{{ STATIC_URL }}images/designs/logo2.png")
+                div.small-12.medium-8.columns.links-container.hide-for-small-only
+                    {% if not user %}
+                    a.orange-btn(href="{% url index:register %}?next=designs") Sign Up
+                    a(href="{% url index:login %}?next=designs") Log In
+                    {% endif %}
+                    a(href="mailto:build@bazaarboy.com", target="_blank") Contact
+                    a.active(href="{% url designs:index %}") Designs
+                    a(href="{% url index:pricing %}") Pricing
+        form#new-project
+            div.services
+                div.row
+                    div.title.small-12.columns I want to create a:
+                div.row
+                    div.choices.small-12.columns
+                        {% for service in services %}
+                        a.service-option(href="javascript:;", data-id="{{ service.id }}", data-price="{{ service.price }}")
+                            span.checkbox &nbsp;
+                            | {{ service.name }} (${{ service.price|floatformat:"0" }})
+                        {% endfor %}
+            div.description.info
+                div.row
+                    div.title.small-12.medium-8.columns Describe your event:&nbsp;
+                        span.orange *
+                div.row
+                    div.input-container.small-12.medium-8.columns
+                        textarea(name="description", placeholder="What is your event about? Also, if you have any preferences as to how your design looks (colors, etc.) please specify here!")
+            div.assets.info
+                div.row
+                    div.title.small-12.medium-8.columns Upload your logo and any other related files:&nbsp;&nbsp;
+                        span.grey (EPS, PDF, PNG, JPG)
+                div.row
+                    div.input-container.small-12.medium-8.columns
+                        div.dropzone
+            div.note.info.row
+                div.small-12.columns
+                    span.orange *&nbsp;
+                    | Required fields.
+            input(type="hidden", name="assets", value="")
+        div.payment
+            div.row
+                div.title.small-12.columns Total:
+            div.row
+                div.small-12.columns.payment-actions
+                    div.cost $0
+                    {% if user %}
+                    a.payment-btn.orange-btn(href="javascript:;", data-email="{{ user.email }}") Complete Order
+                    {% else %}
+                    a.payment-btn.orange-btn(href="javascript:;", data-email="{{ user.email }}", data-next="login") Log In
+                    a.payment-btn.orange-btn(href="javascript:;", data-email="{{ user.email }}", data-next="register") Register
+                    {% endif %}
+                    div.guarantee 100% money-back guarantee
+
+        div#footer
+            div.row.footer-container
+                div.small-12.medium-3.columns.copyright.small-only-text-center
+                    | &copy; 2014 Bazaarboy, LLC
+                div.small-12.medium-9.hide-for-small-only.columns.footer-links
+                    {% if not user %}
+                    a.sign-up(href="{% url index:register %}?next=designs") Sign Up
+                    a(href="{% url index:login %}?next=designs") Log In
+                    {% endif %}
+                    a(href="mailto:build@bazaarboy.com") Contact
+                    a(href="{% url designs:index %}") Designs
+                    a(href="{% url index:pricing %}") Pricing
+
+append script
+    script(type="text/javascript", src="https://checkout.stripe.com/v2/checkout.js")
+    script(type="text/javascript", src="{{ STATIC_URL }}dropzone/dropzone.min.js")
+    script(type="text/javascript").
+        var loggedIn = {% if user %}true{% else %}false{% endif %};
+    script(type="text/javascript", src="{{ STATIC_URL }}designs/js/create.js")

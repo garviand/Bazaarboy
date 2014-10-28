@@ -28,7 +28,7 @@ IMAGE_SIZE_LIMIT = 2621440
 @validate('POST')
 def upload_csv(request, params):
     """
-    Upload a image that is stored temporarily
+    Upload a CSV that is stored temporarily
     """
     if not request.FILES.has_key('csv_file'):
         return HttpResponseBadRequest('Bad request.')

@@ -1,0 +1,52 @@
+extends layout
+
+block body
+    div#designs-dashboard
+        div#top
+            div.header.row
+                div.small-12.medium-4.columns.logo-container
+                    a(href="{% url index %}")
+                        img.logo(src="{{ STATIC_URL }}images/designs/logo2.png")
+                div.small-12.medium-8.columns.links-container.hide-for-small-only
+                    a.orange-btn(href="{% url designs:create %}") New Project
+                    a(href="mailto:build@bazaarboy.com", target="_blank") Contact
+                    a.active(href="{% url designs:index %}") Designs
+                    a(href="{% url index:pricing %}") Pricing
+        div.current-projects
+            {% for project in currentProjects %}
+            div.row.project
+                div.small-12.columns
+                    | {{ project.description }}
+                    div.services.row
+                        div.small-12.columns
+                            {% for service in project.services.all %}
+                            {{ service.name }} {% if not forloop.last %}&nbsp;&nbsp;|&nbsp;&nbsp;{% endif %}
+                            {% endfor %}
+                    div.images.row
+                        {% for asset in project.images.all %}
+                        {% if asset.is_image %}
+                        div.small-12.medium-3.columns.end
+                            div(style="height:150px; width: 100%; background: url({{ asset.source.url }}); background-size: cover;")
+                        {% endif %}
+                        {% endfor %}
+                    div.other-assets.row
+                        div Other Assets
+                            {% for asset in project.images.all %}
+                            {% if not asset.is_image %}
+                            a(href="{{ asset.source.url }}") Asset&nbsp;
+                            {% endif %}
+                            {% endfor %}
+                            a(href="{% url designs:download_zip %}?project={{project.id}}") Download All Assets
+            {% endfor %}
+        hr
+        div.past-projects
+            {% for project in pastProjects %}
+            div
+                {{ project.description }}
+            {% endfor %}
+    
+
+append script
+    script(type="text/javascript").
+        var loggedIn = {% if user %}true{% else %}false{% endif %};
+    script(type="text/javascript", src="{{ STATIC_URL }}designs/js/dashobard.js")

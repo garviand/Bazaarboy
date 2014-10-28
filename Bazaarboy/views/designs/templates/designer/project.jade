@@ -1,0 +1,44 @@
+extends ../layout
+
+block body
+    div#designs-designer-project
+        div#top
+            div.header.row
+                div.small-12.medium-4.columns.logo-container
+                    a(href="{% url index %}")
+                        img.logo(src="{{ STATIC_URL }}images/designs/logo2.png")
+                div.small-12.medium-8.columns.links-container.hide-for-small-only
+                    a.active(href="javascript:;") Hi, {{ designer.first_name }}!
+        div.actions
+            div.row.actions-container
+                div.small-12.medium-6.columns
+                    div.dropzone
+                div.small-12.medium-3.columns.services
+                    {% for service in project.services.all %}
+                    a.service-btn(href="javascript:;", data-id="{{service.id}}") {{ service.name }}
+                    {% endfor %}
+                div.small-12.medium-3.columns
+                    a.add-submission-btn(href="javascript:;", data-id="{{project.id}}") Add Submission
+            form#designer-project
+                input(type="hidden", name="assets")
+        div.project
+            div.row.project-container
+                div.small-12.medium-2.columns
+                    {{ project.id }}
+                div.small-12.medium-4.columns
+                    {{ project.owner.email }}
+                div.small-12.medium-6.columns
+                    {{ project.description }}
+        div.submissions
+            {% for submission in submissions %}
+            div.row.submission
+                {{submission.created_time|date:"m/d"}}
+            {% endfor %}
+
+    
+
+append script
+    script(type="text/javascript", src="{{ STATIC_URL }}dropzone/dropzone.min.js")
+    script(type="text/javascript").
+        var loggedIn = {% if user %}true{% else %}false{% endif %};
+    script(type="text/javascript", src="{{ STATIC_URL }}designs/js/designer/project.js")

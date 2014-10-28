@@ -1,0 +1,30 @@
+extends ../layout
+
+block body
+    div#designs-designer-dashboard
+        div#top
+            div.header.row
+                div.small-12.medium-4.columns.logo-container
+                    a(href="{% url index %}")
+                        img.logo(src="{{ STATIC_URL }}images/designs/logo2.png")
+                div.small-12.medium-8.columns.links-container.hide-for-small-only
+                    a.active(href="javascript:;") Hi, {{ designer.first_name }}!
+        div.current-projects
+            {% for project in currentProjects %}
+            div.row.project
+                div.small-12.medium-2.columns
+                    {{ project.id }}
+                div.small-12.medium-6.columns
+                    {{ project.description }}
+                div.small-12.medium-4.columns
+                    div.row
+                        div.small-12.columns
+                            a(href="{% url designs:designer_project project.id %}") View/Submit
+            {% endfor %}
+
+    
+
+append script
+    script(type="text/javascript").
+        var loggedIn = {% if user %}true{% else %}false{% endif %};
+    script(type="text/javascript", src="{{ STATIC_URL }}designs/js/designer/index.js")

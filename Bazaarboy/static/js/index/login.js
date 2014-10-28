@@ -31,7 +31,17 @@
         if (params.email.length !== 0 && params.password.length !== 0) {
           Bazaarboy.post('user/auth/', params, function(response) {
             if (response.status === 'OK') {
-              Bazaarboy.redirect('index');
+              if (redirect) {
+                if (redirect === 'designs') {
+                  if (code) {
+                    window.location.href = "/designs/finalize?code=" + code;
+                  } else {
+                    window.location.href = "/designs?auth=true";
+                  }
+                }
+              } else {
+                Bazaarboy.redirect('index');
+              }
             } else {
               alert(response.message);
               window.clearTimeout(scope.timer);
@@ -62,7 +72,17 @@
           Bazaarboy.post('user/create/', params, function(response) {
             console.log(response);
             if (response.status === 'OK') {
-              Bazaarboy.redirect('index');
+              if (redirect) {
+                if (redirect === 'designs') {
+                  if (code) {
+                    window.location.href = "/designs/finalize?code=" + code;
+                  } else {
+                    window.location.href = "/designs?auth=true";
+                  }
+                }
+              } else {
+                Bazaarboy.redirect('index');
+              }
             } else {
               alert(response.message);
               window.clearTimeout(scope.timer);

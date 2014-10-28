@@ -119,23 +119,33 @@ def index(request, params, user):
     return render(request, 'index/index.html', locals())
 
 @login_check()
-def login(request, user):
+@validate('GET', [], ['next', 'code'])
+def login(request, user, params):
     """
     Login Page
     """
     if user:
         return redirect('index')
     else:
+        if params['next']:
+            next = params['next']
+        if params['code']:
+            code = params['code']
         return render(request, 'index/login.html', locals())
 
 @login_check()
-def register(request, user):
+@validate('GET', [], ['next', 'code'])
+def register(request, user, params):
     """
     Register Page
     """
     if user:
         return redirect('index')
     else:
+        if params['next']:
+            next = params['next']
+        if params['code']:
+            code = params['code']
         return render(request, 'index/register.html', locals())
 
 @login_check()

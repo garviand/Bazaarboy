@@ -1,0 +1,29 @@
+{% load layout %}
+doctype 5
+html(lang="en")
+    head
+        block head
+            title
+                block title
+                    | Bazaarboy Designs
+            meta(charset="utf-8")
+            meta(name="viewport", content="width=device-width")
+            link(rel="shortcut icon", href="{{ STATIC_URL }}images/logo.png")
+            link(rel="stylesheet", href="//cloud.typography.com/7993072/806564/css/fonts.css")
+            link(rel="stylesheet", href="{{ STATIC_URL }}sweetalert/sweet-alert.css")
+            link(rel="stylesheet", href="{{ STATIC_URL }}dropzone/css/basic.css")
+            link(rel="stylesheet", href="{{ STATIC_URL }}css/foundation.css")
+            link(rel="stylesheet", href="{{ STATIC_URL }}gizmo/ss-gizmo.css")
+            link(rel="stylesheet", href="{{ STATIC_URL }}lightbox/lightbox.css")
+            link(rel="stylesheet", href="{{ STATIC_URL }}designs/css/layout.css")
+    body
+        block body
+        block script
+            script(type="text/javascript", src="{{ STATIC_URL }}js/libraries.js")
+            script(type="text/javascript", src="{{ STATIC_URL }}js/libraries/jquery.min.js")
+            script(type="text/javascript", src="{{ STATIC_URL }}sweetalert/sweet-alert.min.js")
+            script(type="text/javascript", src="{{ STATIC_URL }}fastclick/fastclick.js")
+            script(type="text/javascript").
+                var rootUrl = '{% url index %}';
+                var csrfToken = '{{ csrf_token }}';
+            script(type="text/javascript", src="{{ STATIC_URL }}designs/js/layout.js")

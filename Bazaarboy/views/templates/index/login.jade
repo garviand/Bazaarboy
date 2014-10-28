@@ -38,8 +38,11 @@ block body
                                 div.small-12.medium-8.columns
                                     a.trouble(href="{% url user:reset %}") Forgot your password?
                                 div.small-12.medium-4.columns
-                                    a.switch(href="{% url index:register %}") Register
+                                    a.switch(href="{% url index:register %}{% if next %}?next={{ next }}{% endif %}{% if code %}&code={{ code }}{% endif %}") Register
 
 append script
     script(type="text/javascript", src="{{ STATIC_URL }}hashchange/jquery.ba-hashchange.min.js")
+    script(type="text/javascript").
+        redirect = {% if next %}'{{ next }}'{% else %}false{% endif %};
+        code = {% if code %}'{{ code }}'{% else %}false{% endif %};
     script(type="text/javascript", src="{{ STATIC_URL }}js/index/login.js")

@@ -38,8 +38,11 @@ block body
                         div.small-10.small-offset-1.columns
                             div.row
                                 div.small-12.medium-4.medium-offset-8.columns.end
-                                    a.switch(href="{% url index:login %}") Login
+                                    a.switch(href="{% url index:login %}{% if next %}?next={{ next }}{% endif %}{% if code %}&code={{ code }}{% endif %}") Login
 
 append script
     script(type="text/javascript", src="{{ STATIC_URL }}hashchange/jquery.ba-hashchange.min.js")
+    script(type="text/javascript").
+        redirect = {% if next %}'{{ next }}'{% else %}false{% endif %};
+        code = {% if code %}'{{ code }}'{% else %}false{% endif %};
     script(type="text/javascript", src="{{ STATIC_URL }}js/index/login.js")
