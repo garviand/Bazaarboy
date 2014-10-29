@@ -1,0 +1,583 @@
+// Event Sub-Layout Full Screen Cover
+
+extends ../layout
+
+block title
+	| {% if preview %}Preview | {% endif %}{{ event.name }}
+
+append head
+	meta(name="description", content="{{ event.summary }}")
+
+	{% if editable %}
+	link(rel="stylesheet", href="{{ STATIC_URL }}jQueryUI/jquery-ui.css")
+	link(rel="stylesheet", href="{{ STATIC_URL }}redactor/redactor.css")
+	link(rel="stylesheet", href="{{ STATIC_URL }}pikaday/pikaday.css")
+	{% endif %}
+
+	//- Facebook
+	meta(property="og:url", content="{{ request.build_absolute_uri }}")
+	meta(property="og:title", content="{{ event.name }}")
+	meta(property="og:description", content="{{ event.summary }}")
+	{% if event.cover %}
+	meta(property="og:image", content="{{ event.cover.source.url|sanitizeUrl }}")
+	link(rel="image_src", href="{{ event.cover.source.url|sanitizeUrl }}")
+	{% endif %}
+
+block body
+	include ../components/facebook
+
+	div#confirmation-modal.reveal-modal(data-reveal)
+		div.row
+			div.small-12.text-center.columns.confirmation-title
+				| Confirmation - Thank You!
+		div.row
+			div.medium-5.small-12.columns.organizers.text-left
+				div.row
+					div.medium-12.title.columns
+						| Organizer{{ organizers|length|pluralize }}
+				{% for organizer in organizers %}
+				div.row.organizer
+					div.organizer-icon(style="{% if organizer.profile.image %}background-image:url({{ organizer.profile.image.source.url }});{% endif %}")
+					div.organizer-name
+						span {{ organizer.profile.name }}
+				{% endfor %}
+			div.medium-7.small-12.columns.tickets
+				div.row
+					div.medium-12.title.columns.small-only-text-center
+						| Your Tickets
+				div.ticket-model.hidden
+					div.ticket.row
+						div.medium-4.small-12.columns.small-only-text-center
+							div.quantity x0
+						div.medium-8.small-12.columns.small-only-text-center
+							div.name Ticket Name
+		div.row
+			div.confirmation-note
+				| A confirmation email will be sent with RSVP details and a PDF ticket attachment
+	
+	div#launch-modal.reveal-modal.text-center.medium(data-reveal)
+		div.empty-state-container(class="{% if ticketExists %}hide{% endif %}")
+			div.row
+				div.medium-5.columns
+					| &nbsp;
+				div.medium-6.columns.end.empty-state-content
+					div.text CONGRATULATIONS
+					hr
+					div.subtext Your event is live!
+					div.row
+						div.large-7.medium-7.small-8.columns.to-dash
+							a.start-invite.primary-btn(href="javascript:;") Invite Guests
+						div.large-5.medium-5.small-4.columns.close-launch-modal
+							| or&nbsp;&nbsp;
+							a.close-reveal-modal Close
+	
+	div#invite-modal.reveal-modal.medium(data-reveal)
+		form.invite-form(name="invite")
+			div.row
+				div.medium-12.columns.title.text-center Invite Guests
+			{% if pastEventList.items.count > 0 %}
+			div.row.previous-events
+				div.medium-3.columns
+					label.right.inline Select Previous Attendee Lists To Invite
+				div.medium-9.columns
+					{% for k, event in pastEventList.items %}
+					div.row.event-list(data-id="{{ event.id }}")
+						div.medium-12.columns
+							div.event {{ event.name }} ({{ event.quantity }} emails)
+					{% endfor %}
+					div.row.subtext
+						div.medium-12.columns
+							small * duplicate emails will not receive multiple messages
+			{% endif %}
+			div.row.inviter.hide
+				div.medium-3.columns.text-left
+					label.inline(for="additional-emails") Name
+				div.medium-9.columns
+					input#inviter-name(type="text", name="inviter", placeholder="Your Name")
+			div.row
+				div.medium-3.columns.text-left
+					label.inline(for="additional-emails") Subject
+				div.medium-9.columns
+					input#email-subject(type="text", name="subject", placeholder="Email Subject")
+			div.row
+				div.medium-3.columns.text-left
+					label.inline(for="additional-emails") Add Emails
+				div.medium-9.columns
+					textarea#additional-emails(name="emails", placeholder="Separated By Commas (a@xyz.com, b@xyz.com)")
+			div.row
+				div.medium-3.columns.text-left
+					label.inline(for="additional-emails") Add Message
+				div.medium-9.columns
+					textarea#custom-message(name="message", placeholder="Add a custom message to the invitation (optional)")
+			div.row.send-invite
+				div.medium-4.medium-offset-3.columns
+					a.blue-btn.send-invitation(href="javascript:;") Send Invitations
+				div.medium-1.columns.text-center.move-down
+					| or
+				div.medium-2.small-12.text-center.columns.end.move-down
+					a.close-invite-modal(href="javascript:;") Close
+		div.invite-success.hidden
+			div.row
+				div.medium-12.column.text-center.congrats
+					| Congratulations, you just sent&nbsp;
+					span.invite-count &nbsp;
+					| &nbsp;invitations!
+				div.medium-12.columns.close
+					a.blue-btn.close-invite-modal Back To List
+	
+	div#contact-organizer-modal.reveal-modal.medium(data-reveal)
+		form.contact-organizer-form(name="contact-organizer", data-abide)
+			div.row
+				div.medium-12.columns.text-center.contact-organizer-title
+					h3 Contact 
+						span.underline {{ organizers.0.profile.name }}
+			div.row
+				div.medium-3.columns.text-center
+					label.right.inline(for="contact-name") Your Name
+				div.medium-9.columns
+					input#contact-name(type="text", name="name", required)
+					small.error Your Name Is Required
+			div.row
+				div.medium-3.columns.text-center
+					label.right.inline(for="contact-email") Your Email
+				div.medium-9.columns
+					input#contact-email(type="email", name="useremail", required)
+					small.error Your Email Is Required
+			div.row
+				div.medium-3.columns.text-center
+					label.right.inline(for="contact-message") Your Message
+				div.medium-9.columns
+					textarea#contact-message(name="message", required)
+					small.error A Message Is Required
+			div.row.send-contact-organizer
+				div.medium-4.medium-offset-3.columns
+					a.secondary-btn.send-message(href="javascript:;") Send Message
+				div.medium-1.columns.text-center.move-down
+					| or
+				div.medium-2.columns.end.move-down
+					a.contact-organizer-close(href="javascript:;") Close
+			input(type="hidden", name="profile", value="{{ organizers.0.profile.id }}")
+			input(type="hidden", name="event", value="{{ event.id }}")
+		div.row.contact-organizer-success
+			div.medium-12.columns.text-center.contact-organizer-title
+				h3 Message Sent! 
+		div.row.contact-organizer-success
+			div.medium-4.medium-offset-4
+				a.contact-organizer-close.primary-btn(href="javascript:;") Back To Event
+	
+	div#issue-modal.reveal-modal.medium(data-reveal)
+		form.issue-form(name="contact-organizer", data-abide)
+			div.row
+				div.medium-12.columns.text-center.issue-title
+					h3 Having issue RSVPing for this event?
+			div.row
+				div.medium-12.columns.issue-subtitle.text-center
+					| Send us the details of what you are experiencing and we will help out as soon as possible.
+			div.row
+				div.medium-3.columns.text-center
+					label.right.inline(for="contact-name") Your Name
+				div.medium-9.columns
+					input#issue-name(type="text", name="name", required)
+					small.error Your Name Is Required
+			div.row
+				div.medium-3.columns.text-center
+					label.right.inline(for="contact-email") Your Email
+				div.medium-9.columns
+					input#issue-email(type="email", name="useremail", required)
+					small.error Your Email Is Required
+			div.row
+				div.medium-3.columns.text-center
+					label.right.inline(for="contact-message") Your Issue
+				div.medium-9.columns
+					textarea#issue-message(name="message", required)
+					small.error A Message Is Required
+			div.row.send-issue
+				div.medium-4.medium-offset-3.columns
+					a.secondary-btn.send-issue-btn(href="javascript:;") Send Message
+				div.medium-1.columns.text-center.move-down
+					| or
+				div.medium-2.columns.end.move-down
+					a.issue-close(href="javascript:;") Close
+			input(type="hidden", name="event", value="{{ event.id }}")
+		div.row.issue-success
+			div.medium-12.columns.text-center.issue-title
+				h3 Report Sent! You can expect an email response shortly.
+		div.row.issue-success
+			div.medium-4.medium-offset-4
+				a.issue-close.primary-btn(href="javascript:;") Back To Event
+	
+	div#add-organizer-modal.reveal-modal.medium(data-reveal)
+		div.organizer-model.hide
+			div.row.organizer
+				div.medium-3.columns.organizer-image &nbsp;
+				div.medium-7.columns.organizer-name &nbsp;
+				div.medium-2.columns.organizer-submit
+					a.add-organizer-submit.secondary-btn(href="javascript:;") Add
+		form.add-organizer-form(name="add-organizer")
+			div.row
+				div.medium-12.columns.text-center.contact-organizer-title
+					h3 Add Organizer to  
+						span.underline {{ event.name }}
+			div.row
+				div.medium-3.columns.text-center
+					label.right.inline(for="organizer-name") Organizer
+				div.medium-9.columns
+					input#organizer-name(type="text", name="organizer_name", placeholder="Search for Organizer Here")
+		div.row.add-organizer-success
+			div.medium-12.columns.text-center.add-organizer-title
+				h3 Organizer Added!
+		div.row.add-organizer-success
+			div.medium-4.medium-offset-2.columns
+				a.add-organizer-close.primary-btn(href="javascript:;") Back To Event
+			div.medium-4.columns.end
+				a.add-organizer-another.secondary-btn(href="javascript:;") Add Another
+	
+	div#event
+		div#event-header(style="{% if design %}position:absolute;{% endif %}")
+			div.event-header-body(class="{% if design %}medium-8{% elif preview and editable %}medium-7{% elif preview %}medium-8{% else %}medium-8{% endif %} columns")
+				div.profile-icon
+					div.inner
+						a(href="{% url index %}")
+							img(src="{{ STATIC_URL }}images/logo-inverse.png")
+				div.event-name 
+					span {{ event.name }}
+				{% if not design %}
+				{% if preview and editable %}
+
+			div.event-design.medium-1.columns.hide-for-small-only
+				a(href="{{ event|eventUrl }}?design") Back to Page Design
+				{% endif %}
+
+				//- {% if not hasEnded %}
+			//- div.event-price.medium-1.small-4.columns
+				span
+					{% spaceless %}
+					{% if rsvp %}
+					| &nbsp;
+					{% else %}
+					| {% if cheapest != 0 %}${{ cheapest|floatformat:-2 }}{% else %}Free{% endif %}{% if tickets|length != 1 %}+{% endif %}
+					{% endif %}
+					{% endspaceless %}
+
+			//- div.event-rsvp.medium-2.small-4.columns
+				a#rsvp-button.primary-btn(href="javascript:;")
+					span.ss-bookmark &nbsp;
+					| RSVP
+				{% else %}
+
+			//- div.event-rsvp.medium-3.small-4.columns &nbsp;    
+			//- 	{% endif %}
+
+			div.event-share.medium-1.small-4.end.columns
+				a.share-btn.secondary-btn {% if hasEnded %}Share{% else %}Invite{% endif %}
+
+			div.event-share-canvas.medium-3.small-12.columns.hidden
+				div.share-canvas
+					| <span class='st_facebook_large' displayText='Facebook'></span>
+					| <span class='st_twitter_large' displayText='Tweet'></span>
+					| <span class='st_googleplus_large' displayText='Google +'></span>
+					| <span class='st_pinterest_large' displayText='Pinterest'></span>
+					| <span class='email-invite' displayText='Email'></span>
+					| <span class='close-share ss-delete'></span>
+				{% endif %}
+				{% if design %}
+				{% if not event.is_launched %}
+
+			div.event-launch.medium-2.columns.clearfix
+				a.right.primary-btn.launch-btn(href="javascript:;") Launch Event
+				{% endif %}
+
+			div.event-launch.medium-2.columns.clearfix.right
+				a.back-btn.secondary-btn(href="{{ event|eventUrl }}?preview") Preview Event
+				{% endif %}
+
+		div#event-body.row
+			div#event-hero.medium-12.small-12(style="background-image:url({% if event.cover %}{{ event.cover.source.url }}{% endif %});")
+				div.gradient-overlay
+				div.organizer-logo
+				div.event-hero-rsvp
+					form.small-8.columns
+						input(type="").tix-type.small-7 Season
+						input(type="").tix-quantity.small-3 Quantity
+						button(type="submit").small-2 RSVP
+
+				//- div.event-rsvp
+				//- div.event-price
+
+			div#event-sidebar.medium-4.small-12.columns
+				div.row.event-info
+					div.medium-10.columns
+						div#event-datetime.row
+							div#event-date
+								div.month {{ event.start_time|date:'M' }}
+								div.day {{ event.start_time|date:'j' }}
+							div#event-time.small-12.columns
+								span
+									| {% spaceless %}
+									| {% if event.end_time %}
+									//- Short version
+									| {% if event.end_time|shouldShortenEndTime:event.start_time %}
+									div.day-name {{ event.start_time|date:'l' }}
+									div.time{{ event.start_time|date:'g:iA' }} - {{ event.end_time|date:'g:iA' }}
+									| {% else %}
+									//- Long version
+									| {{ event.start_time|date:'M. jS g:iA' }} to {{ event.end_time|date:'M. jS g:iA' }}
+									| {% endif %}
+									| {% else %}
+									div.day-name {{ event.start_time|date:'l' }}
+									div.time{{ event.start_time|date:'g:iA' }}
+									| {% endif %}
+									| {% endspaceless %}
+						hr
+						div#event-location.row
+							div.location.small-12.columns
+								{{ event.location }}
+							//div.address.small-12.columns.hide
+								span.street-address Street address
+								br
+								span.city-zip City and Zip
+							div.map-canvas.small-12.columns.hide(data-latitude="{{ event.latitude }}", data-longitude="{{ event.longitude }}")
+								div
+									div#map-canvas
+						div#event-calendar-add.row.hidden
+							div.calendar-add.small-12.columns
+								a.addthisevent(href="https://bazaarboy.com/event/{{ event.id }}", title="Add to Calendar")
+									| Add to Calendar
+									span._start {{ event.start_time|date:'m-d-Y H:i:s' }}
+									{% if event.end_time %}
+									span._end {{ event.end_time|date:'m-d-Y H:i:s' }}
+									{% else %}
+									span._end {{ event.start_time|date:'m-d-Y' }} {{ event.start_time|date:'H'|add:'1'}}:{{ event.start_time|date:'i:s' }}
+									{% endif %}
+									span._zonecode 11
+									span._summary {{ event.name }}
+									span._description {{ event.summary }}
+									span._location {{ event.location }}
+									span._organizer {{ organizers.0.profile.name }}
+									span._organizer_email {{ organizers.0.profile.email }}
+									span._all_day_event false
+									span._date_format MM/DD/YYYY
+								{% if event.latitude and event.longitude %}
+								span &nbsp;or&nbsp;
+								a(href="https://maps.google.com/?saddr={{ event.latitude }},{{ event.longitude }}", target="_blank") Get Directions
+								{% endif %}
+						hr
+						div#event-organizers.row
+							div.caption.small-12.columns
+								| Organizer{{ organizers|length|pluralize }}
+							div.canvas.small-12.columns.organizer-list
+								{% for organizer in organizers %}
+								div.organizer
+									div.organizer-icon(style="{% if organizer.profile.image %}background-image:url({{ organizer.profile.image.source.url }});{% endif %}")
+									div.organizer-name
+										span {{ organizer.profile.name }}
+								{% endfor %}
+						{% if organizers.0.profile.email and not design %}
+						div.row.contact-organizer
+							div.small-12.columns
+								a.contact-organizer-btn(href="javascript:;") Contact Organizer
+						{% elif design %}
+						div.row.add-organizer
+							div.small-12.columns
+								a.add-organizer-btn(href="javascript:;") Add Organizer
+						{% endif %}
+						div#event-sponsors.row
+			
+			div#event-content.medium-8.small-12.columns
+				//- div#event-cover.row(style="{% if event.cover %}margin-bottom: 35px;{% elif not design %}height: 0; overflow:hidden;{% else %}margin-bottom: 10px;{% endif %}")
+				//- 	div.columns
+				//- 		{% if design %}
+				//- 		div.upload
+				//- 			form.upload_cover
+				//- 				div.row
+				//- 					div.small-12.medium-4.columns
+				//- 						a.blue-btn-inverse.edit_cover_btn(href="javascript:;", class="{% if not event.cover %}hidden{% endif %}") Edit Cover Image
+				//- 						a.blue-btn-inverse.upload_cover_btn(href="javascript:;", class="{% if event.cover %}hidden{% endif %}") Upload Cover Image
+				//- 					div.small-12.medium-4.columns.end
+				//- 						a.blue-btn-inverse.delete_cover_btn(href="javascript:;", class="{% if not event.cover %}hidden{% endif %}") Delete Cover Image
+				//- 						input.hidden(type="file", name="image_file")
+				//- 						{% csrf_token %}
+				//- 		{% endif %}
+				//- 		div.image
+				//- 			img#cover-image(src="{% if event.cover %}{{ event.cover.source.url }}{% endif %}")
+				//- 			img#cover-image-placeholder.hidden
+				div#event-description.row
+					div.description.small-12.columns(style="margin-top:0;")
+						div.inner
+							{{ event.description|safe }}
+					{% if design %}
+					div.actions.small-12.columns
+						div.row.save-container
+							div.save-status.medium-4.columns.text-center
+								| Saved
+							div.medium-4.end.columns
+								a.save.primary-btn(href="javascript:;") Save description
+					{% endif %}
+
+		div#event-footer
+			div.inner.clearfix
+				div.poweredby.left
+					| Powered by 
+				div.logo.left
+					a(href="{% url index %}", target="_blank")
+						img(src="{{ STATIC_URL }}images/logo-inverse.png")
+				div.links.left
+					a(href="{% url index:pricing %}") Pricing
+					| &nbsp;&nbsp;&nbsp;
+					a(href="{{ STATIC_URL }}bboy-terms.pdf") Terms
+
+		div#tickets.hide
+			div#tickets-header Choose Your Tickets
+			div#tickets-body
+				div.inner
+					div#tickets-canvas
+						{% for ticket in tickets %}
+						div.ticket.row(class="{% if forloop.last %}last{% endif %} {% if ticket|validateTiming %}valid{% else %}invalid{% endif %} {% if ticket.quantity == 0 %}soldout{% endif %}", data-id="{{ ticket.id }}", data-price="{{ ticket.price }}", data-address="{% if ticket.request_address %}yes{% endif %}")
+							div.small-12.columns
+								div.ticket-top.row
+									div.small-5.medium-4.columns.container
+										div.ticket-price
+											div.check
+												div.check-inner
+											div.price {% if ticket.price == 0 %}Free{% else %}${{ ticket.price|floatformat:"-2" }}{% endif %}
+									div.small-7.medium-8.columns.container
+										div.ticket-name {{ ticket.name }}
+								{% if not ticket|validateTiming %}
+								div.ticket-top.row
+									div.small-12.columns.timing-container
+										| {{ ticket|ticketSaleTiming }}
+								{% endif %}
+								div.ticket-middle.row
+									div.small-4.columns.container
+										div.info-label Quantity
+									div.small-8.columns.container
+										input.ticket-quantity(type="text", name="quantity", value="0")
+								{% for field_name, field_options in ticket.custom_fields.items %}
+								div.ticket-middle.row
+									div.small-4.columns.container
+										div.info-label {{ field_name }}
+									{% if field_options|length == 0 %}
+									div.small-8.columns.container.custom-field-group(data-field="{{ field_name }}")
+										div.small-12.columns.custom-field-container
+											input.custom-field-input(href="javascript:;", type="text", data-option="{{ option }}")
+									{% else %}
+									div.small-7.end.columns.container.custom-option-group(data-field="{{ field_name }}")
+										div.title Select One Option
+										{% for option in field_options %}
+										div.small-12.columns.custom-option(class="{% if forloop.last %}end{% endif %}", data-option="{{ option }}")
+											div.row
+												div.small-3.columns.option-radio
+													div.radio
+														div.radio-inner
+												div.small-9.columns.option-text {{ option }}
+										{% endfor %}
+									{% endif %}
+								{% endfor %}
+								div.ticket-bottom.row
+									div.small-12.columns.ticket-description-container
+										{% if ticket.quantity == 0 %}
+										div.ticket-sold-out Sold Out
+										{% endif %}
+										div.ticket-description 
+										br
+										| {{ ticket.description }}
+
+						{% endfor %}
+			div#tickets-details
+				div.row
+					div.small-12.columns
+						div.title Some Details About You
+				div.row
+					div.small-12.columns
+						div.top.row
+							div.small-12.medium-6.columns
+								input(type="text", name="first_name", placeholder="First Name")
+							div.small-12.medium-6.columns
+								input(type="text", name="last_name", placeholder="Last Name")
+						div.middle.row
+							div.small-12.medium-6.columns
+								input(type="text", name="email", placeholder="Email")
+							div.small-12.medium-6.columns
+								input(type="text", name="phone", placeholder="Phone (Optional)")
+						hr.address-container.hide
+						div.collapse.row.address-container.hide
+							div.small-12.columns
+								input(type="text", name="address", placeholder="Address")
+						div.middle.collapse.row.address-container.hide
+							div.small-12.medium-6.columns
+								input(type="text", name="city", placeholder="City")
+							div.small-12.medium-3.columns
+								input(type="text", name="state", placeholder="State")
+							div.small-12.medium-3.columns
+								input(type="text", name="zip", placeholder="Zip")
+						hr.payment-container.hide
+						form#payment-form
+							div.middle.collapse.row.payment-container.hide
+								div.small-12.medium-12.columns.cc-container
+									input(type="text", size="20", data-stripe="number", placeholder="Card Number")
+							div.middle.collapse.row.payment-container.hide
+								div.small-12.medium-4.columns
+									input(type="text", size="4", data-stripe="cvc", placeholder="CVC")
+								div.small-12.medium-4.columns
+									input(type="text", size="2", data-stripe="exp-month", placeholder="Month (MM)")
+								div.small-12.medium-4.columns
+									input(type="text", size="4", data-stripe="exp-year", placeholder="Year (YYYY)")
+						{% if promos.count > 0 %}
+						div.bottom
+							div.row.collapse.start-promo
+								div.small-12.columns.text-right
+									a.start-promo-btn(href="javascript:;") Enter Promo Code
+							div.row.collapse.enter-promo.hidden
+								div.small-12.columns.promo-container
+									input.promo-input(type="text", name="promos", placeholder="Promo Code (applies on confirm)")
+						{% endif %}
+			div#tickets-footer.row
+				div#tickets-subtotal.small-12.small-only-text-center.medium-8.columns
+					| Subtotal | $
+					span.total 0
+					span.fee.hide  + Fee
+					| &nbsp;&middot;&nbsp;
+					span.count 0
+					|  Ticket
+					span.plural s
+					div.issues
+						a.issue-btn(href="javascript:;") Issues Purchasing?
+				div.small-12.medium-4.columns
+					a#tickets-confirm.primary-btn(href="javascript:;") Confirm RSVP
+
+		div#wrapper-overlay.hide
+
+append script
+	{% if design %}
+	script(src="https://dme0ih8comzn4.cloudfront.net/js/feather.js")
+	{% endif %}
+	script(type="text/javascript", src="{{ STATIC_URL }}hashchange/jquery.ba-hashchange.min.js")
+	script.
+		var switchTo5x = true;
+	script(type="text/javascript", src="https://ws.sharethis.com/button/buttons.js")
+	script.
+		stLight.options({
+			publisher: "7bffe644-d542-4b4d-affe-420a0175f3c0", 
+			doNotHash: false, 
+			doNotCopy: false, 
+			hashAddressBar: false,
+			popup: false,
+			onhover: false
+		});
+	script(type="text/javascript", src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAasW6vqPCn18g6UMaFWV90qGMSo6pErwo&sensor=false&libraries=places")
+	
+	{% if editable %}
+	script(type="text/javascript", src="{{ STATIC_URL }}redactor/redactor.min.js")
+	{% endif %}
+	script(type="text/javascript", src="{{ STATIC_URL }}debounce/jquery.debounce.js")
+	script(type="text/javascript", src="{{ STATIC_URL }}addthisevent/atemay.js")
+	script(type="text/javascript", src="https://checkout.stripe.com/v2/checkout.js")
+	script(type="text/javascript", src="https://js.stripe.com/v2/")
+	script(type="text/javascript").
+		var eventId = {{ event.id }};
+		var eventUrl = '{{ event|eventUrl }}';
+		var design = {% if design %}true{% else %}false{% endif %};
+		$(window).load(function(){
+			$('div#event-calendar-add').removeClass('hidden')
+		});
+	script(type="text/javascript", src="{{ STATIC_URL }}js/event/index.js")
