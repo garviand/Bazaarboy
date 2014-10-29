@@ -268,7 +268,7 @@ block body
 			//- div.event-rsvp.medium-3.small-4.columns &nbsp;    
 			//- 	{% endif %}
 
-			div.event-share.medium-1.small-4.end.columns
+			div.event-share.medium-offset-2.medium-2.small-4.columns
 				a.share-btn.secondary-btn {% if hasEnded %}Share{% else %}Invite{% endif %}
 
 			div.event-share-canvas.medium-3.small-12.columns.hidden
@@ -295,16 +295,17 @@ block body
 			div#event-hero.medium-12.small-12(style="background-image:url({% if event.cover %}{{ event.cover.source.url }}{% endif %});")
 				div.gradient-overlay
 				div.event-hero-rsvp
-					{{ organizers|length|pluralize }}
-					{% with organizers.0 as first_organizer %}
+					{% with organizers|first as first_organizer %}
 					{% if first_organizer.profile.image %}
 					div.organizer-logo
 						img(src="{{ first_organizer.profile.image.source.url }}")
 					{% endif %}
 					{% endwith%}
-					form.small-8.columns
-						.small-9.columns 
-							.tix-type STL Surge Season Passes
+					form.hero-ticket-form.small-8.columns
+						.small-9.columns
+							{% with tickets|first as ticket %} 
+							.tix-type(data-id="{{ ticket.id }}") {{ ticket.name }}
+							{% endwith %}
 						//- input(type="").tix-quantity.small-3 Quantity
 						.small-3.columns
 							button(type="submit") RSVP
@@ -392,23 +393,6 @@ block body
 						div#event-sponsors.row
 			
 			div#event-content.medium-8.small-12.columns
-				//- div#event-cover.row(style="{% if event.cover %}margin-bottom: 35px;{% elif not design %}height: 0; overflow:hidden;{% else %}margin-bottom: 10px;{% endif %}")
-				//- 	div.columns
-				//- 		{% if design %}
-				//- 		div.upload
-				//- 			form.upload_cover
-				//- 				div.row
-				//- 					div.small-12.medium-4.columns
-				//- 						a.blue-btn-inverse.edit_cover_btn(href="javascript:;", class="{% if not event.cover %}hidden{% endif %}") Edit Cover Image
-				//- 						a.blue-btn-inverse.upload_cover_btn(href="javascript:;", class="{% if event.cover %}hidden{% endif %}") Upload Cover Image
-				//- 					div.small-12.medium-4.columns.end
-				//- 						a.blue-btn-inverse.delete_cover_btn(href="javascript:;", class="{% if not event.cover %}hidden{% endif %}") Delete Cover Image
-				//- 						input.hidden(type="file", name="image_file")
-				//- 						{% csrf_token %}
-				//- 		{% endif %}
-				//- 		div.image
-				//- 			img#cover-image(src="{% if event.cover %}{{ event.cover.source.url }}{% endif %}")
-				//- 			img#cover-image-placeholder.hidden
 				div#event-description.row
 					div.description.small-12.columns(style="margin-top:0;")
 						div.inner
@@ -589,3 +573,4 @@ append script
 			$('div#event-calendar-add').removeClass('hidden')
 		});
 	script(type="text/javascript", src="{{ STATIC_URL }}js/event/index.js")
+	script(type="text/javascript", src="{{ STATIC_URL }}js/event/format-full-screen.js")
