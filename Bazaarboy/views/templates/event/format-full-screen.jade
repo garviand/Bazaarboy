@@ -291,15 +291,23 @@ block body
 				a.back-btn.secondary-btn(href="{{ event|eventUrl }}?preview") Preview Event
 				{% endif %}
 
-		div#event-body.row
+		div#event-body.row.surge
 			div#event-hero.medium-12.small-12(style="background-image:url({% if event.cover %}{{ event.cover.source.url }}{% endif %});")
 				div.gradient-overlay
 				div.event-hero-rsvp
+					{{ organizers|length|pluralize }}
+					{% with organizers.0 as first_organizer %}
+					{% if first_organizer.profile.image %}
 					div.organizer-logo
+						img(src="{{ first_organizer.profile.image.source.url }}")
+					{% endif %}
+					{% endwith%}
 					form.small-8.columns
-						input(type="").tix-type.small-7 Season
-						input(type="").tix-quantity.small-3 Quantity
-						button(type="submit").small-2 RSVP
+						.small-9.columns 
+							.tix-type STL Surge Season Passes
+						//- input(type="").tix-quantity.small-3 Quantity
+						.small-3.columns
+							button(type="submit") RSVP
 
 				//- div.event-rsvp
 				//- div.event-price
