@@ -31,6 +31,27 @@ class Project(models.Model):
 	is_completed = models.BooleanField(default = False)
 	created_time = models.DateTimeField(auto_now_add = True)
 
+	def hasSubmissions(self):
+		if Submission.objects.filter(project = self).exists():
+			return True
+		else:
+			return False
+
+	def newSubmissions(self):
+		if Submission.objects.filter(project = self, is_new = True).exists():
+			return True
+		else:
+			return False
+
+	def status(self):
+		submissions = Submission.objects.filter(project = self)
+		if len(submissions) == 0:
+			return "1st revision underway"
+		elif len(submissions) == 1:
+			return str(len(submissions)) + " revision completed."
+		else:
+			return str(len(submissions)) + " revisions completed."
+
 	def save(self, *args, **kwargs):
 		"""
 		Overrides save to generate confirmation code
@@ -63,67 +84,69 @@ class Submission(models.Model):
 	project = models.ForeignKey('Project')
 	service = models.ForeignKey('Service')
 	images = models.ManyToManyField('Asset')
-	notes = models.TextField()
+	designer_notes = models.TextField()
+	owner_notes = models.TextField()
+	is_new = models.BooleanField(default = True)
 	is_finalized = models.BooleanField(default = False)
 	created_time = models.DateTimeField(auto_now_add = True)
 
 class Asset(models.Model):
-    """
-    Asset model
-    """
-    source = models.FileField(upload_to = 'uploads/designs/%Y-%m-%d/')
-    is_archived = models.BooleanField(default = False)
-    created_time = models.DateTimeField(auto_now_add = True)
+	"""
+	Asset model
+	"""
+	source = models.FileField(upload_to = 'uploads/designs/%Y-%m-%d/')
+	is_archived = models.BooleanField(default = False)
+	created_time = models.DateTimeField(auto_now_add = True)
 
-    def delete(self, *args, **kwargs):
-        """
-        Automatically delete the Asset file after model deletion
-        """
-        self.source.delete(save = False)
-        super(Csv, self).delete(*args, **kwargs)
+	def delete(self, *args, **kwargs):
+		"""
+		Automatically delete the Asset file after model deletion
+		"""
+		self.source.delete(save = False)
+		super(Csv, self).delete(*args, **kwargs)
 
-    def is_image(self):
-    	image_filetypes = ['.jpg', '.png', '.gif']
-        name, extension = os.path.splitext(self.source.name)
-        return extension.lower() in image_filetypes
+	def is_image(self):
+		image_filetypes = ['.jpg', '.png', '.gif']
+		name, extension = os.path.splitext(self.source.name)
+		return extension.lower() in image_filetypes
 
-    def shortName(self):
-    	return self.source.name.split("/")[-1]
+	def shortName(self):
+		return self.source.name.split("/")[-1]
 
 class Designer(models.Model):
-    """
-    Designer model
+	"""
+	Designer model
 
-    Designer is a the designer assigned to each project.
-    """
-    email = models.CharField(max_length = 50, unique = True)
-    password = models.CharField(max_length = 128, null = True, default = None)
-    salt = models.CharField(max_length = 128, null = True, default = None)
-    first_name = models.CharField(max_length = 50)
-    last_name = models.CharField(max_length = 50)
-    created_time = models.DateTimeField(auto_now_add = True)
+	Designer is a the designer assigned to each project.
+	"""
+	email = models.CharField(max_length = 50, unique = True)
+	password = models.CharField(max_length = 128, null = True, default = None)
+	salt = models.CharField(max_length = 128, null = True, default = None)
+	first_name = models.CharField(max_length = 50)
+	last_name = models.CharField(max_length = 50)
+	created_time = models.DateTimeField(auto_now_add = True)
 
-    # A copy of the user's original password
-    __original_password = None
+	# A copy of the user's original password
+	__original_password = None
 
-    def __init__(self, *args, **kwargs):
-        """
-        Overrides instantiation to keep track of password changes
-        """
-        super(Designer, self).__init__(*args, **kwargs)
-        # Save a copy of the original password
-        self.__original_password = self.password
+	def __init__(self, *args, **kwargs):
+		"""
+		Overrides instantiation to keep track of password changes
+		"""
+		super(Designer, self).__init__(*args, **kwargs)
+		# Save a copy of the original password
+		self.__original_password = self.password
 
-    def save(self, *args, **kwargs):
-        """
-        Overrides save method to rehash password if necessary
-        """
-        if ((self.pk is None or self.password != self.__original_password) and 
-            self.password is not None):
-            # Password is changed, rehash it
-            self.salt = os.urandom(128).encode('base_64')[:128]
-            saltedPassword = self.salt + self.password
-            # Hash the password with salt
-            self.password = hashlib.sha512(saltedPassword).hexdigest()
-        super(Designer, self).save(*args, **kwargs)
-        self.__original_password = self.password
+	def save(self, *args, **kwargs):
+		"""
+		Overrides save method to rehash password if necessary
+		"""
+		if ((self.pk is None or self.password != self.__original_password) and 
+			self.password is not None):
+			# Password is changed, rehash it
+			self.salt = os.urandom(128).encode('base_64')[:128]
+			saltedPassword = self.salt + self.password
+			# Hash the password with salt
+			self.password = hashlib.sha512(saltedPassword).hexdigest()
+		super(Designer, self).save(*args, **kwargs)
+		self.__original_password = self.password

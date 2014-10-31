@@ -37,7 +37,7 @@ def index(request, params, user):
     """
     if user:
         if Project.objects.filter(owner = user).exists():
-            currentProjects = Project.objects.filter(owner = user, checkout__is_charged = True, is_completed = False).order_by('-id')
+            currentProjects = Project.objects.filter(owner = user, checkout__is_charged = True, is_completed = False).order_by('id')
             pastProjects = Project.objects.filter(owner = user, checkout__is_charged = True, is_completed = True)
             return render(request, 'designs/dashboard.html', locals())
         else:
@@ -47,6 +47,29 @@ def index(request, params, user):
                 return render(request, 'designs/index.html', locals())
     else:
         return render(request, 'designs/index.html', locals())
+
+@login_check()
+def review(request, project, user):
+    """
+    Designs index page
+    """
+    if not user:
+        return redirect('designs:index')
+    else:
+        if not Project.objects.filter(owner = user, id = project).exists():
+            return redirect('designs:index')
+        else:
+            project = Project.objects.get(id = project)
+            newSubmissions = Submission.objects.filter(project = project, is_new = True)
+            for submission in newSubmissions:
+                submission.is_new = False
+                submission.save()
+            submissions = []
+            services = Service.objects.filter(project = project)
+            for service in services:
+                if Submission.objects.filter(service = service, project = project).exists():
+                    submissions.append(Submission.objects.filter(service = service, project = project).order_by('-id')[0])
+            return render(request, 'designs/review.html', locals())
 
 @login_check()
 @validate('GET', [], ['code'])
@@ -370,7 +393,7 @@ def designer_submit(request, project, designer, params):
                     'message':'The design service was not selected (Poster, Banner, etc.)'
                 }
                 return json_response(response)
-            submission = Submission(project = project, service = service, notes = '')
+            submission = Submission(project = project, service = service, designer_notes = '', owner_notes = '')
             submission.save()
             if params['assets'] and params['assets'] is not '':
                 assetsRaw = params['assets'].split(",")

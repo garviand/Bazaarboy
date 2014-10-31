@@ -586,6 +586,7 @@ div#designs-index div#go div.go-container a.go-btn:hover {
 div#designs-create div#top,
 div#designs-finalize div#top,
 div#designs-dashboard div#top,
+div#designs-review div#top,
 div#designs-designer-dashboard div#top,
 div#designs-designer-project div#top {
   background: #ff9237;
@@ -593,6 +594,7 @@ div#designs-designer-project div#top {
 div#designs-create div#top div.header,
 div#designs-finalize div#top div.header,
 div#designs-dashboard div#top div.header,
+div#designs-review div#top div.header,
 div#designs-designer-dashboard div#top div.header,
 div#designs-designer-project div#top div.header {
   padding-top: 40px;
@@ -601,6 +603,7 @@ div#designs-designer-project div#top div.header {
   div#designs-create div#top div.header div.logo-container,
   div#designs-finalize div#top div.header div.logo-container,
   div#designs-dashboard div#top div.header div.logo-container,
+  div#designs-review div#top div.header div.logo-container,
   div#designs-designer-dashboard div#top div.header div.logo-container,
   div#designs-designer-project div#top div.header div.logo-container {
     text-align: center;
@@ -609,6 +612,7 @@ div#designs-designer-project div#top div.header {
 div#designs-create div#top div.header div.logo-container img,
 div#designs-finalize div#top div.header div.logo-container img,
 div#designs-dashboard div#top div.header div.logo-container img,
+div#designs-review div#top div.header div.logo-container img,
 div#designs-designer-dashboard div#top div.header div.logo-container img,
 div#designs-designer-project div#top div.header div.logo-container img {
   height: 44px;
@@ -616,6 +620,7 @@ div#designs-designer-project div#top div.header div.logo-container img {
 div#designs-create div#top div.header div.links-container a,
 div#designs-finalize div#top div.header div.links-container a,
 div#designs-dashboard div#top div.header div.links-container a,
+div#designs-review div#top div.header div.links-container a,
 div#designs-designer-dashboard div#top div.header div.links-container a,
 div#designs-designer-project div#top div.header div.links-container a {
   color: #ffffff;
@@ -630,11 +635,13 @@ div#designs-designer-project div#top div.header div.links-container a {
 div#designs-create div#top div.header div.links-container a:hover,
 div#designs-finalize div#top div.header div.links-container a:hover,
 div#designs-dashboard div#top div.header div.links-container a:hover,
+div#designs-review div#top div.header div.links-container a:hover,
 div#designs-designer-dashboard div#top div.header div.links-container a:hover,
 div#designs-designer-project div#top div.header div.links-container a:hover,
 div#designs-create div#top div.header div.links-container a.active,
 div#designs-finalize div#top div.header div.links-container a.active,
 div#designs-dashboard div#top div.header div.links-container a.active,
+div#designs-review div#top div.header div.links-container a.active,
 div#designs-designer-dashboard div#top div.header div.links-container a.active,
 div#designs-designer-project div#top div.header div.links-container a.active {
   border-bottom: #f96d30 8px solid;
@@ -642,6 +649,7 @@ div#designs-designer-project div#top div.header div.links-container a.active {
 div#designs-create div#top div.header div.links-container a.orange-btn,
 div#designs-finalize div#top div.header div.links-container a.orange-btn,
 div#designs-dashboard div#top div.header div.links-container a.orange-btn,
+div#designs-review div#top div.header div.links-container a.orange-btn,
 div#designs-designer-dashboard div#top div.header div.links-container a.orange-btn,
 div#designs-designer-project div#top div.header div.links-container a.orange-btn {
   font-weight: bold;
@@ -649,6 +657,7 @@ div#designs-designer-project div#top div.header div.links-container a.orange-btn
 div#designs-create div.payment,
 div#designs-finalize div.payment,
 div#designs-dashboard div.payment,
+div#designs-review div.payment,
 div#designs-designer-dashboard div.payment,
 div#designs-designer-project div.payment {
   background: #EBEBEB;
@@ -656,6 +665,7 @@ div#designs-designer-project div.payment {
 div#designs-create div.payment div.title,
 div#designs-finalize div.payment div.title,
 div#designs-dashboard div.payment div.title,
+div#designs-review div.payment div.title,
 div#designs-designer-dashboard div.payment div.title,
 div#designs-designer-project div.payment div.title {
   color: #5A5A5A;
@@ -666,6 +676,7 @@ div#designs-designer-project div.payment div.title {
 div#designs-create div.payment div.payment-actions,
 div#designs-finalize div.payment div.payment-actions,
 div#designs-dashboard div.payment div.payment-actions,
+div#designs-review div.payment div.payment-actions,
 div#designs-designer-dashboard div.payment div.payment-actions,
 div#designs-designer-project div.payment div.payment-actions {
   padding-bottom: 50px;
@@ -673,6 +684,7 @@ div#designs-designer-project div.payment div.payment-actions {
 div#designs-create div.payment div.payment-actions div.cost,
 div#designs-finalize div.payment div.payment-actions div.cost,
 div#designs-dashboard div.payment div.payment-actions div.cost,
+div#designs-review div.payment div.payment-actions div.cost,
 div#designs-designer-dashboard div.payment div.payment-actions div.cost,
 div#designs-designer-project div.payment div.payment-actions div.cost {
   background: #ffffff;
@@ -687,6 +699,7 @@ div#designs-designer-project div.payment div.payment-actions div.cost {
 div#designs-create div.payment div.payment-actions a,
 div#designs-finalize div.payment div.payment-actions a,
 div#designs-dashboard div.payment div.payment-actions a,
+div#designs-review div.payment div.payment-actions a,
 div#designs-designer-dashboard div.payment div.payment-actions a,
 div#designs-designer-project div.payment div.payment-actions a {
   text-align: center;
@@ -703,6 +716,7 @@ div#designs-designer-project div.payment div.payment-actions a {
 div#designs-create div.payment div.payment-actions a:hover,
 div#designs-finalize div.payment div.payment-actions a:hover,
 div#designs-dashboard div.payment div.payment-actions a:hover,
+div#designs-review div.payment div.payment-actions a:hover,
 div#designs-designer-dashboard div.payment div.payment-actions a:hover,
 div#designs-designer-project div.payment div.payment-actions a:hover {
   opacity: .9;
@@ -710,6 +724,7 @@ div#designs-designer-project div.payment div.payment-actions a:hover {
 div#designs-create div.payment div.payment-actions div.guarantee,
 div#designs-finalize div.payment div.payment-actions div.guarantee,
 div#designs-dashboard div.payment div.payment-actions div.guarantee,
+div#designs-review div.payment div.payment-actions div.guarantee,
 div#designs-designer-dashboard div.payment div.payment-actions div.guarantee,
 div#designs-designer-project div.payment div.payment-actions div.guarantee {
   color: #797979;
@@ -799,7 +814,7 @@ div#designs-finalize div#content div.title-container div.title {
 }
 div#designs-finalize div#content div.project-info div.project-info-container {
   padding: 15px;
-  border: #929292 thin solid;
+  border: #C6C6C6 thin solid;
   border-radius: 3px;
   margin-left: 0.9375rem;
   margin-right: 0.9375rem;
@@ -828,8 +843,163 @@ div#designs-finalize div#content div.project-info div.project-info-container div
   color: #929292;
 }
 /* --- DASHBOARD --- */
-div#designs-dashboard div.project {
-  margin-bottom: 20px;
+div#designs-dashboard div.dashobard-title {
+  color: #ff9237;
+  font-size: 24px;
+  font-weight: 500;
+  padding-top: 50px;
+  padding-bottom: 50px;
+}
+div#designs-dashboard div.dashobard-title img {
+  position: relative;
+  top: -2px;
+  height: 18px;
+  margin-right: 2px;
+}
+div#designs-dashboard div.current-projects {
+  color: #727272;
+  background: #f0f0f0;
+  padding-top: 35px;
+  padding-bottom: 35px;
+}
+div#designs-dashboard div.current-projects div.title {
+  font-size: 22px;
+  font-weight: 300;
+  padding-bottom: 25px;
+}
+div#designs-dashboard div.current-projects div.project-headers {
+  font-size: .9rem;
+  padding-bottom: 25px;
+  font-weight: 500;
+  border-bottom: #C6C6C6 thin solid;
+}
+div#designs-dashboard div.current-projects div.project-headers div.project-id-shift {
+  padding-left: 35px;
+}
+div#designs-dashboard div.current-projects div.projects div.project {
+  font-size: .9rem;
+  border-bottom: #C6C6C6 thin solid;
+  font-weight: 300;
+}
+div#designs-dashboard div.current-projects div.projects div.project div.indicator {
+  display: inline-block;
+  width: 35px;
+}
+div#designs-dashboard div.current-projects div.projects div.project div.indicator div.indicator-icon.new {
+  background: #ff9237;
+  width: 14px;
+  height: 14px;
+  border-radius: 7px;
+}
+div#designs-dashboard div.current-projects div.projects div.project .project-id,
+div#designs-dashboard div.current-projects div.projects div.project .project-date,
+div#designs-dashboard div.current-projects div.projects div.project .project-status {
+  padding-top: 25px;
+  padding-bottom: 25px;
+}
+div#designs-dashboard div.current-projects div.projects div.project div.project-actions a {
+  padding-top: 11px;
+  padding-bottom: 11px;
+  margin-top: 14px;
+  margin-bottom: 14px;
+  display: block;
+  text-align: center;
+  background: #ff9237;
+  color: #ffffff;
+  font-weight: 500;
+  border-radius: 3px;
+  width: 100%;
+  transition: opacity .1s;
+}
+div#designs-dashboard div.current-projects div.projects div.project div.project-actions a:hover {
+  opacity: .9;
+}
+div#designs-dashboard div#footer {
+  margin-top: 100px;
+}
+/* --- REVIEW --- */
+div#designs-review div#content {
+  padding-top: 60px;
+  padding-bottom: 60px;
+}
+div#designs-review div#content div.title-container div.title {
+  color: #797979;
+  font-size: 32px;
+  font-weight: 500;
+  padding-bottom: 25px;
+}
+div#designs-review div#content div.service-title {
+  color: #797979;
+  padding-bottom: 25px;
+}
+div#designs-review div#content div.project-info div.project-info-container {
+  padding: 15px;
+  padding-top: 0px;
+  border: #C6C6C6 thin solid;
+  border-radius: 3px;
+  margin-left: 0.9375rem;
+  margin-right: 0.9375rem;
+}
+div#designs-review div#content div.project-info div.project-info-container div.title {
+  font-size: 1.1rem;
+  color: #797979;
+  padding: 20px 0;
+  font-weight: 300;
+}
+div#designs-review div#content div.project-info div.project-info-container div.info {
+  color: #797979;
+  padding-bottom: 20px;
+  font-size: .9rem;
+}
+div#designs-review div#content div.project-info div.project-info-container div.images {
+  padding-bottom: 20px;
+}
+div#designs-review div#content div.project-info div.project-info-container div.images div.image {
+  border: 1px dashed #D4D4D4;
+  margin-bottom: 10px;
+}
+div#designs-review div#content div.project-info div.project-info-container div.other-assets a {
+  color: #929292;
+}
+div#designs-review div#content div.project-info div.project-info-container div.designer-notes {
+  padding-top: 20px;
+}
+div#designs-review div#content div.project-info div.project-info-container div.designer-notes div.title {
+  padding-top: 0;
+}
+div#designs-review div#content div.project-info div.project-info-container div.owner-notes textarea {
+  height: 120px;
+  border-radius: 3px;
+  background: #ffffff;
+  box-shadow: none;
+  font-size: .9rem;
+  font-weight: 300;
+  padding: 12px;
+}
+div#designs-review div.payment div.payment-actions {
+  padding-bottom: 50px;
+  font-size: .9rem;
+}
+div#designs-review div.payment div.payment-actions a {
+  text-align: center;
+  width: auto !important;
+  background: #ff9237;
+  color: #ffffff;
+  float: left;
+  padding: 12px 10px;
+  margin-right: 20px;
+  border-radius: 3px;
+  font-weight: 500;
+  transition: opacity .1s;
+}
+div#designs-review div.payment div.payment-actions a:hover {
+  opacity: .9;
+}
+div#designs-review div.payment div.payment-actions div.guarantee {
+  float: left;
+  margin-right: 20px;
+  color: #797979;
+  margin-top: 12px;
 }
 /* --------- DESIGNER --------- */
 /* --- INDEX --- */
