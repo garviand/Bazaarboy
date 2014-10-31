@@ -715,7 +715,8 @@ class Ticket_attachment(Attachment):
             'start_time':event.start_time,
             'end_time':event.end_time,
             'location':event.location,
-            'purchase':purchase.id
+            'purchase':purchase.id,
+            'name':purchase.owner.first_name + ' ' + purchase.owner.last_name
         }
         i = 1
         for item in items:
