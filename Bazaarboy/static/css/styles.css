@@ -9626,7 +9626,7 @@ a#tickets-confirm:hover {
 .surge .event-share .share-btn:active,
 .surge #event-hero .event-hero-rsvp form button:focus,
 .surge .event-share .share-btn:focus {
-  background: #faa638;
+  background: #10CA02;
   box-shadow: 0px 1px 1px rgba(0, 0, 0, 0.5);
 }
 #event-hero {
