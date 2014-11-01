@@ -232,7 +232,7 @@ block body
 			div.medium-4.columns.end
 				a.add-organizer-another.secondary-btn(href="javascript:;") Add Another
 	
-	div#event
+	div#event.surge
 		div#event-header(style="{% if design %}position:absolute;{% endif %}")
 			div.event-header-body(class="{% if design %}medium-8{% elif preview and editable %}medium-7{% elif preview %}medium-8{% else %}medium-8{% endif %} columns")
 				div.profile-icon
@@ -291,7 +291,7 @@ block body
 				a.back-btn.secondary-btn(href="{{ event|eventUrl }}?preview") Preview Event
 				{% endif %}
 
-		div#event-body.row.surge
+		div#event-body.row
 			div#event-hero.medium-12.small-12(style="background-image:url({% if event.cover %}{{ event.cover.source.url }}{% endif %});")
 				div.gradient-overlay
 				div.event-hero-rsvp

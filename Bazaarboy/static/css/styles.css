@@ -9596,8 +9596,28 @@ a#tickets-confirm:hover {
   overflow: hidden;
   box-shadow: 0px 0px 4px rgba(0, 0, 0, 0.25);
 }
-.surge a {
-  color: #43fd35 !important;
+.surge button {
+  font-family: "Gotham SSm A", "Gotham SSm B", sans-serif;
+  font-weight: bold;
+}
+.surge .share-btn {
+  border: none;
+  text-shadow: none;
+  background-color: #43fd35;
+  box-shadow: none;
+  padding-top: 11px;
+}
+.surge #event-hero .event-hero-rsvp form button,
+.surge .share-btn {
+  -webkit-transition: all 0.0625s ease-in;
+}
+.surge #event-hero .event-hero-rsvp form button:hover,
+.surge .share-btn:hover,
+.surge #event-hero .event-hero-rsvp form button:active,
+.surge .share-btn:active,
+.surge #event-hero .event-hero-rsvp form button:focus,
+.surge .share-btn:focus {
+  background: #faa638;
 }
 #event-hero {
   height: 400px;

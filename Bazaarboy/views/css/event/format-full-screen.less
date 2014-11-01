@@ -9,8 +9,28 @@
 }
 
 .surge {
+	button {
+		font-family: "Gotham SSm A", "Gotham SSm B", sans-serif;
+		font-weight:bold;
+	}
+	.share-btn {
+		border:none;
+		text-shadow:none;
+		background-color:@surge-green;
+		box-shadow:none;
+		padding-top:11px;
+	}
+	#event-hero .event-hero-rsvp form button, .share-btn {
+		-webkit-transition:all 0.0625s ease-in;
+		&:hover, &:active, &:focus {
+			background:@orange;
+		}
+	}
 	a {
-		color: @surge-green!important;
+		// color: @surge-green!important;
+	}
+	.addthisevent-drop {
+		// color:@surge-green!important;
 	}
 }
 
