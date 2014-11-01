@@ -215,6 +215,14 @@
                   });
                 }
               });
+              /*
+              @currentCheckout = response.purchase.checkout
+              Stripe.setPublishableKey response.publishable_key
+              Stripe.card.createToken $("form#payment-form"), (status, response) =>
+                  @stripeResponseHandler status, response
+                  return
+              */
+
             }
           }
         });
@@ -693,6 +701,11 @@
               $('.address-container').removeClass('hide');
               return scope.requiresAddress = true;
             }
+            /*
+            if parseInt($(this).data('price')) != 0 and $(this).hasClass('active')
+                $('.payment-container').removeClass 'hide'
+            */
+
           });
           scope.updateSubtotal();
         }

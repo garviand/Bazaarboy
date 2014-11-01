@@ -174,11 +174,13 @@ Bazaarboy.event.index =
                                         alert response.message
                                     return
                                 return
-                        #@currentCheckout = response.purchase.checkout
-                        #Stripe.setPublishableKey response.publishable_key
-                        #Stripe.card.createToken $("form#payment-form"), (status, response) =>
-                            #@stripeResponseHandler status, response
-                            #return
+                        ###
+                        @currentCheckout = response.purchase.checkout
+                        Stripe.setPublishableKey response.publishable_key
+                        Stripe.card.createToken $("form#payment-form"), (status, response) =>
+                            @stripeResponseHandler status, response
+                            return
+                        ###
             return
         return
     completePurchase: (tickets) ->
@@ -591,8 +593,10 @@ Bazaarboy.event.index =
                     if $(this).data('address') == 'yes' and $(this).hasClass('active')
                         $('.address-container').removeClass 'hide'
                         scope.requiresAddress = true
-                    #if parseInt($(this).data('price')) != 0 and $(this).hasClass('active')
-                        #$('.payment-container').removeClass 'hide'
+                    ###
+                    if parseInt($(this).data('price')) != 0 and $(this).hasClass('active')
+                        $('.payment-container').removeClass 'hide'
+                    ###
                 scope.updateSubtotal()
             return
         $('input.ticket-quantity').keyup () ->

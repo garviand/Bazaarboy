@@ -113,7 +113,10 @@ def index(request, id, params, user):
             rsvp = False
         if ticket.price < cheapest:
             cheapest = ticket.price
-    return render(request, 'event/format-full-screen.html', locals())
+    if design or event.id != 337:
+        return render(request, 'event/index.html', locals())
+    else:
+        return render(request, 'event/format-full-screen.html', locals())
 
 @login_required()
 @validate('GET', [], ['create'])
@@ -2394,6 +2397,10 @@ def export(request, params, user):
                         pass
                     finally:
                         try:
+                            item.extra_fields = item.extra_fields.replace("\'", "\"")
+                            item.extra_fields = item.extra_fields.replace("u\"", "\"")
+                            item.extra_fields = item.extra_fields.replace("\"d", "\'d")
+                            item.extra_fields = item.extra_fields.replace("\"s", "\'s")
                             item_fields = json.loads(item.extra_fields)
                         except:
                             pass
@@ -2442,6 +2449,8 @@ def export(request, params, user):
                 try:
                     item.extra_fields = item.extra_fields.replace("\'", "\"")
                     item.extra_fields = item.extra_fields.replace("u\"", "\"")
+                    item.extra_fields = item.extra_fields.replace("\"d", "\'d")
+                    item.extra_fields = item.extra_fields.replace("\"s", "\'s")
                     item_fields = json.loads(item.extra_fields)
                 except:
                     item_fields = {}
