@@ -113,7 +113,10 @@ def index(request, id, params, user):
             rsvp = False
         if ticket.price < cheapest:
             cheapest = ticket.price
-    return render(request, 'event/index.html', locals())
+    if design or event.id != 337:
+        return render(request, 'event/index.html', locals())
+    else:
+        return render(request, 'event/format-full-screen.html', locals())
 
 @login_required()
 @validate('GET', [], ['create'])

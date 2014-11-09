@@ -8,3 +8,7 @@ migration/*
 Bazaarboy/*/migrations/*
 *.DS_STORE
 celery.conf
+
+#Sublime Workspace files
+*.sublime-project
+*.sublime-workspace

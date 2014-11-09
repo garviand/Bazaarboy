@@ -1,4 +1,4 @@
-// Event
+// Event Sub-Layout Full Screen Cover
 
 extends ../layout
 
@@ -7,11 +7,13 @@ block title
 
 append head
 	meta(name="description", content="{{ event.summary }}")
+
 	{% if editable %}
 	link(rel="stylesheet", href="{{ STATIC_URL }}jQueryUI/jquery-ui.css")
 	link(rel="stylesheet", href="{{ STATIC_URL }}redactor/redactor.css")
 	link(rel="stylesheet", href="{{ STATIC_URL }}pikaday/pikaday.css")
 	{% endif %}
+
 	//- Facebook
 	meta(property="og:url", content="{{ request.build_absolute_uri }}")
 	meta(property="og:title", content="{{ event.name }}")
@@ -23,6 +25,7 @@ append head
 
 block body
 	include ../components/facebook
+
 	div#confirmation-modal.reveal-modal(data-reveal)
 		div.row
 			div.small-12.text-center.columns.confirmation-title
@@ -51,6 +54,7 @@ block body
 		div.row
 			div.confirmation-note
 				| A confirmation email will be sent with RSVP details and a PDF ticket attachment
+	
 	div#launch-modal.reveal-modal.text-center.medium(data-reveal)
 		div.empty-state-container(class="{% if ticketExists %}hide{% endif %}")
 			div.row
@@ -66,6 +70,7 @@ block body
 						div.large-5.medium-5.small-4.columns.close-launch-modal
 							| or&nbsp;&nbsp;
 							a.close-reveal-modal Close
+	
 	div#invite-modal.reveal-modal.medium(data-reveal)
 		form.invite-form(name="invite")
 			div.row
@@ -119,6 +124,7 @@ block body
 					| &nbsp;invitations!
 				div.medium-12.columns.close
 					a.blue-btn.close-invite-modal Back To List
+	
 	div#contact-organizer-modal.reveal-modal.medium(data-reveal)
 		form.contact-organizer-form(name="contact-organizer", data-abide)
 			div.row
@@ -158,6 +164,7 @@ block body
 		div.row.contact-organizer-success
 			div.medium-4.medium-offset-4
 				a.contact-organizer-close.primary-btn(href="javascript:;") Back To Event
+	
 	div#issue-modal.reveal-modal.medium(data-reveal)
 		form.issue-form(name="contact-organizer", data-abide)
 			div.row
@@ -198,6 +205,7 @@ block body
 		div.row.issue-success
 			div.medium-4.medium-offset-4
 				a.issue-close.primary-btn(href="javascript:;") Back To Event
+	
 	div#add-organizer-modal.reveal-modal.medium(data-reveal)
 		div.organizer-model.hide
 			div.row.organizer
@@ -223,22 +231,25 @@ block body
 				a.add-organizer-close.primary-btn(href="javascript:;") Back To Event
 			div.medium-4.columns.end
 				a.add-organizer-another.secondary-btn(href="javascript:;") Add Another
-	div#event
+	
+	div#event.surge
 		div#event-header(style="{% if design %}position:absolute;{% endif %}")
 			div.event-header-body(class="{% if design %}medium-8{% elif preview and editable %}medium-7{% elif preview %}medium-8{% else %}medium-8{% endif %} columns")
 				div.profile-icon
 					div.inner
 						a(href="{% url index %}")
-							img(src="{{ STATIC_URL }}images/logo-inverse.png")
+							img(src="{{ STATIC_URL }}images/logo-big.png")
 				div.event-name 
 					span {{ event.name }}
 				{% if not design %}
 				{% if preview and editable %}
+
 			div.event-design.medium-1.columns.hide-for-small-only
 				a(href="{{ event|eventUrl }}?design") Back to Page Design
 				{% endif %}
-				{% if not hasEnded %}
-			div.event-price.medium-1.small-4.columns
+
+				//- {% if not hasEnded %}
+			//- div.event-price.medium-1.small-4.columns
 				span
 					{% spaceless %}
 					{% if rsvp %}
@@ -247,15 +258,19 @@ block body
 					| {% if cheapest != 0 %}${{ cheapest|floatformat:-2 }}{% else %}Free{% endif %}{% if tickets|length != 1 %}+{% endif %}
 					{% endif %}
 					{% endspaceless %}
-			div.event-rsvp.medium-2.small-4.columns
+
+			//- div.event-rsvp.medium-2.small-4.columns
 				a#rsvp-button.primary-btn(href="javascript:;")
 					span.ss-bookmark &nbsp;
 					| RSVP
 				{% else %}
-			div.event-rsvp.medium-3.small-4.columns &nbsp;    
-				{% endif %}
-			div.event-share.medium-1.small-4.end.columns
-				a.share-btn.secondary-btn {% if hasEnded %}Share{% else %}Invite{% endif %}
+
+			//- div.event-rsvp.medium-3.small-4.columns &nbsp;    
+			//- 	{% endif %}
+
+			div.event-share.medium-offset-2.medium-2.small-12.columns
+				a.share-btn.secondary-btn Share
+
 			div.event-share-canvas.medium-3.small-12.columns.hidden
 				div.share-canvas
 					| <span class='st_facebook_large' displayText='Facebook'></span>
@@ -267,13 +282,37 @@ block body
 				{% endif %}
 				{% if design %}
 				{% if not event.is_launched %}
+
 			div.event-launch.medium-2.columns.clearfix
 				a.right.primary-btn.launch-btn(href="javascript:;") Launch Event
 				{% endif %}
+
 			div.event-launch.medium-2.columns.clearfix.right
 				a.back-btn.secondary-btn(href="{{ event|eventUrl }}?preview") Preview Event
 				{% endif %}
+
 		div#event-body.row
+			div#event-hero.medium-12.small-12(style="background-image:url({% if event.cover %}{{ event.cover.source.url }}{% endif %});")
+				div.gradient-overlay
+				div.event-hero-rsvp
+					{% with organizers|first as first_organizer %}
+					{% if first_organizer.profile.image %}
+					div.organizer-logo
+						img(src="{{ first_organizer.profile.image.source.url }}")
+					{% endif %}
+					{% endwith%}
+					form.hero-ticket-form.medium-8.small-12.columns
+						div.medium-9.small-12.columns
+							{% with tickets|first as ticket %} 
+							div.tix-type(data-id="{{ ticket.id }}") {{ ticket.name }}
+							{% endwith %}
+						//- input(type="").tix-quantity.small-3 Quantity
+						div.hero-rsvp-button.medium-3.small-12.columns
+							button(type="submit") Purchase
+
+				//- div.event-rsvp
+				//- div.event-price
+
 			div#event-sidebar.medium-4.small-12.columns
 				div.row.event-info
 					div.medium-10.columns
@@ -352,24 +391,8 @@ block body
 								a.add-organizer-btn(href="javascript:;") Add Organizer
 						{% endif %}
 						div#event-sponsors.row
+			
 			div#event-content.medium-8.small-12.columns
-				div#event-cover.row(style="{% if event.cover %}margin-bottom: 35px;{% elif not design %}height: 0; overflow:hidden;{% else %}margin-bottom: 10px;{% endif %}")
-					div.columns
-						{% if design %}
-						div.upload
-							form.upload_cover
-								div.row
-									div.small-12.medium-4.columns
-										a.blue-btn-inverse.edit_cover_btn(href="javascript:;", class="{% if not event.cover %}hidden{% endif %}") Edit Cover Image
-										a.blue-btn-inverse.upload_cover_btn(href="javascript:;", class="{% if event.cover %}hidden{% endif %}") Upload Cover Image
-									div.small-12.medium-4.columns.end
-										a.blue-btn-inverse.delete_cover_btn(href="javascript:;", class="{% if not event.cover %}hidden{% endif %}") Delete Cover Image
-										input.hidden(type="file", name="image_file")
-										{% csrf_token %}
-						{% endif %}
-						div.image
-							img#cover-image(src="{% if event.cover %}{{ event.cover.source.url }}{% endif %}")
-							img#cover-image-placeholder.hidden
 				div#event-description.row
 					div.description.small-12.columns(style="margin-top:0;")
 						div.inner
@@ -382,6 +405,7 @@ block body
 							div.medium-4.end.columns
 								a.save.primary-btn(href="javascript:;") Save description
 					{% endif %}
+
 		div#event-footer
 			div.inner.clearfix
 				div.poweredby.left
@@ -393,6 +417,7 @@ block body
 					a(href="{% url index:pricing %}") Pricing
 					| &nbsp;&nbsp;&nbsp;
 					a(href="{{ STATIC_URL }}bboy-terms.pdf") Terms
+
 		div#tickets.hide
 			div#tickets-header Choose Your Tickets
 			div#tickets-body
@@ -511,6 +536,7 @@ block body
 						a.issue-btn(href="javascript:;") Issues Purchasing?
 				div.small-12.medium-4.columns
 					a#tickets-confirm.primary-btn(href="javascript:;") Confirm RSVP
+
 		div#wrapper-overlay.hide
 
 append script
@@ -531,6 +557,7 @@ append script
 			onhover: false
 		});
 	script(type="text/javascript", src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAasW6vqPCn18g6UMaFWV90qGMSo6pErwo&sensor=false&libraries=places")
+	
 	{% if editable %}
 	script(type="text/javascript", src="{{ STATIC_URL }}redactor/redactor.min.js")
 	{% endif %}
@@ -546,3 +573,4 @@ append script
 			$('div#event-calendar-add').removeClass('hidden')
 		});
 	script(type="text/javascript", src="{{ STATIC_URL }}js/event/index.js")
+	script(type="text/javascript", src="{{ STATIC_URL }}js/event/format-full-screen.js")

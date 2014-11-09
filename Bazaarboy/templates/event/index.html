@@ -50,15 +50,15 @@ var mediaUrl = '{{ MEDIA_URL }}';
 var staticUrl = '{{ STATIC_URL }}';
 var csrfToken = '{{ csrf_token }}';
 var loggedIn = {% if user %}true{% else %}false{% endif %};</script><script src="{{ STATIC_URL }}fastclick/fastclick.js"></script><script src="{{ STATIC_URL }}js/bazaarboy.js"></script>{% if design %}<script src="https://dme0ih8comzn4.cloudfront.net/js/feather.js"></script>{% endif %}<script type="text/javascript" src="{{ STATIC_URL }}hashchange/jquery.ba-hashchange.min.js"></script><script>var switchTo5x = true;</script><script type="text/javascript" src="https://ws.sharethis.com/button/buttons.js"></script><script>stLight.options({
-    publisher: "7bffe644-d542-4b4d-affe-420a0175f3c0", 
-    doNotHash: false, 
-    doNotCopy: false, 
-    hashAddressBar: false,
-    popup: false,
-    onhover: false
+ publisher: "7bffe644-d542-4b4d-affe-420a0175f3c0", 
+ doNotHash: false, 
+ doNotCopy: false, 
+ hashAddressBar: false,
+ popup: false,
+ onhover: false
 });</script><script type="text/javascript" src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAasW6vqPCn18g6UMaFWV90qGMSo6pErwo&amp;sensor=false&amp;libraries=places"></script>{% if editable %}<script type="text/javascript" src="{{ STATIC_URL }}redactor/redactor.min.js"></script>{% endif %}<script type="text/javascript" src="{{ STATIC_URL }}debounce/jquery.debounce.js"></script><script type="text/javascript" src="{{ STATIC_URL }}addthisevent/atemay.js"></script><script type="text/javascript" src="https://checkout.stripe.com/v2/checkout.js"></script><script type="text/javascript" src="https://js.stripe.com/v2/"></script><script type="text/javascript">var eventId = {{ event.id }};
 var eventUrl = '{{ event|eventUrl }}';
 var design = {% if design %}true{% else %}false{% endif %};
 $(window).load(function(){
-    $('div#event-calendar-add').removeClass('hidden')
+ $('div#event-calendar-add').removeClass('hidden')
 });</script><script type="text/javascript" src="{{ STATIC_URL }}js/event/index.js"></script></div></body></html>
