@@ -51,7 +51,7 @@ def index(request, params, user):
 @login_check()
 def review(request, project, user):
     """
-    Designs index page
+    Designs review page
     """
     if not user:
         return redirect('designs:index')
@@ -70,6 +70,40 @@ def review(request, project, user):
                 if Submission.objects.filter(service = service, project = project).exists():
                     submissions.append(Submission.objects.filter(service = service, project = project).order_by('-id')[0])
             return render(request, 'designs/review.html', locals())
+
+@login_check()
+@validate('POST', ['reviews'])
+def submit_review(request, user, params):
+    """
+    Designs review submit
+    """
+    if not user:
+        response = {
+            'status':'FAIL',
+            'error':'NOT_LOGGED_IN',
+            'message': 'You must be logged in.'
+        }
+        return json_response(response)
+    else:
+        reviews = json.loads(params['reviews'])
+        for subId, comment in reviews.iteritems():
+            if not Submission.objects.filter(id = subId, project__owner = user).exists():
+                response = {
+                    'status':'FAIL',
+                    'error':'SUBMISSION_DOES_NOT_EXIST',
+                    'message': 'This submission doesn\'t exist.'
+                }
+                return json_response(response)
+            else:
+                submission = Submission.objects.get(id = subId)
+                project = submission.project
+                submission.owner_notes = comment
+                submission.save()
+        sendReviewEmail(project)
+        response = {
+            'status':'OK'
+        }
+        return json_response(response)
 
 @login_check()
 @validate('GET', [], ['code'])
@@ -297,6 +331,28 @@ def sendProjectConfirmationEmail(project):
     }]
     return sendEmails(to, MANDRILL_FROM_NAME, subject, template, mergeVars)
 
+def sendSubmissionEmail(submission):
+    """
+    New Submission Email
+    """
+    user = submission.project.owner
+    to = [{
+        'email':user.email, 
+        'name':user.full_name
+    }]
+    subject = 'Bazaarboy Designs - New Submission'
+    template = 'designs-submission'
+    mergeVars = [{
+        'rcpt': user.email,
+        'vars': [
+            {
+                'name':'service_name', 
+                'content': submission.service.name
+            }
+        ]
+    }]
+    return sendEmails(to, MANDRILL_FROM_NAME, subject, template, mergeVars)
+
 def sendDesignerConfirmationEmail(project):
     """
     Email confirming project for designer
@@ -320,6 +376,28 @@ def sendDesignerConfirmationEmail(project):
                 'name':'services', 
                 'content':services
             },
+            {
+                'name':'user_email', 
+                'content':user.email
+            }
+        ]
+    }]
+    return sendEmails(to, MANDRILL_FROM_NAME, subject, template, mergeVars)
+
+def sendReviewEmail(project):
+    """
+    New Review Email
+    """
+    user = project.owner
+    to = [{
+        'email':project.designer.email, 
+        'name':project.designer.first_name + ' ' + project.designer.last_name
+    }]
+    subject = 'Bazaarboy Designs - New Review'
+    template = 'designs-review'
+    mergeVars = [{
+        'rcpt': project.designer.email,
+        'vars': [
             {
                 'name':'user_email', 
                 'content':user.email
@@ -416,6 +494,7 @@ def designer_submit(request, project, designer, params):
             }
             return json_response(response)
         submission.save()
+        sendSubmissionEmail(submission)
         response = {
             'status':'OK'
         }

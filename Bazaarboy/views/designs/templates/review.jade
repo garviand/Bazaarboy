@@ -51,7 +51,7 @@ block body
                             div.small-12.medium-8.columns
                                 div.title Your Comments:
                                 div.owner-notes-input
-                                    textarea(name="owner_notes", data-id="{{ submission.id }}")
+                                    textarea(name="owner_notes", data-id="{{ submission.id }}") {{ submission.owner_notes }}
             {% endfor %}
         div.payment
             div.row
