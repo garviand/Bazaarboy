@@ -440,8 +440,10 @@ div#designs-dashboard{
 		}
 	}
 	div.current-projects{
-		color: #727272;
 		background: #f0f0f0;
+	}
+	div.current-projects, div.past-projects{
+		color: #727272;
 		padding-top: 35px;
 		padding-bottom: 35px;
 		div.title{
@@ -679,6 +681,24 @@ div#login {
                     text-align: center;
 				}
 			}
+		}
+	}
+}
+
+/* --- PROJECT --- */
+
+div#designs-designer-project{
+	div.actions{
+		a.service-btn{
+			&.active{
+				font-weight: bold;
+				text-decoration: underline;
+			}
+		}
+	}
+	div.submissions{
+		div.submission{
+			margin-top: 20px;
 		}
 	}
 }

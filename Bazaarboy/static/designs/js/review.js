@@ -39,6 +39,27 @@
           });
         }
       });
+      $('a.finalize-btn').click(function() {
+        var projectId;
+        projectId = $(this).data('id');
+        Bazaarboy.post('designs/review/finalize/' + projectId + '/', {}, function(response) {
+          if (response.status === 'OK') {
+            return swal({
+              title: "Success!",
+              text: "Your project has been completed. You can download the final designs from your dashboard.",
+              type: "success"
+            }, function() {
+              window.location.href = '/designs';
+            });
+          } else {
+            return swal({
+              title: "Error",
+              text: response.message,
+              type: "error"
+            });
+          }
+        });
+      });
     }
   };
 

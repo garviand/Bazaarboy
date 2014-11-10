@@ -9,7 +9,7 @@ Bazaarboy.designs.designer.login =
                 params.password.length isnt 0
                     Bazaarboy.post 'designs/designer/auth/', params, (response) ->
                         if response.status is 'OK'
-                            console.log 'Logged In'
+                            window.location.href = '/designs/designer'
                         else
                             alert 'Failed'
         return

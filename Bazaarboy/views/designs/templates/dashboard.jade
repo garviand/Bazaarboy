@@ -50,11 +50,38 @@ block body
                             {% endif %}
                     {% endfor %}
         {% endif %}
+        {% if pastProjects|length > 0 %}
         div.past-projects
-            {% for project in pastProjects %}
-            div
-                {{ project.description }}
-            {% endfor %}
+            div.row
+                div.title.small-12.columns Completed Projects:
+                div.projects.small-12.columns
+                    div.project-headers.row
+                        div.small-12.medium-4.columns.project-id
+                            div.project-id-shift
+                                | Project
+                        div.small-12.medium-3.columns.project-date
+                            | Date Begun
+                        div.small-12.medium-3.columns.project-status
+                            | Status
+                        div.small-12.medium-2.columns.project-actions
+                            | &nbsp;
+                    {% for project in pastProjects %}
+                    div.project.row
+                        div.small-12.medium-4.columns.project-id
+                            div.indicator
+                                div.indicator-icon(class="{% if project.newSubmissions %}new{% endif %}") &nbsp;
+                            | Project &#35;{{ project.id }}&nbsp;-
+                            {% for service in project.services.all %}
+                            | {{ service.name }}{% if not forloop.last %},{% endif %}
+                            {% endfor %}
+                        div.small-12.medium-3.columns.project-date
+                            | {{ project.created_time|date:"n-j-Y" }}
+                        div.small-12.medium-3.columns.project-status
+                            | {{ project.status }}
+                        div.small-12.medium-2.columns.project-actions
+                            a.download-btn.orange-btn(href="{% url designs:download_final %}?project={{ project.id }}") Download
+                    {% endfor %}
+        {% endif %}
         div#footer
             div.row.footer-container
                 div.small-12.medium-3.columns.copyright.small-only-text-center

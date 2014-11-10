@@ -45,7 +45,9 @@ class Project(models.Model):
 
 	def status(self):
 		submissions = Submission.objects.filter(project = self)
-		if len(submissions) == 0:
+		if self.is_completed:
+			return "Project Completed"
+		elif len(submissions) == 0:
 			return "1st revision underway"
 		elif len(submissions) == 1:
 			return str(len(submissions)) + " revision completed."

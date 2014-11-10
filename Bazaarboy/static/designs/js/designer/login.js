@@ -10,7 +10,7 @@
         if (params.email.length !== 0 && params.password.length !== 0) {
           return Bazaarboy.post('designs/designer/auth/', params, function(response) {
             if (response.status === 'OK') {
-              return console.log('Logged In');
+              return window.location.href = '/designs/designer';
             } else {
               return alert('Failed');
             }

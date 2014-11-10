@@ -857,47 +857,60 @@ div#designs-dashboard div.dashobard-title img {
   margin-right: 2px;
 }
 div#designs-dashboard div.current-projects {
-  color: #727272;
   background: #f0f0f0;
+}
+div#designs-dashboard div.current-projects,
+div#designs-dashboard div.past-projects {
+  color: #727272;
   padding-top: 35px;
   padding-bottom: 35px;
 }
-div#designs-dashboard div.current-projects div.title {
+div#designs-dashboard div.current-projects div.title,
+div#designs-dashboard div.past-projects div.title {
   font-size: 22px;
   font-weight: 300;
   padding-bottom: 25px;
 }
-div#designs-dashboard div.current-projects div.project-headers {
+div#designs-dashboard div.current-projects div.project-headers,
+div#designs-dashboard div.past-projects div.project-headers {
   font-size: .9rem;
   padding-bottom: 25px;
   font-weight: 500;
   border-bottom: #C6C6C6 thin solid;
 }
-div#designs-dashboard div.current-projects div.project-headers div.project-id-shift {
+div#designs-dashboard div.current-projects div.project-headers div.project-id-shift,
+div#designs-dashboard div.past-projects div.project-headers div.project-id-shift {
   padding-left: 35px;
 }
-div#designs-dashboard div.current-projects div.projects div.project {
+div#designs-dashboard div.current-projects div.projects div.project,
+div#designs-dashboard div.past-projects div.projects div.project {
   font-size: .9rem;
   border-bottom: #C6C6C6 thin solid;
   font-weight: 300;
 }
-div#designs-dashboard div.current-projects div.projects div.project div.indicator {
+div#designs-dashboard div.current-projects div.projects div.project div.indicator,
+div#designs-dashboard div.past-projects div.projects div.project div.indicator {
   display: inline-block;
   width: 35px;
 }
-div#designs-dashboard div.current-projects div.projects div.project div.indicator div.indicator-icon.new {
+div#designs-dashboard div.current-projects div.projects div.project div.indicator div.indicator-icon.new,
+div#designs-dashboard div.past-projects div.projects div.project div.indicator div.indicator-icon.new {
   background: #ff9237;
   width: 14px;
   height: 14px;
   border-radius: 7px;
 }
 div#designs-dashboard div.current-projects div.projects div.project .project-id,
+div#designs-dashboard div.past-projects div.projects div.project .project-id,
 div#designs-dashboard div.current-projects div.projects div.project .project-date,
-div#designs-dashboard div.current-projects div.projects div.project .project-status {
+div#designs-dashboard div.past-projects div.projects div.project .project-date,
+div#designs-dashboard div.current-projects div.projects div.project .project-status,
+div#designs-dashboard div.past-projects div.projects div.project .project-status {
   padding-top: 25px;
   padding-bottom: 25px;
 }
-div#designs-dashboard div.current-projects div.projects div.project div.project-actions a {
+div#designs-dashboard div.current-projects div.projects div.project div.project-actions a,
+div#designs-dashboard div.past-projects div.projects div.project div.project-actions a {
   padding-top: 11px;
   padding-bottom: 11px;
   margin-top: 14px;
@@ -911,7 +924,8 @@ div#designs-dashboard div.current-projects div.projects div.project div.project-
   width: 100%;
   transition: opacity .1s;
 }
-div#designs-dashboard div.current-projects div.projects div.project div.project-actions a:hover {
+div#designs-dashboard div.current-projects div.projects div.project div.project-actions a:hover,
+div#designs-dashboard div.past-projects div.projects div.project div.project-actions a:hover {
   opacity: .9;
 }
 div#designs-dashboard div#footer {
@@ -1071,4 +1085,12 @@ div#login div#login-container form#login-form div.login-bottom .submit-login {
   color: #FFFFFF;
   font-weight: 500;
   text-align: center;
+}
+/* --- PROJECT --- */
+div#designs-designer-project div.actions a.service-btn.active {
+  font-weight: bold;
+  text-decoration: underline;
+}
+div#designs-designer-project div.submissions div.submission {
+  margin-top: 20px;
 }

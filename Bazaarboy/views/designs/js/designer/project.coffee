@@ -11,9 +11,10 @@ Bazaarboy.designs.designer.project =
     		else if $("div.actions-container div.services a.service-btn.active").length == 0
     			swal("Wait!", "You must select the type of submission", "warning")
     		else
+                notes = $('textarea[name=designer_notes]').val()
     			service = $("div.actions-container div.services a.service-btn.active").data('id')
     			assets = $("form#designer-project input[name=assets]").val()
-    			Bazaarboy.post 'designs/designer/submit/'+projectId, {service:service, assets:assets}, (response) ->
+    			Bazaarboy.post 'designs/designer/submit/'+projectId, {service:service, assets:assets, notes:notes}, (response) ->
     				if response.status is 'OK'
     					swal
                             title: "Success"

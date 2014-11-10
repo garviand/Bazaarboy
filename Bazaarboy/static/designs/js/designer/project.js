@@ -6,32 +6,34 @@
         $(this).addClass('active');
       });
       $("div.actions-container a.add-submission-btn").click(function() {
-        var assets, projectId, service;
+        var assets, notes, projectId, service;
         projectId = $(this).data('id');
         if ($("form#designer-project input[name=assets]").val().trim() === '') {
           swal("Wait!", "You must attach at least one asset", "warning");
         } else if ($("div.actions-container div.services a.service-btn.active").length === 0) {
           swal("Wait!", "You must select the type of submission", "warning");
         } else {
-          service = $("div.actions-container div.services a.service-btn.active").data('id');
-          assets = $("form#designer-project input[name=assets]").val();
-          Bazaarboy.post('designs/designer/submit/' + projectId, {
-            service: service,
-            assets: assets
-          }, function(response) {
-            if (response.status === 'OK') {
-              return swal({
-                title: "Success",
-                text: "The submission has gone through!",
-                type: "success"
-              }, function() {
-                location.reload();
-              });
-            } else {
-              return swal("Error", response.message, "error");
-            }
-          });
+          notes = $('textarea[name=designer_notes]').val();
         }
+        service = $("div.actions-container div.services a.service-btn.active").data('id');
+        assets = $("form#designer-project input[name=assets]").val();
+        Bazaarboy.post('designs/designer/submit/' + projectId, {
+          service: service,
+          assets: assets,
+          notes: notes
+        }, function(response) {
+          if (response.status === 'OK') {
+            return swal({
+              title: "Success",
+              text: "The submission has gone through!",
+              type: "success"
+            }, function() {
+              location.reload();
+            });
+          } else {
+            return swal("Error", response.message, "error");
+          }
+        });
       });
       $("div.dropzone").dropzone({
         url: "/designs/asset/upload/",

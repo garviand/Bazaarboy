@@ -37,8 +37,8 @@ def index(request, params, user):
     """
     if user:
         if Project.objects.filter(owner = user).exists():
-            currentProjects = Project.objects.filter(owner = user, checkout__is_charged = True, is_completed = False).order_by('id')
-            pastProjects = Project.objects.filter(owner = user, checkout__is_charged = True, is_completed = True)
+            currentProjects = Project.objects.filter(owner = user, checkout__is_charged = True, is_completed = False).order_by('-id')
+            pastProjects = Project.objects.filter(owner = user, checkout__is_charged = True, is_completed = True).order_by('-id')
             return render(request, 'designs/dashboard.html', locals())
         else:
             if params['auth']:
@@ -102,6 +102,36 @@ def submit_review(request, user, params):
         sendReviewEmail(project)
         response = {
             'status':'OK'
+        }
+        return json_response(response)
+
+@login_check()
+def finalize_review(request, user, project):
+    """
+    Designs finalize
+    """
+    if not user:
+        response = {
+            'status':'FAIL',
+            'error':'NOT_LOGGED_IN',
+            'message': 'You must be logged in.'
+        }
+        return json_response(response)
+    else:
+        if not Project.objects.filter(owner = user, id = project).exists():
+            response = {
+                'status':'FAIL',
+                'error':'NOT_OWNER',
+                'message': 'This is not your project.'
+            }
+            return json_response(response)
+        project = Project.objects.get(id = project)
+        project.is_completed = True
+        sendProjectCompleteEmail(project)
+        project.save()
+        response = {
+            'status':'OK',
+            'project': project.id
         }
         return json_response(response)
 
@@ -406,6 +436,28 @@ def sendReviewEmail(project):
     }]
     return sendEmails(to, MANDRILL_FROM_NAME, subject, template, mergeVars)
 
+def sendProjectCompleteEmail(project):
+    """
+    Project Complete Email
+    """
+    user = project.owner
+    to = [{
+        'email':project.designer.email, 
+        'name':project.designer.first_name + ' ' + project.designer.last_name
+    }]
+    subject = 'Bazaarboy Designs - Project Complete'
+    template = 'designs-complete'
+    mergeVars = [{
+        'rcpt': project.designer.email,
+        'vars': [
+            {
+                'name':'user_email', 
+                'content':user.email
+            }
+        ]
+    }]
+    return sendEmails(to, MANDRILL_FROM_NAME, subject, template, mergeVars)
+
 @login_check()
 @validate('GET', ['project'])
 def download_zip(request, params, user):
@@ -427,6 +479,31 @@ def download_zip(request, params, user):
     response['Content-Disposition'] = 'attachment; filename=BazaarboyDesigns.zip'
     return response
 
+@login_check()
+@validate('GET', ['project'])
+def download_final(request, params, user):
+    if Project.objects.filter(id = params['project'], owner = user).exists():
+        project = Project.objects.get(id = params['project'], owner = user)
+    else:
+        response = {
+            'status':'FAIL',
+            'error':'PROJECT_UNAVAILABLE',
+            'message':'This project is either not yours or non existent.'
+        }
+        return json_response(response)
+    s = StringIO()
+    zf = zipfile.ZipFile(s, "w")
+    services = Service.objects.filter(project = project)
+    for service in services:
+        if Submission.objects.filter(service = service, project = project).exists():
+            submission = Submission.objects.filter(service = service, project = project).order_by('-id')[0]
+            for asset in submission.images.all():
+                zf.write(asset.source.url[1:], arcname = 'assets/' + asset.source.name.split("/")[-1])
+    zf.close()
+    response = HttpResponse(s.getvalue(), mimetype = "application/x-zip-compressed")
+    response['Content-Disposition'] = 'attachment; filename=BazaarboyDesigns.zip'
+    return response
+
 @designer_check()
 def designer(request, designer):
     if not designer:
@@ -443,13 +520,17 @@ def designer_project(request, project, designer):
     else:
         if Project.objects.filter(id = project, designer = designer).exists():
             project = Project.objects.get(id = project, designer = designer)
-            submissions = Submission.objects.filter(project = project)
+            submissions = []
+            services = Service.objects.filter(project = project)
+            for service in services:
+                if Submission.objects.filter(service = service, project = project).exists():
+                    submissions.append(Submission.objects.filter(service = service, project = project).order_by('-id')[0])
             return render(request, 'designs/designer/project.html', locals())
         else:
             return redirect('designs:designer')
 
 @designer_check()
-@validate('POST', ['assets', 'service'])
+@validate('POST', ['assets', 'service'], ['notes'])
 def designer_submit(request, project, designer, params):
     if not designer:
         response = {
@@ -471,7 +552,10 @@ def designer_submit(request, project, designer, params):
                     'message':'The design service was not selected (Poster, Banner, etc.)'
                 }
                 return json_response(response)
-            submission = Submission(project = project, service = service, designer_notes = '', owner_notes = '')
+            notes = ''
+            if params['notes']:
+                notes = params['notes']
+            submission = Submission(project = project, service = service, designer_notes = notes, owner_notes = '')
             submission.save()
             if params['assets'] and params['assets'] is not '':
                 assetsRaw = params['assets'].split(",")

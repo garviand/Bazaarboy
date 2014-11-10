@@ -30,6 +30,23 @@ Bazaarboy.designs.review =
 							type: "error"
 					return
 			return
+		$('a.finalize-btn').click () ->
+			projectId = $(this).data('id')
+			Bazaarboy.post 'designs/review/finalize/'+projectId+'/', {}, (response) ->
+				if response.status is 'OK'
+					swal
+						title: "Success!"
+						text: "Your project has been completed. You can download the final designs from your dashboard."
+						type: "success"
+						, ->
+							window.location.href = '/designs'
+							return
+				else
+					swal
+						title: "Error"
+						text: response.message
+						type: "error"
+			return
 		return
 
 Bazaarboy.designs.review.init()

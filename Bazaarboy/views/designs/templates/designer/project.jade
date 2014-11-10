@@ -13,6 +13,10 @@ block body
             div.row.actions-container
                 div.small-12.medium-6.columns
                     div.dropzone
+                    br
+                    div.comments
+                        label Your Notes
+                        textarea(name="designer_notes")
                 div.small-12.medium-3.columns.services
                     {% for service in project.services.all %}
                     a.service-btn(href="javascript:;", data-id="{{service.id}}") {{ service.name }}
@@ -32,7 +36,12 @@ block body
         div.submissions
             {% for submission in submissions %}
             div.row.submission
-                {{submission.created_time|date:"m/d"}}
+                div.small-12.medium-2.columns
+                    | {{submission.created_time|date:"m/d"}}
+                div.small-12.medium-4.columns
+                    | {{submission.service.name}}
+                div.small-12.medium-6.columns
+                    | {{ submission.owner_notes }}
             {% endfor %}
 
     
