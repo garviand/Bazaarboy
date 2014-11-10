@@ -181,7 +181,7 @@ def finalize_project(request, params, user):
         amount = 0
         for service in project.services.all():
             amount += service.price * 100
-        paymentAccount = Payment_account.objects.get(id = 43)
+        paymentAccount = Payment_account.objects.get(id = 44)
         checkout = Checkout(payer = user, 
                             payee = paymentAccount, 
                             amount = amount, 
