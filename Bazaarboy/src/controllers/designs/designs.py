@@ -36,7 +36,7 @@ def index(request, params, user):
     Designs index page
     """
     if user:
-        if Project.objects.filter(owner = user).exists():
+        if Project.objects.filter(owner = user, checkout__is_charged = True).exists():
             currentProjects = Project.objects.filter(owner = user, checkout__is_charged = True, is_completed = False).order_by('-id')
             pastProjects = Project.objects.filter(owner = user, checkout__is_charged = True, is_completed = True).order_by('-id')
             return render(request, 'designs/dashboard.html', locals())
@@ -181,7 +181,7 @@ def finalize_project(request, params, user):
         amount = 0
         for service in project.services.all():
             amount += service.price * 100
-        paymentAccount = Payment_account.objects.get(id = 44)
+        paymentAccount = Payment_account.objects.get(id = 43)
         checkout = Checkout(payer = user, 
                             payee = paymentAccount, 
                             amount = amount, 
