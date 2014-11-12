@@ -308,7 +308,7 @@ block body
 							{% endwith %}
 						//- input(type="").tix-quantity.small-3 Quantity
 						div.hero-rsvp-button.medium-3.small-12.columns
-							button(type="submit") {% if cheapest != 0 %}Purchase{% else %}RSVP{% endif %}
+							button(type="submit") {% if cheapest == 0 %}RSVP{% else %}Purchase{% endif %}
 
 				//- div.event-rsvp
 				//- div.event-price
