@@ -113,7 +113,7 @@ def index(request, id, params, user):
             rsvp = False
         if ticket.price < cheapest:
             cheapest = ticket.price
-    if design or event.id not in [337, 405]:
+    if design or event.id not in [337, 405, 378]:
         return render(request, 'event/index.html', locals())
     else:
         return render(request, 'event/format-full-screen.html', locals())
