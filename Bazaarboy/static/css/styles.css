@@ -9674,6 +9674,84 @@ a#tickets-confirm:hover {
   margin: auto;
   float: none;
 }
+#event-hero .event-hero-rsvp form .wrapper-dropdown {
+  height: 44px;
+  border-radius: 8px;
+  box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.5);
+  font-weight: 500!important;
+  /* Size and position */
+  position: relative;
+  /* Enable absolute positioning for children and pseudo elements */
+  z-index: 4;
+  width: 100%;
+  margin: 0 auto;
+  /* Styles */
+  background: #FFFFFF;
+  border: 1px solid #43fd35;
+  outline: none;
+  cursor: pointer;
+  /* Font settings */
+  font-weight: bold;
+}
+#event-hero .event-hero-rsvp form .wrapper-dropdown > span {
+  display: block;
+  padding-left: 1em;
+  line-height: 44px;
+  height: 44px;
+  overflow: hidden;
+}
+#event-hero .event-hero-rsvp form .wrapper-dropdown .dropdown {
+  border-radius: 8px;
+  box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.5);
+  /* Size & position */
+  margin-left: 0;
+  margin-bottom: 0;
+  position: absolute;
+  top: 125%;
+  left: 0;
+  /* Size */
+  right: 0;
+  /* Size */
+  /* Styles */
+  background: #fff;
+  font-weight: normal;
+  /* Overwrites previous font-weight: bold; */
+  /* Hiding */
+  opacity: 0;
+  pointer-events: none;
+  list-style: none;
+}
+#event-hero .event-hero-rsvp form .wrapper-dropdown .dropdown li a {
+  border-radius: 8px;
+  display: block;
+  text-decoration: none;
+  color: #3c3c3c;
+  padding: 10px 20px;
+}
+#event-hero .event-hero-rsvp form .wrapper-dropdown .dropdown li:hover a {
+  background: #f6f6f6;
+}
+#event-hero .event-hero-rsvp form .wrapper-dropdown.active .dropdown {
+  opacity: 1;
+  pointer-events: auto;
+}
+#event-hero .event-hero-rsvp form .wrapper-dropdown.active:after {
+  border-color: #43fd35 transparent;
+  border-width: 6px 6px 0 6px;
+  margin-top: -3px;
+}
+#event-hero .event-hero-rsvp form .wrapper-dropdown:after {
+  content: "";
+  width: 0;
+  height: 0;
+  position: absolute;
+  right: 16px;
+  top: 50%;
+  margin-top: -6px;
+  border-width: 6px 0 6px 6px;
+  border-style: solid;
+  border-color: transparent #43fd35;
+}
 #event-hero .event-hero-rsvp form .tix-type,
 #event-hero .event-hero-rsvp form .tix-quantity,
 #event-hero .event-hero-rsvp form button {

@@ -300,15 +300,27 @@ block body
 					div.organizer-logo
 						img(src="{{ first_organizer.profile.image.source.url }}")
 					{% endif %}
-					{% endwith%}
+					{% endwith %}
 					form.hero-ticket-form.medium-8.small-12.columns
 						div.medium-9.small-12.columns
+							{% if tickets|length > 1 %}
+							div#dd.wrapper-dropdown.ticket-dropdown(tabindex="1")
+								span Choose Ticket
+								ul.dropdown
+									{% for ticket in tickets %}
+									li
+										a(href="javascript:;", data-id="{{ ticket.id }}") {{ ticket.name }}
+									{% endfor %}
+							{% elif tickets|length == 1 %}
 							{% with tickets|first as ticket %} 
 							div.tix-type(data-id="{{ ticket.id }}") {{ ticket.name }}
 							{% endwith %}
-						//- input(type="").tix-quantity.small-3 Quantity
+							{% endif %}
+
+						{% if tickets|length > 0 %}
 						div.hero-rsvp-button.medium-3.small-12.columns
 							button(type="submit") {% if cheapest == 0 %}RSVP{% else %}Purchase{% endif %}
+						{% endif %}
 
 				//- div.event-rsvp
 				//- div.event-price

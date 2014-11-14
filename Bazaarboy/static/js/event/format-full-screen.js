@@ -1,11 +1,53 @@
 (function() {
   Bazaarboy.event.format_full_screen = {
+    ticketMenu: void 0,
+    ticketId: void 0,
+    DropDown: function(el) {
+      this.dd = el;
+      this.placeholder = this.dd.children('span');
+      this.opts = this.dd.find('ul.dropdown > li');
+      this.val = '';
+      this.index = -1;
+      this.ticket = void 0;
+      return this.initEvents();
+    },
     init: function() {
+      var scope;
+      scope = this;
+      if ($('.tix-type').length === 1) {
+        scope.ticketId = $('.tix-type').data('id');
+      }
+      this.DropDown.prototype = {
+        initEvents: function() {
+          var obj;
+          obj = this;
+          obj.dd.on("click", function(event) {
+            $(this).toggleClass("active");
+            false;
+          });
+          obj.opts.on("click", function() {
+            var opt;
+            opt = $(this);
+            obj.val = opt.text();
+            obj.index = opt.index();
+            obj.placeholder.text(obj.val);
+            scope.ticketId = opt.find('a').data('id');
+          });
+        },
+        getValue: function() {
+          this.val;
+        },
+        getIndex: function() {
+          this.index;
+        }
+      };
+      this.ticketMenu = new this.DropDown($('#dd'));
+      $(document).click(function() {});
       $("form.hero-ticket-form button[type=submit]").click(function(e) {
         var ticketId,
           _this = this;
         e.preventDefault();
-        ticketId = $("form.hero-ticket-form .tix-type").data('id');
+        ticketId = scope.ticketId;
         if (!$("div#tickets div.ticket[data-id=" + ticketId + "]").hasClass('active')) {
           $("div#tickets div.ticket[data-id=" + ticketId + "] div.ticket-top").click();
         }
