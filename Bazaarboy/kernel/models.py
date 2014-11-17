@@ -158,6 +158,7 @@ class Event(models.Model):
     tags = models.CharField(max_length = 50)
     category = models.CharField(max_length = 30)
     color = models.CharField(max_length = 30, default="#FAA638")
+    premium = models.BooleanField(default = False)
     is_launched = models.BooleanField(default = False)
     launched_time = models.DateTimeField(null = True, default = None)
     created_time = models.DateTimeField(auto_now_add = True)
