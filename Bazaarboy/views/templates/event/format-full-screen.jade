@@ -23,6 +23,48 @@ append head
 	link(rel="image_src", href="{{ event.cover.source.url|sanitizeUrl }}")
 	{% endif %}
 
+	style(type="text/css").
+		.custom .event-share .share-btn {
+			border: none;
+			text-shadow: none;
+			background-color: {{ event.color }};
+			box-shadow: none;
+			padding-top: 11px!important;
+			box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.125);
+		}
+		.custom #event-hero{
+			border-bottom: 2px solid {{ event.color }};
+		}
+		.custom #event-hero .event-hero-rsvp form button,
+		.custom .event-share .share-btn {
+			transition: all 0.125s ease-out;
+			-webkit-transition: all 0.125s ease-out;
+		}
+		.custom #event-hero .event-hero-rsvp form button:hover,
+		.custom .event-share .share-btn:hover,
+		.custom #event-hero .event-hero-rsvp form button:active,
+		.custom .event-share .share-btn:active,
+		.custom #event-hero .event-hero-rsvp form button:focus,
+		.custom .event-share .share-btn:focus {
+			background: {{ event.color_dark }};
+			box-shadow: 0px 1px 1px rgba(0, 0, 0, 0.5);
+		}
+		.custom #event-hero .event-hero-rsvp form .wrapper-dropdown{
+			border: 1px solid {{ event.color }};
+		}
+		.custom #event-hero .event-hero-rsvp form .wrapper-dropdown:after{
+			border-color: transparent {{ event.color }};
+		}
+		.custom #event-hero .event-hero-rsvp form .wrapper-dropdown.active:after{
+			border-color: {{ event.color }} transparent;
+		}
+		.custom #event-hero .event-hero-rsvp form .tix-type, .custom #event-hero .event-hero-rsvp form .tix-quantity {
+			border: 1px solid {{ event.color }};
+		}
+		.custom #event-hero .event-hero-rsvp form button{
+			background: {{ event.color }};
+		}
+
 block body
 	include ../components/facebook
 
@@ -232,7 +274,7 @@ block body
 			div.medium-4.columns.end
 				a.add-organizer-another.secondary-btn(href="javascript:;") Add Another
 	
-	div#event.surge
+	div#event.custom
 		div#event-header(style="{% if design %}position:absolute;{% endif %}")
 			div.event-header-body(class="{% if design %}medium-8{% elif preview and editable %}medium-7{% elif preview %}medium-8{% else %}medium-8{% endif %} columns")
 				div.profile-icon

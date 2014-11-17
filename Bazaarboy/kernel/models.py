@@ -157,6 +157,7 @@ class Event(models.Model):
                               on_delete = models.SET_NULL)
     tags = models.CharField(max_length = 50)
     category = models.CharField(max_length = 30)
+    color = models.CharField(max_length = 30, default="#FAA638")
     is_launched = models.BooleanField(default = False)
     launched_time = models.DateTimeField(null = True, default = None)
     created_time = models.DateTimeField(auto_now_add = True)
@@ -168,6 +169,15 @@ class Event(models.Model):
                                       through = 'Sponsorship')
     slug = models.CharField(max_length = 30, null = True, default = None, unique = True)
     is_deleted = models.BooleanField(default = False)
+
+
+    def color_dark(self):
+        hex_color = self.color
+        brightness_offset = -15
+        rgb_hex = [hex_color[x:x+2] for x in [1, 3, 5]]  
+        new_rgb_int = [int(hex_value, 16) + brightness_offset for hex_value in rgb_hex]  
+        new_rgb_int = [min([255, max([0, i])]) for i in new_rgb_int] # make sure new values are between 0 and 255
+        return "#" + "".join([hex(i)[2:] for i in new_rgb_int])  
 
 def randomConfirmationCode(size=6):
     """
