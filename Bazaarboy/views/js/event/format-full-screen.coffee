@@ -38,7 +38,7 @@ Bazaarboy.event.format_full_screen =
         $(document).click () ->
             #$('.ticket-dropdown').removeClass('active')
             return
-        $("form.hero-ticket-form button[type=submit]").click (e) ->
+        $("form.hero-ticket-form button[type=submit], .tix-type").click (e) ->
             e.preventDefault()
             ticketId = scope.ticketId
             if not $("div#tickets div.ticket[data-id=" + ticketId + "]").hasClass('active')
