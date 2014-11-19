@@ -97,7 +97,12 @@ append head
 		}
 
 		.custom div#event-description a{
-			color: {{ event.color}};
+			color: {{ event.color }};
+			transition: all 0.125s ease-out;
+			-webkit-transition: all 0.125s ease-out;
+		}
+		.custom div#event-description a:hover{
+			color: {{ event.color_dark }}
 		}
 
 block body
