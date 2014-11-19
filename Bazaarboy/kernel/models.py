@@ -178,7 +178,15 @@ class Event(models.Model):
         rgb_hex = [hex_color[x:x+2] for x in [1, 3, 5]]  
         new_rgb_int = [int(hex_value, 16) + brightness_offset for hex_value in rgb_hex]  
         new_rgb_int = [min([255, max([0, i])]) for i in new_rgb_int] # make sure new values are between 0 and 255
-        return "#" + "".join([hex(i)[2:] for i in new_rgb_int])  
+        return "#" + "".join([hex(i)[2:] for i in new_rgb_int])
+
+    def color_light(self):
+        hex_color = self.color
+        brightness_offset = 15
+        rgb_hex = [hex_color[x:x+2] for x in [1, 3, 5]]  
+        new_rgb_int = [int(hex_value, 16) + brightness_offset for hex_value in rgb_hex]  
+        new_rgb_int = [min([255, max([0, i])]) for i in new_rgb_int] # make sure new values are between 0 and 255
+        return "#" + "".join([hex(i)[2:] for i in new_rgb_int])
 
 def randomConfirmationCode(size=6):
     """

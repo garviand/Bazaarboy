@@ -60,9 +60,9 @@ _gaq.push(['_trackPageview']);
 }
 
 .custom div#event-date{
- background: {{ event.color }};
- border: {{ event.color_dark }} thin solid;
- box-shadow: inset 0px -2px 0px 0px {{ event.color_dark }};
+ background: {{ event.color_light }};
+ border: {{ event.color }} thin solid;
+ box-shadow: inset 0px -2px 0px 0px {{ event.color }};
 }
 
 .custom div#event-calendar-add div.calendar-add .addthisevent-drop{
@@ -75,6 +75,10 @@ _gaq.push(['_trackPageview']);
 
 .custom div.contact-organizer a, div.add-organizer a{
  color: {{ event.color}} !important;
+}
+
+.custom div#event-description a{
+ color: {{ event.color}};
 }
 </style></head><body><div id="fb-root"></div><script>window.fbAsyncInit = function() {
     // init the FB JS SDK
