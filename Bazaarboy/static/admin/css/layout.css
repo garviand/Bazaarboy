@@ -563,14 +563,31 @@ div#wrapper_main div.summary div.specs.event_export .event_choices a.hidden {
   display: none;
 }
 div#wrapper_main div.summary div.specs table.upcoming,
-div#wrapper_main div.summary div.specs table.past {
+div#wrapper_main div.summary div.specs table.past,
+div#wrapper_main div.summary div.specs table.premium {
   width: 100%;
 }
 div#wrapper_main div.summary div.specs table.upcoming tr td,
-div#wrapper_main div.summary div.specs table.past tr td {
+div#wrapper_main div.summary div.specs table.past tr td,
+div#wrapper_main div.summary div.specs table.premium tr td {
   padding: 7px 7px;
 }
 div#wrapper_main div.summary div.specs table.upcoming tr td a,
-div#wrapper_main div.summary div.specs table.past tr td a {
+div#wrapper_main div.summary div.specs table.past tr td a,
+div#wrapper_main div.summary div.specs table.premium tr td a {
   text-decoration: none;
+}
+div#wrapper_main div.summary div.specs div.table-container {
+  float: right;
+  width: 70%;
+}
+div#wrapper_main div.summary div.specs div.table-container label {
+  text-decoration: underline;
+}
+div#wrapper_main div.summary div.specs div.colorpicker-container {
+  width: 25%;
+  float: left;
+}
+div#wrapper_main div.summary div.specs div.colorpicker-container label {
+  text-decoration: underline;
 }

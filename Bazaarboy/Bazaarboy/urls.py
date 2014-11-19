@@ -111,6 +111,7 @@ admin_urlpatterns = patterns('src.controllers.admin.admin',
     url(r'^auth/$', 'auth', name = 'auth'),
     url(r'^logout/$', 'logout', name = 'logout'),
     url(r'^login/profile/$', 'login_profile', name = 'login_profile'),
+    url(r'^event/premium/$', 'make_premium', name = 'make_premium'),
 )
 
 designs_urlpatterns = patterns('src.controllers.designs.designs', 

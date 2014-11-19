@@ -4,7 +4,7 @@ module.exports = (grunt) ->
     grunt.loadNpmTasks('grunt-contrib-jade')
     grunt.loadNpmTasks('grunt-contrib-less')
     grunt.loadNpmTasks('grunt-contrib-concat')
-    grunt.loadNpmTasks('grunt-contrib-watch')
+    grunt.loadNpmTasks('grunt-simple-watch')
     grunt.initConfig
         concat:
             css:
@@ -253,5 +253,8 @@ module.exports = (grunt) ->
             opts[output] = filepath
             grunt.config(['less', 'compile', 'files'], opts)
         ###
-    grunt.registerTask('dev', ['jade', 'coffee', 'less', 'concat', 'watch'])
+
+    grunt.option('force', true)
+
+    grunt.registerTask('dev', ['jade', 'coffee', 'less', 'concat', 'simple-watch'])
     return

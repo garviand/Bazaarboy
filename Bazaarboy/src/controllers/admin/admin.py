@@ -13,6 +13,7 @@ from django.utils import timezone
 from datetime import datetime, timedelta
 from admin.models import *
 from kernel.models import *
+from kernel.templatetags import layout 
 from src.controllers.request import json_response, validate
 from src.serializer import serialize_one
 
@@ -104,6 +105,36 @@ def login_profile(request, params):
         request.session['user'] = manager.id
         response = {
             'status':'OK'
+        }
+        return json_response(response)
+    else:
+        response = {
+            'status':'FAIL',
+            'message':'Profile does not exist.'
+        }
+        return json_response(response)
+
+@validate('POST', ['id', 'color'])
+def make_premium(request, params):
+    """
+    Admin Login as Profile Manager
+    """
+    if not request.session.has_key('admin'):
+        # No admin session, block from login
+        response = {
+            'status':'FAIL',
+            'message':'Not an Admin.'
+        }
+        return json_response(response)
+    # Find profile manager by profile id and login
+    if Event.objects.filter(id = params['id']).exists():
+        event = Event.objects.get(id = params['id'])
+        event.color = params['color']
+        event.premium = True
+        event.save()
+        response = {
+            'status':'OK',
+            'redirect': layout.eventUrl(event)
         }
         return json_response(response)
     else:

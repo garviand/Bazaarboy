@@ -25,6 +25,22 @@ Bazaarboy.admin.login =
 			return
 		return
 	init: () ->
+		$('div.colorpicker').spectrum
+			preferredFormat: "hex"
+			flat: true
+			showInput: true
+			showButtons: false
+		$('a.create-premium-event').click () ->
+			color = $('div.colorpicker').spectrum("get").toHexString()
+			eventId = $(this).data('id')
+			eventName = $(this).html()
+			if confirm("Are you sure you want to make " + eventName + " a premium event?")
+				Bazaarboy.post 'admin/event/premium/', {id:eventId, color:color}, (response) ->
+					if response.status is 'OK'
+						window.location.href = response.redirect
+					else
+						alert response.message
+					return
 		$('.profile_login').on 'click', '.profile_choices a', (event) ->
 			id = $(this).data('id')
 			Bazaarboy.get 'admin/login/profile/', {id: id}, (response) ->

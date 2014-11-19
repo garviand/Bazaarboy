@@ -37,6 +37,30 @@
     },
     init: function() {
       var _this = this;
+      $('div.colorpicker').spectrum({
+        preferredFormat: "hex",
+        flat: true,
+        showInput: true,
+        showButtons: false
+      });
+      $('a.create-premium-event').click(function() {
+        var color, eventId, eventName;
+        color = $('div.colorpicker').spectrum("get").toHexString();
+        eventId = $(this).data('id');
+        eventName = $(this).html();
+        if (confirm("Are you sure you want to make " + eventName + " a premium event?")) {
+          return Bazaarboy.post('admin/event/premium/', {
+            id: eventId,
+            color: color
+          }, function(response) {
+            if (response.status === 'OK') {
+              window.location.href = response.redirect;
+            } else {
+              alert(response.message);
+            }
+          });
+        }
+      });
       $('.profile_login').on('click', '.profile_choices a', function(event) {
         var id;
         id = $(this).data('id');
