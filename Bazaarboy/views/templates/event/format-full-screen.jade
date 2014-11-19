@@ -24,6 +24,19 @@ append head
 	{% endif %}
 
 	style(type="text/css").
+
+		.custom div.profile-icon div.inner img {
+			width: 30px;
+			height: 30px;
+			position: relative;
+			left: 7px;
+			top: 5px;
+		}
+
+		.custom div.profile-icon div.inner{
+			background: {{ event.color }} !important;
+		}
+
 		.custom .event-share .share-btn {
 			border: none;
 			text-shadow: none;
@@ -63,6 +76,24 @@ append head
 		}
 		.custom #event-hero .event-hero-rsvp form button{
 			background: {{ event.color }};
+		}
+
+		.custom div#event-date{
+			background: {{ event.color }};
+			border: {{ event.color_dark }} thin solid;
+			box-shadow: inset 0px -2px 0px 0px {{ event.color_dark }};
+		}
+
+		.custom div#event-calendar-add div.calendar-add .addthisevent-drop{
+			color: {{ event.color}} !important;
+		}
+
+		.custom div#event-calendar-add div.calendar-add a{
+			color: {{ event.color}} !important;
+		}
+
+		.custom div.contact-organizer a, div.add-organizer a{
+			color: {{ event.color}} !important;
 		}
 
 block body
@@ -280,7 +311,7 @@ block body
 				div.profile-icon
 					div.inner
 						a(href="{% url index %}")
-							img(src="{{ STATIC_URL }}images/logo-big.png")
+							img(src="{{ STATIC_URL }}images/logo-white.png")
 				div.event-name 
 					span {{ event.name }}
 				{% if not design %}

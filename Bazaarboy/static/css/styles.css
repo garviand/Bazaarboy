@@ -8772,7 +8772,7 @@ div#event-header div.event-header-body div.profile-icon div.inner {
   min-height: 44px;
   margin: 11px;
   border-radius: 22px;
-  background: #FF9137!important;
+  background: #FF9137;
 }
 div#event-header div.event-header-body div.profile-icon div.inner:hover {
   box-shadow: 0 0 20px #FFFFFF;
