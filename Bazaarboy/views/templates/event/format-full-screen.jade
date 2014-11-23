@@ -383,6 +383,7 @@ block body
 						img(src="{{ first_organizer.profile.image.source.url }}")
 					{% endif %}
 					{% endwith %}
+					{% if not hasEnded %}
 					form.hero-ticket-form.medium-8.small-12.columns
 						div.medium-9.small-12.columns
 							{% if tickets|length > 1 %}
@@ -403,6 +404,7 @@ block body
 						div.hero-rsvp-button.medium-3.small-12.columns
 							button(type="submit") {% if cheapest == 0 %}RSVP{% else %}Purchase{% endif %}
 						{% endif %}
+					{% endif %}
 
 				//- div.event-rsvp
 				//- div.event-price
