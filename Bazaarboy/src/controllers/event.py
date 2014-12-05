@@ -407,7 +407,8 @@ def invite(request, id, params, user):
     else:
         message = ''
     for email in emails:
-        sendEventInvite(event, email, subject, inviter, message)
+        if not Unsubscribe.objects.filter(email = email).exists():
+            sendEventInvite(event, email, subject, inviter, message)
     response = {
         'status':'OK',
         'count': str(len(emails))

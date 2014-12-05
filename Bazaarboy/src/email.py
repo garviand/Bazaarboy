@@ -10,6 +10,8 @@ import urllib
 import urllib2
 import weasyprint
 import logging
+import hashlib
+import uuid
 from datetime import datetime
 from celery import task
 from mandrill import Mandrill
@@ -90,7 +92,7 @@ def sendConfirmationEmail(confirmationCode):
     """
     user = confirmationCode.user
     to = [{
-        'email':user.email, 
+        'email':user.email,
         'name':user.full_name
     }]
     subject = 'Welcome to Bazaarboy'
@@ -116,7 +118,7 @@ def sendResetRequestEmail(resetCode):
     """
     user = resetCode.user
     to = [{
-        'email':user.email, 
+        'email':user.email,
         'name':user.first_name + ' ' + user.last_name
     }]
     subject = 'Reset Your Password'
@@ -274,6 +276,8 @@ def sendOrganizerAddedEmail(event, adder, profile):
 
 @task()
 def sendEventInvite(event, email, subject, inviter, custom_message=''):
+    if Unsubscribe.objects.filter(email = email).exists():
+        return False
     event_month = DateFormat(localize(event.start_time))
     event_month = event_month.format('M')
     event_day = DateFormat(localize(event.start_time))
@@ -310,7 +314,8 @@ def sendEventInvite(event, email, subject, inviter, custom_message=''):
     }]
     if subject.strip() == '':
         subject = 'Invitation to \'' + event.name + '\''
-    template = 'event-invitation-message'
+    key = hashlib.sha512(email + UNSUBSCRIBE_SALT).hexdigest()
+    template = 'event-invitation-1'
     mergeVars = [{
         'rcpt': email,
         'vars': [
@@ -349,6 +354,14 @@ def sendEventInvite(event, email, subject, inviter, custom_message=''):
             {
                 'name': 'event_summary', 
                 'content': event.summary
+            },
+            {
+                'name': 'user_email', 
+                'content': email
+            },
+            {
+                'name': 'unsub_key', 
+                'content': key
             }
         ]
     }]

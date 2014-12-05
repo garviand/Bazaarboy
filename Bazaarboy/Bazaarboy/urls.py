@@ -16,6 +16,7 @@ user_urlpatterns = patterns('src.controllers.user',
     url(r'^password/change/$', 'change_password', name = 'change_password'),
     url(r'^auth/$', 'auth', name = 'auth'),
     url(r'^settings/$', 'settings', name = 'settings'),
+    url(r'^unsub/$', 'unsubscribe', name = 'unsubscribe'),
     url(r'^logout/$', 'logout', name = 'logout'),
 )
 

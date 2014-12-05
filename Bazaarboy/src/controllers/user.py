@@ -3,6 +3,7 @@ Controller for all user related actions
 """
 
 import hashlib
+import uuid
 import os
 import random
 from datetime import timedelta
@@ -17,6 +18,28 @@ from src.controllers.request import *
 from src.email import sendConfirmationEmail, sendResetRequestEmail
 from src.regex import REGEX_EMAIL, REGEX_NAME
 from src.serializer import serialize_one
+
+@validate('GET', ['key', 'email'])
+def unsubscribe(request, params):
+    """
+    Unsubscribe from Invites and Follow-Ups
+    """
+    check_key = hashlib.sha512(params['email'] + UNSUBSCRIBE_SALT).hexdigest()
+    if params['key'] == check_key:
+        if not Unsubscribe.objects.filter(email = params['email']).exists():
+            unsubscribe = Unsubscribe(email = params['email'])
+            unsubscribe.save()
+        response = {
+            'status': 'OK',
+            'email': params['email']
+        }
+        return json_response(response)
+    else:
+        response = {
+            'status': 'FAIL',
+            'error': 'KEY_DOESNT_MATCH'
+        }
+        return json_response(response)
 
 @login_check()
 @validate('GET')

@@ -5625,6 +5625,21 @@ div#map-canvas img {
 .secondary-btn-inverse:hover {
   color: #00BD84;
 }
+.disabled-btn {
+  border: 1px solid #CCC !important;
+  border-radius: 4px !important;
+  background: #999 !important;
+  -moz-box-shadow: inset 0px -2px 0px 0px #333333 !important;
+  -webkit-box-shadow: inset 0px -2px 0px 0px #333333 !important;
+  box-shadow: inset 0px -2px 0px 0px #333333 !important;
+  color: #FFFFFF !important;
+  font-weight: 500 !important;
+  text-shadow: 1px 1px 0px #333 !important;
+  cursor: pointer;
+}
+.disabled-btn:hover {
+  color: #FFFFFF;
+}
 .blue-btn {
   border-radius: 4px;
   background: #879BFF;

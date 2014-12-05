@@ -280,7 +280,7 @@ Bazaarboy.event.index =
             $(this).toggleClass 'selected'
             return
         $('div#invite-modal form.invite-form a.send-invitation').click () ->
-            $(this).html 'Sending...'
+            $(this).html 'Sending Email...'
             params = $('form.invite-form').serializeObject()
             events = ''
             $('div#invite-modal form.invite-form div.event-list.selected').each () ->
@@ -293,6 +293,7 @@ Bazaarboy.event.index =
             params = Bazaarboy.stripEmpty params, optionals
             if not scope.emailSending
                 scope.emailSending = true
+                $('div#invite-modal form.invite-form a.send-invitation').addClass 'disabled-btn'
                 Bazaarboy.post 'event/'+eventId+'/invite/', params, (response) ->
                     if response.status is 'OK'
                         $('div.invite-success span.invite-count').html(response.count)
@@ -304,6 +305,7 @@ Bazaarboy.event.index =
                         scope.emailSending = false
                         alert response.message
                         $(this).html 'Send Invitations'
+                        $('div#invite-modal form.invite-form a.send-invitation').removeClass 'disabled-btn'
                     return
             return
         $('.close-invite-modal').click () ->

@@ -131,7 +131,7 @@ Bazaarboy.event.manage =
             return
         $('div#invite-modal form.invite-form a.send-invitation').click () ->
             button = $(this)
-            button.html 'Sending...'
+            button.html 'Sending Email...'
             params = $('form.invite-form').serializeObject()
             events = ''
             $('div#invite-modal form.invite-form div.event-list.selected').each () ->
@@ -144,6 +144,7 @@ Bazaarboy.event.manage =
             params = Bazaarboy.stripEmpty params, optionals
             if not scope.emailSending
                 scope.emailSending = true
+                $('div#invite-modal form.invite-form a.send-invitation').addClass 'disabled-btn'
                 Bazaarboy.post 'event/'+eventId+'/invite/', params, (response) ->
                     if response.status is 'OK'
                         $('div.invite-success span.invite-count').html(response.count)
@@ -155,6 +156,7 @@ Bazaarboy.event.manage =
                         scope.emailSending = false
                         alert response.message
                         button.html 'Send Invitations'
+                        $('div#invite-modal form.invite-form a.send-invitation').removeClass 'disabled-btn'
                     return
             return
         $('a.close-invite-modal').click () ->

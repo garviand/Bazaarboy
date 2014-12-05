@@ -362,6 +362,13 @@ class List_item(models.Model):
     class Meta:
         unique_together = ('_list', 'email')
 
+class Unsubscribe(models.Model):
+    """
+    Unsubscribe from Invites and Follow-Ups
+    """
+    email = models.CharField(max_length = 100)
+    created_time = models.DateTimeField(auto_now_add = True)
+
 class Image(models.Model):
     """
     Image model
