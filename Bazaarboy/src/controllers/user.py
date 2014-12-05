@@ -33,13 +33,13 @@ def unsubscribe(request, params):
             'status': 'OK',
             'email': params['email']
         }
-        return json_response(response)
+        return render(request, 'user/unsubscribe.html', locals())
     else:
         response = {
             'status': 'FAIL',
             'error': 'KEY_DOESNT_MATCH'
         }
-        return json_response(response)
+        return render(request, 'user/unsubscribe.html', locals())
 
 @login_check()
 @validate('GET')
