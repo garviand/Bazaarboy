@@ -1,0 +1,14 @@
+{% load humanize %}
+{% load layout %}<!DOCTYPE html><html lang="en"><head><title>Bazaarboy</title><meta charset="utf-8"><meta name="viewport" content="width=device-width"><link rel="shortcut icon" href="{{ STATIC_URL }}images/logo.png"><link rel="stylesheet" href="//cloud.typography.com/7993072/806564/css/fonts.css"><link rel="stylesheet" href="{{ STATIC_URL }}css/styles.css"><link rel="stylesheet" href="{{ STATIC_URL }}gizmo/ss-gizmo.css"><script type="text/javascript">var _gaq = _gaq || [];
+_gaq.push(['_setAccount', 'UA-39060503-1']);
+_gaq.push(['_trackPageview']);
+(function() {
+    var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+    ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+    var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+})();</script></head><body><div id="login"><div class="row"><div id="container"><div id="login-container"><form id="login-form"><div class="row"><div class="small-10 small-offset-1 columns"><div class="row"><div class="small-12 medium-7 columns text-center"><div class="logo-small">&nbsp;</div></div></div><div class="row title"><div class="small-12 columns text-center site-title"> 
+Bazaarboy<span class="page-title"> <span class="hide-for-small-only">&nbsp;&nbsp;|&nbsp;</span>&nbsp;Login</span></div></div><hr class="separator"><div class="row login-inputs"><div class="small-12 columns">You have succesfully unsubscribed from Bazaarboy emails. You will still receive confirmation emails if you RSVP for an event.</div></div><div class="row login-bottom"><div class="small-12 medium-12 columns text-center"><a href="/">Bazaarboy Home</a></div></div></div></div></form></div></div></div></div><div id="scripts"><script src="{{ STATIC_URL }}js/libraries.js"></script><script>var rootUrl = '{% url index %}';
+var mediaUrl = '{{ MEDIA_URL }}';
+var staticUrl = '{{ STATIC_URL }}';
+var csrfToken = '{{ csrf_token }}';
+var loggedIn = {% if user %}true{% else %}false{% endif %};</script><script src="{{ STATIC_URL }}fastclick/fastclick.js"></script><script src="{{ STATIC_URL }}js/bazaarboy.js"></script></div></body></html>
