@@ -56,6 +56,23 @@ block main
         div.clear
     div.summary.box
         div.icon
+            div.icon_title Revert Premium Event to Normal
+            img(src="{{ STATIC_URL }}admin/fui/images/icons/Calendar@2x.png")
+            div.clear
+        div.specs
+            div
+                label Pick Event
+                table.premium
+                    {% for event in premium_events %}
+                    {% if forloop.counter0|divisibleby:"4" %}
+                    tr
+                    {% endif %}
+                    td
+                       a.undo-premium-event(href="javascript:;", data-id="{{ event.id }}"){{ event.name }}
+                    {% endfor %}
+        div.clear
+    div.summary.box
+        div.icon
             div.icon_title Past<br>Events
             img(src="{{ STATIC_URL }}admin/fui/images/icons/Watches@2x.png")
             div.clear

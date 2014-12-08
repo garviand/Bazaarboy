@@ -41,6 +41,16 @@ Bazaarboy.admin.login =
 					else
 						alert response.message
 					return
+		$('a.undo-premium-event').click () ->
+			eventId = $(this).data('id')
+			eventName = $(this).html()
+			if confirm("Are you sure you want to revert " + eventName + " back to a normal event page?")
+				Bazaarboy.post 'admin/event/premium/undo/', {id:eventId}, (response) ->
+					if response.status is 'OK'
+						window.location.href = response.redirect
+					else
+						alert response.message
+					return
 		$('.profile_login').on 'click', '.profile_choices a', (event) ->
 			id = $(this).data('id')
 			Bazaarboy.get 'admin/login/profile/', {id: id}, (response) ->

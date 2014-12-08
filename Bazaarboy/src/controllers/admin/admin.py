@@ -39,6 +39,7 @@ def index(request):
     daily_stats = daily_stats.aggregate(total_sale = Sum('amount'), sale_count = Count('id'))
     # Events (Upcoming/Past)
     upcoming_events = Event.objects.filter(Q(is_launched = True, start_time__gte = timezone.now())).order_by('-start_time')[:50]
+    premium_events = Event.objects.filter(Q(is_launched = True, start_time__gte = timezone.now(), premium = True)).order_by('-start_time')[:50]
     past_events = Event.objects.filter(Q(is_launched = True, start_time__lte = timezone.now())).order_by('-start_time')[:100]
     return render(request, 'admin/index.html', locals())
 
@@ -126,7 +127,6 @@ def make_premium(request, params):
             'message':'Not an Admin.'
         }
         return json_response(response)
-    # Find profile manager by profile id and login
     if Event.objects.filter(id = params['id']).exists():
         event = Event.objects.get(id = params['id'])
         event.color = params['color']
@@ -140,6 +140,34 @@ def make_premium(request, params):
     else:
         response = {
             'status':'FAIL',
-            'message':'Profile does not exist.'
+            'message':'Event does not exist.'
+        }
+        return json_response(response)
+
+@validate('POST', ['id'])
+def undo_premium(request, params):
+    """
+    Admin Login as Profile Manager
+    """
+    if not request.session.has_key('admin'):
+        # No admin session, block from login
+        response = {
+            'status':'FAIL',
+            'message':'Not an Admin.'
+        }
+        return json_response(response)
+    if Event.objects.filter(id = params['id']).exists():
+        event = Event.objects.get(id = params['id'])
+        event.premium = False
+        event.save()
+        response = {
+            'status':'OK',
+            'redirect': layout.eventUrl(event)
+        }
+        return json_response(response)
+    else:
+        response = {
+            'status':'FAIL',
+            'message':'Event does not exist.'
         }
         return json_response(response)

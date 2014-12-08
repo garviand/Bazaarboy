@@ -113,6 +113,7 @@ admin_urlpatterns = patterns('src.controllers.admin.admin',
     url(r'^logout/$', 'logout', name = 'logout'),
     url(r'^login/profile/$', 'login_profile', name = 'login_profile'),
     url(r'^event/premium/$', 'make_premium', name = 'make_premium'),
+    url(r'^event/premium/undo/$', 'undo_premium', name = 'undo_premium'),
 )
 
 designs_urlpatterns = patterns('src.controllers.designs.designs', 

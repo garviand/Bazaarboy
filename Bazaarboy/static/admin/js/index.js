@@ -61,6 +61,22 @@
           });
         }
       });
+      $('a.undo-premium-event').click(function() {
+        var eventId, eventName;
+        eventId = $(this).data('id');
+        eventName = $(this).html();
+        if (confirm("Are you sure you want to revert " + eventName + " back to a normal event page?")) {
+          return Bazaarboy.post('admin/event/premium/undo/', {
+            id: eventId
+          }, function(response) {
+            if (response.status === 'OK') {
+              window.location.href = response.redirect;
+            } else {
+              alert(response.message);
+            }
+          });
+        }
+      });
       $('.profile_login').on('click', '.profile_choices a', function(event) {
         var id;
         id = $(this).data('id');
