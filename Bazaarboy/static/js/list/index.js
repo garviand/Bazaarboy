@@ -3,13 +3,13 @@
     init: function() {
       var scope;
       scope = this;
-      $("a.new-list-btn").click(function() {
+      $(".new-list-btn").click(function() {
         $("div#new-list-modal").foundation('reveal', 'open');
       });
       $("a.close-list-modal").click(function() {
         $("div#new-list-modal").foundation('reveal', 'close');
       });
-      $("div#new-list-modal div.controls a.create-list").click(function() {
+      $("div#new-list-modal div.new-list-inputs a.create-list").click(function() {
         var list_name;
         list_name = $("div#new-list-modal div.new-list-inputs input[name=list_name]").val();
         if (list_name.trim() !== '') {

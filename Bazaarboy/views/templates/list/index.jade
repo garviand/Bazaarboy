@@ -22,8 +22,23 @@ block header
 
 block content
     div#wrapper-list-dashboard.large-9.medium-10.columns.small-centered
-        div#list-dashboard.small-12.columns
+        {% if listsCount == 0 %}
+        div.empty-state-container
             div.row
+                div.medium-5.columns
+                    &nbsp;
+                div.medium-7.columns.end.empty-state-content
+                    div.text YOU HAVEN'T MADE A LIST YET
+                    hr
+                    div.subtext Make event communication easier with lists
+                    div.row
+                        div.large-5.medium-7.small-9
+                            div.new-list-btn
+                                div.primary-btn
+                                    | <span class="plus">+</span> Add New List
+        {% endif %}
+        div#list-dashboard.small-12.columns
+            div.row.new-list-container(class="{% if listsCount == 0 %}hide{% endif %}")
                 div.medium-3.columns.new-list
                     a.new-list-btn.primary-btn(href="javascript:;") + New List
             div.row
@@ -36,16 +51,18 @@ block content
                             div.small-4.columns.text-right
                                 | {{ list.items }} Members
                     {% endfor %}
-    div#new-list-modal.reveal-modal.text-center.medium(data-reveal)
+    div#new-list-modal.reveal-modal.medium(data-reveal)
+        div.row.new-list-title
+            div.small-12.columns
+                h3 Give Your List A Name
         div.row.new-list-inputs
-            div.medium-3.columns.hide-for-small-only.name-label List Name
-            div.medium-9.small-12.columns
-                input(name="list_name", placeholder="Name Of The List")
-        div.row.controls
-            div.small-12.medium-3.medium-offset-6.columns
-                a.create-list.secondary-btn(href="javascript:;") Create
-            div.small-12.medium-3.columns
-                a.close-list-modal.secondary-btn(href="javascript:;") Cancel
+            div.medium-8.small-12.columns
+                input(name="list_name", placeholder="List Name (required)")
+            div.small-12.medium-4.columns
+                a.create-list.primary-btn(href="javascript:;") + Add New List
+        div.row.new-list-cancel
+            div.small-12.medium-4.medium-offset-8.columns.text-center
+                a.close-list-modal(href="javascript:;") Cancel Adding List
 
 
 append script

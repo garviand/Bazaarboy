@@ -21,6 +21,7 @@ def index(request, user):
     profiles = Profile.objects.filter(managers = user)
     profile = profiles[0]
     lists = List.objects.filter(owner = profile)
+    listsCount = lists.count()
     for lt in lists:
         list_items = List_item.objects.filter(_list = lt)
         lt.items = list_items.count()

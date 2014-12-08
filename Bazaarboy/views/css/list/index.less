@@ -1,54 +1,109 @@
 @import (reference) "vars.less";
 
-div#list-dashboard{
-    margin-top: 40px;
-    a.new-list-btn {
-        display: block;
-        padding-top: 9px;
-        padding-bottom: 12px;
-        color: @white;
-        font-size: 15px;
-        text-transform: uppercase;
-    }
-    div.lists{
+div#wrapper-list-dashboard{
+    div.empty-state-container{
         margin-top: 40px;
-        > a{
-            color: @dark;
-        }
-        div.list{
-            padding: 15px 10px;
-            margin-bottom: 10px;
-            border-radius: 3px;
-            border: @grey thin solid;
-            &:hover{
-                background: @grey;
+        border: #F6F6F6 thin solid;
+        border-radius: 4px;
+        background: url('../images/emptystates/tag_bg.jpg');
+        background-size: 80%;
+        background-position: left center;
+        background-repeat: no-repeat;
+        div.empty-state-content{
+            margin: 80px 0;
+            padding-right: 50px;
+            div.text{
+                font-size: 1.3rem;
+                font-weight: 600;
+                color: @dark;
             }
-            div.list-name{
-                font-size: 16px;
-                font-weight: 500;
+            hr{
+                margin: 10px 0;
+            }
+            div.primary-btn{
+                width: 100%;
+                margin-top: 20px;
+                margin-left: 10px;
+                padding-top: 11px;
+                padding-bottom: 14px;
+                font-size: 15px;
+                text-transform: uppercase;
+            }
+        }
+    }
+    div#list-dashboard{
+        margin-top: 40px;
+        a.new-list-btn {
+            display: block;
+            padding-top: 9px;
+            padding-bottom: 12px;
+            color: @white;
+            font-size: 15px;
+            text-transform: uppercase;
+        }
+        div.lists{
+            margin-top: 40px;
+            > a{
+                color: @dark;
+            }
+            div.list{
+                padding: 15px 10px;
+                margin-bottom: 10px;
+                border-radius: 3px;
+                border: @grey thin solid;
+                &:hover{
+                    background: @grey;
+                }
+                div.list-name{
+                    font-size: 16px;
+                    font-weight: 500;
+                }
             }
         }
     }
 }
 
 div#new-list-modal{
-    div.name-label{
-        margin-top: 7px;
+    div.new-list-title{
+        h3{
+            font-weight: bold;
+            font-size: 24px;
+            color: @dark;
+        }
     }
     input{
         display: block;
         width: 100%;
-        padding: 5px 10px;
+        padding: 12px 10px;
+        font-weight: 300;
+        font-size: 14px;
+        border-radius: 3px;
+        border: #D4D4D4 thin solid;
+    }
+    div.new-list-inputs{
+        margin-top: 10px;
+        a.create-list{
+            display: block;
+            width: 100%;
+            padding-top: 11px;
+            padding-bottom: 13px;
+            &:hover, &:focus{
+                color: @white;
+            }
+        }
+
+    }
+    div.new-list-cancel{
+        margin-top: 20px;
+        a.close-list-modal{
+            color: @orange;
+            font-size: 14px;
+            font-weight: 300;
+            text-decoration: underline;
+            font-style: italic;
+        }
     }
     div.controls{
         margin-top: 20px;
-        a.secondary-btn{
-            display: block;
-            padding-top: 9px;
-            padding-bottom: 12px;
-            color: #ffffff;
-            font-size: 15px;
-            text-transform: uppercase;
-        }
     }
 }
