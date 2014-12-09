@@ -5607,23 +5607,25 @@ div#map-canvas img {
   text-shadow: 1px 1px 0px #00BD84;
   cursor: pointer;
 }
-.secondary-btn:hover {
+.secondary-btn:hover,
+.secondary-btn:focus {
   color: #FFFFFF;
 }
 .secondary-btn-inverse {
-  border: 1px solid #00BD84;
+  border: 1px solid #5AE8BE;
   border-radius: 4px;
   background: #FFFFFF;
-  -moz-box-shadow: inset 0px -2px 0px 0px #00bd84;
-  -webkit-box-shadow: inset 0px -2px 0px 0px #00bd84;
-  box-shadow: inset 0px -2px 0px 0px #00bd84;
-  color: #00BD84;
+  -moz-box-shadow: inset 0px -2px 0px 0px #5ae8be;
+  -webkit-box-shadow: inset 0px -2px 0px 0px #5ae8be;
+  box-shadow: inset 0px -2px 0px 0px #5ae8be;
+  color: #5AE8BE;
   font-weight: 500;
   text-align: center;
   cursor: pointer;
 }
-.secondary-btn-inverse:hover {
-  color: #00BD84;
+.secondary-btn-inverse:hover,
+.secondary-btn-inverse:focus {
+  color: #5AE8BE;
 }
 .disabled-btn {
   border: 1px solid #CCC !important;
@@ -5652,7 +5654,8 @@ div#map-canvas img {
   text-shadow: 1px 1px 0px #4963E4;
   cursor: pointer;
 }
-.blue-btn:hover {
+.blue-btn:hover,
+.blue-btn:focus {
   color: #FFFFFF;
 }
 .blue-btn-inverse {
@@ -10335,10 +10338,10 @@ div#wrapper-list-dashboard div#list-dashboard div.lists > a {
   color: #4a4a4a;
 }
 div#wrapper-list-dashboard div#list-dashboard div.lists div.list {
-  padding: 15px 10px;
+  padding: 12px 5px;
   margin-bottom: 10px;
   border-radius: 3px;
-  border: #f6f6f6 thin solid;
+  border: #d4d4d4 thin solid;
 }
 div#wrapper-list-dashboard div#list-dashboard div.lists div.list:hover {
   background: #f6f6f6;
@@ -10346,6 +10349,11 @@ div#wrapper-list-dashboard div#list-dashboard div.lists div.list:hover {
 div#wrapper-list-dashboard div#list-dashboard div.lists div.list div.list-name {
   font-size: 16px;
   font-weight: 500;
+}
+div#wrapper-list-dashboard div#list-dashboard div.lists div.list div.list-members {
+  font-weight: 300;
+  font-style: italic;
+  font-size: 14px;
 }
 div#new-list-modal div.new-list-title h3 {
   font-weight: bold;
@@ -10387,191 +10395,271 @@ div#new-list-modal div.new-list-cancel a.close-list-modal {
 div#new-list-modal div.controls {
   margin-top: 20px;
 }
-div#add-item-modal form.add-item-form {
-  text-align: left;
-}
-div#add-item-modal form.add-item-form div.title {
-  font-size: 1.3rem;
-  font-weight: bold;
-  margin: 40px 0;
-}
-div#add-item-modal form.add-item-form div.inputs div.row {
-  margin-bottom: 20px;
-}
-div#add-item-modal form.add-item-form div.inputs div.row div.input-label {
-  padding-top: 8px;
-}
-div#add-item-modal form.add-item-form div.inputs div.row input,
-div#add-item-modal form.add-item-form div.inputs div.row textarea {
-  display: block;
-  width: 100%;
-  padding: 5px 10px;
-}
-div#add-item-modal form.add-item-form label {
-  line-height: 1.3rem;
-}
-div#add-item-modal form.add-item-form div.subtext {
-  margin-top: 5px;
-  margin-bottom: 20px;
-}
-div#add-item-modal div.submit-add-item {
-  margin-top: 20px;
-}
-div#add-item-modal div.submit-add-item a.add-item-submit {
-  display: block;
-  width: 100%;
-  padding-top: 9px;
-  padding-bottom: 11px;
-  text-align: center;
-}
-div#add-item-modal div.submit-add-item a.add-item-submit:hover,
-div#add-item-modal div.submit-add-item a.add-item-submit:focus {
-  color: #FFF;
-}
-div#add-item-modal div.submit-add-item div.move-down {
-  margin-top: 10px;
-}
-div#add-event-modal form.add-event-form {
-  text-align: left;
-}
-div#add-event-modal form.add-event-form div.title {
-  font-size: 1.3rem;
-  font-weight: bold;
-  margin: 40px 0;
-}
-div#add-event-modal form.add-event-form label {
-  line-height: 1.3rem;
-}
-div#add-event-modal form.add-event-form div.event-list {
-  cursor: pointer;
-  padding: 10px 15px;
+div#list-management div.list-title {
+  margin-top: 40px;
   margin-bottom: 5px;
-  border-radius: 3px;
-  background: #f6f6f6;
 }
-div#add-event-modal form.add-event-form div.event-list:hover {
-  background: #4a4a4a;
-  color: #ffffff;
-}
-div#add-event-modal form.add-event-form div.event-list.selected {
-  background: #4963e4 !important;
-  color: #ffffff !important;
+div#list-management div.list-title h3 {
   font-weight: bold;
+  font-size: 20px;
+  color: #4a4a4a;
 }
-div#add-event-modal form.add-event-form div.event-list div.event {
-  user-select: none;
-}
-div#add-event-modal form.add-event-form div.subtext {
-  margin-top: 5px;
-  margin-bottom: 20px;
-}
-div#add-event-modal div.submit-add-event {
-  margin-top: 20px;
-}
-div#add-event-modal div.submit-add-event a.add-event-submit {
-  display: block;
-  width: 100%;
-  padding-top: 9px;
-  padding-bottom: 11px;
-  text-align: center;
-}
-div#add-event-modal div.submit-add-event a.add-event-submit:hover,
-div#add-event-modal div.submit-add-event a.add-event-submit:focus {
-  color: #FFF;
-}
-div#add-event-modal div.submit-add-event div.move-down {
-  margin-top: 10px;
-}
-div#add-event-modal div.add-event-success {
-  text-align: left;
-}
-div#add-event-modal div.add-event-success div.close {
-  font-weight: 500;
-  margin-top: 20px;
-  text-align: center;
-}
-div#add-event-modal div.add-event-success div.close a.blue-btn {
-  display: inline;
-  padding: 15px;
-  padding-top: 9px;
-  padding-bottom: 11px;
-  color: #ffffff;
-}
-div#add-event-modal div.add-event-success div.congrats {
-  font-weight: 300;
-  font-size: 18px;
-  line-height: 1.4rem;
-}
-div#add-event-modal div.add-event-success div.remember {
-  font-size: 60%;
-  display: block;
-  width: 100%;
-  text-align: left;
-  margin-top: 10px;
-}
-div#list-management div.controls {
-  margin: 40px 0;
-}
-div#list-management div.controls div.add-label {
-  padding-top: 9px;
-  font-weight: bold;
-}
-div#list-management div.controls a {
-  display: block;
-  width: 100%;
-  padding-top: 8px;
-  padding-bottom: 9px;
-}
-div#list-management div.csv_upload_interface {
-  font-size: 13px;
-  margin-bottom: 20px;
-  border: #f6f6f6 thin solid;
+div#list-management div.list-header {
+  padding: 12px 5px;
+  margin-bottom: 10px;
   border-radius: 3px;
-  word-wrap: break-word;
+  border: #d4d4d4 thin solid;
 }
-div#list-management div.csv_upload_interface div.upload_title {
-  margin-top: 20px;
-  padding-bottom: 20px;
+div#list-management div.list-header div.list-name {
   font-size: 16px;
   font-weight: 500;
-  border-bottom: #f6f6f6 thin solid;
 }
-div#list-management div.csv_upload_interface div.upload_row {
-  border-bottom: #f6f6f6 thin solid;
-  padding-top: 10px;
+div#list-management div.list-header div.list-members {
+  font-weight: 300;
+  font-style: italic;
+  font-size: 14px;
 }
-div#list-management div.csv_upload_interface div.upload_row.active {
-  background: #f6f6f6;
+div#list-management div.list-controls {
+  margin-top: 40px;
 }
-div#list-management div.csv_upload_interface div.upload_row div.col {
-  margin-top: 12px;
+div#list-management div.list-controls h3 {
+  font-weight: bold;
+  font-size: 20px;
+  color: #4a4a4a;
+  margin-bottom: 20px;
 }
-div#list-management div.csv_upload_interface div.upload_row div.choices select {
-  margin-bottom: 10px;
+div#list-management div.list-controls div.add-label {
+  padding-top: 9px;
+  font-weight: bold;
 }
-div#list-management div.csv_upload_interface div.csv-controls {
-  margin: 10px 0;
+div#list-management div.list-controls a {
+  display: block;
+  width: 100%;
+  padding-top: 12px;
+  padding-bottom: 14px;
+  font-weight: 600;
 }
-div#list-management div.csv_upload_interface div.csv-controls a {
+div#list-management div.list-controls a.cancel-add {
+  display: none;
+  color: #faa638;
+  text-decoration: underline;
+  font-style: italic;
+  font-weight: 300;
+  font-size: 13px;
+  padding-top: 14px;
+}
+div#list-management div.csv_upload_interface {
+  margin: 30px 0;
+  border: #d4d4d4 thin solid;
+  border-radius: 3px;
+}
+div#list-management div.csv_upload_interface div.upload-btn-container {
+  padding: 30px 0;
+}
+div#list-management div.csv_upload_interface div.upload-btn-container a.upload-csv-btn {
+  display: block;
+  width: 100%;
+  padding-top: 12px;
+  padding-bottom: 14px;
+  text-align: center;
+}
+div#list-management div.csv_upload_interface div.csv-info-container {
+  padding: 30px 0;
+}
+div#list-management div.csv_upload_interface div.csv-info-container div.csv-name {
+  width: 100%;
+  padding: 12px 10px;
+  font-weight: 300;
+  font-size: 14px;
+  border-radius: 3px;
+  border: #d4d4d4 thin solid;
+}
+div#list-management div.csv_upload_interface div.csv-info-container a.cancel-csv-upload {
   display: block;
   text-align: center;
-  color: #ffffff;
+  width: 100%;
+  padding-top: 12px;
+  padding-bottom: 14px;
+  font-weight: 600;
+}
+div#list-management div.csv_upload_interface div.title_rows {
+  border-top: #d4d4d4 thin solid;
+  font-weight: bold;
+}
+div#list-management div.csv_upload_interface div.title_rows div.row > div {
+  padding-top: 24px;
+  padding-bottom: 24px;
+}
+div#list-management div.csv_upload_interface div.title_rows div.blue {
+  background: #f1f3ff;
+}
+div#list-management div.csv_upload_interface div.upload_rows div.upload_row {
+  border-top: #d4d4d4 thin solid;
+}
+div#list-management div.csv_upload_interface div.upload_rows div.upload_row div.choices {
+  background: #f1f3ff;
+  padding-top: 24px;
+  padding-bottom: 24px;
+}
+div#list-management div.csv_upload_interface div.upload_rows div.upload_row div.choices select {
+  margin: 0;
+}
+div#list-management div.csv_upload_interface div.upload_rows div.upload_row div.col {
+  padding-top: 34px;
+  word-wrap: break-word;
+  font-size: 14px;
+  font-weight: 300;
+}
+div#list-management div.csv_upload_interface div.csv-controls {
+  border-top: #d4d4d4 thin solid;
+  padding-top: 24px;
+  padding-bottom: 24px;
+}
+div#list-management div.csv_upload_interface div.csv-controls a {
+  text-align: center;
+  display: block;
+  width: 100%;
+  padding-top: 12px;
+  padding-bottom: 14px;
+  font-weight: 600px;
+}
+div#list-management div.event-add-interface {
+  margin: 30px 0;
+  border: #d4d4d4 thin solid;
+  border-radius: 3px;
+}
+div#list-management div.event-add-interface div.event-info-container {
+  padding-top: 24px;
+  padding-bottom: 24px;
+}
+div#list-management div.event-add-interface div.event-info-container div.title {
+  font-weight: 500;
+  font-size: 20px;
+  color: #4a4a4a;
+  margin-bottom: 10px;
+}
+div#list-management div.event-add-interface div.event-info-container div.subtext {
+  font-weight: 300;
+}
+div#list-management div.event-add-interface div.event-list {
+  border-top: #d4d4d4 thin solid;
+  padding-bottom: 20px;
+  padding-top: 10px;
+}
+div#list-management div.event-add-interface div.event-list div.event {
+  margin-left: 0;
+  margin-right: 0;
+  padding: 12px 5px;
+  border-radius: 3px;
+  border: #d4d4d4 thin solid;
+  margin-top: 10px;
+  -webkit-touch-callout: none;
+  -webkit-user-select: none;
+  -khtml-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+}
+div#list-management div.event-add-interface div.event-list div.event div.event-name {
+  font-size: 16px;
+  font-weight: 500;
+}
+div#list-management div.event-add-interface div.event-list div.event div.event-quantity {
+  font-weight: 300;
+  font-style: italic;
+  font-size: 14px;
+}
+div#list-management div.event-add-interface div.event-list div.event:hover {
+  cursor: pointer;
+  border: #4963E4 thin solid;
+}
+div#list-management div.event-add-interface div.event-list div.event.active {
+  border: #4963E4 thin solid;
+  background: #f1f3ff;
+}
+div#list-management div.event-add-interface div.event-list div.event.active div.event-quantity {
+  font-weight: 500;
+}
+div#list-management div.event-add-interface div.event-add-controls {
+  border-top: #d4d4d4 thin solid;
+  padding-top: 24px;
+  padding-bottom: 24px;
+}
+div#list-management div.event-add-interface div.event-add-controls a {
+  text-align: center;
+  display: block;
+  width: 100%;
+  padding-top: 12px;
+  padding-bottom: 14px;
+  font-weight: 600px;
+}
+div#list-management div.manual-add-interface {
+  margin: 30px 0;
+  border: #d4d4d4 thin solid;
+  border-radius: 3px;
+}
+div#list-management div.manual-add-interface div.manual-add-info-container {
+  padding-top: 24px;
+  padding-bottom: 24px;
+}
+div#list-management div.manual-add-interface div.manual-add-info-container div.title {
+  font-weight: 500;
+  font-size: 20px;
+  color: #4a4a4a;
+  margin-bottom: 10px;
+}
+div#list-management div.manual-add-interface div.manual-add-form {
+  padding-top: 20px;
+  border-top: #d4d4d4 thin solid;
+}
+div#list-management div.manual-add-interface div.manual-add-form input[type=text] {
+  display: block;
+  width: 100%;
+  padding: 12px 10px;
+  font-weight: 300;
+  font-size: 14px;
+  border-radius: 3px;
+  border: #D4D4D4 thin solid;
+}
+div#list-management div.manual-add-interface div.manual-add-form textarea {
+  height: 90px;
+  display: block;
+  width: 100%;
+  padding: 12px 10px;
+  font-weight: 300;
+  font-size: 14px;
+  border-radius: 3px;
+  border: #D4D4D4 thin solid;
+}
+div#list-management div.manual-add-interface div.manual-add-form a.add-member-submit {
+  text-align: center;
+  display: block;
   width: 100%;
   padding-top: 9px;
-  padding-bottom: 9px;
-}
-div#list-management div.csv_upload_interface div.csv-controls a:hover {
-  color: #ffffff;
-}
-div#list-management div.csv_upload_interface div.csv-controls div.error-message {
-  padding-top: 10px;
   padding-bottom: 10px;
+  font-weight: 600px;
+}
+div#list-management div.list {
+  margin-top: 60px;
+}
+div#list-management div.list div.list-title {
+  font-size: 20px;
+  color: #4a4a4a;
+  margin-bottom: 20px;
 }
 div#list-management div.list div.list-item {
-  border: #f6f6f6 thin solid;
-  padding: 10px 5px;
+  padding: 12px 5px;
+  margin-bottom: 10px;
   border-radius: 3px;
-  margin-bottom: 20px;
+  border: #d4d4d4 thin solid;
+}
+div#list-management div.list div.list-item a.remove-member {
+  color: #4963E4;
+  font-size: 13px;
+  font-style: italic;
+}
+div#list-management div.list div.list-item a.remove-member:hover {
+  text-decoration: underline;
 }
 div#wrapper-user-settings {
   padding-top: 40px;

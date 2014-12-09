@@ -13,13 +13,13 @@
         var list_name;
         list_name = $("div#new-list-modal div.new-list-inputs input[name=list_name]").val();
         if (list_name.trim() !== '') {
-          Bazaarboy.post('list/create/', {
+          Bazaarboy.post('lists/create/', {
             profile: profileId,
             name: list_name,
             is_hidden: 1
           }, function(response) {
             if (response.status === 'OK') {
-              Bazaarboy.redirect('list/' + response.list.pk);
+              Bazaarboy.redirect('lists/' + response.list.pk);
             }
           });
         } else {

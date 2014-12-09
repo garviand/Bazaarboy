@@ -7,88 +7,133 @@
       var scope,
         _this = this;
       scope = this;
-      $('div#list-management div.controls a.add-single-item').click(function() {
-        $('div#add-item-modal').foundation('reveal', 'open');
+      $('div.list').on('click', 'a.remove-member', function() {
+        var member, member_id;
+        member = $(this).closest('div.list-item');
+        member_id = $(this).data('id');
+        console.log(member_id);
+        if (confirm('Are you sure you want to remove this person?')) {
+          Bazaarboy.post('lists/remove/item/', {
+            id: member_id
+          }, function(response) {
+            var member_count;
+            if (response.status === 'OK') {
+              member.remove();
+              member_count = parseInt($('span.member-count').html()) - 1;
+              $('span.member-count').html(member_count);
+            } else {
+              alert(response.message);
+            }
+          });
+        }
       });
-      $('a.add-item-close').click(function() {
-        $('div#add-item-modal').foundation('reveal', 'close');
+      $('a.start-member-add').click(function() {
+        $('a.start-member-add').removeClass('secondary-btn');
+        $('a.start-member-add').removeClass('active');
+        $('a.start-member-add').addClass('secondary-btn-inverse');
+        $(this).removeClass('secondary-btn-inverse');
+        $(this).addClass('active');
+        $(this).addClass('secondary-btn');
+        $('div.member-add-interface').addClass('hide');
+        $('a.cancel-add').css('display', 'block');
       });
-      $('div#add-item-modal form.add-item-form').on('valid.fndtn.abide', function() {
+      $('a.cancel-add').click(function() {
+        $('a.start-member-add').removeClass('secondary-btn');
+        $('a.start-member-add').removeClass('active');
+        $('a.start-member-add').addClass('secondary-btn-inverse');
+        $('div.member-add-interface').addClass('hide');
+        $(this).css('display', 'none');
+      });
+      $('div.list-controls a.add-from-csv').click(function() {
+        $('div.member-add-interface').addClass('hide');
+        $('div.csv_upload_interface').removeClass('hide');
+      });
+      $('div.list-controls a.add-from-event').click(function() {
+        $('div.member-add-interface').addClass('hide');
+        $('div.event-add-interface').removeClass('hide');
+      });
+      $('div.list-controls a.add-single-item').click(function() {
+        $('div.member-add-interface').addClass('hide');
+        $('div.manual-add-interface').removeClass('hide');
+      });
+      $('div.manual-add-interface a.add-member-submit').click(function() {
         var params;
-        $('div#add-item-modal div.submit-add-item a.add-item-submit').html('Adding...');
-        params = $('div#add-item-modal form.add-item-form').serializeObject();
+        $('div.manual-add-interface a.add-member-submit').html('Adding...');
+        params = $('div.manual-add-interface form.add-item-form').serializeObject();
         params.id = listId;
-        return Bazaarboy.post('list/add/item/', params, function(response) {
+        Bazaarboy.post('lists/add/item/', params, function(response) {
           var new_item;
           if (response.status === 'OK') {
             new_item = $('div#list-management div.list div.list-item.template').clone();
             new_item.find('div.name').html(response.item.first_name + " " + response.item.last_name);
             new_item.find('div.email').html(response.item.email);
+            new_item.find('a.remove-member').attr('data-id', response.item.pk);
             new_item.removeClass('template');
             new_item.removeClass('hide');
             $('div#list-management div.list .list-items').prepend(new_item);
-            $('div#add-item-modal div.submit-add-item div.message').html('Added!');
+            $('div.manual-add-interface a.add-member-submit').html('Success!');
+            $('div.manual-add-interface input[type=text]').val('');
+            $('div.manual-add-interface textarea').val('');
+            $('div.manual-add-interface textarea').html('');
             setTimeout(function() {
-              return $('div#add-item-modal div.submit-add-item div.message').html('&nbsp;');
-            }, 3000);
-            $('div#add-item-modal div.submit-add-item a.add-item-submit').html('Add To List');
-            $('div#add-item-modal form.add-item-form input').val('');
-            $('div#add-item-modal form.add-item-form textarea').val('');
+              return $('div.manual-add-interface a.add-member-submit').html('Add Member');
+            }, 1000);
           } else {
-            $('div#add-item-modal div.submit-add-item div.message').html(response.message);
-            setTimeout(function() {
-              return $('div#add-item-modal div.submit-add-item div.message').html('&nbsp;');
-            }, 3000);
-            $('div#add-item-modal div.submit-add-item a.add-item-submit').html('Add To List');
+            alert(response.message);
           }
         });
       });
-      $('div#add-item-modal a.add-item-submit').click(function() {
-        $('div#add-item-modal form.add-item-form').submit();
+      $('div.event-add-interface div.event-list div.event').click(function() {
+        $(this).toggleClass('active');
       });
-      $('div#list-management div.controls a.add-from-event').click(function() {
-        $('div#add-event-modal').foundation('reveal', 'open');
+      $('div.event-add-interface a.cancel-event-add').click(function() {
+        return $('a.cancel-add').click();
       });
-      $('a.add-event-close').click(function() {
-        $('div#add-event-modal').foundation('reveal', 'close');
-      });
-      $('div#add-event-modal form.add-event-form div.event-list').click(function() {
-        $(this).toggleClass('selected');
-      });
-      $('div#add-event-modal form.add-event-form a.add-event-submit').click(function() {
-        var num_added, num_events, selected_events;
-        $('div#add-event-modal form.add-event-form a.add-event-submit').html('Adding...');
-        selected_events = $('div#add-event-modal form.add-event-form div.row.event-list.selected');
+      $('div.event-add-interface a.submit-event-add').click(function() {
+        var added_members, num_added, num_events, selected_events;
+        $('div.event-add-interface a.add-event-submit').html('Adding...');
+        selected_events = $('div.event-add-interface div.event-list div.event.active');
         num_events = selected_events.length;
         num_added = 0;
-        console.log(num_events);
-        $.each(selected_events, function(event) {
-          Bazaarboy.post('list/add/event/', {
-            id: listId,
-            event: $(this).data('id')
-          }, function(response) {
-            num_added++;
-            if (response.status === 'OK') {
-              if (num_added === num_events) {
-                $('div#add-event-modal form.add-event-form').addClass('hide');
-                $('div#add-event-modal div.add-event-success').removeClass('hide');
-                setTimeout(function() {
-                  return location.reload();
-                }, 2500);
+        added_members = 0;
+        if (num_events > 0) {
+          $.each(selected_events, function(event) {
+            Bazaarboy.post('lists/add/event/', {
+              id: listId,
+              event: $(this).data('id')
+            }, function(response) {
+              added_members += response.added;
+              num_added++;
+              if (response.status === 'OK') {
+                if (num_added === num_events) {
+                  $('div.event-add-interface div.event-add-controls div.error-message').html('<span style="font-weight:bold;"> ' + added_members + ' Members</span> Added Succesfully. Refreshing List.....');
+                  $('div.event-add-interface div.event-add-controls a').hide();
+                  setTimeout(function() {
+                    return location.reload();
+                  }, 2500);
+                }
+              } else {
+                alert(response.message);
               }
-            } else {
-              alert(response.message);
-              $('div#add-event-modal form.add-event-form a.add-event-submit').html('Add To List');
-            }
+            });
           });
-        });
+        } else {
+          alert('Must Select At Least 1 Event!');
+        }
       });
-      $('div#list-management div.controls a.upload-csv-btn').click(function() {
+      $('div#list-management div.member-add-interface a.upload-csv-btn').click(function() {
         $('div#list-management form.upload_csv input[name=csv_file]').click();
       });
-      $('div.csv_upload_interface div.csv-controls a.cancel-csv-btn').click(function() {
+      $('div.csv_upload_interface a.cancel-csv-upload').click(function() {
         $('div.csv_upload_interface').addClass('hide');
         $('div.csv_upload_interface div.upload_row:not(.template)').remove();
+        $('div.csv_upload_interface div.upload-btn-container').removeClass('hide');
+        $('div.csv_upload_interface div.csv-info-container').addClass('hide');
+        $('div.csv_upload_interface div.upload_rows').addClass('hide');
+        $('div.csv_upload_interface div.title_rows').addClass('hide');
+        $('div.member-add-interface').addClass('hide');
+        $('div.csv_upload_interface div.csv-controls').addClass('hide');
+        $('a.cancel-add').css('display', 'none');
       });
       $('body').on('change', 'div.csv_upload_interface select[name=field]', function() {
         if ($(this).val() === 'none') {
@@ -128,7 +173,7 @@
           return;
         }
         format = JSON.stringify(format);
-        Bazaarboy.post('list/add/csv/', {
+        Bazaarboy.post('lists/add/csv/', {
           id: id,
           csv: csv,
           format: format
@@ -158,15 +203,22 @@
           data.submit();
         },
         done: function(event, data) {
-          var response;
+          var filename, response;
           response = jQuery.parseJSON(data.result);
           if (response.status === 'OK') {
             scope.uploads.csv = response.file;
-            Bazaarboy.post('list/csv/prepare/', {
+            filename = response.filename;
+            Bazaarboy.post('lists/csv/prepare/', {
               csv: response.file.pk
             }, function(response) {
               var final_results, i, j, new_row, num, result, results, results_columns, results_rows, _i, _j, _k, _l, _len, _ref, _ref1;
               if (response.status === 'OK') {
+                $('div.csv_upload_interface div.csv-info-container div.csv-name').html(filename);
+                $('div.csv_upload_interface div.upload-btn-container').addClass('hide');
+                $('div.csv_upload_interface div.csv-info-container').removeClass('hide');
+                $('div.csv_upload_interface div.upload_rows').removeClass('hide');
+                $('div.csv_upload_interface div.title_rows').removeClass('hide');
+                $('div.csv_upload_interface div.csv-controls').removeClass('hide');
                 results = response.results;
                 results_rows = Object.keys(results).length;
                 if (results_rows > 0) {
@@ -186,7 +238,6 @@
                     new_row.attr('data-col', num);
                     new_row.find('div.col-1').html(result[0]);
                     new_row.find('div.col-2').html(result[1]);
-                    new_row.find('div.col-3').html(result[2]);
                     new_row.removeClass('hide');
                     new_row.removeClass('template');
                     $("div.csv_upload_interface div.upload_rows").append(new_row);

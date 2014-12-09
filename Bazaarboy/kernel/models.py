@@ -359,9 +359,6 @@ class List_item(models.Model):
     last_name = models.CharField(max_length = 50)
     note = models.TextField()
 
-    class Meta:
-        unique_together = ('_list', 'email')
-
 class Unsubscribe(models.Model):
     """
     Unsubscribe from Invites and Follow-Ups

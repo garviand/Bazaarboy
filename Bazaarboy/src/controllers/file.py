@@ -33,6 +33,7 @@ def upload_csv(request, params):
     if not request.FILES.has_key('csv_file'):
         return HttpResponseBadRequest('Bad request.')
     rawCsv = request.FILES['csv_file']
+    csv_filename = rawCsv.name
     csvExt = str(rawCsv.name).split('.')[-1].lower()
     if not csvExt == 'csv':
         response = {
@@ -54,7 +55,8 @@ def upload_csv(request, params):
     csv.save()
     response = {
         'status':'OK',
-        'file':serialize_one(csv)
+        'file':serialize_one(csv),
+        'filename': csv_filename
     }
     return json_response(response)
 

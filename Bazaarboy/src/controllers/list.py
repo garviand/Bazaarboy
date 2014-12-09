@@ -154,6 +154,36 @@ def edit(request, params, user):
     return json_response(response)
 
 @login_required()
+@validate('POST', ['id'])
+def remove_item(request, params, user):
+    """
+    Remove an item from a list
+    """
+    if not List_item.objects.filter(id = params['id']).exists():
+        response = {
+            'status':'FAIL',
+            'error':'LIST_ITEM_NOT_FOUND',
+            'message':'The list item doesn\'t exist.'
+        }
+        return json_response(response)
+    item = List_item.objects.get(id = params['id'])
+    lt = item._list
+    profile = lt.owner
+    if not Profile_manager.objects.filter(profile = profile, 
+                                          user = user).exists():
+        response = {
+            'status':'FAIL',
+            'error':'NOT_A_MANAGER',
+            'message':'You don\'t have permission for the list.'
+        }
+        return json_response(response)
+    item.delete()
+    response = {
+            'status':'OK'
+    }
+    return json_response(response)
+
+@login_required()
 @validate('POST', ['id', 'first_name', 'last_name', 'email'], ['note'])
 def add_item(request, params, user):
     """
@@ -261,16 +291,16 @@ def add_from_event(request, params, user):
                                         event = event, 
                                         is_expired = False) \
                                 .prefetch_related('owner')
+    added = 0
     for purchase in purchases:
-        item, created = List_item.objects \
-                                 .get_or_create(_list = lt, 
-                                                email = purchase.owner.email)
-        item.first_name = purchase.owner.first_name
-        item.last_name = purchase.owner.last_name
-        item.save()
+        if not List_item.objects.filter(_list = lt, email = purchase.owner.email).exists():
+            item = List_item(_list = lt, email = purchase.owner.email, first_name = purchase.owner.first_name, last_name = purchase.owner.last_name)
+            item.save()
+            added += 1
     response = {
         'status':'OK',
-        'list':serialize_one(lt)
+        'list':serialize_one(lt),
+        'added': added
     }
     return json_response(response)
 
@@ -351,11 +381,6 @@ def add_from_csv(request, params, user):
         'list':serialize_one(lt)
     }
     return json_response(response)
-
-@login_required()
-@validate('POST', ['id', 'email'])
-def remove_item(request, params, user):
-    pass
 
 @login_required()
 @validate('POST', ['id'])
