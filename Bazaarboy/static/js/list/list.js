@@ -3,6 +3,7 @@
     uploads: {
       csv: void 0
     },
+    submitting: false,
     init: function() {
       var scope,
         _this = this;
@@ -90,35 +91,47 @@
         return $('a.cancel-add').click();
       });
       $('div.event-add-interface a.submit-event-add').click(function() {
-        var added_members, num_added, num_events, selected_events;
-        $('div.event-add-interface a.add-event-submit').html('Adding...');
-        selected_events = $('div.event-add-interface div.event-list div.event.active');
-        num_events = selected_events.length;
-        num_added = 0;
-        added_members = 0;
-        if (num_events > 0) {
-          $.each(selected_events, function(event) {
-            Bazaarboy.post('lists/add/event/', {
-              id: listId,
-              event: $(this).data('id')
-            }, function(response) {
-              added_members += response.added;
-              num_added++;
-              if (response.status === 'OK') {
-                if (num_added === num_events) {
-                  $('div.event-add-interface div.event-add-controls div.error-message').html('<span style="font-weight:bold;"> ' + added_members + ' Members</span> Added Succesfully. Refreshing List.....');
-                  $('div.event-add-interface div.event-add-controls a').hide();
-                  setTimeout(function() {
-                    return location.reload();
-                  }, 2500);
+        var added_members, duplicate_members, num_added, num_events, selected_events;
+        if (!scope.submitting) {
+          $(this).addClass('disabled-btn');
+          $(this).html('Adding...');
+          scope.submitting = true;
+          selected_events = $('div.event-add-interface div.event-list div.event.active');
+          num_events = selected_events.length;
+          num_added = 0;
+          added_members = 0;
+          duplicate_members = 0;
+          if (num_events > 0) {
+            $.each(selected_events, function(event) {
+              Bazaarboy.post('lists/add/event/', {
+                id: listId,
+                event: $(this).data('id')
+              }, function(response) {
+                added_members += response.added;
+                duplicate_members += response.duplicates;
+                num_added++;
+                if (response.status === 'OK') {
+                  if (num_added === num_events) {
+                    $('div.event-add-interface div.event-add-controls div.error-message').html('Members: <span style="font-weight:bold;"> ' + added_members + '</span> Added -  <span style="font-weight:bold;">' + duplicate_members + '</span> Duplicates. Refreshing List, this may take a minute.....');
+                    $('div.event-add-interface div.event-add-controls a').hide();
+                    setTimeout(function() {
+                      return location.reload();
+                    }, 2500);
+                  }
+                } else {
+                  alert(response.message);
+                  $(this).removeClass('disabled-btn');
+                  $(this).html('Confirm');
+                  scope.submitting = false;
                 }
-              } else {
-                alert(response.message);
-              }
+              });
             });
-          });
-        } else {
-          alert('Must Select At Least 1 Event!');
+          } else {
+            alert('Must Select At Least 1 Event!');
+            $(this).removeClass('disabled-btn');
+            $(this).html('Confirm');
+            scope.submitting = false;
+          }
         }
       });
       $('div#list-management div.member-add-interface a.upload-csv-btn').click(function() {
@@ -148,53 +161,63 @@
       });
       $('body').on('click', 'div.csv_upload_interface div.csv-controls a.submit-csv-btn', function() {
         var button, csv, format, id;
-        button = $(this);
-        button.html('Adding...');
-        id = listId;
-        csv = scope.uploads.csv.pk;
-        format = {};
-        $('div.csv_upload_interface div.upload_row.active select[name=field] option:selected').each(function() {
-          return format[$(this).val()] = $(this).parents('div.upload_row').data('col');
-        });
-        if (!format.hasOwnProperty('email')) {
-          $('div.csv_upload_interface div.csv-controls div.error-message').html('You Must Select an EMAIL Column');
-          setTimeout(function() {
-            return $('div.csv_upload_interface div.csv-controls div.error-message').html('&nbsp;');
-          }, 5000);
-          button.html('Submit');
-          return;
-        }
-        if (!format.hasOwnProperty('first_name')) {
-          $('div.csv_upload_interface div.csv-controls div.error-message').html('You Must Select a FIRST_NAME Column');
-          setTimeout(function() {
-            return $('div.csv_upload_interface div.csv-controls div.error-message').html('&nbsp;');
-          }, 5000);
-          button.html('Submit');
-          return;
-        }
-        format = JSON.stringify(format);
-        Bazaarboy.post('lists/add/csv/', {
-          id: id,
-          csv: csv,
-          format: format
-        }, function(response) {
-          if (response.status === 'OK') {
-            $('div.csv_upload_interface div.csv-controls div.error-message').html('CSV Uploaded Succesfully. Refreshing List.....');
-            $('div.csv_upload_interface div.csv-controls a').hide();
-            setTimeout(function() {
-              $("html, body").animate({
-                scrollTop: 0
-              }, 1);
-              return location.reload();
-            }, 2500);
-          } else {
-            $('div.csv_upload_interface div.csv-controls div.error-message').html(response.message);
+        if (!scope.submitting) {
+          scope.submitting = true;
+          button = $(this);
+          button.html('Adding...');
+          button.addClass('disabled-btn');
+          id = listId;
+          csv = scope.uploads.csv.pk;
+          format = {};
+          $('div.csv_upload_interface div.upload_row.active select[name=field] option:selected').each(function() {
+            return format[$(this).val()] = $(this).parents('div.upload_row').data('col');
+          });
+          if (!format.hasOwnProperty('email')) {
+            $('div.csv_upload_interface div.csv-controls div.error-message').html('You Must Select an EMAIL Column');
             setTimeout(function() {
               return $('div.csv_upload_interface div.csv-controls div.error-message').html('&nbsp;');
             }, 5000);
+            button.html('Submit');
+            scope.submitting = false;
+            button.removeClass('disabled-btn');
+            return;
           }
-          button.html('Submit');
-        });
+          if (!format.hasOwnProperty('first_name')) {
+            $('div.csv_upload_interface div.csv-controls div.error-message').html('You Must Select a FIRST_NAME Column');
+            setTimeout(function() {
+              return $('div.csv_upload_interface div.csv-controls div.error-message').html('&nbsp;');
+            }, 5000);
+            button.html('Submit');
+            scope.submitting = false;
+            button.removeClass('disabled-btn');
+            return;
+          }
+          format = JSON.stringify(format);
+          Bazaarboy.post('lists/add/csv/', {
+            id: id,
+            csv: csv,
+            format: format
+          }, function(response) {
+            if (response.status === 'OK') {
+              $('div.csv_upload_interface div.csv-controls div.error-message').html('Members: <span style="font-weight:bold;"> ' + response.added + '</span> Added -  <span style="font-weight:bold;">' + response.duplicates + '</span> Duplicates. Refreshing List, this may take a minute.....');
+              $('div.csv_upload_interface div.csv-controls a').hide();
+              setTimeout(function() {
+                $("html, body").animate({
+                  scrollTop: 0
+                }, 1);
+                return location.reload();
+              }, 2500);
+            } else {
+              $('div.csv_upload_interface div.csv-controls div.error-message').html(response.message);
+              setTimeout(function() {
+                return $('div.csv_upload_interface div.csv-controls div.error-message').html('&nbsp;');
+              }, 5000);
+            }
+            button.html('Submit');
+            scope.submitting = false;
+            button.removeClass('disabled-btn');
+          });
+        }
       });
       $('div#list-management form.upload_csv input[name=csv_file]').fileupload({
         url: rootUrl + 'file/csv/upload/',

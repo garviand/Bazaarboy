@@ -32,6 +32,8 @@ def list(request, lt, user):
     """
     Single List Page
     """
+    if not List.objects.filter(id = lt).exists():
+        return redirect('list:index')
     profiles = Profile.objects.filter(managers = user)
     profile = profiles[0]
     if List.objects.filter(id = lt).exists():
@@ -67,9 +69,9 @@ def list(request, lt, user):
                     'quantity': 1
                 }
     else:
-        redirect('index')
+        return redirect('index:index')
     if not Profile_manager.objects.filter(profile = lt.owner, user = user).exists():
-        redirect('index')
+        return redirect('index:index')
     return render(request, 'list/list.html', locals())
 @login_required()
 @validate('POST', ['profile', 'name', 'is_hidden'])
@@ -292,15 +294,19 @@ def add_from_event(request, params, user):
                                         is_expired = False) \
                                 .prefetch_related('owner')
     added = 0
+    duplicates = 0
     for purchase in purchases:
         if not List_item.objects.filter(_list = lt, email = purchase.owner.email).exists():
             item = List_item(_list = lt, email = purchase.owner.email, first_name = purchase.owner.first_name, last_name = purchase.owner.last_name)
             item.save()
             added += 1
+        else:
+            duplicates += 1
     response = {
         'status':'OK',
         'list':serialize_one(lt),
-        'added': added
+        'added': added,
+        'duplicates': duplicates
     }
     return json_response(response)
 
@@ -367,18 +373,25 @@ def add_from_csv(request, params, user):
     reader = csv.reader(csvfile)
     # Load Format {field_type:col}
     format = json.loads(params['format'])
+    added = 0
+    duplicates = 0
     for num, row in enumerate(reader):
         if 'email' in format and len(row) >= format['email'] and REGEX_EMAIL.match(row[format['email']]):
-            item, created = List_item.objects \
-                                     .get_or_create(_list = lt, 
-                                                    email = row[format['email']])
-            item.first_name = row[format['first_name']]
-            if 'last_name' in format:
-                item.last_name = row[format['last_name']]
-            item.save()
+            if not List_item.objects.filter(_list = lt, email = row[format['email']]).exists():
+                item = List_item(_list = lt, email = row[format['email']])
+                item.first_name = row[format['first_name']]
+                if 'last_name' in format:
+                    item.last_name = row[format['last_name']]
+                item.save()
+                added += 1
+            else:
+                duplicates += 1
+
     response = {
         'status':'OK',
-        'list':serialize_one(lt)
+        'list':serialize_one(lt),
+        'added': added,
+        'duplicates': duplicates
     }
     return json_response(response)
 

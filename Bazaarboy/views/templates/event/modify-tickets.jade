@@ -22,12 +22,10 @@ block sidebar
         | Ticket Options
     +sidebarItem('ss-picture')(href="{% url event:index id %}?design")
         | Page Design
-    //-+sidebarItem('ss-star')(href="{% url event:modify id 'bonus' %}")
-        | Bonus
-    //-+sidebarItem('ss-mail')(href="{% url event:modify id 'emails' %}")
-        | Emails
     +sidebarItem('ss-newspaper')(href="{% url index %}")(class="sidebar-separate")
         | Events
+    +sidebarItem('ss-database')(href="{% url list:index %}")
+        | Lists
 
 block header
     div.header-title.large-9.medium-10.columns.small-centered

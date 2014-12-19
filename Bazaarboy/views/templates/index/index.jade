@@ -16,10 +16,8 @@ block sidebar
         | Event Drafts
     +sidebarItemSub('{{ pastEventsCount }}')(class="events-filter events-filter-past")
         | Past Events
-    //+sidebarItem('ss-database')(href="{% url list:index %}")
+    +sidebarItem('ss-database')(href="{% url list:index %}")
         | Lists
-    +sidebarItem('ss-pen')(href="{% url designs:index %}")
-        | Designs
     +sidebarItem('ss-share')(href="{% url user:settings %}")
         | Settings
 

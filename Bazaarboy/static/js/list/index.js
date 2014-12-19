@@ -11,6 +11,7 @@
       });
       $("div#new-list-modal div.new-list-inputs a.create-list").click(function() {
         var list_name;
+        $(this).html('Creating...');
         list_name = $("div#new-list-modal div.new-list-inputs input[name=list_name]").val();
         if (list_name.trim() !== '') {
           Bazaarboy.post('lists/create/', {

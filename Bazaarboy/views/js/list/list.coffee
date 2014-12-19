@@ -1,6 +1,7 @@
 Bazaarboy.list.list =
     uploads:
         csv: undefined
+    submitting: false
     init: () ->
         scope = this
         # REMOVE LIST MEMBER
@@ -80,29 +81,40 @@ Bazaarboy.list.list =
         $('div.event-add-interface a.cancel-event-add').click () ->
             $('a.cancel-add').click()
         $('div.event-add-interface a.submit-event-add').click () ->
-            $('div.event-add-interface a.add-event-submit').html 'Adding...'
-            selected_events = $('div.event-add-interface div.event-list div.event.active')
-            num_events = selected_events.length
-            num_added = 0
-            added_members = 0
-            if num_events > 0
-                $.each selected_events, (event) ->
-                    Bazaarboy.post 'lists/add/event/', {id:listId, event:$(this).data('id')}, (response) ->
-                        added_members += response.added
-                        num_added++
-                        if response.status is 'OK'
-                            if num_added == num_events
-                                $('div.event-add-interface div.event-add-controls div.error-message').html '<span style="font-weight:bold;"> ' + added_members + ' Members</span> Added Succesfully. Refreshing List.....'
-                                $('div.event-add-interface div.event-add-controls a').hide()
-                                setTimeout -> 
-                                    location.reload()
-                                , 2500
-                        else
-                            alert response.message
+            if not scope.submitting
+                $(this).addClass 'disabled-btn'
+                $(this).html 'Adding...'
+                scope.submitting = true
+                selected_events = $('div.event-add-interface div.event-list div.event.active')
+                num_events = selected_events.length
+                num_added = 0
+                added_members = 0
+                duplicate_members = 0
+                if num_events > 0
+                    $.each selected_events, (event) ->
+                        Bazaarboy.post 'lists/add/event/', {id:listId, event:$(this).data('id')}, (response) ->
+                            added_members += response.added
+                            duplicate_members += response.duplicates
+                            num_added++
+                            if response.status is 'OK'
+                                if num_added == num_events
+                                    $('div.event-add-interface div.event-add-controls div.error-message').html 'Members: <span style="font-weight:bold;"> ' + added_members + '</span> Added -  <span style="font-weight:bold;">' + duplicate_members + '</span> Duplicates. Refreshing List, this may take a minute.....'
+                                    $('div.event-add-interface div.event-add-controls a').hide()
+                                    setTimeout -> 
+                                        location.reload()
+                                    , 2500
+                            else
+                                alert response.message
+                                $(this).removeClass 'disabled-btn'
+                                $(this).html 'Confirm'
+                                scope.submitting = false
+                            return
                         return
-                    return
-            else
-                alert 'Must Select At Least 1 Event!'
+                else
+                    alert 'Must Select At Least 1 Event!'
+                    $(this).removeClass 'disabled-btn'
+                    $(this).html 'Confirm'
+                    scope.submitting = false
             return
         # CSV UPLOAD
         $('div#list-management div.member-add-interface a.upload-csv-btn').click () ->
@@ -130,45 +142,54 @@ Bazaarboy.list.list =
                 return
             return
         $('body').on 'click', 'div.csv_upload_interface div.csv-controls a.submit-csv-btn', () ->
-            button = $(this)
-            button.html 'Adding...'
-            id = listId
-            csv = scope.uploads.csv.pk
-            format = {}
-            $('div.csv_upload_interface div.upload_row.active select[name=field] option:selected').each () ->
-                format[$(this).val()] = $(this).parents('div.upload_row').data('col')
-            if not format.hasOwnProperty('email')
-                $('div.csv_upload_interface div.csv-controls div.error-message').html 'You Must Select an EMAIL Column'
-                setTimeout -> 
-                    $('div.csv_upload_interface div.csv-controls div.error-message').html '&nbsp;'
-                , 5000
-                button.html 'Submit'
-                return
-            if not format.hasOwnProperty('first_name')
-                $('div.csv_upload_interface div.csv-controls div.error-message').html 'You Must Select a FIRST_NAME Column'
-                setTimeout -> 
-                    $('div.csv_upload_interface div.csv-controls div.error-message').html '&nbsp;'
-                , 5000
-                button.html 'Submit'
-                return
-            format = JSON.stringify format 
-            Bazaarboy.post 'lists/add/csv/', {id:id, csv:csv, format:format}, (response) ->
-                if response.status is 'OK'
-                    $('div.csv_upload_interface div.csv-controls div.error-message').html 'CSV Uploaded Succesfully. Refreshing List.....'
-                    $('div.csv_upload_interface div.csv-controls a').hide()
-                    setTimeout -> 
-                        $("html, body").animate
-                            scrollTop: 0
-                        , 1
-                        location.reload()
-                    , 2500
-                else
-                    $('div.csv_upload_interface div.csv-controls div.error-message').html response.message
+            if not scope.submitting
+                scope.submitting = true
+                button = $(this)
+                button.html 'Adding...'
+                button.addClass 'disabled-btn'
+                id = listId
+                csv = scope.uploads.csv.pk
+                format = {}
+                $('div.csv_upload_interface div.upload_row.active select[name=field] option:selected').each () ->
+                    format[$(this).val()] = $(this).parents('div.upload_row').data('col')
+                if not format.hasOwnProperty('email')
+                    $('div.csv_upload_interface div.csv-controls div.error-message').html 'You Must Select an EMAIL Column'
                     setTimeout -> 
                         $('div.csv_upload_interface div.csv-controls div.error-message').html '&nbsp;'
                     , 5000
-                button.html 'Submit'
-                return
+                    button.html 'Submit'
+                    scope.submitting = false
+                    button.removeClass 'disabled-btn'
+                    return
+                if not format.hasOwnProperty('first_name')
+                    $('div.csv_upload_interface div.csv-controls div.error-message').html 'You Must Select a FIRST_NAME Column'
+                    setTimeout -> 
+                        $('div.csv_upload_interface div.csv-controls div.error-message').html '&nbsp;'
+                    , 5000
+                    button.html 'Submit'
+                    scope.submitting = false
+                    button.removeClass 'disabled-btn'
+                    return
+                format = JSON.stringify format 
+                Bazaarboy.post 'lists/add/csv/', {id:id, csv:csv, format:format}, (response) ->
+                    if response.status is 'OK'
+                        $('div.csv_upload_interface div.csv-controls div.error-message').html 'Members: <span style="font-weight:bold;"> ' + response.added + '</span> Added -  <span style="font-weight:bold;">' + response.duplicates + '</span> Duplicates. Refreshing List, this may take a minute.....'
+                        $('div.csv_upload_interface div.csv-controls a').hide()
+                        setTimeout -> 
+                            $("html, body").animate
+                                scrollTop: 0
+                            , 1
+                            location.reload()
+                        , 2500
+                    else
+                        $('div.csv_upload_interface div.csv-controls div.error-message').html response.message
+                        setTimeout ->
+                            $('div.csv_upload_interface div.csv-controls div.error-message').html '&nbsp;'
+                        , 5000
+                    button.html 'Submit'
+                    scope.submitting = false
+                    button.removeClass 'disabled-btn'
+                    return
             return
         $('div#list-management form.upload_csv input[name=csv_file]').fileupload
             url: rootUrl + 'file/csv/upload/'
