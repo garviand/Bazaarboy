@@ -1,0 +1,128 @@
+{% load layout %}
+doctype strict
+html(xmlns='http://www.w3.org/1999/xhtml')
+head
+  body(leftmargin='0', marginwidth='0', topmargin='0', marginheight='0', offset='0', style='margin: 0;padding: 0;-ms-text-size-adjust: 100%;-webkit-text-size-adjust: 100%;background-color: #F2F2F2;height: 100% !important;width: 100% !important;')
+    center
+      table#bodyTable(align='center', border='0', cellpadding='0', cellspacing='0', height='100%', width='100%', style='border-collapse: collapse;mso-table-lspace: 0pt;mso-table-rspace: 0pt;-ms-text-size-adjust: 100%;-webkit-text-size-adjust: 100%;margin: 0;padding: 0;background-color: #F2F2F2;height: 100% !important;width: 100% !important;')
+        tr
+          td#bodyCell(align='center', valign='top', style='mso-table-lspace: 0pt;mso-table-rspace: 0pt;-ms-text-size-adjust: 100%;-webkit-text-size-adjust: 100%;margin: 0;padding: 0px;border-top: 0;height: 100% !important;width: 100% !important;')
+            // BEGIN TEMPLATE //
+            table#templateContainer(border='0', cellpadding='0', cellspacing='0', width='600', style='border-collapse: collapse;mso-table-lspace: 0pt;mso-table-rspace: 0pt;-ms-text-size-adjust: 100%;-webkit-text-size-adjust: 100%;border: 0;')
+              tr
+                td(align='center', valign='top', style='mso-table-lspace: 0pt;mso-table-rspace: 0pt;-ms-text-size-adjust: 100%;-webkit-text-size-adjust: 100%;')
+                  // BEGIN PREHEADER //
+                  table#templatePreheader(border='0', cellpadding='0', cellspacing='0', width='600', style='border-collapse: collapse;mso-table-lspace: 0pt;mso-table-rspace: 0pt;-ms-text-size-adjust: 100%;-webkit-text-size-adjust: 100%;background-color: #FFFFFF;border-top: 0;border-bottom: 0;')
+                    tr
+                      td.preheaderContainer(valign='top', style='padding-top: 9px;mso-table-lspace: 0pt;mso-table-rspace: 0pt;-ms-text-size-adjust: 100%;-webkit-text-size-adjust: 100%;')
+                        table.mcnTextBlock(border='0', cellpadding='0', cellspacing='0', width='100%', style='border-collapse: collapse;mso-table-lspace: 0pt;mso-table-rspace: 0pt;-ms-text-size-adjust: 100%;-webkit-text-size-adjust: 100%;')
+                          tbody.mcnTextBlockOuter
+                            tr
+                              td.mcnTextBlockInner(valign='top', style='mso-table-lspace: 0pt;mso-table-rspace: 0pt;-ms-text-size-adjust: 100%;-webkit-text-size-adjust: 100%;')
+                                table.mcnTextContentContainer(align='left', border='0', cellpadding='0', cellspacing='0', width='366', style='border-collapse: collapse;mso-table-lspace: 0pt;mso-table-rspace: 0pt;-ms-text-size-adjust: 100%;-webkit-text-size-adjust: 100%;')
+                                    tr
+                                      td.mcnTextContent(valign='top', style='padding-top: 9px;padding-left: 18px;padding-bottom: 9px;padding-right: 0;mso-table-lspace: 0pt;mso-table-rspace: 0pt;-ms-text-size-adjust: 100%;-webkit-text-size-adjust: 100%;color: #606060;font-family: Helvetica;font-size: 11px;line-height: 125%;text-align: left;')
+                                        font(face='arial, sans-serif', size='2')
+                                          span(style='line-height:16.5454540252686px') {{ invite.event.start_time|standardTime }}
+                                |                 
+                                |                 
+                                table.mcnTextContentContainer(align='right', border='0', cellpadding='0', cellspacing='0', width='197', style='border-collapse: collapse;mso-table-lspace: 0pt;mso-table-rspace: 0pt;-ms-text-size-adjust: 100%;-webkit-text-size-adjust: 100%;')
+                                  tbody
+                                    tr
+                                      td.mcnTextContent(valign='top', style='padding-top: 9px;padding-right: 18px;padding-bottom: 9px;padding-left: 0;mso-table-lspace: 0pt;mso-table-rspace: 0pt;-ms-text-size-adjust: 100%;-webkit-text-size-adjust: 100%;color: #606060;font-family: Helvetica;font-size: 11px;line-height: 125%;text-align: left;')
+                  // // END PREHEADER
+              |                             
+              tr
+                td(align='center', valign='top', style='mso-table-lspace: 0pt;mso-table-rspace: 0pt;-ms-text-size-adjust: 100%;-webkit-text-size-adjust: 100%;')
+                  // BEGIN HEADER //
+                  table#templateHeader(border='0', cellpadding='0', cellspacing='0', width='600', style='border-collapse: collapse;mso-table-lspace: 0pt;mso-table-rspace: 0pt;-ms-text-size-adjust: 100%;-webkit-text-size-adjust: 100%;background-color: #FFFFFF;border-top: 0;border-bottom: 0;')
+                    tr
+                      td.headerContainer(valign='top', style='mso-table-lspace: 0pt;mso-table-rspace: 0pt;-ms-text-size-adjust: 100%;-webkit-text-size-adjust: 100%;')
+                  // // END HEADER
+              |                             
+              tr
+                td(align='center', valign='top', style='mso-table-lspace: 0pt;mso-table-rspace: 0pt;-ms-text-size-adjust: 100%;-webkit-text-size-adjust: 100%;')
+                  // BEGIN BODY //
+                  table#templateBody(border='0', cellpadding='0', cellspacing='0', width='600', style='border-collapse: collapse;mso-table-lspace: 0pt;mso-table-rspace: 0pt;-ms-text-size-adjust: 100%;-webkit-text-size-adjust: 100%;background-color: #FFFFFF;border-top: 0;border-bottom: 0;')
+                    tr
+                      td.bodyContainer(valign='top', style='mso-table-lspace: 0pt;mso-table-rspace: 0pt;-ms-text-size-adjust: 100%;-webkit-text-size-adjust: 100%;')
+                        table.mcnImageBlock(border='0', cellpadding='0', cellspacing='0', width='100%', style='border-collapse: collapse;mso-table-lspace: 0pt;mso-table-rspace: 0pt;-ms-text-size-adjust: 100%;-webkit-text-size-adjust: 100%;')
+                          tbody.mcnImageBlockOuter
+                            tr
+                              td.mcnImageBlockInner(valign='top', style='padding: 9px;mso-table-lspace: 0pt;mso-table-rspace: 0pt;-ms-text-size-adjust: 100%;-webkit-text-size-adjust: 100%;')
+                                table.mcnImageContentContainer(align='left', width='100%', border='0', cellpadding='0', cellspacing='0', style='border-collapse: collapse;mso-table-lspace: 0pt;mso-table-rspace: 0pt;-ms-text-size-adjust: 100%;-webkit-text-size-adjust: 100%;')
+                                  tbody
+                                    tr
+                                      td.mcnImageContent(valign='top', style='padding-right: 9px;padding-left: 9px;padding-top: 0;padding-bottom: 0;mso-table-lspace: 0pt;mso-table-rspace: 0pt;-ms-text-size-adjust: 100%;-webkit-text-size-adjust: 100%;')
+                                        img.mcnImage(align='left', alt='', src='https://gallery.mailchimp.com/212963b019ef2c63618da4e42/images/461a99fd-11fe-4fa8-8732-0efc56a70ba3.jpg', width='564', style='max-width: 757px;padding-bottom: 0;display: inline !important;vertical-align: bottom;border: 0;outline: none;text-decoration: none;-ms-interpolation-mode: bicubic;')
+                        table.mcnTextBlock(border='0', cellpadding='0', cellspacing='0', width='100%', style='border-collapse: collapse;mso-table-lspace: 0pt;mso-table-rspace: 0pt;-ms-text-size-adjust: 100%;-webkit-text-size-adjust: 100%;')
+                          tbody.mcnTextBlockOuter
+                            tr
+                              td.mcnTextBlockInner(valign='top', style='mso-table-lspace: 0pt;mso-table-rspace: 0pt;-ms-text-size-adjust: 100%;-webkit-text-size-adjust: 100%;')
+                                table.mcnTextContentContainer(align='left', border='0', cellpadding='0', cellspacing='0', width='600', style='border-collapse: collapse;mso-table-lspace: 0pt;mso-table-rspace: 0pt;-ms-text-size-adjust: 100%;-webkit-text-size-adjust: 100%;')
+                                  tbody
+                                    tr
+                                      td.mcnTextContent(valign='top', style='padding-top: 9px;padding-right: 18px;padding-bottom: 9px;padding-left: 18px;mso-table-lspace: 0pt;mso-table-rspace: 0pt;-ms-text-size-adjust: 100%;-webkit-text-size-adjust: 100%;color: #606060;font-family: Helvetica;font-size: 15px;line-height: 150%;text-align: left;')
+                                        h3(style="box-sizing: border-box;margin: 0.2rem 0px 0.5rem;padding: 0px;font-family: 'Helvetica Neue', Helvetica, Helvetica, Arial, sans-serif;font-weight: 300;color: #222222;text-rendering: optimizelegibility;line-height: 1.4;font-size: 1.6875rem;text-align: center;display: block;font-style: normal;letter-spacing: -.5px;")
+                                          span(style='box-sizing:border-box') {{ invite.profile.name }} Presents
+                                        h1(style="box-sizing: border-box;font-size: 2.75rem;margin: 0.2rem 0px 0.5rem;padding: 0px;font-family: 'Helvetica Neue', Helvetica, Helvetica, Arial, sans-serif;font-weight: 300;color: #222222;text-rendering: optimizelegibility;line-height: 1.4;text-align: center;display: block;font-style: normal;letter-spacing: -1px;") {{ invite.event.name }}
+                                        h4(style="box-sizing: border-box;margin: 0.2rem 0px 0.5rem;padding: 0px;font-family: 'Helvetica Neue', Helvetica, Helvetica, Arial, sans-serif;font-weight: 300;color: #222222;text-rendering: optimizelegibility;line-height: 1.4;font-size: 1.4375rem;text-align: center;display: block;font-style: normal;letter-spacing: normal;") {{ invite.event|standardDate}}
+                                        div(style='text-align: center;') &nbsp;
+                                        p(style="box-sizing: border-box;margin: 0px 0px 1.25rem;padding: 0px;font-family: 'Gotham SSm A', 'Gotham SSm B', sans-serif;font-size: 16px;line-height: 1.6;text-rendering: optimizelegibility;color: #4A4A4A;text-align: center;-ms-text-size-adjust: 100%;-webkit-text-size-adjust: 100%;")
+                                          span(style='color: #4A4A4A;font-family: gotham ssm a,gotham ssm b,sans-serif;font-size: 16px;line-height: 16px;') {{ invite.message }}
+                                          br
+                                          br
+                                          br
+                                          a.primary-btn.view_event_btn(href='{{ invite.event|eventUrl }}', target="_blank", style='color: #222222; text-decoration: none; border-radius: 4px; font-weight: bold; text-align: center; font-size: 1.2em; box-sizing: border-box; padding: 12px 60px;background: #FFFFFF; border: thin solid {{ invite.color }}')
+                                            | RSVP
+                                          br
+                                          br
+                                          br
+                                          span
+                                            | {{ invite.details }}
+                                            br
+                                            br
+                                            br
+                                            | &nbsp;
+                  // // END BODY
+              |                             
+              tr
+                td(align='center', valign='top', style='mso-table-lspace: 0pt;mso-table-rspace: 0pt;-ms-text-size-adjust: 100%;-webkit-text-size-adjust: 100%;')
+                  // BEGIN FOOTER //
+                  table#templateFooter(border='0', cellpadding='0', cellspacing='0', width='600', style='border-collapse: collapse;mso-table-lspace: 0pt;mso-table-rspace: 0pt;-ms-text-size-adjust: 100%;-webkit-text-size-adjust: 100%;background-color: #FFFFFF;border-top: 0;border-bottom: 0;')
+                    tr
+                      td.footerContainer(valign='top', style='padding-bottom: 9px;mso-table-lspace: 0pt;mso-table-rspace: 0pt;-ms-text-size-adjust: 100%;-webkit-text-size-adjust: 100%;')
+                        table.mcnDividerBlock(border='0', cellpadding='0', cellspacing='0', width='100%', style='border-collapse: collapse;mso-table-lspace: 0pt;mso-table-rspace: 0pt;-ms-text-size-adjust: 100%;-webkit-text-size-adjust: 100%;')
+                          tbody.mcnDividerBlockOuter
+                            tr
+                              td.mcnDividerBlockInner(style='padding: 0; mso-table-lspace: 0pt;mso-table-rspace: 0pt;-ms-text-size-adjust: 100%;-webkit-text-size-adjust: 100%;')
+                                table.mcnDividerContent(border='0', cellpadding='0', cellspacing='0', width='100%', style='border-top-width: 1px;border-top-style: solid;border-top-color: #999999;border-collapse: collapse;mso-table-lspace: 0pt;mso-table-rspace: 0pt;-ms-text-size-adjust: 100%;-webkit-text-size-adjust: 100%;')
+                                  tbody
+                                    tr
+                                      td(style='mso-table-lspace: 0pt;mso-table-rspace: 0pt;-ms-text-size-adjust: 100%;-webkit-text-size-adjust: 100%;')
+                                        span
+                        table.mcnImageBlock(border='0', cellpadding='0', cellspacing='0', width='100%', style='border-collapse: collapse;mso-table-lspace: 0pt;mso-table-rspace: 0pt;-ms-text-size-adjust: 100%;-webkit-text-size-adjust: 100%;')
+                          tbody.mcnImageBlockOuter
+                            tr
+                              td.mcnImageBlockInner(valign='top', style='padding: 9px;mso-table-lspace: 0pt;mso-table-rspace: 0pt;-ms-text-size-adjust: 100%;-webkit-text-size-adjust: 100%;')
+                                table.mcnImageContentContainer(align='left', width='100%', border='0', cellpadding='0', cellspacing='0', style='border-collapse: collapse;mso-table-lspace: 0pt;mso-table-rspace: 0pt;-ms-text-size-adjust: 100%;-webkit-text-size-adjust: 100%;')
+                                  tbody
+                                    tr
+                                      td.mcnImageContent(valign='top', style='padding-right: 9px;padding-left: 9px;padding-top: 0;padding-bottom: 0;mso-table-lspace: 0pt;mso-table-rspace: 0pt;-ms-text-size-adjust: 100%;-webkit-text-size-adjust: 100%;')
+                        table.mcnTextBlock(border='0', cellpadding='0', cellspacing='0', width='100%', style='border-collapse: collapse;mso-table-lspace: 0pt;mso-table-rspace: 0pt;-ms-text-size-adjust: 100%;-webkit-text-size-adjust: 100%;')
+                          tbody.mcnTextBlockOuter
+                            tr
+                              td.mcnTextBlockInner(valign='top', style='mso-table-lspace: 0pt;mso-table-rspace: 0pt;-ms-text-size-adjust: 100%;-webkit-text-size-adjust: 100%;')
+                                table.mcnTextContentContainer(align='left', border='0', cellpadding='0', cellspacing='0', width='600', style='border-collapse: collapse;mso-table-lspace: 0pt;mso-table-rspace: 0pt;-ms-text-size-adjust: 100%;-webkit-text-size-adjust: 100%;')
+                                  tbody
+                                    tr
+                                      td.mcnTextContent(valign='top', style='padding-top: 0px;padding-right: 18px;padding-bottom: 9px;padding-left: 18px;mso-table-lspace: 0pt;mso-table-rspace: 0pt;-ms-text-size-adjust: 100%;-webkit-text-size-adjust: 100%;color: #606060;font-family: Helvetica;font-size: 11px;line-height: 125%;text-align: left;')
+                                        | Powered By 
+                                        a(href='https://bazaarboy.com') Bazaarboy
+                                        |                           
+                                        br
+                                        br
+                                        |                             
+                                        a(href='https://bazaarboy.com/user/unsub/?key=*|UNSUB_KEY|*&email=*|USER_EMAIL|*', style='color:#777; text-decoration:none;') Unsubscribe From Bazaarboy Emails
+                  // // END FOOTER
+            // // END TEMPLATE

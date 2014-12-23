@@ -13,6 +13,7 @@ html(lang="en")
             link(rel="stylesheet", href="//cloud.typography.com/7993072/806564/css/fonts.css")
             link(rel="stylesheet", href="{{ STATIC_URL }}css/styles.css")
             link(rel="stylesheet", href="{{ STATIC_URL }}gizmo/ss-gizmo.css")
+            link(rel="stylesheet", href="{{ STATIC_URL }}sweetalert/sweet-alert.css")
             include components/analytics
     body
         include components/mixins
@@ -47,6 +48,7 @@ html(lang="en")
         div#scripts
             block script
                 script(src="{{ STATIC_URL }}js/libraries.js")
+                script(src="{{ STATIC_URL }}sweetalert/sweet-alert.min.js")
                 script.
                     var rootUrl = '{% url index %}';
                     var mediaUrl = '{{ MEDIA_URL }}';

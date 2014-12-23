@@ -294,7 +294,7 @@ Bazaarboy.event.index =
             if not scope.emailSending
                 scope.emailSending = true
                 $('div#invite-modal form.invite-form a.send-invitation').addClass 'disabled-btn'
-                Bazaarboy.post 'event/'+eventId+'/invite/', params, (response) ->
+                Bazaarboy.post 'event/'+eventId+'/manualinvite/', params, (response) ->
                     if response.status is 'OK'
                         $('div.invite-success span.invite-count').html(response.count)
                         $('form.invite-form').fadeOut 300, () ->

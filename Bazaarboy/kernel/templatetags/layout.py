@@ -31,7 +31,26 @@ def standardTime(time):
     Output a datetime object to text in standard format
     """
     time = localize(time)
-    return time.strftime('%Y-%m-%d %X') if time is not None else ''
+    return time.strftime('%m/%d/%Y %I:%M%p') if time is not None else ''
+
+@register.filter
+def standardDate(event):
+    """
+    Output a nicely formatted date for an event
+    """
+    startTime = localize(event.start_time)
+    if event.end_time:
+        endTime = localize(event.end_time)
+        if endTime.day == startTime.day:
+            event_date = startTime.strftime('%A') + ', '
+            event_date += startTime.strftime('%I:%M%p').lower() + ' - ' + endTime.strftime('%I:%M%p').lower()
+        else:
+            event_date = startTime.strftime('%A') + ', ' + startTime.strftime('%I:%M%p').lower() + ' - '
+            event_date += endTime.strftime('%A') + ', ' + endTime.strftime('%I:%M%p').lower()
+    else:
+        event_date = startTime.strftime('%A') + ', '
+        event_date += startTime.strftime('%I:%M%p').lower()
+    return event_date
 
 @register.filter
 def validateTiming(obj):

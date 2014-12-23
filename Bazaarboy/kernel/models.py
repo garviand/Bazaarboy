@@ -246,6 +246,24 @@ class Promo(models.Model):
     is_deleted = models.BooleanField(default = False)
     created_time = models.DateTimeField(auto_now_add = True)
 
+class Invite(models.Model):
+    """
+    Invite model
+    """
+    profile = models.ForeignKey('Profile')
+    event = models.ForeignKey('Event')
+    lists = models.ManyToManyField('List')
+    image = models.ForeignKey('Image', null = True, default = None)
+    color = models.CharField(max_length = 50, default="#FAA638")
+    message = models.CharField(max_length = 5000, null = True, default = None)
+    details = models.CharField(max_length = 1000, null = True, default = None)
+    salutation = models.CharField(max_length = 100, null = True, default = None)
+    salutation_name = models.CharField(max_length = 100, null = True, default = None)
+    is_sent = models.BooleanField(default = False)
+    sent_at = models.DateTimeField(null = True, default = None)
+    email_id = models.CharField(max_length = 200)
+    created_time = models.DateTimeField(auto_now_add = True)
+
 class Purchase(models.Model):
     """
     Purchase model for tickets

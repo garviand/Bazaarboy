@@ -275,7 +275,7 @@ def sendOrganizerAddedEmail(event, adder, profile):
     return sendEmails(to, MANDRILL_FROM_NAME, subject, template, mergeVars)
 
 @task()
-def sendEventInvite(event, email, subject, inviter, custom_message=''):
+def sendManualEventInvite(event, email, subject, inviter, custom_message=''):
     if Unsubscribe.objects.filter(email = email).exists():
         return False
     event_month = DateFormat(localize(event.start_time))

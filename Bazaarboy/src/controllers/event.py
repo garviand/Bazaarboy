@@ -23,7 +23,7 @@ from src.config import *
 from src.controllers.request import *
 from src.ordereddict import OrderedDict
 from src.csvutils import UnicodeWriter
-from src.email import sendEventConfirmationEmail, sendEventInvite, sendOrganizerAddedEmail, sendIssueEmail, sendEventReminder
+from src.email import sendEventConfirmationEmail, sendManualEventInvite, sendOrganizerAddedEmail, sendIssueEmail, sendEventReminder
 from src.regex import REGEX_EMAIL, REGEX_NAME, REGEX_SLUG
 from src.sanitizer import sanitize_redactor_input
 from src.serializer import serialize, serialize_one
@@ -346,8 +346,79 @@ def issue(request, params):
     return json_response(response)
 
 @login_check()
+def invite(request, event, user):
+    if not Event.objects.filter(id = event, 
+                                is_deleted = False).exists():
+        response = {
+            'status':'FAIL',
+            'error':'EVENT_NOT_FOUND',
+            'message':'The event doesn\'t exist.'
+        }
+        raise Http404
+    event = Event.objects.get(id = event)
+    if not Organizer.objects.filter(event = event, 
+                                    profile__managers = user).exists():
+        return redirect('index')
+    profiles = Profile.objects.filter(managers = user)
+    profile = profiles[0]
+    lists = List.objects.filter(owner = profile)
+    for lt in lists:
+        list_items = List_item.objects.filter(_list = lt)
+        lt.items = list_items.count()
+    previousInvites = Invite.objects.filter(event = event)
+    return render(request, 'event/invite.html', locals())
+
+@login_check()
+@validate('POST', ['id', 'lists', 'message'], ['details', 'image', 'color'])
+def new_invite(request, params, user):
+    event = params['id']
+    if not Event.objects.filter(id = event, 
+                                is_deleted = False).exists():
+        response = {
+            'status':'FAIL',
+            'error':'EVENT_NOT_FOUND',
+            'message':'The event doesn\'t exist.'
+        }
+        return json_response(response)
+    event = Event.objects.get(id = event)
+    if not Organizer.objects.filter(event = event, 
+                                    profile__managers = user).exists():
+        response = {
+            'status':'FAIL',
+            'error':'NOT_OWNER',
+            'message':'This is not your event.'
+        }
+        return json_response(response)
+    profiles = Profile.objects.filter(managers = user)
+    profile = profiles[0]
+    invite = Invite(event = event, profile = profile, message = params['message'])
+    if params['details']:
+        invite.details = params['details']
+    invite.save()
+    response = {
+        'status':'OK',
+        'invite':serialize_one(invite)
+    }
+    return json_response(response)
+
+@login_check()
+def preview_invite(request, invite, user):
+    if not Invite.objects.filter(id = invite, profile__managers = user).exists():
+        return redirect('index:index')
+    invite = Invite.objects.get(id = invite)
+    return render(request, 'event/invite-preview.html', locals())
+
+@login_check()
+def preview_invite_template(request, invite, user):
+    if not Invite.objects.filter(id = invite, profile__managers = user).exists():
+        return redirect('index:index')
+    invite = Invite.objects.get(id = invite)
+    return render(request, 'event/invite-preview-template.html', locals())
+
+
+@login_check()
 @validate('POST', [], ['subject', 'events', 'emails', 'message', 'inviter'])
-def invite(request, id, params, user):
+def manual_invite(request, id, params, user):
     if not Event.objects.filter(id = id, 
                                 is_deleted = False).exists():
         response = {
@@ -408,7 +479,7 @@ def invite(request, id, params, user):
         message = ''
     for email in emails:
         if not Unsubscribe.objects.filter(email = email).exists():
-            sendEventInvite(event, email, subject, inviter, message)
+            sendManualEventInvite(event, email, subject, inviter, message)
     response = {
         'status':'OK',
         'count': str(len(emails))

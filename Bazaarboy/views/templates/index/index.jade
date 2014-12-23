@@ -148,19 +148,14 @@ block content
                         div.current-event-actions.medium-3.small-12.columns
                             a.current-event-action.first(href="{% url event:modify event.id 'basics' %}")
                                 div.icon
-                                    span.ss-info
+                                    span.ss-write
                                 div.text
-                                    span Edit Info
-                            a.current-event-action(href="{% url event:modify event.id 'tickets' %}")
+                                    span Edit Event
+                            a.current-event-action(href="{% url event:invite event.id %}")
                                 div.icon
-                                    span.ss-creditcard
+                                    span.ss-mail
                                 div.text
-                                    span Ticket Options
-                            a.current-event-action(href="{{ event|eventUrl }}?design")
-                                div.icon
-                                    span.ss-picture
-                                div.text
-                                    span Page Design
+                                    span Send Invites
                             a.current-event-action(href="{% url event:manage event.id %}")
                                 div.icon
                                     span.ss-file

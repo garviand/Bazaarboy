@@ -1,0 +1,82 @@
+@import (reference) "vars.less";
+
+div#wrapper-event-invite{
+    div#event-invite{
+        padding-top: 24px;
+        label{
+            line-height: 1.5em;
+        }
+        div.info{
+            div.title{
+                font-weight: 500;
+                font-size: 20px;
+                color: @dark;
+                margin-bottom: 20px;
+                text-decoration: underline;
+            }
+        }
+        div.email{
+            border-right: @dark_grey thin solid;
+            div.email-content{
+                div.content-message{
+                    textarea{
+                        height: 150px;
+                        box-shadow: none;
+                        border-radius: 3px;
+                    }
+                }
+                div.content-details{
+                    textarea{
+                        height: 100px;
+                        box-shadow: none;
+                        border-radius: 3px;
+                    }
+                }
+                div.content-submit{
+                    a{
+                        display: block;
+                        width: 100%;
+                        padding: 10px 12px;
+                        text-align: center;
+                    }
+                }
+            }
+        }
+        div.lists{
+            div.list{
+                margin-left: 0;
+                margin-right: 0;
+                padding: 12px 5px;
+                border-radius: 3px;
+                border: @dark_grey thin solid;
+                margin-top: 10px;
+                -webkit-touch-callout: none;
+                -webkit-user-select: none;
+                -khtml-user-select: none;
+                -moz-user-select: none;
+                -ms-user-select: none;
+                user-select: none;
+                div.list-name{
+                    font-size: 16px;
+                    font-weight: 500;
+                }
+                div.list-quantity{
+                    font-weight: 300;
+                    font-style: italic;
+                    font-size: 14px;
+                }
+                &:hover{
+                    cursor: pointer;
+                    border: #4963E4 thin solid;
+                }
+                &.active{
+                    border: #4963E4 thin solid;
+                    background: #f1f3ff;
+                    div.list-quantity{
+                        font-weight: 500;
+                    }
+                }
+            }
+        }
+    }
+}

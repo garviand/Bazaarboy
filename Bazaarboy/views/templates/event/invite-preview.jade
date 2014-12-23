@@ -1,0 +1,30 @@
+extends ../layout
+
+block sidebar
+    +sidebarItem('ss-newspaper')(href="javascript:;")(class="events-filter events-filter-summary selected")
+        | Events
+    +sidebarItem('ss-database')(href="{% url list:index %}")
+        | Lists
+    +sidebarItem('ss-share')(href="{% url user:settings %}")
+        | Settings
+
+block header
+    div.header-title.large-9.medium-10.columns.small-centered
+        div.row.clearfix
+            div.icon.left
+                span.ss-mail
+            div.text.left
+                | {{ invite.event.name }} |
+                span.sub &nbsp;Invitation Preview
+
+block content
+    div#wrapper-event-invite-preview.large-9.medium-10.columns.small-centered
+        div#event-invite-preview.small-12.columns
+            div.row
+                div.small-12.columns
+                    div.email-template
+                        iframe(src="/event/invite/{{ invite.id }}/preview/template/", width="100%", height="1000")
+                  
+
+append script
+    script(src="{{ STATIC_URL }}js/event/invite.js")
