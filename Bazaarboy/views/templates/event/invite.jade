@@ -24,6 +24,9 @@ block content
     div#wrapper-event-invite.large-9.medium-10.columns.small-centered
         div#event-invite.small-12.columns
             div.row
+                div.small-12.columns.invitation-back
+                    a(href="{% url event:invite event.id %}") &lt; Back To Invitations
+            div.row
                 div.email.small-12.medium-6.columns
                     input(type="hidden", name="event", value="{{ event.id }}")
                     input(type="hidden", name="invite", value="{{ invite.id }}")

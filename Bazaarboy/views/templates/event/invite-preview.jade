@@ -31,6 +31,19 @@ block content
                             a.blue-btn.send-email(href="javascript:;", data-id="{{ invite.id }}") Send Email
                         div.small-12.medium-6.columns
                             a.blue-btn-inverse(href="{% url event:edit-invite invite.id %}") Edit Email
+            div.row
+                hr
+                div.email-stats-container.small-12.columns(style="padding-left: 0;")
+                    div.email-stats
+                        div.small-12.medium-6.columns
+                            b {{ sent }} Invites Will Be Sent
+                        div.small-12.medium-6.columns
+                            | {{ duplicates }} List Duplicates
+                    div.email-stats
+                        div.small-12.medium-6.columns
+                            | {{ alreadyInvited }} Previously Invited
+                        div.small-12.medium-6.columns
+                            | {{ unsubscribes }} Unsubscribed
 
 
 append script

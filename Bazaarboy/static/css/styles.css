@@ -10293,6 +10293,13 @@ div#event-modify-tickets div#edit-ticket form input.primary-btn {
 div#wrapper-event-invite div#event-invite {
   padding-top: 24px;
 }
+div#wrapper-event-invite div#event-invite div.invitation-back {
+  margin-top: 0px;
+  margin-bottom: 30px;
+}
+div#wrapper-event-invite div#event-invite div.invitation-back a {
+  color: #4963e4;
+}
 div#wrapper-event-invite div#event-invite label {
   line-height: 1.5em;
 }
@@ -10380,6 +10387,12 @@ div#wrapper-event-invite div#event-invite div.lists div.list.active {
 }
 div#wrapper-event-invite div#event-invite div.lists div.list.active div.list-quantity {
   font-weight: 500;
+}
+div#wrapper-invite-details div#invite-details div.invitation-back {
+  margin-top: 20px;
+}
+div#wrapper-invite-details div#invite-details div.invitation-back a {
+  color: #4963e4;
 }
 div#wrapper-invite-details div#invite-details div.invitation-stats {
   margin-top: 20px;
@@ -10492,7 +10505,6 @@ div#wrapper-event-invite-preview div#event-invite-preview div.email-template ifr
 }
 div#wrapper-event-invite-preview div#event-invite-preview div.email-actions {
   width: 600px;
-  min-height: 100px;
   margin: 0 auto;
   padding-top: 10px;
   padding-bottom: 20px;
@@ -10503,6 +10515,16 @@ div#wrapper-event-invite-preview div#event-invite-preview div.email-actions a {
   text-align: center;
   padding-top: 9px;
   padding-bottom: 11px;
+}
+div#wrapper-event-invite-preview div#event-invite-preview div.email-stats-container {
+  padding-bottom: 40px;
+}
+div#wrapper-event-invite-preview div#event-invite-preview div.email-stats-container div.email-stats {
+  text-align: center;
+  width: 600px;
+  margin: 0 auto;
+  padding-top: 10px;
+  padding-bottom: 20px;
 }
 div#wrapper-list-dashboard div.empty-state-container {
   margin-top: 40px;

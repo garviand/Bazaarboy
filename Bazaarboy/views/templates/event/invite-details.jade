@@ -24,6 +24,9 @@ block content
     div#wrapper-invite-details.large-9.medium-10.columns.small-centered
         div#invite-details.small-12.columns
             div.row
+                div.small-12.columns.invitation-back
+                    a(href="{% url event:invite invt.event.id %}") &lt; Back To Invitations
+            div.row
                 div.small-12.columns.invitation-stats
                     div.row
                         div.small-12.medium-4.columns
@@ -38,6 +41,12 @@ block content
             div.row
                 div.small-12.columns.invitations
                     h3.title Recipient List
+                    {% if results.count == 0 %}
+                    div
+                        div.row.invitation
+                            div.small-12
+                                | Email Data is Being Gathered... Check back in a few minutes!
+                    {% endif %}
                     {% for invite in results %}
                     div
                         div.row.invitation

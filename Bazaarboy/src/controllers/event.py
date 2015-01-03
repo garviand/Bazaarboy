@@ -538,6 +538,30 @@ def preview_invite(request, invite, user):
     if not Invite.objects.filter(id = invite, profile__managers = user, is_deleted = False).exists():
         return redirect('index:index')
     invite = Invite.objects.get(id = invite)
+    recipients = []
+    sent = 0
+    duplicates = 0
+    unsubscribes = 0
+    alreadyInvited = 0
+    invitedList = []
+    client = Mandrill(MANDRILL_API_KEY)
+    results = client.messages.search(query='u_invite_event_id:' + str(invite.event.id))
+    for result in results:
+        invitedList.append(result['email'].lower())
+    for lt in invite.lists.all():
+        list_items = List_item.objects.filter(_list = lt)
+        for item in list_items:
+            if not Unsubscribe.objects.filter(email = item.email).exists():
+                if item.email.lower() not in recipients:
+                    if item.email.lower() not in invitedList:
+                        recipients.append(item.email.lower())
+                        sent += 1
+                    else:
+                        alreadyInvited += 1
+                else:
+                    duplicates += 1
+            else:
+                unsubscribes += 1
     return render(request, 'event/invite-preview.html', locals())
 
 @login_check()
@@ -562,19 +586,41 @@ def send_invite(request, params, user):
     recipients = []
     sent = 0
     duplicates = 0
+    unsubscribes = 0
+    alreadyInvited = 0
+    invitedList = []
+    client = Mandrill(MANDRILL_API_KEY)
+    results = client.messages.search(query='u_invite_event_id:' + str(invite.event.id))
+    for result in results:
+        invitedList.append(result['email'].lower())
     for lt in invite.lists.all():
         list_items = List_item.objects.filter(_list = lt)
         for item in list_items:
-            if item.email.lower() not in recipients:
-                recipients.append(item.email.lower())
-                sent += 1
+            if not Unsubscribe.objects.filter(email = item.email).exists():
+                if item.email.lower() not in recipients:
+                    if item.email.lower() not in invitedList:
+                        recipients.append(item.email.lower())
+                        sent += 1
+                    else:
+                        alreadyInvited += 1
+                else:
+                    duplicates += 1
             else:
-                duplicates += 1
+                unsubscribes += 1
+    if sent == 0:
+        response = {
+            'status': 'FAIL',
+            'error': 'NO_RECIPIENTS',
+            'message': 'The message will not have any recipients, please use another list.'
+        }
+        return json_response(response)
     sendEventInvite(invite, recipients)
     response = {
         'status':'OK',
         'sent': sent,
         'duplicates': duplicates,
+        'unsubscribes': unsubscribes,
+        'already_invited': alreadyInvited,
         'invite': serialize_one(invite)
     }
     return json_response(response)

@@ -61,24 +61,21 @@ def sendEmails(to, from_name, subject, template, mergeVars, attachments=[]):
 def sendEventInvite(invite, recipients):
     to = []
     mergeVars = []
-    recipientCount = 0
     for recipient in recipients:
-        if not Unsubscribe.objects.filter(email = recipient).exists():
-            recipientCount += 1
-            to.append({'email':recipient})
-            mergeVars.append({
-                'rcpt': recipient,
-                'vars': [
-                    {
-                        'name': 'unsub_key',
-                        'content': hashlib.sha512(recipient + UNSUBSCRIBE_SALT).hexdigest()
-                    },
-                    {
-                        'name': 'user_email',
-                        'content': recipient
-                    }
-                ]
-            })
+        to.append({'email':recipient})
+        mergeVars.append({
+            'rcpt': recipient,
+            'vars': [
+                {
+                    'name': 'unsub_key',
+                    'content': hashlib.sha512(recipient + UNSUBSCRIBE_SALT).hexdigest()
+                },
+                {
+                    'name': 'user_email',
+                    'content': recipient
+                }
+            ]
+        })
     buttonHtml = '<a href="https://bazaarboy.com/' + layout.eventUrl(invite.event) + '" class="primary-btn view_event_btn" style="color: #222222; text-decoration: none; border-radius: 4px; font-weight: bold; text-align: center; font-size: 1.2em; box-sizing: border-box; padding: 12px 60px;background: #FFFFFF; border: thin solid ' + invite.color + ';">RSVP</a>'
     if invite.image:
         headerImageHtml = '<img align="left" alt="" src="' + invite.image.source.url.split("?", 1)[0] + '" width="564" style="max-width: 757px;padding-bottom: 0;display: inline !important;vertical-align: bottom;border: 0;outline: none;text-decoration: none;-ms-interpolation-mode: bicubic;" class="mcnImage">'
@@ -88,6 +85,9 @@ def sendEventInvite(invite, recipients):
         organizerLogo = "<img src='" + invite.profile.image.source.url.split("?", 1)[0] + "' style='max-width: 100px; max-height: 100px; padding-bottom: 0;display: inline !important;vertical-align: bottom;border: 0;outline: none;text-decoration: none;-ms-interpolation-mode: bicubic;' align='center' />"
     else:
         organizerLogo = ''
+    inviteDetails = ''
+    if invite.details:
+        inviteDetails = invite.details
     globalVars = [
         {
             'name':'profile_name', 
@@ -119,7 +119,7 @@ def sendEventInvite(invite, recipients):
         },
         {
             'name':'details', 
-            'content': invite.details
+            'content': inviteDetails
         },
         {
             'name':'organizer_logo', 
@@ -164,7 +164,7 @@ def sendEventInvite(invite, recipients):
     else:
         if Invite.objects.filter(id = invite.id).exists():
             invite = Invite.objects.get(id = invite.id)
-            invite.recipients = recipientCount
+            invite.recipients = len(recipients)
             invite.is_sent = True
             invite.sent_at = timezone.now()
             invite.save()

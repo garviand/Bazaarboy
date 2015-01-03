@@ -9,9 +9,12 @@ Bazaarboy.event.invite_preview =
                 scope.sending = true
                 inviteId = $(this).data('id')
                 Bazaarboy.post 'event/invite/send/', {id:inviteId}, (response) ->
-                    console.log response
-                    scope.sending = false
-                    button.html 'Send Email'
+                    if response.status is 'OK'
+                        Bazaarboy.redirect 'event/invite/' + response.invite.pk + '/details/'
+                    else
+                        swal response.message
+                        scope.sending = false
+                        button.html 'Send Email'
                     return
                 return
         return

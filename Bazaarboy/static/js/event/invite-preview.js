@@ -14,9 +14,13 @@
           Bazaarboy.post('event/invite/send/', {
             id: inviteId
           }, function(response) {
-            console.log(response);
-            scope.sending = false;
-            button.html('Send Email');
+            if (response.status === 'OK') {
+              Bazaarboy.redirect('event/invite/' + response.invite.pk + '/details/');
+            } else {
+              swal(response.message);
+              scope.sending = false;
+              button.html('Send Email');
+            }
           });
         }
       });
