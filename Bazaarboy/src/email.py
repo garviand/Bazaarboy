@@ -21,8 +21,10 @@ from django.template.loader import *
 from kernel.models import *
 from src.config import *
 from src.timezone import localize
+from django.utils import timezone
 from django.utils.dateformat import DateFormat
 from pygeocoder import Geocoder
+from kernel.templatetags import layout 
 
 import pdb
 
@@ -54,6 +56,119 @@ def sendEmails(to, from_name, subject, template, mergeVars, attachments=[]):
         return False
     else:
         return result
+
+@task()
+def sendEventInvite(invite, recipients):
+    to = []
+    mergeVars = []
+    recipientCount = 0
+    for recipient in recipients:
+        if not Unsubscribe.objects.filter(email = recipient).exists():
+            recipientCount += 1
+            to.append({'email':recipient})
+            mergeVars.append({
+                'rcpt': recipient,
+                'vars': [
+                    {
+                        'name': 'unsub_key',
+                        'content': hashlib.sha512(recipient + UNSUBSCRIBE_SALT).hexdigest()
+                    },
+                    {
+                        'name': 'user_email',
+                        'content': recipient
+                    }
+                ]
+            })
+    buttonHtml = '<a href="https://bazaarboy.com/' + layout.eventUrl(invite.event) + '" class="primary-btn view_event_btn" style="color: #222222; text-decoration: none; border-radius: 4px; font-weight: bold; text-align: center; font-size: 1.2em; box-sizing: border-box; padding: 12px 60px;background: #FFFFFF; border: thin solid ' + invite.color + ';">RSVP</a>'
+    if invite.image:
+        headerImageHtml = '<img align="left" alt="" src="' + invite.image.source.url.split("?", 1)[0] + '" width="564" style="max-width: 757px;padding-bottom: 0;display: inline !important;vertical-align: bottom;border: 0;outline: none;text-decoration: none;-ms-interpolation-mode: bicubic;" class="mcnImage">'
+    else:
+        headerImageHtml = ''
+    if invite.profile.image:
+        organizerLogo = "<img src='" + invite.profile.image.source.url.split("?", 1)[0] + "' style='max-width: 100px; max-height: 100px; padding-bottom: 0;display: inline !important;vertical-align: bottom;border: 0;outline: none;text-decoration: none;-ms-interpolation-mode: bicubic;' align='center' />"
+    else:
+        organizerLogo = ''
+    globalVars = [
+        {
+            'name':'profile_name', 
+            'content': invite.profile.name
+        },
+        {
+            'name':'header_image', 
+            'content': headerImageHtml
+        },
+        {
+            'name':'event_date_short', 
+            'content': layout.standardTime(invite.event.start_time)
+        },
+        {
+            'name':'event_name', 
+            'content': invite.event.name
+        },
+        {
+            'name':'event_date', 
+            'content': layout.standardDate(invite.event)
+        },
+        {
+            'name':'message', 
+            'content': invite.message
+        },
+        {
+            'name':'rsvp_button', 
+            'content': buttonHtml
+        },
+        {
+            'name':'details', 
+            'content': invite.details
+        },
+        {
+            'name':'organizer_logo', 
+            'content': organizerLogo
+        },
+        {
+            'name':'event_link', 
+            'content': 'https://bazaarboy.com/' + layout.eventUrl(invite.event)
+        }
+    ]
+    template = 'new-invite'
+    subject = 'Invitation to \'' + invite.event.name + '\''
+    attachments = []
+    try:
+        client = Mandrill(MANDRILL_API_KEY)
+        message = {
+            'from_email':MANDRILL_FROM_EMAIL,
+            'from_name':invite.profile.name,
+            'headers':{
+                'Reply-To':MANDRILL_FROM_EMAIL
+            },
+            'subject':subject,
+            'merge_vars':mergeVars,
+            'global_merge_vars':globalVars,
+            'to':to,
+            'track_clicks':True,
+            'track_opens':True,
+            'attachments':attachments,
+            'metadata':{
+                'invite_id':invite.id,
+                'invite_event_id':invite.event.id,
+                'profile_id':invite.profile.id
+            }
+        }
+        result = client.messages.send_template(template_name = template, 
+                                                    template_content = [], 
+                                                    message = message, 
+                                                    async = True)
+    except Exception, e:
+        logging.error(str(e))
+        return False
+    else:
+        if Invite.objects.filter(id = invite.id).exists():
+            invite = Invite.objects.get(id = invite.id)
+            invite.recipients = recipientCount
+            invite.is_sent = True
+            invite.sent_at = timezone.now()
+            invite.save()
+            return result
 
 @task
 def sendNewAccountEmail(profile):

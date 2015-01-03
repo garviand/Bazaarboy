@@ -31,7 +31,7 @@ def standardTime(time):
     Output a datetime object to text in standard format
     """
     time = localize(time)
-    return time.strftime('%m/%d/%Y %I:%M%p') if time is not None else ''
+    return time.strftime('%m/%d/%Y').lstrip('0') + ' ' + time.strftime('%I:%M%p').lstrip('0') if time is not None else ''
 
 @register.filter
 def standardDate(event):
@@ -42,14 +42,14 @@ def standardDate(event):
     if event.end_time:
         endTime = localize(event.end_time)
         if endTime.day == startTime.day:
-            event_date = startTime.strftime('%A') + ', '
-            event_date += startTime.strftime('%I:%M%p').lower() + ' - ' + endTime.strftime('%I:%M%p').lower()
+            event_date = startTime.strftime('%A') + ', ' + startTime.strftime('%B') + ' ' + startTime.strftime('%d').lstrip('0') + ', '
+            event_date += startTime.strftime('%I:%M%p').lower() + ' - ' + endTime.strftime('%I:%M%p').lower().lstrip('0')
         else:
-            event_date = startTime.strftime('%A') + ', ' + startTime.strftime('%I:%M%p').lower() + ' - '
-            event_date += endTime.strftime('%A') + ', ' + endTime.strftime('%I:%M%p').lower()
+            event_date = startTime.strftime('%A') + ', ' + startTime.strftime('%B') + ' ' + startTime.strftime('%d').lstrip('0') + ', ' + startTime.strftime('%I:%M%p').lower().lstrip('0') + ' - '
+            event_date += endTime.strftime('%A') + ', ' + startTime.strftime('%B') + ' ' + startTime.strftime('%d').lstrip('0') + ', ' + endTime.strftime('%I:%M%p').lower().lstrip('0')
     else:
-        event_date = startTime.strftime('%A') + ', '
-        event_date += startTime.strftime('%I:%M%p').lower()
+        event_date = startTime.strftime('%A') + ', ' + startTime.strftime('%B') + ' ' + startTime.strftime('%d').lstrip('0') + ', '
+        event_date += startTime.strftime('%I:%M%p').lower().lstrip('0')
     return event_date
 
 @register.filter

@@ -341,9 +341,6 @@
         }
         $('div#event').css('padding-top', $('div#event-header').height() + 'px');
       });
-      $('div#launch-modal a.start-invite').click(function() {
-        $('div#invite-modal').foundation('reveal', 'open');
-      });
       $('div#invite-modal form.invite-form div.event-list').click(function() {
         $(this).toggleClass('selected');
       });

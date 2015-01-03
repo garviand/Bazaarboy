@@ -151,11 +151,16 @@ block content
                                     span.ss-write
                                 div.text
                                     span Edit Event
+                            a.current-event-action(href="{% url event:modify event.id 'tickets' %}")
+                                div.icon
+                                    span.ss-creditcard
+                                div.text
+                                    span Ticket Options
                             a.current-event-action(href="{% url event:invite event.id %}")
                                 div.icon
                                     span.ss-mail
                                 div.text
-                                    span Send Invites
+                                    span Invitations
                             a.current-event-action(href="{% url event:manage event.id %}")
                                 div.icon
                                     span.ss-file

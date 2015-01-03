@@ -261,8 +261,9 @@ class Invite(models.Model):
     salutation_name = models.CharField(max_length = 100, null = True, default = None)
     is_sent = models.BooleanField(default = False)
     sent_at = models.DateTimeField(null = True, default = None)
-    email_id = models.CharField(max_length = 200)
+    recipients = models.IntegerField(null = True, default = None)
     created_time = models.DateTimeField(auto_now_add = True)
+    is_deleted = models.BooleanField(default = False)
 
 class Purchase(models.Model):
     """

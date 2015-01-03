@@ -271,10 +271,6 @@ Bazaarboy.event.index =
                 $('div#tickets').css('top', '100px')
             $('div#event').css('padding-top', $('div#event-header').height() + 'px')
             return
-        # LAUNCH MODAL
-        $('div#launch-modal a.start-invite').click () ->
-            $('div#invite-modal').foundation('reveal', 'open')
-            return
         # INVITE MODAL INIT
         $('div#invite-modal form.invite-form div.event-list').click () ->
             $(this).toggleClass 'selected'

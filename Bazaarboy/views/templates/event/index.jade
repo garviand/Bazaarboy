@@ -62,7 +62,7 @@ block body
 					div.subtext Your event is live!
 					div.row
 						div.large-7.medium-7.small-8.columns.to-dash
-							a.start-invite.primary-btn(href="javascript:;") Invite Guests
+							a.start-invite.primary-btn(href="{% url event:create-invite event.id %}") Invite Guests
 						div.large-5.medium-5.small-4.columns.close-launch-modal
 							| or&nbsp;&nbsp;
 							a.close-reveal-modal Close

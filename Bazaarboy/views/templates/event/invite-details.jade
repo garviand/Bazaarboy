@@ -1,0 +1,54 @@
+extends ../layout
+
+block title
+    | Invite Dashboard
+
+block sidebar
+    +sidebarItem('ss-newspaper')(href="{% url index %}")
+        | Events
+    +sidebarItem('ss-database')(href="{% url list:index %}")
+        | Lists
+    +sidebarItem('ss-share')(href="{% url user:settings %}")
+        | Settings
+
+block header
+    div.header-title.large-9.medium-10.columns.small-centered
+        div.row.clearfix
+            div.icon.left
+                span.ss-file
+            div.text.left
+                | Invitation Details |
+                span.sub &nbsp;{{ invt.event.name }}
+
+block content
+    div#wrapper-invite-details.large-9.medium-10.columns.small-centered
+        div#invite-details.small-12.columns
+            div.row
+                div.small-12.columns.invitation-stats
+                    div.row
+                        div.small-12.medium-4.columns
+                            h3 Recipients
+                            h1 {{ invt.recipients }}
+                        div.small-12.medium-4.columns
+                            h3 Unique Opens
+                            h1 {{ totalOpens }}
+                        div.small-12.medium-4.columns
+                            h3 Unique Clicks
+                            h1 {{ totalClicks }}
+            div.row
+                div.small-12.columns.invitations
+                    h3.title Recipient List
+                    {% for invite in results %}
+                    div
+                        div.row.invitation
+                            div.small-12.medium-6.columns.invitation-name
+                                | {{ invite.email }}
+                            div.small-12.medium-3.columns.text-right.invitation-details
+                                | {{ invite.opens }} Ope{{ invite.opens|pluralize:"n,ns" }}
+                            div.small-12.medium-3.columns.text-right.invitation-details
+                                | {{ invite.clicks }} Clic{{ invite.clicks|pluralize:"k,ks" }}
+                    {% endfor %}
+
+
+append script
+    script(src="{{ STATIC_URL }}js/event/invite-details.js")

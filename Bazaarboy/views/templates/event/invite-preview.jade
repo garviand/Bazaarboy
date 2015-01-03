@@ -1,7 +1,7 @@
 extends ../layout
 
 block sidebar
-    +sidebarItem('ss-newspaper')(href="javascript:;")(class="events-filter events-filter-summary selected")
+    +sidebarItem('ss-newspaper')(href="{% url index %}")
         | Events
     +sidebarItem('ss-database')(href="{% url list:index %}")
         | Lists
@@ -23,8 +23,24 @@ block content
             div.row
                 div.small-12.columns
                     div.email-template
-                        iframe(src="/event/invite/{{ invite.id }}/preview/template/", width="100%", height="1000")
-                  
+                        iframe#email-preview(src="/event/invite/{{ invite.id }}/preview/template/", width="100%", height="1000", onload="iframeLoaded()")
+            div.email-actions.row
+                div.small-12.columns(style="padding-left: 0;")
+                    div.email-actions
+                        div.small-12.medium-6.columns
+                            a.blue-btn.send-email(href="javascript:;", data-id="{{ invite.id }}") Send Email
+                        div.small-12.medium-6.columns
+                            a.blue-btn-inverse(href="{% url event:edit-invite invite.id %}") Edit Email
+
 
 append script
-    script(src="{{ STATIC_URL }}js/event/invite.js")
+    script.
+        function iframeLoaded() {
+          var iFrameID = document.getElementById('email-preview');
+          if(iFrameID) {
+            console.log(iFrameID)
+            iFrameID.height = "";
+            iFrameID.height = iFrameID.contentWindow.document.body.scrollHeight + "px";
+          }
+        }
+    script(src="{{ STATIC_URL }}js/event/invite-preview.js")

@@ -23,11 +23,12 @@ from src.config import *
 from src.controllers.request import *
 from src.ordereddict import OrderedDict
 from src.csvutils import UnicodeWriter
-from src.email import sendEventConfirmationEmail, sendManualEventInvite, sendOrganizerAddedEmail, sendIssueEmail, sendEventReminder
+from src.email import sendEventConfirmationEmail, sendEventInvite, sendManualEventInvite, sendOrganizerAddedEmail, sendIssueEmail, sendEventReminder
 from src.regex import REGEX_EMAIL, REGEX_NAME, REGEX_SLUG
 from src.sanitizer import sanitize_redactor_input
 from src.serializer import serialize, serialize_one
 from src.sms import sendEventConfirmationSMS
+from mandrill import Mandrill
 
 import pdb
 import operator
@@ -345,15 +346,50 @@ def issue(request, params):
     }
     return json_response(response)
 
+
 @login_check()
 def invite(request, event, user):
     if not Event.objects.filter(id = event, 
                                 is_deleted = False).exists():
-        response = {
-            'status':'FAIL',
-            'error':'EVENT_NOT_FOUND',
-            'message':'The event doesn\'t exist.'
-        }
+        raise Http404
+    event = Event.objects.get(id = event)
+    if not Organizer.objects.filter(event = event, 
+                                    profile__managers = user).exists():
+        return redirect('index')
+    client = Mandrill(MANDRILL_API_KEY)
+    sentInvites = Invite.objects.filter(event = event, is_sent = True).order_by('-sent_at')
+    for invt in sentInvites:
+        opens = 0
+        totalOpens = 0
+        result = client.messages.search(query='u_invite_id:' + str(invt.id))
+        for email in result:
+            opens += email['opens']
+            if email['opens'] > 0:
+                totalOpens += 1
+        invt.opens = opens
+        invt.total_opens = totalOpens
+    draftInvites = Invite.objects.filter(event = event, is_sent = False, is_deleted = False).order_by('-created_time')
+    return render(request, 'event/invite-dashboard.html', locals())
+
+@login_check()
+def invite_details(request, invite, user):
+    if not Invite.objects.filter(id = invite, profile__managers = user, is_sent = True, is_deleted = False).exists():
+        return redirect('index')
+    invt = Invite.objects.get(id = invite)
+    client = Mandrill(MANDRILL_API_KEY)
+    results = client.messages.search(query='u_invite_id:' + str(invt.id))
+    totalOpens = 0
+    totalClicks = 0
+    for email in results:
+        if email['opens'] > 0:
+            totalOpens += 1
+        if email['clicks'] > 0:
+            totalClicks += 1
+    return render(request, 'event/invite-details.html', locals())
+
+@login_check()
+def create_invite(request, event, user):
+    if not Event.objects.filter(id = event, is_deleted = False).exists():
         raise Http404
     event = Event.objects.get(id = event)
     if not Organizer.objects.filter(event = event, 
@@ -369,11 +405,27 @@ def invite(request, event, user):
     return render(request, 'event/invite.html', locals())
 
 @login_check()
+def edit_invite(request, invite, user):
+    if not Invite.objects.filter(id = invite, profile__managers = user, is_deleted = False).exists():
+        return redirect('index')
+    invite = Invite.objects.get(id = invite)
+    event = invite.event
+    profiles = Profile.objects.filter(managers = user)
+    profile = profiles[0]
+    lists = List.objects.filter(owner = profile)
+    for lt in lists:
+        list_items = List_item.objects.filter(_list = lt)
+        lt.items = list_items.count()
+        lt.selected = False
+        if invite.lists.filter(id = lt.id).exists():
+            lt.selected = True
+    return render(request, 'event/invite.html', locals())
+
+@login_check()
 @validate('POST', ['id', 'lists', 'message'], ['details', 'image', 'color'])
 def new_invite(request, params, user):
     event = params['id']
-    if not Event.objects.filter(id = event, 
-                                is_deleted = False).exists():
+    if not Event.objects.filter(id = event, is_deleted = False).exists():
         response = {
             'status':'FAIL',
             'error':'EVENT_NOT_FOUND',
@@ -391,9 +443,26 @@ def new_invite(request, params, user):
         return json_response(response)
     profiles = Profile.objects.filter(managers = user)
     profile = profiles[0]
+    if List.objects.filter(id__in = [x.strip() for x in params['lists'].split(',')], owner__managers = user).exists():
+        lists = List.objects.filter(id__in = [x.strip() for x in params['lists'].split(',')], owner__managers = user)
+    else:
+        response = {
+            'status':'FAIL',
+            'error':'NO_VALID_LISTS',
+            'message':'No Valid Lists Were Selected.'
+        }
+        return json_response(response)
     invite = Invite(event = event, profile = profile, message = params['message'])
     if params['details']:
         invite.details = params['details']
+    if params['image'] and params['image'] != '':
+        if Image.objects.filter(id = params['image']).exists():
+            invite.image = Image.objects.get(id = params['image'])
+    if params['color'] and params['color'] != '':
+        invite.color = params['color']
+    invite.save()
+    for lt in lists:
+        invite.lists.add(lt)
     invite.save()
     response = {
         'status':'OK',
@@ -402,8 +471,71 @@ def new_invite(request, params, user):
     return json_response(response)
 
 @login_check()
-def preview_invite(request, invite, user):
+@validate('POST', ['id', 'lists', 'message'], ['details', 'image', 'color', 'deleteImg'])
+def save_invite(request, params, user):
+    invite = params['id']
+    if not Invite.objects.filter(id = invite, profile__managers = user, is_deleted = False).exists():
+        response = {
+            'status':'FAIL',
+            'error':'Invite_NOT_FOUND',
+            'message':'The invite doesn\'t exist.'
+        }
+        return json_response(response)
+    invite = Invite.objects.get(id = invite)
+    profiles = Profile.objects.filter(managers = user)
+    profile = profiles[0]
+    if List.objects.filter(id__in = [x.strip() for x in params['lists'].split(',')], owner__managers = user).exists():
+        lists = List.objects.filter(id__in = [x.strip() for x in params['lists'].split(',')], owner__managers = user)
+    else:
+        response = {
+            'status':'FAIL',
+            'error':'NO_VALID_LISTS',
+            'message':'No Valid Lists Were Selected.'
+        }
+        return json_response(response)
+    invite.message = params['message']
+    if params['details']:
+        invite.details = params['details']
+    if params['image'] and params['image'] != '':
+        if Image.objects.filter(id = params['image']).exists():
+            invite.image = Image.objects.get(id = params['image'])
+    if params['color'] and params['color'] != '':
+        invite.color = params['color']
+    invite.lists.clear()
+    for lt in lists:
+        invite.lists.add(lt)
+    if params['deleteImg'] and params['deleteImg'] == 'true':
+        invite.image = None
+    invite.save()
+    response = {
+        'status':'OK',
+        'invite':serialize_one(invite)
+    }
+    return json_response(response)
+
+@login_check()
+@validate('POST', ['id'])
+def delete_invite(request, params, user):
+    invite = params['id']
     if not Invite.objects.filter(id = invite, profile__managers = user).exists():
+        response = {
+            'status':'FAIL',
+            'error':'Invite_NOT_FOUND',
+            'message':'The invite doesn\'t exist.'
+        }
+        return json_response(response)
+    invite = Invite.objects.get(id = invite)
+    invite.is_deleted = True
+    invite.save()
+    response = {
+        'status': 'OK',
+        'invite': serialize_one(invite)
+    }
+    return json_response(response)
+
+@login_check()
+def preview_invite(request, invite, user):
+    if not Invite.objects.filter(id = invite, profile__managers = user, is_deleted = False).exists():
         return redirect('index:index')
     invite = Invite.objects.get(id = invite)
     return render(request, 'event/invite-preview.html', locals())
@@ -414,6 +546,38 @@ def preview_invite_template(request, invite, user):
         return redirect('index:index')
     invite = Invite.objects.get(id = invite)
     return render(request, 'event/invite-preview-template.html', locals())
+
+@login_check()
+@validate('POST', ['id'])
+def send_invite(request, params, user):
+    invite = params['id']
+    if not Invite.objects.filter(id = invite, profile__managers = user, is_deleted = False).exists():
+        response = {
+            'status':'FAIL',
+            'error':'Invite_NOT_FOUND',
+            'message':'The invite doesn\'t exist.'
+        }
+        return json_response(response)
+    invite = Invite.objects.get(id = invite)
+    recipients = []
+    sent = 0
+    duplicates = 0
+    for lt in invite.lists.all():
+        list_items = List_item.objects.filter(_list = lt)
+        for item in list_items:
+            if item.email.lower() not in recipients:
+                recipients.append(item.email.lower())
+                sent += 1
+            else:
+                duplicates += 1
+    sendEventInvite(invite, recipients)
+    response = {
+        'status':'OK',
+        'sent': sent,
+        'duplicates': duplicates,
+        'invite': serialize_one(invite)
+    }
+    return json_response(response)
 
 
 @login_check()

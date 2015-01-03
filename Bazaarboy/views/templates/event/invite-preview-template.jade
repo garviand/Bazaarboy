@@ -54,7 +54,10 @@ head
                                   tbody
                                     tr
                                       td.mcnImageContent(valign='top', style='padding-right: 9px;padding-left: 9px;padding-top: 0;padding-bottom: 0;mso-table-lspace: 0pt;mso-table-rspace: 0pt;-ms-text-size-adjust: 100%;-webkit-text-size-adjust: 100%;')
-                                        img.mcnImage(align='left', alt='', src='https://gallery.mailchimp.com/212963b019ef2c63618da4e42/images/461a99fd-11fe-4fa8-8732-0efc56a70ba3.jpg', width='564', style='max-width: 757px;padding-bottom: 0;display: inline !important;vertical-align: bottom;border: 0;outline: none;text-decoration: none;-ms-interpolation-mode: bicubic;')
+                                        {% if invite.image %}
+                                        a(href='{{ invite.event|eventUrl }}', target="_blank")
+                                          img.mcnImage(align='left', alt='', src='{{ invite.image.source.url }}', width='564', style='max-width: 757px;padding-bottom: 0;display: inline !important;vertical-align: bottom;border: 0;outline: none;text-decoration: none;-ms-interpolation-mode: bicubic;')
+                                        {% endif %}
                         table.mcnTextBlock(border='0', cellpadding='0', cellspacing='0', width='100%', style='border-collapse: collapse;mso-table-lspace: 0pt;mso-table-rspace: 0pt;-ms-text-size-adjust: 100%;-webkit-text-size-adjust: 100%;')
                           tbody.mcnTextBlockOuter
                             tr
@@ -64,8 +67,8 @@ head
                                     tr
                                       td.mcnTextContent(valign='top', style='padding-top: 9px;padding-right: 18px;padding-bottom: 9px;padding-left: 18px;mso-table-lspace: 0pt;mso-table-rspace: 0pt;-ms-text-size-adjust: 100%;-webkit-text-size-adjust: 100%;color: #606060;font-family: Helvetica;font-size: 15px;line-height: 150%;text-align: left;')
                                         h3(style="box-sizing: border-box;margin: 0.2rem 0px 0.5rem;padding: 0px;font-family: 'Helvetica Neue', Helvetica, Helvetica, Arial, sans-serif;font-weight: 300;color: #222222;text-rendering: optimizelegibility;line-height: 1.4;font-size: 1.6875rem;text-align: center;display: block;font-style: normal;letter-spacing: -.5px;")
-                                          span(style='box-sizing:border-box') {{ invite.profile.name }} Presents
-                                        h1(style="box-sizing: border-box;font-size: 2.75rem;margin: 0.2rem 0px 0.5rem;padding: 0px;font-family: 'Helvetica Neue', Helvetica, Helvetica, Arial, sans-serif;font-weight: 300;color: #222222;text-rendering: optimizelegibility;line-height: 1.4;text-align: center;display: block;font-style: normal;letter-spacing: -1px;") {{ invite.event.name }}
+                                          span(style='box-sizing:border-box') {{ invite.profile.name }} Invites You To
+                                        h1(style="box-sizing: border-box;font-size: 2.75rem;margin: 0.5rem 0px 1rem;padding: 0px;font-family: 'Helvetica Neue', Helvetica, Helvetica, Arial, sans-serif;font-weight: 300;color: #222222;text-rendering: optimizelegibility;line-height: 1.1;text-align: center;display: block;font-style: normal;letter-spacing: -1px;") {{ invite.event.name }}
                                         h4(style="box-sizing: border-box;margin: 0.2rem 0px 0.5rem;padding: 0px;font-family: 'Helvetica Neue', Helvetica, Helvetica, Arial, sans-serif;font-weight: 300;color: #222222;text-rendering: optimizelegibility;line-height: 1.4;font-size: 1.4375rem;text-align: center;display: block;font-style: normal;letter-spacing: normal;") {{ invite.event|standardDate}}
                                         div(style='text-align: center;') &nbsp;
                                         p(style="box-sizing: border-box;margin: 0px 0px 1.25rem;padding: 0px;font-family: 'Gotham SSm A', 'Gotham SSm B', sans-serif;font-size: 16px;line-height: 1.6;text-rendering: optimizelegibility;color: #4A4A4A;text-align: center;-ms-text-size-adjust: 100%;-webkit-text-size-adjust: 100%;")
@@ -82,8 +85,12 @@ head
                                             | {{ invite.details }}
                                             br
                                             br
+                                            {% if invite.profile.image %}
+                                            img.mcnImage(align='center', alt='', src='{{ invite.profile.image.source.url }}', style='max-width: 100px; max-height: 100px; padding-bottom: 0;display: inline !important;vertical-align: bottom;border: 0;outline: none;text-decoration: none;-ms-interpolation-mode: bicubic;')
                                             br
+                                            {% else %}
                                             | &nbsp;
+                                            {% endif %}
                   // // END BODY
               |                             
               tr

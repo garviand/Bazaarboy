@@ -1,0 +1,74 @@
+extends ../layout
+
+block title
+    | Invite Dashboard
+
+block sidebar
+    +sidebarItem('ss-newspaper')(href="{% url index %}")
+        | Events
+    +sidebarItem('ss-database')(href="{% url list:index %}")
+        | Lists
+    +sidebarItem('ss-share')(href="{% url user:settings %}")
+        | Settings
+
+block header
+    div.header-title.large-9.medium-10.columns.small-centered
+        div.row.clearfix
+            div.icon.left
+                span.ss-file
+            div.text.left
+                | Invitations |
+                span.sub &nbsp;{{ event.name }}
+
+block content
+    div#wrapper-invite-dashboard.large-9.medium-10.columns.small-centered
+        {% if sentInvites.count == 0 and draftInvites.count == 0 %}
+        div.empty-state-container
+            div.row
+                div.medium-5.columns
+                    &nbsp;
+                div.medium-7.columns.end.empty-state-content
+                    div.text YOU HAVEN'T CREATED INVITATIONS YET
+                    hr
+                    div.subtext Get the word out about your event!
+                    div.row
+                        div.large-6.medium-7.small-9
+                            div.new-list-btn
+                                a(href="{% url event:create-invite event.id %}").primary-btn
+                                    | <span class="plus">+</span> New Invitation
+        {% endif %}
+        div#invite-dashboard.small-12.columns
+            div.row.new-invite-container(class="{% if listsCount == 0 %}hide{% endif %}")
+                div.medium-4.columns.new-list
+                    a.new-invite-btn.primary-btn(href="{% url event:create-invite event.id %}", style="{% if sentInvites.count == 0 and draftInvites.count == 0 %}display:none;{% endif %}") + New Invitation
+            div.row
+                {% if sentInvites.count > 0 %}
+                div.small-12.columns.invitations
+                    h3.title Sent Invitations
+                    {% for invite in sentInvites %}
+                    a(href="{% url event:invite-details invite.id %}")
+                        div.row.invitation
+                            div.small-12.medium-6.columns.invitation-name
+                                | {{ invite.message|truncatechars:40 }}
+                            div.small-12.medium-3.columns.text-right.invitation-details
+                                | {{ invite.recipients }} Recipients
+                            div.small-12.medium-3.columns.text-right.invitation-details
+                                | {{ invite.total_opens }} Ope{{ invite.total_opens|pluralize:"n,ns" }}
+                    {% endfor %}
+                {% endif %}
+                {% if draftInvites.count > 0 %}
+                div.small-12.columns.invitations
+                    h3.title Invitation Drafts
+                    {% for invite in draftInvites %}
+                    div.row.invitation
+                        div.small-12.medium-6.columns.invitation-name
+                            | {{ invite.message|truncatechars:40 }}
+                        div.small-12.medium-3.columns.text-right.invitation-details
+                            a(href="{% url event:edit-invite invite.id %}") Edit Invite
+                        div.small-12.medium-3.columns.text-right.invitation-details
+                            a.delete-invite(href="javascript:;", data-id="{{ invite.id }}") Delete Invite
+                    {% endfor %}
+                {% endif %}
+
+append script
+    script(src="{{ STATIC_URL }}js/event/invite-dashboard.js")

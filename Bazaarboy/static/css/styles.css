@@ -10306,6 +10306,20 @@ div#wrapper-event-invite div#event-invite div.info div.title {
 div#wrapper-event-invite div#event-invite div.email {
   border-right: #d4d4d4 thin solid;
 }
+div#wrapper-event-invite div#event-invite div.email div.email-content a.blue-btn-inverse {
+  display: block;
+  width: 100%;
+  text-align: center;
+  margin-top: 10px;
+  margin-bottom: 10px;
+  padding: 8px 12px;
+}
+div#wrapper-event-invite div#event-invite div.email div.email-content div.image-preview {
+  text-align: center;
+}
+div#wrapper-event-invite div#event-invite div.email div.email-content div.image-preview img {
+  padding: 20px 0;
+}
 div#wrapper-event-invite div#event-invite div.email div.email-content div.content-message textarea {
   height: 150px;
   box-shadow: none;
@@ -10316,11 +10330,22 @@ div#wrapper-event-invite div#event-invite div.email div.email-content div.conten
   box-shadow: none;
   border-radius: 3px;
 }
+div#wrapper-event-invite div#event-invite div.email div.email-content .sp-replacer {
+  width: 100% !important;
+  margin-bottom: 20px !important;
+}
+div#wrapper-event-invite div#event-invite div.email div.email-content .sp-preview {
+  width: 100% !important;
+}
+div#wrapper-event-invite div#event-invite div.email div.email-content .sp-dd {
+  display: none !important;
+}
 div#wrapper-event-invite div#event-invite div.email div.email-content div.content-submit a {
   display: block;
   width: 100%;
   padding: 10px 12px;
   text-align: center;
+  margin-bottom: 20px;
 }
 div#wrapper-event-invite div#event-invite div.lists div.list {
   margin-left: 0;
@@ -10356,6 +10381,104 @@ div#wrapper-event-invite div#event-invite div.lists div.list.active {
 div#wrapper-event-invite div#event-invite div.lists div.list.active div.list-quantity {
   font-weight: 500;
 }
+div#wrapper-invite-details div#invite-details div.invitation-stats {
+  margin-top: 20px;
+}
+div#wrapper-invite-details div#invite-details div.invitations {
+  margin-top: 40px;
+}
+div#wrapper-invite-details div#invite-details div.invitations > div {
+  color: #4a4a4a;
+}
+div#wrapper-invite-details div#invite-details div.invitations div.invitation {
+  padding: 12px 5px;
+  margin-bottom: 10px;
+  border-radius: 3px;
+  border: #d4d4d4 thin solid;
+}
+div#wrapper-invite-details div#invite-details div.invitations div.invitation div.invitation-name {
+  font-size: 16px;
+  font-weight: 500;
+}
+div#wrapper-invite-details div#invite-details div.invitations div.invitation div.invitation-details {
+  font-weight: 300;
+  font-style: italic;
+  font-size: 14px;
+}
+div#wrapper-invite-dashboard div.empty-state-container {
+  margin-top: 40px;
+  border: #F6F6F6 thin solid;
+  border-radius: 4px;
+  background: url('../images/emptystates/tag_bg.jpg');
+  background-size: 80%;
+  background-position: left center;
+  background-repeat: no-repeat;
+}
+div#wrapper-invite-dashboard div.empty-state-container div.empty-state-content {
+  margin: 80px 0;
+  padding-right: 50px;
+}
+div#wrapper-invite-dashboard div.empty-state-container div.empty-state-content div.text {
+  font-size: 1.3rem;
+  font-weight: 600;
+  color: #4a4a4a;
+}
+div#wrapper-invite-dashboard div.empty-state-container div.empty-state-content hr {
+  margin: 10px 0;
+}
+div#wrapper-invite-dashboard div.empty-state-container div.empty-state-content a.primary-btn {
+  display: block;
+  width: 100%;
+  margin-top: 20px;
+  margin-left: 10px;
+  padding-top: 11px;
+  padding-bottom: 14px;
+  font-size: 15px;
+  text-transform: uppercase;
+}
+div#wrapper-invite-dashboard div.empty-state-container div.empty-state-content a.primary-btn:hover {
+  color: #FFF;
+}
+div#wrapper-invite-dashboard div#invite-dashboard {
+  margin-top: 40px;
+}
+div#wrapper-invite-dashboard div#invite-dashboard a.new-invite-btn {
+  display: block;
+  padding-top: 9px;
+  padding-bottom: 12px;
+  color: #ffffff;
+  font-size: 15px;
+  text-transform: uppercase;
+}
+div#wrapper-invite-dashboard div#invite-dashboard div.invitations {
+  margin-top: 40px;
+}
+div#wrapper-invite-dashboard div#invite-dashboard div.invitations > a {
+  color: #4a4a4a;
+}
+div#wrapper-invite-dashboard div#invite-dashboard div.invitations div.invitation {
+  padding: 12px 5px;
+  margin-bottom: 10px;
+  border-radius: 3px;
+  border: #d4d4d4 thin solid;
+}
+div#wrapper-invite-dashboard div#invite-dashboard div.invitations div.invitation:hover {
+  background: #f6f6f6;
+}
+div#wrapper-invite-dashboard div#invite-dashboard div.invitations div.invitation div.invitation-name {
+  font-size: 16px;
+  font-weight: 500;
+}
+div#wrapper-invite-dashboard div#invite-dashboard div.invitations div.invitation div.invitation-details {
+  font-weight: 300;
+  font-style: italic;
+  font-size: 14px;
+}
+div#wrapper-invite-dashboard div#invite-dashboard div.invitations div.invitation div.invitation-details a {
+  color: #4a4a4a;
+  text-decoration: underline;
+  font-style: normal;
+}
 div#wrapper-event-invite-preview div#event-invite-preview {
   padding-top: 24px;
 }
@@ -10366,6 +10489,20 @@ div#wrapper-event-invite-preview div#event-invite-preview div.email-template {
 }
 div#wrapper-event-invite-preview div#event-invite-preview div.email-template iframe {
   border: #d4d4d4 thin solid;
+}
+div#wrapper-event-invite-preview div#event-invite-preview div.email-actions {
+  width: 600px;
+  min-height: 100px;
+  margin: 0 auto;
+  padding-top: 10px;
+  padding-bottom: 20px;
+}
+div#wrapper-event-invite-preview div#event-invite-preview div.email-actions a {
+  display: block;
+  width: 100%;
+  text-align: center;
+  padding-top: 9px;
+  padding-bottom: 11px;
 }
 div#wrapper-list-dashboard div.empty-state-container {
   margin-top: 40px;

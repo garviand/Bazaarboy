@@ -1,0 +1,30 @@
+@import (reference) "vars.less";
+
+div#wrapper-invite-details{
+    div#invite-details{
+        div.invitation-stats{
+            margin-top: 20px;
+        }
+        div.invitations{
+            margin-top: 40px;
+            > div{
+                color: @dark;
+            }
+            div.invitation{
+                padding: 12px 5px;
+                margin-bottom: 10px;
+                border-radius: 3px;
+                border: @dark_grey thin solid;
+                div.invitation-name{
+                    font-size: 16px;
+                    font-weight: 500;
+                }
+                div.invitation-details{
+                    font-weight: 300;
+                    font-style: italic;
+                    font-size: 14px;
+                }
+            }
+        }
+    }
+}

@@ -1,7 +1,10 @@
 extends ../layout
 
+append head
+    link(rel="stylesheet", href="{{ STATIC_URL }}spectrum/spectrum.css")
+
 block sidebar
-    +sidebarItem('ss-newspaper')(href="javascript:;")(class="events-filter events-filter-summary selected")
+    +sidebarItem('ss-newspaper')(href="{% url index %}")
         | Events
     +sidebarItem('ss-database')(href="{% url list:index %}")
         | Lists
@@ -23,28 +26,51 @@ block content
             div.row
                 div.email.small-12.medium-6.columns
                     input(type="hidden", name="event", value="{{ event.id }}")
+                    input(type="hidden", name="invite", value="{{ invite.id }}")
+                    input(type="hidden", name="image", value="")
                     div.info
                         div.title Email Content
                     div.row.email-content
                         div.small-12.columns.content-image
                             label Email Header Image (optional)
-                                input(type="file", name="image_file")
+                                input.hide(type="file", name="image_file")
+                                a.upload-image-btn.blue-btn-inverse(href="javascript:;", style="{% if invite.image %}display:none;{% endif %}") Upload Image
+                                a.delete-image-btn.blue-btn-inverse(href="javascript:;", style="{% if not invite.image %}display:none;{% endif %}") Delete Image
+                    div.row.email-content
+                        div.small-12.columns.image-preview(class="{% if not invite.image %}hide{% endif %}")
+                            img(src="{% if invite.image %}{{ invite.image.source.url }}{% endif %}")
                     div.row.email-content
                         div.small-12.columns.content-message
                             label Message Content
-                                textarea(name="message", placeholder="Enter the description of your event here")
+                                textarea(name="message", placeholder="Enter the description of your event here") {{ invite.message }}
                     div.row.email-content
                         div.small-12.columns.content-details
                             label Details
-                                textarea(name="details", placeholder="Enter any details here (menu items, parking info, etc.)")
+                                textarea(name="details", placeholder="Enter any details here (menu items, parking info, etc.)") {{ invite.details }}
+                    div.row.email-content
+                        div.small-12.columns.content-details
+                            label RSVP Button Color
+                            input(type='color', name='colorpicker', value='{% if invite.color %}{{ invite.color }}{% else %}#FAA638{% endif %}')
                     div.row.email-content
                         div.small-12.columns.content-submit
                             a.save-invite.blue-btn(href="javascript:;") Save &amp; Preview
                 div.lists.small-12.medium-6.columns
                     div.info
                         div.title Choose Invite Lists
+                    {% if lists.count == 0 %}
+                    div.no-lists
+                        div.info
+                            | You must have at least 1 list to send an invitation.
+                            br
+                            br
+                            | Lists can be built from CSV Uploads, Previous Event Attendee Lists and Manual Entry. Try it now, it's easy!
+                            br
+                            br
+                        div.link
+                            a(href="{% url list:index %}") List Management
+                    {% endif %}
                     {% for lt in lists %}
-                    div.row.list
+                    div.row.list(data-id="{{ lt.id }}", class="{% if lt.selected %}active{% endif %}")
                         div.small-12.medium-6.columns.list-name
                             | {{ lt.name }}
                         div.small-12.medium-6.columns.list-quantity.text-right
@@ -52,4 +78,9 @@ block content
                     {% endfor %}
 
 append script
+    script(type="text/javascript", src="{{ STATIC_URL }}spectrum/spectrum.js")
+    script.
+        mediaUrl = "{{ MEDIA_URL }}"
+        {% if invite.image %}imgId = "{{ invite.image.id }}"{% endif %}
+        {% if invite %}inviteEdit = true{% else %}inviteEdit = false{% endif %}
     script(src="{{ STATIC_URL }}js/event/invite.js")
