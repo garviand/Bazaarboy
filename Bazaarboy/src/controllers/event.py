@@ -919,7 +919,7 @@ def edit(request, params, user):
             response = {
                 'status':'FAIL',
                 'error':'INVALID_SLUG',
-                'message':'The shortcut must be a combination of alphanumeric chars and hyphen.'
+                'message':'The URL shortcut must be a combination of alphanumeric characters and hyphens.'
             }
             return json_response(response)
         elif Event.objects.filter(slug = params['slug'], is_deleted = False) \
