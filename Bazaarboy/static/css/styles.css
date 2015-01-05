@@ -5652,6 +5652,7 @@ div#map-canvas img {
   color: #FFFFFF;
   font-weight: 500;
   text-shadow: 1px 1px 0px #4963E4;
+  text-align: center;
   cursor: pointer;
 }
 .blue-btn:hover,
@@ -9773,6 +9774,101 @@ div#wrapper-event-modify.full {
 div#wrapper-event-modify > div {
   padding-top: 40px;
 }
+div#event-modify-basics form.event-modify hr.end-hr {
+  border: none;
+  border-top: #4963e4 thin solid;
+  height: 0px;
+  margin-top: 50px;
+  margin-bottom: 0px;
+}
+div#event-modify-basics form.event-modify span.location-info {
+  font-size: 14px;
+  line-height: 20px;
+}
+div#event-modify-basics form.event-modify div.section-header {
+  overflow: visible !important;
+  height: 0px;
+  border-top: #4963e4 thin solid;
+  margin-top: 50px;
+  padding-bottom: 60px;
+  padding-left: 0;
+}
+div#event-modify-basics form.event-modify div.section-header div.number {
+  font-size: 24px;
+  font-weight: bold;
+  position: relative;
+  text-align: center;
+  float: left;
+  width: 60px;
+  height: 60px;
+  line-height: 60px;
+  border-radius: 30px;
+  border: #4963e4 thin solid;
+  background: #ffffff;
+  top: -30px;
+}
+div#event-modify-basics form.event-modify div.section-header div.title {
+  font-size: 18px;
+  font-weight: bold;
+  position: relative;
+  text-align: center;
+  float: left;
+  height: 60px;
+  padding-left: 15px;
+  padding-right: 15px;
+  line-height: 60px;
+  background: #ffffff;
+  top: -30px;
+  left: 62px;
+}
+div#event-modify-basics form.event-modify span.taken {
+  color: #faa638;
+  font-style: normal;
+  font-weight: bold;
+}
+div#event-modify-basics form.event-modify div.input-container {
+  border: #d4d4d4 thin solid;
+  padding: 12px;
+  border-radius: 3px;
+  margin-bottom: 20px;
+}
+div#event-modify-basics form.event-modify div.input-container.active {
+  border: #4963e4 thin solid;
+}
+div#event-modify-basics form.event-modify div.input-container.active div.input-title {
+  color: #4963e4;
+}
+div#event-modify-basics form.event-modify div.input-container div.input-title,
+div#event-modify-basics form.event-modify div.input-container div.input-note {
+  font-size: 12px;
+  cursor: pointer;
+}
+div#event-modify-basics form.event-modify div.input-container div.input-title {
+  font-weight: 600 !important;
+}
+div#event-modify-basics form.event-modify div.input-container div.input-note {
+  font-style: italic;
+}
+div#event-modify-basics form.event-modify div.input-container input,
+div#event-modify-basics form.event-modify div.input-container textarea {
+  font-weight: 300 !important;
+  margin-bottom: 0;
+  box-shadow: none;
+  padding-left: 0;
+  margin-top: 10px;
+  border: none !important;
+  outline: none !important;
+  padding: 0;
+  height: auto;
+}
+div#event-modify-basics form.event-modify div.input-container input.url-input,
+div#event-modify-basics form.event-modify div.input-container textarea.url-input {
+  padding-left: 230px !important;
+}
+div#event-modify-basics form.event-modify div.input-container input:focus,
+div#event-modify-basics form.event-modify div.input-container textarea:focus {
+  box-shadow: none !important;
+}
 div#event-modify-basics div.name {
   padding: 0;
   padding-top: 10px;
@@ -9799,16 +9895,16 @@ div#event-modify-basics div.url-shortcut {
 div#event-modify-basics div.url-shortcut div.url-prefix {
   position: absolute;
   height: 14px;
-  top: 11px;
-  left: 23px;
-  color: #000;
+  top: 36px;
+  left: 28px;
+  color: #d4d4d4;
   font-size: 14px;
   line-height: 14px;
 }
 div#event-modify-basics div.url-shortcut input {
   padding-left: 235px;
 }
-div#event-modify-basics input.primary-btn {
+div#event-modify-basics input.blue-btn {
   width: 100%;
   margin-top: 40px;
   margin-bottom: 40px;

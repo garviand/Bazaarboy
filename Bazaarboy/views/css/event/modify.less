@@ -11,6 +11,100 @@ div#wrapper-event-modify {
 }
 
 div#event-modify-basics {
+    form.event-modify{
+        hr.end-hr{
+            border: none;
+            border-top: @blue thin solid;
+            height: 0px;
+            margin-top: 50px;
+            margin-bottom: 0px;
+        }
+        span.location-info{
+            font-size: 14px;
+            line-height: 20px;
+        }
+        div.section-header{
+            overflow: visible !important;
+            height: 0px;
+            border-top: @blue thin solid;
+            margin-top: 50px;
+            padding-bottom: 60px;
+            padding-left: 0;
+            div.number{
+                font-size: 24px;
+                font-weight: bold;
+                position: relative;
+                text-align: center;
+                float: left;
+                width: 60px;
+                height: 60px;
+                line-height: 60px;
+                border-radius: 30px;
+                border: @blue thin solid;
+                background: @white;
+                top: -30px;
+            }
+            div.title{
+                font-size: 18px;
+                font-weight: bold;
+                position: relative;
+                text-align: center;
+                float: left;
+                height: 60px;
+                padding-left: 15px;
+                padding-right: 15px;
+                line-height: 60px;
+                background: @white;
+                top: -30px;
+                left: 62px;
+            }
+        }
+        span.taken{
+            color: @orange;
+            font-style: normal;
+            font-weight: bold;
+        }
+        div.input-container{
+            &.active{
+                border: @blue thin solid;
+                div.input-title{
+                    color: @blue;
+                }    
+            }
+            border: @dark_grey thin solid;
+            padding: 12px;
+            border-radius: 3px;
+            margin-bottom: 20px;
+            div.input-title, div.input-note{
+                font-size: 12px;
+                cursor: pointer;
+            }
+            div.input-title{
+                font-weight: 600 !important;
+            }
+            div.input-note{
+                font-style: italic;
+            }
+            input, textarea{
+                font-weight: 300 !important;
+                margin-bottom: 0;
+                box-shadow: none;
+                padding-left: 0;
+                margin-top: 10px;
+                border: none !important;
+                outline: none !important;
+                padding: 0;
+                height: auto;
+                &.url-input{
+                    padding-left: 230px !important;
+                }
+                &:focus{
+                    box-shadow: none !important;
+                }
+            }
+        }
+    }
+
     div.name {
         padding: 0;
         padding-top: 10px;
@@ -43,9 +137,9 @@ div#event-modify-basics {
         div.url-prefix {
             position: absolute;
             height: 14px;
-            top: 11px;
-            left: 23px;
-            color: #000;
+            top: 36px;
+            left: 28px;
+            color: @dark_grey;
             font-size: 14px;
             line-height: 14px;
         }
@@ -55,7 +149,7 @@ div#event-modify-basics {
         }
     }
 
-    input.primary-btn {
+    input.blue-btn {
         width: 100%;
         margin-top: 40px;
         margin-bottom: 40px;

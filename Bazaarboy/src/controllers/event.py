@@ -927,9 +927,9 @@ def edit(request, params, user):
             response = {
                 'status':'FAIL',
                 'error':'DUPLICATE_SLUG',
-                'message':'The shortcut has already been taken.'
+                'message':'The URL shortcut has already been taken.'
             }
-            return
+            return json_response(response)
         else:
             event.slug = params['slug']
     # Save the changes

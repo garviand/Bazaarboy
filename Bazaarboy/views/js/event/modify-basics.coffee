@@ -64,8 +64,18 @@ Bazaarboy.event.modify.basics =
                 if not autoSave
                     window.location = '/event/' + eventId + '/tickets'
             else
-                $('div#event-modify-basics div.status').html err.message
-                console.log err
+                if err.error is 'DUPLICATE_SLUG' and not autoSave
+                    $('div#event-modify-basics span.optional').addClass 'hide'
+                    $('div#event-modify-basics span.taken').removeClass 'hide'
+                    $('html, body').animate({scrollTop: $('div#event-modify-basics span.taken').offset().top - 100}, 1000);
+                    setTimeout (() ->
+                        $('div#event-modify-basics span.taken').addClass 'hide'
+                        $('div#event-modify-basics span.optional').removeClass 'hide'
+                        return
+                    ), 4000
+                else
+                    $('div#event-modify-basics div.status').html err.message
+                    console.log err
             return
         return
     autoSave: () ->
@@ -90,6 +100,15 @@ Bazaarboy.event.modify.basics =
             return
         return
     init: () ->
+        $('div.input-container').click () ->
+            $(this).find('input, textarea').focus()
+            return
+        $('div.input-container input,div.input-container textarea').focus () ->
+            $(this).closest('div.input-container').addClass 'active'
+            return
+        $('div.input-container input,div.input-container textarea').blur () ->
+            $(this).closest('div.input-container').removeClass 'active'
+            return
         # Submit Form
         $('form.event-modify').submit (e) =>
             e.preventDefault()

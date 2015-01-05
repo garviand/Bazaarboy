@@ -79,8 +79,20 @@
             window.location = '/event/' + eventId + '/tickets';
           }
         } else {
-          $('div#event-modify-basics div.status').html(err.message);
-          console.log(err);
+          if (err.error === 'DUPLICATE_SLUG' && !autoSave) {
+            $('div#event-modify-basics span.optional').addClass('hide');
+            $('div#event-modify-basics span.taken').removeClass('hide');
+            $('html, body').animate({
+              scrollTop: $('div#event-modify-basics span.taken').offset().top - 100
+            }, 1000);
+            setTimeout((function() {
+              $('div#event-modify-basics span.taken').addClass('hide');
+              $('div#event-modify-basics span.optional').removeClass('hide');
+            }), 4000);
+          } else {
+            $('div#event-modify-basics div.status').html(err.message);
+            console.log(err);
+          }
         }
       });
     },
@@ -111,6 +123,15 @@
     init: function() {
       var googleAutocomplete, initial_lat, initial_lng, mapOptions, mapStyles, map_center, originalEndTime, originalStartTime,
         _this = this;
+      $('div.input-container').click(function() {
+        $(this).find('input, textarea').focus();
+      });
+      $('div.input-container input,div.input-container textarea').focus(function() {
+        $(this).closest('div.input-container').addClass('active');
+      });
+      $('div.input-container input,div.input-container textarea').blur(function() {
+        $(this).closest('div.input-container').removeClass('active');
+      });
       $('form.event-modify').submit(function(e) {
         e.preventDefault();
         _this.saveBasics(false);

@@ -30,8 +30,6 @@ block sidebar
 block header
     div.header-title.large-9.medium-10.columns.small-centered
         div.row.clearfix
-            div.icon.left
-                span.ss-file
             div.text.left
                 | Edit Event |
                 span.sub &nbsp;Modify Basic Event Information
@@ -41,64 +39,86 @@ block content
         div#event-modify-basics.small-12.columns
             form.event-modify
                 div.row
-                    div.name.medium-2.columns 
-                        | Name
-                    div.medium-10.columns
-                        input.field(type="text", name="name", value="{{ event.name }}", placeholder="Event name")
-                    div.text.medium-10.medium-offset-2.columns
-                        p The name of your event, maximum 150 characters.
+                    div.small-12.columns.section-header
+                        div.number 1
+                        div.title Name &amp; Summary
                 div.row
-                    div.name.medium-2.columns
-                        | Summary
-                    div.medium-10.columns
-                        textarea.field(type="text", name="summary", placeholder="Short summary")
-                            {{ event.summary }}
-                    div.text.medium-10.medium-offset-2.columns
-                        p A summary of your event - it will be used for email communications. Maximum 250 characters.
-                div.row
-                    div.name.medium-2.columns
-                        | Url shortcut
-                    div.url-shortcut.medium-10.columns
-                        div.url-prefix https://www.bazaarboy.com/
-                        input.field(type="text", name="slug", value="{% if event.slug %}{{ event.slug }}{% endif %}", placeholder="my-event")
-                    div.text.medium-10.medium-offset-2.columns
-                        p 
-                            | An optional shortcut address for your event, you will be able to access your event through this url. Must be a combination of alphanumeric characters and/or hyphen. 
-                            span.taken.hide Taken.
-                div.row
-                    div.name.medium-2.columns
-                        | Start Time
-                    div.medium-5.columns
-                        input.field(type="text", name="start_date", value="{{ event.start_time|date:'m/d/Y' }}", placeholder="MM/DD/YYYY")
-                    div.medium-5.columns
-                        input.field(type="text", name="start_time", value="{{ event.start_time|date:'g:i A' }}", placeholder="ex. 6:00 PM")
-                    div.text.medium-10.medium-offset-2.columns
-                        p The start time of your event (Required)
-                div.row
-                    div.name.medium-2.columns
-                        | End Time
-                    div.medium-5.columns
-                        input.field(type="text", name="end_date", value="{{ event.end_time|date:'m/d/Y' }}", placeholder="MM/DD/YYYY")
-                    div.medium-5.columns
-                        input.field(type="text", name="end_time", value="{{ event.end_time|date:'g:i A' }}", placeholder="ex. 7:00 PM")
-                    div.text.medium-10.medium-offset-2.columns
-                        p The end time of your event (Optional, leave it blank if the event doesn't have a end time)
-                div.row
-                    div.name.medium-2.columns
-                        | Location
-                    div.medium-10.columns
-                        input.field(type="text", name="location", value="{{ event.location }}", placeholder="Event location")
-                    div.text.medium-10.medium-offset-2.columns
-                        p The location of your event. If you don't think marker position is accurate, you can also drag the marker to where you desire.
                     div.medium-10.medium-offset-2.columns
+                        div.input-container
+                            div.row
+                                div.small-4.columns.input-title Event Name
+                                div.small-8.columns.input-note.text-right Maximum 150 Characters
+                            input.field(type="text", name="name", value="{{ event.name }}", placeholder="Event Name")
+                div.row
+                    div.medium-10.medium-offset-2.columns
+                        div.input-container
+                            div.row
+                                div.small-4.columns.input-title Event Summary
+                                div.small-8.columns.input-note.text-right Maximum 250 Characters
+                            textarea.field(type="text", name="summary", placeholder="Short Summary") {{ event.summary }}
+                    div.medium-10.columns
+                div.row
+                    div.url-shortcut.medium-10.medium-offset-2.columns
+                        div.url-prefix https://www.bazaarboy.com/
+                        div.input-container
+                            div.row
+                                div.small-4.columns.input-title URL Shortcut
+                                div.small-8.columns.input-note.text-right
+                                    span.optional optional - leave blank if desired
+                                    span.taken.hide This URL is Taken
+                            input.field.url-input(type="text", name="slug", value="{% if event.slug %}{{ event.slug }}{% endif %}", placeholder="my-event")
+                div.row
+                    div.small-12.columns.section-header
+                        div.number 2
+                        div.title Duration
+                div.row
+                    div.medium-5.medium-offset-2.columns
+                        div.input-container
+                            div.row
+                                div.small-4.columns.input-title Start Date
+                                div.small-8.columns.input-note.text-right &nbsp;
+                            input.field(type="text", name="start_date", value="{{ event.start_time|date:'m/d/Y' }}", placeholder="MM/DD/YYYY")
+                    div.medium-5.columns
+                        div.input-container
+                            div.row
+                                div.small-4.columns.input-title Start Time
+                                div.small-8.columns.input-note.text-right &nbsp;
+                            input.field(type="text", name="start_time", value="{{ event.start_time|date:'g:i A' }}", placeholder="ex. 6:00 PM")
+                div.row
+                    div.medium-5.medium-offset-2.columns
+                        div.input-container
+                            div.row
+                                div.small-4.columns.input-title End Date
+                                div.small-8.columns.input-note.text-right optional
+                            input.field(type="text", name="end_date", value="{{ event.end_time|date:'m/d/Y' }}", placeholder="MM/DD/YYYY")
+                    div.medium-5.columns
+                        div.input-container
+                            div.row
+                                div.small-4.columns.input-title End Time
+                                div.small-8.columns.input-note.text-right optional
+                            input.field(type="text", name="end_time", value="{{ event.end_time|date:'g:i A' }}", placeholder="ex. 7:00 PM")
+                div.row
+                    div.small-12.columns.section-header
+                        div.number 3
+                        div.title Location
+                div.row
+                    div.medium-5.medium-offset-2.columns
+                        div.input-container
+                            div.row
+                                div.small-6.columns.input-title Event Location
+                                div.small-6.columns.input-note.text-right 
+                            input.field(type="text", name="location", value="{{ event.location }}", placeholder="Event location")
+                        span.location-info Make sure to place the marker where you think it's most accurate. You can drag the marker anywhere on the map.
+                    div.medium-5.columns
                         div#map-canvas
                     div.hide
                         div#map-canvas-hidden
+                hr.end-hr
                 div.row
-                    div.status.medium-4.text-right.columns
+                    div.status.medium-2.medium-offset-1.text-center.columns
                         | Saved
-                    div.medium-4.columns.end
-                        input.primary-btn(type="submit", value="Save and Continue")
+                    div.medium-5.columns.end
+                        input.blue-btn(type="submit", value="Save and Continue")
                 input(type="hidden", name="latitude", value="{{ event.latitude }}")
                 input(type="hidden", name="longitude", value="{{ event.longitude }}")
 
