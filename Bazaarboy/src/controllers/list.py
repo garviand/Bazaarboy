@@ -20,7 +20,7 @@ def index(request, user):
     """
     profiles = Profile.objects.filter(managers = user)
     profile = profiles[0]
-    lists = List.objects.filter(owner = profile)
+    lists = List.objects.filter(owner = profile, is_deleted = False)
     listsCount = lists.count()
     for lt in lists:
         list_items = List_item.objects.filter(_list = lt)
@@ -32,12 +32,14 @@ def list(request, lt, user):
     """
     Single List Page
     """
-    if not List.objects.filter(id = lt).exists():
+    if not List.objects.filter(id = lt, is_deleted = False).exists():
         return redirect('list:index')
     profiles = Profile.objects.filter(managers = user)
     profile = profiles[0]
     if List.objects.filter(id = lt).exists():
         lt = List.objects.get(id = lt)
+        if not Profile_manager.objects.filter(profile = lt.owner, user = user).exists():
+            return redirect('index:index')
         list_items = List_item.objects.filter(_list = lt).order_by('-id')
         pastEventList = {}
         profiles = Profile.objects.filter(managers = user)
@@ -119,7 +121,7 @@ def edit(request, params, user):
     """
     Edit a list
     """
-    if not List.objects.filter(id = params['id']).exists():
+    if not List.objects.filter(id = params['id'], is_deleted = False).exists():
         response = {
             'status':'FAIL',
             'error':'LIST_NOT_FOUND',
@@ -253,7 +255,7 @@ def add_from_event(request, params, user):
     """
     Add items from an event
     """
-    if not List.objects.filter(id = params['id']).exists():
+    if not List.objects.filter(id = params['id'], is_deleted = False).exists():
         response = {
             'status':'FAIL',
             'error':'LIST_NOT_FOUND',
@@ -342,7 +344,7 @@ def add_from_csv(request, params, user):
     """
     Add items from a csv file
     """
-    if not List.objects.filter(id = params['id']).exists():
+    if not List.objects.filter(id = params['id'], is_deleted = False).exists():
         response = {
             'status':'FAIL',
             'error':'LIST_NOT_FOUND',
@@ -398,4 +400,31 @@ def add_from_csv(request, params, user):
 @login_required()
 @validate('POST', ['id'])
 def delete(request, params, user):
-    pass
+    """
+    Delete List
+    """
+    if not List.objects.filter(id = params['id'], is_deleted = False).exists():
+        response = {
+            'status':'FAIL',
+            'error':'LIST_NOT_FOUND',
+            'message':'The list doesn\'t exist.'
+        }
+        return json_response(response)
+    lt = List.objects.get(id = params['id'])
+    profile = lt.owner
+    # Check if the user is a manager of the profile
+    if not Profile_manager.objects.filter(profile = profile, 
+                                          user = user).exists():
+        response = {
+            'status':'FAIL',
+            'error':'NOT_A_MANAGER',
+            'message':'You don\'t have permission for the list.'
+        }
+        return json_response(response)
+    lt.is_deleted = True
+    lt.save()
+    response = {
+        'status': 'OK',
+        'list': serialize_one(lt)
+    }
+    return json_response(response)

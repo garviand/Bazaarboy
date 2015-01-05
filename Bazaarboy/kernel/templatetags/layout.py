@@ -31,7 +31,7 @@ def standardTime(time):
     Output a datetime object to text in standard format
     """
     time = localize(time)
-    return time.strftime('%m/%d/%Y').lstrip('0') + ' ' + time.strftime('%I:%M%p').lstrip('0') if time is not None else ''
+    return time.strftime('%m/%d/%Y').lstrip('0') + ' @ ' + time.strftime('%I:%M%p').lstrip('0') if time is not None else ''
 
 @register.filter
 def standardDate(event):

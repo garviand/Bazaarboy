@@ -3,6 +3,29 @@
     init: function() {
       var scope;
       scope = this;
+      $("a.delete-list-btn").click(function() {
+        var list, listId;
+        list = $(this).closest("div.list");
+        listId = $(this).data("id");
+        return swal({
+          title: "Are You Sure?",
+          text: "Are you sure you want to delete this list?",
+          type: "warning",
+          showCancelButton: true,
+          confirmButtonText: "Yes, Delete",
+          closeOnConfirm: true
+        }, function() {
+          return Bazaarboy.post('lists/delete/', {
+            id: listId
+          }, function(response) {
+            if (response.status === 'OK') {
+              list.remove();
+            } else {
+              swal(response.message);
+            }
+          });
+        });
+      });
       $(".new-list-btn").click(function() {
         $("div#new-list-modal").foundation('reveal', 'open');
       });
@@ -24,7 +47,7 @@
             }
           });
         } else {
-          alert('List name can\'t be empty');
+          swal('List name can\'t be empty');
         }
       });
     }

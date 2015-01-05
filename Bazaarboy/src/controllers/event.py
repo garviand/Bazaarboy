@@ -412,7 +412,7 @@ def edit_invite(request, invite, user):
     event = invite.event
     profiles = Profile.objects.filter(managers = user)
     profile = profiles[0]
-    lists = List.objects.filter(owner = profile)
+    lists = List.objects.filter(owner = profile, is_deleted = False)
     for lt in lists:
         list_items = List_item.objects.filter(_list = lt)
         lt.items = list_items.count()
@@ -444,7 +444,7 @@ def new_invite(request, params, user):
     profiles = Profile.objects.filter(managers = user)
     profile = profiles[0]
     if List.objects.filter(id__in = [x.strip() for x in params['lists'].split(',')], owner__managers = user).exists():
-        lists = List.objects.filter(id__in = [x.strip() for x in params['lists'].split(',')], owner__managers = user)
+        lists = List.objects.filter(id__in = [x.strip() for x in params['lists'].split(',')], owner__managers = user, is_deleted = False)
     else:
         response = {
             'status':'FAIL',

@@ -376,6 +376,7 @@ class List(models.Model):
     owner = models.ForeignKey('Profile')
     name = models.CharField(max_length = 50)
     is_hidden = models.BooleanField(default = True)
+    is_deleted = models.BooleanField(default = False)
     created_time = models.DateTimeField(auto_now_add = True)
 
 class List_item(models.Model):

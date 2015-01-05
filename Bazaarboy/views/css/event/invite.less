@@ -19,7 +19,14 @@ div#wrapper-event-invite{
                 font-size: 20px;
                 color: @dark;
                 margin-bottom: 20px;
-                text-decoration: underline;
+                span{
+                    text-decoration: underline;
+                }
+                a{
+                    text-decoration: none !important;
+                    font-size: 14px;
+                    color: @blue;
+                }
             }
         }
         div.email{
@@ -111,5 +118,60 @@ div#wrapper-event-invite{
                 }
             }
         }
+    }
+}
+
+div#new-list-modal{
+    div.new-list-title{
+        h3{
+            font-weight: bold;
+            font-size: 24px;
+            color: @dark;
+        }
+    }
+    input{
+        display: block;
+        width: 100%;
+        padding: 12px 10px;
+        font-weight: 300;
+        font-size: 14px;
+        border-radius: 3px;
+        border: #D4D4D4 thin solid;
+    }
+    div.new-list-title{
+        h3{
+            span{
+                font-weight: 300;
+                font-size: 14px;
+                position: relative;
+                top: -3px;
+            }
+        }
+    }
+    div.new-list-inputs{
+        margin-top: 10px;
+        a.create-list{
+            display: block;
+            width: 100%;
+            padding-top: 11px;
+            padding-bottom: 13px;
+            &:hover, &:focus{
+                color: @white;
+            }
+        }
+
+    }
+    div.new-list-cancel{
+        margin-top: 20px;
+        a.close-list-modal{
+            color: @orange;
+            font-size: 14px;
+            font-weight: 300;
+            text-decoration: underline;
+            font-style: italic;
+        }
+    }
+    div.controls{
+        margin-top: 20px;
     }
 }

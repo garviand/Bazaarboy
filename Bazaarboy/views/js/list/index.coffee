@@ -1,6 +1,23 @@
 Bazaarboy.list.index =
     init: () ->
         scope = this
+        $("a.delete-list-btn").click () ->
+            list = $(this).closest("div.list")
+            listId = $(this).data("id")
+            swal
+                title: "Are You Sure?"
+                text: "Are you sure you want to delete this list?"
+                type: "warning"
+                showCancelButton: true
+                confirmButtonText: "Yes, Delete"
+                closeOnConfirm: true
+                , ->
+                    Bazaarboy.post 'lists/delete/', {id:listId}, (response) ->
+                        if response.status is 'OK'
+                            list.remove()
+                        else
+                            swal response.message
+                        return
         $(".new-list-btn").click () ->
             $("div#new-list-modal").foundation('reveal', 'open')
             return
@@ -16,7 +33,7 @@ Bazaarboy.list.index =
                         Bazaarboy.redirect 'lists/' + response.list.pk
                     return
             else
-                alert 'List name can\'t be empty'
+                swal 'List name can\'t be empty'
             return
         return
 

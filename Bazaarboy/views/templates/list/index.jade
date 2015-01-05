@@ -39,17 +39,21 @@ block content
         {% endif %}
         div#list-dashboard.small-12.columns
             div.row.new-list-container(class="{% if listsCount == 0 %}hide{% endif %}")
-                div.medium-3.columns.new-list
-                    a.new-list-btn.primary-btn(href="javascript:;") + New List
+                div.medium-4.columns.new-list
+                    a.new-list-btn.blue-btn(href="javascript:;") + New List
             div.row
                 div.small-12.columns.lists
                     {% for list in lists %}
-                    a(href="{% url list:list list.id %}")
+                    div
                         div.row.list
-                            div.small-8.columns.list-name
-                                | {{ list.name }}
-                            div.small-4.columns.text-right.list-members
-                                | {{ list.items }} Members
+                            div.small-6.columns.list-name
+                                | {{ list.name|truncatechars:30 }}
+                            div.small-2.columns.text-left.list-members
+                                | {{ list.items }} Membe{{ list.items|pluralize:"r,rs" }}
+                            div.small-2.columns.text-right.list-action
+                                a(href="{% url list:list list.id %}") Manage List
+                            div.small-2.columns.text-right.list-action
+                                a.delete-list-btn(href="javascript:;", data-id="{{ list.id }}") Delete List
                     {% endfor %}
     div#new-list-modal.reveal-modal.medium(data-reveal)
         div.row.new-list-title

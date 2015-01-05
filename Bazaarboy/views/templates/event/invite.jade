@@ -32,7 +32,8 @@ block content
                     input(type="hidden", name="invite", value="{{ invite.id }}")
                     input(type="hidden", name="image", value="")
                     div.info
-                        div.title Email Content
+                        div.title
+                            span Email Content
                     div.row.email-content
                         div.small-12.columns.content-image
                             label Email Header Image (optional)
@@ -59,7 +60,11 @@ block content
                             a.save-invite.blue-btn(href="javascript:;") Save &amp; Preview
                 div.lists.small-12.medium-6.columns
                     div.info
-                        div.title Choose Invite Lists
+                        div.title
+                            span Choose Invite Lists
+                            {% if not lists.count == 0 %}
+                            a.new-list-btn(href="javascript:;") &nbsp;&nbsp;(+ New List)
+                            {% endif %}
                     {% if lists.count == 0 %}
                     div.no-lists
                         div.info
@@ -70,20 +75,36 @@ block content
                             br
                             br
                         div.link
-                            a(href="{% url list:index %}") List Management
+                            a.new-list-btn(href="javascript:;") Create New List
                     {% endif %}
                     {% for lt in lists %}
+                    {% if lt.items > 0 %}
                     div.row.list(data-id="{{ lt.id }}", class="{% if lt.selected %}active{% endif %}")
                         div.small-12.medium-6.columns.list-name
                             | {{ lt.name }}
                         div.small-12.medium-6.columns.list-quantity.text-right
                             | {{ lt.items }} Members
+                    {% endif %}
                     {% endfor %}
+    div#new-list-modal.reveal-modal.medium(data-reveal)
+        div.row.new-list-title
+            div.small-12.columns
+                h3 Create List
+                    span &nbsp;&nbsp;(Note: All Unsaved Changes to Invite Will Be Lost)
+        div.row.new-list-inputs
+            div.medium-8.small-12.columns
+                input(name="list_name", placeholder="List Name (required)")
+            div.small-12.medium-4.columns
+                a.create-list.primary-btn(href="javascript:;") + Add New List
+        div.row.new-list-cancel
+            div.small-12.medium-4.medium-offset-8.columns.text-center
+                a.close-list-modal(href="javascript:;") Cancel Adding List
 
 append script
     script(type="text/javascript", src="{{ STATIC_URL }}spectrum/spectrum.js")
     script.
         mediaUrl = "{{ MEDIA_URL }}"
+        profileId = {{ profile.id }};
         {% if invite.image %}imgId = "{{ invite.image.id }}"{% endif %}
         {% if invite %}inviteEdit = true{% else %}inviteEdit = false{% endif %}
     script(src="{{ STATIC_URL }}js/event/invite.js")

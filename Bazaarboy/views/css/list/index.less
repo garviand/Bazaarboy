@@ -34,6 +34,7 @@ div#wrapper-list-dashboard{
     div#list-dashboard{
         margin-top: 40px;
         a.new-list-btn {
+            text-align: center;
             display: block;
             padding-top: 9px;
             padding-bottom: 12px;
@@ -62,6 +63,17 @@ div#wrapper-list-dashboard{
                     font-weight: 300;
                     font-style: italic;
                     font-size: 14px;
+                }
+                div.list-action{
+                    a{
+                        font-weight: 300;
+                        color: @dark;
+                        text-decoration: underline;
+                        font-size: 14px;
+                        &:hover{
+                            color: @blue;
+                        }
+                    }
                 }
             }
         }

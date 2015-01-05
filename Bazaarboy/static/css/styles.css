@@ -10308,7 +10308,14 @@ div#wrapper-event-invite div#event-invite div.info div.title {
   font-size: 20px;
   color: #4a4a4a;
   margin-bottom: 20px;
+}
+div#wrapper-event-invite div#event-invite div.info div.title span {
   text-decoration: underline;
+}
+div#wrapper-event-invite div#event-invite div.info div.title a {
+  text-decoration: none !important;
+  font-size: 14px;
+  color: #4963e4;
 }
 div#wrapper-event-invite div#event-invite div.email {
   border-right: #d4d4d4 thin solid;
@@ -10387,6 +10394,52 @@ div#wrapper-event-invite div#event-invite div.lists div.list.active {
 }
 div#wrapper-event-invite div#event-invite div.lists div.list.active div.list-quantity {
   font-weight: 500;
+}
+div#new-list-modal div.new-list-title h3 {
+  font-weight: bold;
+  font-size: 24px;
+  color: #4a4a4a;
+}
+div#new-list-modal input {
+  display: block;
+  width: 100%;
+  padding: 12px 10px;
+  font-weight: 300;
+  font-size: 14px;
+  border-radius: 3px;
+  border: #D4D4D4 thin solid;
+}
+div#new-list-modal div.new-list-title h3 span {
+  font-weight: 300;
+  font-size: 14px;
+  position: relative;
+  top: -3px;
+}
+div#new-list-modal div.new-list-inputs {
+  margin-top: 10px;
+}
+div#new-list-modal div.new-list-inputs a.create-list {
+  display: block;
+  width: 100%;
+  padding-top: 11px;
+  padding-bottom: 13px;
+}
+div#new-list-modal div.new-list-inputs a.create-list:hover,
+div#new-list-modal div.new-list-inputs a.create-list:focus {
+  color: #ffffff;
+}
+div#new-list-modal div.new-list-cancel {
+  margin-top: 20px;
+}
+div#new-list-modal div.new-list-cancel a.close-list-modal {
+  color: #faa638;
+  font-size: 14px;
+  font-weight: 300;
+  text-decoration: underline;
+  font-style: italic;
+}
+div#new-list-modal div.controls {
+  margin-top: 20px;
 }
 div#wrapper-invite-details div#invite-details div.invitation-back {
   margin-top: 20px;
@@ -10571,6 +10624,7 @@ div#wrapper-list-dashboard div#list-dashboard {
   margin-top: 40px;
 }
 div#wrapper-list-dashboard div#list-dashboard a.new-list-btn {
+  text-align: center;
   display: block;
   padding-top: 9px;
   padding-bottom: 12px;
@@ -10601,6 +10655,15 @@ div#wrapper-list-dashboard div#list-dashboard div.lists div.list div.list-member
   font-weight: 300;
   font-style: italic;
   font-size: 14px;
+}
+div#wrapper-list-dashboard div#list-dashboard div.lists div.list div.list-action a {
+  font-weight: 300;
+  color: #4a4a4a;
+  text-decoration: underline;
+  font-size: 14px;
+}
+div#wrapper-list-dashboard div#list-dashboard div.lists div.list div.list-action a:hover {
+  color: #4963e4;
 }
 div#new-list-modal div.new-list-title h3 {
   font-weight: bold;
