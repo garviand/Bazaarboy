@@ -59,7 +59,7 @@ def INVITE_COST(sent, isNonProfit=False):
     Calculate the invite cost (in cents)
     """
     cost = 0
-    if sent > 0:
+    if sent > 100:
         cost = 500 # $5
     if sent > 500:
         cost = 1000 # $10
