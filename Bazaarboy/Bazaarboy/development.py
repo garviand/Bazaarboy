@@ -15,3 +15,5 @@ STATICFILES_STORAGE = 'src.s3utils.StaticS3BotoStorage'
 
 S3_URL = 'https://%s.s3.amazonaws.com' % AWS_STORAGE_BUCKET_NAME
 MEDIA_URL = S3_URL + '/media/'
+
+INVITATION_PREFIX = 'dev'

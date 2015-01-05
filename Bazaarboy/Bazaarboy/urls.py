@@ -24,6 +24,7 @@ payment_urlpatterns = patterns('src.controllers.payment',
     url(r'^connect/$', 'connect', name = 'connect'),
     url(r'^charge/$', 'charge', name = 'charge'),
     url(r'^refund/$', 'refund', name = 'refund'),
+    url(r'^charge/invite/$', 'charge_invite', name = 'charge-invite'),
 )
 
 profile_urlpatterns = patterns('src.controllers.profile', 

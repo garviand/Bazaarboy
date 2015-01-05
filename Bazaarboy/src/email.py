@@ -149,9 +149,9 @@ def sendEventInvite(invite, recipients):
             'track_opens':True,
             'attachments':attachments,
             'metadata':{
-                'invite_id':invite.id,
-                'invite_event_id':invite.event.id,
-                'profile_id':invite.profile.id
+                'invite_id':settings.INVITATION_PREFIX + '-' + str(invite.id),
+                'invite_event_id':settings.INVITATION_PREFIX + '-' + str(invite.event.id),
+                'profile_id':settings.INVITATION_PREFIX + '-' + str(invite.profile.id)
             }
         }
         result = client.messages.send_template(template_name = template, 

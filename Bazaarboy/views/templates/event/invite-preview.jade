@@ -31,6 +31,10 @@ block content
                             a.blue-btn.send-email(href="javascript:;", data-id="{{ invite.id }}") Send Email
                         div.small-12.medium-6.columns
                             a.blue-btn-inverse(href="{% url event:edit-invite invite.id %}") Edit Email
+                    div.email-pricing
+                        div.small-12.columns
+                            | Cost - {% if cost == 0 %}Free{% else %}${{ cost }}{% endif %}&nbsp;
+                            a(href="javascript:;", data-reveal-id="pricing-modal") (Pricing)
             div.row
                 hr
                 div.email-stats-container.small-12.columns(style="padding-left: 0;")
@@ -44,6 +48,28 @@ block content
                             | {{ alreadyInvited }} Previously Invited
                         div.small-12.medium-6.columns
                             | {{ unsubscribes }} Unsubscribed
+    div#pricing-modal.reveal-modal.medium(data-reveal)
+        div.row
+            div.small-12.medium-6.columns
+                ul.pricing-table
+                    li.title For-profit Pricing
+                    li.price Invites
+                    li.bullet-item 1-100 : Free
+                    li.bullet-item 101-500 : $5
+                    li.bullet-item 501-1000 : $10
+                    li.bullet-item 1001-2000 : $15
+                    li.bullet-item 2001-10000 : $20
+                    li.bullet-item 10001+ : $25
+            div.small-12.medium-6.columns
+                ul.pricing-table
+                    li.title Non-profit Pricing
+                    li.price Invites
+                    li.bullet-item 1-100 : Free
+                    li.bullet-item 101-500 : $3.75
+                    li.bullet-item 501-1000 : $7.50
+                    li.bullet-item 1001-2000 : $11.25
+                    li.bullet-item 2001-10000 : $15
+                    li.bullet-item 10001+ : $18.75
 
 
 append script
@@ -56,4 +82,6 @@ append script
             iFrameID.height = iFrameID.contentWindow.document.body.scrollHeight + "px";
           }
         }
+    script(type="text/javascript", src="https://checkout.stripe.com/v2/checkout.js")
+    script(type="text/javascript", src="https://js.stripe.com/v2/")
     script(src="{{ STATIC_URL }}js/event/invite-preview.js")

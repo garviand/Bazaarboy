@@ -20,7 +20,7 @@ block sidebar
             input(type="text", name="guest_code", placeholder="Confirmation #")
         div.guest-add-invite.show-for-large-only
             a.start-guest-add(href="javascript:;") Manually Add a Guest
-            a.start-guest-invite(href="javascript:;") Invite Guests
+            a(href="{% url event:invite event.id %}") Invite Guests
             a.raffle-btn(href="javascript:;") Generate Random Raffle
         div.ticket-filters-container.show-for-large-only
             label Filter Tickets

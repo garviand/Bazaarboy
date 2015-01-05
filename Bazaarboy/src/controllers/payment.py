@@ -199,3 +199,42 @@ def refund(request, params, user):
             'purchase': serialize_one(purchase)
         }
         return json_response(response)
+
+@login_check()
+@validate('POST', ['invite', 'stripe_token', 'amount'])
+def charge_invite(request, params, user):
+    """
+    Charge for invitation
+    """
+    if not Invite.objects.filter(id = params['invite']).exists():
+        response = {
+            'status':'FAIL',
+            'error':'INVITE_NOT_FOUND',
+            'message':'The invitation doesn\'t exist.'
+        }
+        return json_response(response)
+    invite = Invite.objects.get(id = params['invite'])
+    try:
+        charge = stripe.Charge.create(
+            amount = params['amount'],
+            currency = STRIPE_CURRENCY,
+            card = params['stripe_token'],
+            description = 'Invitations for ' + invite.event.name,
+            api_key = STRIPE_SECRET_KEY
+        )
+    except stripe.CardError, e:
+        response = {
+            'status':'FAIL',
+            'error':'CARD_DECLINED',
+            'message':'The card is declined.'
+        }
+        return json_response(response)
+    else:
+        invite.paid = True
+        invite.price = params['amount']
+        invite.save()
+        response = {
+            'status':'OK',
+            'invite': serialize_one(invite)
+        }
+        return json_response(response)

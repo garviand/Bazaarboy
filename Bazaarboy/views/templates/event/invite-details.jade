@@ -41,7 +41,7 @@ block content
             div.row
                 div.small-12.columns.invitations
                     h3.title Recipient List
-                    {% if results.count == 0 %}
+                    {% if results|length == 0 %}
                     div
                         div.row.invitation
                             div.small-12
@@ -57,7 +57,6 @@ block content
                             div.small-12.medium-3.columns.text-right.invitation-details
                                 | {{ invite.clicks }} Clic{{ invite.clicks|pluralize:"k,ks" }}
                     {% endfor %}
-
 
 append script
     script(src="{{ STATIC_URL }}js/event/invite-details.js")

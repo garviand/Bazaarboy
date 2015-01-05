@@ -361,7 +361,7 @@ def invite(request, event, user):
     for invt in sentInvites:
         opens = 0
         totalOpens = 0
-        result = client.messages.search(query='u_invite_id:' + str(invt.id))
+        result = client.messages.search(query='u_invite_id:'  + settings.INVITATION_PREFIX + '-' + str(invt.id))
         for email in result:
             opens += email['opens']
             if email['opens'] > 0:
@@ -377,7 +377,7 @@ def invite_details(request, invite, user):
         return redirect('index')
     invt = Invite.objects.get(id = invite)
     client = Mandrill(MANDRILL_API_KEY)
-    results = client.messages.search(query='u_invite_id:' + str(invt.id))
+    results = client.messages.search(query='u_invite_id:' + settings.INVITATION_PREFIX + '-' + str(invt.id))
     totalOpens = 0
     totalClicks = 0
     for email in results:
@@ -536,7 +536,7 @@ def delete_invite(request, params, user):
 @login_check()
 def preview_invite(request, invite, user):
     if not Invite.objects.filter(id = invite, profile__managers = user, is_deleted = False).exists():
-        return redirect('index:index')
+        return redirect('index')
     invite = Invite.objects.get(id = invite)
     recipients = []
     sent = 0
@@ -545,7 +545,7 @@ def preview_invite(request, invite, user):
     alreadyInvited = 0
     invitedList = []
     client = Mandrill(MANDRILL_API_KEY)
-    results = client.messages.search(query='u_invite_event_id:' + str(invite.event.id))
+    results = client.messages.search(query='u_invite_event_id:' + settings.INVITATION_PREFIX + '-' + str(invite.event.id))
     for result in results:
         invitedList.append(result['email'].lower())
     for lt in invite.lists.all():
@@ -562,6 +562,7 @@ def preview_invite(request, invite, user):
                     duplicates += 1
             else:
                 unsubscribes += 1
+    cost = INVITE_COST(sent) / 100
     return render(request, 'event/invite-preview.html', locals())
 
 @login_check()
@@ -590,7 +591,7 @@ def send_invite(request, params, user):
     alreadyInvited = 0
     invitedList = []
     client = Mandrill(MANDRILL_API_KEY)
-    results = client.messages.search(query='u_invite_event_id:' + str(invite.event.id))
+    results = client.messages.search(query='u_invite_event_id:' + settings.INVITATION_PREFIX + '-' + str(invite.event.id))
     for result in results:
         invitedList.append(result['email'].lower())
     for lt in invite.lists.all():
@@ -614,7 +615,17 @@ def send_invite(request, params, user):
             'message': 'The message will not have any recipients, please use another list.'
         }
         return json_response(response)
-    sendEventInvite(invite, recipients)
+    if invite.paid == True or INVITE_COST(sent) == 0:
+        sendEventInvite(invite, recipients)
+    else:
+        response = {
+            'status':'PAYMENT',
+            'cost':INVITE_COST(sent),
+            'sent':sent,
+            'publishable_key':STRIPE_PUBLISHABLE_KEY,
+            'invite':serialize_one(invite)
+        }
+        return json_response(response)
     response = {
         'status':'OK',
         'sent': sent,

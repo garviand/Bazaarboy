@@ -259,6 +259,8 @@ class Invite(models.Model):
     details = models.CharField(max_length = 1000, null = True, default = None)
     salutation = models.CharField(max_length = 100, null = True, default = None)
     salutation_name = models.CharField(max_length = 100, null = True, default = None)
+    paid = models.BooleanField(default = False)
+    price = models.IntegerField(default = 0)
     is_sent = models.BooleanField(default = False)
     sent_at = models.DateTimeField(null = True, default = None)
     recipients = models.IntegerField(null = True, default = None)

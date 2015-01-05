@@ -10507,7 +10507,6 @@ div#wrapper-event-invite-preview div#event-invite-preview div.email-actions {
   width: 600px;
   margin: 0 auto;
   padding-top: 10px;
-  padding-bottom: 20px;
 }
 div#wrapper-event-invite-preview div#event-invite-preview div.email-actions a {
   display: block;
@@ -10515,6 +10514,18 @@ div#wrapper-event-invite-preview div#event-invite-preview div.email-actions a {
   text-align: center;
   padding-top: 9px;
   padding-bottom: 11px;
+}
+div#wrapper-event-invite-preview div#event-invite-preview div.email-pricing {
+  font-size: 14px;
+  width: 600px;
+  margin: 0 auto;
+  padding-top: 60px;
+  padding-bottom: 0px;
+}
+div#wrapper-event-invite-preview div#event-invite-preview div.email-pricing a {
+  color: #4963e4;
+  display: inline;
+  text-align: left;
 }
 div#wrapper-event-invite-preview div#event-invite-preview div.email-stats-container {
   padding-bottom: 40px;

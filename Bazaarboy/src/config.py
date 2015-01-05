@@ -28,6 +28,7 @@ GOOGLE_MAPS_KEY = 'AIzaSyAasW6vqPCn18g6UMaFWV90qGMSo6pErwo'
 
 STRIPE_CLIENT_ID = os.getenv('STRIPE_CLIENT_ID', 'ca_2Zvu0dHwuN2dHPaiYc1bwqNRbPfvNwMX')
 STRIPE_SECRET_KEY = os.getenv('STRIPE_SECRET_KEY', 'sk_test_zjWJjkoeZ06r91JDpSWgK80s')
+STRIPE_PUBLISHABLE_KEY = os.getenv('STRIPE_PUBLISHABLE_KEY', 'pk_test_RSGy6UzqReE1KaD0WhVfIKYK')
 STRIPE_SCOPE = os.getenv('STRIPE_SCOPE', 'read_write')
 STRIPE_OAUTH_ROOT = 'https://connect.stripe.com/oauth/'
 STRIPE_CONNECT_URL = STRIPE_OAUTH_ROOT + 'authorize'
@@ -52,6 +53,25 @@ def STRIPE_TRANSACTION(amount, isNonProfit=False):
     total = min(a, b)
     fee = (1 - 0.029) * total - 30 - amount
     return int(round(total)), int(round(fee))
+
+def INVITE_COST(sent, isNonProfit=False):
+    """
+    Calculate the invite cost (in cents)
+    """
+    cost = 0
+    if sent > 0:
+        cost = 500 # $5
+    if sent > 500:
+        cost = 1000 # $10
+    if sent > 1000:
+        cost = 1500 # $15
+    if sent > 2000:
+        cost = 2000 # $20
+    if sent > 10000:
+        cost = 2500 # $25
+    if isNonProfit:
+        cost = cost * .75
+    return int(round(cost))
 
 # Mandrill
 
