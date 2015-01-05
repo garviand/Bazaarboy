@@ -406,7 +406,7 @@ def create_invite(request, event, user):
 
 @login_check()
 def edit_invite(request, invite, user):
-    if not Invite.objects.filter(id = invite, profile__managers = user, is_deleted = False).exists():
+    if not Invite.objects.filter(id = invite, profile__managers = user, is_deleted = False, is_sent = False).exists():
         return redirect('index')
     invite = Invite.objects.get(id = invite)
     event = invite.event
@@ -535,7 +535,7 @@ def delete_invite(request, params, user):
 
 @login_check()
 def preview_invite(request, invite, user):
-    if not Invite.objects.filter(id = invite, profile__managers = user, is_deleted = False).exists():
+    if not Invite.objects.filter(id = invite, profile__managers = user, is_deleted = False, is_sent = False).exists():
         return redirect('index')
     invite = Invite.objects.get(id = invite)
     recipients = []
@@ -576,7 +576,7 @@ def preview_invite_template(request, invite, user):
 @validate('POST', ['id'])
 def send_invite(request, params, user):
     invite = params['id']
-    if not Invite.objects.filter(id = invite, profile__managers = user, is_deleted = False).exists():
+    if not Invite.objects.filter(id = invite, profile__managers = user, is_deleted = False, is_sent = False).exists():
         response = {
             'status':'FAIL',
             'error':'Invite_NOT_FOUND',
