@@ -518,14 +518,6 @@ Bazaarboy.event.index =
             $('form.upload_cover a.upload_cover_btn').click () ->
                 $('form.upload_cover input[name=image_file]').click()
                 return
-            $('form.upload_cover a.edit_cover_btn').click () ->
-                scope.aviary.launch
-                    image: 'cover-image'
-                    url: $("#cover-image").attr('src')
-                    cropPresets: ['1000x400']
-                    cropPresetsStrict: true
-                    forceCropPreset: ['Cover Image Size','10:4']
-                return
             $('form.upload_cover a.delete_cover_btn').click () ->
                 if confirm 'Are you sure you want to delete your cover image?'
                     Bazaarboy.post 'event/edit/', 
@@ -535,7 +527,6 @@ Bazaarboy.event.index =
                         if response.status is 'OK'
                             $('img#cover-image').attr 'src', ''
                             $('form.upload_cover a.delete_cover_btn').addClass 'hidden'
-                            $('form.upload_cover a.edit_cover_btn').addClass 'hidden'
                             $('form.upload_cover a.upload_cover_btn').removeClass 'hidden'
                             $('div#event-hero').addClass 'hide'
                         else
@@ -550,17 +541,18 @@ Bazaarboy.event.index =
                 enableCORS: true
                 onSave: (imageId, imageUrl) =>
                     $("img#cover-image").attr 'src', imageUrl
-                    $('div#event-hero').css('background-image', 'url(' + imageUrl + ')')
-                    $('div#event-hero').removeClass 'hide'
                     @aviary.close();
-                    $('form.upload_cover a.delete_cover_btn').removeClass 'hidden'
-                    $('form.upload_cover a.edit_cover_btn').removeClass 'hidden'
-                    $('form.upload_cover a.upload_cover_btn').addClass 'hidden'
+                    $('form.upload_cover a.upload_cover_btn').html 'Saving...'
                     Bazaarboy.post 'file/aviary/', 
                         event: eventId,
                         url: imageUrl
                     , (response) ->
+                        $('form.upload_cover a.upload_cover_btn').addClass 'hidden'
+                        $('form.upload_cover a.upload_cover_btn').html 'Upload Cover Image'
+                        $('form.upload_cover a.delete_cover_btn').removeClass 'hidden'
                         $('img#cover-image').attr 'src', response.image
+                        $('div#event-hero').css('background-image', 'url(' + imageUrl + ')')
+                        $('div#event-hero').removeClass 'hide'
                         return
                     return
             $('form.upload_cover input[name=image_file]').fileupload

@@ -615,15 +615,6 @@
         $('form.upload_cover a.upload_cover_btn').click(function() {
           $('form.upload_cover input[name=image_file]').click();
         });
-        $('form.upload_cover a.edit_cover_btn').click(function() {
-          scope.aviary.launch({
-            image: 'cover-image',
-            url: $("#cover-image").attr('src'),
-            cropPresets: ['1000x400'],
-            cropPresetsStrict: true,
-            forceCropPreset: ['Cover Image Size', '10:4']
-          });
-        });
         $('form.upload_cover a.delete_cover_btn').click(function() {
           if (confirm('Are you sure you want to delete your cover image?')) {
             Bazaarboy.post('event/edit/', {
@@ -633,7 +624,6 @@
               if (response.status === 'OK') {
                 $('img#cover-image').attr('src', '');
                 $('form.upload_cover a.delete_cover_btn').addClass('hidden');
-                $('form.upload_cover a.edit_cover_btn').addClass('hidden');
                 $('form.upload_cover a.upload_cover_btn').removeClass('hidden');
                 $('div#event-hero').addClass('hide');
               } else {
@@ -651,17 +641,18 @@
           enableCORS: true,
           onSave: function(imageId, imageUrl) {
             $("img#cover-image").attr('src', imageUrl);
-            $('div#event-hero').css('background-image', 'url(' + imageUrl + ')');
-            $('div#event-hero').removeClass('hide');
             _this.aviary.close();
-            $('form.upload_cover a.delete_cover_btn').removeClass('hidden');
-            $('form.upload_cover a.edit_cover_btn').removeClass('hidden');
-            $('form.upload_cover a.upload_cover_btn').addClass('hidden');
+            $('form.upload_cover a.upload_cover_btn').html('Saving...');
             Bazaarboy.post('file/aviary/', {
               event: eventId,
               url: imageUrl
             }, function(response) {
+              $('form.upload_cover a.upload_cover_btn').addClass('hidden');
+              $('form.upload_cover a.upload_cover_btn').html('Upload Cover Image');
+              $('form.upload_cover a.delete_cover_btn').removeClass('hidden');
               $('img#cover-image').attr('src', response.image);
+              $('div#event-hero').css('background-image', 'url(' + imageUrl + ')');
+              $('div#event-hero').removeClass('hide');
             });
           }
         });
