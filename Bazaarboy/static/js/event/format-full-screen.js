@@ -42,7 +42,6 @@
         }
       };
       this.ticketMenu = new this.DropDown($('#dd'));
-      $(document).click(function() {});
       $("form.hero-ticket-form button[type=submit], .tix-type").click(function(e) {
         var ticketId,
           _this = this;

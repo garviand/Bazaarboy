@@ -5594,6 +5594,10 @@ div#map-canvas img {
   text-align: center;
   cursor: pointer;
 }
+.primary-btn:hover,
+.primary-btn:focus {
+  color: #FFFFFF;
+}
 .secondary-btn {
   border: 1px solid #00BD84;
   border-radius: 4px;
@@ -5671,7 +5675,8 @@ div#map-canvas img {
   text-align: center;
   cursor: pointer;
 }
-.blue-btn-inverse:hover {
+.blue-btn-inverse:hover,
+.blue-btn-inverse:focus {
   color: #879BFF;
 }
 .grey-btn {
@@ -5690,6 +5695,10 @@ div#map-canvas img {
   font-weight: 500;
   text-align: center;
   cursor: pointer;
+}
+.grey-btn:hover,
+.grey-btn:focus {
+  color: #FFFFFF;
 }
 textarea {
   resize: none;
@@ -8436,6 +8445,155 @@ div#event {
   padding-top: 66px;
   background: #F6F6F6;
 }
+#event-hero {
+  height: 400px;
+  position: relative;
+  background-size: cover;
+  background-position: center center;
+}
+#event-hero .gradient-overlay {
+  position: absolute;
+  bottom: 0;
+  width: 100%;
+  display: block;
+  height: 200px;
+  background-image: -o-linear-gradient(-90deg, rgba(0, 0, 0, 0) 0%, rgba(0, 0, 0, 0.5) 100%);
+  background-image: -moz-linear-gradient(-90deg, rgba(0, 0, 0, 0) 0%, rgba(0, 0, 0, 0.5) 100%);
+  background-image: -ms-linear-gradient(-90deg, rgba(0, 0, 0, 0) 0%, rgba(0, 0, 0, 0.5) 100%);
+  background-image: linear-gradient(-180deg, rgba(0, 0, 0, 0) 0%, rgba(0, 0, 0, 0.5) 100%);
+}
+@media only screen and (max-width: 40em) {
+  #event-hero .event-hero-rsvp {
+    height: 280px !important;
+  }
+}
+#event-hero .event-hero-rsvp {
+  position: absolute;
+  width: 100%;
+  bottom: 0px;
+  height: 200px;
+  display: block;
+}
+#event-hero .event-hero-rsvp .organizer-logo {
+  width: 92px;
+  height: 92px;
+  margin: auto auto 24px;
+  display: block;
+  border-radius: 50%;
+  background-color: white;
+  box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.5);
+  padding: 10px;
+  overflow: hidden;
+}
+#event-hero .event-hero-rsvp form {
+  margin: auto;
+  float: none;
+}
+#event-hero .event-hero-rsvp form .wrapper-dropdown {
+  height: 44px;
+  border-radius: 8px;
+  box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.5);
+  font-weight: 500!important;
+  /* Size and position */
+  position: relative;
+  /* Enable absolute positioning for children and pseudo elements */
+  z-index: 4;
+  width: 100%;
+  margin: 0 auto;
+  /* Styles */
+  background: #FFFFFF;
+  outline: none;
+  cursor: pointer;
+  /* Font settings */
+  font-weight: bold;
+}
+#event-hero .event-hero-rsvp form .wrapper-dropdown > span {
+  display: block;
+  padding-left: 1em;
+  line-height: 44px;
+  height: 44px;
+  overflow: hidden;
+}
+#event-hero .event-hero-rsvp form .wrapper-dropdown .dropdown {
+  border-radius: 8px;
+  box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.5);
+  /* Size & position */
+  margin-left: 0;
+  margin-bottom: 0;
+  position: absolute;
+  top: 125%;
+  left: 0;
+  /* Size */
+  right: 0;
+  /* Size */
+  /* Styles */
+  background: #fff;
+  font-weight: normal;
+  /* Overwrites previous font-weight: bold; */
+  /* Hiding */
+  opacity: 0;
+  pointer-events: none;
+  list-style: none;
+}
+#event-hero .event-hero-rsvp form .wrapper-dropdown .dropdown li a {
+  border-radius: 8px;
+  display: block;
+  text-decoration: none;
+  color: #3c3c3c;
+  padding: 10px 20px;
+}
+#event-hero .event-hero-rsvp form .wrapper-dropdown .dropdown li:hover a {
+  background: #f6f6f6;
+}
+#event-hero .event-hero-rsvp form .wrapper-dropdown.active .dropdown {
+  opacity: 1;
+  pointer-events: auto;
+}
+#event-hero .event-hero-rsvp form .wrapper-dropdown.active:after {
+  border-width: 6px 6px 0 6px;
+  margin-top: -3px;
+}
+#event-hero .event-hero-rsvp form .wrapper-dropdown:after {
+  content: "";
+  width: 0;
+  height: 0;
+  position: absolute;
+  right: 16px;
+  top: 50%;
+  margin-top: -6px;
+  border-width: 6px 0 6px 6px;
+  border-style: solid;
+}
+#event-hero .event-hero-rsvp form .tix-type,
+#event-hero .event-hero-rsvp form .tix-quantity,
+#event-hero .event-hero-rsvp form button {
+  width: 100%;
+  height: 44px;
+  border-radius: 8px;
+  box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.5);
+  font-weight: 500!important;
+  cursor: pointer;
+}
+#event-hero .event-hero-rsvp form .tix-type {
+  padding-left: 1em;
+  line-height: 44px;
+}
+#event-hero .event-hero-rsvp form .tix-type,
+#event-hero .event-hero-rsvp form .tix-quantity {
+  border-radius: 3px;
+  background: #FFFFFF;
+  display: inline-block;
+}
+#event-hero .event-hero-rsvp form button {
+  border-radius: 3px;
+  padding: 0;
+  font-family: "Gotham SSm A", "Gotham SSm B", sans-serif;
+}
+@media only screen and (max-width: 40em) {
+  #event-hero .event-hero-rsvp form div.hero-rsvp-button {
+    margin-top: 20px;
+  }
+}
 div#confirmation-modal {
   margin-left: -25%;
   width: 50%;
@@ -8932,6 +9090,22 @@ div#event-body {
   margin-bottom: 48px;
   padding-bottom: 40px;
   background: #ffffff;
+  border-radius: 3px;
+  overflow: hidden;
+  box-shadow: 0px 0px 4px rgba(0, 0, 0, 0.25);
+}
+div#event-body div#event-image-upload {
+  border-right: #f6f6f6 thin solid;
+  padding-top: 10px;
+}
+div#event-body div#event-image-upload form.upload_cover a {
+  display: block;
+  width: 100%;
+  padding-top: 9px;
+  padding-bottom: 11px;
+}
+div#event-body div#event-image-upload form.upload_cover a.hidden {
+  display: none !important;
 }
 div#event-body div#event-content {
   padding-right: 2rem;
@@ -9613,160 +9787,6 @@ a#tickets-confirm {
 }
 a#tickets-confirm:hover {
   color: #ffffff;
-}
-#event-body {
-  border-radius: 3px;
-  overflow: hidden;
-  box-shadow: 0px 0px 4px rgba(0, 0, 0, 0.25);
-}
-#event-hero {
-  height: 400px;
-  position: relative;
-  background-size: cover;
-  background-position: center center;
-}
-#event-hero .gradient-overlay {
-  position: absolute;
-  bottom: 0;
-  width: 100%;
-  display: block;
-  height: 200px;
-  background-image: -o-linear-gradient(-90deg, rgba(0, 0, 0, 0) 0%, rgba(0, 0, 0, 0.5) 100%);
-  background-image: -moz-linear-gradient(-90deg, rgba(0, 0, 0, 0) 0%, rgba(0, 0, 0, 0.5) 100%);
-  background-image: -ms-linear-gradient(-90deg, rgba(0, 0, 0, 0) 0%, rgba(0, 0, 0, 0.5) 100%);
-  background-image: linear-gradient(-180deg, rgba(0, 0, 0, 0) 0%, rgba(0, 0, 0, 0.5) 100%);
-}
-@media only screen and (max-width: 40em) {
-  #event-hero .event-hero-rsvp {
-    height: 280px !important;
-  }
-}
-#event-hero .event-hero-rsvp {
-  position: absolute;
-  width: 100%;
-  bottom: 0px;
-  height: 200px;
-  display: block;
-}
-#event-hero .event-hero-rsvp .organizer-logo {
-  width: 92px;
-  height: 92px;
-  margin: auto auto 24px;
-  display: block;
-  border-radius: 50%;
-  background-color: white;
-  box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.5);
-  padding: 10px;
-  overflow: hidden;
-}
-#event-hero .event-hero-rsvp form {
-  margin: auto;
-  float: none;
-}
-#event-hero .event-hero-rsvp form .wrapper-dropdown {
-  height: 44px;
-  border-radius: 8px;
-  box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.5);
-  font-weight: 500!important;
-  /* Size and position */
-  position: relative;
-  /* Enable absolute positioning for children and pseudo elements */
-  z-index: 4;
-  width: 100%;
-  margin: 0 auto;
-  /* Styles */
-  background: #FFFFFF;
-  outline: none;
-  cursor: pointer;
-  /* Font settings */
-  font-weight: bold;
-}
-#event-hero .event-hero-rsvp form .wrapper-dropdown > span {
-  display: block;
-  padding-left: 1em;
-  line-height: 44px;
-  height: 44px;
-  overflow: hidden;
-}
-#event-hero .event-hero-rsvp form .wrapper-dropdown .dropdown {
-  border-radius: 8px;
-  box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.5);
-  /* Size & position */
-  margin-left: 0;
-  margin-bottom: 0;
-  position: absolute;
-  top: 125%;
-  left: 0;
-  /* Size */
-  right: 0;
-  /* Size */
-  /* Styles */
-  background: #fff;
-  font-weight: normal;
-  /* Overwrites previous font-weight: bold; */
-  /* Hiding */
-  opacity: 0;
-  pointer-events: none;
-  list-style: none;
-}
-#event-hero .event-hero-rsvp form .wrapper-dropdown .dropdown li a {
-  border-radius: 8px;
-  display: block;
-  text-decoration: none;
-  color: #3c3c3c;
-  padding: 10px 20px;
-}
-#event-hero .event-hero-rsvp form .wrapper-dropdown .dropdown li:hover a {
-  background: #f6f6f6;
-}
-#event-hero .event-hero-rsvp form .wrapper-dropdown.active .dropdown {
-  opacity: 1;
-  pointer-events: auto;
-}
-#event-hero .event-hero-rsvp form .wrapper-dropdown.active:after {
-  border-width: 6px 6px 0 6px;
-  margin-top: -3px;
-}
-#event-hero .event-hero-rsvp form .wrapper-dropdown:after {
-  content: "";
-  width: 0;
-  height: 0;
-  position: absolute;
-  right: 16px;
-  top: 50%;
-  margin-top: -6px;
-  border-width: 6px 0 6px 6px;
-  border-style: solid;
-}
-#event-hero .event-hero-rsvp form .tix-type,
-#event-hero .event-hero-rsvp form .tix-quantity,
-#event-hero .event-hero-rsvp form button {
-  width: 100%;
-  height: 44px;
-  border-radius: 8px;
-  box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.5);
-  font-weight: 500!important;
-  cursor: pointer;
-}
-#event-hero .event-hero-rsvp form .tix-type {
-  padding-left: 1em;
-  line-height: 44px;
-}
-#event-hero .event-hero-rsvp form .tix-type,
-#event-hero .event-hero-rsvp form .tix-quantity {
-  border-radius: 3px;
-  background: #FFFFFF;
-  display: inline-block;
-}
-#event-hero .event-hero-rsvp form button {
-  border-radius: 3px;
-  padding: 0;
-  font-family: "Gotham SSm A", "Gotham SSm B", sans-serif;
-}
-@media only screen and (max-width: 40em) {
-  #event-hero .event-hero-rsvp form div.hero-rsvp-button {
-    margin-top: 20px;
-  }
 }
 div#wrapper-event-modify.full {
   width: 100%;

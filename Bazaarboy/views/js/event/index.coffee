@@ -8,6 +8,16 @@ Bazaarboy.event.index =
     emailSending: false
     requiresAddress: false
     currentCheckout: 'HI'
+    ticketMenu: undefined
+    ticketId: undefined
+    DropDown: (el) ->
+        this.dd = el
+        this.placeholder = this.dd.children('span')
+        this.opts = this.dd.find('ul.dropdown > li')
+        this.val = ''
+        this.index = -1
+        this.ticket = undefined
+        this.initEvents()
     saveDescription: () ->
         scope = this
         description = $('div#event-description div.description div.inner').redactor('get')
@@ -253,6 +263,45 @@ Bazaarboy.event.index =
                 $('div#confirmation-modal').foundation('reveal', 'open')
                 return
         $(window).hashchange()
+        if $('.tix-type').length == 1
+            scope.ticketId = $('.tix-type').data('id')
+        @DropDown:: =
+            initEvents: ->
+                obj = this
+                obj.dd.on "click", (event) ->
+                    $(this).toggleClass "active"
+                    false
+                    return
+                obj.opts.on "click", ->
+                    opt = $(this)
+                    obj.val = opt.text()
+                    obj.index = opt.index()
+                    obj.placeholder.text obj.val
+                    scope.ticketId = opt.find('a').data('id')
+                    return
+                return
+            getValue: ->
+                @val
+                return
+            getIndex: ->
+                @index
+                return
+        @ticketMenu = new @DropDown($('#dd'))
+        $("form.hero-ticket-form button[type=submit], .tix-type").click (e) ->
+            e.preventDefault()
+            ticketId = scope.ticketId
+            if not $("div#tickets div.ticket[data-id=" + ticketId + "]").hasClass('active')
+                $("div#tickets div.ticket[data-id=" + ticketId + "] div.ticket-top").click()
+            if not Bazaarboy.event.index.overlayAnimationInProgress
+                $("html, body").animate({ scrollTop: 0 }, "fast")
+                if $('div#wrapper-overlay').hasClass('hide')
+                    Bazaarboy.event.index.overlayAnimationInProgress = true
+                    $('div#wrapper-overlay').css('opacity', 0).removeClass('hide')
+                    $('div#tickets').css('opacity', 0).removeClass('hide')
+                    $('div#wrapper-overlay').animate {opacity: 1}, 300
+                    $('div#tickets').animate {opacity: 1}, 300, () =>
+                        Bazaarboy.event.index.overlayAnimationInProgress = false
+                        return
         $('div.custom-option-group div.custom-option').click () ->
             $(this).parents('div.custom-option-group').find('div.custom-option').removeClass 'active'
             $(this).addClass 'active'
@@ -466,15 +515,18 @@ Bazaarboy.event.index =
                 return
             scope.redactorContent = $('div#event-description div.description div.inner').redactor('get')
             # Cover image
-            $('div#event-cover form.upload_cover a.upload_cover_btn').click () ->
-                $('div#event-cover form.upload_cover input[name=image_file]').click()
+            $('form.upload_cover a.upload_cover_btn').click () ->
+                $('form.upload_cover input[name=image_file]').click()
                 return
-            $('div#event-cover form.upload_cover a.edit_cover_btn').click () ->
+            $('form.upload_cover a.edit_cover_btn').click () ->
                 scope.aviary.launch
                     image: 'cover-image'
                     url: $("#cover-image").attr('src')
+                    cropPresets: ['1000x400']
+                    cropPresetsStrict: true
+                    forceCropPreset: ['Cover Image Size','10:4']
                 return
-            $('div#event-cover form.upload_cover a.delete_cover_btn').click () ->
+            $('form.upload_cover a.delete_cover_btn').click () ->
                 if confirm 'Are you sure you want to delete your cover image?'
                     Bazaarboy.post 'event/edit/', 
                         id: eventId,
@@ -482,9 +534,10 @@ Bazaarboy.event.index =
                     , (response) ->
                         if response.status is 'OK'
                             $('img#cover-image').attr 'src', ''
-                            $('div#event-cover form.upload_cover a.delete_cover_btn').addClass 'hidden'
-                            $('div#event-cover form.upload_cover a.edit_cover_btn').addClass 'hidden'
-                            $('div#event-cover form.upload_cover a.upload_cover_btn').removeClass 'hidden'
+                            $('form.upload_cover a.delete_cover_btn').addClass 'hidden'
+                            $('form.upload_cover a.edit_cover_btn').addClass 'hidden'
+                            $('form.upload_cover a.upload_cover_btn').removeClass 'hidden'
+                            $('div#event-hero').addClass 'hide'
                         else
                             alert response.message
                         return
@@ -496,11 +549,13 @@ Bazaarboy.event.index =
                 apiVersion: 3
                 enableCORS: true
                 onSave: (imageId, imageUrl) =>
-                    $("img##{imageId}").attr 'src', imageUrl
+                    $("img#cover-image").attr 'src', imageUrl
+                    $('div#event-hero').css('background-image', 'url(' + imageUrl + ')')
+                    $('div#event-hero').removeClass 'hide'
                     @aviary.close();
-                    $('div#event-cover form.upload_cover a.delete_cover_btn').removeClass 'hidden'
-                    $('div#event-cover form.upload_cover a.edit_cover_btn').removeClass 'hidden'
-                    $('div#event-cover form.upload_cover a.upload_cover_btn').addClass 'hidden'
+                    $('form.upload_cover a.delete_cover_btn').removeClass 'hidden'
+                    $('form.upload_cover a.edit_cover_btn').removeClass 'hidden'
+                    $('form.upload_cover a.upload_cover_btn').addClass 'hidden'
                     Bazaarboy.post 'file/aviary/', 
                         event: eventId,
                         url: imageUrl
@@ -508,7 +563,7 @@ Bazaarboy.event.index =
                         $('img#cover-image').attr 'src', response.image
                         return
                     return
-            $('div#event-cover form.upload_cover input[name=image_file]').fileupload
+            $('form.upload_cover input[name=image_file]').fileupload
                 url: rootUrl + 'file/image/upload/'
                 type: 'POST'
                 add: (event, data) =>
@@ -517,11 +572,13 @@ Bazaarboy.event.index =
                 done: (event, data) =>
                     response = jQuery.parseJSON data.result
                     if response.status is 'OK'
-                        $('img#cover-image-placeholder').attr 'src', mediaUrl + response.image.source
                         $('img#cover-image').attr 'src', mediaUrl + response.image.source
                         @aviary.launch
-                            image: 'cover-image-placeholder'
+                            image: 'cover-image'
                             url: mediaUrl + response.image.source
+                            cropPresets: ['1000x400']
+                            cropPresetsStrict: true
+                            forceCropPreset: ['Cover Image Size','10:4']
                     else
                         alert response.message
                     return

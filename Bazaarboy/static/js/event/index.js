@@ -9,6 +9,17 @@
     emailSending: false,
     requiresAddress: false,
     currentCheckout: 'HI',
+    ticketMenu: void 0,
+    ticketId: void 0,
+    DropDown: function(el) {
+      this.dd = el;
+      this.placeholder = this.dd.children('span');
+      this.opts = this.dd.find('ul.dropdown > li');
+      this.val = '';
+      this.index = -1;
+      this.ticket = void 0;
+      return this.initEvents();
+    },
     saveDescription: function() {
       var description, scope;
       scope = this;
@@ -322,6 +333,61 @@
         }
       });
       $(window).hashchange();
+      if ($('.tix-type').length === 1) {
+        scope.ticketId = $('.tix-type').data('id');
+      }
+      this.DropDown.prototype = {
+        initEvents: function() {
+          var obj;
+          obj = this;
+          obj.dd.on("click", function(event) {
+            $(this).toggleClass("active");
+            false;
+          });
+          obj.opts.on("click", function() {
+            var opt;
+            opt = $(this);
+            obj.val = opt.text();
+            obj.index = opt.index();
+            obj.placeholder.text(obj.val);
+            scope.ticketId = opt.find('a').data('id');
+          });
+        },
+        getValue: function() {
+          this.val;
+        },
+        getIndex: function() {
+          this.index;
+        }
+      };
+      this.ticketMenu = new this.DropDown($('#dd'));
+      $("form.hero-ticket-form button[type=submit], .tix-type").click(function(e) {
+        var ticketId,
+          _this = this;
+        e.preventDefault();
+        ticketId = scope.ticketId;
+        if (!$("div#tickets div.ticket[data-id=" + ticketId + "]").hasClass('active')) {
+          $("div#tickets div.ticket[data-id=" + ticketId + "] div.ticket-top").click();
+        }
+        if (!Bazaarboy.event.index.overlayAnimationInProgress) {
+          $("html, body").animate({
+            scrollTop: 0
+          }, "fast");
+          if ($('div#wrapper-overlay').hasClass('hide')) {
+            Bazaarboy.event.index.overlayAnimationInProgress = true;
+            $('div#wrapper-overlay').css('opacity', 0).removeClass('hide');
+            $('div#tickets').css('opacity', 0).removeClass('hide');
+            $('div#wrapper-overlay').animate({
+              opacity: 1
+            }, 300);
+            return $('div#tickets').animate({
+              opacity: 1
+            }, 300, function() {
+              Bazaarboy.event.index.overlayAnimationInProgress = false;
+            });
+          }
+        }
+      });
       $('div.custom-option-group div.custom-option').click(function() {
         $(this).parents('div.custom-option-group').find('div.custom-option').removeClass('active');
         $(this).addClass('active');
@@ -546,16 +612,19 @@
           $('div.save-status').html('Unsaved Changes');
         });
         scope.redactorContent = $('div#event-description div.description div.inner').redactor('get');
-        $('div#event-cover form.upload_cover a.upload_cover_btn').click(function() {
-          $('div#event-cover form.upload_cover input[name=image_file]').click();
+        $('form.upload_cover a.upload_cover_btn').click(function() {
+          $('form.upload_cover input[name=image_file]').click();
         });
-        $('div#event-cover form.upload_cover a.edit_cover_btn').click(function() {
+        $('form.upload_cover a.edit_cover_btn').click(function() {
           scope.aviary.launch({
             image: 'cover-image',
-            url: $("#cover-image").attr('src')
+            url: $("#cover-image").attr('src'),
+            cropPresets: ['1000x400'],
+            cropPresetsStrict: true,
+            forceCropPreset: ['Cover Image Size', '10:4']
           });
         });
-        $('div#event-cover form.upload_cover a.delete_cover_btn').click(function() {
+        $('form.upload_cover a.delete_cover_btn').click(function() {
           if (confirm('Are you sure you want to delete your cover image?')) {
             Bazaarboy.post('event/edit/', {
               id: eventId,
@@ -563,9 +632,10 @@
             }, function(response) {
               if (response.status === 'OK') {
                 $('img#cover-image').attr('src', '');
-                $('div#event-cover form.upload_cover a.delete_cover_btn').addClass('hidden');
-                $('div#event-cover form.upload_cover a.edit_cover_btn').addClass('hidden');
-                $('div#event-cover form.upload_cover a.upload_cover_btn').removeClass('hidden');
+                $('form.upload_cover a.delete_cover_btn').addClass('hidden');
+                $('form.upload_cover a.edit_cover_btn').addClass('hidden');
+                $('form.upload_cover a.upload_cover_btn').removeClass('hidden');
+                $('div#event-hero').addClass('hide');
               } else {
                 alert(response.message);
               }
@@ -580,11 +650,13 @@
           apiVersion: 3,
           enableCORS: true,
           onSave: function(imageId, imageUrl) {
-            $("img#" + imageId).attr('src', imageUrl);
+            $("img#cover-image").attr('src', imageUrl);
+            $('div#event-hero').css('background-image', 'url(' + imageUrl + ')');
+            $('div#event-hero').removeClass('hide');
             _this.aviary.close();
-            $('div#event-cover form.upload_cover a.delete_cover_btn').removeClass('hidden');
-            $('div#event-cover form.upload_cover a.edit_cover_btn').removeClass('hidden');
-            $('div#event-cover form.upload_cover a.upload_cover_btn').addClass('hidden');
+            $('form.upload_cover a.delete_cover_btn').removeClass('hidden');
+            $('form.upload_cover a.edit_cover_btn').removeClass('hidden');
+            $('form.upload_cover a.upload_cover_btn').addClass('hidden');
             Bazaarboy.post('file/aviary/', {
               event: eventId,
               url: imageUrl
@@ -593,7 +665,7 @@
             });
           }
         });
-        $('div#event-cover form.upload_cover input[name=image_file]').fileupload({
+        $('form.upload_cover input[name=image_file]').fileupload({
           url: rootUrl + 'file/image/upload/',
           type: 'POST',
           add: function(event, data) {
@@ -603,11 +675,13 @@
             var response;
             response = jQuery.parseJSON(data.result);
             if (response.status === 'OK') {
-              $('img#cover-image-placeholder').attr('src', mediaUrl + response.image.source);
               $('img#cover-image').attr('src', mediaUrl + response.image.source);
               _this.aviary.launch({
-                image: 'cover-image-placeholder',
-                url: mediaUrl + response.image.source
+                image: 'cover-image',
+                url: mediaUrl + response.image.source,
+                cropPresets: ['1000x400'],
+                cropPresetsStrict: true,
+                forceCropPreset: ['Cover Image Size', '10:4']
               });
             } else {
               alert(response.message);
