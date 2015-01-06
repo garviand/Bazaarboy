@@ -394,6 +394,7 @@ class Unsubscribe(models.Model):
     Unsubscribe from Invites and Follow-Ups
     """
     email = models.CharField(max_length = 100)
+    profile = models.ForeignKey('Profile', null = True, default = None)
     created_time = models.DateTimeField(auto_now_add = True)
 
 class Image(models.Model):

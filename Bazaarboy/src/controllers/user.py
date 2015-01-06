@@ -19,26 +19,32 @@ from src.email import sendConfirmationEmail, sendResetRequestEmail
 from src.regex import REGEX_EMAIL, REGEX_NAME
 from src.serializer import serialize_one
 
-@validate('GET', ['key', 'email'])
+import pdb
+
+@validate('GET', ['key', 'email'], ['profile'])
 def unsubscribe(request, params):
     """
     Unsubscribe from Invites and Follow-Ups
     """
     check_key = hashlib.sha512(params['email'] + UNSUBSCRIBE_SALT).hexdigest()
-    if params['key'] == check_key:
-        if not Unsubscribe.objects.filter(email = params['email']).exists():
-            unsubscribe = Unsubscribe(email = params['email'])
-            unsubscribe.save()
-        response = {
-            'status': 'OK',
-            'email': params['email']
-        }
-        return render(request, 'user/unsubscribe.html', locals())
+    if params['profile']:
+        profileCheck = params['profile']
     else:
-        response = {
-            'status': 'FAIL',
-            'error': 'KEY_DOESNT_MATCH'
-        }
+        profileCheck = 0
+    if params['key'] == check_key:
+        if not Unsubscribe.objects.filter(Q(email = params['email']), Q(profile__id = profileCheck) | Q(profile__isnull = True)).exists():
+            unsubscribe = Unsubscribe(email = params['email'])
+            if params['profile'] is not None and Profile.objects.filter(id = params['profile']).exists():
+                profile = Profile.objects.get(id = params['profile'])
+                unsubscribe.profile = profile
+            unsubscribe.save()
+            message = 'You have succesfully unsubscribed. You will still receive confirmation emails if you RSVP for an event.'
+            return render(request, 'user/unsubscribe.html', locals())
+        else:
+            message = 'You have already unsubscribed from this email.'
+            return render(request, 'user/unsubscribe.html', locals())
+    else:
+        message = 'The email you are using cannot be verified, please contact us at build@bazaarboy.com.'
         return render(request, 'user/unsubscribe.html', locals())
 
 @login_check()

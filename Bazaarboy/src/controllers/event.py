@@ -551,7 +551,7 @@ def preview_invite(request, invite, user):
     for lt in invite.lists.all():
         list_items = List_item.objects.filter(_list = lt)
         for item in list_items:
-            if not Unsubscribe.objects.filter(email = item.email).exists():
+            if not Unsubscribe.objects.filter(Q(email = item.email), Q(profile = invite.profile) | Q(profile__isnull = True)).exists():
                 if item.email.lower() not in recipients:
                     if item.email.lower() not in invitedList:
                         recipients.append(item.email.lower())
@@ -597,7 +597,7 @@ def send_invite(request, params, user):
     for lt in invite.lists.all():
         list_items = List_item.objects.filter(_list = lt)
         for item in list_items:
-            if not Unsubscribe.objects.filter(email = item.email).exists():
+            if not Unsubscribe.objects.filter(Q(email = item.email), Q(profile = invite.profile) | Q(profile__isnull = True)).exists():
                 if item.email.lower() not in recipients:
                     if item.email.lower() not in invitedList:
                         recipients.append(item.email.lower())

@@ -94,6 +94,10 @@ def sendEventInvite(invite, recipients):
             'content': invite.profile.name
         },
         {
+            'name':'profile_id', 
+            'content': invite.profile.id
+        },
+        {
             'name':'header_image', 
             'content': headerImageHtml
         },
