@@ -27,12 +27,12 @@ block body
                     div.ticket.row(class="{% if forloop.last %}last{% endif %} {% if ticket|validateTiming %}valid{% else %}invalid{% endif %} {% if ticket.quantity == 0 %}soldout{% endif %}", data-id="{{ ticket.id }}", data-price="{{ ticket.price }}", data-address="{% if ticket.request_address %}yes{% endif %}")
                         div.small-12.columns
                             div.ticket-top.row
-                                div.small-4.columns.container
+                                div.small-4.medium-3.large-2.columns.container
                                     div.ticket-price
                                         div.check
                                             div.check-inner
                                         div.price {% if ticket.price == 0 %}Free{% else %}${{ ticket.price|floatformat:"-2" }}{% endif %}
-                                div.small-8.columns.container
+                                div.small-8.medium-9.large-10.columns.container
                                     div.ticket-name {{ ticket.name }}
                             {% if not ticket|validateTiming %}
                             div.ticket-top.row
@@ -40,16 +40,16 @@ block body
                                     | {{ ticket|ticketSaleTiming }}
                             {% endif %}
                             div.ticket-middle.row
-                                div.small-4.columns.container
+                                div.small-4.medium-3.large-2.columns.container
                                     div.info-label Quantity
-                                div.small-8.columns.container
+                                div.small-8.medium-9.large-10.columns.container
                                     input.ticket-quantity(type="text", name="quantity", value="0")
                             {% for field_name, field_options in ticket.custom_fields.items %}
                             div.ticket-middle.row
-                                div.small-4.columns.container
+                                div.small-4.medium-3.large-2.columns.container
                                     div.info-label {{ field_name }}
                                 {% if field_options|length == 0 %}
-                                div.small-8.columns.container.custom-field-group(data-field="{{ field_name }}")
+                                div.small-8.medium-9.large-10.columns.container.custom-field-group(data-field="{{ field_name }}")
                                     div.small-12.columns.custom-field-container
                                         input.custom-field-input(href="javascript:;", type="text", data-option="{{ option }}")
                                 {% else %}
@@ -134,6 +134,34 @@ block body
                 span.plural s
             div.small-12.medium-4.columns
                 a#tickets-confirm.primary-btn(href="javascript:;") Confirm RSVP
+    div#confirmation.hide
+        div.row
+            div.small-12.text-center.columns.confirmation-title
+                | Confirmation - Thank You!
+        div.row
+            div.medium-5.small-12.columns.organizers.text-left
+                div.row
+                    div.medium-12.title.columns
+                        | Organizer{{ organizers|length|pluralize }}
+                {% for organizer in organizers %}
+                div.row.organizer
+                    div.organizer-icon(style="{% if organizer.profile.image %}background-image:url({{ organizer.profile.image.source.url }});{% endif %}")
+                    div.organizer-name
+                        span {{ organizer.profile.name }}
+                {% endfor %}
+            div.medium-7.small-12.columns.tickets
+                div.row
+                    div.medium-12.title.columns.small-only-text-center
+                        | Your Tickets
+                div.ticket-model.hidden
+                    div.ticket.row
+                        div.medium-4.small-12.columns.small-only-text-center
+                            div.quantity x0
+                        div.medium-8.small-12.columns.small-only-text-center
+                            div.name Ticket Name
+        div.row
+            div.confirmation-note
+                | A confirmation email will be sent with RSVP details and a PDF ticket attachment
 
 append script
     script(type="text/javascript", src="https://checkout.stripe.com/v2/checkout.js")

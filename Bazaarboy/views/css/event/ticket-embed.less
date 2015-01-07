@@ -94,7 +94,9 @@ div#tickets-embed {
                                 float: left;
                                 font-size: 22px;
                                 font-weight: 600;
-
+                                @media @media_small{
+                                    font-size: 18px;
+                                }
                             }
                         }
                         div.ticket-name{
@@ -332,5 +334,98 @@ div#tickets-embed {
         &:hover{
             color: @white;
         }
+    }
+}
+
+div#confirmation{
+    padding: 20px;
+    border: @grey thin solid;
+    border-radius: 4px;
+    width: 100%;
+    max-width: 800px;
+    margin: 0 auto;
+    div.confirmation-title{
+        font-size: 18px;
+        font-weight: 600;
+        text-transform: uppercase;
+        margin-bottom: 40px;
+    }
+    div.organizers{
+        margin-bottom: 20px;
+        div.title{
+            padding-left: 0;
+            font-size: 14px;
+            font-weight: 500;
+            margin-bottom: 20px;
+        }
+        div.organizer {
+            position: relative;
+            width: 100%;
+            height: 40px;
+            padding: 5px 0;
+
+            div.organizer-icon {
+                position: absolute;
+                top: 5px;
+                left: 0;
+                width: 30px;
+                height: 30px;
+                border-radius: 4px;
+                background: @white;
+                background-size: cover;
+                background-position: center;
+            }
+
+            div.organizer-name {
+                display: table;
+                width: 100%;
+                height: 30px;
+                padding-left: 40px;
+                font-size: 16px;
+                line-height: 18px;
+
+                span {
+                    display: table-cell;
+                    vertical-align: middle;
+                }
+            }
+        }
+    }
+    div.tickets{
+        div.title{
+            font-size: 14px;
+            font-weight: 500;
+            margin-bottom: 20px;
+        }
+
+        div.ticket {
+            width: 100%;
+            border-top: 1px solid darken(@grey, 10%);
+            padding: 20px 0;
+
+            div.quantity {
+                width: 40px;
+                height: 40px;
+                padding: 13px 0;
+                border-radius: 4px;
+                background: #4963E4;
+                color: #FFFFFF;
+                font-size: 14px;
+                font-weight: 600;
+                text-align: center;
+            }
+
+            div.name {
+                margin-top: 10px;
+                font-size: 14px;
+                line-height: 18px;
+                font-weight: 700;
+            }
+        }
+    }
+    div.confirmation-note{
+        margin-top: 10px;
+        font-size: 12px;
+        line-height: 1.5em;
     }
 }

@@ -190,14 +190,14 @@
       scope = this;
       if (!this.overlayAnimationInProgress) {
         this.overlayAnimationInProgress = true;
-        $('div#confirmation-modal div.ticket').hide();
-        ticketHTML = $('div#confirmation-modal div.ticket-model').html();
+        $('div#confirmation div.ticket').hide();
+        ticketHTML = $('div#confirmation div.ticket-model').html();
         for (k in tickets) {
           ticket = tickets[k];
           newTicket = $(ticketHTML);
           newTicket.find('div.quantity').html('x' + ticket['quantity']);
           newTicket.find('div.name').html(ticket['name']);
-          $('div#confirmation-modal').find('div.tickets').append(newTicket);
+          $('div#confirmation').find('div.tickets').append(newTicket);
           newTicket.show();
         }
         $('div#wrapper-overlay').animate({
@@ -224,7 +224,8 @@
         $('input[name=city]').val('');
         $('input[name=zip]').val('');
         $('input.ticket-selected').prop('checked', false);
-        $('div#confirmation-modal').foundation('reveal', 'open');
+        $('div#tickets-embed').addClass('hide');
+        $('div#confirmation').removeClass('hide');
       }
     },
     init: function() {

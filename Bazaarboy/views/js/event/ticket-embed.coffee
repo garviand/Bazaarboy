@@ -149,13 +149,13 @@ Bazaarboy.event.ticket_embed =
         scope = this
         if not @overlayAnimationInProgress
             @overlayAnimationInProgress = true
-            $('div#confirmation-modal div.ticket').hide()
-            ticketHTML = $('div#confirmation-modal div.ticket-model').html()
+            $('div#confirmation div.ticket').hide()
+            ticketHTML = $('div#confirmation div.ticket-model').html()
             for k, ticket of tickets
                 newTicket = $(ticketHTML)
                 newTicket.find('div.quantity').html('x'+ticket['quantity'])
                 newTicket.find('div.name').html(ticket['name'])
-                $('div#confirmation-modal').find('div.tickets').append(newTicket)
+                $('div#confirmation').find('div.tickets').append(newTicket)
                 newTicket.show()
             $('div#wrapper-overlay').animate {opacity: 0}, 300, () ->
                 $(this).addClass('hide')
@@ -177,7 +177,8 @@ Bazaarboy.event.ticket_embed =
             $('input[name=city]').val('')
             $('input[name=zip]').val('')
             $('input.ticket-selected').prop('checked', false)
-            $('div#confirmation-modal').foundation('reveal', 'open')
+            $('div#tickets-embed').addClass 'hide'
+            $('div#confirmation').removeClass 'hide'
         return
     init: () ->
         scope = this
