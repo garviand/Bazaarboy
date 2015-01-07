@@ -1143,330 +1143,330 @@ div#tickets {
     border: @grey thin solid;
     border-radius: 4px;
     background: @white;
-}
 
-div#tickets-header {
-    width: 100%;
-    padding: 25px 0;
-    font-size: 14px;
-    font-weight: 600;
-    text-align: center;
-    text-transform: uppercase;
-}
-
-div#tickets-body {
-    width: 100%;
-    div#tickets-canvas{
-        padding-left: 0.9375rem;
-        padding-right: 0.9375rem;
-        div.ticket{
-            border: #D7D7D7 thin solid;
-            border-radius: 4px;
-            margin-bottom: 10px;
-            &.active{
-                div.ticket-top{
-                    background: #FEC84D !important;
-                    div.check{
-                        div.check-inner{
-                            display: block !important;
-                        }
-                    }
-                }
-            }
-            &.hover, &.active{
-                border: @orange thin solid;
-                div.ticket-top{
-                    background: #FFF4DB;
-                    cursor: pointer;
-                    div.check{
-                        border: @orange thin solid !important;
-                    }
-                }
-                div.ticket-bottom{
-                    border-top: @orange thin solid;
-                }
-            }
-            div.ticket-top{
-                background: @grey;
-                border-top-left-radius: 4px;
-                border-top-right-radius: 4px;
-                div.timing-container{
-                    border-top: #D7D7D7 thin solid;
-                    font-weight: bold;
-                    font-size: 12px;
-                    padding-top: 15px;
-                    padding-bottom: 15px;
-                    &.underline{
-                        text-decoration: underline;
-                    }
-                }
-                div.container{
-                    min-height: 60px;
-                    padding: 10px 0;
-                    div.ticket-price{
-                        padding-left: 0.9375rem;
-                        div.check{
-                            float: left;
-                            position: absolute;
-                            top: 50%;
-                            -webkit-transform: translateY(-50%);
-                            -ms-transform: translateY(-50%);
-                            transform: translateY(-50%);
-                            height: 20px;
-                            width: 20px;
-                            background: @white;
-                            border: #D7D7D7 thin solid;
-                            border-radius: 2px;
-                            div.check-inner{
-                                background: @orange;
-                                display: none;
-                                margin: 2px;
-                                border-radius: 2px;
-                                height: 14px;
-                                width: 14px;
-                            }
-                        }
-                        div.price{
-                            padding-left: 30px;
-                            float: left;
-                            font-size: 22px;
-                            font-weight: 600;
-
-                        }
-                    }
-                    div.ticket-name{
-                        font-weight: 600;
-                        font-size: 15px;
-                        line-height: 1.1rem;
-                    }
-                    div.ticket-price, div.ticket-name{
-                        position: absolute;
-                        top: 50%;
-                        -webkit-transform: translateY(-50%);
-                        -ms-transform: translateY(-50%);
-                        transform: translateY(-50%);
-                    }
-                }
-            }
-            div.ticket-middle{
-                display: none;
-                background: #FFF4DB;
-                div.custom-option-group{
-                    margin-top: 13px;
-                    font-size: 13px;
-                    div.title{
-                        padding: 10px;
-                        border-bottom: #D7D7D7 thin solid; 
-                    }
-                    margin-bottom: 20px;
-                    padding: 0 !important;
-                    padding-bottom: 0 !important;
-                    background: @white;
-                    border: #D7D7D7 thin solid;
-                    border-radius: 3px;
-                }
-                div.container{
-                    min-height: 60px;
-                    padding: 10px 0;
-                    padding-bottom: 20px;
-                    div.info-label{
-                        position: absolute;
-                        top: 50%;
-                        -webkit-transform: translateY(-50%);
-                        -ms-transform: translateY(-50%);
-                        transform: translateY(-50%);
-                        font-size: 13px;
-                        font-weight: 600;
-                        padding-left: 0.9375rem;
-                    }
-                    input.ticket-quantity{
-                        border: @orange thin solid;
-                        padding: 0;
-                        display: block;
-                        margin-bottom: 0;
-                        width: 30px;
-                        height: 25px;
-                        position: absolute;
-                        top: 50%;
-                        -webkit-transform: translateY(-50%);
-                        -ms-transform: translateY(-50%);
-                        transform: translateY(-50%);
-                        text-align: center;
-                        border-radius: 4px;
-                        font-weight: 300;
-                        box-shadow: none;
-                        transition: none;
-                    }
-                    div.custom-field-container{
-                        font-size: 13px;
-                        padding-left: 0;
-                        input{
-                            font-size: 13px;
-                            outline: none;
-                            border: #D7D7D7 thin solid;
-                            border-radius: 3px;
-                            box-shadow: none;
-                        }
-                    }
-
-                    div.custom-option{
-                        cursor: pointer;
-                        padding: 7px 0;
-                        padding-left: 0;
-                        color: @dark;
-                        &.active{
-                            text-decoration: underline;
-                        }
-                        &:hover{
-                            font-weight: bold;
-                            div.radio{
-                                border-color: @orange;
-                            }
-                        }
-                        &.active{
-                            font-weight: bold;
-                            div.radio{
-                                border-color: @orange;
-                                div.radio-inner{
-                                    background: @orange;
-                                }
-                            }
-                        }
-                        div.radio{
-                            padding: 1px;
-                            width: 16px;
-                            height: 16px;
-                            border: #D7D7D7 thin solid;
-                            border-radius: 8px;
-                            background: @white;
-                            margin: 0 auto;
-                            div.radio-inner{
-                                width: 12px;
-                                height: 12px;
-                                border-radius: 6px;
-                                background: @white;
-                            }
-                        }
-                        div.option-text{
-                            padding-left: 0;
-                            position: relative;
-                            top: 2px;
-                        }
-                    }
-                }
-            }
-            div.ticket-bottom{
-                border-top: #D7D7D7 thin solid;
-                font-size: 12px;
-                div.ticket-description-container{
-                    padding: 10px 0;
-                    padding-left: 0.9375rem;
-                    padding-right: 0.9375rem;
-                    min-height: 60px;
-                    div.ticket-sold-out{
-                        font-weight: bold;
-                    }
-                }
-                div.ticket-description{
-                    position: absolute;
-                    top: 50%;
-                    -webkit-transform: translateY(-50%);
-                    -ms-transform: translateY(-50%);
-                    transform: translateY(-50%);
-                    line-height: 1.1rem;
-                }
-            }
-        }
-    }
-}
-
-div#tickets-details {
-    width: 100%;
-    div.title{
+    div#tickets-header {
         width: 100%;
-        padding: 20px 0;
+        padding: 25px 0;
         font-size: 14px;
         font-weight: 600;
         text-align: center;
         text-transform: uppercase;
     }
-    input{
-        border-radius: 4px;
-        font-weight: 300;
-        box-shadow: none;
-        transition: none;
-    }
 
-    hr{
-        margin-top: 4px;
-    }
+    div#tickets-body {
+        width: 100%;
+        div#tickets-canvas{
+            padding-left: 0.9375rem;
+            padding-right: 0.9375rem;
+            div.ticket{
+                border: #D7D7D7 thin solid;
+                border-radius: 4px;
+                margin-bottom: 10px;
+                &.active{
+                    div.ticket-top{
+                        background: #FEC84D !important;
+                        div.check{
+                            div.check-inner{
+                                display: block !important;
+                            }
+                        }
+                    }
+                }
+                &.hover, &.active{
+                    border: @orange thin solid;
+                    div.ticket-top{
+                        background: #FFF4DB;
+                        cursor: pointer;
+                        div.check{
+                            border: @orange thin solid !important;
+                        }
+                    }
+                    div.ticket-bottom{
+                        border-top: @orange thin solid;
+                    }
+                }
+                div.ticket-top{
+                    background: @grey;
+                    border-top-left-radius: 4px;
+                    border-top-right-radius: 4px;
+                    div.timing-container{
+                        border-top: #D7D7D7 thin solid;
+                        font-weight: bold;
+                        font-size: 12px;
+                        padding-top: 15px;
+                        padding-bottom: 15px;
+                        &.underline{
+                            text-decoration: underline;
+                        }
+                    }
+                    div.container{
+                        min-height: 60px;
+                        padding: 10px 0;
+                        div.ticket-price{
+                            padding-left: 0.9375rem;
+                            div.check{
+                                float: left;
+                                position: absolute;
+                                top: 50%;
+                                -webkit-transform: translateY(-50%);
+                                -ms-transform: translateY(-50%);
+                                transform: translateY(-50%);
+                                height: 20px;
+                                width: 20px;
+                                background: @white;
+                                border: #D7D7D7 thin solid;
+                                border-radius: 2px;
+                                div.check-inner{
+                                    background: @orange;
+                                    display: none;
+                                    margin: 2px;
+                                    border-radius: 2px;
+                                    height: 14px;
+                                    width: 14px;
+                                }
+                            }
+                            div.price{
+                                padding-left: 30px;
+                                float: left;
+                                font-size: 22px;
+                                font-weight: 600;
 
-    div.top, div.middle{
-        .cc-container{
-            padding-left: 0 !important;
-            padding-right: 0 !important;
-        }
-        @media only screen and (min-width: 40.063em){
-            .columns:first-child{
-                padding-right: 7px;
+                            }
+                        }
+                        div.ticket-name{
+                            font-weight: 600;
+                            font-size: 15px;
+                            line-height: 1.1rem;
+                        }
+                        div.ticket-price, div.ticket-name{
+                            position: absolute;
+                            top: 50%;
+                            -webkit-transform: translateY(-50%);
+                            -ms-transform: translateY(-50%);
+                            transform: translateY(-50%);
+                        }
+                    }
+                }
+                div.ticket-middle{
+                    display: none;
+                    background: #FFF4DB;
+                    div.custom-option-group{
+                        margin-top: 13px;
+                        font-size: 13px;
+                        div.title{
+                            padding: 10px;
+                            border-bottom: #D7D7D7 thin solid; 
+                        }
+                        margin-bottom: 20px;
+                        padding: 0 !important;
+                        padding-bottom: 0 !important;
+                        background: @white;
+                        border: #D7D7D7 thin solid;
+                        border-radius: 3px;
+                    }
+                    div.container{
+                        min-height: 60px;
+                        padding: 10px 0;
+                        padding-bottom: 20px;
+                        div.info-label{
+                            position: absolute;
+                            top: 50%;
+                            -webkit-transform: translateY(-50%);
+                            -ms-transform: translateY(-50%);
+                            transform: translateY(-50%);
+                            font-size: 13px;
+                            font-weight: 600;
+                            padding-left: 0.9375rem;
+                        }
+                        input.ticket-quantity{
+                            border: @orange thin solid;
+                            padding: 0;
+                            display: block;
+                            margin-bottom: 0;
+                            width: 30px;
+                            height: 25px;
+                            position: absolute;
+                            top: 50%;
+                            -webkit-transform: translateY(-50%);
+                            -ms-transform: translateY(-50%);
+                            transform: translateY(-50%);
+                            text-align: center;
+                            border-radius: 4px;
+                            font-weight: 300;
+                            box-shadow: none;
+                            transition: none;
+                        }
+                        div.custom-field-container{
+                            font-size: 13px;
+                            padding-left: 0;
+                            input{
+                                font-size: 13px;
+                                outline: none;
+                                border: #D7D7D7 thin solid;
+                                border-radius: 3px;
+                                box-shadow: none;
+                            }
+                        }
+
+                        div.custom-option{
+                            cursor: pointer;
+                            padding: 7px 0;
+                            padding-left: 0;
+                            color: @dark;
+                            &.active{
+                                text-decoration: underline;
+                            }
+                            &:hover{
+                                font-weight: bold;
+                                div.radio{
+                                    border-color: @orange;
+                                }
+                            }
+                            &.active{
+                                font-weight: bold;
+                                div.radio{
+                                    border-color: @orange;
+                                    div.radio-inner{
+                                        background: @orange;
+                                    }
+                                }
+                            }
+                            div.radio{
+                                padding: 1px;
+                                width: 16px;
+                                height: 16px;
+                                border: #D7D7D7 thin solid;
+                                border-radius: 8px;
+                                background: @white;
+                                margin: 0 auto;
+                                div.radio-inner{
+                                    width: 12px;
+                                    height: 12px;
+                                    border-radius: 6px;
+                                    background: @white;
+                                }
+                            }
+                            div.option-text{
+                                padding-left: 0;
+                                position: relative;
+                                top: 2px;
+                            }
+                        }
+                    }
+                }
+                div.ticket-bottom{
+                    border-top: #D7D7D7 thin solid;
+                    font-size: 12px;
+                    div.ticket-description-container{
+                        padding: 10px 0;
+                        padding-left: 0.9375rem;
+                        padding-right: 0.9375rem;
+                        min-height: 60px;
+                        div.ticket-sold-out{
+                            font-weight: bold;
+                        }
+                    }
+                    div.ticket-description{
+                        position: absolute;
+                        top: 50%;
+                        -webkit-transform: translateY(-50%);
+                        -ms-transform: translateY(-50%);
+                        transform: translateY(-50%);
+                        line-height: 1.1rem;
+                    }
+                }
             }
-            .columns:last-child{
-                padding-left: 7px;
+        }
+    }
+
+    div#tickets-details {
+        width: 100%;
+        div.title{
+            width: 100%;
+            padding: 20px 0;
+            font-size: 14px;
+            font-weight: 600;
+            text-align: center;
+            text-transform: uppercase;
+        }
+        input{
+            border-radius: 4px;
+            font-weight: 300;
+            box-shadow: none;
+            transition: none;
+        }
+
+        hr{
+            margin-top: 4px;
+        }
+
+        div.top, div.middle{
+            .cc-container{
+                padding-left: 0 !important;
+                padding-right: 0 !important;
+            }
+            @media only screen and (min-width: 40.063em){
+                .columns:first-child{
+                    padding-right: 7px;
+                }
+                .columns:last-child{
+                    padding-left: 7px;
+                }
+            }
+        }
+
+        div.bottom{
+            div.start-promo{
+                padding-bottom: 20px;
+                a{
+                    color: @orange;
+                    font-weight: 300;
+                    text-decoration: underline;
+                    font-style: italic;
+                    font-size: 12px;
+                }
             }
         }
     }
 
-    div.bottom{
-        div.start-promo{
-            padding-bottom: 20px;
+    div#tickets-footer {
+        padding: 20px 0;
+        position: relative;
+        width: 100%;
+        border-top: #F6F6F6 thin solid;
+    }
+
+    div#tickets-subtotal {
+        font-size: 14px;
+        padding-top: 14px;
+        font-weight: bold;
+        div.issues{
             a{
+                display: block;
+                margin-top: 10px;
+                font-size: 10px;
                 color: @orange;
                 font-weight: 300;
-                text-decoration: underline;
                 font-style: italic;
-                font-size: 12px;
             }
         }
     }
-}
 
-div#tickets-footer {
-    padding: 20px 0;
-    position: relative;
-    width: 100%;
-    border-top: #F6F6F6 thin solid;
-}
-
-div#tickets-subtotal {
-    font-size: 14px;
-    padding-top: 14px;
-    font-weight: bold;
-    div.issues{
-        a{
-            display: block;
-            margin-top: 10px;
-            font-size: 10px;
-            color: @orange;
-            font-weight: 300;
-            font-style: italic;
+    @media @media_small{
+        div#tickets-subtotal {
+            text-align: center;
+            margin-bottom: 20px;
         }
     }
-}
 
-@media @media_small{
-    div#tickets-subtotal {
-        text-align: center;
-        margin-bottom: 20px;
-    }
-}
-
-a#tickets-confirm {
-    display: block;
-    width: 100%;
-    padding-top: 10px;
-    padding-bottom: 11px;
-    color: @white;
-    &:hover{
+    a#tickets-confirm {
+        display: block;
+        width: 100%;
+        padding-top: 10px;
+        padding-bottom: 11px;
         color: @white;
+        &:hover{
+            color: @white;
+        }
     }
 }

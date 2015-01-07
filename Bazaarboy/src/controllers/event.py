@@ -16,6 +16,7 @@ from django.shortcuts import render, redirect
 from django.http import HttpResponse, HttpResponseBadRequest
 from django.utils import timezone
 from django.views.decorators.cache import cache_page
+from django.views.decorators.clickjacking import xframe_options_exempt
 from django.core.serializers.json import DjangoJSONEncoder
 from celery import task
 from kernel.models import *
@@ -1180,6 +1181,28 @@ def delete(request, params, user):
         'status':'OK'
     }
     return json_response(response)
+
+@xframe_options_exempt
+def ticket_embed(request, id):
+    if Event.objects.filter(id = id, is_deleted = False).exists():
+        event = Event.objects.get(id = id)
+        tickets = Ticket.objects.filter(event = event, is_deleted = False).order_by('order', '-id')
+        requiresAddress = False
+        for ticket in tickets:
+            if ticket.request_address:
+                requiresAddress = True
+            if ticket.extra_fields:
+                custom_fields = simplejson.loads(ticket.extra_fields, object_pairs_hook=ordereddict.OrderedDict)
+                fields = ordereddict.OrderedDict()
+                for field_name, field_options in custom_fields.iteritems():
+                    fields[field_name] = []
+                    if field_options.strip() != '':
+                        for option in field_options.split(','):
+                            fields[field_name].append(option.strip())
+                ticket.custom_fields = fields
+        promos = Promo.objects.filter(event = event, is_deleted = False)
+        organizers = Organizer.objects.filter(event = event)
+    return render(request, 'event/ticket-embed.html', locals())
 
 @login_required()
 @validate('GET', ['id'])
