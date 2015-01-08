@@ -46,7 +46,7 @@ div#tickets a#tickets-confirm{
 }
 
 div#tickets div#tickets-footer div.issues a{
-    color: {{ event.color }} !important;
+    color: {{ event.color_dark }} !important;
 }
 
 div#tickets div#tickets-body div#tickets-canvas div.ticket div.ticket-middle div.container div.custom-option.active div.radio div.radio-inner{
@@ -59,6 +59,10 @@ div#tickets div#tickets-body div#tickets-canvas div.ticket div.ticket-middle div
 
 div#tickets div#tickets-body div#tickets-canvas div.ticket div.ticket-middle div.container div.custom-option:hover div.radio{
     border-color: {{ event.color }} !important;
+}
+
+div#tickets div#tickets-details div.bottom div.start-promo a{
+    color: {{ event.color_dark }} !important;
 }
 
 div.event-rsvp a#rsvp-button{
