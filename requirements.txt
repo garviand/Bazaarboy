@@ -47,3 +47,4 @@ ordereddict==1.1
 simplejson==3.6.2
 pygeocoder==1.2.5
 python-magic==0.4.6
+palette==0.2

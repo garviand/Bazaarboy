@@ -9497,7 +9497,7 @@ div#tickets div#tickets-body div#tickets-canvas div.ticket {
   margin-bottom: 10px;
 }
 div#tickets div#tickets-body div#tickets-canvas div.ticket.active div.ticket-top {
-  background: #FEC84D !important;
+  background: #FEC84D;
 }
 div#tickets div#tickets-body div#tickets-canvas div.ticket.active div.ticket-top div.check div.check-inner {
   display: block !important;
@@ -9513,7 +9513,7 @@ div#tickets div#tickets-body div#tickets-canvas div.ticket.active div.ticket-top
 }
 div#tickets div#tickets-body div#tickets-canvas div.ticket.hover div.ticket-top div.check,
 div#tickets div#tickets-body div#tickets-canvas div.ticket.active div.ticket-top div.check {
-  border: #faa638 thin solid !important;
+  border: #faa638 thin solid;
 }
 div#tickets div#tickets-body div#tickets-canvas div.ticket.hover div.ticket-bottom,
 div#tickets div#tickets-body div#tickets-canvas div.ticket.active div.ticket-bottom {

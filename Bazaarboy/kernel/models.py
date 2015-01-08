@@ -8,6 +8,7 @@ import random
 import string
 from django.db import models
 from django.utils import timezone
+from palette import Color
 
 class User(models.Model):
     """
@@ -173,28 +174,25 @@ class Event(models.Model):
 
 
     def color_dark(self):
-        hex_color = self.color
-        brightness_offset = -15
-        rgb_hex = [hex_color[x:x+2] for x in [1, 3, 5]]  
-        new_rgb_int = [int(hex_value, 16) + brightness_offset for hex_value in rgb_hex]  
-        new_rgb_int = [min([255, max([0, i])]) for i in new_rgb_int] # make sure new values are between 0 and 255
-        newColor = "#" + "".join([hex(i)[2:] for i in new_rgb_int])
-        if len(newColor) == 7:
-            return newColor
-        else:
-            return hex_color
+        try:
+            c = Color(self.color)
+        except ValueError:
+            return self.color
+        return c.darker(amt=0.1).css
 
     def color_light(self):
-        hex_color = self.color
-        brightness_offset = 15
-        rgb_hex = [hex_color[x:x+2] for x in [1, 3, 5]]  
-        new_rgb_int = [int(hex_value, 16) + brightness_offset for hex_value in rgb_hex]  
-        new_rgb_int = [min([255, max([0, i])]) for i in new_rgb_int] # make sure new values are between 0 and 255
-        newColor = "#" + "".join([hex(i)[2:] for i in new_rgb_int])
-        if len(newColor) == 7:
-            return newColor
-        else:
-            return hex_color
+        try:
+            c = Color(self.color)
+        except ValueError:
+            return self.color
+        return c.lighter(amt=0.1).css
+
+    def color_translucent(self):
+        try:
+            c = Color(self.color, a=.25)
+        except ValueError:
+            return self.color
+        return c.css
 
 def randomConfirmationCode(size=6):
     """
