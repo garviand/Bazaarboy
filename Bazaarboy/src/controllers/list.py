@@ -326,8 +326,10 @@ def prepare_csv(request, params, user):
         }
         return json_response(response)
     csv_file = Csv.objects.get(id = params['csv'])
+    csv_file.source.file._mode = 'rU'
+    csv_file.save()
     csvfile = csv_file.source.file
-    reader = csv.reader(csvfile)
+    reader = csv.reader(csvfile.read().splitlines())
     results = {}
     for num, row in enumerate(reader):
         results[num] = row
@@ -372,7 +374,7 @@ def add_from_csv(request, params, user):
         return json_response(response)
     csv_file = Csv.objects.get(id = params['csv'])
     csvfile = csv_file.source.file
-    reader = csv.reader(csvfile)
+    reader = csv.reader(csvfile.read().splitlines())
     # Load Format {field_type:col}
     format = json.loads(params['format'])
     added = 0
