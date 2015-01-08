@@ -25,6 +25,10 @@ append head
 
     style(type="text/css").
 
+        div#tickets div#tickets-body div#tickets-canvas div.ticket.active div.ticket-top{
+            color: {% if event.color_test %}#4a4a4a{% else %}#FFF{% endif %} !important;
+        }
+
         div#tickets div#tickets-canvas div.ticket.hover, div#tickets div#tickets-canvas div.ticket.active{
             border: {{ event.color }} thin solid !important;
         }

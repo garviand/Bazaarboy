@@ -6,7 +6,11 @@ _gaq.push(['_trackPageview']);
     var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
     ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
     var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
-})();</script><meta name="description" content="{{ event.summary }}">{% if editable %}<link rel="stylesheet" href="{{ STATIC_URL }}jQueryUI/jquery-ui.css"><link rel="stylesheet" href="{{ STATIC_URL }}redactor/redactor.css"><link rel="stylesheet" href="{{ STATIC_URL }}pikaday/pikaday.css">{% endif %}<meta property="og:url" content="{{ request.build_absolute_uri }}"><meta property="og:title" content="{{ event.name }}"><meta property="og:description" content="{{ event.summary }}">{% if event.cover %}<meta property="og:image" content="{{ event.cover.source.url|sanitizeUrl }}"><link rel="image_src" href="{{ event.cover.source.url|sanitizeUrl }}">{% endif %}<style type="text/css">div#tickets div#tickets-canvas div.ticket.hover, div#tickets div#tickets-canvas div.ticket.active{
+})();</script><meta name="description" content="{{ event.summary }}">{% if editable %}<link rel="stylesheet" href="{{ STATIC_URL }}jQueryUI/jquery-ui.css"><link rel="stylesheet" href="{{ STATIC_URL }}redactor/redactor.css"><link rel="stylesheet" href="{{ STATIC_URL }}pikaday/pikaday.css">{% endif %}<meta property="og:url" content="{{ request.build_absolute_uri }}"><meta property="og:title" content="{{ event.name }}"><meta property="og:description" content="{{ event.summary }}">{% if event.cover %}<meta property="og:image" content="{{ event.cover.source.url|sanitizeUrl }}"><link rel="image_src" href="{{ event.cover.source.url|sanitizeUrl }}">{% endif %}<style type="text/css">div#tickets div#tickets-body div#tickets-canvas div.ticket.active div.ticket-top{
+    color: {% if event.color_test %}#4a4a4a{% else %}#FFF{% endif %} !important;
+}
+
+div#tickets div#tickets-canvas div.ticket.hover, div#tickets div#tickets-canvas div.ticket.active{
     border: {{ event.color }} thin solid !important;
 }
 

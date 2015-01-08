@@ -570,7 +570,7 @@ Bazaarboy.event.index =
                             url: mediaUrl + response.image.source
                             cropPresets: ['1000x400']
                             cropPresetsStrict: true
-                            forceCropPreset: ['Cover Image Size','10:4']
+                            #forceCropPreset: ['Cover Image Size','10:4']
                     else
                         alert response.message
                     return

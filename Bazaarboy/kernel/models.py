@@ -10,6 +10,8 @@ from django.db import models
 from django.utils import timezone
 from palette import Color
 
+import pdb
+
 class User(models.Model):
     """
     User model
@@ -172,6 +174,14 @@ class Event(models.Model):
     slug = models.CharField(max_length = 30, null = True, default = None, unique = True)
     is_deleted = models.BooleanField(default = False)
 
+    def color_test(self):
+        try:
+            c = Color(self.color)
+        except ValueError:
+            return True
+        if Color("#4a4a4a").w3_contrast_ratio(c) < 10:
+            return False
+        return True
 
     def color_dark(self):
         try:
