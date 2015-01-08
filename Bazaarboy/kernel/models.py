@@ -179,7 +179,7 @@ class Event(models.Model):
             c = Color(self.color)
         except ValueError:
             return True
-        if Color("#4a4a4a").w3_contrast_ratio(c) < 10:
+        if c.w3_contrast_ratio(Color("#4a4a4a")) < 5:
             return False
         return True
 
