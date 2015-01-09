@@ -3,6 +3,7 @@ extends ../layout
 append head
     link(rel="stylesheet", href="{{ STATIC_URL }}jQueryUI/jquery-ui.css")
     link(rel="stylesheet", href="{{ STATIC_URL }}pikaday/pikaday.css")
+    link(rel="stylesheet", href="{{ STATIC_URL }}spectrum/spectrum.css")
 
 block sidebar
     div.launch-event(class="{% if event.is_launched %}launched{% endif %}", data-event-id="{{ event.id }}")
@@ -67,6 +68,13 @@ block content
                                     span.optional optional - leave blank if desired
                                     span.taken.hide This URL is Taken
                             input.field.url-input(type="text", name="slug", value="{% if event.slug %}{{ event.slug }}{% endif %}", placeholder="my-event")
+                div.row
+                    div.medium-10.medium-offset-2.columns
+                        div.input-container
+                            div.row
+                                div.small-4.columns.input-title Event Color
+                                div.small-8.columns.input-note.text-right very light colors will not work well
+                            input.field(type='color', name='colorpicker', value='{{ event.color }}')
                 div.row
                     div.small-12.columns.section-header
                         div.number 2
@@ -133,6 +141,7 @@ append script
     script.
         var eventId = {{ event.id }};
         var eventUrl = '{{ event|eventUrl }}';
+    script(type="text/javascript", src="{{ STATIC_URL }}spectrum/spectrum.js")
     script(src="{{ STATIC_URL }}js/event/modify.js")
     script(src="{{ STATIC_URL }}js/event/modify-basics.js")
 

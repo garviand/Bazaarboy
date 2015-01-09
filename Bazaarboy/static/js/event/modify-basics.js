@@ -69,7 +69,8 @@
         location: save_data.location,
         latitude: save_data.latitude,
         longitude: save_data.longitude,
-        slug: save_data.slug
+        slug: save_data.slug,
+        color: $('input[name=colorpicker]').spectrum("get").toHexString()
       }, function(err, event) {
         if (!err) {
           setTimeout((function() {
@@ -123,6 +124,11 @@
     init: function() {
       var googleAutocomplete, initial_lat, initial_lng, mapOptions, mapStyles, map_center, originalEndTime, originalStartTime,
         _this = this;
+      $('input[name=colorpicker]').spectrum({
+        preferredFormat: "hex",
+        showInput: true,
+        showButtons: true
+      });
       $('div.input-container').click(function() {
         $(this).find('input, textarea').focus();
       });

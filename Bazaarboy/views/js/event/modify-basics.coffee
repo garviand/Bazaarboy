@@ -55,6 +55,7 @@ Bazaarboy.event.modify.basics =
             latitude: save_data.latitude
             longitude: save_data.longitude
             slug: save_data.slug
+            color: $('input[name=colorpicker]').spectrum("get").toHexString()
         , (err, event) =>
             unless err
                 setTimeout (() ->
@@ -100,6 +101,11 @@ Bazaarboy.event.modify.basics =
             return
         return
     init: () ->
+        # COLOR PICKER
+        $('input[name=colorpicker]').spectrum
+            preferredFormat: "hex"
+            showInput: true
+            showButtons: true
         $('div.input-container').click () ->
             $(this).find('input, textarea').focus()
             return

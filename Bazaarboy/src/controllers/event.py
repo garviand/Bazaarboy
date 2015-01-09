@@ -747,7 +747,7 @@ def create(request, params, user):
           ['id'], 
           ['name', 'summary', 'description', 'cover', 'caption', 'tags', 
            'category', 'start_time', 'end_time', 'location', 'latitude', 
-           'longitude', 'slug'])
+           'longitude', 'slug', 'color'])
 def edit(request, params, user):
     """
     Edit an existing event
@@ -826,6 +826,8 @@ def edit(request, params, user):
             cover.is_archived = True
             cover.save()
             event.cover = cover
+    if params['color'] is not None and len(params['color']) == 7:
+        event.color = params['color']
     if params['caption'] is not None:
         params['caption'] = cgi.escape(params['caption'])
         if event.cover is None:
