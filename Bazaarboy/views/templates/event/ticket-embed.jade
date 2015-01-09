@@ -17,6 +17,88 @@ append head
     link(rel="image_src", href="{{ event.cover.source.url|sanitizeUrl }}")
     {% endif %}
 
+    style(type="text/css").
+
+        div#tickets-embed div#tickets-body div#tickets-canvas div.ticket.active div.ticket-top{
+            color: {% if event.color_test %}#4a4a4a{% else %}#FFF{% endif %} !important;
+        }
+
+        div#tickets-embed div#tickets-canvas div.ticket.hover, div#tickets-embed div#tickets-canvas div.ticket.active{
+            border: {{ event.color }} thin solid !important;
+        }
+
+        div#tickets-embed div#tickets-canvas div.ticket.hover div.ticket-top, div#tickets-embed div#tickets-canvas div.ticket.active div.ticket-top{
+            background: {{ event.color_translucent }} !important;
+        }
+
+        div#tickets-embed div#tickets-canvas div.ticket.hover div.check, div#tickets-embed div#tickets-canvas div.ticket.active div.check{
+            border: {{ event.color }} thin solid !important;
+        }
+
+        div#tickets-embed div#tickets-canvas div.ticket.hover div.ticket-bottom, div#tickets-embed div#tickets-canvas div.ticket.active div.ticket-bottom{
+            border-top: {{ event.color }} thin solid !important;
+        }
+
+        div#tickets-embed div#tickets-canvas div.ticket.active div.ticket-top{
+            background: {{ event.color_light }} !important;
+        }
+
+        div#tickets-embed div#tickets-canvas div.ticket div.check div.check-inner{
+            background: {{ event.color }} !important;
+        }
+
+        div#tickets-embed div#tickets-canvas div.ticket div.ticket-middle{
+            background: {{ event.color_translucent }} !important;
+        }
+
+        div#tickets-embed div#tickets-canvas div.ticket div.ticket-middle input.ticket-quantity{
+            border: {{ event.color }} thin solid !important;
+        }
+
+        div#tickets-embed a#tickets-confirm{
+            background: {{ event.color }} !important;
+            border: {{ event.color_dark }} thin solid !important;
+            box-shadow: inset 0px -2px 0px 0px {{ event.color_dark }} !important;
+            text-shadow: 1px 1px 0 {{ event.color_dark }} !important;
+        }
+
+        div#tickets-embed div#tickets-footer div.issues a{
+            color: {{ event.color_dark }} !important;
+        }
+
+        div#tickets-embed div#tickets-body div#tickets-canvas div.ticket div.ticket-middle div.container div.custom-option.active div.radio div.radio-inner{
+            background: {{ event.color }} !important;
+        }
+
+        div#tickets-embed div#tickets-body div#tickets-canvas div.ticket div.ticket-middle div.container div.custom-option.active div.radio{
+            border-color: {{ event.color }} !important;
+        }
+
+        div#tickets-embed div#tickets-body div#tickets-canvas div.ticket div.ticket-middle div.container div.custom-option:hover div.radio{
+            border-color: {{ event.color }} !important;
+        }
+
+        div#tickets-embed div#tickets-details div.bottom div.start-promo a{
+            color: {{ event.color_dark }} !important;
+        }
+
+        div.event-rsvp a#rsvp-button{
+            color: #FFF;
+            background: {{ event.color }} !important;
+            border: {{ event.color_dark }} thin solid !important;
+            box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.125);
+            text-shadow: none;
+            transition: all 0.125s ease-out;
+        }
+        div.event-rsvp a#rsvp-button:hover{
+            background: {{ event.color_dark }} !important;
+        }
+
+        div.event-rsvp a#rsvp-button:hover{
+            background: {{ event.color_dark }};
+            box-shadow: 0px 1px 1px rgba(0, 0, 0, 0.5);
+        }
+
 block body
     div#tickets-embed
         div#tickets-header Choose Your Tickets
