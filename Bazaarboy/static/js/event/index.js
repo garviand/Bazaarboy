@@ -443,6 +443,12 @@
           });
         }
       });
+      $('a.embed-code-btn').click(function() {
+        $('div#embed-code-modal').foundation('reveal', 'open');
+      });
+      $('a.embed-code-close').click(function() {
+        $('div#embed-code-modal').foundation('reveal', 'close');
+      });
       $('.close-invite-modal').click(function() {
         $('div#invite-modal').foundation('reveal', 'close');
       });

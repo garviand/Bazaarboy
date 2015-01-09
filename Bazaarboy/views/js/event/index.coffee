@@ -353,6 +353,12 @@ Bazaarboy.event.index =
                         $('div#invite-modal form.invite-form a.send-invitation').removeClass 'disabled-btn'
                     return
             return
+        $('a.embed-code-btn').click () ->
+            $('div#embed-code-modal').foundation('reveal', 'open')
+            return
+        $('a.embed-code-close').click () ->
+            $('div#embed-code-modal').foundation('reveal', 'close')
+            return
         $('.close-invite-modal').click () ->
             $('div#invite-modal').foundation('reveal', 'close')
             return

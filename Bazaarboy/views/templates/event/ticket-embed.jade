@@ -101,6 +101,11 @@ append head
 
         div#embed-brand div.profile-icon div.inner{
             background: {{ event.color }} !important;
+            transition: all 0.125s ease-out;
+        }
+
+        div#embed-brand div.profile-icon div.inner:hover{
+            background: {{ event.color_dark }} !important;
         }
 
         div{
