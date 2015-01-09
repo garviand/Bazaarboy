@@ -114,6 +114,7 @@ append head
 
 block body
     div#tickets-embed
+        {% if not event|hasStartedOrEnded %}
         div#tickets-header Choose Your Tickets
         div#tickets-body
             div.inner
@@ -229,6 +230,9 @@ block body
                 span.plural s
             div.small-12.medium-4.columns
                 a#tickets-confirm.primary-btn(href="javascript:;") Confirm RSVP
+        {% else %}
+        div#tickets-header Ticket sales for '{{ event.name }}' have ended. See you next time!
+        {% endif %}
         div#embed-brand.row
             div.profile-icon
                 div.inner
