@@ -99,6 +99,14 @@ append head
             box-shadow: 0px 1px 1px rgba(0, 0, 0, 0.5);
         }
 
+        div#embed-brand div.profile-icon div.inner{
+            background: {{ event.color }} !important;
+        }
+
+        div{
+
+        }
+
 block body
     div#tickets-embed
         div#tickets-header Choose Your Tickets
@@ -216,6 +224,11 @@ block body
                 span.plural s
             div.small-12.medium-4.columns
                 a#tickets-confirm.primary-btn(href="javascript:;") Confirm RSVP
+        div#embed-brand.row
+            div.profile-icon
+                div.inner
+                    a(href="{% url index %}", target="_blank")
+                        img(src="{{ STATIC_URL }}images/logo-white.png")
     div#confirmation.hide
         div.row
             div.small-12.text-center.columns.confirmation-title

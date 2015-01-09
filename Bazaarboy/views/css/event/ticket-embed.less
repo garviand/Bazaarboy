@@ -302,6 +302,45 @@ div#tickets-embed {
         border-top: #F6F6F6 thin solid;
     }
 
+    div#embed-brand{
+        display: block;
+        position: relative;
+        top: 5px;
+        div.profile-icon {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 66px;
+            min-height: 66px;
+            background: transparent!important;
+
+            @media @media_small {
+                background: none !important;
+            }
+
+            div.inner {
+                width: 44px;
+                min-height: 44px;
+                margin: 11px;
+                border-radius: 22px;
+                background: #FF9137;
+
+                &:hover {
+                    box-shadow: 0 0 20px #FFFFFF;
+                }
+
+                img{
+                    width: 30px;
+                    height: 30px;
+                    position: relative;
+                    left: 7px;
+                    top: 5px;
+                }
+
+            }
+        }
+    }
+
     div#tickets-subtotal {
         font-size: 14px;
         padding-top: 14px;
