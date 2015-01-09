@@ -265,7 +265,7 @@ Bazaarboy.event.index =
         $(window).hashchange()
         $('iframe#ticket-embed-iframe').load () ->
             oldEmbed = $('textarea.embed-code').html()
-            newHeight = this.contentWindow.document.body.scrollHeight + 100
+            newHeight = this.contentWindow.document.body.scrollHeight + 130
             newEmbed = oldEmbed.replace("[IFRAME_HEIGHT]", newHeight);
             $('textarea.embed-code').html newEmbed
             $('iframe#ticket-embed-iframe').css('height', newHeight + 'px')
