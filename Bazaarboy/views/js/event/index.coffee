@@ -263,6 +263,13 @@ Bazaarboy.event.index =
                 $('div#confirmation-modal').foundation('reveal', 'open')
                 return
         $(window).hashchange()
+        $('iframe#ticket-embed-iframe').load () ->
+            oldEmbed = $('textarea.embed-code').html()
+            newHeight = this.contentWindow.document.body.scrollHeight + 100
+            newEmbed = oldEmbed.replace("[IFRAME_HEIGHT]", newHeight);
+            $('textarea.embed-code').html newEmbed
+            $('iframe#ticket-embed-iframe').css('height', newHeight + 'px')
+            return
         if $('.tix-type').length == 1
             scope.ticketId = $('.tix-type').data('id')
         @DropDown:: =

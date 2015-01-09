@@ -11014,13 +11014,14 @@ div#tickets-embed div#tickets-footer {
   border-top: #F6F6F6 thin solid;
 }
 div#tickets-embed div#embed-brand {
+  border-top: #F6F6F6 thin solid;
   display: block;
   position: relative;
   top: 5px;
 }
 div#tickets-embed div#embed-brand div.profile-icon {
-  position: absolute;
-  top: 0;
+  position: relative;
+  top: 10px;
   left: 0;
   width: 66px;
   min-height: 66px;

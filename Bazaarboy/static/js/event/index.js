@@ -333,6 +333,14 @@
         }
       });
       $(window).hashchange();
+      $('iframe#ticket-embed-iframe').load(function() {
+        var newEmbed, newHeight, oldEmbed;
+        oldEmbed = $('textarea.embed-code').html();
+        newHeight = this.contentWindow.document.body.scrollHeight + 100;
+        newEmbed = oldEmbed.replace("[IFRAME_HEIGHT]", newHeight);
+        $('textarea.embed-code').html(newEmbed);
+        $('iframe#ticket-embed-iframe').css('height', newHeight + 'px');
+      });
       if ($('.tix-type').length === 1) {
         scope.ticketId = $('.tix-type').data('id');
       }
