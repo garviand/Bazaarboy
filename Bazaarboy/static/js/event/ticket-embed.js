@@ -238,6 +238,7 @@
       $('div.custom-option-group div.custom-option').click(function() {
         $(this).parents('div.custom-option-group').find('div.custom-option').removeClass('active');
         $(this).addClass('active');
+        $(window).trigger('resize');
       });
       $('div#tickets-details a.start-promo-btn').click(function() {
         return $('div.start-promo').fadeOut(300, function() {
@@ -268,12 +269,14 @@
           $(this).parents('.ticket').toggleClass('active');
           if ($(this).parents('.ticket').hasClass('active')) {
             $(this).parents('.ticket').find('div.ticket-middle').slideDown(100);
+            $(window).trigger('resize');
             quant = $(this).parents('.ticket').find('input.ticket-quantity');
             if (quant.val().trim() === '' || parseInt(quant.val()) === 0) {
               quant.val(1);
             }
           } else {
             $(this).parents('.ticket').find('div.ticket-middle').slideUp(100);
+            $(window).trigger('resize');
           }
           $('.address-container').addClass('hide');
           $('.payment-container').addClass('hide');

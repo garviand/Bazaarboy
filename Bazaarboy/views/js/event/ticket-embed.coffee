@@ -187,6 +187,7 @@ Bazaarboy.event.ticket_embed =
         $('div.custom-option-group div.custom-option').click () ->
             $(this).parents('div.custom-option-group').find('div.custom-option').removeClass 'active'
             $(this).addClass 'active'
+            $(window).trigger('resize');
             return
         # PROMOS
         $('div#tickets-details a.start-promo-btn').click () ->
@@ -214,11 +215,13 @@ Bazaarboy.event.ticket_embed =
                 $(this).parents('.ticket').toggleClass 'active'
                 if $(this).parents('.ticket').hasClass('active')
                     $(this).parents('.ticket').find('div.ticket-middle').slideDown 100
+                    $(window).trigger('resize');
                     quant = $(this).parents('.ticket').find('input.ticket-quantity')
                     if quant.val().trim() is '' or parseInt(quant.val()) is 0
                         quant.val 1
                 else
                     $(this).parents('.ticket').find('div.ticket-middle').slideUp 100
+                    $(window).trigger('resize');
                 $('.address-container').addClass 'hide'
                 $('.payment-container').addClass 'hide'
                 scope.requiresAddress = false
