@@ -291,7 +291,7 @@ block body
         div.row
             div.medium-12.columns.code-container
                 h4 Paste this code into your website HTML
-                textarea.embed-code(disabled, style="height:100px;") &lt;iframe src='https://www.bazaarboy.com{% url event:ticket-embed event.id %}' width='100%', height='1000' frameborder='0' onLoad='autoResize("embed-iframe");'' onresize='autoResize("embed-iframe");'&gt;&lt;iframe&gt;&lt;script&gt;function autoResize(id){var newheight;var newwidth;if(document.getElementById){newheight=document.getElementById(id).contentWindow.document.body.scrollHeight;}document.getElementById(id).height= (newheight) + "px";document.getElementById(id).width= "100%";}&lt;/script&gt;
+                textarea.embed-code(disabled, style="height:100px;") &lt;iframe src='https://www.bazaarboy.com{% url event:ticket-embed event.id %}' width='100%', height='1000' frameborder='0' onLoad='autoResize("embed-iframe");' onresize='autoResize("embed-iframe");'&gt;&lt;iframe&gt;&lt;script&gt;function autoResize(id){var newheight;var newwidth;if(document.getElementById){newheight=document.getElementById(id).contentWindow.document.body.scrollHeight;}document.getElementById(id).height= (newheight) + "px";document.getElementById(id).width= "100%";}&lt;/script&gt;
                 script.
                     function autoResize(id){
                         var newheight;
