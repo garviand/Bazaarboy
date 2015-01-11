@@ -473,8 +473,7 @@ block body
                 div.event-hero-rsvp
                     {% with organizers|first as first_organizer %}
                     {% if first_organizer.profile.image %}
-                    div.organizer-logo
-                        img(src="{{ first_organizer.profile.image.source.url }}")
+                    div.organizer-logo(style="background:url({{ first_organizer.profile.image.source.url }}); background-size:contain; background-position:center;")
                     {% endif %}
                     {% endwith %}
                     {% if not hasEnded %}

@@ -132,6 +132,7 @@ block content
                                                 | RSVPs
                                             div.number
                                                 {{ event.rsvpCount }}{% if event.potentialQuantity %}/{{ event.potentialQuantity }}{% endif %}
+                                        {% if event.creator %}
                                         div.sales
                                             div.title
                                                 | Revenue
@@ -142,10 +143,12 @@ block content
                                                 | {% if event.potentialSale %}Potential Rev.{% endif %}
                                             div.number
                                                 | {% if event.potentialSale %}${{ event.potentialSale|floatformat:"-2" }}{% else %}{% endif %}
+                                        {% endif %}
                                     div.graph.medium-8.columns.hide-for-small-only
                                         div.graph-frame
                                             div.graph-canvas
                         div.current-event-actions.medium-3.small-12.columns
+                            {% if event.creator %}
                             a.current-event-action.first(href="{% url event:modify event.id 'basics' %}")
                                 div.icon
                                     span.ss-write
@@ -156,6 +159,7 @@ block content
                                     span.ss-creditcard
                                 div.text
                                     span Ticket Options
+                            {% endif %}
                             a.current-event-action(href="{% url event:invite event.id %}")
                                 div.icon
                                     span.ss-mail
@@ -166,11 +170,13 @@ block content
                                     span.ss-file
                                 div.text
                                     span Guest List
+                            {% if event.creator %}
                             a.current-event-action.last(href="{% url event:export %}?id={{ event.id }}")
                                 div.icon
                                     span.ss-outbox
                                 div.text
                                     span Export Guests
+                            {% endif %}
     mixin pastEvent()
         div.past-event.row(data-id="{{ event.id }}", data-launched-time="{{ event.launched_time|date:'Y-m-d H:i:s' }}")
             div.small-12.columns.tile
@@ -224,6 +230,7 @@ block content
                                         div.graph-frame
                                             div.graph-canvas
                         div.past-event-actions.medium-3.small-12.columns
+                            {% if event.creator %}
                             a.past-event-action.first(href="{% url event:modify event.id 'basics' %}")
                                 div.icon
                                     span.ss-info
@@ -234,16 +241,19 @@ block content
                                     span.ss-picture
                                 div.text
                                     span Page Design
+                            {% endif %}
                             a.past-event-action(href="{% url event:manage event.id %}")
                                 div.icon
                                     span.ss-file
                                 div.text
                                     span Guest List
+                            {% if event.creator %}
                             a.past-event-action.last(href="{% url event:export %}?id={{ event.id }}")
                                 div.icon
                                     span.ss-outbox
                                 div.text
                                     span Export Guests
+                            {% endif %}
     div#wrapper-dashboard.large-9.medium-10.columns.small-centered
         {% if eventsCount == 0 %}
         div.empty-state-container

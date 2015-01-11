@@ -8479,6 +8479,9 @@ div#event {
   box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.5);
   padding: 10px;
   overflow: hidden;
+  line-height: 92px;
+  position: relative;
+  text-align: center;
 }
 #event-hero .event-hero-rsvp form {
   margin: auto;

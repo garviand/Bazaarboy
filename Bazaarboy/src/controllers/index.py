@@ -44,6 +44,9 @@ def index(request, params, user):
     currentEventsCount = currentEvents.count()
     currentEvents = list(currentEvents)
     for i in range(0, len(currentEvents)):
+        currentEvents[i].creator = True
+        if not Organizer.objects.filter(event = currentEvents[i], profile__managers = user, is_creator = True).exists():
+            currentEvents[i].creator = False
         stats = Purchase.objects.filter(Q(checkout = None) | 
                                         Q(checkout__is_charged = True, 
                                           checkout__is_refunded = False), 

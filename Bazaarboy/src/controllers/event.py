@@ -50,7 +50,7 @@ def index(request, id, params, user):
         raise Http404
     editable = (user is not None and 
                 Organizer.objects.filter(event = event, 
-                                         profile__managers = user).exists())
+                                         profile__managers = user, is_creator = True).exists())
     preview = params['preview'] is not None and editable
     design = params['design'] is not None and editable
     if not design and not preview and not event.is_launched:
@@ -127,7 +127,7 @@ def modify(request, id, step, params, user):
         raise Http404
     event = Event.objects.select_related().get(id = id)
     if not Organizer.objects.filter(event = event, 
-                                    profile__managers = user).exists():
+                                    profile__managers = user, is_creator = True).exists():
         return redirect('index')
     if step == 'tickets':
         tickets = Ticket.objects.filter(event = event, is_deleted = False).order_by('order')
@@ -2663,12 +2663,11 @@ def export(request, params, user):
         return json_response(response)
     event = Event.objects.get(id = params['id'])
     # Check if user has permission for the event
-    if not Organizer.objects.filter(event = event, 
-                                    profile__managers = user).exists():
+    if not Organizer.objects.filter(event = event, profile__managers = user, is_creator = True).exists():
         response = {
             'status':'FAIL',
-            'error':'NOT_A_MANAGER',
-            'message':'You don\'t have permission for the event.'
+            'error':'NOT_PRIMARY_ORGANIZER',
+            'message':'Only the primary organizer of an event can export the guest list.'
         }
         return json_response(response)
     # Get all successful purchases
