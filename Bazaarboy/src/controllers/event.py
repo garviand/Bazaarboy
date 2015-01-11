@@ -355,7 +355,7 @@ def invite(request, event, user):
                                     profile__managers = user).exists():
         return redirect('index')
     client = Mandrill(MANDRILL_API_KEY)
-    sentInvites = Invite.objects.filter(event = event, is_sent = True).order_by('-sent_at')
+    sentInvites = Invite.objects.filter(event = event, is_sent = True, profile__managers = user).order_by('-sent_at')
     for invt in sentInvites:
         opens = 0
         totalOpens = 0

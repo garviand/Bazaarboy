@@ -26,9 +26,8 @@ html(lang="en")
                     div#sidebar-logo
                         a(href="{% url index %}").clearfix
                             div.logo.left
-                                img.absolute-center(src="{{ STATIC_URL }}images/logo.png")
-                            div.text.left.hide-for-medium-only
-                                | Bazaarboy
+                                img.hide-for-medium-only(src="{{ STATIC_URL }}images/logo_radiating.png")
+                                img.small-logo.show-for-medium-only(src="{{ STATIC_URL }}images/big_logo_radiating.png")
                     block sidebar
                     +sidebarItem('ss-login')(href="{% url user:logout %}")
                         | Log Out

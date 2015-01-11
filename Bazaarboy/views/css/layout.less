@@ -60,6 +60,7 @@ div#wrapper-main {
 /* Sidebar */
 
 div#wrapper-sidebar {
+    overflow: hidden;
     div#sidebar-logo {
         margin-bottom: 11px;
 
@@ -71,7 +72,8 @@ div#wrapper-sidebar {
             display: block;
             width: @sidebar-width - 10px * 2;
             height: @top-height - 10px * 2;
-            margin: 10px;
+            position: relative;
+            top: -5px;
 
             @media @media_medium {
                 width: @sidebar-width-collapsed;
@@ -80,26 +82,16 @@ div#wrapper-sidebar {
                 border: none;
             }
 
-            @logo-size: @top-height - 10px * 2 - 3px * 2;
+            @logo-size: @top-height - 10px * 2 - 3px * 100;
 
             div.logo {
                 position: relative;
-                width: @logo-size;
-                height: @logo-size;
-
-                @media @media_medium {
-                    width: @sidebar-width-collapsed;
-                    height: @top-height;
-                }
-
-                img {
-                    width: 24px;
-                    height: 24px;
-
-                    @media @media_medium {
-                        width: 30px;
-                        height: 30px;
-                    }
+                width: @sidebar-width - 10px * 2;
+                height: @top-height - 10px * 2;
+                img.small-logo{
+                    position: relative;
+                    left: -2px;
+                    top: 3px;
                 }
             }
 
@@ -123,14 +115,16 @@ div#wrapper-sidebar {
     div.create-event, div.launch-event {
         padding: 6px 16px;
         padding-top: 0;
+        position: relative;
+        z-index: 110;
 
         @media @media_medium {
             padding: 6px 12px;
         }
 
         div.primary-btn {
-            margin: 12px 0;
             margin-bottom: 20px;
+            margin-top: 20px;
             padding-top: 11px;
             padding-bottom: 11px;
             font-size: 14px;
