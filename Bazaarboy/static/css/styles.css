@@ -8228,6 +8228,9 @@ div#raffle-modal div.empty-state-container div.empty-state-content div.close-lau
   color: #faa638;
   font-weight: normal;
 }
+#wrapper-sidebar form.list_search {
+  position: relative;
+}
 #wrapper-sidebar div.checkin_numbers {
   width: 100%;
   text-align: center;
