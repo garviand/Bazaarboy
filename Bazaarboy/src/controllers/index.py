@@ -87,6 +87,9 @@ def index(request, params, user):
     pastEvents = pastEvents.filter()[:10]
     pastEvents = list(pastEvents)
     for i in range(0, len(pastEvents)):
+        pastEvents[i].creator = True
+        if not Organizer.objects.filter(event = pastEvents[i], profile__managers = user, is_creator = True).exists():
+            pastEvents[i].creator = False
         stats = Purchase.objects.filter(Q(checkout = None) | 
                                         Q(checkout__is_charged = True, 
                                           checkout__is_refunded = False), 
