@@ -20,6 +20,13 @@ BBOY_EVENT_CATEGORIES = [
     'Nightlife', 'Charity', 'Other'
 ]
 
+TIME_ZONE_CHOICES = (
+    ('-0800', 'Pacific Time'),
+    ('-0700', 'Mountain Time'),
+    ('-0600', 'Central Time'),
+    ('-0500', 'Eastern Time'),
+)
+
 # Google
 
 GOOGLE_MAPS_KEY = 'AIzaSyAasW6vqPCn18g6UMaFWV90qGMSo6pErwo'

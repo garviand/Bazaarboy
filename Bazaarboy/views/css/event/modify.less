@@ -64,6 +64,23 @@ div#event-modify-basics {
             font-style: normal;
             font-weight: bold;
         }
+        div.show-tz-container{
+            font-size: 12px;
+            margin-top: 10px;
+            a{
+                color: @blue;
+            }
+        }
+        .tz-select{
+            display: none;
+            &.active{
+                display: block !important;
+            }
+            a.cancel-timezone{
+                color: @blue;
+                font-size: 12px;
+            }
+        }
         div.input-container{
             .sp-replacer{
                 width: 35% !important;

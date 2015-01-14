@@ -37,7 +37,7 @@ module.exports = (grunt) ->
                     'Bazaarboy/static/js/libraries/foundation.min.js'
                     'Bazaarboy/static/js/libraries/highcharts.js'
                     'Bazaarboy/static/js/libraries/moment.min.js'
-                    'Bazaarboy/static/js/libraries/moment.timezone.min.js'
+                    'Bazaarboy/static/js/libraries/moment-timezone.min.js'
                     'Bazaarboy/static/js/libraries/moment.timezone.data.js'
                     'Bazaarboy/static/js/libraries/misc.js'
                 ]

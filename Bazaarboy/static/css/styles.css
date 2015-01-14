@@ -9848,6 +9848,23 @@ div#event-modify-basics form.event-modify span.taken {
   font-style: normal;
   font-weight: bold;
 }
+div#event-modify-basics form.event-modify div.show-tz-container {
+  font-size: 12px;
+  margin-top: 10px;
+}
+div#event-modify-basics form.event-modify div.show-tz-container a {
+  color: #4963e4;
+}
+div#event-modify-basics form.event-modify .tz-select {
+  display: none;
+}
+div#event-modify-basics form.event-modify .tz-select.active {
+  display: block !important;
+}
+div#event-modify-basics form.event-modify .tz-select a.cancel-timezone {
+  color: #4963e4;
+  font-size: 12px;
+}
 div#event-modify-basics form.event-modify div.input-container {
   border: #d4d4d4 thin solid;
   padding: 12px;

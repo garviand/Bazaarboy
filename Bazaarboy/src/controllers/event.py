@@ -129,6 +129,7 @@ def modify(request, id, step, params, user):
     if not Organizer.objects.filter(event = event, 
                                     profile__managers = user, is_creator = True).exists():
         return redirect('index')
+    tzChoices = TIME_ZONE_CHOICES
     if step == 'tickets':
         tickets = Ticket.objects.filter(event = event, is_deleted = False).order_by('order')
         cheapest = float('inf')

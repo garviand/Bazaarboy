@@ -28,8 +28,14 @@ Bazaarboy.event.modify.basics =
                 console.log('Invalid slug')
         else
             save_data.slug = 'None'
+        useTimezone = false
+        if ($('div.tz-select').hasClass('active') and autoSave is false)
+            useTimezone = true
         if save_data.start_date.trim().length != 0 and save_data.start_time.trim().length != 0 and moment(save_data.start_date, 'MM/DD/YYYY').isValid() and moment(save_data.start_time, 'h:mm A').isValid()
+            tzOffset = $('select[name=tz]').val()
             start_time = moment(save_data.start_date + ' ' + save_data.start_time, 'MM/DD/YYYY h:mm A').utc().format('YYYY-MM-DD HH:mm:ss')
+            if useTimezone
+                start_time = moment(save_data.start_date + ' ' + save_data.start_time + ' ' + tzOffset, 'MM/DD/YYYY h:mm A Z').utc().format('YYYY-MM-DD HH:mm:ss')
         else
             start_time = ''
             $('div#event-modify-basics div.status').html 'Start Time is Invalid'
@@ -44,6 +50,8 @@ Bazaarboy.event.modify.basics =
                 $('div#event-modify-basics div.status').html 'End Time is Invalid'
                 return
             end_time = moment(save_data.end_date + ' ' + save_data.end_time, 'MM/DD/YYYY h:mm A').utc().format('YYYY-MM-DD HH:mm:ss')
+            if useTimezone
+                end_time = moment(save_data.end_date + ' ' + save_data.end_time + ' ' + tzOffset, 'MM/DD/YYYY h:mm A Z').utc().format('YYYY-MM-DD HH:mm:ss')
         $('div#event-modify-basics div.status').html 'Saving...'
         @save
             id: eventId
@@ -101,6 +109,15 @@ Bazaarboy.event.modify.basics =
             return
         return
     init: () ->
+        # TIMEZONE
+        $('div.show-tz-container a.show-timezone').click () ->
+            $('div.show-tz-container').addClass 'hide'
+            $('div.tz-select').addClass 'active'
+            return
+        $('div.tz-select a.cancel-timezone').click () ->
+            $('div.show-tz-container').removeClass 'hide'
+            $('div.tz-select').removeClass 'active'
+            return
         # COLOR PICKER
         $('input[name=colorpicker]').spectrum
             preferredFormat: "hex"

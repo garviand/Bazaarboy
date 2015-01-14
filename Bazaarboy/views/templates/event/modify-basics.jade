@@ -106,6 +106,24 @@ block content
                                 div.small-8.columns.input-note.text-right optional
                             input.field(type="text", name="end_time", value="{{ event.end_time|date:'g:i A' }}", placeholder="ex. 7:00 PM")
                 div.row
+                    div.medium-10.medium-offset-2.columns
+                        div.show-tz-container
+                            div 
+                                a.show-timezone(href='javascript:;') Select A Timezone
+                                | {% get_current_timezone as tz_name %} - Current: {{ tz_name }}
+                        div.tz-select
+                            div.row
+                                div.small-12
+                                    select(name="tz")
+                                        {% for choice in tzChoices %}
+                                        option(value='{{ choice.0 }}') {{ choice.1 }}
+                                        {% endfor %}
+                                    div.row
+                                        div.small-12.medium-8.columns
+                                            small Note: Once saved, all times will appear in your computers timezone.
+                                        div.small-12.medium-4.columns.text-right
+                                            a.cancel-timezone(href='javascript:;') Cancel, Use My Current Timezone
+                div.row
                     div.small-12.columns.section-header
                         div.number 3
                         div.title Location
