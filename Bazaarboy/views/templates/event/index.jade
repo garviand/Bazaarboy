@@ -525,14 +525,14 @@ block body
                                     //- Short version
                                     | {% if event.end_time|shouldShortenEndTime:event.start_time %}
                                     div.day-name {{ event.start_time|date:'l' }}
-                                    div.time{{ event.start_time|date:'g:iA' }} - {{ event.end_time|date:'g:iA' }}
+                                    div.time{{ event.start_time|date:'g:iA' }} - {{ event.end_time|date:'g:iA e' }}
                                     | {% else %}
                                     //- Long version
-                                    | {{ event.start_time|date:'M. jS g:iA' }} to {{ event.end_time|date:'M. jS g:iA' }}
+                                    | {{ event.start_time|date:'M. jS g:iA' }} to {{ event.end_time|date:'M. jS g:iA e' }}
                                     | {% endif %}
                                     | {% else %}
                                     div.day-name {{ event.start_time|date:'l' }}
-                                    div.time{{ event.start_time|date:'g:iA' }}
+                                    div.time{{ event.start_time|date:'g:iA e' }}
                                     | {% endif %}
                                     | {% endspaceless %}
                         hr
