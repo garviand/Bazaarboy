@@ -376,7 +376,7 @@ def invite_details(request, invite, user):
         return redirect('index')
     invt = Invite.objects.get(id = invite)
     client = Mandrill(MANDRILL_API_KEY)
-    results = client.messages.search(query='u_invite_id:' + settings.INVITATION_PREFIX + '-' + str(invt.id))
+    results = client.messages.search(query='u_invite_id:' + settings.INVITATION_PREFIX + '-' + str(invt.id), limit = 1000)
     totalOpens = 0
     totalClicks = 0
     for email in results:
