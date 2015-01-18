@@ -360,7 +360,7 @@ def invite(request, event, user):
     for invt in sentInvites:
         opens = 0
         totalOpens = 0
-        result = client.messages.search(query='u_invite_id:'  + settings.INVITATION_PREFIX + '-' + str(invt.id))
+        result = client.messages.search(query='u_invite_id:'  + settings.INVITATION_PREFIX + '-' + str(invt.id), limit = 1000)
         for email in result:
             opens += email['opens']
             if email['opens'] > 0:
@@ -544,7 +544,7 @@ def preview_invite(request, invite, user):
     alreadyInvited = 0
     invitedList = []
     client = Mandrill(MANDRILL_API_KEY)
-    results = client.messages.search(query='u_invite_event_id:' + settings.INVITATION_PREFIX + '-' + str(invite.event.id))
+    results = client.messages.search(query='u_invite_event_id:' + settings.INVITATION_PREFIX + '-' + str(invite.event.id), limit = 1000)
     for result in results:
         invitedList.append(result['email'].lower())
     for lt in invite.lists.all():
@@ -590,7 +590,7 @@ def send_invite(request, params, user):
     alreadyInvited = 0
     invitedList = []
     client = Mandrill(MANDRILL_API_KEY)
-    results = client.messages.search(query='u_invite_event_id:' + settings.INVITATION_PREFIX + '-' + str(invite.event.id))
+    results = client.messages.search(query='u_invite_event_id:' + settings.INVITATION_PREFIX + '-' + str(invite.event.id), limit = 1000)
     for result in results:
         invitedList.append(result['email'].lower())
     for lt in invite.lists.all():
