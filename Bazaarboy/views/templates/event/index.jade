@@ -708,18 +708,28 @@ block body
                                 input(type="text", name="state", placeholder="State")
                             div.small-12.medium-3.columns
                                 input(type="text", name="zip", placeholder="Zip")
-                        hr.payment-container.hide
-                        form#payment-form
-                            div.middle.collapse.row.payment-container.hide
+                        form#payment-form.hide
+                            hr.payment-container
+                            div.row
+                                div.small-12.columns
+                                    div.payment-title Payment Info
+                            div.middle.collapse.row.payment-container
                                 div.small-12.medium-12.columns.cc-container
-                                    input(type="text", size="20", data-stripe="number", placeholder="Card Number")
-                            div.middle.collapse.row.payment-container.hide
+                                    input(type="text", maxlength="20", data-stripe="number", placeholder="Card Number")
+                            div.middle.collapse.row.payment-container
                                 div.small-12.medium-4.columns
-                                    input(type="text", size="4", data-stripe="cvc", placeholder="CVC")
+                                    input(type="text", maxlength="4", data-stripe="cvc", placeholder="CVC")
                                 div.small-12.medium-4.columns
-                                    input(type="text", size="2", data-stripe="exp-month", placeholder="Month (MM)")
+                                    input(type="text", maxlength="2", data-stripe="exp-month", placeholder="Month (MM)")
                                 div.small-12.medium-4.columns
-                                    input(type="text", size="4", data-stripe="exp-year", placeholder="Year (YYYY)")
+                                    input(type="text", maxlength="4", data-stripe="exp-year", placeholder="Year (YYYY)")
+                            div.row
+                                div.small-12.columns
+                                    div.credit-cards
+                                        img(src="{{ STATIC_URL }}images/cc/visa.png")
+                                        img(src="{{ STATIC_URL }}images/cc/mastercard.png")
+                                        img(src="{{ STATIC_URL }}images/cc/discover.png")
+                                        img(src="{{ STATIC_URL }}images/cc/americanexpress.png")
                         {% if promos.count > 0 %}
                         div.bottom
                             div.row.collapse.start-promo
@@ -730,7 +740,7 @@ block body
                                     input.promo-input(type="text", name="promos", placeholder="Promo Code (applies on confirm)")
                         {% endif %}
             div#tickets-footer.row
-                div#tickets-subtotal.small-12.small-only-text-center.medium-8.columns
+                div#tickets-subtotal.small-12.small-only-text-center.medium-7.columns
                     | Subtotal | $
                     span.total 0
                     span.fee.hide  + Fee
@@ -740,8 +750,8 @@ block body
                     span.plural s
                     div.issues
                         a.issue-btn(href="javascript:;") Issues Purchasing?
-                div.small-12.medium-4.columns
-                    a#tickets-confirm.primary-btn(href="javascript:;") Confirm RSVP
+                div.small-12.medium-5.columns
+                    a#tickets-confirm.primary-btn.btn.full-btn(href="javascript:;") Confirm RSVP
 
         div#wrapper-overlay.hide
 

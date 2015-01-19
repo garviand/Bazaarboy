@@ -9699,6 +9699,15 @@ div#tickets div#tickets-body div#tickets-canvas div.ticket div.ticket-bottom div
 div#tickets div#tickets-details {
   width: 100%;
 }
+div#tickets div#tickets-details div.payment-title {
+  width: 100%;
+  padding: 20px 0;
+  padding-top: 0;
+  font-size: 14px;
+  font-weight: 600;
+  text-align: center;
+  text-transform: uppercase;
+}
 div#tickets div#tickets-details div.title {
   width: 100%;
   padding: 20px 0;
@@ -9730,6 +9739,9 @@ div#tickets div#tickets-details div.middle .cc-container {
   div#tickets div#tickets-details div.middle .columns:last-child {
     padding-left: 7px;
   }
+}
+div#tickets div#tickets-details div.credit-cards img {
+  margin-right: 5px;
 }
 div#tickets div#tickets-details div.bottom div.start-promo {
   padding-bottom: 20px;

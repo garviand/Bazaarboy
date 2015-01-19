@@ -81,22 +81,42 @@
         $('div#tickets-subtotal span.plural').removeClass('hide');
       }
     },
-    stripeResponseHandler: function(status, response) {
+    stripeResponseHandler: function(status, response, total) {
       var _this = this;
       if (status === 200) {
-        Bazaarboy.post('payment/charge/', {
-          checkout: this.currentCheckout,
-          stripe_token: response.id
-        }, function(response) {
-          if (response.status === 'OK') {
-            _this.completePurchase(response.tickets);
+        swal({
+          title: "Complete Purchase",
+          text: "Ticket Price + Fees = $" + (total / 100).toFixed(2),
+          type: "success",
+          showCancelButton: true,
+          confirmButtonText: "Purchase",
+          closeOnConfirm: true
+        }, function(isConfirm) {
+          if (isConfirm) {
+            return Bazaarboy.post('payment/charge/', {
+              checkout: _this.currentCheckout,
+              stripe_token: response.id
+            }, function(response) {
+              console.log(response);
+              if (response.status === 'OK') {
+                _this.completePurchase(response.tickets);
+              } else {
+                alert(response.message);
+                $('a#tickets-confirm').html('Confirm RSVP');
+              }
+            });
           } else {
-            alert(response.message);
-            $('a#tickets-confirm').html('Confirm RSVP');
+            return $('a#tickets-confirm').html('Confirm RSVP');
           }
         });
       } else {
-        console.log(response);
+        swal({
+          title: "Checkout Error",
+          text: response.error.message,
+          type: "warning"
+        }, function() {
+          $('a#tickets-confirm').html('Confirm RSVP');
+        });
       }
     },
     purchase: function() {
@@ -200,40 +220,38 @@
               a = (1 + 0.05) * total + 50;
               b = (1 + 0.029) * total + 30 + 1000;
               total = Math.round(Math.min(a, b));
-              return StripeCheckout.open({
-                key: response.publishable_key,
-                address: false,
-                amount: total,
-                currency: 'usd',
-                name: response.purchase.event.name,
-                description: 'Tickets for ' + response.purchase.event.name,
-                panelLabel: 'Checkout',
-                email: params.email,
-                image: response.logo,
-                closed: function() {
-                  $('a#tickets-confirm').html('Confirm RSVP');
-                },
-                token: function(token) {
-                  Bazaarboy.post('payment/charge/', {
-                    checkout: response.purchase.checkout,
-                    stripe_token: token.id
-                  }, function(response) {
-                    if (response.status === 'OK') {
-                      _this.completePurchase(response.tickets);
-                    } else {
-                      alert(response.message);
-                    }
-                  });
-                }
-              });
               /*
-              @currentCheckout = response.purchase.checkout
-              Stripe.setPublishableKey response.publishable_key
-              Stripe.card.createToken $("form#payment-form"), (status, response) =>
-                  @stripeResponseHandler status, response
-                  return
+              StripeCheckout.open
+                  key: response.publishable_key
+                  address: false
+                  amount: total
+                  currency: 'usd'
+                  name: response.purchase.event.name
+                  description: 'Tickets for ' + response.purchase.event.name
+                  panelLabel: 'Checkout'
+                  email: params.email
+                  image: response.logo
+                  closed: () ->
+                      $('a#tickets-confirm').html 'Confirm RSVP'
+                      return
+                  token: (token) =>
+                      Bazaarboy.post 'payment/charge/', 
+                          checkout: response.purchase.checkout
+                          stripe_token: token.id
+                      , (response) =>
+                          if response.status is 'OK'
+                              @completePurchase(response.tickets)
+                          else
+                              alert response.message
+                          return
+                      return
               */
 
+              _this.currentCheckout = response.purchase.checkout;
+              Stripe.setPublishableKey(response.publishable_key);
+              Stripe.card.createToken($("form#payment-form"), function(status, response) {
+                _this.stripeResponseHandler(status, response, total);
+              });
             }
           }
         });
@@ -772,18 +790,18 @@
             $(this).parents('.ticket').find('div.ticket-middle').slideUp(100);
           }
           $('.address-container').addClass('hide');
-          $('.payment-container').addClass('hide');
+          $('form#payment-form').addClass('hide');
+          $('a#tickets-confirm').html('Confirm RSVP');
           scope.requiresAddress = false;
           $('div.ticket').each(function() {
             if ($(this).data('address') === 'yes' && $(this).hasClass('active')) {
               $('.address-container').removeClass('hide');
-              return scope.requiresAddress = true;
+              scope.requiresAddress = true;
             }
-            /*
-            if parseInt($(this).data('price')) != 0 and $(this).hasClass('active')
-                $('.payment-container').removeClass 'hide'
-            */
-
+            if (parseInt($(this).data('price')) !== 0 && $(this).hasClass('active')) {
+              $('form#payment-form').removeClass('hide');
+              return $('a#tickets-confirm').html('Purchase');
+            }
           });
           scope.updateSubtotal();
         }
