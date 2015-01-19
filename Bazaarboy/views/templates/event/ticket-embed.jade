@@ -82,6 +82,14 @@ append head
             color: {{ event.color_dark }} !important;
         }
 
+        div#tickets-embed div#tickets-details input:focus{
+            border-color: {{ event.color_dark }} !important;
+        }
+
+        div#tickets-embed div#tickets-details input:focus::-webkit-input-placeholder {
+            color: {{ event.color_dark }} !important;
+        }
+
         div.event-rsvp a#rsvp-button{
             color: #FFF;
             background: {{ event.color }} !important;

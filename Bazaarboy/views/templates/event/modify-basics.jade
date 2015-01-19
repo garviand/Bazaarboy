@@ -7,7 +7,7 @@ append head
 
 block sidebar
     div.launch-event(class="{% if event.is_launched %}launched{% endif %}", data-event-id="{{ event.id }}")
-        div.primary-btn.hide-for-medium-only
+        div.btn.secondary-btn.hide-for-medium-only
             | <span class="plus">&nbsp;</span>
             span.launch-text
                 {% if event.is_launched %}
@@ -15,7 +15,7 @@ block sidebar
                 {% else %}
                 | Launch Event
                 {% endif %}
-        div.primary-btn.show-for-medium-only
+        div.btn.secondary-btn.show-for-medium-only
             | <span class="plus">+</span>
     +sidebarItem('ss-file')(href="{% url event:modify id 'basics' %}", class="selected")
         | Basic Info
@@ -144,7 +144,7 @@ block content
                     div.status.medium-3.text-right.columns
                         | Saved
                     div.medium-5.columns.end
-                        input.blue-btn(type="submit", value="Save and Continue")
+                        input.btn.full-btn.secondary-btn(type="submit", value="Save and Continue")
                 input(type="hidden", name="latitude", value="{{ event.latitude }}")
                 input(type="hidden", name="longitude", value="{{ event.longitude }}")
 

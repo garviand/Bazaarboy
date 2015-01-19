@@ -13,8 +13,8 @@
       $('div#edit-ticket div.step-2 span.type').html('New');
       $('div#edit-ticket input').val('');
       $('div#edit-ticket textarea').val('');
-      $('div#edit-ticket div.info a.blue-btn').parent().removeClass('columns').addClass('hide');
-      $('div#edit-ticket div.info input.primary-btn').val('Add').parent().addClass('medium-centered').removeClass('end');
+      $('div#edit-ticket div.info a.btn').parent().removeClass('columns').addClass('hide');
+      $('div#edit-ticket div.info input.btn').val('Add').parent().addClass('medium-centered').removeClass('end');
       this.initDateTimeAutoComplete($('div#edit-ticket form'));
       $('div#edit-ticket').fadeIn(300);
     },
@@ -104,8 +104,8 @@
           $('div#edit-ticket textarea[name=end_date]').val(endDate);
           $('div#edit-ticket textarea[name=end_time]').val(endTime);
           _this.initDateTimeAutoComplete($('div#edit-ticket'));
-          $('div#edit-ticket div.info a.blue-btn').parent().addClass('columns').removeClass('hide');
-          $('div#edit-ticket div.info input.primary-btn').val('Save').parent().removeClass('medium-centered').addClass('end');
+          $('div#edit-ticket div.info a.btn').parent().addClass('columns').removeClass('hide');
+          $('div#edit-ticket div.info input.btn').val('Save').parent().removeClass('medium-centered').addClass('end');
           $('div#edit-ticket').attr('data-id', ticket).fadeIn(300);
           $('body').animate({
             scrollTop: 0
@@ -442,7 +442,7 @@
           });
         });
       });
-      $('div#edit-ticket a.blue-btn').click(function() {
+      $('div#edit-ticket a.btn').click(function() {
         var ticketId;
         ticketId = $('div#edit-ticket').attr('data-id');
         if (confirm('Are you sure you want to delete this ticket?')) {

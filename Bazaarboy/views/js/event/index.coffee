@@ -285,6 +285,7 @@ Bazaarboy.event.index =
                     obj.index = opt.index()
                     obj.placeholder.text obj.val
                     scope.ticketId = opt.find('a').data('id')
+                    $("form.hero-ticket-form button[type=submit]").click()
                     return
                 return
             getValue: ->

@@ -12,6 +12,19 @@ html, body {
     -webkit-font-smoothing: antialiased;
 }
 
+body{
+    font-size: 14px;
+}
+
+a{
+    color: @orange;
+    font-weight: 500;
+    transition: color .125s;
+    &:hover{
+        color: @light-orange;
+    }
+}
+
 div#wrapper-top {
     position: relative;
     height: @top-height;
@@ -122,13 +135,8 @@ div#wrapper-sidebar {
             padding: 6px 12px;
         }
 
-        div.primary-btn {
+        div.btn {
             margin-bottom: 20px;
-            margin-top: 20px;
-            padding-top: 11px;
-            padding-bottom: 11px;
-            font-size: 14px;
-            font-weight: 600;
             text-transform: uppercase;
 
             @media @media_medium {
@@ -338,7 +346,7 @@ div.sidebar-item-text {
 div#main-header {
     width: 100%;
     height: @top-height;
-    background: @grey;
+    background: @light-grey;
 
     div.header-title {
         div.icon {
@@ -354,9 +362,8 @@ div#main-header {
         div.text {
             height: @top-height;
             padding: (@top-height - 18px) / 2 0;
-            font-size: 18px;
-            font-weight: 600;
             text-transform: uppercase;
+            .headline;
 
             span.sub {
                 color: #999;

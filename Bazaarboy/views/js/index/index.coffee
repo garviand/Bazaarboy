@@ -39,7 +39,7 @@ Bazaarboy.index.index =
                         fontFamily: 'helvetica'
                 credits:
                     enabled: false
-                colors: ["#4963E4", "#00BD84"]
+                colors: ["#C57724", "#00BD84"]
                 title:
                     text: ''
                 legend:
@@ -47,7 +47,7 @@ Bazaarboy.index.index =
                 tooltip:
                     formatter: () ->
                         return Highcharts.dateFormat('%b %e', new Date(this.x)) + '<br /><b>' + this.y + ' RSVPs</b>'
-                    backgroundColor: '#4963E4'
+                    backgroundColor: '#C57724'
                     borderWidth: 0
                     dateTimeLabelFormats:
                         millisecond: '%b %e'

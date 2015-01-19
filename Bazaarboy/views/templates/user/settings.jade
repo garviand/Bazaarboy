@@ -8,9 +8,9 @@ append head
 
 block sidebar
     div.create-event(data-profile-id="{{ profiles.0.id }}")
-        div.primary-btn.hide-for-medium-only
+        div.secondary-btn.btn.hide-for-medium-only
             | <span class="plus">+</span> Create Event
-        div.primary-btn.show-for-medium-only
+        div.secondary-btn.secondary-btn.show-for-medium-only
             | <span class="plus">+</span>
     +sidebarItem('ss-newspaper')(href="{% url index %}")
         | Events

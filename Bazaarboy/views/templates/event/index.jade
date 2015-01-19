@@ -88,6 +88,14 @@ append head
             color: {{ event.color_dark }} !important;
         }
 
+        div#tickets div#tickets-details input:focus{
+            border-color: {{ event.color_dark }} !important;
+        }
+
+        div#tickets div#tickets-details input:focus::-webkit-input-placeholder {
+            color: {{ event.color_dark }} !important;
+        }
+
         div.event-rsvp a#rsvp-button{
             color: #FFF;
             background: {{ event.color }} !important;
@@ -172,7 +180,7 @@ append head
             color: {{ event.color}} !important;
         }
 
-        .custom div.contact-organizer a, div.add-organizer a{
+        .custom div.contact-organizer a{
             color: {{ event.color}} !important;
         }
 
@@ -286,7 +294,7 @@ block body
                     | &nbsp;invitations!
                 div.medium-12.columns.close
                     a.blue-btn.close-invite-modal Back To List
-    
+    {% if design %}
     div#embed-code-modal.reveal-modal.medium(data-reveal, style="z-index: 10000; display:block;")
         div.row
             div.medium-12.columns.code-container
@@ -296,7 +304,7 @@ block body
         div.row
             div.medium-12.columns.iframe-container
                 iframe#ticket-embed-iframe(src="{% url event:ticket-embed event.id %}", width="100%", height="100", frameborder="0", scrolling="auto")
-                
+    {% endif %}            
 
     div#contact-organizer-modal.reveal-modal.medium(data-reveal)
         form.contact-organizer-form(name="contact-organizer", data-abide)
@@ -461,7 +469,7 @@ block body
                 {% endif %}
                 {% if tickets|length > 0 %}
             div.event-launch.medium-2.columns.clearfix
-                a.embed-code-btn.blue-btn(href="javascript:;") Embed Code
+                a.embed-code-btn.secondary-btn-inverse.btn(href="javascript:;") Embed Code
                 {% endif %}
             div.event-launch.medium-2.columns.clearfix.right
                 a.back-btn.secondary-btn(href="{{ event|eventUrl }}?preview") Preview Event
@@ -505,9 +513,9 @@ block body
                         form.upload_cover
                             div.row
                                 div.small-12.medium-6.columns
-                                    a.blue-btn-inverse.upload_cover_btn(href="javascript:;", class="{% if event.cover %}hidden{% endif %}") Upload Cover Image
+                                    a.btn.full-btn.secondary-btn-inverse.upload_cover_btn(href="javascript:;", class="{% if event.cover %}hidden{% endif %}") Upload Full Width Image
                                 div.small-12.medium-6.columns.end
-                                    a.blue-btn-inverse.delete_cover_btn(href="javascript:;", class="{% if not event.cover %}hidden{% endif %}") Delete Cover Image
+                                    a.btn.full-btn.secondary-btn-inverse.delete_cover_btn(href="javascript:;", class="{% if not event.cover %}hidden{% endif %}") Delete Cover Image
                                     input.hidden(type="file", name="image_file")
                                     {% csrf_token %}
             {% endif %}
@@ -586,7 +594,7 @@ block body
                         {% elif design %}
                         div.row.add-organizer
                             div.small-12.columns
-                                a.add-organizer-btn(href="javascript:;") Add Organizer
+                                a.btn.primary-btn.full-btn.add-organizer-btn(href="javascript:;") Add Organizer
                         {% endif %}
                         div#event-sponsors.row
             
@@ -601,7 +609,7 @@ block body
                             div.save-status.medium-4.columns.text-center
                                 | Saved
                             div.medium-4.end.columns
-                                a.save.primary-btn(href="javascript:;") Save description
+                                a.save.secondary-btn.btn(href="javascript:;") Save description
                     {% endif %}
 
         div#event-footer

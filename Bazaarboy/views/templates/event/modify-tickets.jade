@@ -6,7 +6,7 @@ append head
 
 block sidebar
     div.launch-event(class="{% if event.is_launched %}launched{% endif %}", data-event-id="{{ event.id }}")
-        div.primary-btn.hide-for-medium-only
+        div.btn.secondary-btn.hide-for-medium-only
             | <span class="plus">&nbsp;</span>
             span.launch-text
                 {% if event.is_launched %}
@@ -42,7 +42,7 @@ block content
             div#action-canvas.small-12.columns(class="{% if not ticketExists %}hide{% endif %}")
                 div.row
                     div.medium-3.columns.new-ticket
-                        a.new-ticket.primary-btn(href="javascript:;") + New Ticket
+                        a.new-ticket.secondary-btn.btn(href="javascript:;") + New Ticket
             div.empty-state-container(class="{% if ticketExists %}hide{% endif %}")
                 div.row
                     div.medium-5.columns
@@ -53,7 +53,7 @@ block content
                         div.subtext Or add a free RSVP option.
                         div.row
                             div.large-5.medium-7.small-9
-                                a.new-ticket.primary-btn(href="javascript:;") + New Ticket
+                                a.new-ticket.secondary-btn.btn(href="javascript:;") + New Ticket
             div.small-12.columns
                 div#promos.row(class="{% if not ticketExists %}hide {% endif %}{% if rsvp %}hide{% endif %}")
                     div.content
@@ -82,7 +82,7 @@ block content
                                 {% endfor %}
                                 div.add-promo-container.small-12.columns
                                     div.row
-                                        a.add-promo.small-12.medium-3.medium-offset-9.columns.blue-btn(href="javascript:;") + New Promo
+                                        a.add-promo.small-12.medium-3.medium-offset-9.columns.btn(href="javascript:;") + New Promo
                     div.edit.hide
                         div.top.small-12.columns
                             div.inner.row
@@ -138,13 +138,13 @@ block content
                                                 {% endfor %}
                                 div.new-promo-controls.small-12.columns
                                     div.row
-                                        a.save-promo.small-12.medium-3.medium-offset-6.columns.blue-btn(href="javascript:;") Save
-                                        a.cancel-promo.small-12.medium-3.columns.blue-btn(href="javascript:;") Cancel
+                                        a.save-promo.small-12.medium-3.medium-offset-6.columns.primary-btn.btn(href="javascript:;") Save
+                                        a.cancel-promo.small-12.medium-3.columns.primary-btn.btn(href="javascript:;") Cancel
                                 div.edit-promo-controls.small-12.columns.hide
                                     div.row
-                                        a.save-promo.small-12.medium-3.medium-offset-3.columns.blue-btn(href="javascript:;") Save
-                                        a.delete-promo.small-12.medium-3.columns.blue-btn(href="javascript:;") Delete
-                                        a.cancel-promo.small-12.medium-3.columns.blue-btn(href="javascript:;") Cancel
+                                        a.save-promo.small-12.medium-3.medium-offset-3.columns.primary-btn.btn(href="javascript:;") Save
+                                        a.delete-promo.small-12.medium-3.columns.primary-btn.btn(href="javascript:;") Delete
+                                        a.cancel-promo.small-12.medium-3.columns.primary-btn.btn(href="javascript:;") Cancel
             mixin ticket-option(tags)
                 div.ticket-option.row(data-id!= tags ? "{{ ticket.id }}" : "", class!= tags ? "" : "template")
                     div.top.small-12.columns
@@ -154,7 +154,7 @@ block content
                             div.name.medium-7.columns
                                 != tags ? '{{ ticket.name }}' : ''
                             div.action.medium-3.columns
-                                div.secondary-btn Edit/Delete
+                                div.secondary-btn.btn Edit/Delete
                     div.middle.small-12.columns
                         div.inner.small-12.columns
                             div.stats.medium-8.columns
@@ -217,13 +217,13 @@ block content
                                 a(href="javascript:;").action-btn.priced
                                     div.text.absolute-center Priced Ticket
                 div.step-2.hide
-                    div.title.small-12.columns
+                    div.title.headline.small-12.columns
                         div.text 
                             span.ss-tag
                             | &nbsp;
                             span.type New
                             | &nbsp;Ticket Option
-                        div.change-type.secondary-btn Change Type
+                        div.change-type.primary-btn.btn Change Type
                     div.info.small-12.columns
                         form.add-ticket
                             div.row
@@ -266,13 +266,13 @@ block content
                                     input.field(type="text", name="end_time", placeholder="End Time")
                             div.row
                                 div.medium-3.medium-offset-3.small-12.columns.hide
-                                    a.blue-btn(href="javascript:;") Delete
+                                    a.secondary-btn-inverse.btn.full-btn(href="javascript:;") Delete
                                 div.medium-3.medium-centered.small-12.columns
-                                    input.primary-btn(type="submit", value="Add")
+                                    input.secondary-btn.btn.full-btn(type="submit", value="Add")
             div.next-step
                 div.row
                     div.medium-4.medium-centered.columns.end
-                        a.primary-btn.right(href="{% url event:index event.id %}?design") Page Design &gt;
+                        a.secondary-btn.btn.full-btn.right(href="{% url event:index event.id %}?design") Page Design &gt;
 
 append script
     script(src="{{ STATIC_URL }}jQueryUI/jquery-ui.min.js")

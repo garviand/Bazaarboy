@@ -12,11 +12,11 @@ Bazaarboy.event.modify.tickets =
         $('div#edit-ticket div.step-2 span.type').html 'New'
         $('div#edit-ticket input').val ''
         $('div#edit-ticket textarea').val ''
-        $('div#edit-ticket div.info a.blue-btn')
+        $('div#edit-ticket div.info a.btn')
             .parent()
             .removeClass('columns')
             .addClass 'hide'
-        $('div#edit-ticket div.info input.primary-btn').val('Add')
+        $('div#edit-ticket div.info input.btn').val('Add')
             .parent()
             .addClass('medium-centered').removeClass('end')
         @initDateTimeAutoComplete $('div#edit-ticket form')
@@ -94,11 +94,11 @@ Bazaarboy.event.modify.tickets =
               $('div#edit-ticket textarea[name=end_date]').val endDate
               $('div#edit-ticket textarea[name=end_time]').val endTime
               @initDateTimeAutoComplete $('div#edit-ticket')
-              $('div#edit-ticket div.info a.blue-btn')
+              $('div#edit-ticket div.info a.btn')
                   .parent()
                   .addClass('columns')
                   .removeClass 'hide'
-              $('div#edit-ticket div.info input.primary-btn').val('Save')
+              $('div#edit-ticket div.info input.btn').val('Save')
                   .parent()
                   .removeClass('medium-centered').addClass('end')
               $('div#edit-ticket').attr('data-id', ticket).fadeIn 300
@@ -365,7 +365,7 @@ Bazaarboy.event.modify.tickets =
                     return
                 return
             return
-        $('div#edit-ticket a.blue-btn').click () ->
+        $('div#edit-ticket a.btn').click () ->
             ticketId = $('div#edit-ticket').attr 'data-id'
             if confirm 'Are you sure you want to delete this ticket?'
                 Bazaarboy.post 'event/ticket/delete/', {id: ticketId}, (response) ->

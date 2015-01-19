@@ -4,9 +4,9 @@ extends ../layout
 
 block sidebar
     div.create-event(data-profile-id="{{ profiles.0.id }}")
-        div.primary-btn.hide-for-medium-only
+        div.secondary-btn.btn.full-btn.hide-for-medium-only
             | <span class="plus">+</span> Create Event
-        div.primary-btn.show-for-medium-only
+        div.secondary-btn.btn.full-btn.show-for-medium-only
             | <span class="plus">+</span>
     +sidebarItem('ss-newspaper')(href="javascript:;")(class="events-filter events-filter-summary selected")
         | Events
@@ -26,9 +26,9 @@ block header
         div.row.clearfix
             div.icon.left
                 span.ss-newspaper
-            div.text.left
+            div.text.headline.left
                 | Events | 
-                span.sub Events Overview
+                span.sub Overview
     
 block content
     mixin draftEvent()
@@ -38,15 +38,15 @@ block content
                     div.draft-event-date
                         div.month {{ event.start_time|date:'M' }}
                         div.day {{ event.start_time|date:'j' }}
-                    div.draft-event-title.large-7.medium-6.small-12.columns
+                    div.draft-event-title.headline.large-7.medium-6.small-12.columns
                         | {{ event.name }}
                     div.draft-event-view.large-5.medium-6.small-12.columns
                         div.row
                             div.medium-7.small-12.columns.draft-publish
-                                a.primary-btn.launch-draft(href="javascript:;", data-id="{{ event.id }}")  
+                                a.btn.secondary-btn.full-btn.launch-draft(href="javascript:;", data-id="{{ event.id }}")  
                                     | Launch Event
                             div.medium-5.small-6.columns
-                                a.secondary-btn.delete-draft(href="javascript:;", data-id="{{ event.id }}") 
+                                a.btn.secondary-btn-inverse.delete-draft(href="javascript:;", data-id="{{ event.id }}") 
                                     | Delete
                 div.info.small-12.columns
                     div.inner.row
@@ -100,12 +100,12 @@ block content
                     div.current-event-date
                         div.month {{ event.start_time|date:'M' }}
                         div.day {{ event.start_time|date:'j' }}
-                    div.current-event-title.large-9.medium-8.small-12.columns
+                    div.current-event-title.headline.large-9.medium-8.small-12.columns
                         | {{ event.name }}
                     div.current-event-view.large-3.medium-4.small-12.columns
                         div.row
                             div.medium-10.medium-offset-2.columns
-                                a.secondary-btn(href="{{ event|eventUrl }}") 
+                                a.btn.secondary-btn(href="{{ event|eventUrl }}") 
                                     | View Event
                 div.info.small-12.columns
                     div.inner.row
@@ -184,12 +184,12 @@ block content
                     div.past-event-date
                         div.month {{ event.start_time|date:'M' }}
                         div.day {{ event.start_time|date:'j' }}
-                    div.past-event-title.large-9.medium-8.small-12.columns
+                    div.past-event-title.headline.large-9.medium-8.small-12.columns
                         | {{ event.name }}
                     div.past-event-view.large-3.medium-4.small-12.columns
                         div.row
                             div.medium-10.medium-offset-2.columns
-                                a.secondary-btn(href="{{ event|eventUrl }}", target="_blank") 
+                                a.btn.secondary-btn(href="{{ event|eventUrl }}", target="_blank") 
                                     | View Event
                 div.info.small-12.columns
                     div.inner.row
@@ -267,13 +267,13 @@ block content
                     div.row
                         div.large-5.medium-7.small-9
                             div.create-event(data-profile-id="{{ profiles.0.id }}")
-                                div.primary-btn
+                                div.btn.secondary-btn.full-btn
                                     | <span class="plus">+</span> Create Event
         {% endif %}
         div.event-tiles-container.summary-events.active
             {% if currentEventsCount > 0 %}
             div.events-overview-title
-                div.title.left
+                div.title.headline.left
                     span.events-count {{ currentEventsCount }}
                     | &nbsp;&nbsp;Current Events
                 div.clearfix &nbsp;
@@ -283,7 +283,7 @@ block content
             {% endif %}
             {% if draftEventsCount > 0 %}
             div.events-overview-title
-                div.title.left
+                div.title.headline.left
                     span.events-count {{ draftEventsCount }}
                     | &nbsp;&nbsp;Draft Events
                     span.pipe &nbsp;|
@@ -295,7 +295,7 @@ block content
             {% endif %}
             {% if pastEventsCount > 0 %}
             div.events-overview-title
-                div.title.left
+                div.title.headline.left
                     span.events-count {{ pastEventsCount }}
                     | &nbsp;&nbsp;Past Events
                     span.pipe &nbsp;|

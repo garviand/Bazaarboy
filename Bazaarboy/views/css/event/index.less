@@ -661,9 +661,6 @@ div#event-header {
         a.primary-btn, a.secondary-btn, a.blue-btn {
             display: block;
             width: 100%;
-            padding-top: 9px;
-            padding-bottom: 11px;
-            color: @white;
         }
 
         div.price {
@@ -714,7 +711,7 @@ div#event-body {
     overflow:hidden;
     box-shadow: 0px 0px 4px rgba(0,0,0,0.25);
     div#event-image-upload{
-        border-right: @grey thin solid;
+        border-right: @light-grey thin solid;
         padding-top: 10px;
         form.upload_cover{
             a{
@@ -996,7 +993,11 @@ div#event-organizers {
     }
 }
 
-div.contact-organizer, div.add-organizer{
+div.add-organizer{
+    margin-top: 20px !important;
+}
+
+div.contact-organizer{
     margin-top: 20px !important;
     a{
         font-size: 13px;
@@ -1060,7 +1061,7 @@ div#event-description {
     > div.actions {
         padding-top: 20px;
 
-        a.primary-btn {
+        a.secondary-btn {
             display: block;
             padding-top: 9px;
             padding-bottom: 11px;
@@ -1186,7 +1187,7 @@ div#tickets {
                     }
                 }
                 div.ticket-top{
-                    background: @grey;
+                    background: @light-grey;
                     border-top-left-radius: 4px;
                     border-top-right-radius: 4px;
                     div.timing-container{
