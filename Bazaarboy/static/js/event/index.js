@@ -615,7 +615,7 @@
           toolbarFixedBox: true,
           placeholder: 'Add Your Event Description Here...'
         });
-        $('a.save.primary-btn').click(function() {
+        $('a.save.secondary-btn').click(function() {
           _this.saveDescription();
         });
         $('div.event-launch a.launch-btn').click(function() {

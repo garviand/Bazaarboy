@@ -516,7 +516,7 @@ Bazaarboy.event.index =
                 imageUpload: rootUrl + 'file/image/upload/'
                 toolbarFixedBox: true
                 placeholder: 'Add Your Event Description Here...'
-            $('a.save.primary-btn').click () =>
+            $('a.save.secondary-btn').click () =>
                 @saveDescription()
                 return
             $('div.event-launch a.launch-btn').click () ->

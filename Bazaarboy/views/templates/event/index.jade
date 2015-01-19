@@ -467,7 +467,7 @@ block body
             div.event-launch.medium-2.columns.clearfix
                 a.right.primary-btn.launch-btn(href="javascript:;") Launch Event
                 {% endif %}
-                {% if tickets|length > 0 %}
+                {% if tickets|length > 0 and event.is_launched %}
             div.event-launch.medium-2.columns.clearfix
                 a.embed-code-btn.secondary-btn-inverse.btn(href="javascript:;") Embed Code
                 {% endif %}
