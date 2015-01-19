@@ -51,7 +51,7 @@ block content
             // CSV UPLOAD
             div.member-add-interface.csv_upload_interface.row.hide
                 div.small-12.medium-9.medium-centered.columns.upload-btn-container
-                    a.upload-csv-btn.blue-btn(href="javascript:;") Upload CSV For Import
+                    a.upload-csv-btn.btn.secondary-btn.full-btn(href="javascript:;") Upload CSV For Import
                 div.small-12.medium-11.medium-centered.columns.csv-info-container.hide
                     div.row
                         div.small-12.medium-8.columns
@@ -60,27 +60,29 @@ block content
                             a.blue-btn.cancel-csv-upload(href='javascript:;') Cancel Upload
                 div.small-12.columns.title_rows.hide
                     div.row
-                        div.blue.small-12.medium-4.columns Choose Field Type
-                        div.small-12.medium-4.columns Row 1
-                        div.small-12.medium-4.columns Row 2
+                        div.blue.small-12.medium-3.columns Choose Field Type
+                        div.small-12.medium-3.columns Row 1
+                        div.small-12.medium-3.columns Row 2
+                        div.small-12.medium-3.columns Row 3
                 div.small-12.columns.upload_rows.hide
                     div.upload_row.template.row.hide
-                        div.choices.small-12.medium-4.columns
+                        div.choices.small-12.medium-3.columns
                             select(name='field')
                                 option(value="none") None
                                 option(value="email") Email
                                 option(value="first_name") First Name
                                 option(value="last_name") Last Name
                                 option(value="note") Note (optional)
-                        div.col.col-1.small-12.medium-4.columns
-                        div.col.col-2.small-12.medium-4.columns
+                        div.col.col-1.small-12.medium-3.columns
+                        div.col.col-2.small-12.medium-3.columns
+                        div.col.col-3.small-12.medium-3.columns
                 div.small-12.columns.csv-controls.hide
                     div.row
                         div.small-12.medium-6.error-message.columns &nbsp;
                         div.small-12.medium-3.columns
-                            a.blue-btn.submit-csv-btn(href="javascript:;") Submit
+                            a.primary-btn.btn.full-btn.submit-csv-btn(href="javascript:;") Submit
                         div.small-12.medium-3.columns
-                            a.blue-btn.cancel-csv-upload(href="javascript:;") Cancel
+                            a.primary-btn.btn.full-btn.cancel-csv-upload(href="javascript:;") Cancel
             // ADD FROM EVENT
             div.member-add-interface.event-add-interface.row.hide
                 div.small-12.medium-12.columns.event-info-container
@@ -96,9 +98,9 @@ block content
                     div.row
                         div.small-12.medium-6.error-message.columns &nbsp;
                         div.small-12.medium-3.columns
-                            a.blue-btn.submit-event-add(href="javascript:;") Confirm
+                            a.primary-btn.btn.full-btn.submit-event-add(href="javascript:;") Confirm
                         div.small-12.medium-3.columns
-                            a.blue-btn-inverse.cancel-event-add(href="javascript:;") Cancel
+                            a.primary-btn.btn.full-btn.cancel-event-add(href="javascript:;") Cancel
             // ADD MANUALLY
             div.member-add-interface.manual-add-interface.row.hide
                 div.small-12.medium-12.columns.manual-add-info-container
@@ -117,7 +119,7 @@ block content
                                 div
                                     textarea(name="note", placeholder="Notes (optional)")
                                 div
-                                    a.blue-btn.add-member-submit(href="javascript:;") Add Member
+                                    a.primary-btn.btn.full-btn.add-member-submit(href="javascript:;") Add Member
 
             // MEMBER LIST
             div.row.list

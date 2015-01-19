@@ -300,8 +300,11 @@ def add_from_event(request, params, user):
     for purchase in purchases:
         if not List_item.objects.filter(_list = lt, email = purchase.owner.email).exists():
             item = List_item(_list = lt, email = purchase.owner.email, first_name = purchase.owner.first_name, last_name = purchase.owner.last_name)
-            item.save()
-            added += 1
+            try:
+                item.save()
+                added += 1
+            except Exception, e:
+                pass
         else:
             duplicates += 1
     response = {

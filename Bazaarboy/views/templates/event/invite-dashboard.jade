@@ -34,7 +34,7 @@ block content
                     div.row
                         div.large-6.medium-7.small-9
                             div.new-list-btn
-                                a(href="{% url event:create-invite event.id %}").primary-btn
+                                a(href="{% url event:create-invite event.id %}").secondary-btn.btn.full-btn
                                     | <span class="plus">+</span> New Invitation
         {% endif %}
         div#invite-dashboard.small-12.columns

@@ -5581,6 +5581,7 @@ div#map-canvas img {
 }
 .field,
 input[type="text"],
+input[type="password"],
 textarea {
   height: auto !important;
   box-shadow: none;
@@ -5595,11 +5596,13 @@ textarea {
 }
 .field:focus,
 input[type="text"]:focus,
+input[type="password"]:focus,
 textarea:focus {
   border-color: #c57724 !important;
 }
 .field:focus::-webkit-input-placeholder,
 input[type="text"]:focus::-webkit-input-placeholder,
+input[type="password"]:focus::-webkit-input-placeholder,
 textarea:focus::-webkit-input-placeholder {
   color: #c57724;
 }
@@ -7304,8 +7307,8 @@ div#wrapper-pricing div#pricing div#signup {
 div#wrapper-pricing div#pricing div#signup input[type=text] {
   border-radius: 4px;
   border: none;
-  padding-top: 22px;
-  padding-bottom: 22px;
+  padding-top: 13px;
+  padding-bottom: 12px;
 }
 div#wrapper-pricing div#pricing div#signup .primary-btn {
   display: block;
@@ -8060,7 +8063,7 @@ div#wrapper-profile-new div.profile-new-container div.profile-steps div.profile-
 }
 div#wrapper-profile-new div.profile-new-container div.profile-steps div.profile-step-btn a.active,
 div#wrapper-profile-new div.profile-new-container div.profile-steps div.profile-step-btn a:hover {
-  background: #F4A534;
+  background: #c57724;
 }
 div#wrapper-profile-new div.profile-new-container div.profile-step {
   display: none;
@@ -8094,8 +8097,6 @@ div#wrapper-profile-new div.profile-new-container div.profile-step div.logo div.
   display: block;
   width: 100%;
   margin-bottom: 10px;
-  padding-top: 11px;
-  padding-bottom: 14px;
   font-size: 15px;
   text-transform: uppercase;
 }
@@ -10390,10 +10391,11 @@ div#wrapper-event-invite div#event-invite div.invitation-back {
   margin-bottom: 30px;
 }
 div#wrapper-event-invite div#event-invite div.invitation-back a {
-  color: #1dbc85;
+  color: #c57724;
 }
 div#wrapper-event-invite div#event-invite label {
   line-height: 1.5em;
+  margin-bottom: 20px;
 }
 div#wrapper-event-invite div#event-invite div.info div.title {
   font-weight: 500;
@@ -10407,7 +10409,7 @@ div#wrapper-event-invite div#event-invite div.info div.title span {
 div#wrapper-event-invite div#event-invite div.info div.title a {
   text-decoration: none !important;
   font-size: 14px;
-  color: #1dbc85;
+  color: #c57724;
 }
 div#wrapper-event-invite div#event-invite div.email {
   border-right: #7a7a7a thin solid;
@@ -10427,12 +10429,12 @@ div#wrapper-event-invite div#event-invite div.email div.email-content div.image-
   padding: 20px 0;
 }
 div#wrapper-event-invite div#event-invite div.email div.email-content div.content-message textarea {
-  height: 150px;
+  height: 150px !important;
   box-shadow: none;
   border-radius: 3px;
 }
 div#wrapper-event-invite div#event-invite div.email div.email-content div.content-details textarea {
-  height: 100px;
+  height: 100px !important;
   box-shadow: none;
   border-radius: 3px;
 }
@@ -10478,11 +10480,11 @@ div#wrapper-event-invite div#event-invite div.lists div.list div.list-quantity {
 }
 div#wrapper-event-invite div#event-invite div.lists div.list:hover {
   cursor: pointer;
-  border: #4963E4 thin solid;
+  border: #c57724 thin solid;
 }
 div#wrapper-event-invite div#event-invite div.lists div.list.active {
-  border: #4963E4 thin solid;
-  background: #f1f3ff;
+  border: #c57724 thin solid;
+  background: rgba(197, 119, 36, 0.2);
 }
 div#wrapper-event-invite div#event-invite div.lists div.list.active div.list-quantity {
   font-weight: 500;
@@ -10584,17 +10586,14 @@ div#wrapper-invite-dashboard div.empty-state-container div.empty-state-content d
 div#wrapper-invite-dashboard div.empty-state-container div.empty-state-content hr {
   margin: 10px 0;
 }
-div#wrapper-invite-dashboard div.empty-state-container div.empty-state-content a.primary-btn {
+div#wrapper-invite-dashboard div.empty-state-container div.empty-state-content a.btn {
   display: block;
   width: 100%;
   margin-top: 20px;
   margin-left: 10px;
-  padding-top: 11px;
-  padding-bottom: 14px;
-  font-size: 15px;
   text-transform: uppercase;
 }
-div#wrapper-invite-dashboard div.empty-state-container div.empty-state-content a.primary-btn:hover {
+div#wrapper-invite-dashboard div.empty-state-container div.empty-state-content a.btn:hover {
   color: #FFF;
 }
 div#wrapper-invite-dashboard div#invite-dashboard {
@@ -10668,7 +10667,7 @@ div#wrapper-event-invite-preview div#event-invite-preview div.email-pricing {
   padding-bottom: 0px;
 }
 div#wrapper-event-invite-preview div#event-invite-preview div.email-pricing a {
-  color: #1dbc85;
+  color: #c57724;
   display: inline;
   text-align: left;
 }
@@ -11503,7 +11502,7 @@ div#wrapper-list-dashboard div.empty-state-container div.empty-state-content div
 div#wrapper-list-dashboard div.empty-state-container div.empty-state-content hr {
   margin: 10px 0;
 }
-div#wrapper-list-dashboard div.empty-state-container div.empty-state-content div.primary-btn {
+div#wrapper-list-dashboard div.empty-state-container div.empty-state-content div.btn {
   width: 100%;
   margin-top: 20px;
   margin-left: 10px;
@@ -11537,7 +11536,7 @@ div#wrapper-list-dashboard div#list-dashboard div.lists div.list {
   border: #7a7a7a thin solid;
 }
 div#wrapper-list-dashboard div#list-dashboard div.lists div.list:hover {
-  background: #d4d4d4;
+  background: #f6f6f6;
 }
 div#wrapper-list-dashboard div#list-dashboard div.lists div.list div.list-name {
   font-size: 16px;
@@ -11555,7 +11554,7 @@ div#wrapper-list-dashboard div#list-dashboard div.lists div.list div.list-action
   font-size: 14px;
 }
 div#wrapper-list-dashboard div#list-dashboard div.lists div.list div.list-action a:hover {
-  color: #1dbc85;
+  color: #c57724;
 }
 div#new-list-modal div.new-list-title h3 {
   font-weight: bold;
@@ -11693,23 +11692,23 @@ div#list-management div.csv_upload_interface div.title_rows div.row > div {
   padding-bottom: 24px;
 }
 div#list-management div.csv_upload_interface div.title_rows div.blue {
-  background: #f1f3ff;
+  background: rgba(197, 119, 36, 0.2);
 }
 div#list-management div.csv_upload_interface div.upload_rows div.upload_row {
   border-top: #7a7a7a thin solid;
 }
 div#list-management div.csv_upload_interface div.upload_rows div.upload_row div.choices {
-  background: #f1f3ff;
-  padding-top: 24px;
-  padding-bottom: 24px;
+  background: rgba(197, 119, 36, 0.2);
+  padding-top: 16px;
+  padding-bottom: 16px;
 }
 div#list-management div.csv_upload_interface div.upload_rows div.upload_row div.choices select {
   margin: 0;
 }
 div#list-management div.csv_upload_interface div.upload_rows div.upload_row div.col {
-  padding-top: 34px;
+  padding-top: 30px;
   word-wrap: break-word;
-  font-size: 14px;
+  font-size: 12px;
   font-weight: 300;
 }
 div#list-management div.csv_upload_interface div.csv-controls {
@@ -11773,11 +11772,11 @@ div#list-management div.event-add-interface div.event-list div.event div.event-q
 }
 div#list-management div.event-add-interface div.event-list div.event:hover {
   cursor: pointer;
-  border: #4963E4 thin solid;
+  border: #c57724 thin solid;
 }
 div#list-management div.event-add-interface div.event-list div.event.active {
-  border: #4963E4 thin solid;
-  background: #f1f3ff;
+  border: #c57724 thin solid;
+  background: rgba(197, 119, 36, 0.2);
 }
 div#list-management div.event-add-interface div.event-list div.event.active div.event-quantity {
   font-weight: 500;
@@ -11824,7 +11823,7 @@ div#list-management div.manual-add-interface div.manual-add-form input[type=text
   border: #D4D4D4 thin solid;
 }
 div#list-management div.manual-add-interface div.manual-add-form textarea {
-  height: 90px;
+  height: 110px !important;
   display: block;
   width: 100%;
   padding: 12px 10px;
@@ -11837,9 +11836,6 @@ div#list-management div.manual-add-interface div.manual-add-form a.add-member-su
   text-align: center;
   display: block;
   width: 100%;
-  padding-top: 9px;
-  padding-bottom: 10px;
-  font-weight: 600px;
 }
 div#list-management div.list {
   margin-top: 60px;
@@ -11856,7 +11852,7 @@ div#list-management div.list div.list-item {
   border: #7a7a7a thin solid;
 }
 div#list-management div.list div.list-item a.remove-member {
-  color: #4963E4;
+  color: #c57724;
   font-size: 13px;
   font-style: italic;
 }

@@ -28,9 +28,9 @@ block content
                 div.small-12.columns(style="padding-left: 0;")
                     div.email-actions
                         div.small-12.medium-6.columns
-                            a.blue-btn.send-email(href="javascript:;", data-id="{{ invite.id }}") Send Email
+                            a.btn.full-btn.secondary-btn.send-email(href="javascript:;", data-id="{{ invite.id }}") Send Email
                         div.small-12.medium-6.columns
-                            a.blue-btn-inverse(href="{% url event:edit-invite invite.id %}") Edit Email
+                            a.btn.full-btn.secondary-btn-inverse(href="{% url event:edit-invite invite.id %}") Edit Email
                     div.email-pricing
                         div.small-12.columns
                             | Cost - {% if cost == 0 %}Free{% else %}${{ cost }}{% endif %}&nbsp;

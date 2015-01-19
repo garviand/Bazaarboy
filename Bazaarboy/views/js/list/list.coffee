@@ -225,6 +225,7 @@ Bazaarboy.list.list =
                                     new_row.attr 'data-col', num
                                     new_row.find('div.col-1').html result[0]
                                     new_row.find('div.col-2').html result[1]
+                                    new_row.find('div.col-3').html result[2]
                                     new_row.removeClass 'hide'
                                     new_row.removeClass 'template'
                                     $("div.csv_upload_interface div.upload_rows").append(new_row)

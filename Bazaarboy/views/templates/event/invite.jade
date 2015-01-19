@@ -38,8 +38,8 @@ block content
                         div.small-12.columns.content-image
                             label Email Header Image (optional)
                                 input.hide(type="file", name="image_file")
-                                a.upload-image-btn.blue-btn-inverse(href="javascript:;", style="{% if invite.image %}display:none;{% endif %}") Upload Image
-                                a.delete-image-btn.blue-btn-inverse(href="javascript:;", style="{% if not invite.image %}display:none;{% endif %}") Delete Image
+                                a.upload-image-btn.secondary-btn-inverse.btn.full-btn(href="javascript:;", style="{% if invite.image %}display:none;{% endif %}") Upload Image
+                                a.delete-image-btn.secondary-btn-inverse.btn.full-btn(href="javascript:;", style="{% if not invite.image %}display:none;{% endif %}") Delete Image
                     div.row.email-content
                         div.small-12.columns.image-preview(class="{% if not invite.image %}hide{% endif %}")
                             img(src="{% if invite.image %}{{ invite.image.source.url }}{% endif %}")
@@ -54,10 +54,10 @@ block content
                     div.row.email-content
                         div.small-12.columns.content-details
                             label RSVP Button Color
-                            input(type='color', name='colorpicker', value='{% if invite.color %}{{ invite.color }}{% else %}#FAA638{% endif %}')
+                            input(type='color', name='colorpicker', value='{% if invite.color %}{{ invite.color }}{% else %}{{ event.color }}{% endif %}')
                     div.row.email-content
                         div.small-12.columns.content-submit
-                            a.save-invite.blue-btn(href="javascript:;") Save &amp; Preview
+                            a.save-invite.primary-btn.btn.full-btn(href="javascript:;") Save &amp; Preview
                 div.lists.small-12.medium-6.columns
                     div.info
                         div.title

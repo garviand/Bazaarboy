@@ -7,11 +7,12 @@ div#wrapper-event-invite{
             margin-top: 0px;
             margin-bottom: 30px;
             a{
-                color: @blue;
+                color: @orange;
             }
         }
         label{
             line-height: 1.5em;
+            margin-bottom: 20px;
         }
         div.info{
             div.title{
@@ -25,7 +26,7 @@ div#wrapper-event-invite{
                 a{
                     text-decoration: none !important;
                     font-size: 14px;
-                    color: @blue;
+                    color: @orange;
                 }
             }
         }
@@ -48,14 +49,14 @@ div#wrapper-event-invite{
                 }
                 div.content-message{
                     textarea{
-                        height: 150px;
+                        height: 150px !important;
                         box-shadow: none;
                         border-radius: 3px;
                     }
                 }
                 div.content-details{
                     textarea{
-                        height: 100px;
+                        height: 100px !important;
                         box-shadow: none;
                         border-radius: 3px;
                     }
@@ -107,11 +108,11 @@ div#wrapper-event-invite{
                 }
                 &:hover{
                     cursor: pointer;
-                    border: #4963E4 thin solid;
+                    border: @orange thin solid;
                 }
                 &.active{
-                    border: #4963E4 thin solid;
-                    background: #f1f3ff;
+                    border: @orange thin solid;
+                    background: rgba(197, 119, 36, 0.2);
                     div.list-quantity{
                         font-weight: 500;
                     }
