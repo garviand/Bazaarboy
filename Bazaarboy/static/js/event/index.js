@@ -85,12 +85,13 @@
       var _this = this;
       if (status === 200) {
         swal({
-          title: "Complete Purchase",
+          title: "Confirm Purchase",
           text: "Ticket Price + Fees = $" + (total / 100).toFixed(2),
           type: "success",
           showCancelButton: true,
-          confirmButtonText: "Purchase",
-          closeOnConfirm: true
+          confirmButtonText: "Purchase ($" + (total / 100).toFixed(2) + ")",
+          closeOnConfirm: true,
+          confirmButtonColor: "#1DBC85"
         }, function(isConfirm) {
           if (isConfirm) {
             return Bazaarboy.post('payment/charge/', {
@@ -208,7 +209,7 @@
         return;
       } else {
         Bazaarboy.post('event/purchase/', params, function(response) {
-          var a, b, total;
+          var a, b, paymentInfo, total;
           if (response.status !== 'OK') {
             alert(response.message);
             return $('a#tickets-confirm').html('Confirm RSVP');
@@ -249,7 +250,13 @@
 
               _this.currentCheckout = response.purchase.checkout;
               Stripe.setPublishableKey(response.publishable_key);
-              Stripe.card.createToken($("form#payment-form"), function(status, response) {
+              paymentInfo = {
+                number: $('.cc-number').val().replace(/\ /g, ''),
+                cvc: $('.cc-cvc').val(),
+                exp_month: $('.cc-exp').val().split('/')[0].trim(),
+                exp_year: $('.cc-exp').val().split('/')[1].trim()
+              };
+              Stripe.card.createToken(paymentInfo, function(status, response) {
                 _this.stripeResponseHandler(status, response, total);
               });
             }
@@ -333,6 +340,26 @@
       var add_organizer_debounce, geocoder, iconImage, latitude, latlng, longitude, map, mapCenter, mapOptions, mapStyles, marker, postData, scope,
         _this = this;
       scope = this;
+      $('.cc-exp').payment('formatCardExpiry');
+      $('.cc-number').payment('formatCardNumber');
+      $('.cc-cvc').payment('formatCardCVC');
+      $('input.cc-number').keypress(function() {
+        if ($(this).hasClass('visa')) {
+          $('div.credit-cards img').css('opacity', '.1');
+          $('img.visa-img').css('opacity', '1');
+        } else if ($(this).hasClass('mastercard')) {
+          $('div.credit-cards img').css('opacity', '.1');
+          $('img.mastercard-img').css('opacity', '1');
+        } else if ($(this).hasClass('discover')) {
+          $('div.credit-cards img').css('opacity', '.1');
+          $('img.discover-img').css('opacity', '1');
+        } else if ($(this).hasClass('amex')) {
+          $('div.credit-cards img').css('opacity', '.1');
+          $('img.americanexpress-img').css('opacity', '1');
+        } else {
+          $('div.credit-cards').css('opacity', '1');
+        }
+      });
       $(window).hashchange(function() {
         var hash;
         hash = location.hash;

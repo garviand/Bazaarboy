@@ -71,12 +71,13 @@ Bazaarboy.event.index =
     stripeResponseHandler: (status, response, total) ->
         if status == 200
             swal
-                title: "Complete Purchase"
+                title: "Confirm Purchase"
                 text: "Ticket Price + Fees = $" + (total/100).toFixed(2)
                 type: "success"
                 showCancelButton: true
-                confirmButtonText: "Purchase"
+                confirmButtonText: "Purchase ($" + (total/100).toFixed(2) + ")"
                 closeOnConfirm: true
+                confirmButtonColor: "#1DBC85"
                 , (isConfirm) =>
                     if isConfirm
                         Bazaarboy.post 'payment/charge/',
@@ -206,7 +207,12 @@ Bazaarboy.event.index =
                         ###
                         @currentCheckout = response.purchase.checkout
                         Stripe.setPublishableKey response.publishable_key
-                        Stripe.card.createToken $("form#payment-form"), (status, response) =>
+                        paymentInfo =
+                            number: $('.cc-number').val().replace(/\ /g, '')
+                            cvc: $('.cc-cvc').val()
+                            exp_month: $('.cc-exp').val().split('/')[0].trim()
+                            exp_year: $('.cc-exp').val().split('/')[1].trim()
+                        Stripe.card.createToken paymentInfo, (status, response) =>
                             @stripeResponseHandler status, response, total
                             return
                         return
@@ -268,6 +274,25 @@ Bazaarboy.event.index =
         return
     init: () ->
         scope = this
+        $('.cc-exp').payment('formatCardExpiry');
+        $('.cc-number').payment('formatCardNumber');
+        $('.cc-cvc').payment('formatCardCVC');
+        $('input.cc-number').keypress () ->
+            if $(this).hasClass('visa')
+                $('div.credit-cards img').css('opacity', '.1')
+                $('img.visa-img').css('opacity', '1')
+            else if $(this).hasClass('mastercard')
+                $('div.credit-cards img').css('opacity', '.1')
+                $('img.mastercard-img').css('opacity', '1')
+            else if $(this).hasClass('discover')
+                $('div.credit-cards img').css('opacity', '.1')
+                $('img.discover-img').css('opacity', '1')
+            else if $(this).hasClass('amex')
+                $('div.credit-cards img').css('opacity', '.1')
+                $('img.americanexpress-img').css('opacity', '1')
+            else
+                $('div.credit-cards').css('opacity', '1')
+            return
         $(window).hashchange () ->
             hash = location.hash
             if hash is '#launch'

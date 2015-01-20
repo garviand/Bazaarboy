@@ -9742,6 +9742,7 @@ div#tickets div#tickets-details div.middle .cc-container {
 }
 div#tickets div#tickets-details div.credit-cards img {
   margin-right: 5px;
+  height: 26px;
 }
 div#tickets div#tickets-details div.bottom div.start-promo {
   padding-bottom: 20px;
@@ -9781,12 +9782,11 @@ div#tickets div#tickets-subtotal div.issues a {
 div#tickets a#tickets-confirm {
   display: block;
   width: 100%;
-  padding-top: 10px;
-  padding-bottom: 11px;
   color: #ffffff;
 }
 div#tickets a#tickets-confirm:hover {
   color: #ffffff;
+  opacity: .8;
 }
 div#wrapper-event-modify.full {
   width: 100%;
