@@ -14,7 +14,7 @@ redactorAllowedAttrs = [
     'mozallowfullscreen'
 ]
 iframeAllowedDomains = [
-    'www.youtube.com', 'player.vimeo.com', 'w.soundcloud.com'
+    'www.youtube.com', 'player.vimeo.com', 'w.soundcloud.com', 'bandcamp.com'
 ]
 
 def sanitize_redactor_input(string):
