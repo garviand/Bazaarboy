@@ -40,7 +40,7 @@ block content
         div#invite-dashboard.small-12.columns
             div.row.new-invite-container(class="{% if listsCount == 0 %}hide{% endif %}")
                 div.medium-4.columns.new-list
-                    a.new-invite-btn.blue-btn.text-center(href="{% url event:create-invite event.id %}", style="{% if sentInvites.count == 0 and draftInvites.count == 0 %}display:none;{% endif %}") + New Invitation
+                    a.new-invite-btn.primary-btn.text-center(href="{% url event:create-invite event.id %}", style="{% if sentInvites.count == 0 and draftInvites.count == 0 %}display:none;{% endif %}") + New Invitation
             div.row
                 {% if sentInvites.count > 0 %}
                 div.small-12.columns.invitations
