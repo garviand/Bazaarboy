@@ -196,7 +196,7 @@
             $('div.header-title div.text span.sub').text('Events Overview');
             $('#wrapper-dashboard div.summary-events').addClass('active');
             $('#wrapper-dashboard div.summary-events').fadeIn(300, function() {
-              $('div.current-event, div.past-event').each(function() {
+              $('div.current-event, div.past-event, div.past-event-attention').each(function() {
                 scope.initGraph(this);
               });
             });
@@ -228,6 +228,104 @@
             });
           }
         });
+      });
+      $('a.add-to-list-btn').click(function(e) {
+        $('div#add-list-modal span.event-name').html($(this).data('name'));
+        $('div#add-list-modal span.attendee-count').html($(this).data('count'));
+        $('div#add-list-modal input[name=event_id]').val($(this).data('id'));
+        $('div#add-list-modal').foundation('reveal', 'open');
+      });
+      $(document).on('close.fndtn.reveal', 'div#add-list-modal', function() {
+        $('div#add-list-modal input[name=event_id]').val('');
+        $('div#add-list-modal div.list').removeClass('active');
+      });
+      $('div#add-list-modal a.add-cancel-btn').click(function(e) {
+        $('div#add-list-modal').foundation('reveal', 'close');
+      });
+      $('div#add-list-modal div.list').click(function(e) {
+        $(this).toggleClass('active');
+      });
+      $('div#add-list-modal a.create-list').click(function() {
+        var eventId, list_name, profileId;
+        $('div#add-list-modal div.status').html('Creating...');
+        $('div#add-list-modal div.submit-actions a').css('display', 'none');
+        profileId = $('div#add-list-modal input[name=profile_id]').val();
+        eventId = $('div#add-list-modal input[name=event_id]').val();
+        list_name = $('div#add-list-modal input[name=list_name]').val();
+        if (list_name.trim() !== '') {
+          Bazaarboy.post('lists/create/', {
+            profile: profileId,
+            name: list_name,
+            is_hidden: 1
+          }, function(response) {
+            var listId;
+            if (response.status === 'OK') {
+              listId = response.list.pk;
+              $('div#add-list-modal div.status').html('Successfully Created List! Adding Members...');
+              Bazaarboy.post('lists/add/event/', {
+                id: listId,
+                event: eventId
+              }, function(response) {
+                if (response.status === 'OK') {
+                  console.log(response);
+                  $('div#add-list-modal div.status').html('Congrats! List was Created and ' + response.added + ' Attendees were added.');
+                } else {
+                  swal('List Was Created, But there was an error: ' + response.message);
+                }
+                $('div#add-list-modal div.submit-actions a').css('display', 'block');
+              });
+            } else {
+              swal('Could not create list');
+              $('div#add-list-modal div.submit-actions a').css('display', 'block');
+            }
+            $('div#add-list-modal input[name=list_name]').val('');
+          });
+        } else {
+          swal('List name can\'t be empty');
+          $('div#add-list-modal div.submit-actions a').css('display', 'block');
+        }
+      });
+      $('div#add-list-modal a.submit-add-btn').click(function() {
+        var error_lists, eventId, num_finished, num_lists, selected_lists;
+        $('div#add-list-modal div.status').html('Adding Attendees to Lists...');
+        $('div#add-list-modal div.submit-actions a').css('display', 'none');
+        eventId = $('div#add-list-modal input[name=event_id]').val();
+        selected_lists = $('div#add-list-modal div.lists div.list.active');
+        num_lists = selected_lists.length;
+        error_lists = 0;
+        num_finished = 0;
+        if (num_lists > 0) {
+          $.each(selected_lists, function(list) {
+            Bazaarboy.post('lists/add/event/', {
+              id: $(this).data('id'),
+              event: eventId
+            }, function(response) {
+              if (response.status === 'OK') {
+                $('div#add-list-modal div.status').html(num_finished + 'Lists Complete - ' + (num_lists - num_finished) + 'Lists Remaining');
+              } else {
+                error_lists++;
+              }
+              num_finished++;
+              if ((num_lists - num_finished) === 0) {
+                if (error_lists > 0) {
+                  swal('Lists added, but some attendees may have been left out');
+                } else {
+                  swal({
+                    title: "Success",
+                    text: "The Attendees have been Added!",
+                    type: "success"
+                  }, function() {
+                    $('div#add-list-modal').foundation('reveal', 'close');
+                  });
+                }
+                $('div#add-list-modal div.status').html('&nbsp;');
+                $('div#add-list-modal div.submit-actions a').css('display', 'block');
+              }
+            });
+          });
+        } else {
+          swal('You Must Select at least One List!');
+        }
       });
       $('div.draft-event a.delete-draft').click(function(e) {
         var deleteConfirm, eventId;

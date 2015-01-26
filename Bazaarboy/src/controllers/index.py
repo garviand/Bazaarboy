@@ -31,6 +31,12 @@ def index(request, params, user):
     # If user doesn't have a profile, redirect to profile creation
     if profiles.count() is 0:
         return redirect('profile:new')
+    # Lists
+    profile = profiles[0]
+    lists = List.objects.filter(owner = profiles[0], is_deleted = False)
+    for lt in lists:
+        list_items = List_item.objects.filter(_list = lt)
+        lt.items = list_items.count()
     # Count events
     eventsCount = Event.objects.filter(is_deleted = False, organizers__in = pids).count()
     # Fetch events
@@ -86,6 +92,7 @@ def index(request, params, user):
     pastEventsCount = pastEvents.count()
     pastEvents = pastEvents.filter()[:10]
     pastEvents = list(pastEvents)
+    pastEventsAttention = []
     for i in range(0, len(pastEvents)):
         pastEvents[i].creator = True
         if not Organizer.objects.filter(event = pastEvents[i], profile__managers = user, is_creator = True).exists():
@@ -117,9 +124,13 @@ def index(request, params, user):
         if potentialQuantity:
             pastEvents[i].potentialQuantity += totalRSVP
         pastEvents[i].potentialSale = potentialSale
+        current_organizer = Organizer.objects.get(event__id = pastEvents[i].id, profile__in = pids)
+        if hasattr(current_organizer, 'recap') and current_organizer.recap.is_viewed is False:
+            pastEventsAttention.append(pastEvents[i])
+    pastEventsAttentionCount = len(pastEventsAttention)
     draftEvents = Event.objects.filter(is_launched = False,
                                        is_deleted = False,
-                                       organizers__in = pids)
+                                       organizers__in = pids).order_by('-id')
     draftEventsCount = draftEvents.count()
     draftEvents = draftEvents.filter()[:10]
     return render(request, 'index/index.html', locals())

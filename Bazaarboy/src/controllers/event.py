@@ -737,6 +737,8 @@ def create(request, params, user):
     # Set the profile as the organizer and creator of the event
     organizer = Organizer(event = event, profile = profile, is_creator = True)
     organizer.save()
+    recap = Recap(organizer = organizer)
+    recap.save()
     response = {
         'status':'OK',
         'event':serialize_one(event)

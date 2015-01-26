@@ -275,6 +275,30 @@ class Invite(models.Model):
     created_time = models.DateTimeField(auto_now_add = True)
     is_deleted = models.BooleanField(default = False)
 
+class Recap(models.Model):
+    """
+    Recap model - Post event actions including adding attendees to list and sending follow up email
+    """
+    organizer = models.OneToOneField('Organizer')
+    is_viewed = models.BooleanField(default = False)
+    list_added = models.BooleanField(default = False)
+
+class Follow_up(models.Model):
+    """
+    Follow up model
+    """
+    recap = models.OneToOneField('Recap')
+    image = models.ForeignKey('Image', null = True, default = None)
+    color = models.CharField(max_length = 50, default="#FAA638")
+    header = models.CharField(max_length = 1000, null = True, default = None)
+    message = models.CharField(max_length = 5000, null = True, default = None)
+    paid = models.BooleanField(default = False)
+    price = models.IntegerField(default = 0)
+    is_sent = models.BooleanField(default = False)
+    sent_at = models.DateTimeField(null = True, default = None)
+    attachment = models.FileField(upload_to = 'uploads/attachment/%Y-%m-%d', null = True, default = None)
+    created_time = models.DateTimeField(auto_now_add = True)
+
 class Purchase(models.Model):
     """
     Purchase model for tickets

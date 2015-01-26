@@ -145,7 +145,7 @@ Bazaarboy.index.index =
                     $('div.header-title div.text span.sub').text 'Events Overview'
                     $('#wrapper-dashboard div.summary-events').addClass('active')
                     $('#wrapper-dashboard div.summary-events').fadeIn 300, () ->
-                        $('div.current-event, div.past-event').each () ->
+                        $('div.current-event, div.past-event, div.past-event-attention').each () ->
                             scope.initGraph this
                             return
                         return
@@ -173,6 +173,84 @@ Bazaarboy.index.index =
                             return
                         return
                 return
+            return
+        $('a.add-to-list-btn').click (e) ->
+            $('div#add-list-modal span.event-name').html $(this).data('name')
+            $('div#add-list-modal span.attendee-count').html $(this).data('count')
+            $('div#add-list-modal input[name=event_id]').val $(this).data('id')
+            $('div#add-list-modal').foundation('reveal', 'open')
+            return
+        $(document).on 'close.fndtn.reveal', 'div#add-list-modal', () ->
+            $('div#add-list-modal input[name=event_id]').val ''
+            $('div#add-list-modal div.list').removeClass 'active'
+            return
+        $('div#add-list-modal a.add-cancel-btn').click (e) ->
+            $('div#add-list-modal').foundation('reveal', 'close')
+            return
+        $('div#add-list-modal div.list').click (e) ->
+            $(this).toggleClass 'active'
+            return
+        $('div#add-list-modal a.create-list').click () ->
+            $('div#add-list-modal div.status').html 'Creating...'
+            $('div#add-list-modal div.submit-actions a').css('display','none')
+            profileId = $('div#add-list-modal input[name=profile_id]').val()
+            eventId = $('div#add-list-modal input[name=event_id]').val()
+            list_name = $('div#add-list-modal input[name=list_name]').val()
+            if list_name.trim() isnt ''
+                Bazaarboy.post 'lists/create/', {profile:profileId, name:list_name, is_hidden:1}, (response) ->
+                    if response.status is 'OK'
+                        listId = response.list.pk
+                        $('div#add-list-modal div.status').html 'Successfully Created List! Adding Members...'
+                        Bazaarboy.post 'lists/add/event/', {id:listId, event:eventId}, (response) ->
+                            if response.status is 'OK'
+                                console.log response
+                                $('div#add-list-modal div.status').html 'Congrats! List was Created and ' + response.added + ' Attendees were added.'
+                            else
+                                swal 'List Was Created, But there was an error: ' + response.message
+                            $('div#add-list-modal div.submit-actions a').css('display','block')
+                            return
+                    else
+                        swal 'Could not create list'
+                        $('div#add-list-modal div.submit-actions a').css('display','block')
+                    $('div#add-list-modal input[name=list_name]').val('')
+                    return
+            else
+                swal 'List name can\'t be empty'
+                $('div#add-list-modal div.submit-actions a').css('display','block')
+            return
+        $('div#add-list-modal a.submit-add-btn').click () ->
+            $('div#add-list-modal div.status').html 'Adding Attendees to Lists...'
+            $('div#add-list-modal div.submit-actions a').css('display','none')
+            eventId = $('div#add-list-modal input[name=event_id]').val()
+            selected_lists = $('div#add-list-modal div.lists div.list.active')
+            num_lists = selected_lists.length
+            error_lists = 0
+            num_finished = 0
+            if num_lists > 0
+                $.each selected_lists, (list) ->
+                    Bazaarboy.post 'lists/add/event/', {id:$(this).data('id'), event:eventId}, (response) ->
+                        if response.status is 'OK'
+                            $('div#add-list-modal div.status').html(num_finished + 'Lists Complete - ' + (num_lists - num_finished) + 'Lists Remaining')
+                        else
+                            error_lists++
+                        num_finished++
+                        if (num_lists - num_finished) is 0
+                            if error_lists > 0
+                                swal 'Lists added, but some attendees may have been left out'
+                            else
+                                swal
+                                    title: "Success"
+                                    text: "The Attendees have been Added!"
+                                    type: "success"
+                                    , ->
+                                        $('div#add-list-modal').foundation('reveal', 'close')
+                                        return
+                            $('div#add-list-modal div.status').html '&nbsp;'
+                            $('div#add-list-modal div.submit-actions a').css('display','block')
+                        return
+                    return
+            else
+                swal 'You Must Select at least One List!'
             return
         $('div.draft-event a.delete-draft').click (e) ->
             e.preventDefault()
