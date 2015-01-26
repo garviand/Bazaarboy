@@ -24,7 +24,7 @@ from src.config import *
 from src.controllers.request import *
 from src.ordereddict import OrderedDict
 from src.csvutils import UnicodeWriter
-from src.email import sendEventConfirmationEmail, sendEventInvite, sendManualEventInvite, sendOrganizerAddedEmail, sendIssueEmail, sendEventReminder
+from src.email import sendEventConfirmationEmail, sendEventInvite, sendManualEventInvite, sendOrganizerAddedEmail, sendIssueEmail, sendEventReminder, sendRecapReminder
 from src.regex import REGEX_EMAIL, REGEX_NAME, REGEX_SLUG
 from src.sanitizer import sanitize_redactor_input
 from src.serializer import serialize, serialize_one
@@ -739,6 +739,11 @@ def create(request, params, user):
     organizer.save()
     recap = Recap(organizer = organizer)
     recap.save()
+    follow_up = Follow_up(recap = recap)
+    follow_up.save()
+    recap_email = sendRecapReminder(organizer)
+    follow_up.email_id = recap_email[0]['_id']
+    follow_up.save()
     response = {
         'status':'OK',
         'event':serialize_one(event)

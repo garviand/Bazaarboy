@@ -24,7 +24,7 @@ from src.timezone import localize
 from django.utils import timezone
 from django.utils.dateformat import DateFormat
 from pygeocoder import Geocoder
-from kernel.templatetags import layout 
+from kernel.templatetags import layout
 
 import pdb
 
@@ -173,6 +173,83 @@ def sendEventInvite(invite, recipients):
             invite.sent_at = timezone.now()
             invite.save()
             return result
+
+@task()
+def sendRecapReminder(organizer):
+    to = [{
+        'email': organizer.profile.email, 
+        'name': organizer.profile.name
+    }]
+    subject = '\'' + organizer.event.name + '\' has ended - Manage Attendees'
+    template = 'recap-reminder'
+    buttonHtml = '<a href="https://bazaarboy.com" class="primary-btn view_event_btn" style="color: #222222; text-decoration: none; border-radius: 4px; font-weight: bold; text-align: center; font-size: 1.2em; box-sizing: border-box; padding: 12px 60px;background: #FFFFFF; border: thin solid ' + organizer.event.color + ';">My Dashboard</a>'
+    if organizer.profile.image:
+        organizerLogo = "<img src='" + organizer.profile.image.source.url.split("?", 1)[0] + "' style='max-width: 100px; max-height: 100px; padding-bottom: 0;display: inline !important;vertical-align: bottom;border: 0;outline: none;text-decoration: none;-ms-interpolation-mode: bicubic;' align='center' />"
+    else:
+        organizerLogo = ''
+    mergeVars = [{
+        'rcpt': organizer.profile.email,
+        'vars': [
+            {
+                'name':'profile_name', 
+                'content': organizer.profile.name
+            },
+            {
+                'name':'profile_id', 
+                'content': organizer.profile.id
+            },
+            {
+                'name':'event_date_short', 
+                'content': layout.standardTime(organizer.event.start_time)
+            },
+            {
+                'name':'event_name', 
+                'content': organizer.event.name
+            },
+            {
+                'name':'event_date', 
+                'content': layout.standardDate(organizer.event)
+            },
+            {
+                'name':'action_button', 
+                'content': buttonHtml
+            },
+            {
+                'name':'organizer_logo', 
+                'content': organizerLogo
+            }
+        ]
+    }]
+
+    df = DateFormat(organizer.event.start_time)
+    send_time = df.format('Y-m-d H:i:s')
+    attachments = []
+
+    try:
+        client = Mandrill(MANDRILL_API_KEY)
+        message = {
+            'from_email':MANDRILL_FROM_EMAIL,
+            'from_name':MANDRILL_FROM_NAME,
+            'headers':{
+                'Reply-To':MANDRILL_FROM_EMAIL
+            },
+            'subject':subject,
+            'merge_vars':mergeVars,
+            'to':to,
+            'track_clicks':True,
+            'track_opens':True,
+            'attachments':attachments
+        }
+        result = client.messages.send_template(template_name = template, 
+                                                    template_content = [], 
+                                                    message = message, 
+                                                    async = True,
+                                                    send_at = send_time)
+    except Exception, e:
+        logging.error(str(e))
+        return False
+    else:
+        return result
 
 @task
 def sendNewAccountEmail(profile):

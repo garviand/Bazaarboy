@@ -297,6 +297,7 @@ class Follow_up(models.Model):
     is_sent = models.BooleanField(default = False)
     sent_at = models.DateTimeField(null = True, default = None)
     attachment = models.FileField(upload_to = 'uploads/attachment/%Y-%m-%d', null = True, default = None)
+    email_id = models.CharField(max_length = 150, null = True, default = None)
     created_time = models.DateTimeField(auto_now_add = True)
 
 class Purchase(models.Model):
