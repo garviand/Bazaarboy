@@ -15,6 +15,7 @@ from django.http import Http404
 from django.shortcuts import render, redirect
 from django.http import HttpResponse, HttpResponseBadRequest
 from django.utils import timezone
+from django.utils.dateformat import DateFormat
 from django.views.decorators.cache import cache_page
 from django.views.decorators.clickjacking import xframe_options_exempt
 from django.core.serializers.json import DjangoJSONEncoder
@@ -30,6 +31,7 @@ from src.sanitizer import sanitize_redactor_input
 from src.serializer import serialize, serialize_one
 from src.sms import sendEventConfirmationSMS
 from mandrill import Mandrill
+import logging
 
 import pdb
 import operator
@@ -761,6 +763,7 @@ def edit(request, params, user):
     Edit an existing event
     """
     # Check if the event is valid
+    reschedule_email = False
     if not Event.objects.filter(id = params['id'], 
                                 is_deleted = False).exists():
         response = {
@@ -790,6 +793,8 @@ def edit(request, params, user):
             }
             return json_response(response)
         else:
+            if not event.name == params['name']:
+                reschedule_email = True
             event.name = params['name']
     if params['summary'] is not None:
         params['summary'] = cgi.escape(params['summary'])
@@ -867,11 +872,15 @@ def edit(request, params, user):
         else:
             event.tags = params['tags']
     if params['start_time'] is not None:
+        if not event.start_time == params['start_time'] and event.end_time is None:
+            reschedule_email = True
         event.start_time = params['start_time']
     if params['end_time'] is not None:
         if params['end_time'] == 'none':
             event.end_time = None
         else:
+            if not event.end_time == params['end_time']:
+                reschedule_email = True
             event.end_time = params['end_time']
     if event.end_time is not None:
         if event.start_time is not None and event.start_time > event.end_time:
@@ -942,6 +951,17 @@ def edit(request, params, user):
             event.slug = params['slug']
     # Save the changes
     event.save()
+    if reschedule_email and Follow_up.objects.filter(recap__organizer__event = event).exists():
+        follow_ups = Follow_up.objects.filter(recap__organizer__event = event)
+        client = Mandrill(MANDRILL_API_KEY)
+        for follow_up in follow_ups:
+            try:
+                mail_cancel = client.messages.cancel_scheduled(id = follow_up.email_id)
+            except Exception, e:
+                logging.error(str(e))
+            mail_send = sendRecapReminder(follow_up.recap.organizer)
+            follow_up.email_id = mail_send[0]['_id']
+            follow_up.save()
     response = {
         'status':'OK',
         'event':serialize_one(event)

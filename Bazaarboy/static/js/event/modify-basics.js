@@ -108,11 +108,7 @@
         }
       });
     },
-    autoSave: function() {
-      if (!this.isEditing) {
-        this.saveBasics(true);
-      }
-    },
+    autoSave: function() {},
     fetchCoordinates: function(reference) {
       var gmap, location, placesService,
         _this = this;
