@@ -743,9 +743,6 @@ def create(request, params, user):
     recap.save()
     follow_up = Follow_up(recap = recap)
     follow_up.save()
-    recap_email = sendRecapReminder(organizer)
-    follow_up.email_id = recap_email[0]['_id']
-    follow_up.save()
     response = {
         'status':'OK',
         'event':serialize_one(event)
@@ -951,17 +948,19 @@ def edit(request, params, user):
             event.slug = params['slug']
     # Save the changes
     event.save()
-    if reschedule_email and Follow_up.objects.filter(recap__organizer__event = event).exists():
+    if reschedule_email and Follow_up.objects.filter(recap__organizer__event = event).exists() and event.is_launched:
         follow_ups = Follow_up.objects.filter(recap__organizer__event = event)
         client = Mandrill(MANDRILL_API_KEY)
         for follow_up in follow_ups:
             try:
-                if Follow_up.email_id is not None:
+                if follow_up.email_id is not None:
                     mail_cancel = client.messages.cancel_scheduled(id = follow_up.email_id)
+                    follow_up.email_id = None
             except Exception, e:
                 logging.error(str(e))
-            mail_send = sendRecapReminder(follow_up.recap.organizer)
-            follow_up.email_id = mail_send[0]['_id']
+            if event.start_time >= timezone.now():
+                mail_send = sendRecapReminder(follow_up.recap.organizer)
+                follow_up.email_id = mail_send[0]['_id']
             follow_up.save()
     response = {
         'status':'OK',
@@ -1019,6 +1018,14 @@ def add_organizer(request, params, user):
         result_profile['image_url'] = None
     if profile.email:
         sendOrganizerAddedEmail(event, user_profile, profile)
+    recap = Recap(organizer = organizer)
+    recap.save()
+    follow_up = Follow_up(recap = recap)
+    follow_up.save()
+    if event.is_launched and event.start_time >= timezone.now():
+        mail_send = sendRecapReminder(organizer)
+        follow_up.email_id = mail_send[0]['_id']
+        follow_up.save()
     response = {
         'status':'OK',
         'profile': result_profile
@@ -1073,6 +1080,11 @@ def delete_organizer(request, params, user):
             'message':'You cannot remove the creator from organizers.'
         }
         return json_response(response)
+    if Follow_up.objects.filter(recap__organizer = organizer).exists():
+        follow_up = Follow_up.objects.get(recap__organizer = organizer)
+        if follow_up.email_id is not None:
+            client = Mandrill(MANDRILL_API_KEY)
+            client.messages.cancel_scheduled(id = follow_up.email_id)
     # Remove the profile from organizers
     organizer.delete()
     response = {
@@ -1131,6 +1143,13 @@ def launch(request, params, user):
     event.is_launched = True
     event.launched_time = timezone.now()
     event.save()
+    organizers = Organizer.objects.filter(event = event)
+    for organizer in organizers:
+        if Follow_up.objects.filter(recap__organizer = organizer).exists() and event.start_time >= timezone.now():
+            follow_up = Follow_up.objects.get(recap__organizer = organizer)
+            recap_email = sendRecapReminder(organizer)
+            follow_up.email_id = recap_email[0]['_id']
+            follow_up.save()
     response = {
         'status':'OK',
         'event':serialize_one(event)
@@ -1173,6 +1192,15 @@ def delaunch(request, params, user):
     # Mark the event as offline
     event.is_launched = False
     event.save()
+    organizers = Organizer.objects.filter(event = event)
+    for organizer in organizers:
+        if Follow_up.objects.filter(recap__organizer = organizer).exists():
+            follow_up = Follow_up.objects.get(recap__organizer = organizer)
+            if follow_up.email_id is not None:
+                client = Mandrill(MANDRILL_API_KEY)
+                client.messages.cancel_scheduled(id = follow_up.email_id)
+                follow_up.email_id = None
+                follow_up.save()
     response = {
         'status':'OK',
         'event':serialize_one(event)
@@ -1208,6 +1236,13 @@ def delete(request, params, user):
     Ticket.objects.filter(event = event).update(is_deleted = True)
     event.is_deleted = True
     event.save()
+    organizers = Organizer.objects.filter(event = event)
+    for organizer in organizers:
+        if Follow_up.objects.filter(recap__organizer = organizer).exists():
+            follow_up = Follow_up.objects.get(recap__organizer = organizer)
+            if follow_up.email_id is not None:
+                client = Mandrill(MANDRILL_API_KEY)
+                client.messages.cancel_scheduled(id = follow_up.email_id)
     response = {
         'status':'OK'
     }
