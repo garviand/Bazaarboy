@@ -289,6 +289,7 @@ def add_from_event(request, params, user):
             'message':'You don\'t have permission for the event.'
         }
         return json_response(response)
+
     purchases = Purchase.objects.filter(Q(checkout = None) | 
                                         Q(checkout__isnull = False, 
                                           checkout__is_charged = True), 
@@ -307,6 +308,12 @@ def add_from_event(request, params, user):
                 pass
         else:
             duplicates += 1
+    organizer = Organizer.objects.get(event = event, profile__managers = user)
+    if Recap.objects.filter(organizer = organizer, is_viewed = False).exists():
+        recap = Recap.objects.get(organizer = organizer)
+        recap.is_viewed = True
+        recap.list_added = True
+        recap.save()
     response = {
         'status':'OK',
         'list':serialize_one(lt),

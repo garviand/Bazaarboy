@@ -125,7 +125,7 @@ def index(request, params, user):
             pastEvents[i].potentialQuantity += totalRSVP
         pastEvents[i].potentialSale = potentialSale
         current_organizer = Organizer.objects.get(event__id = pastEvents[i].id, profile__in = pids)
-        if hasattr(current_organizer, 'recap') and current_organizer.recap.is_viewed is False:
+        if Recap.objects.filter(organizer = current_organizer, is_viewed = False).exists():
             pastEventsAttention.append(pastEvents[i])
     pastEventsAttentionCount = len(pastEventsAttention)
     draftEvents = Event.objects.filter(is_launched = False,
