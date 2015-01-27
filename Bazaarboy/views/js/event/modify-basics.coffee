@@ -88,8 +88,8 @@ Bazaarboy.event.modify.basics =
             return
         return
     autoSave: () ->
-        #if not @isEditing
-            #@saveBasics(true)
+        if not @isEditing
+            @saveBasics(true)
         return
     fetchCoordinates: (reference) ->
         gmap = $('div#map-canvas-hidden').get(0)

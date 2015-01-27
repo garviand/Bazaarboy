@@ -12,7 +12,8 @@ import weasyprint
 import logging
 import hashlib
 import uuid
-from datetime import datetime
+import pytz
+from datetime import datetime, timedelta
 from celery import task
 from mandrill import Mandrill
 from django.conf import settings
@@ -221,7 +222,16 @@ def sendRecapReminder(organizer):
         ]
     }]
 
-    df = DateFormat(organizer.event.start_time)
+    if organizer.event.end_time is not None:
+        mark_time = organizer.event.end_time
+    else:
+        mark_time = organizer.event.start_time
+    local_time = localize(mark_time)
+    if local_time.hour < 5:
+        send_time_local = local_time + timedelta(hours = (12-local_time.hour))
+    else:
+        send_time_local = local_time + timedelta(hours = (36-local_time.hour))
+    df = DateFormat(send_time_local.astimezone(pytz.utc))
     send_time = df.format('Y-m-d H:i:s')
     attachments = []
 

@@ -956,7 +956,8 @@ def edit(request, params, user):
         client = Mandrill(MANDRILL_API_KEY)
         for follow_up in follow_ups:
             try:
-                mail_cancel = client.messages.cancel_scheduled(id = follow_up.email_id)
+                if Follow_up.email_id is not None:
+                    mail_cancel = client.messages.cancel_scheduled(id = follow_up.email_id)
             except Exception, e:
                 logging.error(str(e))
             mail_send = sendRecapReminder(follow_up.recap.organizer)

@@ -108,7 +108,11 @@
         }
       });
     },
-    autoSave: function() {},
+    autoSave: function() {
+      if (!this.isEditing) {
+        this.saveBasics(true);
+      }
+    },
     fetchCoordinates: function(reference) {
       var gmap, location, placesService,
         _this = this;
