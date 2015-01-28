@@ -944,7 +944,26 @@ def edit(request, params, user):
 @login_required()
 @validate('POST', ['id'], ['profile', 'email'])
 def request_organizer(request, params, user):
-    
+    # Check if the event is valid
+    if not Event.objects.filter(id = params['id'], 
+                                is_deleted = False).exists():
+        response = {
+            'status':'FAIL',
+            'error':'EVENT_NOT_FOUND',
+            'message':'The event doesn\'t exist.'
+        }
+        return json_response(response)
+    event = Event.objects.get(id = params['id'])
+    # Check if user has permission for the event
+    if not Organizer.objects.filter(event = event, 
+                                    profile__managers = user).exists():
+        response = {
+            'status':'FAIL',
+            'error':'NOT_A_MANAGER',
+            'message':'You don\'t have permission for the event.'
+        }
+        return json_response(response)
+    organizer = Organizer.objects.filter(event = event, profile__managers = user)[0].profile
 
 @login_required()
 @validate('POST', ['id', 'profile'])
