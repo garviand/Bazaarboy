@@ -221,6 +221,27 @@ class Organizer(models.Model):
     is_creator = models.BooleanField(default = False)
     created_time = models.DateTimeField(auto_now_add = True)
 
+class Collaboration_request(models.Model):
+    """
+    Add Organizer to Event Request model
+    """
+    event = models.ForeignKey('Event')
+    profile = models.ForeignKey('Profile', null = True, default = None)
+    user = models.ForeignKey('User', null = True, default = None) #Used to capture request before needing to go through profile creation
+    email = models.CharField(max_length = 100, null = True, default = None)
+    code = models.CharField(max_length = 30)
+    accepted = models.DateTimeField(null = True, default = None)
+    is_rejected = models.BooleanField(default = False)
+    created_time = models.DateTimeField(auto_now_add = True)
+
+    def save(self, *args, **kwargs):
+        """
+        Overrides save to generate confirmation code
+        """
+        if self.pk is None:
+            self.code = randomConfirmationCode(30)
+        super(Collaboration_request, self).save(*args, **kwargs)
+
 class Ticket(models.Model):
     """
     Ticket model for events
