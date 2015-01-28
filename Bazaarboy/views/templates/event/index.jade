@@ -389,22 +389,31 @@ block body
         div.organizer-model.hide
             div.row.organizer
                 div.medium-3.columns.organizer-image &nbsp;
-                div.medium-7.columns.organizer-name &nbsp;
-                div.medium-2.columns.organizer-submit
-                    a.add-organizer-submit.secondary-btn(href="javascript:;") Add
+                div.medium-6.columns.organizer-name &nbsp;
+                div.medium-3.columns.organizer-submit
+                    a.add-organizer-submit.secondary-btn(href="javascript:;") Send Request
         form.add-organizer-form(name="add-organizer")
             div.row
                 div.medium-12.columns.text-center.contact-organizer-title
                     h3 Add Organizer to  
                         span.underline {{ event.name }}
             div.row
-                div.medium-3.columns.text-center
-                    label.right.inline(for="organizer-name") Organizer
+                div.medium-3.columns
+                    label.inline(for="organizer-name") Invite via Email
                 div.medium-9.columns
-                    input#organizer-name(type="text", name="organizer_name", placeholder="Search for Organizer Here")
+                    input#organizer-email(type="text", name="organizer_email", placeholder="Email of Collaborator")
+            div.row
+                div.medium-4.medium-offset-8.columns
+                    a.primary-btn.full-btn(href="javascript:;") Send Request
+            hr
+            div.row
+                div.medium-3.columns
+                    label.inline(for="organizer-name") Search Organizers
+                div.medium-9.columns
+                    input#organizer-name(type="text", name="organizer_name", placeholder="Search for Bazaarboy Profiles")
         div.row.add-organizer-success
             div.medium-12.columns.text-center.add-organizer-title
-                h3 Organizer Added!
+                h3 Organizer Request Sent! You will be notified when they have completed the request.
         div.row.add-organizer-success
             div.medium-4.medium-offset-2.columns
                 a.add-organizer-close.primary-btn(href="javascript:;") Back To Event

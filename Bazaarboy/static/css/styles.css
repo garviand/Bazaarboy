@@ -8862,6 +8862,10 @@ div#add-organizer-modal div.add-organizer-title {
 div#add-organizer-modal form > div {
   margin-top: 15px;
 }
+div#add-organizer-modal form label,
+div#add-organizer-modal form input {
+  margin-bottom: 0;
+}
 div#add-organizer-modal form div.organizer div.organizer-name {
   padding-top: 10px;
 }

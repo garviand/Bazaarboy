@@ -942,6 +942,11 @@ def edit(request, params, user):
     return json_response(response)
 
 @login_required()
+@validate('POST', ['id'], ['profile', 'email'])
+def request_organizer(request, params, user):
+    
+
+@login_required()
 @validate('POST', ['id', 'profile'])
 def add_organizer(request, params, user):
     # Check if the event is valid
