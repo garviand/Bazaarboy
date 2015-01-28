@@ -129,6 +129,17 @@ Bazaarboy.index.index =
             return
     init: () ->
         scope = this
+        # Collaboration Request
+        $('div.request a.accept-request').click () ->
+            requestId = $(this).data('id')
+            thisRequest = $(this).closest('div.request')
+            Bazaarboy.post 'event/organizer/request/accept/', {id:requestId}, (response) ->
+                if response.status is 'OK'
+                    thisRequest.html('<div class="small-12 text columns">Request Accepted!</div>')
+                else
+                    swal response.message
+                return
+            return
         # Create event
         $('div.create-event').click () ->
             profileId = $(this).attr('data-profile-id')

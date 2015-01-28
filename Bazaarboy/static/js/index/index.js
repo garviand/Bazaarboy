@@ -179,6 +179,20 @@
     init: function() {
       var scope;
       scope = this;
+      $('div.request a.accept-request').click(function() {
+        var requestId, thisRequest;
+        requestId = $(this).data('id');
+        thisRequest = $(this).closest('div.request');
+        Bazaarboy.post('event/organizer/request/accept/', {
+          id: requestId
+        }, function(response) {
+          if (response.status === 'OK') {
+            thisRequest.html('<div class="small-12 text columns">Request Accepted!</div>');
+          } else {
+            swal(response.message);
+          }
+        });
+      });
       $('div.create-event').click(function() {
         var profileId;
         profileId = $(this).attr('data-profile-id');

@@ -963,11 +963,124 @@ def request_organizer(request, params, user):
             'message':'You don\'t have permission for the event.'
         }
         return json_response(response)
-    organizer = Organizer.objects.filter(event = event, profile__managers = user)[0].profile
+    organizer = Organizer.objects.filter(event = event, profile__managers = user)[0]
+    if params['profile']:
+        if not Profile.objects.filter(id = params['profile']).exists():
+            response = {
+                'status':'FAIL',
+                'error':'PROFILE_NOT_FOUND',
+                'message':'The profile doesn\'t exist.'
+            }
+            return json_response(response)
+        profile = Profile.objects.get(id = params['profile'])
+        if Organizer.objects.filter(event = event, profile = profile).exists():
+            response = {
+                'status':'FAIL',
+                'error':'ALREADY_AN_ORGANIZER',
+                'message':'The profile is already an organizer.'
+            }
+            return json_response(response)
+        collaboration = Collaboration_request(event = event, sender = organizer, profile = profile)
+        collaboration.save()
+        response = {
+            'status':'OK',
+            'collaboration':serialize_one(collaboration)
+        }
+        return json_response(response)
+
+@login_required()
+@validate('POST', ['id'])
+def accept_organizer_request(request, params, user):
+    # Check if the request is valid
+    if not Collaboration_request.objects.filter(id = params['id'], accepted__isnull = True, is_rejected = False).exists():
+        response = {
+            'status':'FAIL',
+            'error':'REQUEST_NOT_FOUND',
+            'message':'The request doesn\'t exist.'
+        }
+        return json_response(response)
+    collaboration_request = Collaboration_request.objects.get(id = params['id'])
+    if not Collaboration_request.objects.filter(event = collaboration_request.event, profile__managers = user).exists():
+        response = {
+            'status':'FAIL',
+            'error':'NOT_A_MANAGER',
+            'message':'You don\'t have permission for the request.'
+        }
+        return json_response(response)
+    if Organizer.objects.filter(event = collaboration_request.event, profile__managers = user).exists():
+        response = {
+            'status':'FAIL',
+            'error':'ALREADY_AN_ORGANIZER',
+            'message':'The profile is already an organizer.'
+        }
+        return json_response(response)
+    organizer = Organizer(event = collaboration_request.event, profile = collaboration_request.profile)
+    organizer.save()
+    collaboration_request.accepted = timezone.now()
+    collaboration_request.save()
+    if collaboration_request.profile.email and collaboration_request.sender.profile.email:
+        sendOrganizerAddedEmail(collaboration_request.event, collaboration_request.sender.profile, collaboration_request.profile)
+    response = {
+        'status':'OK',
+        'collaboration':serialize_one(collaboration_request),
+        'organizer':serialize_one(organizer)
+    }
+    return json_response(response)
+
+@login_required()
+@validate('POST', ['id'])
+def accept_organizer_request(request, params, user):
+    # Check if the request is valid
+    if not Collaboration_request.objects.filter(id = params['id'], accepted__isnull = True, is_rejected = False).exists():
+        response = {
+            'status':'FAIL',
+            'error':'REQUEST_NOT_FOUND',
+            'message':'The request doesn\'t exist.'
+        }
+        return json_response(response)
+    collaboration_request = Collaboration_request.objects.get(id = params['id'])
+    if not Collaboration_request.objects.filter(event = collaboration_request.event, profile__managers = user).exists():
+        response = {
+            'status':'FAIL',
+            'error':'NOT_A_MANAGER',
+            'message':'You don\'t have permission for the request.'
+        }
+        return json_response(response)
+    if Organizer.objects.filter(event = collaboration_request.event, profile__managers = user).exists():
+        response = {
+            'status':'FAIL',
+            'error':'ALREADY_AN_ORGANIZER',
+            'message':'The profile is already an organizer.'
+        }
+        return json_response(response)
+    organizer = Organizer(event = collaboration_request.event, profile = collaboration_request.profile)
+    organizer.save()
+    collaboration_request.accepted = timezone.now()
+    collaboration_request.save()
+    if collaboration_request.profile.email and collaboration_request.sender.profile.email:
+        sendOrganizerAddedEmail(collaboration_request.event, collaboration_request.sender.profile, collaboration_request.profile)
+    response = {
+        'status':'OK',
+        'collaboration':serialize_one(collaboration_request),
+        'organizer':serialize_one(organizer)
+    }
+    return json_response(response)
+
+@login_required()
+@validate('POST', ['id'])
+def reject_organizer_request(request, params, user):
+    pass
 
 @login_required()
 @validate('POST', ['id', 'profile'])
 def add_organizer(request, params, user):
+    if not request.session.has_key('admin'):
+        # No admin session, block from login
+        response = {
+            'status':'FAIL',
+            'message':'Not an Admin.'
+        }
+        return json_response(response)
     # Check if the event is valid
     if not Event.objects.filter(id = params['id'], 
                                 is_deleted = False).exists():
@@ -979,15 +1092,7 @@ def add_organizer(request, params, user):
         return json_response(response)
     event = Event.objects.get(id = params['id'])
     # Check if user has permission for the event
-    if not Organizer.objects.filter(event = event, 
-                                    profile__managers = user).exists():
-        response = {
-            'status':'FAIL',
-            'error':'NOT_A_MANAGER',
-            'message':'You don\'t have permission for the event.'
-        }
-        return json_response(response)
-    user_profile = Organizer.objects.filter(event = event, profile__managers = user)[0].profile
+    user_profile = Organizer.objects.filter(event = event)[0].profile
     # Check if the profile exists
     if not Profile.objects.filter(id = params['profile']).exists():
         response = {

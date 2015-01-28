@@ -270,6 +270,24 @@ block content
                                 div.btn.secondary-btn.full-btn
                                     | <span class="plus">+</span> Create Event
         {% endif %}
+
+        {% if collaboration_requests|length > 0 %}
+        div.collaboration-requests
+            div.row
+                div.small-12.columns
+                    div.headline Event Collaboration Requests
+            {% for request in collaboration_requests %}
+            div.row.request
+                div.small-12.medium-5.columns.text
+                    a(href="{% url event:index request.event.id %}", target="_blank") {{ request.event.name }}
+                div.small-12.medium-3.columns.text
+                    | {{ request.sender.profile.name }}
+                div.small-12.medium-2.columns
+                    a.primary-btn.full-btn.accept-request(href="javascript:;", data-id="{{ request.id }}") Accept
+                div.small-12.medium-2.columns
+                    a.primary-btn-inverse.full-btn.reject-request(href="javascript:;", data-id="{{ request.id }}") Reject
+            {% endfor %}
+        {% endif %}
         div.event-tiles-container.summary-events.active
             {% if currentEventsCount > 0 %}
             div.events-overview-title

@@ -228,7 +228,7 @@ class Collaboration_request(models.Model):
     event = models.ForeignKey('Event')
     sender = models.ForeignKey('Organizer')
     profile = models.ForeignKey('Profile', null = True, default = None)
-    user = models.ForeignKey('User', null = True, default = None) #Used to capture request before needing to go through profile creation
+    user = models.ForeignKey('User', null = True, default = None) # Used to capture request before needing to go through profile creation
     email = models.CharField(max_length = 100, null = True, default = None)
     code = models.CharField(max_length = 30)
     accepted = models.DateTimeField(null = True, default = None)
