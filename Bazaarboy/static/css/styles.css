@@ -9081,6 +9081,12 @@ div#event-body {
   overflow: hidden;
   box-shadow: 0px 0px 4px rgba(0, 0, 0, 0.25);
 }
+@media only screen and (max-width: 40em) {
+  div#event-body {
+    position: relative;
+    top: -37px;
+  }
+}
 div#event-body div#event-image-upload {
   border-right: #f6f6f6 thin solid;
   padding-top: 10px;
