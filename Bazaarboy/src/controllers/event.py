@@ -421,6 +421,48 @@ def edit_invite(request, invite, user):
     return render(request, 'event/invite.html', locals())
 
 @login_check()
+def edit_invite(request, invite, user):
+    if not Invite.objects.filter(id = invite, profile__managers = user, is_deleted = False, is_sent = False).exists():
+        return redirect('index')
+    invite = Invite.objects.get(id = invite)
+    event = invite.event
+    profiles = Profile.objects.filter(managers = user)
+    profile = profiles[0]
+    lists = List.objects.filter(owner = profile, is_deleted = False)
+    for lt in lists:
+        list_items = List_item.objects.filter(_list = lt)
+        lt.items = list_items.count()
+        lt.selected = False
+        if invite.lists.filter(id = lt.id).exists():
+            lt.selected = True
+    return render(request, 'event/invite.html', locals())
+
+@login_check()
+@validate('POST', [])
+def copy_invite(request, params, invite, user):
+    if not Invite.objects.filter(id = invite, profile__managers = user).exists():
+        response = {
+            'status':'FAIL',
+            'error':'INVITE_NOT_FOUND',
+            'message':'The invite doesn\'t exist.'
+        }
+        return json_response(response)
+    invite = Invite.objects.get(id = invite)
+    new_invite = Invite(profile = invite.profile, event = invite.event, color = invite.color)
+    if invite.image is not None:
+        new_invite.image = invite.image
+    if invite.message is not None:
+        new_invite.message = invite.message
+    if invite.details is not None:
+        new_invite.details = invite.details
+    new_invite.save()
+    response = {
+        'status':'OK',
+        'invite':serialize_one(new_invite)
+    }
+    return json_response(response)
+
+@login_check()
 @validate('POST', ['id', 'lists', 'message'], ['details', 'image', 'color'])
 def new_invite(request, params, user):
     event = params['id']

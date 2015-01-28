@@ -2,6 +2,15 @@ Bazaarboy.event.invite_dashboard =
     sending: false
     init: () ->
         scope = this
+        $('div.invitation a.copy-invite').click () ->
+            inviteId = $(this).data('id')
+            Bazaarboy.post 'event/invite/' + inviteId + '/copy/', {}, (response) ->
+                if response.status is 'OK'
+                    Bazaarboy.redirect 'event/invite/'+response.invite.pk+'/edit/'
+                else
+                    swal response.message
+                return
+            return
         $('div.invitation a.delete-invite').click () ->
             invitation = $(this).closest('div.invitation')
             inviteId = $(this).data('id')
