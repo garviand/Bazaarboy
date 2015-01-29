@@ -255,7 +255,7 @@ block content
                                     span Export Guests
                             {% endif %}
     div#wrapper-dashboard.large-9.medium-10.columns.small-centered
-        {% if eventsCount == 0 %}
+        {% if eventsCount == 0 and collaboration_requests|length == 0 %}
         div.empty-state-container
             div.row
                 div.medium-5.columns

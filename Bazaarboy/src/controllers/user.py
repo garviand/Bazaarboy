@@ -127,7 +127,7 @@ def settings(request, user):
     return render(request, 'user/settings.html', locals())
 
 @login_check()
-@validate('POST', ['email', 'password', 'first_name', 'last_name'])
+@validate('POST', ['email', 'password', 'first_name', 'last_name'], ['request_id', 'request_code'])
 def create(request, params, user):
     """
     Create a new user using email and password
@@ -185,6 +185,10 @@ def create(request, params, user):
     user.first_name = params['first_name']
     user.last_name = params['last_name']
     user.save()
+    if Collaboration_request.objects.filter(id = params['request_id'], code = params['request_code'], profile__isnull = True, user__isnull = True).exists():
+        collaboration = Collaboration_request.objects.get(id = params['request_id'])
+        collaboration.user = user
+        collaboration.save()
     # Creation done, send out a confirmation email
     code = os.urandom(128).encode('base_64')[:128]
     confirmationCode = User_confirmation_code(user = user, code = code)
@@ -198,7 +202,7 @@ def create(request, params, user):
     return json_response(response)
 
 @login_check()
-@validate('POST', ['email', 'password'])
+@validate('POST', ['email', 'password'], ['request_id', 'request_code'])
 def auth(request, params, user):
     """
     Authenticate a user using email and password
@@ -226,6 +230,12 @@ def auth(request, params, user):
                 return json_response(response)
             # Email and password match, start session
             request.session['user'] = user.id
+            if Profile.objects.filter(managers = user).exists() and params['request_id'] and params['request_code']:
+                profile = Profile.objects.filter(managers = user)[0]
+                if Collaboration_request.objects.filter(id = params['request_id'], code = params['request_code'], profile__isnull = True).exists():
+                    collaboration = Collaboration_request.objects.get(id = params['request_id'])
+                    collaboration.profile = profile
+                    collaboration.save()
             response = {
                 'status':'OK'
             }

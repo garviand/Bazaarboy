@@ -135,10 +135,31 @@ Bazaarboy.index.index =
             thisRequest = $(this).closest('div.request')
             Bazaarboy.post 'event/organizer/request/accept/', {id:requestId}, (response) ->
                 if response.status is 'OK'
-                    thisRequest.html('<div class="small-12 text columns">Request Accepted!</div>')
+                    thisRequest.html('<div class="small-12 text columns">Request Accepted! Refreshing...</div>')
+                    setTimeout -> 
+                        location.reload()
+                    , 1000
                 else
                     swal response.message
                 return
+            return
+        $('div.request a.reject-request').click () ->
+            requestId = $(this).data('id')
+            thisRequest = $(this).closest('div.request')
+            swal
+                title: "Are You Sure?"
+                text: "Are you sure you want to reject this collaboration request?"
+                type: "warning"
+                showCancelButton: true
+                confirmButtonText: "Yes"
+                closeOnConfirm: true
+                , ->
+                    Bazaarboy.post 'event/organizer/request/reject/', {id:requestId}, (response) ->
+                        if response.status is 'OK'
+                            thisRequest.html('<div class="small-12 text columns">Request Rejected...</div>')
+                        else
+                            swal response.message
+                        return
             return
         # Create event
         $('div.create-event').click () ->

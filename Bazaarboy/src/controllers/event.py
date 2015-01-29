@@ -24,7 +24,7 @@ from src.config import *
 from src.controllers.request import *
 from src.ordereddict import OrderedDict
 from src.csvutils import UnicodeWriter
-from src.email import sendEventConfirmationEmail, sendEventInvite, sendManualEventInvite, sendOrganizerAddedEmail, sendIssueEmail, sendEventReminder, sendCollaborationRequest
+from src.email import sendEventConfirmationEmail, sendEventInvite, sendManualEventInvite, sendOrganizerAddedEmail, sendIssueEmail, sendEventReminder, sendCollaborationRequest, sendCollaborationResponse
 from src.regex import REGEX_EMAIL, REGEX_NAME, REGEX_SLUG
 from src.sanitizer import sanitize_redactor_input
 from src.serializer import serialize, serialize_one
@@ -1043,6 +1043,7 @@ def accept_organizer_request(request, params, user):
     organizer.save()
     collaboration_request.accepted = timezone.now()
     collaboration_request.save()
+    sendCollaborationResponse(collaboration_request, True)
     response = {
         'status':'OK',
         'collaboration':serialize_one(collaboration_request),
@@ -1053,7 +1054,37 @@ def accept_organizer_request(request, params, user):
 @login_required()
 @validate('POST', ['id'])
 def reject_organizer_request(request, params, user):
-    pass
+    if not Collaboration_request.objects.filter(id = params['id'], accepted__isnull = True, is_rejected = False).exists():
+        response = {
+            'status':'FAIL',
+            'error':'REQUEST_NOT_FOUND',
+            'message':'The request doesn\'t exist.'
+        }
+        return json_response(response)
+    collaboration_request = Collaboration_request.objects.get(id = params['id'])
+    if not Collaboration_request.objects.filter(event = collaboration_request.event, profile__managers = user).exists():
+        response = {
+            'status':'FAIL',
+            'error':'NOT_A_MANAGER',
+            'message':'You don\'t have permission for the request.'
+        }
+        return json_response(response)
+    if Organizer.objects.filter(event = collaboration_request.event, profile__managers = user).exists():
+        response = {
+            'status':'FAIL',
+            'error':'ALREADY_AN_ORGANIZER',
+            'message':'The profile is already an organizer.'
+        }
+        return json_response(response)
+    profile = Profile.objects.filter(managers = user)[0]
+    collaboration_request.is_rejected = True
+    collaboration_request.save()
+    sendCollaborationResponse(collaboration_request, False)
+    response = {
+        'status':'OK',
+        'collaboration':serialize_one(collaboration_request)
+    }
+    return json_response(response)
 
 @login_required()
 @validate('POST', ['id', 'profile'])

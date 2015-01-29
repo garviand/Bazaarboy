@@ -30,6 +30,10 @@ block body
                                         input(id="savepw", type="checkbox")
                                         label(for="savepw") Keep me signed in.
                                     div.small-12.medium-4.medium-offset-8.columns
+                                        {% if organizer_request %}
+                                        input(type="hidden", name="request_id", value="{{ organizer_request.id }}")
+                                        input(type="hidden", name="request_code", value="{{ organizer_request.code }}")
+                                        {% endif %}
                                         input.primary-btn.submit-login(type="submit", value="SIGN IN")
                 div#footer
                     div.row
@@ -38,7 +42,7 @@ block body
                                 div.small-12.medium-8.columns
                                     a.trouble(href="{% url user:reset %}") Forgot your password?
                                 div.small-12.medium-4.columns
-                                    a.switch(href="{% url index:register %}{% if next %}?next={{ next }}{% endif %}{% if code %}&code={{ code }}{% endif %}") Register
+                                    a.switch(href="{% url index:register %}{% if next %}?next={{ next }}{% endif %}{% if code %}&code={{ code }}{% endif %}{% if organizer_request %}?requestid={{ organizer_request.id }}&requestc={{ organizer_request.code }}{% endif %}") Register
 
 append script
     script(type="text/javascript", src="{{ STATIC_URL }}hashchange/jquery.ba-hashchange.min.js")
