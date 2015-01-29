@@ -32,13 +32,17 @@ block body
                                         input(type="password", name="confirm", placeholder="Confirm Password", autocomplete="off")
                                 div.row.register-bottom
                                     div.small-12.medium-4.medium-offset-8.columns.end
+                                        {% if organizer_request %}
+                                        input(type="hidden", name="request_id", value="{{ organizer_request.id }}")
+                                        input(type="hidden", name="request_code", value="{{ organizer_request.code }}")
+                                        {% endif %}
                                         input.primary-btn.submit-register(type="submit", value="REGISTER")
                 div#footer
                     div.row
                         div.small-10.small-offset-1.columns
                             div.row
                                 div.small-12.medium-4.medium-offset-8.columns.end
-                                    a.switch(href="{% url index:login %}{% if next %}?next={{ next }}{% endif %}{% if code %}&code={{ code }}{% endif %}") Login
+                                    a.switch(href="{% url index:login %}{% if next %}?next={{ next }}{% endif %}{% if code %}&code={{ code }}{% endif %}{% if organizer_request %}?requestid={{ organizer_request.id }}&requestc={{ organizer_request.code }}{% endif %}") Login
 
 append script
     script(type="text/javascript", src="{{ STATIC_URL }}hashchange/jquery.ba-hashchange.min.js")

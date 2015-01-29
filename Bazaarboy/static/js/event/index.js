@@ -931,29 +931,42 @@
         var profileId,
           _this = this;
         profileId = $(this).data('profile');
-        Bazaarboy.post('event/organizer/add/', {
+        Bazaarboy.post('event/organizer/request/', {
           id: eventId,
           profile: profileId
         }, function(response) {
-          var newOrganizer;
           if (response.status === 'OK') {
-            newOrganizer = $('div#event-organizers div.organizer').eq(0).clone();
-            if (response.profile['image_url'] != null) {
-              newOrganizer.find('div.organizer-icon').css("background-image", "url(" + response.profile.image_url + ")");
-            } else {
-              newOrganizer.find('div.organizer-icon').css("background-image", "none");
-            }
-            newOrganizer.find('div.organizer-name').html("<span>" + response.profile.name + "</span>");
-            $('div#event-organizers div.organizer-list').append(newOrganizer);
-            return $('form.add-organizer-form').fadeOut(300, function() {
+            $('form.add-organizer-form').fadeOut(300, function() {
               $('form.add-organizer-form input#organizer-name').val('');
               $('form.add-organizer-form div.organizer').remove();
               $('div.row.add-organizer-success').fadeIn(300);
             });
           } else {
-            return alert(response.message);
+            swal(response.message);
           }
         });
+      });
+      $('form.add-organizer-form a.send-request-btn').click(function() {
+        var email,
+          _this = this;
+        email = $('form.add-organizer-form input[name=organizer_email]').val();
+        if (email.trim() !== '') {
+          Bazaarboy.post('event/organizer/request/', {
+            id: eventId,
+            email: email
+          }, function(response) {
+            console.log(response);
+            if (response.status === 'OK') {
+              $('form.add-organizer-form').fadeOut(300, function() {
+                $('form.add-organizer-form input#organizer-name').val('');
+                $('form.add-organizer-form div.organizer').remove();
+                $('div.row.add-organizer-success').fadeIn(300);
+              });
+            } else {
+              swal(response.message);
+            }
+          });
+        }
       });
       $("span.email-invite").click(function(e) {
         $('div#invite-modal').foundation('reveal', 'open');

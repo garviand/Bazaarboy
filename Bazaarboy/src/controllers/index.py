@@ -122,10 +122,11 @@ def index(request, params, user):
                                        organizers__in = pids)
     draftEventsCount = draftEvents.count()
     draftEvents = draftEvents.filter()[:10]
+    collaboration_requests = Collaboration_request.objects.filter(profile__in = pids, accepted__isnull = True, is_rejected = False)
     return render(request, 'index/index.html', locals())
 
 @login_check()
-@validate('GET', [], ['next', 'code'])
+@validate('GET', [], ['next', 'code', 'requestid', 'requestc'])
 def login(request, user, params):
     """
     Login Page
@@ -137,10 +138,13 @@ def login(request, user, params):
             next = params['next']
         if params['code']:
             code = params['code']
+        if params['requestid'] and params['requestc']:
+            if Collaboration_request.objects.filter(id = params['requestid'], code = params['requestc']).exists():
+                organizer_request = Collaboration_request.objects.get(id = params['requestid'], code = params['requestc'])
         return render(request, 'index/login.html', locals())
 
 @login_check()
-@validate('GET', [], ['next', 'code'])
+@validate('GET', [], ['next', 'code', 'requestid', 'requestc'])
 def register(request, user, params):
     """
     Register Page
@@ -152,6 +156,9 @@ def register(request, user, params):
             next = params['next']
         if params['code']:
             code = params['code']
+        if params['requestid'] and params['requestc']:
+            if Collaboration_request.objects.filter(id = params['requestid'], code = params['requestc']).exists():
+                organizer_request = Collaboration_request.objects.get(id = params['requestid'], code = params['requestc'])
         return render(request, 'index/register.html', locals())
 
 @login_check()

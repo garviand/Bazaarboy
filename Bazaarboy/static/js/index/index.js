@@ -179,6 +179,46 @@
     init: function() {
       var scope;
       scope = this;
+      $('div.request a.accept-request').click(function() {
+        var requestId, thisRequest;
+        requestId = $(this).data('id');
+        thisRequest = $(this).closest('div.request');
+        Bazaarboy.post('event/organizer/request/accept/', {
+          id: requestId
+        }, function(response) {
+          if (response.status === 'OK') {
+            thisRequest.html('<div class="small-12 text columns">Request Accepted! Refreshing...</div>');
+            setTimeout(function() {
+              return location.reload();
+            }, 1000);
+          } else {
+            swal(response.message);
+          }
+        });
+      });
+      $('div.request a.reject-request').click(function() {
+        var requestId, thisRequest;
+        requestId = $(this).data('id');
+        thisRequest = $(this).closest('div.request');
+        swal({
+          title: "Are You Sure?",
+          text: "Are you sure you want to reject this collaboration request?",
+          type: "warning",
+          showCancelButton: true,
+          confirmButtonText: "Yes",
+          closeOnConfirm: true
+        }, function() {
+          return Bazaarboy.post('event/organizer/request/reject/', {
+            id: requestId
+          }, function(response) {
+            if (response.status === 'OK') {
+              thisRequest.html('<div class="small-12 text columns">Request Rejected...</div>');
+            } else {
+              swal(response.message);
+            }
+          });
+        });
+      });
       $('div.create-event').click(function() {
         var profileId;
         profileId = $(this).attr('data-profile-id');

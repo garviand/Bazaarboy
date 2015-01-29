@@ -244,6 +244,11 @@ def create(request, params, user):
             profile.payment_account = paymentAccount
     # Save profile and establish manager role
     profile.save()
+    if Collaboration_request.objects.filter(user = user, profile__isnull = True).exists():
+        collaboration_requests = Collaboration_request.objects.filter(user = user, profile__isnull = True)
+        for collab in collaboration_requests:
+            collab.profile = profile
+            collab.save()
     profileManager = Profile_manager(user = user,
                                      profile = profile,
                                      is_creator = True)
