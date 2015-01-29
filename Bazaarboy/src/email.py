@@ -331,10 +331,10 @@ def sendCollaborationResponse(collaboration, accepted):
     }]
     buttonHtml = '<a href="https://bazaarboy.com/" class="primary-btn view_event_btn" style="color: #222222; text-decoration: none; border-radius: 4px; font-weight: bold; text-align: center; font-size: 1.2em; box-sizing: border-box; padding: 12px 60px;background: #FFFFFF; border: thin solid ' + collaboration.event.color + ';">My Dashboard</a>'
     if accepted:
-        organizer_action = '\'' + collaboration.profile.name + '\' has accepted your collaboration request!'
+        organizer_action = '\'' + collaboration.profile.name + '\' has accepted your collaboration request for the event:'
         action_text = 'Congratulations on working together!'
     else:
-        organizer_action = '\'' + collaboration.profile.name + '\' has rejected your collaboration request.'
+        organizer_action = '\'' + collaboration.profile.name + '\' has rejected your collaboration request for the event:'
         action_text = 'You may want to contact the collaborator directly.'
     mergeVars = [{
         'rcpt': organizer.profile.email,
