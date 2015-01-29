@@ -279,7 +279,7 @@ block content
             {% for request in collaboration_requests %}
             div.row.request
                 div.small-12.medium-5.columns.text
-                    a(href="{% url event:index request.event.id %}", target="_blank") {{ request.event.name }}
+                    a(href="{% url event:index request.event.id %}?preview", target="_blank") {{ request.event.name }}
                 div.small-12.medium-3.columns.text
                     | {{ request.sender.profile.name }}
                 div.small-12.medium-2.columns

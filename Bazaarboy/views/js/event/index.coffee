@@ -805,6 +805,21 @@ Bazaarboy.event.index =
                     swal response.message
                 return
             return
+        $('form.add-organizer-form a.send-request-btn').click () ->
+            email = $('form.add-organizer-form input[name=organizer_email]').val()
+            if email.trim() != ''
+                Bazaarboy.post 'event/organizer/request/', {id: eventId, email: email}, (response) =>
+                    console.log response
+                    if response.status is 'OK'
+                        $('form.add-organizer-form').fadeOut 300, () ->
+                            $('form.add-organizer-form input#organizer-name').val('')
+                            $('form.add-organizer-form div.organizer').remove()
+                            $('div.row.add-organizer-success').fadeIn 300
+                            return
+                    else
+                        swal response.message
+                    return
+            return
         $("span.email-invite").click (e) ->
             $('div#invite-modal').foundation('reveal', 'open')
             $('div#invite-modal div.previous-events').addClass 'hide'

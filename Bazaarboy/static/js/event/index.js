@@ -946,6 +946,28 @@
           }
         });
       });
+      $('form.add-organizer-form a.send-request-btn').click(function() {
+        var email,
+          _this = this;
+        email = $('form.add-organizer-form input[name=organizer_email]').val();
+        if (email.trim() !== '') {
+          Bazaarboy.post('event/organizer/request/', {
+            id: eventId,
+            email: email
+          }, function(response) {
+            console.log(response);
+            if (response.status === 'OK') {
+              $('form.add-organizer-form').fadeOut(300, function() {
+                $('form.add-organizer-form input#organizer-name').val('');
+                $('form.add-organizer-form div.organizer').remove();
+                $('div.row.add-organizer-success').fadeIn(300);
+              });
+            } else {
+              swal(response.message);
+            }
+          });
+        }
+      });
       $("span.email-invite").click(function(e) {
         $('div#invite-modal').foundation('reveal', 'open');
         $('div#invite-modal div.previous-events').addClass('hide');
