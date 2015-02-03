@@ -146,6 +146,19 @@ div.event-rsvp a#rsvp-button:hover{
     background: {{ event.color }};
 }
 
+.custom #event-hero .event-hero-rsvp form .tix-type:after{
+    content: "";
+    width: 0;
+    height: 0;
+    position: absolute;
+    right: 16px;
+    top: 50%;
+    margin-top: -6px;
+    border-width: 6px 0 6px 6px;
+    border-style: solid;
+    border-color: transparent {{ event.color }};
+}
+
 .custom div#event-date{
     background: {{ event.color }};
     border: {{ event.color_dark }} thin solid;

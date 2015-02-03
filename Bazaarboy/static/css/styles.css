@@ -8579,8 +8579,20 @@ div#event {
   cursor: pointer;
 }
 #event-hero .event-hero-rsvp form .tix-type {
+  position: relative;
   padding-left: 1em;
   line-height: 44px;
+}
+#event-hero .event-hero-rsvp form .tix-type:after {
+  content: "";
+  width: 0;
+  height: 0;
+  position: absolute;
+  right: 16px;
+  top: 50%;
+  margin-top: -6px;
+  border-width: 6px 0 6px 6px;
+  border-style: solid;
 }
 #event-hero .event-hero-rsvp form .tix-type,
 #event-hero .event-hero-rsvp form .tix-quantity {
