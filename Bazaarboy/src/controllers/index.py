@@ -122,7 +122,7 @@ def index(request, params, user):
                                        organizers__in = pids)
     draftEventsCount = draftEvents.count()
     draftEvents = draftEvents.filter()[:10]
-    collaboration_requests = Collaboration_request.objects.filter(profile__in = pids, accepted__isnull = True, is_rejected = False).exclude(event__organizer__in = pids)
+    collaboration_requests = Collaboration_request.objects.filter(profile__in = pids, accepted__isnull = True, is_rejected = False).exclude(event__organizer__profile__in = pids)
     return render(request, 'index/index.html', locals())
 
 @login_check()
