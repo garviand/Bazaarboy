@@ -28,3 +28,5 @@ Bazaarboy.admin.login =
                 return
             return
         return
+
+Bazaarboy.admin.login.init()

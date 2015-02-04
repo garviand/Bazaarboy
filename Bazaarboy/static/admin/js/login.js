@@ -34,4 +34,6 @@
     }
   };
 
+  Bazaarboy.admin.login.init();
+
 }).call(this);

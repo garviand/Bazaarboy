@@ -1,83 +1,74 @@
 (function() {
   Bazaarboy.admin.login = {
+    sort_method: 'rsvps',
     searchProfiles: function(value) {
       Bazaarboy.get('profile/search/', {
         keyword: value
       }, function(response) {
-        var i, profiles, _i, _ref;
+        var profiles;
         if (response.status === 'OK') {
           profiles = response.profiles;
-          console.log(profiles);
           if (profiles.length > 0) {
-            $('.profile_login .profile_choices').empty();
-            for (i = _i = 0, _ref = profiles.length - 1; 0 <= _ref ? _i <= _ref : _i >= _ref; i = 0 <= _ref ? ++_i : --_i) {
-              $('.profile_login .profile_choices').append('<a href="javascript:;" data-id="' + profiles[i].pk + '">' + profiles[i].name + '</a>');
-            }
+            console.log(profiles);
+            return profiles;
           } else {
-            $('.profile_login .profile_choices').empty();
+            return [];
           }
         }
       });
     },
-    searchEvents: function(value) {
-      Bazaarboy.get('event/search/', {
-        keyword: value
-      }, function(response) {
-        var events, i, _i, _ref;
-        if (response.status === 'OK') {
-          events = response.events;
-          if (events.length > 0) {
-            $('.event_export .event_choices').empty();
-            for (i = _i = 0, _ref = events.length - 1; 0 <= _ref ? _i <= _ref : _i >= _ref; i = 0 <= _ref ? ++_i : --_i) {
-              $('.event_export .event_choices').append('<a href="/event/export/csv?id=' + events[i].pk + '">' + events[i].name + '</a>');
-            }
-          }
-        }
-      });
+    sort_li: function(a, b) {
+      var _ref, _ref1;
+      if (Bazaarboy.admin.login.sort_method === 'date') {
+        return (_ref = ($(b).data(Bazaarboy.admin.login.sort_method)) < ($(a).data(Bazaarboy.admin.login.sort_method))) != null ? _ref : {
+          1: -1
+        };
+      } else {
+        return (_ref1 = ($(b).data(Bazaarboy.admin.login.sort_method)) > ($(a).data(Bazaarboy.admin.login.sort_method))) != null ? _ref1 : {
+          1: -1
+        };
+      }
     },
     init: function() {
-      var _this = this;
-      $('div.colorpicker').spectrum({
-        preferredFormat: "hex",
-        flat: true,
-        showInput: true,
-        showButtons: false
+      var scope,
+        _this = this;
+      scope = this;
+      console.log(scope.sort_method);
+      $('.event-filters a.sort-btn').click(function() {
+        $('.event-filters a.sort-btn').removeClass('active');
+        scope.sort_method = $(this).data('sort');
+        $(this).addClass('active');
+        $('.event-list .event').sort(scope.sort_li).appendTo('.event-list');
       });
-      $('a.create-premium-event').click(function() {
-        var color, eventId, eventName;
-        color = $('div.colorpicker').spectrum("get").toHexString();
-        eventId = $(this).data('id');
-        eventName = $(this).html();
-        if (confirm("Are you sure you want to make " + eventName + " a premium event?")) {
-          return Bazaarboy.post('admin/event/premium/', {
-            id: eventId,
-            color: color
-          }, function(response) {
-            if (response.status === 'OK') {
-              window.location.href = response.redirect;
-            } else {
-              alert(response.message);
+      $('div.login-profile input[name=profile_name]').autocomplete({
+        html: true
+      }, {
+        source: function(request, response) {
+          Bazaarboy.get('profile/search/', {
+            keyword: request.term
+          }, function(results) {
+            var profile, profiles, thisLabel, _i, _len, _ref;
+            profiles = [];
+            _ref = results.profiles;
+            for (_i = 0, _len = _ref.length; _i < _len; _i++) {
+              profile = _ref[_i];
+              console.log(profile);
+              thisLabel = '<div class="autocomplete_result row" data-id="' + profile.pk + '">';
+              if (profile.image_url != null) {
+                thisLabel += '<div class="small-1 columns autocomplete_image" style="background-image:url(' + profile.image_url + '); background-size:contain; background-position:center; background-repeat:no-repeat;" />';
+              }
+              thisLabel += '<div class="small-11 columns autocomplete_name">' + profile.name + '</div>';
+              thisLabel += '</div>';
+              profiles.push({
+                label: thisLabel,
+                value: profile.name
+              });
             }
+            return response(profiles);
           });
         }
       });
-      $('a.undo-premium-event').click(function() {
-        var eventId, eventName;
-        eventId = $(this).data('id');
-        eventName = $(this).html();
-        if (confirm("Are you sure you want to revert " + eventName + " back to a normal event page?")) {
-          return Bazaarboy.post('admin/event/premium/undo/', {
-            id: eventId
-          }, function(response) {
-            if (response.status === 'OK') {
-              window.location.href = response.redirect;
-            } else {
-              alert(response.message);
-            }
-          });
-        }
-      });
-      $('.profile_login').on('click', '.profile_choices a', function(event) {
+      $('body').on('click', '.autocomplete_result', function(event) {
         var id;
         id = $(this).data('id');
         Bazaarboy.get('admin/login/profile/', {
@@ -89,15 +80,6 @@
             alert(response.message);
           }
         });
-      });
-      $('.profile_login .input_container input[name=profile_name]').keyup(function(event) {
-        var value;
-        value = $('.profile_login .input_container input[name=profile_name]').val();
-        if (value) {
-          _this.searchProfiles(value);
-        } else {
-          $('.profile_login .profile_choices').empty();
-        }
       });
       $('div.event_export .input_container input[name=event_name]').keyup(function(event) {
         var value;

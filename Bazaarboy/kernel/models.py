@@ -7,6 +7,7 @@ import os
 import random
 import string
 from django.db import models
+from django.db.models import Q, Sum, Count
 from django.utils import timezone
 from palette import Color
 
@@ -173,6 +174,23 @@ class Event(models.Model):
                                       through = 'Sponsorship')
     slug = models.CharField(max_length = 30, null = True, default = None, unique = True)
     is_deleted = models.BooleanField(default = False)
+
+    def totalRSVP(self):
+        stats = Purchase.objects.filter(Q(checkout = None) | 
+                                        Q(checkout__is_charged = True, 
+                                          checkout__is_refunded = False), 
+                                        event = self)
+        return stats.aggregate(Count('items'))['items__count']
+
+    def totalRevenue(self):
+        stats = Purchase.objects.filter(Q(checkout = None) | 
+                                        Q(checkout__is_charged = True, 
+                                          checkout__is_refunded = False), 
+                                        event = self)
+        if stats.aggregate(Sum('amount'))['amount__sum'] is None:
+            return 0
+        else:
+            return stats.aggregate(Sum('amount'))['amount__sum']
 
     def color_test(self):
         try:

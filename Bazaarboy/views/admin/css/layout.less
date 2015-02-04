@@ -1,236 +1,61 @@
-// Global values
+@import (reference) "../../css/vars.less";
 
-@body_width: 960px;
-@top_height: 60px;
-
-@box_padding: 24px;
-
-@title_color_white: rgba(255, 255, 255, 0.9);
-
-@font_color_base: #34495e;
-@font_family_base: "rooney-sans", Helvetica, sans-serif;
-@font_style_base: normal;
-@font_size_base: 16px;
-@font_weight_base: 400;
-@font_weight_bold: 700;
-
-// Mixins
-
-.hidden {
-    display: none;
-}
-
-.left {
-    float: left;
-}
-
-.right {
-    float: right;
-}
-
-.clear {
-    clear: both;
-}
-
-.center {
-    display: block;
-    margin: auto;
-}
-
-.capitalize {
-    text-transform: uppercase;
-}
-
-.box {
-    position: relative;
-    padding: @box_padding;
-    border-radius: 6px;
-    background-color: #EDEFF1;
-}
-
-// Tags
-
-b {
-    font-family: @font_family_base;
-    font-style: @font_style_base;
-    font-weight: @font_weight_bold;
-}
-
-// Admin layout
-
-body {
-    font-family: @font_family_base;
-    font-style: @font_style_base;
-    font-weight: @font_weight_base;
-}
-
-body > div.background{
-    position: fixed;
-    width: 100%;
-    height: 100%;
-    min-height: 600px;
-    min-width: 970px;
-    z-index: -1;
-    background-image: url('../../images/pricing/bg.jpg');
-    background-size: cover;
-    background-position: center top;
-}
-
-div#wrapper_top {
-    position: relative;
-    width: 100%;
-    min-width: @body_width;
-    height: @top_height;
-    background: rgba(237, 239, 241, 0.8);
-
-    div#top_inner {
-        width: @body_width;
-        height: @top_height;
-        .center;
-
-        div.title {
-            width: @body_width;
-            padding-top: 10px;
-            font-size: 30px;
-            text-align: center;
-            .center;
-            .capitalize;
-        }
+div#admin-login{
+    div.login-form{
+        margin-top: 100px;
     }
 }
 
-div#wrapper_main {
-    width: @body_width;
-    padding: 20px 0;
-    .center;
-}
-
-div#wrapper_bottom {
-    width: @body_width;
-    .center;
-}
-
-// Login
-
-div#login {
-    div.login-form {
-        width: 313px;
-        margin-top: 40px !important;
-        .center;
-
-        &:before {
-            display:none;
-        }
-    }
-
-    div.quote {
-        width: 100%;
-        margin: 40px 0;
-        font-size: @font_size_base - 2;
-        text-align: center;
-    }
-}
-
-// Index
-
-div#wrapper_top {
-    div#top_inner {
-        div.welcome {
-            position: absolute;
-            top: floor((@top_height - @font_size_base) / 2);
-            left: floor((@top_height - @font_size_base) / 2);
-        }
-
-        div.logout {
-            position: absolute;
-            top: floor((@top_height - @font_size_base) / 2);
-            right: floor((@top_height - @font_size_base) / 2);
-
-            a {
-                font-size: @font_size_base;
-                color: @font_color_base;
-                text-decoration: none;
-            }
-        }
-    }
-}
-
-div#wrapper_main {
-    div.summary {
-        width: @body_width - @box_padding * 2;
-        min-height: 100px;
-        margin-bottom: 20px;
-
-        div.icon {
-            width: 100px;
-            min-height: 100px;
-            .left;
-            .icon_title{
-                font-weight: bold;
-                width: 100%;
-                text-align: center;
-                line-height: 1.5em;
-                margin-bottom: 10px;
-            }
-        }
-
-        div.specs {
-            width: @body_width - @box_padding * 2 - 130px;
-            min-height: 100px;
-            padding-left: 30px;
-            div.finances{
-                margin-top: 14px;
-                div{
-                    float: left;
-                    width: @body_width/5;
-                    font-size: @font_size_base + 1;
+div#admin-dashboard{
+    padding-top: 50px;
+    div.events{
+        ul.button-group{
+            a{
+                background: @orange-50;
+                &:hover, &.active{
+                    background: @orange;
                 }
             }
-            &.profile_login, &.event_export{
-                .input_container{
-                    float: left;
-                    width: @body_width / 3;
+        }
+        div.event-list{
+            div.event{
+                min-height: 60px;
+                border-top: @light-grey thin solid;
+                padding: 5px;
+                div.image{
+                    height: 50px;
+                    width: 50px;
                 }
-                .profile_choices, .event_choices{
-                    float: left;
-                    width: @body_width / 3;
-                    a{
-                        display: block;
-                        float: left;
-                        margin-right: 10px;
-                        margin-bottom: 10px;
-                        &.hidden{
-                            display: none;
-                        }
+                div.text{
+                    padding-top: 13px;
+                    div.rsvp-count{
+                        margin-bottom: 3px;
                     }
                 }
-            }
-            table.upcoming, table.past, table.premium{
-                width: 100%;
-                tr{
-                    td{
-                        padding: 7px 7px;
-                        a{
-                            text-decoration: none;
-                        }
-                    }
+                div.action{
+                    padding-top: 5px;
                 }
             }
-            div.table-container{
-                float: right;
-                width: 70%;
-                label{
-                    text-decoration: underline;
-                }
-            }
-            div.colorpicker-container{
-                width: 25%;
-                float: left;
-                label{
-                    text-decoration: underline;
-                }
-            }
-            .left
         }
     }
+}
+
+div.autocomplete_result{
+    padding: 5px;
+    border-bottom: @light-grey thin solid;
+    min-height: 55px;
+    &:hover{
+        background: @light-grey;
+        div.autocomplete_image{
+            background-color: @light-grey !important; 
+        }
+    }
+    div.autocomplete_image{
+        height: 40px;
+    }
+}
+
+.ui-state-focus{
+    border: none !important;
+    background: @light-grey;
 }

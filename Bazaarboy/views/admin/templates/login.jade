@@ -2,19 +2,22 @@ extends layout
 
 append script
     script(type="text/javascript", src="{{ STATIC_URL }}admin/js/login.js")
-    script(type="text/javascript").
-        Bazaarboy.admin.login.init();
 
-block main
-    div#login
+block content
+    div#admin-login
         div.login-form
             form(name="login")
-                div.control-group
-                    input#username_field.login-field(type="text", name="name", placeholder="Username")
-                    label.login-field-icon.fui-user(for="username_field")
-                div.control-group
-                    input#password_field.login-field(type="password", name="password", placeholder="Password")
-                    label.login-field-icon.fui-lock
-                a.btn.btn-large.btn-block.palette-peter-river(href="javascript:;") Login
-        div.quote
-            | Thus far you shall come, but no farther. - Job 38:11
+                div.row
+                    div.small-12.columns.medium-6.medium-centered.columns
+                        div.row
+                            div.small-12.columns
+                                h3 Bazaarboy Admin | Login
+                        div.row
+                            div.small-12.columns
+                                input(type="text", name="name", placeholder="Username")
+                        div.row
+                            div.small-12.columns
+                                input(type="password", name="password", placeholder="Password")
+                        div.row
+                            div.small-12.columns
+                                a.primary-btn.full-btn(href="javascript:;") Login
