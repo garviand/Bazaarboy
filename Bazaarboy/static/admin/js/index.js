@@ -1,6 +1,5 @@
 (function() {
   Bazaarboy.admin.login = {
-    sort_method: 'rsvps',
     searchProfiles: function(value) {
       Bazaarboy.get('profile/search/', {
         keyword: value
@@ -9,7 +8,6 @@
         if (response.status === 'OK') {
           profiles = response.profiles;
           if (profiles.length > 0) {
-            console.log(profiles);
             return profiles;
           } else {
             return [];
@@ -17,28 +15,24 @@
         }
       });
     },
-    sort_li: function(a, b) {
-      var _ref, _ref1;
-      if (Bazaarboy.admin.login.sort_method === 'date') {
-        return (_ref = ($(b).data(Bazaarboy.admin.login.sort_method)) < ($(a).data(Bazaarboy.admin.login.sort_method))) != null ? _ref : {
-          1: -1
-        };
-      } else {
-        return (_ref1 = ($(b).data(Bazaarboy.admin.login.sort_method)) > ($(a).data(Bazaarboy.admin.login.sort_method))) != null ? _ref1 : {
-          1: -1
-        };
-      }
-    },
     init: function() {
       var scope,
         _this = this;
       scope = this;
-      console.log(scope.sort_method);
       $('.event-filters a.sort-btn').click(function() {
         $('.event-filters a.sort-btn').removeClass('active');
-        scope.sort_method = $(this).data('sort');
         $(this).addClass('active');
-        $('.event-list .event').sort(scope.sort_li).appendTo('.event-list');
+        if ($(this).data('sort') === 'date') {
+          tinysort('.event-list>.event', {
+            data: $(this).data('sort'),
+            order: 'asc'
+          });
+        } else {
+          tinysort('.event-list>.event', {
+            data: $(this).data('sort'),
+            order: 'desc'
+          });
+        }
       });
       $('div.login-profile input[name=profile_name]').autocomplete({
         html: true
@@ -52,7 +46,6 @@
             _ref = results.profiles;
             for (_i = 0, _len = _ref.length; _i < _len; _i++) {
               profile = _ref[_i];
-              console.log(profile);
               thisLabel = '<div class="autocomplete_result row" data-id="' + profile.pk + '">';
               if (profile.image_url != null) {
                 thisLabel += '<div class="small-1 columns autocomplete_image" style="background-image:url(' + profile.image_url + '); background-size:contain; background-position:center; background-repeat:no-repeat;" />';
