@@ -794,22 +794,31 @@ Bazaarboy.event.index =
         $('form.add-organizer-form input#organizer-name').bind('keypress', add_organizer_debounce)
         $('form.add-organizer-form').on 'click', 'a.add-organizer-submit', () ->
             profileId = $(this).data('profile')
-            Bazaarboy.post 'event/organizer/add/', {id: eventId, profile: profileId}, (response) =>
+            Bazaarboy.post 'event/organizer/request/', {id: eventId, profile: profileId}, (response) =>
                 if response.status is 'OK'
-                    newOrganizer = $('div#event-organizers div.organizer').eq(0).clone()
-                    if response.profile['image_url']?
-                        newOrganizer.find('div.organizer-icon').css("background-image", "url(#{response.profile.image_url})")
-                    else
-                        newOrganizer.find('div.organizer-icon').css("background-image", "none")
-                    newOrganizer.find('div.organizer-name').html("<span>#{response.profile.name}</span>")
-                    $('div#event-organizers div.organizer-list').append(newOrganizer)
                     $('form.add-organizer-form').fadeOut 300, () ->
                         $('form.add-organizer-form input#organizer-name').val('')
                         $('form.add-organizer-form div.organizer').remove()
                         $('div.row.add-organizer-success').fadeIn 300
                         return
                 else
-                    alert response.message
+                    swal response.message
+                return
+            return
+        $('form.add-organizer-form a.send-request-btn').click () ->
+            email = $('form.add-organizer-form input[name=organizer_email]').val()
+            if email.trim() != ''
+                Bazaarboy.post 'event/organizer/request/', {id: eventId, email: email}, (response) =>
+                    console.log response
+                    if response.status is 'OK'
+                        $('form.add-organizer-form').fadeOut 300, () ->
+                            $('form.add-organizer-form input#organizer-name').val('')
+                            $('form.add-organizer-form div.organizer').remove()
+                            $('div.row.add-organizer-success').fadeIn 300
+                            return
+                    else
+                        swal response.message
+                    return
             return
         $("span.email-invite").click (e) ->
             $('div#invite-modal').foundation('reveal', 'open')

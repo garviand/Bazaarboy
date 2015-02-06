@@ -7,6 +7,7 @@ import os
 import random
 import string
 from django.db import models
+from django.db.models import Q, Sum, Count
 from django.utils import timezone
 from palette import Color
 
@@ -174,6 +175,23 @@ class Event(models.Model):
     slug = models.CharField(max_length = 30, null = True, default = None, unique = True)
     is_deleted = models.BooleanField(default = False)
 
+    def totalRSVP(self):
+        stats = Purchase.objects.filter(Q(checkout = None) | 
+                                        Q(checkout__is_charged = True, 
+                                          checkout__is_refunded = False), 
+                                        event = self)
+        return stats.aggregate(Count('items'))['items__count']
+
+    def totalRevenue(self):
+        stats = Purchase.objects.filter(Q(checkout = None) | 
+                                        Q(checkout__is_charged = True, 
+                                          checkout__is_refunded = False), 
+                                        event = self)
+        if stats.aggregate(Sum('amount'))['amount__sum'] is None:
+            return 0
+        else:
+            return stats.aggregate(Sum('amount'))['amount__sum']
+
     def color_test(self):
         try:
             c = Color(self.color)
@@ -220,6 +238,28 @@ class Organizer(models.Model):
     profile = models.ForeignKey('Profile')
     is_creator = models.BooleanField(default = False)
     created_time = models.DateTimeField(auto_now_add = True)
+
+class Collaboration_request(models.Model):
+    """
+    Add Organizer to Event Request model
+    """
+    event = models.ForeignKey('Event')
+    sender = models.ForeignKey('Organizer')
+    profile = models.ForeignKey('Profile', null = True, default = None)
+    user = models.ForeignKey('User', null = True, default = None) # Used to capture request before needing to go through profile creation
+    email = models.CharField(max_length = 100, null = True, default = None)
+    code = models.CharField(max_length = 30)
+    accepted = models.DateTimeField(null = True, default = None)
+    is_rejected = models.BooleanField(default = False)
+    created_time = models.DateTimeField(auto_now_add = True)
+
+    def save(self, *args, **kwargs):
+        """
+        Overrides save to generate confirmation code
+        """
+        if self.pk is None:
+            self.code = randomConfirmationCode(30)
+        super(Collaboration_request, self).save(*args, **kwargs)
 
 class Ticket(models.Model):
     """

@@ -1,108 +1,62 @@
 extends layout
 
-prepend top
-    div.welcome 
-        | Hello, 
-        b {{ admin.name }}
-append top
-    div.logout
-        a(href="{% url admin:logout %}") Logout
+append head
+    link(rel="stylesheet", href="{{ STATIC_URL }}jQueryUI/jquery-ui.css")
 
-block main
-    div.summary.box
-        div.icon
-            img(src="{{ STATIC_URL }}admin/fui/images/icons/Pensils@2x.png")
-        div.specs.profile_login
-            div.input_container
-                h3.profile_login_title Login as Profile
-                form.profile_login
-                    input(type="text", name="profile_name", placeholder="Profile Name")
-            div.profile_choices &nbsp;
-        div.clear
-    div.summary.box
-        div.icon
-            div.icon_title Live<br>Events
-            img(src="{{ STATIC_URL }}admin/fui/images/icons/Calendar@2x.png")
-            div.clear
-        div.specs
-            table.upcoming
-                {% for event in upcoming_events %}
-                {% if forloop.counter0|divisibleby:"4" %}
-                tr
-                {% endif %}
-                td
-                   a(href="{{ event|eventUrl }}"){{ event.name }}
-                {% endfor %}
-        div.clear
-    div.summary.box
-        div.icon
-            div.icon_title Create Premium Event
-            img(src="{{ STATIC_URL }}admin/fui/images/icons/Calendar@2x.png")
-            div.clear
-        div.specs
-            div.colorpicker-container
-                label Pick Color
-                div.colorpicker
-            div.table-container
-                label Pick Event
-                table.premium
-                    {% for event in upcoming_events %}
-                    {% if forloop.counter0|divisibleby:"4" %}
-                    tr
-                    {% endif %}
-                    td
-                       a.create-premium-event(href="javascript:;", data-id="{{ event.id }}"){{ event.name }}
-                    {% endfor %}
-        div.clear
-    div.summary.box
-        div.icon
-            div.icon_title Revert Premium Event to Normal
-            img(src="{{ STATIC_URL }}admin/fui/images/icons/Calendar@2x.png")
-            div.clear
-        div.specs
-            div
-                label Pick Event
-                table.premium
-                    {% for event in premium_events %}
-                    {% if forloop.counter0|divisibleby:"4" %}
-                    tr
-                    {% endif %}
-                    td
-                       a.undo-premium-event(href="javascript:;", data-id="{{ event.id }}"){{ event.name }}
-                    {% endfor %}
-        div.clear
-    div.summary.box
-        div.icon
-            div.icon_title Past<br>Events
-            img(src="{{ STATIC_URL }}admin/fui/images/icons/Watches@2x.png")
-            div.clear
-        div.specs
-            table.past
-                {% for event in past_events %}
-                {% if forloop.counter0|divisibleby:"4" %}
-                tr
-                {% endif %}
-                td
-                    a(href="{% url event:index event.id %}?preview"){{ event.name }}
-                {% endfor %}
-        div.clear
-    div.summary.box.hidden
-        div.icon
-            img(src="{{ STATIC_URL }}admin/fui/images/icons/Infinity-Loop@2x.png")
-        div.specs
-            div.finances
-                div Total Sales: ${{ total_stats.total_sale }}
-                div Monthly Sales: ${{ monthly_stats.total_sale }}
-                div Weekly Sales: ${{ weekly_stats.total_sale }}
-                div Daily Sales: ${{ daily_stats.total_sale }}
-            div.clear &nbsp;
-            div.finances
-                div Total RSVPs: {{ total_stats.sale_count }}
-                div Monthly RSVPs: {{ monthly_stats.sale_count }}
-                div Weekly RSVPs: {{ weekly_stats.sale_count }}
-                div Daily RSVPs: {{ daily_stats.sale_count }}
-        div.clear
+block content
+    div#admin-dashboard
+        div.row.login-profile
+            div.small-12.columns
+                div.row
+                    div.small-12.columns
+                        h3 Login As Profile
+                div.row
+                    div.small-12.columns
+                        input(type="text", name="profile_name", placeholder="Profile Name")
+        hr
+        div.row.current-events.events
+            div.small-12.columns
+                div.row
+                    div.small-12.medium-3.columns
+                        h3 Live Events
+                    div.small-12.medium-9.columns
+                        div.row
+                            div.small-12.medium-2.columns.text-right
+                                label(style="padding-top:0.625rem;") Sort By:
+                            div.small-12.medium-10.columns
+                                ul.button-group.round.even-3.event-filters
+                                    li
+                                        a.sort-btn.button.tiny.active(href="javascript:;", data-sort="date") Date
+                                    li
+                                        a.sort-btn.button.tiny(href="javascript:;", data-sort="rsvps") RSVPs
+                                    li
+                                        a.sort-btn.button.tiny(href="javascript:;", data-sort="revenue") Revenue
+                div.row
+                    div.small-12.columns.event-list
+                        {% for event in live_events %}
+                        div.row.event(data-date="{{ event.start_time|date:'U' }}", data-rsvps="{{ event.totalRSVP }}", data-revenue="{{ event.totalRevenue }}")
+                            div.small-12.hide-for-small-only.medium-1.columns
+                                {% if event.organizers.all.0.image %}
+                                div.image(style="background:url({{ event.organizers.all.0.image.source.url }}); background-size:contain; background-position:center;")
+                                {% else %}
+                                | &nbsp;
+                                {% endif %}
+                            div.small-12.medium-5.columns.text
+                                strong {{ event.name }}
+                            div.small-12.medium-2.columns.text
+                                {{ event.start_time|standardTime }}
+                            div.small-12.medium-2.columns.text
+                                div.rsvp-count {{ event.totalRSVP }} RSVP{{ event.totalRSVP|pluralize }}
+                                div ${{ event.totalRevenue|floatformat:"-2" }}
+                            div.small-12.medium-2.columns.action
+                                a.primary-btn-inverse.full-btn(href="{{ event|eventUrl }}", target="_blank") View
+                        {% endfor %}
+
+
 
 append script
+    script(type="text/javascript", src="{{ STATIC_URL }}jQueryUI/jquery-ui.min.js")
+    script(type="text/javascript", src="{{ STATIC_URL }}jQueryUI/jquery-ui.autocomplete.html.js")
     script(type="text/javascript", src="{{ STATIC_URL }}spectrum/spectrum.js")
+    script(type="text/javascript", src="{{ STATIC_URL }}tinysort/tinysort.min.js")
     script(type="text/javascript", src="{{ STATIC_URL }}admin/js/index.js")

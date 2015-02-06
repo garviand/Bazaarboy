@@ -46,14 +46,15 @@ block content
                 div.small-12.columns.invitations
                     h3.title Sent Invitations
                     {% for invite in sentInvites %}
-                    a(href="{% url event:invite-details invite.id %}")
-                        div.row.invitation
-                            div.small-12.medium-6.columns.invitation-name
-                                | {{ invite.message|truncatechars:40 }}
-                            div.small-12.medium-3.columns.text-right.invitation-details
-                                | {{ invite.recipients }} Recipients
-                            div.small-12.medium-3.columns.text-right.invitation-details
-                                | {{ invite.total_opens }} Ope{{ invite.total_opens|pluralize:"n,ns" }}
+                    div.row.invitation
+                        div.small-12.medium-6.columns.invitation-name
+                            | {{ invite.message|truncatechars:40 }}
+                        div.small-12.medium-2.columns.text-right.invitation-details
+                            | {{ invite.recipients }} Recipien{{ invite.recipients|pluralize:"t,ts" }}
+                        div.small-12.medium-2.columns.text-right.invitation-details
+                            a(href="{% url event:invite-details invite.id %}") View Stats
+                        div.small-12.medium-2.columns.text-right.invitation-details
+                            a.copy-invite(data-id="{{ invite.id }}", href="javascript:;") Copy Invite
                     {% endfor %}
                 {% endif %}
                 {% if draftInvites.count > 0 %}

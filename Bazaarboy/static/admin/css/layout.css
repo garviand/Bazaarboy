@@ -395,199 +395,52 @@ table {
     border-spacing: 0;
 }
 
-.hidden {
-  display: none;
+div#admin-login div.login-form {
+  margin-top: 100px;
 }
-.left {
-  float: left;
+div#admin-dashboard {
+  padding-top: 50px;
 }
-.right {
-  float: right;
+div#admin-dashboard div.events ul.button-group a {
+  background: #d69e5f;
 }
-.clear {
-  clear: both;
+div#admin-dashboard div.events ul.button-group a:hover,
+div#admin-dashboard div.events ul.button-group a.active {
+  background: #c57724;
 }
-.center {
-  display: block;
-  margin: auto;
+div#admin-dashboard div.events div.event-list div.event {
+  min-height: 60px;
+  border-top: #f6f6f6 thin solid;
+  padding: 5px;
 }
-.capitalize {
-  text-transform: uppercase;
+div#admin-dashboard div.events div.event-list div.event div.image {
+  height: 50px;
+  width: 50px;
 }
-.box {
-  position: relative;
-  padding: 24px;
-  border-radius: 6px;
-  background-color: #EDEFF1;
+div#admin-dashboard div.events div.event-list div.event div.text {
+  padding-top: 13px;
 }
-b {
-  font-family: "rooney-sans", Helvetica, sans-serif;
-  font-style: normal;
-  font-weight: 700;
+div#admin-dashboard div.events div.event-list div.event div.text div.rsvp-count {
+  margin-bottom: 3px;
 }
-body {
-  font-family: "rooney-sans", Helvetica, sans-serif;
-  font-style: normal;
-  font-weight: 400;
+div#admin-dashboard div.events div.event-list div.event div.action {
+  padding-top: 5px;
 }
-body > div.background {
-  position: fixed;
-  width: 100%;
-  height: 100%;
-  min-height: 600px;
-  min-width: 970px;
-  z-index: -1;
-  background-image: url('../../images/pricing/bg.jpg');
-  background-size: cover;
-  background-position: center top;
+div.autocomplete_result {
+  padding: 5px;
+  border-bottom: #f6f6f6 thin solid;
+  min-height: 55px;
 }
-div#wrapper_top {
-  position: relative;
-  width: 100%;
-  min-width: 960px;
-  height: 60px;
-  background: rgba(237, 239, 241, 0.8);
+div.autocomplete_result:hover {
+  background: #f6f6f6;
 }
-div#wrapper_top div#top_inner {
-  width: 960px;
-  height: 60px;
-  display: block;
-  margin: auto;
+div.autocomplete_result:hover div.autocomplete_image {
+  background-color: #f6f6f6 !important;
 }
-div#wrapper_top div#top_inner div.title {
-  width: 960px;
-  padding-top: 10px;
-  font-size: 30px;
-  text-align: center;
-  display: block;
-  margin: auto;
-  text-transform: uppercase;
+div.autocomplete_result div.autocomplete_image {
+  height: 40px;
 }
-div#wrapper_main {
-  width: 960px;
-  padding: 20px 0;
-  display: block;
-  margin: auto;
-}
-div#wrapper_bottom {
-  width: 960px;
-  display: block;
-  margin: auto;
-}
-div#login div.login-form {
-  width: 313px;
-  margin-top: 40px !important;
-  display: block;
-  margin: auto;
-}
-div#login div.login-form:before {
-  display: none;
-}
-div#login div.quote {
-  width: 100%;
-  margin: 40px 0;
-  font-size: 14px;
-  text-align: center;
-}
-div#wrapper_top div#top_inner div.welcome {
-  position: absolute;
-  top: 22px;
-  left: 22px;
-}
-div#wrapper_top div#top_inner div.logout {
-  position: absolute;
-  top: 22px;
-  right: 22px;
-}
-div#wrapper_top div#top_inner div.logout a {
-  font-size: 16px;
-  color: #34495e;
-  text-decoration: none;
-}
-div#wrapper_main div.summary {
-  width: 912px;
-  min-height: 100px;
-  margin-bottom: 20px;
-}
-div#wrapper_main div.summary div.icon {
-  width: 100px;
-  min-height: 100px;
-  float: left;
-}
-div#wrapper_main div.summary div.icon .icon_title {
-  font-weight: bold;
-  width: 100%;
-  text-align: center;
-  line-height: 1.5em;
-  margin-bottom: 10px;
-}
-div#wrapper_main div.summary div.specs {
-  width: 782px;
-  min-height: 100px;
-  padding-left: 30px;
-  float: left;
-}
-div#wrapper_main div.summary div.specs div.finances {
-  margin-top: 14px;
-}
-div#wrapper_main div.summary div.specs div.finances div {
-  float: left;
-  width: 192px;
-  font-size: 17px;
-}
-div#wrapper_main div.summary div.specs.profile_login .input_container,
-div#wrapper_main div.summary div.specs.event_export .input_container {
-  float: left;
-  width: 320px;
-}
-div#wrapper_main div.summary div.specs.profile_login .profile_choices,
-div#wrapper_main div.summary div.specs.event_export .profile_choices,
-div#wrapper_main div.summary div.specs.profile_login .event_choices,
-div#wrapper_main div.summary div.specs.event_export .event_choices {
-  float: left;
-  width: 320px;
-}
-div#wrapper_main div.summary div.specs.profile_login .profile_choices a,
-div#wrapper_main div.summary div.specs.event_export .profile_choices a,
-div#wrapper_main div.summary div.specs.profile_login .event_choices a,
-div#wrapper_main div.summary div.specs.event_export .event_choices a {
-  display: block;
-  float: left;
-  margin-right: 10px;
-  margin-bottom: 10px;
-}
-div#wrapper_main div.summary div.specs.profile_login .profile_choices a.hidden,
-div#wrapper_main div.summary div.specs.event_export .profile_choices a.hidden,
-div#wrapper_main div.summary div.specs.profile_login .event_choices a.hidden,
-div#wrapper_main div.summary div.specs.event_export .event_choices a.hidden {
-  display: none;
-}
-div#wrapper_main div.summary div.specs table.upcoming,
-div#wrapper_main div.summary div.specs table.past,
-div#wrapper_main div.summary div.specs table.premium {
-  width: 100%;
-}
-div#wrapper_main div.summary div.specs table.upcoming tr td,
-div#wrapper_main div.summary div.specs table.past tr td,
-div#wrapper_main div.summary div.specs table.premium tr td {
-  padding: 7px 7px;
-}
-div#wrapper_main div.summary div.specs table.upcoming tr td a,
-div#wrapper_main div.summary div.specs table.past tr td a,
-div#wrapper_main div.summary div.specs table.premium tr td a {
-  text-decoration: none;
-}
-div#wrapper_main div.summary div.specs div.table-container {
-  float: right;
-  width: 70%;
-}
-div#wrapper_main div.summary div.specs div.table-container label {
-  text-decoration: underline;
-}
-div#wrapper_main div.summary div.specs div.colorpicker-container {
-  width: 25%;
-  float: left;
-}
-div#wrapper_main div.summary div.specs div.colorpicker-container label {
-  text-decoration: underline;
+.ui-state-focus {
+  border: none !important;
+  background: #f6f6f6;
 }

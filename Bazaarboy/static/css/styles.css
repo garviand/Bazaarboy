@@ -5746,7 +5746,8 @@ a {
   font-weight: 500;
   transition: color .125s;
 }
-a:hover {
+a:hover,
+a:focus {
   color: #f3a536;
 }
 div#wrapper-top {
@@ -6317,6 +6318,20 @@ div#landing div.section-4 div.content div.subtext {
 div#landing div.section-4 div.content img.glass {
   float: right;
   max-height: 250px;
+}
+div.collaboration-requests {
+  margin-top: 25px;
+}
+div.collaboration-requests div.request {
+  margin-top: 15px;
+  padding-top: 8px;
+  padding-bottom: 8px;
+  border: #d4d4d4 thin solid;
+  border-radius: 3px;
+}
+div.collaboration-requests div.request div.text {
+  padding-top: 12px;
+  padding-bottom: 12px;
 }
 div.summary-events div.current-event,
 div.summary-events div.draft-event,
@@ -8881,8 +8896,20 @@ div#event {
   cursor: pointer;
 }
 #event-hero .event-hero-rsvp form .tix-type {
+  position: relative;
   padding-left: 1em;
   line-height: 44px;
+}
+#event-hero .event-hero-rsvp form .tix-type:after {
+  content: "";
+  width: 0;
+  height: 0;
+  position: absolute;
+  right: 16px;
+  top: 50%;
+  margin-top: -6px;
+  border-width: 6px 0 6px 6px;
+  border-style: solid;
 }
 #event-hero .event-hero-rsvp form .tix-type,
 #event-hero .event-hero-rsvp form .tix-quantity {
@@ -9178,6 +9205,10 @@ div#add-organizer-modal div.add-organizer-title {
 }
 div#add-organizer-modal form > div {
   margin-top: 15px;
+}
+div#add-organizer-modal form label,
+div#add-organizer-modal form input {
+  margin-bottom: 0;
 }
 div#add-organizer-modal form div.organizer div.organizer-name {
   padding-top: 10px;

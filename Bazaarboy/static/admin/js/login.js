@@ -18,7 +18,7 @@
             }
           });
         });
-        $('form[name=login] a.btn').click(function() {
+        $('form[name=login] a.login-btn').click(function() {
           $('form[name=login]').submit();
         });
         $('form[name=login] input').keyup(function(event) {
@@ -33,5 +33,7 @@
       });
     }
   };
+
+  Bazaarboy.admin.login.init();
 
 }).call(this);

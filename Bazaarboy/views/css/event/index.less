@@ -147,8 +147,20 @@ div#event {
                 cursor: pointer;
             }
             .tix-type {
+                position: relative;
                 padding-left:1em;
                 line-height:44px;
+            }
+            .tix-type:after{
+                content: "";
+                width: 0;
+                height: 0;
+                position: absolute;
+                right: 16px;
+                top: 50%;
+                margin-top: -6px;
+                border-width: 6px 0 6px 6px;
+                border-style: solid;
             }
             .tix-type, .tix-quantity {
                 border-radius: 3px;
@@ -477,6 +489,9 @@ div#add-organizer-modal{
     form{
         > div{
             margin-top: 15px;
+        }
+        label, input{
+            margin-bottom: 0;
         }
         div.organizer{
             div.organizer-name{

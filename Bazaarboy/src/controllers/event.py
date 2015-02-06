@@ -25,7 +25,7 @@ from src.config import *
 from src.controllers.request import *
 from src.ordereddict import OrderedDict
 from src.csvutils import UnicodeWriter
-from src.email import sendEventConfirmationEmail, sendEventInvite, sendManualEventInvite, sendOrganizerAddedEmail, sendIssueEmail, sendEventReminder, sendRecapReminder
+from src.email import sendEventConfirmationEmail, sendEventInvite, sendManualEventInvite, sendOrganizerAddedEmail, sendIssueEmail, sendEventReminder, sendRecapReminder, sendCollaborationRequest, sendCollaborationResponse
 from src.regex import REGEX_EMAIL, REGEX_NAME, REGEX_SLUG
 from src.sanitizer import sanitize_redactor_input
 from src.serializer import serialize, serialize_one
@@ -53,7 +53,8 @@ def index(request, id, params, user):
     editable = (user is not None and 
                 Organizer.objects.filter(event = event, 
                                          profile__managers = user, is_creator = True).exists())
-    preview = params['preview'] is not None and editable
+    collab_invite_pending = Collaboration_request.objects.filter(event = event, profile__managers = user).exists()
+    preview = params['preview'] is not None and (editable or collab_invite_pending)
     design = params['design'] is not None and editable
     if not design and not preview and not event.is_launched:
         return redirect('index')
@@ -362,7 +363,7 @@ def invite(request, event, user):
     for invt in sentInvites:
         opens = 0
         totalOpens = 0
-        result = client.messages.search(query='u_invite_id:'  + settings.INVITATION_PREFIX + '-' + str(invt.id), limit = 1000)
+        result = client.messages.search(query='u_invite_id:'  + settings.INVITATION_PREFIX + '-' + str(invt.id), limit = 1000, date_from='2014-01-01')
         for email in result:
             opens += email['opens']
             if email['opens'] > 0:
@@ -378,7 +379,7 @@ def invite_details(request, invite, user):
         return redirect('index')
     invt = Invite.objects.get(id = invite)
     client = Mandrill(MANDRILL_API_KEY)
-    results = client.messages.search(query='u_invite_id:' + settings.INVITATION_PREFIX + '-' + str(invt.id), limit = 1000)
+    results = client.messages.search(query='u_invite_id:' + settings.INVITATION_PREFIX + '-' + str(invt.id), limit = 1000, date_from='2014-01-01')
     totalOpens = 0
     totalClicks = 0
     for email in results:
@@ -421,6 +422,48 @@ def edit_invite(request, invite, user):
         if invite.lists.filter(id = lt.id).exists():
             lt.selected = True
     return render(request, 'event/invite.html', locals())
+
+@login_check()
+def edit_invite(request, invite, user):
+    if not Invite.objects.filter(id = invite, profile__managers = user, is_deleted = False, is_sent = False).exists():
+        return redirect('index')
+    invite = Invite.objects.get(id = invite)
+    event = invite.event
+    profiles = Profile.objects.filter(managers = user)
+    profile = profiles[0]
+    lists = List.objects.filter(owner = profile, is_deleted = False)
+    for lt in lists:
+        list_items = List_item.objects.filter(_list = lt)
+        lt.items = list_items.count()
+        lt.selected = False
+        if invite.lists.filter(id = lt.id).exists():
+            lt.selected = True
+    return render(request, 'event/invite.html', locals())
+
+@login_check()
+@validate('POST', [])
+def copy_invite(request, params, invite, user):
+    if not Invite.objects.filter(id = invite, profile__managers = user).exists():
+        response = {
+            'status':'FAIL',
+            'error':'INVITE_NOT_FOUND',
+            'message':'The invite doesn\'t exist.'
+        }
+        return json_response(response)
+    invite = Invite.objects.get(id = invite)
+    new_invite = Invite(profile = invite.profile, event = invite.event, color = invite.color)
+    if invite.image is not None:
+        new_invite.image = invite.image
+    if invite.message is not None:
+        new_invite.message = invite.message
+    if invite.details is not None:
+        new_invite.details = invite.details
+    new_invite.save()
+    response = {
+        'status':'OK',
+        'invite':serialize_one(new_invite)
+    }
+    return json_response(response)
 
 @login_check()
 @validate('POST', ['id', 'lists', 'message'], ['details', 'image', 'color'])
@@ -546,7 +589,7 @@ def preview_invite(request, invite, user):
     alreadyInvited = 0
     invitedList = []
     client = Mandrill(MANDRILL_API_KEY)
-    results = client.messages.search(query='u_invite_event_id:' + settings.INVITATION_PREFIX + '-' + str(invite.event.id), limit = 1000)
+    results = client.messages.search(query='u_invite_event_id:' + settings.INVITATION_PREFIX + '-' + str(invite.event.id), limit = 1000, date_from='2014-01-01')
     for result in results:
         invitedList.append(result['email'].lower())
     for lt in invite.lists.all():
@@ -592,7 +635,7 @@ def send_invite(request, params, user):
     alreadyInvited = 0
     invitedList = []
     client = Mandrill(MANDRILL_API_KEY)
-    results = client.messages.search(query='u_invite_event_id:' + settings.INVITATION_PREFIX + '-' + str(invite.event.id), limit = 1000)
+    results = client.messages.search(query='u_invite_event_id:' + settings.INVITATION_PREFIX + '-' + str(invite.event.id), limit = 1000, date_from='2014-01-01')
     for result in results:
         invitedList.append(result['email'].lower())
     for lt in invite.lists.all():
@@ -969,8 +1012,8 @@ def edit(request, params, user):
     return json_response(response)
 
 @login_required()
-@validate('POST', ['id', 'profile'])
-def add_organizer(request, params, user):
+@validate('POST', ['id'], ['profile', 'email'])
+def request_organizer(request, params, user):
     # Check if the event is valid
     if not Event.objects.filter(id = params['id'], 
                                 is_deleted = False).exists():
@@ -982,15 +1025,158 @@ def add_organizer(request, params, user):
         return json_response(response)
     event = Event.objects.get(id = params['id'])
     # Check if user has permission for the event
-    if not Organizer.objects.filter(event = event, 
-                                    profile__managers = user).exists():
+    if not Organizer.objects.filter(event = event, profile__managers = user).exists():
         response = {
             'status':'FAIL',
             'error':'NOT_A_MANAGER',
             'message':'You don\'t have permission for the event.'
         }
         return json_response(response)
-    user_profile = Organizer.objects.filter(event = event, profile__managers = user)[0].profile
+    organizer = Organizer.objects.filter(event = event, profile__managers = user)[0]
+    if params['profile']:
+        if not Profile.objects.filter(id = params['profile']).exists():
+            response = {
+                'status':'FAIL',
+                'error':'PROFILE_NOT_FOUND',
+                'message':'The profile doesn\'t exist.'
+            }
+            return json_response(response)
+        profile = Profile.objects.get(id = params['profile'])
+        if Organizer.objects.filter(event = event, profile = profile).exists():
+            response = {
+                'status':'FAIL',
+                'error':'ALREADY_AN_ORGANIZER',
+                'message':'The profile is already an organizer.'
+            }
+            return json_response(response)
+        collaboration = Collaboration_request(event = event, sender = organizer, profile = profile)
+        collaboration.save()
+        if collaboration.profile.email:
+            sendCollaborationRequest(collaboration)
+        response = {
+            'status':'OK',
+            'collaboration':serialize_one(collaboration)
+        }
+        return json_response(response)
+    elif params['profile'] is None and params['email']:
+        if not REGEX_EMAIL.match(params['email']):
+            response = {
+                'status':'FAIL',
+                'error':'BAD_EMAIL',
+                'message':'Please enter a valid email address.'
+            }
+            return json_response(response)
+        collaboration = Collaboration_request(event = event, sender = organizer, email = params['email'])
+        collaboration.save()
+        sendCollaborationRequest(collaboration)
+        response = {
+            'status':'OK',
+            'collaboration':serialize_one(collaboration)
+        }
+        return json_response(response)
+    else:
+        response = {
+            'status':'FAIL',
+            'error':'ERROR',
+            'message':'There was an error sending the request.'
+        }
+        return json_response(response)
+
+@login_required()
+@validate('POST', ['id'])
+def accept_organizer_request(request, params, user):
+    # Check if the request is valid
+    if not Collaboration_request.objects.filter(id = params['id'], accepted__isnull = True, is_rejected = False).exists():
+        response = {
+            'status':'FAIL',
+            'error':'REQUEST_NOT_FOUND',
+            'message':'The request doesn\'t exist.'
+        }
+        return json_response(response)
+    collaboration_request = Collaboration_request.objects.get(id = params['id'])
+    if not Collaboration_request.objects.filter(event = collaboration_request.event, profile__managers = user).exists():
+        response = {
+            'status':'FAIL',
+            'error':'NOT_A_MANAGER',
+            'message':'You don\'t have permission for the request.'
+        }
+        return json_response(response)
+    if Organizer.objects.filter(event = collaboration_request.event, profile__managers = user).exists():
+        response = {
+            'status':'FAIL',
+            'error':'ALREADY_AN_ORGANIZER',
+            'message':'The profile is already an organizer.'
+        }
+        return json_response(response)
+    organizer = Organizer(event = collaboration_request.event, profile = collaboration_request.profile)
+    organizer.save()
+    collaboration_request.accepted = timezone.now()
+    collaboration_request.save()
+    sendCollaborationResponse(collaboration_request, True)
+    response = {
+        'status':'OK',
+        'collaboration':serialize_one(collaboration_request),
+        'organizer':serialize_one(organizer)
+    }
+    return json_response(response)
+
+@login_required()
+@validate('POST', ['id'])
+def reject_organizer_request(request, params, user):
+    if not Collaboration_request.objects.filter(id = params['id'], accepted__isnull = True, is_rejected = False).exists():
+        response = {
+            'status':'FAIL',
+            'error':'REQUEST_NOT_FOUND',
+            'message':'The request doesn\'t exist.'
+        }
+        return json_response(response)
+    collaboration_request = Collaboration_request.objects.get(id = params['id'])
+    if not Collaboration_request.objects.filter(event = collaboration_request.event, profile__managers = user).exists():
+        response = {
+            'status':'FAIL',
+            'error':'NOT_A_MANAGER',
+            'message':'You don\'t have permission for the request.'
+        }
+        return json_response(response)
+    if Organizer.objects.filter(event = collaboration_request.event, profile__managers = user).exists():
+        response = {
+            'status':'FAIL',
+            'error':'ALREADY_AN_ORGANIZER',
+            'message':'The profile is already an organizer.'
+        }
+        return json_response(response)
+    profile = Profile.objects.filter(managers = user)[0]
+    collaboration_request.is_rejected = True
+    collaboration_request.save()
+    sendCollaborationResponse(collaboration_request, False)
+    response = {
+        'status':'OK',
+        'collaboration':serialize_one(collaboration_request)
+    }
+    return json_response(response)
+
+@login_required()
+@validate('POST', ['id', 'profile'])
+def add_organizer(request, params, user):
+    if not request.session.has_key('admin'):
+        # No admin session, block from login
+        response = {
+            'status':'FAIL',
+            'message':'Not an Admin.'
+        }
+        return json_response(response)
+    # Check if the event is valid
+    if not Event.objects.filter(id = params['id'], 
+                                is_deleted = False).exists():
+        response = {
+            'status':'FAIL',
+            'error':'EVENT_NOT_FOUND',
+            'message':'The event doesn\'t exist.'
+        }
+        return json_response(response)
+    event = Event.objects.get(id = params['id'])
+    # Check if user has permission for the event
+    user_profile = Organizer.objects.filter(event = event)[0].profile
     # Check if the profile exists
     if not Profile.objects.filter(id = params['profile']).exists():
         response = {

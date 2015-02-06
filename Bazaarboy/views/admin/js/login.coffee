@@ -15,7 +15,7 @@ Bazaarboy.admin.login =
                         $('form[name=login] a.btn').html('Access Denied')
                     return
                 return
-            $('form[name=login] a.btn').click () ->
+            $('form[name=login] a.login-btn').click () ->
                 $('form[name=login]').submit()
                 return
             $('form[name=login] input').keyup (event) ->
@@ -28,3 +28,5 @@ Bazaarboy.admin.login =
                 return
             return
         return
+
+Bazaarboy.admin.login.init()
