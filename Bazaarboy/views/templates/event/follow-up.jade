@@ -1,0 +1,93 @@
+extends ../layout
+
+append head
+    link(rel="stylesheet", href="{{ STATIC_URL }}spectrum/spectrum.css")
+
+block sidebar
+    +sidebarItem('ss-newspaper')(href="{% url index %}")
+        | Events
+    +sidebarItem('ss-database')(href="{% url list:index %}")
+        | Lists
+    +sidebarItem('ss-share')(href="{% url user:settings %}")
+        | Settings
+
+block header
+    div.header-title.large-9.medium-10.columns.small-centered
+        div.row.clearfix
+            div.icon.left
+                span.ss-mail
+            div.text.left
+                | {{ event.name }} |
+                span.sub &nbsp;Send Follow Ups
+
+block content
+    div#wrapper-event-follow-up.large-9.medium-10.columns.small-centered
+        div#event-follow-up.small-12.columns
+            div.row
+                div.small-12.columns.comm-back
+                    a(href="{% url event:follow-up event.id %}") &lt; Back To Follow Ups
+            div.row
+                div.email.small-12.medium-6.columns
+                    input(type="hidden", name="event", value="{{ event.id }}")
+                    input(type="hidden", name="follow_up", value="{{ follow_up.id }}")
+                    input(type="hidden", name="image", value="")
+                    {% csrf_token %}
+                    div.info
+                        div.title
+                            span Email Content
+                    div.row.email-content
+                        div.small-12.columns.content-image
+                            label Email Header Image (optional)
+                                input.hide(type="file", name="image_file")
+                                a.upload-image-btn.primary-btn-inverse.btn.full-btn(href="javascript:;", style="{% if follow_up.image %}display:none;{% endif %}") Upload Image
+                                a.delete-image-btn.primary-btn-inverse.btn.full-btn(href="javascript:;", style="{% if not follow_up.image %}display:none;{% endif %}") Delete Image
+                    div.row.email-content
+                        div.small-12.columns.image-preview(class="{% if not invite.image %}hide{% endif %}")
+                            img(src="{% if invite.image %}{{ invite.image.source.url }}{% endif %}")
+                    div.row.email-content
+                        div.small-12.columns.content-image
+                            label Attach PDF to Follow Up (optional)
+                                input.hide(type="file", name="attachment_file")
+                                a.upload-attachment-btn.primary-btn-inverse.btn.full-btn(href="javascript:;", style="{% if follow_up.attachment %}display:none;{% endif %}") Upload PDF
+                                a.delete-attachment-btn.primary-btn-inverse.btn.full-btn(href="javascript:;", style="{% if not follow_up.attachment %}display:none;{% endif %}") Delete PDF
+                    div.row.email-content
+                        div.small-12.columns.pdf-preview(class="{% if not follow_up.attachment %}hide{% endif %}")
+                            span.filename {% if follow_up.attachment %}{{ follow_up.attachment.name }}{% else %}&nbsp;{% endif %}
+                    div.row.email-content
+                        div.small-12.columns.content-details
+                            label Header Text
+                                textarea(name="heading", placeholder="Enter the header text here (ex. 'Thanks for Coming!')") {{ follow_up.message }}
+                    div.row.email-content
+                        div.small-12.columns.content-message
+                            label Message Content
+                                textarea(name="message", placeholder="Enter the message content here") {{ follow_up.details }}
+                    div.row.email-content
+                        div.small-12.columns.content-details
+                            label Button Color
+                            input(type='color', name='colorpicker', value='{% if follow_up.color %}{{ follow_up.color }}{% else %}{{ event.color }}{% endif %}')
+                    div.row.email-content
+                        div.small-12.columns.content-submit
+                            a.save-follow-up.primary-btn.btn.full-btn(href="javascript:;") Save &amp; Preview
+                div.lists.small-12.medium-6.columns
+                    div.info
+                        div.title
+                            span Choose Tickets to Follow Up With
+                    {% for ticket in tickets %}
+                    {% if ticket.items > 0 %}
+                    div.row.list(data-id="{{ ticket.id }}", class="{% if ticket.selected %}active{% endif %}")
+                        div.small-12.medium-6.columns.list-name
+                            | {{ ticket.name }}
+                        div.small-12.medium-6.columns.list-quantity.text-right
+                            | {{ ticket.items }} RSVP{{ ticket.items|pluralize }}
+                    {% endif %}
+                    {% endfor %}
+
+append script
+    script(type="text/javascript", src="{{ STATIC_URL }}spectrum/spectrum.js")
+    script.
+        mediaUrl = "{{ MEDIA_URL }}";
+        profileId = {{ profile.id }};
+        {% if follow_up.image %}imgId = "{{ follow_up.image.id }}"{% endif %}
+        {% if follow_up.attachment %}pdfId = "{{ follow_up.attachment.id }}"{% endif %}
+        {% if follow_up %}followUpEdit = true{% else %}followUpEdit = false{% endif %}
+    script(src="{{ STATIC_URL }}js/event/follow-up.js")

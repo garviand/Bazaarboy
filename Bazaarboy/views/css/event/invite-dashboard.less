@@ -1,6 +1,6 @@
 @import (reference) "vars.less";
 
-div#wrapper-invite-dashboard{
+div#wrapper-invite-dashboard, div#wrapper-follow-up-dashboard{
     div.empty-state-container{
         margin-top: 40px;
         border: #F6F6F6 thin solid;
@@ -32,9 +32,9 @@ div#wrapper-invite-dashboard{
             }
         }
     }
-    div#invite-dashboard{
+    div#invite-dashboard, div#follow-up-dashboard{
         margin-top: 40px;
-        a.new-invite-btn {
+        a.new-comm-btn {
             display: block;
             padding-top: 9px;
             padding-bottom: 12px;
@@ -42,12 +42,12 @@ div#wrapper-invite-dashboard{
             font-size: 15px;
             text-transform: uppercase;
         }
-        div.invitations{
+        div.comms{
             margin-top: 40px;
             > a{
                 color: @dark;
             }
-            div.invitation{
+            div.comm{
                 padding: 12px 5px;
                 margin-bottom: 10px;
                 border-radius: 3px;
@@ -55,11 +55,11 @@ div#wrapper-invite-dashboard{
                 &:hover{
                     background: @grey;
                 }
-                div.invitation-name{
+                div.comm-name{
                     font-size: 16px;
                     font-weight: 500;
                 }
-                div.invitation-details{
+                div.comm-details{
                     font-weight: 300;
                     font-style: italic;
                     font-size: 14px;

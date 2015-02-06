@@ -10743,38 +10743,72 @@ div#event-modify-tickets div#edit-ticket form input.btn {
   border: none;
   text-transform: uppercase;
 }
-div#wrapper-event-invite div#event-invite {
+div#wrapper-event-invite div#event-invite,
+div#wrapper-event-follow-up div#event-invite,
+div#wrapper-event-invite div#event-follow-up,
+div#wrapper-event-follow-up div#event-follow-up {
   padding-top: 24px;
 }
-div#wrapper-event-invite div#event-invite div.invitation-back {
+div#wrapper-event-invite div#event-invite div.comm-back,
+div#wrapper-event-follow-up div#event-invite div.comm-back,
+div#wrapper-event-invite div#event-follow-up div.comm-back,
+div#wrapper-event-follow-up div#event-follow-up div.comm-back {
   margin-top: 0px;
   margin-bottom: 30px;
 }
-div#wrapper-event-invite div#event-invite div.invitation-back a {
+div#wrapper-event-invite div#event-invite div.comm-back a,
+div#wrapper-event-follow-up div#event-invite div.comm-back a,
+div#wrapper-event-invite div#event-follow-up div.comm-back a,
+div#wrapper-event-follow-up div#event-follow-up div.comm-back a {
   color: #c57724;
 }
-div#wrapper-event-invite div#event-invite label {
+div#wrapper-event-invite div#event-invite label,
+div#wrapper-event-follow-up div#event-invite label,
+div#wrapper-event-invite div#event-follow-up label,
+div#wrapper-event-follow-up div#event-follow-up label {
   line-height: 1.5em;
   margin-bottom: 20px;
 }
-div#wrapper-event-invite div#event-invite div.info div.title {
+div#wrapper-event-invite div#event-invite div.info div.title,
+div#wrapper-event-follow-up div#event-invite div.info div.title,
+div#wrapper-event-invite div#event-follow-up div.info div.title,
+div#wrapper-event-follow-up div#event-follow-up div.info div.title {
   font-weight: 500;
   font-size: 20px;
   color: #4a4a4a;
   margin-bottom: 20px;
 }
-div#wrapper-event-invite div#event-invite div.info div.title span {
+div#wrapper-event-invite div#event-invite div.info div.title span,
+div#wrapper-event-follow-up div#event-invite div.info div.title span,
+div#wrapper-event-invite div#event-follow-up div.info div.title span,
+div#wrapper-event-follow-up div#event-follow-up div.info div.title span {
   text-decoration: underline;
 }
-div#wrapper-event-invite div#event-invite div.info div.title a {
+div#wrapper-event-invite div#event-invite div.info div.title a,
+div#wrapper-event-follow-up div#event-invite div.info div.title a,
+div#wrapper-event-invite div#event-follow-up div.info div.title a,
+div#wrapper-event-follow-up div#event-follow-up div.info div.title a {
   text-decoration: none !important;
   font-size: 14px;
   color: #c57724;
 }
-div#wrapper-event-invite div#event-invite div.email {
+div#wrapper-event-invite div#event-invite div.email,
+div#wrapper-event-follow-up div#event-invite div.email,
+div#wrapper-event-invite div#event-follow-up div.email,
+div#wrapper-event-follow-up div#event-follow-up div.email {
   border-right: #7a7a7a thin solid;
 }
-div#wrapper-event-invite div#event-invite div.email div.email-content a.blue-btn-inverse {
+div#wrapper-event-invite div#event-invite div.email div.email-content div.pdf-preview,
+div#wrapper-event-follow-up div#event-invite div.email div.email-content div.pdf-preview,
+div#wrapper-event-invite div#event-follow-up div.email div.email-content div.pdf-preview,
+div#wrapper-event-follow-up div#event-follow-up div.email div.email-content div.pdf-preview {
+  margin-bottom: 20px;
+  font-weight: bold;
+}
+div#wrapper-event-invite div#event-invite div.email div.email-content a.blue-btn-inverse,
+div#wrapper-event-follow-up div#event-invite div.email div.email-content a.blue-btn-inverse,
+div#wrapper-event-invite div#event-follow-up div.email div.email-content a.blue-btn-inverse,
+div#wrapper-event-follow-up div#event-follow-up div.email div.email-content a.blue-btn-inverse {
   display: block;
   width: 100%;
   text-align: center;
@@ -10782,40 +10816,68 @@ div#wrapper-event-invite div#event-invite div.email div.email-content a.blue-btn
   margin-bottom: 10px;
   padding: 8px 12px;
 }
-div#wrapper-event-invite div#event-invite div.email div.email-content div.image-preview {
+div#wrapper-event-invite div#event-invite div.email div.email-content div.image-preview,
+div#wrapper-event-follow-up div#event-invite div.email div.email-content div.image-preview,
+div#wrapper-event-invite div#event-follow-up div.email div.email-content div.image-preview,
+div#wrapper-event-follow-up div#event-follow-up div.email div.email-content div.image-preview {
   text-align: center;
 }
-div#wrapper-event-invite div#event-invite div.email div.email-content div.image-preview img {
+div#wrapper-event-invite div#event-invite div.email div.email-content div.image-preview img,
+div#wrapper-event-follow-up div#event-invite div.email div.email-content div.image-preview img,
+div#wrapper-event-invite div#event-follow-up div.email div.email-content div.image-preview img,
+div#wrapper-event-follow-up div#event-follow-up div.email div.email-content div.image-preview img {
+  padding-top: 5px;
   padding: 20px 0;
 }
-div#wrapper-event-invite div#event-invite div.email div.email-content div.content-message textarea {
+div#wrapper-event-invite div#event-invite div.email div.email-content div.content-message textarea,
+div#wrapper-event-follow-up div#event-invite div.email div.email-content div.content-message textarea,
+div#wrapper-event-invite div#event-follow-up div.email div.email-content div.content-message textarea,
+div#wrapper-event-follow-up div#event-follow-up div.email div.email-content div.content-message textarea {
   height: 150px !important;
   box-shadow: none;
   border-radius: 3px;
 }
-div#wrapper-event-invite div#event-invite div.email div.email-content div.content-details textarea {
+div#wrapper-event-invite div#event-invite div.email div.email-content div.content-details textarea,
+div#wrapper-event-follow-up div#event-invite div.email div.email-content div.content-details textarea,
+div#wrapper-event-invite div#event-follow-up div.email div.email-content div.content-details textarea,
+div#wrapper-event-follow-up div#event-follow-up div.email div.email-content div.content-details textarea {
   height: 100px !important;
   box-shadow: none;
   border-radius: 3px;
 }
-div#wrapper-event-invite div#event-invite div.email div.email-content .sp-replacer {
+div#wrapper-event-invite div#event-invite div.email div.email-content .sp-replacer,
+div#wrapper-event-follow-up div#event-invite div.email div.email-content .sp-replacer,
+div#wrapper-event-invite div#event-follow-up div.email div.email-content .sp-replacer,
+div#wrapper-event-follow-up div#event-follow-up div.email div.email-content .sp-replacer {
   width: 100% !important;
   margin-bottom: 20px !important;
 }
-div#wrapper-event-invite div#event-invite div.email div.email-content .sp-preview {
+div#wrapper-event-invite div#event-invite div.email div.email-content .sp-preview,
+div#wrapper-event-follow-up div#event-invite div.email div.email-content .sp-preview,
+div#wrapper-event-invite div#event-follow-up div.email div.email-content .sp-preview,
+div#wrapper-event-follow-up div#event-follow-up div.email div.email-content .sp-preview {
   width: 100% !important;
 }
-div#wrapper-event-invite div#event-invite div.email div.email-content .sp-dd {
+div#wrapper-event-invite div#event-invite div.email div.email-content .sp-dd,
+div#wrapper-event-follow-up div#event-invite div.email div.email-content .sp-dd,
+div#wrapper-event-invite div#event-follow-up div.email div.email-content .sp-dd,
+div#wrapper-event-follow-up div#event-follow-up div.email div.email-content .sp-dd {
   display: none !important;
 }
-div#wrapper-event-invite div#event-invite div.email div.email-content div.content-submit a {
+div#wrapper-event-invite div#event-invite div.email div.email-content div.content-submit a,
+div#wrapper-event-follow-up div#event-invite div.email div.email-content div.content-submit a,
+div#wrapper-event-invite div#event-follow-up div.email div.email-content div.content-submit a,
+div#wrapper-event-follow-up div#event-follow-up div.email div.email-content div.content-submit a {
   display: block;
   width: 100%;
   padding: 10px 12px;
   text-align: center;
   margin-bottom: 20px;
 }
-div#wrapper-event-invite div#event-invite div.lists div.list {
+div#wrapper-event-invite div#event-invite div.lists div.list,
+div#wrapper-event-follow-up div#event-invite div.lists div.list,
+div#wrapper-event-invite div#event-follow-up div.lists div.list,
+div#wrapper-event-follow-up div#event-follow-up div.lists div.list {
   margin-left: 0;
   margin-right: 0;
   padding: 12px 5px;
@@ -10829,24 +10891,39 @@ div#wrapper-event-invite div#event-invite div.lists div.list {
   -ms-user-select: none;
   user-select: none;
 }
-div#wrapper-event-invite div#event-invite div.lists div.list div.list-name {
+div#wrapper-event-invite div#event-invite div.lists div.list div.list-name,
+div#wrapper-event-follow-up div#event-invite div.lists div.list div.list-name,
+div#wrapper-event-invite div#event-follow-up div.lists div.list div.list-name,
+div#wrapper-event-follow-up div#event-follow-up div.lists div.list div.list-name {
   font-size: 16px;
   font-weight: 500;
 }
-div#wrapper-event-invite div#event-invite div.lists div.list div.list-quantity {
+div#wrapper-event-invite div#event-invite div.lists div.list div.list-quantity,
+div#wrapper-event-follow-up div#event-invite div.lists div.list div.list-quantity,
+div#wrapper-event-invite div#event-follow-up div.lists div.list div.list-quantity,
+div#wrapper-event-follow-up div#event-follow-up div.lists div.list div.list-quantity {
   font-weight: 300;
   font-style: italic;
   font-size: 14px;
 }
-div#wrapper-event-invite div#event-invite div.lists div.list:hover {
+div#wrapper-event-invite div#event-invite div.lists div.list:hover,
+div#wrapper-event-follow-up div#event-invite div.lists div.list:hover,
+div#wrapper-event-invite div#event-follow-up div.lists div.list:hover,
+div#wrapper-event-follow-up div#event-follow-up div.lists div.list:hover {
   cursor: pointer;
   border: #c57724 thin solid;
 }
-div#wrapper-event-invite div#event-invite div.lists div.list.active {
+div#wrapper-event-invite div#event-invite div.lists div.list.active,
+div#wrapper-event-follow-up div#event-invite div.lists div.list.active,
+div#wrapper-event-invite div#event-follow-up div.lists div.list.active,
+div#wrapper-event-follow-up div#event-follow-up div.lists div.list.active {
   border: #c57724 thin solid;
   background: rgba(197, 119, 36, 0.2);
 }
-div#wrapper-event-invite div#event-invite div.lists div.list.active div.list-quantity {
+div#wrapper-event-invite div#event-invite div.lists div.list.active div.list-quantity,
+div#wrapper-event-follow-up div#event-invite div.lists div.list.active div.list-quantity,
+div#wrapper-event-invite div#event-follow-up div.lists div.list.active div.list-quantity,
+div#wrapper-event-follow-up div#event-follow-up div.lists div.list.active div.list-quantity {
   font-weight: 500;
 }
 div#new-list-modal div.new-list-title h3 {
@@ -10925,7 +11002,8 @@ div#wrapper-invite-details div#invite-details div.invitations div.invitation div
   font-style: italic;
   font-size: 14px;
 }
-div#wrapper-invite-dashboard div.empty-state-container {
+div#wrapper-invite-dashboard div.empty-state-container,
+div#wrapper-follow-up-dashboard div.empty-state-container {
   margin-top: 40px;
   border: #F6F6F6 thin solid;
   border-radius: 4px;
@@ -10934,32 +11012,43 @@ div#wrapper-invite-dashboard div.empty-state-container {
   background-position: left center;
   background-repeat: no-repeat;
 }
-div#wrapper-invite-dashboard div.empty-state-container div.empty-state-content {
+div#wrapper-invite-dashboard div.empty-state-container div.empty-state-content,
+div#wrapper-follow-up-dashboard div.empty-state-container div.empty-state-content {
   margin: 80px 0;
   padding-right: 50px;
 }
-div#wrapper-invite-dashboard div.empty-state-container div.empty-state-content div.text {
+div#wrapper-invite-dashboard div.empty-state-container div.empty-state-content div.text,
+div#wrapper-follow-up-dashboard div.empty-state-container div.empty-state-content div.text {
   font-size: 1.3rem;
   font-weight: 600;
   color: #4a4a4a;
 }
-div#wrapper-invite-dashboard div.empty-state-container div.empty-state-content hr {
+div#wrapper-invite-dashboard div.empty-state-container div.empty-state-content hr,
+div#wrapper-follow-up-dashboard div.empty-state-container div.empty-state-content hr {
   margin: 10px 0;
 }
-div#wrapper-invite-dashboard div.empty-state-container div.empty-state-content a.btn {
+div#wrapper-invite-dashboard div.empty-state-container div.empty-state-content a.btn,
+div#wrapper-follow-up-dashboard div.empty-state-container div.empty-state-content a.btn {
   display: block;
   width: 100%;
   margin-top: 20px;
   margin-left: 10px;
   text-transform: uppercase;
 }
-div#wrapper-invite-dashboard div.empty-state-container div.empty-state-content a.btn:hover {
+div#wrapper-invite-dashboard div.empty-state-container div.empty-state-content a.btn:hover,
+div#wrapper-follow-up-dashboard div.empty-state-container div.empty-state-content a.btn:hover {
   color: #FFF;
 }
-div#wrapper-invite-dashboard div#invite-dashboard {
+div#wrapper-invite-dashboard div#invite-dashboard,
+div#wrapper-follow-up-dashboard div#invite-dashboard,
+div#wrapper-invite-dashboard div#follow-up-dashboard,
+div#wrapper-follow-up-dashboard div#follow-up-dashboard {
   margin-top: 40px;
 }
-div#wrapper-invite-dashboard div#invite-dashboard a.new-invite-btn {
+div#wrapper-invite-dashboard div#invite-dashboard a.new-comm-btn,
+div#wrapper-follow-up-dashboard div#invite-dashboard a.new-comm-btn,
+div#wrapper-invite-dashboard div#follow-up-dashboard a.new-comm-btn,
+div#wrapper-follow-up-dashboard div#follow-up-dashboard a.new-comm-btn {
   display: block;
   padding-top: 9px;
   padding-bottom: 12px;
@@ -10967,31 +11056,52 @@ div#wrapper-invite-dashboard div#invite-dashboard a.new-invite-btn {
   font-size: 15px;
   text-transform: uppercase;
 }
-div#wrapper-invite-dashboard div#invite-dashboard div.invitations {
+div#wrapper-invite-dashboard div#invite-dashboard div.comms,
+div#wrapper-follow-up-dashboard div#invite-dashboard div.comms,
+div#wrapper-invite-dashboard div#follow-up-dashboard div.comms,
+div#wrapper-follow-up-dashboard div#follow-up-dashboard div.comms {
   margin-top: 40px;
 }
-div#wrapper-invite-dashboard div#invite-dashboard div.invitations > a {
+div#wrapper-invite-dashboard div#invite-dashboard div.comms > a,
+div#wrapper-follow-up-dashboard div#invite-dashboard div.comms > a,
+div#wrapper-invite-dashboard div#follow-up-dashboard div.comms > a,
+div#wrapper-follow-up-dashboard div#follow-up-dashboard div.comms > a {
   color: #4a4a4a;
 }
-div#wrapper-invite-dashboard div#invite-dashboard div.invitations div.invitation {
+div#wrapper-invite-dashboard div#invite-dashboard div.comms div.comm,
+div#wrapper-follow-up-dashboard div#invite-dashboard div.comms div.comm,
+div#wrapper-invite-dashboard div#follow-up-dashboard div.comms div.comm,
+div#wrapper-follow-up-dashboard div#follow-up-dashboard div.comms div.comm {
   padding: 12px 5px;
   margin-bottom: 10px;
   border-radius: 3px;
   border: #7a7a7a thin solid;
 }
-div#wrapper-invite-dashboard div#invite-dashboard div.invitations div.invitation:hover {
+div#wrapper-invite-dashboard div#invite-dashboard div.comms div.comm:hover,
+div#wrapper-follow-up-dashboard div#invite-dashboard div.comms div.comm:hover,
+div#wrapper-invite-dashboard div#follow-up-dashboard div.comms div.comm:hover,
+div#wrapper-follow-up-dashboard div#follow-up-dashboard div.comms div.comm:hover {
   background: #d4d4d4;
 }
-div#wrapper-invite-dashboard div#invite-dashboard div.invitations div.invitation div.invitation-name {
+div#wrapper-invite-dashboard div#invite-dashboard div.comms div.comm div.comm-name,
+div#wrapper-follow-up-dashboard div#invite-dashboard div.comms div.comm div.comm-name,
+div#wrapper-invite-dashboard div#follow-up-dashboard div.comms div.comm div.comm-name,
+div#wrapper-follow-up-dashboard div#follow-up-dashboard div.comms div.comm div.comm-name {
   font-size: 16px;
   font-weight: 500;
 }
-div#wrapper-invite-dashboard div#invite-dashboard div.invitations div.invitation div.invitation-details {
+div#wrapper-invite-dashboard div#invite-dashboard div.comms div.comm div.comm-details,
+div#wrapper-follow-up-dashboard div#invite-dashboard div.comms div.comm div.comm-details,
+div#wrapper-invite-dashboard div#follow-up-dashboard div.comms div.comm div.comm-details,
+div#wrapper-follow-up-dashboard div#follow-up-dashboard div.comms div.comm div.comm-details {
   font-weight: 300;
   font-style: italic;
   font-size: 14px;
 }
-div#wrapper-invite-dashboard div#invite-dashboard div.invitations div.invitation div.invitation-details a {
+div#wrapper-invite-dashboard div#invite-dashboard div.comms div.comm div.comm-details a,
+div#wrapper-follow-up-dashboard div#invite-dashboard div.comms div.comm div.comm-details a,
+div#wrapper-invite-dashboard div#follow-up-dashboard div.comms div.comm div.comm-details a,
+div#wrapper-follow-up-dashboard div#follow-up-dashboard div.comms div.comm div.comm-details a {
   color: #4a4a4a;
   text-decoration: underline;
   font-style: normal;

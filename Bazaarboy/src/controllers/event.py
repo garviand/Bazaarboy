@@ -348,7 +348,7 @@ def issue(request, params):
     }
     return json_response(response)
 
-
+# INVITES
 @login_check()
 def invite(request, event, user):
     if not Event.objects.filter(id = event, 
@@ -370,7 +370,7 @@ def invite(request, event, user):
                 totalOpens += 1
         invt.opens = opens
         invt.total_opens = totalOpens
-    draftInvites = Invite.objects.filter(event = event, is_sent = False, is_deleted = False).order_by('-created_time')
+    draftInvites = Invite.objects.filter(event = event, profile__managers = user, is_sent = False, is_deleted = False).order_by('-created_time')
     return render(request, 'event/invite-dashboard.html', locals())
 
 @login_check()
@@ -751,7 +751,113 @@ def manual_invite(request, id, params, user):
     }
     return json_response(response)
 
+# FOLLOW UPS
+@login_check()
+def follow_up(request, event, user):
+    """
+    Follow Ups sent/drafts page for event
+    """
+    if not Event.objects.filter(id = event, 
+                                is_deleted = False).exists():
+        raise Http404
+    event = Event.objects.get(id = event)
+    if not Organizer.objects.filter(event = event, 
+                                    profile__managers = user).exists():
+        return redirect('index')
+    sentFollowUps = Follow_up.objects.filter(recap__organizer__event = event, is_sent = True, recap__organizer__profile__managers = user).order_by('-sent_at')
+    draftFollowUps = Follow_up.objects.filter(recap__organizer__event = event, is_sent = False, recap__organizer__profile__managers = user, is_deleted = False).order_by('-created_time')
+    return render(request, 'event/follow-up-dashboard.html', locals())
 
+@login_check()
+def create_follow_up(request, event, user):
+    if not Event.objects.filter(id = event, is_deleted = False).exists():
+        raise Http404
+    event = Event.objects.get(id = event)
+    if not Organizer.objects.filter(event = event, 
+                                    profile__managers = user).exists():
+        return redirect('index')
+    profiles = Profile.objects.filter(managers = user)
+    profile = profiles[0]
+    tickets = Ticket.objects.filter(event = event)
+    for ticket in tickets:
+        ticket.items = Purchase_item.objects.filter(ticket = ticket).values_list('purchase__id', flat=True).distinct().count()
+    previousFollowUps = Follow_up.objects.filter(recap__organizer__event = event)
+    return render(request, 'event/follow-up.html', locals())
+
+@login_check()
+@validate('POST', ['id', 'tickets', 'message', 'heading'], ['image', 'pdf', 'color'])
+def new_follow_up(request, params, user):
+    profiles = Profile.objects.filter(managers = user)
+    pids = []
+    for profile in profiles:
+        pids.append(profile.id)
+    if not Organizer.objects.filter(event__id = params['id'], profile__in = pids).exists():
+        response = {
+            'status':'FAIL',
+            'error':'NOT_OWNER',
+            'message':'This is not your event.'
+        }
+        return json_response(response)
+    current_organizer = Organizer.objects.get(event__id = params['id'], profile__in = pids)
+    if not Recap.objects.filter(organizer = current_organizer).exists():
+        response = {
+            'status':'FAIL',
+            'error':'NO_RECAP',
+            'message':'This recap does not exist.'
+        }
+        return json_response(response)
+    recap = Recap.objects.get(organizer = current_organizer)
+    if Ticket.objects.filter(id__in = [x.strip() for x in params['tickets'].split(',')], event__organizers__managers = user).exists():
+        tickets = Ticket.objects.filter(id__in = [x.strip() for x in params['tickets'].split(',')], event__organizers__managers = user)
+    else:
+        response = {
+            'status':'FAIL',
+            'error':'NO_VALID_LISTS',
+            'message':'No Valid Lists Were Selected.'
+        }
+        return json_response(response)
+    follow_up = Follow_up(recap = recap, message = params['message'], heading = params['heading'])
+    if params['image'] and params['image'] != '':
+        if Image.objects.filter(id = params['image']).exists():
+            follow_up.image = Image.objects.get(id = params['image'])
+    if params['pdf'] and params['pdf'] != '':
+        if Pdf.objects.filter(id = params['pdf']).exists():
+            follow_up.attachment = Pdf.objects.get(id = params['pdf'])
+    if params['color'] and params['color'] != '':
+        follow_up.color = params['color']
+    follow_up.save()
+    for ticket in tickets:
+        follow_up.tickets.add(ticket)
+    follow_up.save()
+    response = {
+        'status':'OK',
+        'follow_up':serialize_one(follow_up)
+    }
+    return json_response(response)
+
+@login_check()
+@validate('POST', ['name'])
+def follow_up_attachment(request, user, params):
+    """
+    Create Attachment For Follow Up
+    """
+    if not request.FILES.has_key('attachment_file'):
+        response = {
+            'status': 'FAIL',
+            'error': 'NO_FILE',
+            'message': 'Upload failed. Try again.'
+        }
+        return json_response(response)
+    else:
+        # Validate the MIME type of the file
+        attachment = request.FILES['attachment_file']
+        newPdf = Pdf(source = attachment, name = params['name'])
+        newPdf.save()
+        response = {
+            'status': 'OK',
+            'pdf': serialize_one(newPdf)
+        }
+        return json_response(response)
 
 @login_required()
 @validate('POST', ['profile'])
@@ -784,8 +890,6 @@ def create(request, params, user):
     organizer.save()
     recap = Recap(organizer = organizer)
     recap.save()
-    follow_up = Follow_up(recap = recap)
-    follow_up.save()
     response = {
         'status':'OK',
         'event':serialize_one(event)
@@ -991,20 +1095,20 @@ def edit(request, params, user):
             event.slug = params['slug']
     # Save the changes
     event.save()
-    if reschedule_email and Follow_up.objects.filter(recap__organizer__event = event).exists() and event.is_launched:
-        follow_ups = Follow_up.objects.filter(recap__organizer__event = event)
+    if reschedule_email and Recap.objects.filter(organizer__event = event).exists() and event.is_launched:
+        recaps = Recap.objects.filter(organizer__event = event)
         client = Mandrill(MANDRILL_API_KEY)
-        for follow_up in follow_ups:
+        for recap in recaps:
             try:
-                if follow_up.email_id is not None:
-                    mail_cancel = client.messages.cancel_scheduled(id = follow_up.email_id)
-                    follow_up.email_id = None
+                if recap.email_id is not None:
+                    mail_cancel = client.messages.cancel_scheduled(id = recap.email_id)
+                    recap.email_id = None
             except Exception, e:
                 logging.error(str(e))
             if event.start_time >= timezone.now():
-                mail_send = sendRecapReminder(follow_up.recap.organizer)
-                follow_up.email_id = mail_send[0]['_id']
-            follow_up.save()
+                mail_send = sendRecapReminder(recap.organizer)
+                recap.email_id = mail_send[0]['_id']
+            recap.save()
     response = {
         'status':'OK',
         'event':serialize_one(event)
@@ -1206,12 +1310,10 @@ def add_organizer(request, params, user):
         sendOrganizerAddedEmail(event, user_profile, profile)
     recap = Recap(organizer = organizer)
     recap.save()
-    follow_up = Follow_up(recap = recap)
-    follow_up.save()
     if event.is_launched and event.start_time >= timezone.now():
         mail_send = sendRecapReminder(organizer)
-        follow_up.email_id = mail_send[0]['_id']
-        follow_up.save()
+        recap.email_id = mail_send[0]['_id']
+        recap.save()
     response = {
         'status':'OK',
         'profile': result_profile
@@ -1266,11 +1368,11 @@ def delete_organizer(request, params, user):
             'message':'You cannot remove the creator from organizers.'
         }
         return json_response(response)
-    if Follow_up.objects.filter(recap__organizer = organizer).exists():
-        follow_up = Follow_up.objects.get(recap__organizer = organizer)
-        if follow_up.email_id is not None:
+    if Recap.objects.filter(organizer = organizer).exists():
+        recap = Recap.objects.get(organizer = organizer)
+        if recap.email_id is not None:
             client = Mandrill(MANDRILL_API_KEY)
-            client.messages.cancel_scheduled(id = follow_up.email_id)
+            client.messages.cancel_scheduled(id = recap.email_id)
     # Remove the profile from organizers
     organizer.delete()
     response = {
@@ -1331,11 +1433,11 @@ def launch(request, params, user):
     event.save()
     organizers = Organizer.objects.filter(event = event)
     for organizer in organizers:
-        if Follow_up.objects.filter(recap__organizer = organizer).exists() and event.start_time >= timezone.now():
-            follow_up = Follow_up.objects.get(recap__organizer = organizer)
+        if Recap.objects.filter(organizer = organizer).exists() and event.start_time >= timezone.now():
+            recap = Recap.objects.get(organizer = organizer)
             recap_email = sendRecapReminder(organizer)
-            follow_up.email_id = recap_email[0]['_id']
-            follow_up.save()
+            recap.email_id = recap_email[0]['_id']
+            recap.save()
     response = {
         'status':'OK',
         'event':serialize_one(event)
@@ -1380,13 +1482,13 @@ def delaunch(request, params, user):
     event.save()
     organizers = Organizer.objects.filter(event = event)
     for organizer in organizers:
-        if Follow_up.objects.filter(recap__organizer = organizer).exists():
-            follow_up = Follow_up.objects.get(recap__organizer = organizer)
-            if follow_up.email_id is not None:
+        if Recap.objects.filter(organizer = organizer).exists():
+            recap = Recap.objects.get(organizer = organizer)
+            if recap.email_id is not None:
                 client = Mandrill(MANDRILL_API_KEY)
-                client.messages.cancel_scheduled(id = follow_up.email_id)
-                follow_up.email_id = None
-                follow_up.save()
+                client.messages.cancel_scheduled(id = recap.email_id)
+                recap.email_id = None
+                recap.save()
     response = {
         'status':'OK',
         'event':serialize_one(event)
@@ -1424,11 +1526,11 @@ def delete(request, params, user):
     event.save()
     organizers = Organizer.objects.filter(event = event)
     for organizer in organizers:
-        if Follow_up.objects.filter(recap__organizer = organizer).exists():
-            follow_up = Follow_up.objects.get(recap__organizer = organizer)
-            if follow_up.email_id is not None:
+        if Recap.objects.filter(organizer = organizer).exists():
+            recap = Recap.objects.get(organizer = organizer)
+            if recap.email_id is not None:
                 client = Mandrill(MANDRILL_API_KEY)
-                client.messages.cancel_scheduled(id = follow_up.email_id)
+                client.messages.cancel_scheduled(id = recap.email_id)
     response = {
         'status':'OK'
     }

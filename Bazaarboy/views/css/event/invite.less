@@ -1,9 +1,9 @@
 @import (reference) "vars.less";
 
-div#wrapper-event-invite{
-    div#event-invite{
+div#wrapper-event-invite, div#wrapper-event-follow-up{
+    div#event-invite, div#event-follow-up{
         padding-top: 24px;
-        div.invitation-back{
+        div.comm-back{
             margin-top: 0px;
             margin-bottom: 30px;
             a{
@@ -33,6 +33,10 @@ div#wrapper-event-invite{
         div.email{
             border-right: @dark_grey thin solid;
             div.email-content{
+                div.pdf-preview{
+                    margin-bottom: 20px;
+                    font-weight: bold;
+                }
                 a.blue-btn-inverse{
                     display: block;
                     width: 100%;
@@ -44,6 +48,7 @@ div#wrapper-event-invite{
                 div.image-preview{
                     text-align: center;
                     img{
+                        padding-top: 5px;
                         padding: 20px 0;
                     }
                 }

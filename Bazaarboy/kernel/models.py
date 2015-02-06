@@ -322,23 +322,26 @@ class Recap(models.Model):
     organizer = models.OneToOneField('Organizer')
     is_viewed = models.BooleanField(default = False)
     list_added = models.BooleanField(default = False)
+    email_id = models.CharField(max_length = 150, null = True, default = None)
 
 class Follow_up(models.Model):
     """
     Follow up model
     """
-    recap = models.OneToOneField('Recap')
+    recap = models.ForeignKey('Recap')
     image = models.ForeignKey('Image', null = True, default = None)
+    tickets = models.ManyToManyField('Ticket')
     color = models.CharField(max_length = 50, default="#FAA638")
-    header = models.CharField(max_length = 1000, null = True, default = None)
+    heading = models.CharField(max_length = 1000, null = True, default = None)
     message = models.CharField(max_length = 5000, null = True, default = None)
     paid = models.BooleanField(default = False)
     price = models.IntegerField(default = 0)
     is_sent = models.BooleanField(default = False)
     sent_at = models.DateTimeField(null = True, default = None)
-    attachment = models.FileField(upload_to = 'uploads/attachment/%Y-%m-%d', null = True, default = None)
+    attachment = models.ForeignKey('Pdf', null = True, default = None)
     email_id = models.CharField(max_length = 150, null = True, default = None)
     created_time = models.DateTimeField(auto_now_add = True)
+    is_deleted = models.BooleanField(default = False)
 
 class Purchase(models.Model):
     """
@@ -500,3 +503,19 @@ class Csv(models.Model):
         """
         self.source.delete(save = False)
         super(Csv, self).delete(*args, **kwargs)
+
+class Pdf(models.Model):
+    """
+    PDF model
+    """
+    source = models.FileField(upload_to = 'uploads/attachment/%Y-%m-%d/')
+    name = models.CharField(max_length = 500)
+    is_archived = models.BooleanField(default = False)
+    created_time = models.DateTimeField(auto_now_add = True)
+
+    def delete(self, *args, **kwargs):
+        """
+        Automatically delete the PDF file after model deletion
+        """
+        self.source.delete(save = False)
+        super(Pdf, self).delete(*args, **kwargs)
