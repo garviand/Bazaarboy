@@ -46,21 +46,21 @@ block content
                             img(src="{% if follow_up.image %}{{ follow_up.image.source.url }}{% endif %}")
                     div.row.email-content
                         div.small-12.columns.content-image
-                            label Attach PDF to Follow Up (optional)
+                            label Attach File to Follow Up (PDF, JPG, PNG, GIF)
                                 input.hide(type="file", name="attachment_file")
-                                a.upload-attachment-btn.primary-btn-inverse.btn.full-btn(href="javascript:;", style="{% if follow_up.attachment %}display:none;{% endif %}") Upload PDF
-                                a.delete-attachment-btn.primary-btn-inverse.btn.full-btn(href="javascript:;", style="{% if not follow_up.attachment %}display:none;{% endif %}") Delete PDF
+                                a.upload-attachment-btn.primary-btn-inverse.btn.full-btn(href="javascript:;", style="{% if follow_up.attachment %}display:none;{% endif %}") Upload File
+                                a.delete-attachment-btn.primary-btn-inverse.btn.full-btn(href="javascript:;", style="{% if not follow_up.attachment %}display:none;{% endif %}") Delete File
                     div.row.email-content
                         div.small-12.columns.pdf-preview(class="{% if not follow_up.attachment %}hide{% endif %}")
                             span.filename {% if follow_up.attachment %}{{ follow_up.attachment.name }}{% else %}&nbsp;{% endif %}
                     div.row.email-content
                         div.small-12.columns.content-details
                             label Header Text
-                                textarea(name="heading", placeholder="Enter the header text here (ex. 'Thanks for Coming!')") {{ follow_up.message }}
+                                textarea(name="heading", placeholder="Enter the header text here (ex. 'Thanks for Coming!')") {{ follow_up.heading }}
                     div.row.email-content
                         div.small-12.columns.content-message
                             label Message Content
-                                textarea(name="message", placeholder="Enter the message content here") {{ follow_up.details }}
+                                textarea(name="message", placeholder="Enter the message content here") {{ follow_up.message }}
                     div.row.email-content
                         div.small-12.columns.content-details
                             label Button Color

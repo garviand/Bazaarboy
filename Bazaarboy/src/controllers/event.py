@@ -835,30 +835,18 @@ def new_follow_up(request, params, user):
     return json_response(response)
 
 @login_check()
-@validate('POST', ['id', 'tickets', 'message', 'heading'], ['image', 'pdf', 'color'])
+@validate('POST', ['id', 'tickets', 'message', 'heading'], ['image', 'pdf', 'color', 'deleteImg', 'deletePdf'])
 def save_follow_up(request, params, user):
-    profiles = Profile.objects.filter(managers = user)
-    pids = []
-    for profile in profiles:
-        pids.append(profile.id)
-    if not Organizer.objects.filter(event__id = params['id'], profile__in = pids).exists():
+    if not Follow_up.objects.filter(id = params['id'], recap__organizer__profile__managers = user).exists():
         response = {
             'status':'FAIL',
-            'error':'NOT_OWNER',
-            'message':'This is not your event.'
+            'error':'NO_FOLLOW_UP',
+            'message':'No follow up exists.'
         }
         return json_response(response)
-    current_organizer = Organizer.objects.get(event__id = params['id'], profile__in = pids)
-    if not Recap.objects.filter(organizer = current_organizer).exists():
-        response = {
-            'status':'FAIL',
-            'error':'NO_RECAP',
-            'message':'This recap does not exist.'
-        }
-        return json_response(response)
-    recap = Recap.objects.get(organizer = current_organizer)
-    if Ticket.objects.filter(id__in = [x.strip() for x in params['tickets'].split(',')], event__organizers__managers = user).exists():
-        tickets = Ticket.objects.filter(id__in = [x.strip() for x in params['tickets'].split(',')], event__organizers__managers = user)
+    follow_up = Follow_up.objects.get(id = params['id'])
+    if Ticket.objects.filter(id__in = [x.strip() for x in params['tickets'].split(',')], event__organizer__profile__managers = user).exists():
+        tickets = Ticket.objects.filter(id__in = [x.strip() for x in params['tickets'].split(',')], event__organizer__profile__managers = user)
     else:
         response = {
             'status':'FAIL',
@@ -866,7 +854,8 @@ def save_follow_up(request, params, user):
             'message':'No Valid Lists Were Selected.'
         }
         return json_response(response)
-    follow_up = Follow_up(recap = recap, message = params['message'], heading = params['heading'])
+    follow_up.message = params['message']
+    follow_up.heading = params['heading']
     if params['image'] and params['image'] != '':
         if Image.objects.filter(id = params['image']).exists():
             follow_up.image = Image.objects.get(id = params['image'])
@@ -878,12 +867,75 @@ def save_follow_up(request, params, user):
     follow_up.tickets.clear()
     for ticket in tickets:
         follow_up.tickets.add(ticket)
+    if params['deleteImg'] and params['deleteImg'] == 'true':
+        follow_up.image = None
+    if params['deletePdf'] and params['deletePdf'] == 'true':
+        follow_up.attachment = None
     follow_up.save()
     response = {
         'status':'OK',
         'follow_up':serialize_one(follow_up)
     }
     return json_response(response)
+
+@login_check()
+@validate('POST', ['id'])
+def delete_follow_up(request, params, user):
+    follow_up = params['id']
+    if not Follow_up.objects.filter(id = follow_up, recap__organizer__profile__managers = user).exists():
+        response = {
+            'status':'FAIL',
+            'error':'FOLLOW_UP_NOT_FOUND',
+            'message':'The follow up doesn\'t exist.'
+        }
+        return json_response(response)
+    follow_up = Follow_up.objects.get(id = follow_up)
+    follow_up.is_deleted = True
+    follow_up.save()
+    response = {
+        'status': 'OK',
+        'invite': serialize_one(follow_up)
+    }
+    return json_response(response)
+
+@login_check()
+def preview_follow_up(request, follow_up, user):
+    if not Follow_up.objects.filter(id = follow_up, recap__organizer__profile__managers = user, is_deleted = False, is_sent = False).exists():
+        return redirect('index:index')
+    follow_up = Follow_up.objects.get(id = follow_up)
+    recipients = []
+    sent = 0
+    duplicates = 0
+    unsubscribes = 0
+    alreadyEmailed = 0
+    emailedList = []
+    client = Mandrill(MANDRILL_API_KEY)
+    results = client.messages.search(query='u_follow_up_event_id:' + settings.INVITATION_PREFIX + '-' + str(follow_up.recap.organizer.event.id), limit = 1000, date_from='2014-01-01')
+    for result in results:
+        emailedList.append(result['email'].lower())
+    for ticket in follow_up.tickets.all():
+        list_items = Purchase_item.objects.filter(ticket = ticket)
+        for item in list_items:
+            if not Unsubscribe.objects.filter(Q(email = item.purchase.owner.email), Q(profile = follow_up.recap.organizer.profile) | Q(profile__isnull = True)).exists():
+                if item.purchase.owner.email.lower() not in recipients:
+                    if item.purchase.owner.email.lower() not in emailedList:
+                        recipients.append(item.purchase.owner.email.lower())
+                        sent += 1
+                    else:
+                        alreadyEmailed += 1
+                else:
+                    duplicates += 1
+            else:
+                unsubscribes += 1
+    cost = INVITE_COST(sent) / 100
+    return render(request, 'event/follow-up-preview.html', locals())
+
+@login_check()
+def preview_follow_up_template(request, follow_up, user):
+    if not Follow_up.objects.filter(id = follow_up, recap__organizer__profile__managers = user).exists():
+        return redirect('index:index')
+    follow_up = Follow_up.objects.get(id = follow_up)
+    return render(request, 'event/follow-up-preview-template.html', locals())
 
 @login_check()
 @validate('POST', ['name'])

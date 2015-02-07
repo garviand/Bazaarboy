@@ -2,7 +2,7 @@ Bazaarboy.event.invite_dashboard =
     sending: false
     init: () ->
         scope = this
-        $('div.invitation a.copy-invite').click () ->
+        $('div.comm a.copy-invite').click () ->
             inviteId = $(this).data('id')
             Bazaarboy.post 'event/invite/' + inviteId + '/copy/', {}, (response) ->
                 if response.status is 'OK'
@@ -11,8 +11,8 @@ Bazaarboy.event.invite_dashboard =
                     swal response.message
                 return
             return
-        $('div.invitation a.delete-invite').click () ->
-            invitation = $(this).closest('div.invitation')
+        $('div.comm a.delete-invite').click () ->
+            invitation = $(this).closest('div.comm')
             inviteId = $(this).data('id')
             swal
                 title: "Are You Sure?"

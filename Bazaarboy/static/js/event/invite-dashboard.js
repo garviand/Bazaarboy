@@ -4,7 +4,7 @@
     init: function() {
       var scope;
       scope = this;
-      $('div.invitation a.copy-invite').click(function() {
+      $('div.comm a.copy-invite').click(function() {
         var inviteId;
         inviteId = $(this).data('id');
         Bazaarboy.post('event/invite/' + inviteId + '/copy/', {}, function(response) {
@@ -15,9 +15,9 @@
           }
         });
       });
-      $('div.invitation a.delete-invite').click(function() {
+      $('div.comm a.delete-invite').click(function() {
         var invitation, inviteId;
-        invitation = $(this).closest('div.invitation');
+        invitation = $(this).closest('div.comm');
         inviteId = $(this).data('id');
         return swal({
           title: "Are You Sure?",

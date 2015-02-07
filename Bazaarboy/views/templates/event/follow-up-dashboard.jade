@@ -40,7 +40,7 @@ block content
         div#follow-up-dashboard.small-12.columns
             div.row.new-comm-container(class="{% if sentFollowUps.count == 0 and draftFollowUps.count == 0 %}hide{% endif %}")
                 div.medium-4.columns.new-list
-                    a.new-comm-btn.primary-btn.text-center(href="{% url event:create-follow-up event.id %}", style="{% if sentInvites.count == 0 and draftInvites.count == 0 %}display:none;{% endif %}") + New Invitation
+                    a.new-comm-btn.primary-btn.text-center(href="{% url event:create-follow-up event.id %}", style="{% if sentFollowUps.count == 0 and draftFollowUps.count == 0 %}display:none;{% endif %}") + New Follow Up
             div.row
                 {% if sentFollowUps.count > 0 %}
                 div.small-12.columns.comms
@@ -54,7 +54,7 @@ block content
                         div.small-12.medium-2.columns.text-right.comm-details
                             a(href="{% url event:invite-details follow_up.id %}") View Stats
                         div.small-12.medium-2.columns.text-right.comm-details
-                            a.copy-invite(data-id="{{ follow_up.id }}", href="javascript:;") Copy Invite
+                            a.copy-follow-up(data-id="{{ follow_up.id }}", href="javascript:;") Copy Follow Up
                     {% endfor %}
                 {% endif %}
                 {% if draftFollowUps.count > 0 %}
@@ -63,11 +63,11 @@ block content
                     {% for follow_up in draftFollowUps %}
                     div.row.comm
                         div.small-12.medium-6.columns.comm-name
-                            | {% for ticket in follow_up.tickets.all %}{{ticket.name}}{% if not forloop.last %}, {% endif %}{% endfor %}
+                            | Tickets: {% for ticket in follow_up.tickets.all %}{{ticket.name}}{% if not forloop.last %}, {% endif %}{% endfor %}
                         div.small-12.medium-3.columns.text-right.comm-details
                             a(href="{% url event:edit-follow-up follow_up.id %}") Edit Follow Up
                         div.small-12.medium-3.columns.text-right.comm-details
-                            a.delete-invite(href="javascript:;", data-id="{{ follow_up.id }}") Delete Follow Up
+                            a.delete-follow-up(href="javascript:;", data-id="{{ follow_up.id }}") Delete Follow Up
                     {% endfor %}
                 {% endif %}
 

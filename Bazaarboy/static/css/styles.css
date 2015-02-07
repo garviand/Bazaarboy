@@ -10826,8 +10826,8 @@ div#wrapper-event-invite div#event-invite div.email div.email-content div.image-
 div#wrapper-event-follow-up div#event-invite div.email div.email-content div.image-preview img,
 div#wrapper-event-invite div#event-follow-up div.email div.email-content div.image-preview img,
 div#wrapper-event-follow-up div#event-follow-up div.email div.email-content div.image-preview img {
-  padding-top: 5px;
   padding: 20px 0;
+  padding-top: 5px;
 }
 div#wrapper-event-invite div#event-invite div.email div.email-content div.content-message textarea,
 div#wrapper-event-follow-up div#event-invite div.email div.email-content div.content-message textarea,
@@ -11050,8 +11050,6 @@ div#wrapper-follow-up-dashboard div#invite-dashboard a.new-comm-btn,
 div#wrapper-invite-dashboard div#follow-up-dashboard a.new-comm-btn,
 div#wrapper-follow-up-dashboard div#follow-up-dashboard a.new-comm-btn {
   display: block;
-  padding-top: 9px;
-  padding-bottom: 12px;
   color: #ffffff;
   font-size: 15px;
   text-transform: uppercase;

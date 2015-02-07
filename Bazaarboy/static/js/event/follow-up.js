@@ -33,14 +33,15 @@
         url: rootUrl + 'event/followup/attachment/',
         type: 'POST',
         add: function(event, data) {
-          var csrfmiddlewaretoken;
+          var csrfmiddlewaretoken, _ref;
           csrfmiddlewaretoken = $('input[name=csrfmiddlewaretoken]').val();
+          console.log(data);
           data.formData = {
             name: data.files[0].name,
             csrfmiddlewaretoken: csrfmiddlewaretoken
           };
-          if (data.files[0].type !== 'application/pdf') {
-            swal('Must Be A PDF File');
+          if ((_ref = data.files[0].type) !== 'application/pdf' && _ref !== 'image/jpeg' && _ref !== 'image/jpg' && _ref !== 'image/png' && _ref !== 'image/gif') {
+            swal('Must Be A PDF, PNG, JPG or GIF');
           } else {
             data.submit();
           }
@@ -171,6 +172,7 @@
             var followUpId;
             if (response.status === 'OK') {
               followUpId = response.follow_up.pk;
+              Bazaarboy.redirect('event/followup/' + followUpId + '/preview');
               return;
             } else {
               swal(response.message);

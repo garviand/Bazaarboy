@@ -279,7 +279,7 @@ block content
                     div.small-12.medium-3.columns
                         a.secondary-btn-inverse.btn-full.add-to-list-btn(href="javascript:;", data-id="{{ event.id }}", data-name="{{ event.name }}", data-count="{{ event.rsvpCount }}") Add to List
                     div.small-12.medium-3.columns
-                        a.secondary-btn-inverse.btn-full(href="javascript:;") Follow Up
+                        a.secondary-btn-inverse.btn-full(href="{% url event:follow-up event.id %}") Follow Up
                 div.info.small-12.columns
                     div.inner.row
                         div.past-event-datetime.medium-3.small-6.columns

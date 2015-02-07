@@ -27,9 +27,10 @@ Bazaarboy.event.follow_up =
           type: 'POST'
           add: (event, data) ->
             csrfmiddlewaretoken = $('input[name=csrfmiddlewaretoken]').val()
+            console.log data
             data.formData = {name:data.files[0].name, csrfmiddlewaretoken: csrfmiddlewaretoken}
-            if data.files[0].type isnt 'application/pdf'
-              swal 'Must Be A PDF File'
+            if data.files[0].type not in ['application/pdf', 'image/jpeg', 'image/jpg', 'image/png', 'image/gif']
+              swal 'Must Be A PDF, PNG, JPG or GIF'
             else
               data.submit()
             return
@@ -133,7 +134,7 @@ Bazaarboy.event.follow_up =
                 Bazaarboy.post targetUrl, {id:targetId, heading:heading, message:message, tickets:lists, color:color, image:imageId, deleteImg:deleteImg, pdf:pdfId, deletePdf:deletePdf}, (response) ->
                     if response.status is 'OK'
                         followUpId = response.follow_up.pk
-                        #Bazaarboy.redirect 'event/followup/' + followUpId + '/preview'
+                        Bazaarboy.redirect 'event/followup/' + followUpId + '/preview'
                         return
                     else
                       swal response.message
