@@ -424,23 +424,6 @@ def edit_invite(request, invite, user):
     return render(request, 'event/invite.html', locals())
 
 @login_check()
-def edit_invite(request, invite, user):
-    if not Invite.objects.filter(id = invite, profile__managers = user, is_deleted = False, is_sent = False).exists():
-        return redirect('index')
-    invite = Invite.objects.get(id = invite)
-    event = invite.event
-    profiles = Profile.objects.filter(managers = user)
-    profile = profiles[0]
-    lists = List.objects.filter(owner = profile, is_deleted = False)
-    for lt in lists:
-        list_items = List_item.objects.filter(_list = lt)
-        lt.items = list_items.count()
-        lt.selected = False
-        if invite.lists.filter(id = lt.id).exists():
-            lt.selected = True
-    return render(request, 'event/invite.html', locals())
-
-@login_check()
 @validate('POST', [])
 def copy_invite(request, params, invite, user):
     if not Invite.objects.filter(id = invite, profile__managers = user).exists():
@@ -785,6 +768,22 @@ def create_follow_up(request, event, user):
     return render(request, 'event/follow-up.html', locals())
 
 @login_check()
+def edit_follow_up(request, follow_up, user):
+    if not Follow_up.objects.filter(id = follow_up, recap__organizer__profile__managers = user, is_deleted = False, is_sent = False).exists():
+        return redirect('index')
+    follow_up = Follow_up.objects.get(id = follow_up)
+    event = follow_up.recap.organizer.event
+    profiles = Profile.objects.filter(managers = user)
+    profile = profiles[0]
+    tickets = Ticket.objects.filter(event = event)
+    for ticket in tickets:
+        ticket.items = Purchase_item.objects.filter(ticket = ticket).values_list('purchase__id', flat=True).distinct().count()
+        ticket.selected = False
+        if follow_up.tickets.filter(id = ticket.id).exists():
+            ticket.selected = True
+    return render(request, 'event/follow-up.html', locals())
+
+@login_check()
 @validate('POST', ['id', 'tickets', 'message', 'heading'], ['image', 'pdf', 'color'])
 def new_follow_up(request, params, user):
     profiles = Profile.objects.filter(managers = user)
@@ -826,6 +825,57 @@ def new_follow_up(request, params, user):
     if params['color'] and params['color'] != '':
         follow_up.color = params['color']
     follow_up.save()
+    for ticket in tickets:
+        follow_up.tickets.add(ticket)
+    follow_up.save()
+    response = {
+        'status':'OK',
+        'follow_up':serialize_one(follow_up)
+    }
+    return json_response(response)
+
+@login_check()
+@validate('POST', ['id', 'tickets', 'message', 'heading'], ['image', 'pdf', 'color'])
+def save_follow_up(request, params, user):
+    profiles = Profile.objects.filter(managers = user)
+    pids = []
+    for profile in profiles:
+        pids.append(profile.id)
+    if not Organizer.objects.filter(event__id = params['id'], profile__in = pids).exists():
+        response = {
+            'status':'FAIL',
+            'error':'NOT_OWNER',
+            'message':'This is not your event.'
+        }
+        return json_response(response)
+    current_organizer = Organizer.objects.get(event__id = params['id'], profile__in = pids)
+    if not Recap.objects.filter(organizer = current_organizer).exists():
+        response = {
+            'status':'FAIL',
+            'error':'NO_RECAP',
+            'message':'This recap does not exist.'
+        }
+        return json_response(response)
+    recap = Recap.objects.get(organizer = current_organizer)
+    if Ticket.objects.filter(id__in = [x.strip() for x in params['tickets'].split(',')], event__organizers__managers = user).exists():
+        tickets = Ticket.objects.filter(id__in = [x.strip() for x in params['tickets'].split(',')], event__organizers__managers = user)
+    else:
+        response = {
+            'status':'FAIL',
+            'error':'NO_VALID_LISTS',
+            'message':'No Valid Lists Were Selected.'
+        }
+        return json_response(response)
+    follow_up = Follow_up(recap = recap, message = params['message'], heading = params['heading'])
+    if params['image'] and params['image'] != '':
+        if Image.objects.filter(id = params['image']).exists():
+            follow_up.image = Image.objects.get(id = params['image'])
+    if params['pdf'] and params['pdf'] != '':
+        if Pdf.objects.filter(id = params['pdf']).exists():
+            follow_up.attachment = Pdf.objects.get(id = params['pdf'])
+    if params['color'] and params['color'] != '':
+        follow_up.color = params['color']
+    follow_up.tickets.clear()
     for ticket in tickets:
         follow_up.tickets.add(ticket)
     follow_up.save()

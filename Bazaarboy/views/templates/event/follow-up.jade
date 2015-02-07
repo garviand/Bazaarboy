@@ -42,8 +42,8 @@ block content
                                 a.upload-image-btn.primary-btn-inverse.btn.full-btn(href="javascript:;", style="{% if follow_up.image %}display:none;{% endif %}") Upload Image
                                 a.delete-image-btn.primary-btn-inverse.btn.full-btn(href="javascript:;", style="{% if not follow_up.image %}display:none;{% endif %}") Delete Image
                     div.row.email-content
-                        div.small-12.columns.image-preview(class="{% if not invite.image %}hide{% endif %}")
-                            img(src="{% if invite.image %}{{ invite.image.source.url }}{% endif %}")
+                        div.small-12.columns.image-preview(class="{% if not follow_up.image %}hide{% endif %}")
+                            img(src="{% if follow_up.image %}{{ follow_up.image.source.url }}{% endif %}")
                     div.row.email-content
                         div.small-12.columns.content-image
                             label Attach PDF to Follow Up (optional)
@@ -81,7 +81,6 @@ block content
                             | {{ ticket.items }} RSVP{{ ticket.items|pluralize }}
                     {% endif %}
                     {% endfor %}
-
 append script
     script(type="text/javascript", src="{{ STATIC_URL }}spectrum/spectrum.js")
     script.
