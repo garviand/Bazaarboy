@@ -99,13 +99,25 @@
           }
         }
       });
+      $('a.button-type-btn').click(function() {
+        $('a.button-type-btn').removeClass('primary-btn');
+        $('a.button-type-btn').addClass('primary-btn-inverse');
+        $('a.button-type-btn').removeClass('active');
+        $(this).addClass('active');
+        $(this).addClass('primary-btn');
+        $(this).removeClass('primary-btn-inverse');
+        $('div.custom-link').addClass('hide');
+        if ($(this).data('type') === 'link') {
+          $('div.custom-link').removeClass('hide');
+        }
+      });
       $('input[name=colorpicker]').spectrum({
         preferredFormat: "hex",
         showInput: true,
         showButtons: true
       });
       $('a.save-follow-up').click(function() {
-        var activeLists, color, deleteImg, deletePdf, heading, imageId, list, lists, message, pdfId, targetId, targetUrl, _i, _len;
+        var activeLists, button_text, color, deleteImg, deletePdf, heading, imageId, list, lists, message, pdfId, targetId, targetUrl, _i, _len;
         if (!scope.saving) {
           $('a.save-follow-up').html('Saving...');
           scope.saving = true;
@@ -126,6 +138,13 @@
           message = $('div.email textarea[name=message]').val();
           if (message.trim() === '') {
             swal("Wait!", "Email Message Cannot Be Empty", "warning");
+            scope.saving = false;
+            $('a.save-follow-up').html('Save &amp; Preview');
+            return;
+          }
+          button_text = $('div.email input[name=button_text]').val();
+          if (message.trim() === '') {
+            swal("Wait!", "Email Button Text Cannot Be Empty", "warning");
             scope.saving = false;
             $('a.save-follow-up').html('Save &amp; Preview');
             return;
@@ -162,6 +181,7 @@
             id: targetId,
             heading: heading,
             message: message,
+            button_text: button_text,
             tickets: lists,
             color: color,
             image: imageId,

@@ -784,7 +784,7 @@ def edit_follow_up(request, follow_up, user):
     return render(request, 'event/follow-up.html', locals())
 
 @login_check()
-@validate('POST', ['id', 'tickets', 'message', 'heading'], ['image', 'pdf', 'color'])
+@validate('POST', ['id', 'tickets', 'message', 'heading', 'button_text'], ['image', 'pdf', 'color'])
 def new_follow_up(request, params, user):
     profiles = Profile.objects.filter(managers = user)
     pids = []
@@ -815,7 +815,7 @@ def new_follow_up(request, params, user):
             'message':'No Valid Lists Were Selected.'
         }
         return json_response(response)
-    follow_up = Follow_up(recap = recap, message = params['message'], heading = params['heading'])
+    follow_up = Follow_up(recap = recap, message = params['message'], heading = params['heading'], button_text = params['button_text'])
     if params['image'] and params['image'] != '':
         if Image.objects.filter(id = params['image']).exists():
             follow_up.image = Image.objects.get(id = params['image'])
@@ -835,7 +835,7 @@ def new_follow_up(request, params, user):
     return json_response(response)
 
 @login_check()
-@validate('POST', ['id', 'tickets', 'message', 'heading'], ['image', 'pdf', 'color', 'deleteImg', 'deletePdf'])
+@validate('POST', ['id', 'tickets', 'message', 'heading', 'button_text'], ['image', 'pdf', 'color', 'deleteImg', 'deletePdf'])
 def save_follow_up(request, params, user):
     if not Follow_up.objects.filter(id = params['id'], recap__organizer__profile__managers = user).exists():
         response = {
@@ -856,6 +856,7 @@ def save_follow_up(request, params, user):
         return json_response(response)
     follow_up.message = params['message']
     follow_up.heading = params['heading']
+    follow_up.button_text = params['button_text']
     if params['image'] and params['image'] != '':
         if Image.objects.filter(id = params['image']).exists():
             follow_up.image = Image.objects.get(id = params['image'])

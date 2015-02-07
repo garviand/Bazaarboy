@@ -5719,6 +5719,21 @@ h3 {
   color: #ffffff;
   background: #d69e5f;
 }
+.tiny-btn-group > div:first-child a {
+  border-top-left-radius: 3px;
+  border-bottom-left-radius: 3px;
+  border-right: none;
+}
+.tiny-btn-group > div:last-child a {
+  border-top-right-radius: 3px;
+  border-bottom-right-radius: 3px;
+  border-left: none;
+}
+.tiny-btn-group .tiny-btn {
+  font-size: 12px;
+  padding: 8px 6px;
+  border-radius: 0;
+}
 input[type="text"]:focus {
   background: #ffffff !important;
 }

@@ -336,6 +336,8 @@ class Follow_up(models.Model):
     message = models.CharField(max_length = 5000, null = True, default = None)
     paid = models.BooleanField(default = False)
     price = models.IntegerField(default = 0)
+    button_text = models.CharField(max_length = 100, null = True, default = None)
+    button_target = models.CharField(max_length = 300, null = True, default = None)
     is_sent = models.BooleanField(default = False)
     sent_at = models.DateTimeField(null = True, default = None)
     attachment = models.ForeignKey('Pdf', null = True, default = None)

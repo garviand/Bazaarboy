@@ -62,8 +62,25 @@ block content
                             label Message Content
                                 textarea(name="message", placeholder="Enter the message content here") {{ follow_up.message }}
                     div.row.email-content
+                        div.small-12.columns.content-message
+                            label Button Text
+                                input(type="text", name="button_text", value="{% if follow_up.button_text %}{{ follow_up.button_text }}{% endif %}", placeholder="(ex. View Page, Click Here)")
+                    div.row.email-content
                         div.small-12.columns.content-details
-                            label Button Color
+                            label Button Link
+                                div.row.collapse.tiny-btn-group
+                                    div.small-12.medium-4.columns
+                                        a.button-type-btn.primary-btn.active.full-btn.tiny-btn(href="javascript:;", data-type="event") Event Page
+                                    div.small-12.medium-4.columns
+                                        a.button-type-btn.primary-btn-inverse.full-btn.tiny-btn(href="javascript:;", data-type="attachment") Attachment
+                                    div.small-12.medium-4.columns
+                                        a.button-type-btn.primary-btn-inverse.full-btn.tiny-btn(href="javascript:;", data-type="link") Custom Link
+                                div.custom-link.hide
+                                    br
+                                    input(type="text", name="button_link", value="{% if follow_up.button_target %}{{ follow_up.button_target }}{% endif %}", placeholder="(ex. http://bazaarboy.com)")
+                    div.row.email-content
+                        div.small-12.columns.content-details
+                            label Email Color
                             input(type='color', name='colorpicker', value='{% if follow_up.color %}{{ follow_up.color }}{% else %}{{ event.color }}{% endif %}')
                     div.row.email-content
                         div.small-12.columns.content-submit

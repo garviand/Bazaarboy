@@ -208,6 +208,28 @@ h3{
     }
 }
 
+.tiny-btn-group{
+    > div:first-child{
+        a{
+            border-top-left-radius: 3px;
+            border-bottom-left-radius: 3px;
+            border-right: none;
+        }
+    }
+    > div:last-child{
+        a{
+            border-top-right-radius: 3px;
+            border-bottom-right-radius: 3px;
+            border-left: none;
+        }
+    }
+    .tiny-btn{
+        font-size: 12px;
+        padding: 8px 6px;
+        border-radius: 0;
+    }
+}
+
 input[type="text"]{
     &:focus{
         background: @white !important;

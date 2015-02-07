@@ -81,6 +81,18 @@ Bazaarboy.event.follow_up =
                     alert response.message
                     $('div#event-follow-up a.upload-image-btn').html 'Upload Image'
                 return
+        # BUTTON TYPE SELECTION
+        $('a.button-type-btn').click () ->
+            $('a.button-type-btn').removeClass('primary-btn')
+            $('a.button-type-btn').addClass('primary-btn-inverse')
+            $('a.button-type-btn').removeClass('active')
+            $(this).addClass('active')
+            $(this).addClass('primary-btn')
+            $(this).removeClass('primary-btn-inverse')
+            $('div.custom-link').addClass('hide')
+            if $(this).data('type') == 'link'
+                $('div.custom-link').removeClass('hide')
+            return
         # COLOR PICKER
         $('input[name=colorpicker]').spectrum
             preferredFormat: "hex"
@@ -109,6 +121,12 @@ Bazaarboy.event.follow_up =
                     scope.saving = false
                     $('a.save-follow-up').html 'Save &amp; Preview'
                     return
+                button_text = $('div.email input[name=button_text]').val()
+                if message.trim() is ''
+                    swal("Wait!", "Email Button Text Cannot Be Empty", "warning")
+                    scope.saving = false
+                    $('a.save-follow-up').html 'Save &amp; Preview'
+                    return
                 activeLists = $('div.lists div.list.active')
                 if activeLists.length is 0
                     swal("Wait!", "You Must Select At Least 1 Ticket", "warning")
@@ -131,7 +149,7 @@ Bazaarboy.event.follow_up =
                     deletePdf = false
                 color = $('input[name=colorpicker]').spectrum("get").toHexString()
                 scope.saving = false
-                Bazaarboy.post targetUrl, {id:targetId, heading:heading, message:message, tickets:lists, color:color, image:imageId, deleteImg:deleteImg, pdf:pdfId, deletePdf:deletePdf}, (response) ->
+                Bazaarboy.post targetUrl, {id:targetId, heading:heading, message:message, button_text:button_text, tickets:lists, color:color, image:imageId, deleteImg:deleteImg, pdf:pdfId, deletePdf:deletePdf}, (response) ->
                     if response.status is 'OK'
                         followUpId = response.follow_up.pk
                         Bazaarboy.redirect 'event/followup/' + followUpId + '/preview'
