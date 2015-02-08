@@ -70,12 +70,12 @@ block content
                             label Button Link
                                 div.row.collapse.tiny-btn-group
                                     div.small-12.medium-4.columns
-                                        a.button-type-btn.primary-btn.active.full-btn.tiny-btn(href="javascript:;", data-type="event") Event Page
+                                        a.button-type-btn.full-btn.tiny-btn(href="javascript:;", data-type="event", class="{% if activeButtonType = 'event' %}active primary-btn{% else %}primary-btn-inverse{% endif %}") Event Page
                                     div.small-12.medium-4.columns
-                                        a.button-type-btn.primary-btn-inverse.full-btn.tiny-btn(href="javascript:;", data-type="attachment") Attachment
+                                        a.button-type-btn.full-btn.tiny-btn(href="javascript:;", data-type="attachment", class="{% if activeButtonType = 'attachment' %}active primary-btn{% else %}primary-btn-inverse{% endif %}") Attachment
                                     div.small-12.medium-4.columns
-                                        a.button-type-btn.primary-btn-inverse.full-btn.tiny-btn(href="javascript:;", data-type="link") Custom Link
-                                div.custom-link.hide
+                                        a.button-type-btn.full-btn.tiny-btn(href="javascript:;", data-type="link", class="{% if activeButtonType = 'link' %}active primary-btn{% else %}primary-btn-inverse{% endif %}") Custom Link
+                                div.custom-link(class="{% if not activeButtonType = 'link' %}hide{% endif %}")
                                     br
                                     input(type="text", name="button_link", value="{% if follow_up.button_target %}{{ follow_up.button_target }}{% endif %}", placeholder="(ex. http://bazaarboy.com)")
                     div.row.email-content

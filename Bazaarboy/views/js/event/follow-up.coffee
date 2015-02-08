@@ -148,8 +148,14 @@ Bazaarboy.event.follow_up =
                     pdfId = scope.pdf.pk
                     deletePdf = false
                 color = $('input[name=colorpicker]').spectrum("get").toHexString()
-                scope.saving = false
-                Bazaarboy.post targetUrl, {id:targetId, heading:heading, message:message, button_text:button_text, tickets:lists, color:color, image:imageId, deleteImg:deleteImg, pdf:pdfId, deletePdf:deletePdf}, (response) ->
+                button_type = $('a.button-type-btn.active').data('type')
+                custom_url = $('input[name=button_link]').val()
+                if button_type == 'link' and not(/^([a-z]([a-z]|\d|\+|-|\.)*):(\/\/(((([a-z]|\d|-|\.|_|~|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])|(%[\da-f]{2})|[!\$&'\(\)\*\+,;=]|:)*@)?((\[(|(v[\da-f]{1,}\.(([a-z]|\d|-|\.|_|~)|[!\$&'\(\)\*\+,;=]|:)+))\])|((\d|[1-9]\d|1\d\d|2[0-4]\d|25[0-5])\.(\d|[1-9]\d|1\d\d|2[0-4]\d|25[0-5])\.(\d|[1-9]\d|1\d\d|2[0-4]\d|25[0-5])\.(\d|[1-9]\d|1\d\d|2[0-4]\d|25[0-5]))|(([a-z]|\d|-|\.|_|~|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])|(%[\da-f]{2})|[!\$&'\(\)\*\+,;=])*)(:\d*)?)(\/(([a-z]|\d|-|\.|_|~|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])|(%[\da-f]{2})|[!\$&'\(\)\*\+,;=]|:|@)*)*|(\/((([a-z]|\d|-|\.|_|~|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])|(%[\da-f]{2})|[!\$&'\(\)\*\+,;=]|:|@)+(\/(([a-z]|\d|-|\.|_|~|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])|(%[\da-f]{2})|[!\$&'\(\)\*\+,;=]|:|@)*)*)?)|((([a-z]|\d|-|\.|_|~|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])|(%[\da-f]{2})|[!\$&'\(\)\*\+,;=]|:|@)+(\/(([a-z]|\d|-|\.|_|~|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])|(%[\da-f]{2})|[!\$&'\(\)\*\+,;=]|:|@)*)*)|((([a-z]|\d|-|\.|_|~|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])|(%[\da-f]{2})|[!\$&'\(\)\*\+,;=]|:|@)){0})(\?((([a-z]|\d|-|\.|_|~|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])|(%[\da-f]{2})|[!\$&'\(\)\*\+,;=]|:|@)|[\uE000-\uF8FF]|\/|\?)*)?(\#((([a-z]|\d|-|\.|_|~|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])|(%[\da-f]{2})|[!\$&'\(\)\*\+,;=]|:|@)|\/|\?)*)?$/i.test(custom_url))
+                    scope.saving = false
+                    $('a.save-follow-up').html 'Save &amp; Preview'
+                    swal "Custom Link is not valid. Remember, you must include http:// or https://."
+                    return
+                Bazaarboy.post targetUrl, {id:targetId, heading:heading, message:message, button_text:button_text, button_type:button_type, custom_link:custom_url, tickets:lists, color:color, image:imageId, deleteImg:deleteImg, pdf:pdfId, deletePdf:deletePdf}, (response) ->
                     if response.status is 'OK'
                         followUpId = response.follow_up.pk
                         Bazaarboy.redirect 'event/followup/' + followUpId + '/preview'
@@ -157,7 +163,7 @@ Bazaarboy.event.follow_up =
                     else
                       swal response.message
                     scope.saving = false
-                    $('a.save-invite').html 'Save &amp; Preview'
+                    $('a.save-follow-up').html 'Save &amp; Preview'
                     return
             return
         return

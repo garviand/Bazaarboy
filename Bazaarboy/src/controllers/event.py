@@ -21,6 +21,7 @@ from django.views.decorators.clickjacking import xframe_options_exempt
 from django.core.serializers.json import DjangoJSONEncoder
 from celery import task
 from kernel.models import *
+from kernel.templatetags import layout
 from src.config import *
 from src.controllers.request import *
 from src.ordereddict import OrderedDict
@@ -765,6 +766,7 @@ def create_follow_up(request, event, user):
     for ticket in tickets:
         ticket.items = Purchase_item.objects.filter(ticket = ticket).values_list('purchase__id', flat=True).distinct().count()
     previousFollowUps = Follow_up.objects.filter(recap__organizer__event = event)
+    activeButtonType = 'event'
     return render(request, 'event/follow-up.html', locals())
 
 @login_check()
@@ -781,10 +783,15 @@ def edit_follow_up(request, follow_up, user):
         ticket.selected = False
         if follow_up.tickets.filter(id = ticket.id).exists():
             ticket.selected = True
+    activeButtonType = 'link'
+    if follow_up.attachment.source.url.split("?", 1)[0] == str(follow_up.button_target).split("?", 1)[0]:
+        activeButtonType = 'attachment'
+    if (follow_up.button_target) == 'http://bazaarboy.com' + layout.eventUrl(follow_up.recap.organizer.event):
+        activeButtonType = 'event'
     return render(request, 'event/follow-up.html', locals())
 
 @login_check()
-@validate('POST', ['id', 'tickets', 'message', 'heading', 'button_text'], ['image', 'pdf', 'color'])
+@validate('POST', ['id', 'tickets', 'message', 'heading', 'button_text', 'button_type'], ['image', 'pdf', 'color', 'custom_link'])
 def new_follow_up(request, params, user):
     profiles = Profile.objects.filter(managers = user)
     pids = []
@@ -824,6 +831,12 @@ def new_follow_up(request, params, user):
             follow_up.attachment = Pdf.objects.get(id = params['pdf'])
     if params['color'] and params['color'] != '':
         follow_up.color = params['color']
+    custom_link = 'http://bazaarboy.com' + layout.eventUrl(recap.organizer.event)
+    if params['button_type'] == 'attachment' and follow_up.attachment:
+        custom_link = follow_up.attachment.source.url
+    if params['button_type'] == 'link' and params['custom_link']:
+        custom_link = params['custom_link']
+    follow_up.button_target = custom_link
     follow_up.save()
     for ticket in tickets:
         follow_up.tickets.add(ticket)
@@ -835,7 +848,7 @@ def new_follow_up(request, params, user):
     return json_response(response)
 
 @login_check()
-@validate('POST', ['id', 'tickets', 'message', 'heading', 'button_text'], ['image', 'pdf', 'color', 'deleteImg', 'deletePdf'])
+@validate('POST', ['id', 'tickets', 'message', 'heading', 'button_text', 'button_type'], ['image', 'pdf', 'color', 'deleteImg', 'deletePdf', 'custom_link'])
 def save_follow_up(request, params, user):
     if not Follow_up.objects.filter(id = params['id'], recap__organizer__profile__managers = user).exists():
         response = {
@@ -872,6 +885,12 @@ def save_follow_up(request, params, user):
         follow_up.image = None
     if params['deletePdf'] and params['deletePdf'] == 'true':
         follow_up.attachment = None
+    custom_link = 'http://bazaarboy.com' + layout.eventUrl(follow_up.recap.organizer.event)
+    if params['button_type'] == 'attachment' and follow_up.attachment:
+        custom_link = follow_up.attachment.source.url
+    if params['button_type'] == 'link' and params['custom_link']:
+        custom_link = params['custom_link']
+    follow_up.button_target = custom_link
     follow_up.save()
     response = {
         'status':'OK',
