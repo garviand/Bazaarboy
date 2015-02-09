@@ -143,7 +143,7 @@
             return;
           }
           button_text = $('div.email input[name=button_text]').val();
-          if (message.trim() === '') {
+          if (button_text.trim() === '') {
             swal("Wait!", "Email Button Text Cannot Be Empty", "warning");
             scope.saving = false;
             $('a.save-follow-up').html('Save &amp; Preview');

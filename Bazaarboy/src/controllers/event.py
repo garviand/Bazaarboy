@@ -833,13 +833,10 @@ def new_follow_up(request, params, user):
         return json_response(response)
     current_organizer = Organizer.objects.get(event__id = params['id'], profile__in = pids)
     if not Recap.objects.filter(organizer = current_organizer).exists():
-        response = {
-            'status':'FAIL',
-            'error':'NO_RECAP',
-            'message':'This recap does not exist.'
-        }
-        return json_response(response)
-    recap = Recap.objects.get(organizer = current_organizer)
+        recap = Recap(organizer = current_organizer)
+        recap.save()
+    else:
+        recap = Recap.objects.get(organizer = current_organizer)
     if Ticket.objects.filter(id__in = [x.strip() for x in params['tickets'].split(',')], event__organizers__managers = user).exists():
         tickets = Ticket.objects.filter(id__in = [x.strip() for x in params['tickets'].split(',')], event__organizers__managers = user)
     else:

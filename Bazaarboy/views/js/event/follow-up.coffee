@@ -122,7 +122,7 @@ Bazaarboy.event.follow_up =
                     $('a.save-follow-up').html 'Save &amp; Preview'
                     return
                 button_text = $('div.email input[name=button_text]').val()
-                if message.trim() is ''
+                if button_text.trim() is ''
                     swal("Wait!", "Email Button Text Cannot Be Empty", "warning")
                     scope.saving = false
                     $('a.save-follow-up').html 'Save &amp; Preview'
