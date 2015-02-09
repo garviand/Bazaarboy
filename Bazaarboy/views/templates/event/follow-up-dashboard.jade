@@ -44,17 +44,17 @@ block content
             div.row
                 {% if sentFollowUps.count > 0 %}
                 div.small-12.columns.comms
-                    h3.title Sent Invitations
+                    h3.title Sent Follow Ups
                     {% for follow_up in sentFollowUps %}
                     div.row.comm
-                        div.small-12.medium-6.columns.comm-name
-                            | {% for ticket in follow_up.tickets.all %}{{ticket.name}}{% if not forloop.last %}, {% endif %}{% endfor %}
+                        div.small-12.medium-8.columns.comm-name
+                            | Tickets: {% for ticket in follow_up.tickets.all %}{{ticket.name}}{% if not forloop.last %}, {% endif %}{% endfor %}
                         div.small-12.medium-2.columns.text-right.comm-details
                             | {{ follow_up.recipients }} Recipien{{ follow_up.recipients|pluralize:"t,ts" }}
                         div.small-12.medium-2.columns.text-right.comm-details
-                            a(href="{% url event:invite-details follow_up.id %}") View Stats
-                        div.small-12.medium-2.columns.text-right.comm-details
-                            a.copy-follow-up(data-id="{{ follow_up.id }}", href="javascript:;") Copy Follow Up
+                            a(href="{% url event:follow-up-details follow_up.id %}") View Stats
+                        div.small-12.medium-2.columns.text-right.comm-details.hide
+                            a.copy-follow-up(data-id="{{ follow_up.id }}", href="javascript:;") Copy Email
                     {% endfor %}
                 {% endif %}
                 {% if draftFollowUps.count > 0 %}

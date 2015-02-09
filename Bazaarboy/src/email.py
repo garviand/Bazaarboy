@@ -176,6 +176,116 @@ def sendEventInvite(invite, recipients):
             return result
 
 @task()
+def sendFollowUp(follow_up, recipients):
+    to = []
+    mergeVars = []
+    for recipient in recipients:
+        to.append({'email':recipient})
+        mergeVars.append({
+            'rcpt': recipient,
+            'vars': [
+                {
+                    'name': 'unsub_key',
+                    'content': hashlib.sha512(recipient + UNSUBSCRIBE_SALT).hexdigest()
+                },
+                {
+                    'name': 'user_email',
+                    'content': recipient
+                }
+            ]
+        })
+    buttonHtml = '<a href="' + follow_up.button_target + '" class="primary-btn view_event_btn" style="color: #222222; text-decoration: none; border-radius: 4px; font-weight: bold; text-align: center; font-size: 1.2em; box-sizing: border-box; padding: 12px 60px;background: transparent; border: thin solid ' + follow_up.color + ';">' + follow_up.button_text + '</a>'
+    if follow_up.image:
+        headerImageHtml = '<img align="left" alt="" src="' + follow_up.image.source.url.split("?", 1)[0] + '" style="max-width: 600px !important; height: auto; line-height: 100%; outline: none; text-decoration: none; display: block; border: 0;" class="mcnImage">'
+    else:
+        headerImageHtml = ''
+    if follow_up.recap.organizer.profile.image:
+        organizerLogo = "<img src='" + follow_up.recap.organizer.profile.image.source.url.split("?", 1)[0] + "' style='max-width: 150px; height: auto; max-height: 150px; line-height: 100%; outline: none; text-decoration: none; display: block; border: 0;' />"
+    else:
+        organizerLogo = ''
+    globalVars = [
+        {
+            'name':'profile_name', 
+            'content': follow_up.recap.organizer.profile.name
+        },
+        {
+            'name':'profile_id', 
+            'content': follow_up.recap.organizer.profile.id
+        },
+        {
+            'name':'header_image', 
+            'content': headerImageHtml
+        },
+        {
+            'name':'event_name', 
+            'content': follow_up.recap.organizer.event.name
+        },
+        {
+            'name':'message', 
+            'content': follow_up.message
+        },
+        {
+            'name':'button_html', 
+            'content': buttonHtml
+        },
+        {
+            'name':'heading', 
+            'content': follow_up.heading
+        },
+        {
+            'name':'organizer_logo', 
+            'content': organizerLogo
+        }
+    ]
+    template = 'follow-up'
+    subject = '\'' + follow_up.recap.organizer.event.name + '\' - Thanks for coming!'
+    attachments = []
+    if follow_up.attachment:
+        name, extension = os.path.splitext(follow_up.attachment.source.file.name)
+        content = urllib2.urlopen(follow_up.attachment.source.url).read().encode('base64')
+        attachments.append({
+            'type': mimetypes.guess_type(follow_up.attachment.source.file.name)[0], 
+            'name': name+extension,
+            'content': content
+        })
+    try:
+        client = Mandrill(MANDRILL_API_KEY)
+        message = {
+            'from_email':MANDRILL_FROM_EMAIL,
+            'from_name':follow_up.recap.organizer.profile.name,
+            'headers':{
+                'Reply-To':MANDRILL_FROM_EMAIL
+            },
+            'subject':subject,
+            'merge_vars':mergeVars,
+            'global_merge_vars':globalVars,
+            'to':to,
+            'track_clicks':True,
+            'track_opens':True,
+            'attachments':attachments,
+            'metadata':{
+                'follow_up_id':settings.INVITATION_PREFIX + '-' + str(follow_up.id),
+                'follow_up_event_id':settings.INVITATION_PREFIX + '-' + str(follow_up.recap.organizer.event.id),
+                'profile_id':settings.INVITATION_PREFIX + '-' + str(follow_up.recap.organizer.profile.id)
+            }
+        }
+        result = client.messages.send_template(template_name = template, 
+                                                    template_content = [], 
+                                                    message = message, 
+                                                    async = True)
+    except Exception, e:
+        logging.error(str(e))
+        return False
+    else:
+        if Follow_up.objects.filter(id = follow_up.id).exists():
+            follow_up = Follow_up.objects.get(id = follow_up.id)
+            follow_up.recipients = len(recipients)
+            follow_up.is_sent = True
+            follow_up.sent_at = timezone.now()
+            follow_up.save()
+            return result
+
+@task()
 def sendRecapReminder(organizer):
     to = [{
         'email': organizer.profile.email, 
@@ -188,6 +298,10 @@ def sendRecapReminder(organizer):
         organizerLogo = "<img src='" + organizer.profile.image.source.url.split("?", 1)[0] + "' style='max-width: 100px; max-height: 100px; padding-bottom: 0;display: inline !important;vertical-align: bottom;border: 0;outline: none;text-decoration: none;-ms-interpolation-mode: bicubic;' align='center' />"
     else:
         organizerLogo = ''
+    if organizer.is_creator:
+        recapText = 'It\'s time to add the attendees to a list and send out your follow up communitcation!'
+    else:
+        recapText = 'It\'s time to add the attendees to a list!'
     mergeVars = [{
         'rcpt': organizer.profile.email,
         'vars': [
@@ -218,6 +332,10 @@ def sendRecapReminder(organizer):
             {
                 'name':'organizer_logo', 
                 'content': organizerLogo
+            },
+            {
+                'name':'recap_text',
+                'content': recapText
             }
         ]
     }]

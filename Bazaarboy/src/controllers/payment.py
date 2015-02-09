@@ -238,3 +238,42 @@ def charge_invite(request, params, user):
             'invite': serialize_one(invite)
         }
         return json_response(response)
+
+@login_check()
+@validate('POST', ['follow_up', 'stripe_token', 'amount'])
+def charge_follow_up(request, params, user):
+    """
+    Charge for follow_up
+    """
+    if not Follow_up.objects.filter(id = params['follow_up']).exists():
+        response = {
+            'status':'FAIL',
+            'error':'FOLLOW_UP_NOT_FOUND',
+            'message':'The follow_up doesn\'t exist.'
+        }
+        return json_response(response)
+    follow_up = Follow_up.objects.get(id = params['follow_up'])
+    try:
+        charge = stripe.Charge.create(
+            amount = params['amount'],
+            currency = STRIPE_CURRENCY,
+            card = params['stripe_token'],
+            description = 'Follow Ups for ' + follow_up.recap.organizer.event.name,
+            api_key = STRIPE_SECRET_KEY
+        )
+    except stripe.CardError, e:
+        response = {
+            'status':'FAIL',
+            'error':'CARD_DECLINED',
+            'message':'The card is declined.'
+        }
+        return json_response(response)
+    else:
+        follow_up.paid = True
+        follow_up.price = params['amount']
+        follow_up.save()
+        response = {
+            'status':'OK',
+            'follow_up': serialize_one(follow_up)
+        }
+        return json_response(response)

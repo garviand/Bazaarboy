@@ -1,0 +1,62 @@
+extends ../layout
+
+block title
+    | Follow Up Details
+
+block sidebar
+    +sidebarItem('ss-newspaper')(href="{% url index %}")
+        | Events
+    +sidebarItem('ss-database')(href="{% url list:index %}")
+        | Lists
+    +sidebarItem('ss-share')(href="{% url user:settings %}")
+        | Settings
+
+block header
+    div.header-title.large-9.medium-10.columns.small-centered
+        div.row.clearfix
+            div.icon.left
+                span.ss-file
+            div.text.left
+                | Follow Up Details |
+                span.sub &nbsp;Tickets: {% for ticket in follow_up.tickets.all %}{{ticket.name}}{% if not forloop.last %}, {% endif %}{% endfor %}
+
+block content
+    div#wrapper-invite-details.large-9.medium-10.columns.small-centered
+        div#invite-details.small-12.columns
+            div.row
+                div.small-12.columns.invitation-back
+                    a(href="{% url event:follow-up follow_up.recap.organizer.event.id %}") &lt; Back To Follow Ups
+            div.row
+                div.small-12.columns.invitation-stats
+                    div.row
+                        div.small-12.medium-4.columns
+                            h3 Recipients
+                            h1 {{ follow_up.recipients }}
+                        div.small-12.medium-4.columns
+                            h3 Unique Opens
+                            h1 {{ totalOpens }}
+                        div.small-12.medium-4.columns
+                            h3 Unique Clicks
+                            h1 {{ totalClicks }}
+            div.row
+                div.small-12.columns.invitations
+                    h3.title Recipient List
+                    {% if results|length == 0 %}
+                    div
+                        div.row.invitation
+                            div.small-12
+                                | Email Data is Being Gathered... Check back in a few minutes!
+                    {% endif %}
+                    {% for fu in results %}
+                    div
+                        div.row.invitation
+                            div.small-12.medium-6.columns.invitation-name
+                                | {{ fu.email }}
+                            div.small-12.medium-3.columns.text-right.invitation-details
+                                | {{ fu.opens }} Ope{{ fu.opens|pluralize:"n,ns" }}
+                            div.small-12.medium-3.columns.text-right.invitation-details
+                                | {{ fu.clicks }} Clic{{ fu.clicks|pluralize:"k,ks" }}
+                    {% endfor %}
+
+append script
+    script(src="{{ STATIC_URL }}js/event/follow-up-details.js")

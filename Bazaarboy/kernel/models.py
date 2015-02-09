@@ -340,6 +340,7 @@ class Follow_up(models.Model):
     button_target = models.CharField(max_length = 300, null = True, default = None)
     is_sent = models.BooleanField(default = False)
     sent_at = models.DateTimeField(null = True, default = None)
+    recipients = models.IntegerField(null = True, default = None)
     attachment = models.ForeignKey('Pdf', null = True, default = None)
     email_id = models.CharField(max_length = 150, null = True, default = None)
     created_time = models.DateTimeField(auto_now_add = True)

@@ -26,7 +26,7 @@ from src.config import *
 from src.controllers.request import *
 from src.ordereddict import OrderedDict
 from src.csvutils import UnicodeWriter
-from src.email import sendEventConfirmationEmail, sendEventInvite, sendManualEventInvite, sendOrganizerAddedEmail, sendIssueEmail, sendEventReminder, sendRecapReminder, sendCollaborationRequest, sendCollaborationResponse
+from src.email import sendEventConfirmationEmail, sendEventInvite, sendManualEventInvite, sendOrganizerAddedEmail, sendIssueEmail, sendEventReminder, sendRecapReminder, sendCollaborationRequest, sendCollaborationResponse, sendFollowUp
 from src.regex import REGEX_EMAIL, REGEX_NAME, REGEX_SLUG
 from src.sanitizer import sanitize_redactor_input
 from src.serializer import serialize, serialize_one
@@ -167,6 +167,9 @@ def manage(request, id, params, user):
     if not Organizer.objects.filter(event = event, 
                                     profile__managers = user).exists():
         return redirect('index')
+    isCreator = False
+    if Organizer.objects.filter(event = event, profile__managers = user, is_creator = True).exists():
+        isCreator = True
     pastEventList = {}
     profiles = Profile.objects.filter(managers = user)
     pids = []
@@ -741,8 +744,7 @@ def follow_up(request, event, user):
     """
     Follow Ups sent/drafts page for event
     """
-    if not Event.objects.filter(id = event, 
-                                is_deleted = False).exists():
+    if not Organizer.objects.filter(event__id = event, profile__managers = user, is_creator = True).exists():
         raise Http404
     event = Event.objects.get(id = event)
     if not Organizer.objects.filter(event = event, 
@@ -753,8 +755,24 @@ def follow_up(request, event, user):
     return render(request, 'event/follow-up-dashboard.html', locals())
 
 @login_check()
+def follow_up_details(request, follow_up, user):
+    if not Follow_up.objects.filter(id = follow_up, recap__organizer__profile__managers = user, is_deleted = False, is_sent = True).exists():
+        return redirect('index')
+    follow_up = Follow_up.objects.get(id = follow_up)
+    client = Mandrill(MANDRILL_API_KEY)
+    results = client.messages.search(query='u_follow_up_id:' + settings.INVITATION_PREFIX + '-' + str(follow_up.id), limit = 1000, date_from='2014-01-01')
+    totalOpens = 0
+    totalClicks = 0
+    for email in results:
+        if email['opens'] > 0:
+            totalOpens += 1
+        if email['clicks'] > 0:
+            totalClicks += 1
+    return render(request, 'event/follow-up-details.html', locals())
+
+@login_check()
 def create_follow_up(request, event, user):
-    if not Event.objects.filter(id = event, is_deleted = False).exists():
+    if not Organizer.objects.filter(event__id = event, event__is_deleted = False, profile__managers = user, is_creator = True).exists():
         raise Http404
     event = Event.objects.get(id = event)
     if not Organizer.objects.filter(event = event, 
@@ -762,7 +780,11 @@ def create_follow_up(request, event, user):
         return redirect('index')
     profiles = Profile.objects.filter(managers = user)
     profile = profiles[0]
-    tickets = Ticket.objects.filter(event = event)
+    sent_tickets = []
+    for fu in Follow_up.objects.filter(recap__organizer__event = event, is_sent = True):
+        for ticket in fu.tickets.all():
+            sent_tickets.append(ticket.id)
+    tickets = Ticket.objects.filter(event = event).exclude(id__in = sent_tickets)
     for ticket in tickets:
         ticket.items = Purchase_item.objects.filter(ticket = ticket).values_list('purchase__id', flat=True).distinct().count()
     previousFollowUps = Follow_up.objects.filter(recap__organizer__event = event)
@@ -777,15 +799,20 @@ def edit_follow_up(request, follow_up, user):
     event = follow_up.recap.organizer.event
     profiles = Profile.objects.filter(managers = user)
     profile = profiles[0]
-    tickets = Ticket.objects.filter(event = event)
+    sent_tickets = []
+    for fu in Follow_up.objects.filter(recap__organizer__event = event, is_sent = True):
+        for ticket in fu.tickets.all():
+            sent_tickets.append(ticket.id)
+    tickets = Ticket.objects.filter(event = event).exclude(id__in = sent_tickets)
     for ticket in tickets:
         ticket.items = Purchase_item.objects.filter(ticket = ticket).values_list('purchase__id', flat=True).distinct().count()
         ticket.selected = False
         if follow_up.tickets.filter(id = ticket.id).exists():
             ticket.selected = True
     activeButtonType = 'link'
-    if follow_up.attachment.source.url.split("?", 1)[0] == str(follow_up.button_target).split("?", 1)[0]:
-        activeButtonType = 'attachment'
+    if follow_up.attachment:
+        if follow_up.attachment.source.url.split("?", 1)[0] == str(follow_up.button_target).split("?", 1)[0]:
+            activeButtonType = 'attachment'
     if (follow_up.button_target) == 'http://bazaarboy.com' + layout.eventUrl(follow_up.recap.organizer.event):
         activeButtonType = 'event'
     return render(request, 'event/follow-up.html', locals())
@@ -921,7 +948,7 @@ def delete_follow_up(request, params, user):
 @login_check()
 def preview_follow_up(request, follow_up, user):
     if not Follow_up.objects.filter(id = follow_up, recap__organizer__profile__managers = user, is_deleted = False, is_sent = False).exists():
-        return redirect('index:index')
+        return redirect('index')
     follow_up = Follow_up.objects.get(id = follow_up)
     recipients = []
     sent = 0
@@ -947,15 +974,80 @@ def preview_follow_up(request, follow_up, user):
                     duplicates += 1
             else:
                 unsubscribes += 1
-    cost = INVITE_COST(sent) / 100
+    cost = FOLLOW_UP_COST(sent) / 100
     return render(request, 'event/follow-up-preview.html', locals())
 
 @login_check()
 def preview_follow_up_template(request, follow_up, user):
     if not Follow_up.objects.filter(id = follow_up, recap__organizer__profile__managers = user).exists():
-        return redirect('index:index')
+        return redirect('index')
     follow_up = Follow_up.objects.get(id = follow_up)
     return render(request, 'event/follow-up-preview-template.html', locals())
+
+@login_check()
+@validate('POST', ['id'])
+def send_follow_up(request, params, user):
+    if not Follow_up.objects.filter(id = params['id'], recap__organizer__profile__managers = user).exists():
+        response = {
+            'status':'FAIL',
+            'error':'FOLLOW_UP_NOT_FOUND',
+            'message':'The follow up doesn\'t exist.'
+        }
+        return json_response(response)
+    follow_up = Follow_up.objects.get(id = params['id'])
+    recipients = []
+    sent = 0
+    duplicates = 0
+    unsubscribes = 0
+    alreadyEmailed = 0
+    emailedList = []
+    client = Mandrill(MANDRILL_API_KEY)
+    results = client.messages.search(query='u_follow_up_event_id:' + settings.INVITATION_PREFIX + '-' + str(follow_up.recap.organizer.event.id), limit = 1000, date_from='2014-01-01')
+    for result in results:
+        emailedList.append(result['email'].lower())
+    for ticket in follow_up.tickets.all():
+        list_items = Purchase_item.objects.filter(ticket = ticket)
+        for item in list_items:
+            if not Unsubscribe.objects.filter(Q(email = item.purchase.owner.email), Q(profile = follow_up.recap.organizer.profile) | Q(profile__isnull = True)).exists():
+                if item.purchase.owner.email.lower() not in recipients:
+                    if item.purchase.owner.email.lower() not in emailedList:
+                        recipients.append(item.purchase.owner.email.lower())
+                        sent += 1
+                    else:
+                        alreadyEmailed += 1
+                else:
+                    duplicates += 1
+            else:
+                unsubscribes += 1
+    cost = FOLLOW_UP_COST(sent) / 100
+    if sent == 0:
+        response = {
+            'status': 'FAIL',
+            'error': 'NO_RECIPIENTS',
+            'message': 'The message will not have any recipients, please use another ticket.'
+        }
+        return json_response(response)
+    if follow_up.paid == True or FOLLOW_UP_COST(sent) == 0:
+        sendFollowUp(follow_up, recipients)
+    else:
+        response = {
+            'status':'PAYMENT',
+            'cost':FOLLOW_UP_COST(sent),
+            'sent':sent,
+            'publishable_key':STRIPE_PUBLISHABLE_KEY,
+            'follow_up':serialize_one(follow_up),
+            'event':serialize_one(follow_up.recap.organizer.event)
+        }
+        return json_response(response)
+    response = {
+        'status':'OK',
+        'sent': sent,
+        'duplicates': duplicates,
+        'unsubscribes': unsubscribes,
+        'already_invited': alreadyEmailed,
+        'follow_up': serialize_one(follow_up)
+    }
+    return json_response(response)
 
 @login_check()
 @validate('POST', ['name'])
@@ -1339,6 +1431,12 @@ def accept_organizer_request(request, params, user):
     collaboration_request.accepted = timezone.now()
     collaboration_request.save()
     sendCollaborationResponse(collaboration_request, True)
+    recap = Recap(organizer = organizer)
+    recap.save()
+    if recap.organizer.event.is_launched and recap.organizer.event.start_time >= timezone.now():
+        mail_send = sendRecapReminder(organizer)
+        recap.email_id = mail_send[0]['_id']
+        recap.save()
     response = {
         'status':'OK',
         'collaboration':serialize_one(collaboration_request),

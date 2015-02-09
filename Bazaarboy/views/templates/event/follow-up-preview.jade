@@ -53,23 +53,11 @@ block content
             div.small-12.medium-6.columns
                 ul.pricing-table
                     li.title For-profit Pricing
-                    li.price Emails
-                    li.bullet-item 1-100 : Free
-                    li.bullet-item 101-500 : $5
-                    li.bullet-item 501-1000 : $10
-                    li.bullet-item 1001-2000 : $15
-                    li.bullet-item 2001-10000 : $20
-                    li.bullet-item 10001+ : $25
+                    li.price $10
             div.small-12.medium-6.columns
                 ul.pricing-table
                     li.title Non-profit Pricing
-                    li.price Emails
-                    li.bullet-item 1-100 : Free
-                    li.bullet-item 101-500 : $3.75
-                    li.bullet-item 501-1000 : $7.50
-                    li.bullet-item 1001-2000 : $11.25
-                    li.bullet-item 2001-10000 : $15
-                    li.bullet-item 10001+ : $18.75
+                    li.price $5
 
 
 append script
@@ -77,7 +65,6 @@ append script
         function iframeLoaded() {
           var iFrameID = document.getElementById('email-preview');
           if(iFrameID) {
-            console.log(iFrameID)
             iFrameID.height = "";
             iFrameID.height = iFrameID.contentWindow.document.body.scrollHeight + "px";
           }

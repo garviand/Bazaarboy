@@ -19,7 +19,9 @@ block sidebar
             input(type="text", name="guest_name", placeholder="Name")
             input(type="text", name="guest_code", placeholder="Confirmation #")
         div.guest-add-invite.show-for-large-only
+            {% if isCreator %}
             a.start-guest-add(href="javascript:;") Manually Add a Guest
+            {% endif %}
             a(href="{% url event:invite event.id %}") Invite Guests
             a.raffle-btn(href="javascript:;") Generate Random Raffle
         div.ticket-filters-container.show-for-large-only
@@ -49,6 +51,7 @@ block content
                     input(type="text", name="guest_code", placeholder="Search Conf. #")
         div#wrapper-event-manage.large-9.medium-10.columns.small-centered
             div#event-manage.small-12.columns
+                {% if isCreator %}
                 div.row.add-guest-container.hidden
                     form(name="add-guest")
                         div.medium-12.columns
@@ -92,6 +95,7 @@ block content
                                         div.small-12.columns
                                             input.primary-btn(type="submit", name="submit", value="Add Guest(s)")
                             hr
+                {% endif %}
                 div.row
                     div.small-12.columns.guests
                         div.list_guests

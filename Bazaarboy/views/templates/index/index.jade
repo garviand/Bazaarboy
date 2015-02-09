@@ -230,16 +230,18 @@ block content
                                         div.graph-frame
                                             div.graph-canvas
                         div.past-event-actions.medium-3.small-12.columns
-                            a.past-event-action.first(href="{% url event:follow-up event.id %}")
-                                div.icon
-                                    span.ss-mail
-                                div.text
-                                    span Follow Up
-                            a.past-event-action.add-to-list-btn(href="javascript:;", data-id="{{ event.id }}", data-name="{{ event.name }}", data-count="{{ event.rsvpCount }}")
+                            a.past-event-action.add-to-list-btn.first(href="javascript:;", data-id="{{ event.id }}", data-name="{{ event.name }}", data-count="{{ event.rsvpCount }}")
                                 div.icon
                                     span.ss-retweet
                                 div.text
                                     span Add To List
+                            {% if event.creator %}
+                            a.past-event-action(href="{% url event:follow-up event.id %}")
+                                div.icon
+                                    span.ss-mail
+                                div.text
+                                    span Follow Up
+                            {% endif %}
                             {% if event.creator %}
                             a.past-event-action(href="{% url event:modify event.id 'basics' %}")
                                 div.icon
@@ -278,8 +280,10 @@ block content
                         | Follow Up and Add Attendees to List
                     div.small-12.medium-3.columns
                         a.secondary-btn-inverse.btn-full.add-to-list-btn(href="javascript:;", data-id="{{ event.id }}", data-name="{{ event.name }}", data-count="{{ event.rsvpCount }}") Add to List
+                    {% if event.creator %}
                     div.small-12.medium-3.columns
                         a.secondary-btn-inverse.btn-full(href="{% url event:follow-up event.id %}") Follow Up
+                    {% endif %}
                 div.info.small-12.columns
                     div.inner.row
                         div.past-event-datetime.medium-3.small-6.columns
@@ -319,16 +323,18 @@ block content
                                         div.graph-frame
                                             div.graph-canvas
                         div.past-event-actions.medium-3.small-12.columns
-                            a.past-event-action.first(href="{% url event:follow-up event.id %}")
-                                div.icon
-                                    span.ss-mail
-                                div.text
-                                    span Follow Up
                             a.past-event-action.add-to-list-btn(href="javascript:;", data-id="{{ event.id }}", data-name="{{ event.name }}", data-count="{{ event.rsvpCount }}")
                                 div.icon
                                     span.ss-retweet
                                 div.text
                                     span Add To List
+                            {% if event.creator %}
+                            a.past-event-action(href="{% url event:follow-up event.id %}")
+                                div.icon
+                                    span.ss-mail
+                                div.text
+                                    span Follow Up
+                            {% endif %}
                             {% if event.creator %}
                             a.past-event-action(href="{% url event:modify event.id 'basics' %}")
                                 div.icon

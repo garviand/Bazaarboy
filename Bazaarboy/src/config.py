@@ -80,6 +80,15 @@ def INVITE_COST(sent, isNonProfit=False):
         cost = cost * .75
     return int(round(cost))
 
+def FOLLOW_UP_COST(sent, isNonProfit=False):
+    """
+    Calculate the follow up cost (in cents)
+    """
+    if isNonProfit:
+        return 500
+    else:
+        return 1000
+
 # Mandrill
 
 MANDRILL_API_KEY = 'EJmj_TdbdCy6Xda_9hREKA'
