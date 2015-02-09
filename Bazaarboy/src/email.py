@@ -235,6 +235,10 @@ def sendFollowUp(follow_up, recipients):
         {
             'name':'organizer_logo', 
             'content': organizerLogo
+        },
+        {
+            'name':'color', 
+            'content': follow_up.color
         }
     ]
     template = 'follow-up'
