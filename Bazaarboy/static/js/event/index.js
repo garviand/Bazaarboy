@@ -729,9 +729,7 @@
               $('img#cover-image').attr('src', mediaUrl + response.image.source);
               _this.aviary.launch({
                 image: 'cover-image',
-                url: mediaUrl + response.image.source,
-                cropPresets: ['1000x400'],
-                cropPresetsStrict: true
+                url: mediaUrl + response.image.source
               });
             } else {
               alert(response.message);
