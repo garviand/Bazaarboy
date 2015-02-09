@@ -750,6 +750,11 @@ def follow_up(request, event, user):
     if not Organizer.objects.filter(event = event, 
                                     profile__managers = user).exists():
         return redirect('index')
+    organizer = Organizer.objects.filter(event = event, profile__managers = user)[0]
+    if Recap.objects.filter(organizer = organizer, is_viewed = False).exists():
+        recap = Recap.objects.get(organizer = organizer)
+        recap.is_viewed = True
+        recap.save()
     sentFollowUps = Follow_up.objects.filter(recap__organizer__event = event, is_sent = True, recap__organizer__profile__managers = user).order_by('-sent_at')
     draftFollowUps = Follow_up.objects.filter(recap__organizer__event = event, is_sent = False, recap__organizer__profile__managers = user, is_deleted = False).order_by('-created_time')
     return render(request, 'event/follow-up-dashboard.html', locals())
