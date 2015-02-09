@@ -282,7 +282,7 @@
       $('div#add-list-modal a.add-cancel-btn').click(function(e) {
         $('div#add-list-modal').foundation('reveal', 'close');
       });
-      $('div#add-list-modal div.list').click(function(e) {
+      $('body').on('click', 'div#add-list-modal div.list', function(e) {
         $(this).toggleClass('active');
       });
       $('div#add-list-modal a.create-list').click(function() {
@@ -306,8 +306,14 @@
                 id: listId,
                 event: eventId
               }, function(response) {
+                var newList;
                 if (response.status === 'OK') {
-                  console.log(response);
+                  newList = $('div.list-template').clone();
+                  newList.attr('data-id', response.list.pk);
+                  newList.find('div.list-name').html(response.list.name);
+                  newList.find('div.list-action').html(response.added + ' Members');
+                  newList.removeClass('hide');
+                  $('div#add-list-modal div.lists').prepend(newList);
                   $('div#add-list-modal div.status').html('Congrats! List was Created and ' + response.added + ' Attendees were added.');
                 } else {
                   swal('List Was Created, But there was an error: ' + response.message);

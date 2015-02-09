@@ -446,6 +446,10 @@ block content
             +pastEvent()
             {% endfor %}
 
+    div.list-template.hide
+        div.row.list(data-id="")
+            div.small-9.columns.list-name
+            div.small-3.columns.text-right.list-action
     div#add-list-modal.reveal-modal.medium(data-reveal)
         input(type="hidden", name="event_id", value="")
         input(type="hidden", name="profile_id", value="{{ profile.id }}")

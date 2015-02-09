@@ -219,7 +219,7 @@ Bazaarboy.index.index =
         $('div#add-list-modal a.add-cancel-btn').click (e) ->
             $('div#add-list-modal').foundation('reveal', 'close')
             return
-        $('div#add-list-modal div.list').click (e) ->
+        $('body').on 'click', 'div#add-list-modal div.list', (e) ->
             $(this).toggleClass 'active'
             return
         $('div#add-list-modal a.create-list').click () ->
@@ -235,7 +235,12 @@ Bazaarboy.index.index =
                         $('div#add-list-modal div.status').html 'Successfully Created List! Adding Members...'
                         Bazaarboy.post 'lists/add/event/', {id:listId, event:eventId}, (response) ->
                             if response.status is 'OK'
-                                console.log response
+                                newList = $('div.list-template').clone()
+                                newList.attr('data-id', response.list.pk)
+                                newList.find('div.list-name').html(response.list.name)
+                                newList.find('div.list-action').html(response.added + ' Members')
+                                newList.removeClass('hide')
+                                $('div#add-list-modal div.lists').prepend(newList)
                                 $('div#add-list-modal div.status').html 'Congrats! List was Created and ' + response.added + ' Attendees were added.'
                             else
                                 swal 'List Was Created, But there was an error: ' + response.message
