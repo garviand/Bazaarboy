@@ -426,7 +426,7 @@ block body
                     input#organizer-name(type="text", name="organizer_name", placeholder="Search for Bazaarboy Profiles")
         div.row.add-organizer-success
             div.medium-12.columns.text-center.add-organizer-title
-                h3 Organizer Request Sent! You will be notified when they have completed the request.
+                h3 Your organizer request has been sent! Once accepted, your event collaboration will begin!
         div.row.add-organizer-success
             div.medium-4.medium-offset-2.columns
                 a.add-organizer-close.primary-btn(href="javascript:;") Back To Event
@@ -502,7 +502,7 @@ block body
                 div.event-hero-rsvp
                     {% with organizers|first as first_organizer %}
                     {% if first_organizer.profile.image %}
-                    div.organizer-logo(style="background:url({{ first_organizer.profile.image.source.url }}); background-size:80%; background-position:center; background-repeat:no-repeat; background-color:#FFF;")
+                    div.organizer-logo(style="background:url({{ first_organizer.profile.image.source.url }}); background-size:cover; background-position:center; background-repeat:no-repeat; background-color:#FFF;")
                     {% endif %}
                     {% endwith %}
                     {% if not hasEnded %}

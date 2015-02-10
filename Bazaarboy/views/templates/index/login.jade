@@ -10,6 +10,7 @@ block body
                     form#login-form
                         div.row
                             div.small-10.small-offset-1.columns
+                                {% if not organizer_request %}
                                 div.row
                                     div.small-12.medium-7.columns.text-center
                                         div.logo-small &nbsp;
@@ -19,6 +20,16 @@ block body
                                         span.page-title 
                                             span.hide-for-small-only &nbsp;&nbsp;|&nbsp;
                                             | &nbsp;Login
+                                {% else %}
+                                div.row
+                                    div.small-12.columns.text-center.request_logo_container
+                                        img.request_logo(src="{{ organizer_request.sender.profile.image.source.url }}")
+                                div.row
+                                    div.small-12.columns.request_info
+                                        | '{{ organizer_request.sender.profile.name }}' has invited you to collaborate on the event&nbsp;
+                                        b {{ organizer_request.event.name }}
+                                        | . Log in to accept the request!
+                                {% endif %}
                                 hr.separator
                                 div.row.login-inputs
                                     div.small-12.columns

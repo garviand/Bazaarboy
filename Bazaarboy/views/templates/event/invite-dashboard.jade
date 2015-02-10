@@ -34,13 +34,13 @@ block content
                     div.row
                         div.large-6.medium-7.small-9
                             div.new-list-btn
-                                a(href="{% url event:create-invite event.id %}").secondary-btn.btn.full-btn
+                                a.create-invite-btn(href="{% if numLists = 0 %}javascript:;{% else %}{% url event:create-invite event.id %}{% endif %}").secondary-btn.btn.full-btn
                                     | <span class="plus">+</span> New Invitation
         {% endif %}
         div#invite-dashboard.small-12.columns
             div.row.new-comm-container(class="{% if listsCount == 0 %}hide{% endif %}")
                 div.medium-4.columns.new-list
-                    a.new-comm-btn.primary-btn.text-center(href="{% url event:create-invite event.id %}", style="{% if sentInvites.count == 0 and draftInvites.count == 0 %}display:none;{% endif %}") + New Invitation
+                    a.create-invite-btn.new-comm-btn.primary-btn.text-center(href="{% if numLists = 0 %}javascript:;{% else %}{% url event:create-invite event.id %}{% endif %}", style="{% if sentInvites.count == 0 and draftInvites.count == 0 %}display:none;{% endif %}") + New Invitation
             div.row
                 {% if sentInvites.count > 0 %}
                 div.small-12.columns.comms
@@ -70,6 +70,21 @@ block content
                             a.delete-invite(href="javascript:;", data-id="{{ invite.id }}") Delete Invite
                     {% endfor %}
                 {% endif %}
+    div#new-list-modal.reveal-modal.medium(data-reveal)
+        div.row.new-list-title
+            div.small-12.columns
+                h3 Give Your List a Name
+        div.row.new-list-inputs
+            div.medium-8.small-12.columns
+                input(name="list_name", placeholder="List Name (required)")
+            div.small-12.medium-4.columns
+                a.create-list.primary-btn(href="javascript:;") + Add New List
+        div.row.new-list-cancel
+            div.small-12.medium-4.medium-offset-8.columns.text-center
+                a.close-list-modal(href="javascript:;") Cancel Adding List
 
 append script
     script(src="{{ STATIC_URL }}js/event/invite-dashboard.js")
+    script.
+        numLists = {{ numLists }};
+        profileId = {{ profile.id }};

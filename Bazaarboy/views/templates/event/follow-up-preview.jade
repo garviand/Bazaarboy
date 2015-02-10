@@ -31,7 +31,7 @@ block content
                             a.btn.full-btn.secondary-btn.send-email(href="javascript:;", data-id="{{ follow_up.id }}") Send Email
                         div.small-12.medium-6.columns
                             a.btn.full-btn.secondary-btn-inverse(href="{% url event:edit-follow-up follow_up.id %}") Edit Email
-                    div.email-pricing
+                    //div.email-pricing
                         div.small-12.columns
                             | Cost - {% if cost == 0 %}Free{% else %}${{ cost }}{% endif %}&nbsp;
                             a(href="javascript:;", data-reveal-id="pricing-modal") (Pricing)

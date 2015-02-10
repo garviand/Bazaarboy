@@ -45,15 +45,6 @@ block content
                         div.small-12.columns.image-preview(class="{% if not follow_up.image %}hide{% endif %}")
                             img(src="{% if follow_up.image %}{{ follow_up.image.source.url }}{% endif %}")
                     div.row.email-content
-                        div.small-12.columns.content-image
-                            label Attach File to Follow Up (PDF, JPG, PNG, GIF)
-                                input.hide(type="file", name="attachment_file")
-                                a.upload-attachment-btn.primary-btn-inverse.btn.full-btn(href="javascript:;", style="{% if follow_up.attachment %}display:none;{% endif %}") Upload File
-                                a.delete-attachment-btn.primary-btn-inverse.btn.full-btn(href="javascript:;", style="{% if not follow_up.attachment %}display:none;{% endif %}") Delete File
-                    div.row.email-content
-                        div.small-12.columns.pdf-preview(class="{% if not follow_up.attachment %}hide{% endif %}")
-                            span.filename {% if follow_up.attachment %}{{ follow_up.attachment.name }}{% else %}&nbsp;{% endif %}
-                    div.row.email-content
                         div.small-12.columns.content-details
                             label Header Text
                                 textarea(name="heading", placeholder="Enter the header text here (ex. 'Thanks for Coming!')") {{ follow_up.heading }}
@@ -78,6 +69,15 @@ block content
                                 div.custom-link(class="{% if not activeButtonType = 'link' %}hide{% endif %}")
                                     br
                                     input(type="text", name="button_link", value="{% if follow_up.button_target %}{{ follow_up.button_target }}{% endif %}", placeholder="(ex. http://bazaarboy.com)")
+                    div.row.email-content
+                        div.small-12.columns.content-image
+                            label Attach File to Follow Up (PDF, JPG, PNG, GIF)
+                                input.hide(type="file", name="attachment_file")
+                                a.upload-attachment-btn.primary-btn-inverse.btn.full-btn(href="javascript:;", style="{% if follow_up.attachment %}display:none;{% endif %}") Upload Attachment
+                                a.delete-attachment-btn.primary-btn-inverse.btn.full-btn(href="javascript:;", style="{% if not follow_up.attachment %}display:none;{% endif %}") Delete Attachment
+                    div.row.email-content
+                        div.small-12.columns.pdf-preview(class="{% if not follow_up.attachment %}hide{% endif %}")
+                            span.filename {% if follow_up.attachment %}{{ follow_up.attachment.name }}{% else %}&nbsp;{% endif %}
                     div.row.email-content
                         div.small-12.columns.content-details
                             label Email Color

@@ -7832,6 +7832,23 @@ div#reset div#container {
   max-width: 98%;
   margin: 0 auto;
 }
+div#login div.request_logo_container,
+div#register div.request_logo_container,
+div#reset div.request_logo_container {
+  margin-top: 15px;
+}
+div#login div.request_logo_container img,
+div#register div.request_logo_container img,
+div#reset div.request_logo_container img {
+  max-width: 100px;
+  max-height: 100px;
+}
+div#login div.request_info,
+div#register div.request_info,
+div#reset div.request_info {
+  margin-top: 15px;
+  line-height: 18px;
+}
 div#login div#login-container,
 div#register div#login-container,
 div#reset div#login-container {

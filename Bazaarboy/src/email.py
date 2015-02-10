@@ -473,7 +473,9 @@ def sendCollaborationRequest(collaboration):
     subject = 'Invitation to Collaborate - ' + collaboration.event.name
     template = 'collaboration-request'
     organizer = collaboration.sender
-    if organizer.profile.image:
+    if organizer.event.cover:
+        organizerLogo = '<img align="left" alt="" src="' + organizer.event.cover.source.url.split("?", 1)[0] + '" style="max-width: 560px !important; height: auto; line-height: 100%; outline: none; text-decoration: none; display: block; border: 0;" class="mcnImage">'
+    elif organizer.profile.image:
         organizerLogo = "<img src='" + organizer.profile.image.source.url.split("?", 1)[0] + "' style='max-width: 100px; max-height: 100px; padding-bottom: 0;display: inline !important;vertical-align: bottom;border: 0;outline: none;text-decoration: none;-ms-interpolation-mode: bicubic;' align='center' />"
     else:
         organizerLogo = ''
@@ -486,7 +488,7 @@ def sendCollaborationRequest(collaboration):
         }]
         reciever = profile.email
         buttonHtml = '<a href="https://bazaarboy.com/" class="primary-btn view_event_btn" style="color: #222222; text-decoration: none; border-radius: 4px; font-weight: bold; text-align: center; font-size: 1.2em; box-sizing: border-box; padding: 12px 60px;background: #FFFFFF; border: thin solid ' + collaboration.event.color + ';">My Dashboard</a>'
-        action_text = 'Check your dashboard to accept or reject the request.'
+        action_text = 'You can help ' + organizer.profile.name + ' put butts in seats by using Bazaarboy\'s event invitation tool. Get started now!'
     else:
         to = [{
             'email':collaboration.email
@@ -495,7 +497,7 @@ def sendCollaborationRequest(collaboration):
         buttonHtml = '<a href="https://bazaarboy.com/login?requestid=' + str(collaboration.id) + '&requestc=' + collaboration.code + '" class="primary-btn view_event_btn" style="color: #222222; text-decoration: none; border-radius: 4px; font-weight: bold; text-align: center; font-size: 1.2em; box-sizing: border-box; padding: 12px 60px;background: #FFFFFF; border: thin solid ' + collaboration.event.color + ';">Log In</a>'
         buttonHtml += '<br><br>or<br><br>'
         buttonHtml += '<a href="https://bazaarboy.com/register?requestid=' + str(collaboration.id) + '&requestc=' + collaboration.code + '" class="primary-btn view_event_btn" style="color: #222222; text-decoration: none; border-radius: 4px; font-weight: bold; text-align: center; font-size: 1.2em; box-sizing: border-box; padding: 12px 60px;background: #FFFFFF; border: thin solid ' + collaboration.event.color + ';">Register</a>'
-        action_text = 'Log In or Create an Account to respond to the collaboration request.'
+        action_text = 'You can help ' + organizer.profile.name + ' put butts in seats by using Bazaarboy\'s event invitation tool. Get started now!'
     mergeVars = [{
         'rcpt': reciever,
         'vars': [

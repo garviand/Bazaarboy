@@ -78,16 +78,14 @@ def INVITE_COST(sent, isNonProfit=False):
         cost = 2500 # $25
     if isNonProfit:
         cost = cost * .75
-    return int(round(cost))
+    #return int(round(cost))
+    return 0
 
 def FOLLOW_UP_COST(sent, isNonProfit=False):
     """
     Calculate the follow up cost (in cents)
     """
-    if isNonProfit:
-        return 500
-    else:
-        return 1000
+    return 0
 
 # Mandrill
 

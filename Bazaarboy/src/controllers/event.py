@@ -362,6 +362,7 @@ def invite(request, event, user):
     if not Organizer.objects.filter(event = event, 
                                     profile__managers = user).exists():
         return redirect('index')
+    profile = Organizer.objects.filter(event = event, profile__managers = user)[0].profile
     client = Mandrill(MANDRILL_API_KEY)
     sentInvites = Invite.objects.filter(event = event, is_sent = True, profile__managers = user).order_by('-sent_at')
     for invt in sentInvites:
@@ -375,6 +376,7 @@ def invite(request, event, user):
         invt.opens = opens
         invt.total_opens = totalOpens
     draftInvites = Invite.objects.filter(event = event, profile__managers = user, is_sent = False, is_deleted = False).order_by('-created_time')
+    numLists = List_item.objects.filter(_list__owner = profile).count()
     return render(request, 'event/invite-dashboard.html', locals())
 
 @login_check()
