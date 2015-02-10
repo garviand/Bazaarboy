@@ -1659,8 +1659,9 @@ def launch(request, params, user):
     for organizer in organizers:
         if Recap.objects.filter(organizer = organizer).exists() and event.start_time >= timezone.now():
             recap = Recap.objects.get(organizer = organizer)
-            recap_email = sendRecapReminder(organizer)
-            recap.email_id = recap_email[0]['_id']
+            if recap.organizer.profile.email:
+                recap_email = sendRecapReminder(organizer)
+                recap.email_id = recap_email[0]['_id']
             recap.save()
     response = {
         'status':'OK',
