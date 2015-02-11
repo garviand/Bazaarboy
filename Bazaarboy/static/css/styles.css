@@ -9232,51 +9232,6 @@ div#issue-modal div.issue-success a.issue-close {
 div#issue-modal div.issue-success a.issue-close:hover {
   color: #FFF;
 }
-div#add-organizer-modal div.add-organizer-title {
-  margin-bottom: 20px;
-}
-div#add-organizer-modal form > div {
-  margin-top: 15px;
-}
-div#add-organizer-modal form label,
-div#add-organizer-modal form input {
-  margin-bottom: 0;
-}
-div#add-organizer-modal form div.organizer div.organizer-name {
-  padding-top: 10px;
-}
-div#add-organizer-modal form div.organizer div.organizer-image {
-  text-align: center;
-}
-div#add-organizer-modal form div.organizer div.organizer-image img {
-  max-height: 40px;
-}
-div#add-organizer-modal form div.organizer div.organizer-submit a {
-  display: block;
-  width: 100%;
-  padding-top: 9px;
-  padding-bottom: 11px;
-}
-div#add-organizer-modal form div.organizer div.organizer-submit a:hover {
-  color: #FFF;
-}
-div#add-organizer-modal span.underline {
-  text-decoration: underline;
-}
-div#add-organizer-modal div.add-organizer-success {
-  display: none;
-}
-div#add-organizer-modal div.add-organizer-success a.add-organizer-close,
-div#add-organizer-modal div.add-organizer-success a.add-organizer-another {
-  display: block;
-  width: 100%;
-  padding-top: 9px;
-  padding-bottom: 11px;
-}
-div#add-organizer-modal div.add-organizer-success a.add-organizer-close:hover,
-div#add-organizer-modal div.add-organizer-success a.add-organizer-another:hover {
-  color: #FFF;
-}
 div#event-header {
   position: fixed;
   top: 0;
@@ -10774,6 +10729,75 @@ div#event-modify-tickets div#edit-ticket form a.btn {
 div#event-modify-tickets div#edit-ticket form input.btn {
   border: none;
   text-transform: uppercase;
+}
+div#wrapper-event-collaborators div#event-collaborators {
+  margin-top: 20px;
+}
+div#wrapper-event-collaborators div#event-collaborators a.add-organizer-btn {
+  display: block;
+  font-size: 12px;
+  padding: 8px 6px;
+  color: #ffffff;
+  text-transform: uppercase;
+}
+div#wrapper-event-collaborators div#event-collaborators div.pending div.headline {
+  margin-top: 40px;
+  margin-bottom: 20px;
+}
+div#wrapper-event-collaborators div#event-collaborators div.pending div.request_title {
+  margin-bottom: 20px;
+  font-weight: bold;
+}
+div#wrapper-event-collaborators div#event-collaborators div.pending div.request {
+  margin-bottom: 10px;
+}
+div#wrapper-event-collaborators div#event-collaborators div.organizers {
+  margin-top: 40px;
+}
+div#add-organizer-modal div.add-organizer-title {
+  margin-bottom: 20px;
+}
+div#add-organizer-modal form > div {
+  margin-top: 15px;
+}
+div#add-organizer-modal form label,
+div#add-organizer-modal form input {
+  margin-bottom: 0;
+}
+div#add-organizer-modal form div.organizer div.organizer-name {
+  padding-top: 10px;
+}
+div#add-organizer-modal form div.organizer div.organizer-image {
+  text-align: center;
+}
+div#add-organizer-modal form div.organizer div.organizer-image img {
+  max-height: 40px;
+}
+div#add-organizer-modal form div.organizer div.organizer-submit a {
+  display: block;
+  width: 100%;
+  padding-top: 9px;
+  padding-bottom: 11px;
+}
+div#add-organizer-modal form div.organizer div.organizer-submit a:hover {
+  color: #FFF;
+}
+div#add-organizer-modal span.underline {
+  text-decoration: underline;
+}
+div#add-organizer-modal div.add-organizer-success {
+  display: none;
+}
+div#add-organizer-modal div.add-organizer-success a.add-organizer-close,
+div#add-organizer-modal div.add-organizer-success a.add-organizer-another {
+  display: block;
+  width: 100%;
+  padding-top: 9px;
+  padding-bottom: 11px;
+}
+div#add-organizer-modal div.add-organizer-success a.add-organizer-close:hover,
+div#add-organizer-modal div.add-organizer-success a.add-organizer-another:hover {
+  color: #FFF;
 }
 div#wrapper-event-invite div#event-invite,
 div#wrapper-event-follow-up div#event-invite,

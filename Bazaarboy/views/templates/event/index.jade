@@ -356,7 +356,6 @@ block body
         div.row.contact-organizer-success
             div.medium-4.medium-offset-4
                 a.contact-organizer-close.primary-btn(href="javascript:;") Back To Event
-    
     div#issue-modal.reveal-modal.medium(data-reveal)
         form.issue-form(name="contact-organizer", data-abide)
             div.row
@@ -397,42 +396,6 @@ block body
         div.row.issue-success
             div.medium-4.medium-offset-4
                 a.issue-close.primary-btn(href="javascript:;") Back To Event
-    
-    div#add-organizer-modal.reveal-modal.medium(data-reveal)
-        div.organizer-model.hide
-            div.row.organizer
-                div.medium-3.columns.organizer-image &nbsp;
-                div.medium-6.columns.organizer-name &nbsp;
-                div.medium-3.columns.organizer-submit
-                    a.add-organizer-submit.secondary-btn(href="javascript:;") Send Request
-        form.add-organizer-form(name="add-organizer")
-            div.row
-                div.medium-12.columns.text-center.contact-organizer-title
-                    h3 Add Organizer to  
-                        span.underline {{ event.name }}
-            div.row
-                div.medium-3.columns
-                    label.inline(for="organizer-name") Invite via Email
-                div.medium-9.columns
-                    input#organizer-email(type="text", name="organizer_email", placeholder="Email of Collaborator")
-            div.row
-                div.medium-4.medium-offset-8.columns
-                    a.primary-btn.full-btn.send-request-btn(href="javascript:;") Send Request
-            hr
-            div.row
-                div.medium-3.columns
-                    label.inline(for="organizer-name") Search Organizers
-                div.medium-9.columns
-                    input#organizer-name(type="text", name="organizer_name", placeholder="Search for Bazaarboy Profiles")
-        div.row.add-organizer-success
-            div.medium-12.columns.text-center.add-organizer-title
-                h3 Your organizer request has been sent! Once accepted, your event collaboration will begin!
-        div.row.add-organizer-success
-            div.medium-4.medium-offset-2.columns
-                a.add-organizer-close.primary-btn(href="javascript:;") Back To Event
-            div.medium-4.columns.end
-                a.add-organizer-another.secondary-btn(href="javascript:;") Add Another
-    
     div#event.custom
         div#event-header(style="{% if design %}position:absolute;{% endif %}")
             div.event-header-body(class="{% if design %}medium-8{% elif preview and editable %}medium-6{% elif preview %}medium-6{% else %}medium-7{% endif %} columns")

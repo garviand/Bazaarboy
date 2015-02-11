@@ -1,7 +1,81 @@
 @import (reference) "vars.less";
 
 div#wrapper-event-collaborators{
-    div#event-collaborators{
-        
+  div#event-collaborators{
+    margin-top: 20px;
+    a.add-organizer-btn {
+        display: block;
+        font-size: 12px;
+        padding: 8px 6px;
+        color: @white;
+        text-transform: uppercase;
+    }
+    div.pending{
+      div.headline{
+        margin-top: 40px;
+        margin-bottom: 20px;
+      }
+      div.request_title{
+        margin-bottom: 20px;
+        font-weight: bold;
+      }
+      div.request{
+        margin-bottom: 10px;
+      }
+    }
+    div.organizers{
+      margin-top: 40px;
+    }
+  }
+}
+
+div#add-organizer-modal{
+    div.add-organizer-title{
+        margin-bottom: 20px;
+    }
+    form{
+        > div{
+            margin-top: 15px;
+        }
+        label, input{
+            margin-bottom: 0;
+        }
+        div.organizer{
+            div.organizer-name{
+                padding-top: 10px;
+            }
+            div.organizer-image{
+                text-align: center;
+                img{
+                    max-height: 40px;
+                }
+            }
+            div.organizer-submit{
+                a{
+                    display: block;
+                    width: 100%;
+                    padding-top: 9px;
+                    padding-bottom: 11px;
+                    &:hover{
+                        color: #FFF;
+                    }
+                }
+            }
+        }
+    }
+    span.underline{
+        text-decoration: underline;
+    }
+    div.add-organizer-success{
+        display: none;
+        a.add-organizer-close, a.add-organizer-another{
+            display: block;
+            width: 100%;
+            padding-top: 9px;
+            padding-bottom: 11px;
+            &:hover{
+                color:#FFF;
+            }
+        }
     }
 }

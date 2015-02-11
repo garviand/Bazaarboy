@@ -171,6 +171,9 @@ def collaborators(request, event, user):
     organizers = Organizer.objects.filter(event = event, is_creator = False)
     for organizer in organizers:
         organizer.invites = Invite.objects.filter(event = event, profile = organizer.profile, is_sent = True)
+        organizer.invite_count = 0
+        for invite in organizer.invites:
+            organizer.invite_count += invite.recipients
     pendingRequests = Collaboration_request.objects.filter(event = event, accepted__isnull = True, is_rejected = False)
     rejectedRequests = Collaboration_request.objects.filter(event = event, is_rejected = True)
     return render(request, 'event/collaborators.html', locals())
@@ -422,7 +425,7 @@ def create_invite(request, event, user):
         return redirect('index')
     profiles = Profile.objects.filter(managers = user)
     profile = profiles[0]
-    lists = List.objects.filter(owner = profile)
+    lists = List.objects.filter(owner = profile, is_deleted = False)
     for lt in lists:
         list_items = List_item.objects.filter(_list = lt)
         lt.items = list_items.count()

@@ -35,18 +35,80 @@ block header
 block content
     div#wrapper-event-collaborators.large-9.medium-10.columns.small-centered
         div#event-collaborators.small-12.columns
-            div.organizers.row
-                div.small-12.columns
+            div.row.new-comm-container
+                div.medium-4.columns.new-collaborator
+                    a.add-organizer-btn.primary-btn.text-center(href="javascript:;") + New Collaborator
+            div.row
+                div.pending.small-12.columns(class="{% if pendingRequests.count = 0 and rejectedRequests.count = 0 %}hide{% endif %}")
+                    div.headline Pending Requests
+                    hr
+                    div.request_title.row
+                        div.small-12.medium-8.columns To
+                        div.small-12.medium-4.columns Status
+                    {% for req in pendingRequests %}
+                    div.request.row
+                        div.small-12.medium-8.columns.request_name {% if req.profile %}{{ req.profile.name }}{% else %}{{ req.email }}{% endif %}
+                        div.small-12.medium-4.columns.request_status Pending
+                    {% endfor %}
+                    {% for req in rejectedRequests %}
+                    div.request.row
+                        div.small-12.medium-8.columns.request_name {{ req.profile.name }}
+                        div.small-12.medium-4.columns.request_status Rejected
+                    {% endfor %}
+                    div.request.row.request_template.hide
+                        div.small-12.medium-8.columns.request_name &nbsp;
+                        div.small-12.medium-4.columns.request_status Pending
+            {% if organizers.count > 0 %}
+            div.row
+                div.organizers.small-12.columns
+                    div.headline Current Collaborators
+                    hr
                     {% for organizer in organizers %}
                     div.organizer.row
                         div.small-12.medium-8.columns {{ organizer.profile.name }}
-                        div.small-12.medium-4.columns.text-right {{ organizer.invites.count }} Invite{{ organizer.invites.count|pluralize }} Sent
+                        div.small-12.medium-4.columns {{ organizer.invite_count }} Invitation{{ organizer.invite_count|pluralize }} Sent
                     {% endfor %}
+            {% endif %}
+    div#add-organizer-modal.reveal-modal.medium(data-reveal)
+        div.organizer-model.hide
+            div.row.organizer
+                div.medium-3.columns.organizer-image &nbsp;
+                div.medium-6.columns.organizer-name &nbsp;
+                div.medium-3.columns.organizer-submit
+                    a.add-organizer-submit.secondary-btn(href="javascript:;") Send Request
+        form.add-organizer-form(name="add-organizer")
+            div.row
+                div.medium-12.columns.text-center.contact-organizer-title
+                    h3 Add Organizer to  
+                        span.underline {{ event.name }}
+            div.row
+                div.medium-3.columns
+                    label.inline(for="organizer-name") Invite via Email
+                div.medium-9.columns
+                    input#organizer-email(type="text", name="organizer_email", placeholder="Email of Collaborator")
+            div.row
+                div.medium-4.medium-offset-8.columns
+                    a.primary-btn.full-btn.send-request-btn(href="javascript:;") Send Request
+            hr
+            div.row
+                div.medium-3.columns
+                    label.inline(for="organizer-name") Search Organizers
+                div.medium-9.columns
+                    input#organizer-name(type="text", name="organizer_name", placeholder="Search for Bazaarboy Profiles")
+        div.row.add-organizer-success
+            div.medium-12.columns.text-center.add-organizer-title
+                h3 Your organizer request has been sent! Once accepted, your event collaboration will begin!
+        div.row.add-organizer-success
+            div.medium-4.medium-offset-2.columns
+                a.add-organizer-close.primary-btn(href="javascript:;") Back To Event
+            div.medium-4.columns.end
+                a.add-organizer-another.secondary-btn(href="javascript:;") Add Another
 
 append script
     script.
         var eventId = {{ event.id }};
         var eventUrl = '{{ event|eventUrl }}';
+    script(type="text/javascript", src="{{ STATIC_URL }}debounce/jquery.debounce.js")
     script(src="{{ STATIC_URL }}js/event/modify.js")
     script(src="{{ STATIC_URL }}js/event/collaborators.js")
 
