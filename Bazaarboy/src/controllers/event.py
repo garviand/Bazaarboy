@@ -159,6 +159,23 @@ def modify(request, id, step, params, user):
     return render(request, 'event/modify-' + step + '.html', locals())
 
 @login_required()
+def collaborators(request, event, user):
+    """
+    Event Collaborators Dashboard
+    """
+    if not Event.objects.filter(id = event).exists():
+        raise Http404
+    event = Event.objects.get(id = event)
+    if not Organizer.objects.filter(event = event, profile__managers = user, is_creator = True).exists():
+        return redirect('index')
+    organizers = Organizer.objects.filter(event = event, is_creator = False)
+    for organizer in organizers:
+        organizer.invites = Invite.objects.filter(event = event, profile = organizer.profile, is_sent = True)
+    pendingRequests = Collaboration_request.objects.filter(event = event, accepted__isnull = True, is_rejected = False)
+    rejectedRequests = Collaboration_request.objects.filter(event = event, is_rejected = True)
+    return render(request, 'event/collaborators.html', locals())
+
+@login_required()
 @validate('GET')
 def manage(request, id, params, user):
     if not Event.objects.filter(id = id).exists():

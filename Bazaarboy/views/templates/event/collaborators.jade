@@ -1,0 +1,52 @@
+extends ../layout
+
+block sidebar
+    div.launch-event(class="{% if event.is_launched %}launched{% endif %}", data-event-id="{{ event.id }}")
+        div.btn.secondary-btn.hide-for-medium-only
+            | <span class="plus">&nbsp;</span>
+            span.launch-text
+                {% if event.is_launched %}
+                | Take Offline
+                {% else %}
+                | Launch Event
+                {% endif %}
+        div.btn.secondary-btn.show-for-medium-only
+            | <span class="plus">+</span>
+    +sidebarItem('ss-file')(href="{% url event:modify event.id 'basics' %}")
+        | Basic Info
+    +sidebarItem('ss-tag')(href="{% url event:modify event.id 'tickets' %}")
+        | Ticket Options
+    +sidebarItem('ss-picture')(href="{% url event:index event.id %}?design")
+        | Page Design
+    +sidebarItem('ss-usergroup')(href="{% url event:collaborators event.id %}", class="selected")
+        | Collaborators
+    +sidebarItem('ss-newspaper')(href="{% url index %}")(class="sidebar-separate")
+        | Events
+    +sidebarItem('ss-database')(href="{% url list:index %}")
+        | Lists
+
+block header
+    div.header-title.large-9.medium-10.columns.small-centered
+        div.row.clearfix
+            div.text.left
+                | Event Collaborators |
+                span.sub &nbsp; {{ event.name }}
+
+block content
+    div#wrapper-event-collaborators.large-9.medium-10.columns.small-centered
+        div#event-collaborators.small-12.columns
+            div.organizers.row
+                div.small-12.columns
+                    {% for organizer in organizers %}
+                    div.organizer.row
+                        div.small-12.medium-8.columns {{ organizer.profile.name }}
+                        div.small-12.medium-4.columns.text-right {{ organizer.invites.count }} Invite{{ organizer.invites.count|pluralize }} Sent
+                    {% endfor %}
+
+append script
+    script.
+        var eventId = {{ event.id }};
+        var eventUrl = '{{ event|eventUrl }}';
+    script(src="{{ STATIC_URL }}js/event/modify.js")
+    script(src="{{ STATIC_URL }}js/event/collaborators.js")
+

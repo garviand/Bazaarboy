@@ -23,6 +23,8 @@ block sidebar
         | Ticket Options
     +sidebarItem('ss-picture')(href="{% url event:index id %}?design")
         | Page Design
+    +sidebarItem('ss-usergroup')(href="{% url event:collaborators event.id %}")
+        | Collaborators
     +sidebarItem('ss-newspaper')(href="{% url index %}")(class="sidebar-separate")
         | Events
     +sidebarItem('ss-database')(href="{% url list:index %}")

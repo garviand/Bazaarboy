@@ -615,7 +615,7 @@ block body
                         {% elif design %}
                         div.row.add-organizer
                             div.small-12.columns
-                                a.btn.primary-btn.full-btn.add-organizer-btn(href="javascript:;") Add Organizer
+                                a.btn.primary-btn.full-btn.add-organizer-btn(href="{% url event:collaborators event.id %}") Add Collaborator
                         {% endif %}
                         div#event-sponsors.row
             
