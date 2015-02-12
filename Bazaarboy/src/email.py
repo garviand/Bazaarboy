@@ -194,7 +194,7 @@ def sendFollowUp(follow_up, recipients):
                 }
             ]
         })
-    buttonHtml = '<a href="' + follow_up.button_target + '" class="primary-btn view_event_btn" style="color: #222222; text-decoration: none; border-radius: 4px; font-weight: bold; text-align: center; font-size: 1.2em; box-sizing: border-box; padding: 12px 60px;background: transparent; border: thin solid ' + follow_up.color + ';">' + follow_up.button_text + '</a>'
+    buttonHtml = '<a href="' + follow_up.button_target.split("?", 1)[0] + '" class="primary-btn view_event_btn" style="color: #222222; text-decoration: none; border-radius: 4px; font-weight: bold; text-align: center; font-size: 1.2em; box-sizing: border-box; padding: 12px 60px;background: transparent; border: thin solid ' + follow_up.color + ';">' + follow_up.button_text + '</a>'
     if follow_up.image:
         headerImageHtml = '<img align="left" alt="" src="' + follow_up.image.source.url.split("?", 1)[0] + '" style="max-width: 600px !important; height: auto; line-height: 100%; outline: none; text-decoration: none; display: block; border: 0;" class="mcnImage">'
     else:
