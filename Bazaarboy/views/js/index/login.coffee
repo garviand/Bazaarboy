@@ -1,4 +1,5 @@
 @Bazaarboy.login = 
+    aviary: undefined
     timer: undefined
     rotateLogo: (degree) ->  
         $('div.logo-small').css({ WebkitTransform: 'rotate(' + degree + 'deg)'}) 
@@ -39,13 +40,51 @@
                             $('div.logo-small').css({ '-moz-transform': 'none'})
                         return
             return
+        # LOGO UPLOAD
+        scope.aviary = new Aviary.Feather
+            apiKey: 'ce3b87fb1edaa22c'
+            apiVersion: 3
+            enableCORS: true
+            onSave: (imageId, imageUrl) =>
+                $("img#organization-logo").attr 'src', imageUrl
+                scope.aviary.close();
+                $('a.upload-logo-btn').html 'Uploading...'
+                Bazaarboy.post 'file/aviary/profile/',
+                    url: imageUrl
+                , (response) ->
+                    $("img#organization-logo").attr 'src', response.image
+                    $("input[name=logo_id]").val(response.image_id)
+                    $('a.upload-logo-btn').html 'Change'
+                    return
+                return
+        $('a.upload-logo-btn').click () ->
+            $('input[name=image_file]').click()
+            return
+        $('form.upload-logo input[name=image_file]').fileupload
+            url: rootUrl + 'file/image/upload/'
+            type: 'POST'
+            add: (event, data) =>
+                data.submit()
+                return
+            done: (event, data) =>
+                response = jQuery.parseJSON data.result
+                if response.status is 'OK'
+                    $('img#organization-logo').attr 'src', mediaUrl + response.image.source
+                    scope.aviary.launch
+                        image: 'organization-logo'
+                        url: mediaUrl + response.image.source
+                        cropPresets: ['400x400']
+                        cropPresetsStrict: true
+                        forceCropPreset: ['Logo Size','1:1']
+                else
+                    swal response.message
+                return
         $('form#register-form input').keypress (event) ->
             if event.which == 13
                 event.preventDefault()
                 $('form#register-form').submit()
             return
         $('form#register-form').submit (event) ->
-            console.log 'Submit Register Form'
             event.preventDefault()
             scope.rotateLogo(0)
             params = $('form#register-form').serializeObject()

@@ -135,6 +135,7 @@ file_urlpatterns = patterns('src.controllers.file',
     url(r'^image/delete/$', 'delete_image', name = 'image-delete'),
     url(r'^csv/upload/$', 'upload_csv', name = 'csv-upload'),
     url(r'^aviary/$', 'aviary', name = 'aviary'),
+    url(r'^aviary/profile/$', 'aviary_profile', name = 'aviary_profile'),
 )
 
 admin_urlpatterns = patterns('src.controllers.admin.admin', 

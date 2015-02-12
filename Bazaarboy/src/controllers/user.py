@@ -6,6 +6,7 @@ import hashlib
 import uuid
 import os
 import random
+import cgi
 from datetime import timedelta
 from django.db.models import Q
 from django.http import HttpResponse, HttpResponseForbidden
@@ -15,7 +16,7 @@ from facebook import GraphAPI, GraphAPIError
 from kernel.models import *
 from src.config import *
 from src.controllers.request import *
-from src.email import sendConfirmationEmail, sendResetRequestEmail
+from src.email import sendConfirmationEmail, sendResetRequestEmail, sendNewAccountEmail
 from src.regex import REGEX_EMAIL, REGEX_NAME
 from src.serializer import serialize_one
 
@@ -127,7 +128,7 @@ def settings(request, user):
     return render(request, 'user/settings.html', locals())
 
 @login_check()
-@validate('POST', ['email', 'password', 'first_name', 'last_name'], ['request_id', 'request_code'])
+@validate('POST', ['email', 'password', 'first_name', 'last_name'], ['request_id', 'request_code', 'organization_name', 'logo_id'])
 def create(request, params, user):
     """
     Create a new user using email and password
@@ -193,8 +194,30 @@ def create(request, params, user):
     code = os.urandom(128).encode('base_64')[:128]
     confirmationCode = User_confirmation_code(user = user, code = code)
     confirmationCode.save()
-    #sendConfirmationEmail(confirmationCode)
-    # Start the session
+    if params['organization_name'] is not None:
+        params['organization_name'] = cgi.escape(params['organization_name'])
+        if len(params['organization_name']) > 100:
+            response = {
+                'status':'FAIL',
+                'error':'INVALID_NAME',
+                'message':'Profile name cannot be over 100 characters.'
+            }
+            return json_response(response)
+        profile = Profile(name = params['organization_name'], description = params['organization_name'], location = ' ', email = params['email'])
+        if params['logo_id'] is not None:
+            if Image.objects.filter(id = params['logo_id']).exists():
+                profile.image = Image.objects.get(id = params['logo_id'])
+        profile.save()
+        if Collaboration_request.objects.filter(user = user, profile__isnull = True).exists():
+            collaboration_requests = Collaboration_request.objects.filter(user = user, profile__isnull = True)
+            for collab in collaboration_requests:
+                collab.profile = profile
+                collab.save()
+        profileManager = Profile_manager(user = user,
+                                         profile = profile,
+                                         is_creator = True)
+        profileManager.save()
+        #sendNewAccountEmail(profile)
     request.session['user'] = user.id
     response = {
         'status':'OK'

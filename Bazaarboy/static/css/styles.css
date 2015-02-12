@@ -7962,6 +7962,24 @@ div#reset div#register-container form#register-form .register-inputs input[type=
   border-radius: 3px;
   box-shadow: none;
 }
+div#login div#register-container form#register-form .register-inputs div.logo-title,
+div#register div#register-container form#register-form .register-inputs div.logo-title,
+div#reset div#register-container form#register-form .register-inputs div.logo-title {
+  color: #4a4a4a;
+}
+div#login div#register-container form#register-form .register-inputs a.upload-logo-btn,
+div#register div#register-container form#register-form .register-inputs a.upload-logo-btn,
+div#reset div#register-container form#register-form .register-inputs a.upload-logo-btn {
+  margin-top: 15px;
+  margin-bottom: 30px;
+}
+div#login div#register-container form#register-form .register-inputs img#organization-logo,
+div#register div#register-container form#register-form .register-inputs img#organization-logo,
+div#reset div#register-container form#register-form .register-inputs img#organization-logo {
+  max-width: 120px;
+  max-height: 120px;
+  margin-bottom: 20px;
+}
 div#login div#register-container form#register-form div.register-bottom,
 div#register div#register-container form#register-form div.register-bottom,
 div#reset div#register-container form#register-form div.register-bottom {

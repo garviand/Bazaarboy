@@ -7,6 +7,8 @@ block body
         div.row
             div#container
                 div#register-container
+                    form.upload-logo.hide(name="upload_logo_form")
+                        input(type="file", name="image_file", value="")
                     form#register-form
                         div.row
                             div.small-10.small-offset-1.columns
@@ -33,21 +35,30 @@ block body
                                 hr.separator
                                 div.row.register-inputs
                                     div.small-12.columns
-                                        input(type="text", name="first_name", placeholder="First Name")
-                                        input(type="text", name="last_name", placeholder="Last Name")
+                                        input(type="text", name="first_name", placeholder="Your First Name")
                                     div.small-12.columns
-                                        input(type="text", name="email", placeholder="Email")
+                                        input(type="text", name="last_name", placeholder="Your Last Name")
+                                    div.small-12.columns
+                                        input(type="text", name="organization_name", placeholder="Organization Name")
+                                    div.small-12.columns
+                                        input(type="text", name="email", placeholder="Organization Email")
+                                    div.small-12.medium-5.columns
+                                        div.logo-title Organization Logo
+                                        a.upload-logo-btn.primary-btn-inverse.full-btn(href="javascript:;") Upload
+                                        input(name="logo_id", value="", type="hidden")
+                                    div.small-12.medium-7.columns.text-center
+                                        img#organization-logo(src='')
                                     div.small-12.columns
                                         input(type="password", name="password", placeholder="Password", autocomplete="off")
                                     div.small-12.columns
                                         input(type="password", name="confirm", placeholder="Confirm Password", autocomplete="off")
                                 div.row.register-bottom
-                                    div.small-12.medium-4.medium-offset-8.columns.end
+                                    div.small-12.columns.end
                                         {% if organizer_request %}
                                         input(type="hidden", name="request_id", value="{{ organizer_request.id }}")
                                         input(type="hidden", name="request_code", value="{{ organizer_request.code }}")
                                         {% endif %}
-                                        input.primary-btn.submit-register(type="submit", value="REGISTER")
+                                        input.primary-btn.full-btn.submit-register(type="submit", value="Create Bazaarboy Account")
                 div#footer
                     div.row
                         div.small-10.small-offset-1.columns
@@ -56,6 +67,7 @@ block body
                                     a.switch(href="{% url index:login %}{% if next %}?next={{ next }}{% endif %}{% if code %}&code={{ code }}{% endif %}{% if organizer_request %}?requestid={{ organizer_request.id }}&requestc={{ organizer_request.code }}{% endif %}") Login
 
 append script
+    script(src="https://dme0ih8comzn4.cloudfront.net/js/feather.js")
     script(type="text/javascript", src="{{ STATIC_URL }}hashchange/jquery.ba-hashchange.min.js")
     script(type="text/javascript").
         redirect = {% if next %}'{{ next }}'{% else %}false{% endif %};

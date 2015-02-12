@@ -186,6 +186,29 @@ def delete_image(request, params):
     return json_response(response)
 
 @csrf_exempt
+@validate('POST', ['url'])
+def aviary_profile(request, params):
+    imageRequest = requests.get(params['url'])
+    imageUid = uuid.uuid4().hex
+    imageExt = params['url'].split('.')[-1]
+    imageName = '%s.%s' % (imageUid, imageExt)
+    imageIO = StringIO(imageRequest.content)
+    aviaryImage = InMemoryUploadedFile(file = imageIO,
+                                       field_name = None, 
+                                       name = imageName, 
+                                       content_type = IMAGE_CONTENT_TYPES[imageExt],
+                                       size = imageIO.len, 
+                                       charset = None)
+    image = Image(source = aviaryImage, is_archived = True)
+    image.save()
+    response = {
+        'status':'OK',
+        'image': image.source.url,
+        'image_id': image.id
+    }
+    return json_response(response)
+
+@csrf_exempt
 @validate('POST', ['url', 'event'])
 def aviary(request, params):
     """

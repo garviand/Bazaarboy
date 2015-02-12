@@ -40,12 +40,12 @@ block content
                 form.upload_csv.small-12.columns.hide
                     input(type="file", name="csv_file")
                     {% csrf_token %}
-                div.small-12.medium-3.columns.from-csv
-                    a.start-member-add.add-from-csv.secondary-btn-inverse(href="javascript:;") Upload CSV
-                div.small-12.medium-3.columns.from-event
-                    a.start-member-add.add-from-event.secondary-btn-inverse(href="javascript:;") From Event
                 div.small-12.medium-3.columns.from-manual
                     a.start-member-add.add-single-item.secondary-btn-inverse(href="javascript:;") Manual Entry
+                div.small-12.medium-3.columns.from-event
+                    a.start-member-add.add-from-event.secondary-btn-inverse(href="javascript:;") From Event
+                div.small-12.medium-3.columns.from-csv
+                    a.start-member-add.add-from-csv.secondary-btn-inverse(href="javascript:;") Upload CSV
                 div.small-12.medium-3.columns.text-right
                     a.cancel-add(href="javascript:;") Cancel Add Members
             // CSV UPLOAD
