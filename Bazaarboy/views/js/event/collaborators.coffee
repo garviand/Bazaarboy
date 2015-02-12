@@ -22,6 +22,20 @@ Bazaarboy.event.collaborators =
         return
     init: () ->
         scope = this
+        # TOGGLE ORGANIZER VISIBLE
+        $('a.toggle-visiblity-btn').click () ->
+            organizerId = $(this).data('organizer')
+            console.log organizerId
+            Bazaarboy.post 'event/collaborator/' + organizerId + '/toggle/', {}, (response) ->
+                if response.status is 'OK'
+                    if response.organizer.is_public
+                        $('a.toggle-visiblity-btn').html('Hide on Event')
+                    else
+                        $('a.toggle-visiblity-btn').html('Show on Event')
+                else
+                    swal response.message
+                return
+            return
         # ADD ORGANIZER
         $('a.add-organizer-btn').click () ->
             $('div#add-organizer-modal').foundation('reveal', 'open')

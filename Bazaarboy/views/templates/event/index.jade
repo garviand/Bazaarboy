@@ -217,10 +217,12 @@ block body
                     div.medium-12.title.columns
                         | Organizer{{ organizers|length|pluralize }}
                 {% for organizer in organizers %}
+                {% if organizer.is_public or organizer.is_creator %}
                 div.row.organizer
                     div.organizer-icon(style="{% if organizer.profile.image %}background-image:url({{ organizer.profile.image.source.url }});{% endif %}")
                     div.organizer-name
                         span {{ organizer.profile.name }}
+                {% endif %}
                 {% endfor %}
             div.medium-7.small-12.columns.tickets
                 div.row
@@ -566,10 +568,12 @@ block body
                                 | Organizer{{ organizers|length|pluralize }}
                             div.canvas.small-12.columns.organizer-list
                                 {% for organizer in organizers %}
+                                {% if organizer.is_public or organizer.is_creator %}
                                 div.organizer
                                     div.organizer-icon(style="{% if organizer.profile.image %}background-image:url({{ organizer.profile.image.source.url }});{% endif %}")
                                     div.organizer-name
                                         span {{ organizer.profile.name }}
+                                {% endif %}
                                 {% endfor %}
                         {% if organizers.0.profile.email and not design %}
                         div.row.contact-organizer

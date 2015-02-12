@@ -179,6 +179,39 @@ def collaborators(request, event, user):
     return render(request, 'event/collaborators.html', locals())
 
 @login_required()
+@validate('POST')
+def collaborator_toggle(request, organizer, params, user):
+    """
+    Toggle whether an organizer is visible or not
+    """
+    if not Organizer.objects.filter(id = organizer).exists():
+        response = {
+            'status':'FAIL',
+            'error':'ORGANIZER_NOT_FOUND',
+            'message':'The organizer doesn\'t exist.'
+        }
+        return json_response(response)
+    organizer = Organizer.objects.get(id = organizer)
+    if not Organizer.objects.filter(event = organizer.event, profile__managers = user, is_creator = True).exists():
+        response = {
+            'status':'FAIL',
+            'error':'NOT_AN_ORGANIZER',
+            'message':'You don\'t have permission to edit this.'
+        }
+        return json_response(response)
+    if organizer.is_public:
+        organizer.is_public = False
+    else:
+        organizer.is_public = True
+    organizer.save()
+    response = {
+        'status':'OK',
+        'organizer': serialize_one(organizer)
+    }
+    return json_response(response)
+
+
+@login_required()
 @validate('GET')
 def manage(request, id, params, user):
     if not Event.objects.filter(id = id).exists():

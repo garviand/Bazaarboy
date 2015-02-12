@@ -65,8 +65,10 @@ block content
                     hr
                     {% for organizer in organizers %}
                     div.organizer.row
-                        div.small-12.medium-8.columns {{ organizer.profile.name }}
-                        div.small-12.medium-4.columns {{ organizer.invite_count }} Invitation{{ organizer.invite_count|pluralize }} Sent
+                        div.small-12.medium-5.columns.text {{ organizer.profile.name }}
+                        div.small-12.medium-3.columns.text {{ organizer.invite_count }} Invitation{{ organizer.invite_count|pluralize }} Sent
+                        div.small-12.medium-4.columns
+                            a.toggle-visiblity-btn.primary-btn-inverse.small-btn.full-btn(href="javascript:;", data-organizer="{{ organizer.id }}") {% if organizer.is_public %}Hide on Event{% else %}Show on Event{% endif %}
                     {% endfor %}
             {% endif %}
     div#add-organizer-modal.reveal-modal.medium(data-reveal)

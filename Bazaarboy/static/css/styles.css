@@ -5734,6 +5734,10 @@ h3 {
   padding: 8px 6px;
   border-radius: 0;
 }
+.small-btn {
+  font-size: 12px;
+  padding: 8px 6px;
+}
 input[type="text"]:focus {
   background: #ffffff !important;
 }
@@ -10771,6 +10775,9 @@ div#wrapper-event-collaborators div#event-collaborators div.pending div.request 
 }
 div#wrapper-event-collaborators div#event-collaborators div.organizers {
   margin-top: 40px;
+}
+div#wrapper-event-collaborators div#event-collaborators div.organizers div.organizer div.text {
+  padding-top: 8px;
 }
 div#add-organizer-modal div.add-organizer-title {
   margin-bottom: 20px;

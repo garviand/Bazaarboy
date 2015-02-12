@@ -33,6 +33,22 @@
     init: function() {
       var add_organizer_debounce, scope;
       scope = this;
+      $('a.toggle-visiblity-btn').click(function() {
+        var organizerId;
+        organizerId = $(this).data('organizer');
+        console.log(organizerId);
+        Bazaarboy.post('event/collaborator/' + organizerId + '/toggle/', {}, function(response) {
+          if (response.status === 'OK') {
+            if (response.organizer.is_public) {
+              $('a.toggle-visiblity-btn').html('Hide on Event');
+            } else {
+              $('a.toggle-visiblity-btn').html('Show on Event');
+            }
+          } else {
+            swal(response.message);
+          }
+        });
+      });
       $('a.add-organizer-btn').click(function() {
         $('div#add-organizer-modal').foundation('reveal', 'open');
       });

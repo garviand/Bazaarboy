@@ -237,6 +237,7 @@ class Organizer(models.Model):
     event = models.ForeignKey('Event')
     profile = models.ForeignKey('Profile')
     is_creator = models.BooleanField(default = False)
+    is_public = models.BooleanField(default = False)
     created_time = models.DateTimeField(auto_now_add = True)
 
 class Collaboration_request(models.Model):
