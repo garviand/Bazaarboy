@@ -217,7 +217,7 @@ def create(request, params, user):
                                          profile = profile,
                                          is_creator = True)
         profileManager.save()
-        #sendNewAccountEmail(profile)
+        sendNewAccountEmail(profile)
     request.session['user'] = user.id
     response = {
         'status':'OK'
