@@ -316,6 +316,18 @@ class Invite(models.Model):
     created_time = models.DateTimeField(auto_now_add = True)
     is_deleted = models.BooleanField(default = False)
 
+class Invite_stat(models.Model):
+    """
+    Invite Statistic
+    """
+    email_id = models.CharField(max_length = 100, unique = True)
+    to = models.CharField(max_length = 150, null = True, default = None)
+    invite = models.ForeignKey('Invite', null = True, default = None)
+    clicks = models.IntegerField(null = True, default = None)
+    opens = models.IntegerField(null = True, default = None)
+    city = models.CharField(max_length = 100, null = True, default = None)
+    zip_code = models.CharField(max_length = 20, null = True, default = None)
+
 class Recap(models.Model):
     """
     Recap model - Post event actions including adding attendees to list and sending follow up email

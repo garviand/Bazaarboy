@@ -114,6 +114,10 @@ event_urlpatterns = patterns('src.controllers.event',
     url(r'^checkin/$', 'checkin', name = 'checkin'),
 )
 
+communication_urlpatterns = patterns('src.controllers.communication', 
+    url(r'^invite/hook/$', 'invite_hook', name = 'invite_hook'),
+)
+
 sponsorship_urlpatterns = patterns('src.controllers.sponsorship', 
     url(r'^criteria/create/$', 'create_criteria', name = 'criteria-create'), 
     url(r'^criteria/edit/$', 'edit_criteria', name = 'criteria-edit'), 
@@ -178,6 +182,7 @@ urlpatterns = patterns('',
     url(r'^profile/', include(profile_urlpatterns, namespace = 'profile')),
     url(r'^lists/', include(list_urlpatterns, namespace = 'list')),
     url(r'^event/', include(event_urlpatterns, namespace = 'event')),
+    url(r'^communication/', include(communication_urlpatterns, namespace = 'communication')),
     url(r'^sponsorship/', 
         include(sponsorship_urlpatterns, namespace = 'sponsorship')),
     url(r'^bonus/', include(bonus_urlpatterns, namespace = 'bonus')), 
