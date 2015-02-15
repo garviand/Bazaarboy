@@ -323,6 +323,8 @@ class Invite_stat(models.Model):
     email_id = models.CharField(max_length = 100, unique = True)
     to = models.CharField(max_length = 150, null = True, default = None)
     invite = models.ForeignKey('Invite', null = True, default = None)
+    event = models.ForeignKey('Event', null = True, default = None)
+    profile = models.ForeignKey('Profile', null = True, default = None)
     clicks = models.IntegerField(null = True, default = None)
     opens = models.IntegerField(null = True, default = None)
     city = models.CharField(max_length = 100, null = True, default = None)
@@ -358,6 +360,20 @@ class Follow_up(models.Model):
     email_id = models.CharField(max_length = 150, null = True, default = None)
     created_time = models.DateTimeField(auto_now_add = True)
     is_deleted = models.BooleanField(default = False)
+
+class Follow_up_stat(models.Model):
+    """
+    Follow Up Statistic
+    """
+    email_id = models.CharField(max_length = 100, unique = True)
+    to = models.CharField(max_length = 150, null = True, default = None)
+    follow_up = models.ForeignKey('Follow_up', null = True, default = None)
+    event = models.ForeignKey('Event', null = True, default = None)
+    profile = models.ForeignKey('Profile', null = True, default = None)
+    clicks = models.IntegerField(null = True, default = None)
+    opens = models.IntegerField(null = True, default = None)
+    city = models.CharField(max_length = 100, null = True, default = None)
+    zip_code = models.CharField(max_length = 20, null = True, default = None)
 
 class Purchase(models.Model):
     """

@@ -115,7 +115,7 @@ event_urlpatterns = patterns('src.controllers.event',
 )
 
 communication_urlpatterns = patterns('src.controllers.communication', 
-    url(r'^invite/hook/$', 'invite_hook', name = 'invite_hook'),
+    url(r'^email/hook/$', 'email_hook', name = 'email_hook'),
 )
 
 sponsorship_urlpatterns = patterns('src.controllers.sponsorship', 
