@@ -467,7 +467,7 @@ block body
                 div.event-hero-rsvp
                     {% with organizers|first as first_organizer %}
                     {% if first_organizer.profile.image %}
-                    div.organizer-logo(style="background:url({{ first_organizer.profile.image.source.url }}); background-size:cover; background-position:center; background-repeat:no-repeat; background-color:#FFF;")
+                    div.organizer-logo(style="background:url({{ first_organizer.profile.image.source.url }}); background-size:contain; background-position:center; background-repeat:no-repeat; background-color:#FFF;")
                     {% endif %}
                     {% endwith %}
                     {% if not hasEnded %}
