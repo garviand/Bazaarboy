@@ -73,6 +73,7 @@ block content
                                         div.summary-text
                                             {{ event.summary }}
                         div.draft-event-actions.medium-3.small-12.columns
+                            {% if event.creator %}
                             a.draft-event-action.first(href="{% url event:modify event.id 'basics' %}")
                                 div.icon
                                     span.ss-info
@@ -83,11 +84,17 @@ block content
                                     span.ss-creditcard
                                 div.text
                                     span Ticket Options
+                            a.draft-event-action(href="{% url event:collaborators event.id %}")
+                                div.icon
+                                    span.ss-usergroup
+                                div.text
+                                    span Collaborators
                             a.draft-event-action(href="{{ event|eventUrl }}?design")
                                 div.icon
                                     span.ss-picture
                                 div.text
                                     span Page Design
+                            {% endif %}
                             a.draft-event-action.last(href="{{ event|eventUrl }}?preview")
                                 div.icon
                                     span.ss-airplay
@@ -154,11 +161,11 @@ block content
                                     span.ss-write
                                 div.text
                                     span Edit Event
-                            a.current-event-action(href="{% url event:modify event.id 'tickets' %}")
+                            a.current-event-action(href="{% url event:collaborators event.id %}")
                                 div.icon
-                                    span.ss-creditcard
+                                    span.ss-usergroup
                                 div.text
-                                    span Ticket Options
+                                    span Collaborators
                             {% endif %}
                             a.current-event-action(href="{% url event:invite event.id %}")
                                 div.icon

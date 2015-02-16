@@ -143,7 +143,7 @@
       $("div.guest-add-invite a.raffle-btn").click(function(e) {
         var winner, winner_email, winner_id, winner_name;
         e.preventDefault();
-        winner_id = Math.floor(Math.random() * ($("div.guest").length));
+        winner_id = Math.floor(Math.random() * ($("div.guest").not('div.guest_template').length)) - 1;
         winner = $("div.list_guests div.guest").eq(winner_id);
         winner_name = winner.find("div.name").html();
         winner_email = winner.attr('data-email');
