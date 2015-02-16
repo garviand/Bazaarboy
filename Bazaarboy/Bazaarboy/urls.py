@@ -118,20 +118,10 @@ communication_urlpatterns = patterns('src.controllers.communication',
     url(r'^email/hook/$', 'email_hook', name = 'email_hook'),
 )
 
-sponsorship_urlpatterns = patterns('src.controllers.sponsorship', 
-    url(r'^criteria/create/$', 'create_criteria', name = 'criteria-create'), 
-    url(r'^criteria/edit/$', 'edit_criteria', name = 'criteria-edit'), 
-    url(r'^criteria/delete/$', 'delete_criteria', name = 'criteria-delete'), 
-    url(r'^create/$', 'create', name = 'create'),
-    url(r'^delete/$', 'delete', name = 'delete'), 
+sponsorship_urlpatterns = patterns('src.controllers.sponsorship',
 )
 
-bonus_urlpatterns = patterns('src.controllers.bonus', 
-    url(r'^create/$', 'create', name = 'create'),
-    url(r'^edit/$', 'edit', name = 'edit'), 
-    url(r'^delete/$', 'delete', name = 'delete'), 
-    url(r'^send/$', 'send', name = 'send'), 
-    url(r'^claim/$', 'claim', name = 'claim'), 
+reward_urlpatterns = patterns('src.controllers.reward',
 )
 
 file_urlpatterns = patterns('src.controllers.file', 
@@ -185,7 +175,7 @@ urlpatterns = patterns('',
     url(r'^communication/', include(communication_urlpatterns, namespace = 'communication')),
     url(r'^sponsorship/', 
         include(sponsorship_urlpatterns, namespace = 'sponsorship')),
-    url(r'^bonus/', include(bonus_urlpatterns, namespace = 'bonus')), 
+    url(r'^reward/', include(reward_urlpatterns, namespace = 'reward')), 
     url(r'^file/', include(file_urlpatterns, namespace = 'file')),
     url(r'^admin/', include(admin_urlpatterns, namespace = 'admin')),
     url(r'^designs/', include(designs_urlpatterns, namespace = 'designs')),
