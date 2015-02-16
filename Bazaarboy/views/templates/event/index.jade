@@ -670,6 +670,7 @@ block body
 
                         {% endfor %}
             div#tickets-details
+                input(type="hidden", name="invite_id", value="{% if invite %}{{ invite.id }}{% endif %}")
                 div.row
                     div.small-12.columns
                         div.title Some Details About You

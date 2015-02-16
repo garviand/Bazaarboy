@@ -39,7 +39,7 @@ import operator
 
 @cache_page(60 * 5)
 @login_check()
-@validate('GET', [], ['preview', 'design'])
+@validate('GET', [], ['preview', 'design', 'iid'])
 def index(request, id, params, user):
     """
     Event page
@@ -119,6 +119,9 @@ def index(request, id, params, user):
             rsvp = False
         if ticket.price < cheapest:
             cheapest = ticket.price
+    if params['iid'] is not None:
+        if Invite.objects.filter(id = params['iid']).exists():
+            invite = Invite.objects.get(id = params['iid'])
     return render(request, 'event/index.html', locals())
 
 @login_required()
@@ -2699,7 +2702,7 @@ def mark_purchase_as_expired(purchase, immediate=False):
 @login_check()
 @validate('POST', 
           ['event', 'email', 'first_name', 'last_name', 'details'], 
-          ['phone', 'promos', 'address'])
+          ['phone', 'promos', 'address', 'invite'])
 def purchase(request, params, user):
     """
     Make purchase for an event
@@ -2933,6 +2936,9 @@ def purchase(request, params, user):
         if amount == 0:
             # Create the purchase
             purchase = Purchase(owner = user, event = event, amount = 0)
+            if params['invite']:
+                if Invite.objects.filter(id = params['invite']).exists():
+                    purchase.invite = Invite.objects.get(id = params['invite'])
             purchase.save()
             for ticket in tickets:
                 for i in range(0, details[ticket.id]['quantity']):
@@ -2992,6 +2998,9 @@ def purchase(request, params, user):
         # Create the purchase
         purchase = Purchase(owner = user, event = event, amount = amount, 
                             checkout = checkout)
+        if params['invite']:
+                if Invite.objects.filter(id = params['invite']).exists():
+                    purchase.invite = Invite.objects.get(id = params['invite'])
         purchase.save()
         for promo in promos:
             purchase.promos.add(promo['promo'])

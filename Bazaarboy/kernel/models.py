@@ -386,6 +386,7 @@ class Purchase(models.Model):
     promos = models.ManyToManyField('Promo')
     amount = models.FloatField(default = 0)
     checkout = models.ForeignKey('Checkout', null = True, default = None)
+    invite = models.ForeignKey('Invite', null = True, default = None)
     is_expired = models.BooleanField(default = False)
     created_time = models.DateTimeField(auto_now_add = True)
 

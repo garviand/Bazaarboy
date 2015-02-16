@@ -111,6 +111,8 @@ Bazaarboy.event.index =
             email: $('input[name=email]').val().trim()
             phone: $('input[name=phone]').val().trim()
             details: {}
+        if $('input[name=invite_id]').val().trim() != ''
+            params['invite'] = $('input[name=invite_id]').val()
         if @requiresAddress
             if $('input[name=address]').val().trim() == '' or $('input[name=state]').val().trim() == '' or $('input[name=city]').val().trim() == '' or $('input[name=zip]').val().trim() == ''
                 alert 'All Address Fields Are Required'
