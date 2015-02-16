@@ -1,0 +1,81 @@
+extends ../layout
+
+block title
+    | Rewards Dashboard
+
+block sidebar
+    +sidebarItem('ss-newspaper')(href="{% url index %}")
+        | Events
+    +sidebarItem('ss-database')(href="{% url list:index %}")
+        | Lists
+    +sidebarItem('ss-share')(href="{% url user:settings %}")
+        | Settings
+
+block header
+    div.header-title.large-9.medium-10.columns.small-centered
+        div.row.clearfix
+            div.icon.left
+                span.ss-file
+            div.text.left
+                | Reward Management |
+                span.sub &nbsp;All Rewards
+
+block content
+    div#wrapper-reward-dashboard.large-9.medium-10.columns.small-centered
+        {% if rewards.count == 0 and reward_items.count == 0 %}
+        div.empty-state-container
+            div.row
+                div.medium-5.columns
+                    &nbsp;
+                div.medium-7.columns.end.empty-state-content
+                    div.text YOU HAVEN'T MADE A REWARD YET
+                    hr
+                    div.subtext Do some stuff with this thing
+                    div.row
+                        div.large-5.medium-7.small-9
+                            a.new-reward-btn(href="{% url reward:new %}")
+                                div.secondary-btn.btn.full-btn
+                                    | <span class="plus">+</span> Add New Reward
+        {% endif %}
+        div#reward-dashboard.small-12.columns
+            div.row.new-reward-container(class="{% if rewards.count == 0 %}hide{% endif %}")
+                div.medium-4.columns.new-reward
+                    a.new-reward-btn.primary-btn(href="{% url reward:new %}") + New Reward
+            div.row
+                div.small-12.columns.rewards
+                    div.headline Current Rewards
+                    hr
+                    {% for reward_item in reward_items %}
+                    div
+                        div.row.reward
+                            div.small-6.columns.reward-name
+                                | {{ reward_item.reward.name|truncatechars:30 }}
+                            div.small-2.columns.text-left.reward-members
+                                | {{ reward_item.quantity }} Left
+                            div.small-2.columns.text-right.reward-members
+                                | {{ reward_item.redeemed }} Redeemed
+                            div.small-2.columns.text-right.reward-action
+                                a.delete-reward-btn(href="javascript:;", data-id="{{ reward.id }}") Redemptions
+                    {% endfor %}
+                div.small-12.columns.rewards
+                    div.headline Created Rewards
+                    hr
+                    {% for reward in rewards %}
+                    div
+                        div.row.reward
+                            div.small-6.columns.reward-name
+                                | {{ reward.name|truncatechars:30 }}
+                            div.small-2.columns.text-left.reward-members
+                                | {{ reward.given.count }} Given
+                            div.small-2.columns.text-right.reward-action
+                                a.send-reward(href="javascript:;") Send Reward
+                            div.small-2.columns.text-right.reward-action
+                                a.delete-reward-btn(href="javascript:;", data-id="{{ reward.id }}") Delete
+                    {% endfor %}
+                    
+
+
+append script
+    script.
+        var profileId = {{ profile.id }};
+    script(src="{{ STATIC_URL }}js/reward/index.js")

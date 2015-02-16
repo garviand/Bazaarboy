@@ -122,6 +122,12 @@ sponsorship_urlpatterns = patterns('src.controllers.sponsorship',
 )
 
 reward_urlpatterns = patterns('src.controllers.reward',
+    url(r'^$', 'index', name = 'index'),
+    url(r'^new/$', 'new', name = 'new'),
+    url(r'^create/$', 'create', name = 'create'),
+    url(r'^edit/$', 'edit', name = 'edit'),
+    url(r'^item/add/$', 'add_item', name = 'add-item'),
+    url(r'^claim/add/$', 'add_claim', name = 'add-claim'),
 )
 
 file_urlpatterns = patterns('src.controllers.file', 

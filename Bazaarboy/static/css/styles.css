@@ -12030,6 +12030,121 @@ div#confirmation div.confirmation-note {
     left: auto;
   }
 }
+div#wrapper-reward-dashboard div.empty-state-container {
+  margin-top: 40px;
+  border: #F6F6F6 thin solid;
+  border-radius: 4px;
+  background: url('../images/emptystates/tag_bg.jpg');
+  background-size: 80%;
+  background-position: left center;
+  background-repeat: no-repeat;
+}
+div#wrapper-reward-dashboard div.empty-state-container div.empty-state-content {
+  margin: 80px 0;
+  padding-right: 50px;
+}
+div#wrapper-reward-dashboard div.empty-state-container div.empty-state-content div.text {
+  font-size: 1.3rem;
+  font-weight: 600;
+  color: #4a4a4a;
+}
+div#wrapper-reward-dashboard div.empty-state-container div.empty-state-content hr {
+  margin: 10px 0;
+}
+div#wrapper-reward-dashboard div.empty-state-container div.empty-state-content div.btn {
+  width: 100%;
+  margin-top: 20px;
+  margin-left: 10px;
+  padding-top: 11px;
+  padding-bottom: 14px;
+  font-size: 15px;
+  text-transform: uppercase;
+}
+div#wrapper-reward-dashboard div#reward-dashboard {
+  margin-top: 40px;
+}
+div#wrapper-reward-dashboard div#reward-dashboard a.new-reward-btn {
+  text-align: center;
+  display: block;
+  padding-top: 9px;
+  padding-bottom: 12px;
+  color: #ffffff;
+  font-size: 15px;
+  text-transform: uppercase;
+}
+div#wrapper-reward-dashboard div#reward-dashboard div.rewards {
+  margin-top: 40px;
+}
+div#wrapper-reward-dashboard div#reward-dashboard div.rewards > a {
+  color: #4a4a4a;
+}
+div#wrapper-reward-dashboard div#reward-dashboard div.rewards div.reward {
+  padding: 12px 5px;
+  margin-bottom: 10px;
+  border-radius: 3px;
+  border: #7a7a7a thin solid;
+}
+div#wrapper-reward-dashboard div#reward-dashboard div.rewards div.reward:hover {
+  background: #f6f6f6;
+}
+div#wrapper-reward-dashboard div#reward-dashboard div.rewards div.reward div.reward-name {
+  font-size: 16px;
+  font-weight: 500;
+}
+div#wrapper-reward-dashboard div#reward-dashboard div.rewards div.reward div.reward-members {
+  font-weight: 300;
+  font-style: italic;
+  font-size: 14px;
+}
+div#wrapper-reward-dashboard div#reward-dashboard div.rewards div.reward div.reward-action a {
+  font-weight: 300;
+  color: #4a4a4a;
+  text-decoration: underline;
+  font-size: 14px;
+}
+div#wrapper-reward-dashboard div#reward-dashboard div.rewards div.reward div.reward-action a:hover {
+  color: #c57724;
+}
+div#new-reward-modal div.new-reward-title h3 {
+  font-weight: bold;
+  font-size: 24px;
+  color: #4a4a4a;
+}
+div#new-reward-modal input {
+  display: block;
+  width: 100%;
+  padding: 12px 10px;
+  font-weight: 300;
+  font-size: 14px;
+  border-radius: 3px;
+  border: #D4D4D4 thin solid;
+}
+div#new-reward-modal div.new-reward-inputs {
+  margin-top: 10px;
+}
+div#new-reward-modal div.new-reward-inputs a.create-reward {
+  display: block;
+  width: 100%;
+  padding-top: 11px;
+  padding-bottom: 13px;
+}
+div#new-reward-modal div.new-reward-inputs a.create-reward:hover,
+div#new-reward-modal div.new-reward-inputs a.create-reward:focus {
+  color: #ffffff;
+}
+div#new-reward-modal div.new-reward-cancel {
+  margin-top: 20px;
+}
+div#new-reward-modal div.new-reward-cancel a.close-reward-modal {
+  color: #c57724;
+  font-size: 14px;
+  font-weight: 300;
+  text-decoration: underline;
+  font-style: italic;
+}
+div#new-reward-modal div.controls {
+  margin-top: 20px;
+}
 div#wrapper-list-dashboard div.empty-state-container {
   margin-top: 40px;
   border: #F6F6F6 thin solid;

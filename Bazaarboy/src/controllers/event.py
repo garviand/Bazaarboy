@@ -1129,7 +1129,8 @@ def follow_up_attachment(request, user, params):
         newPdf.save()
         response = {
             'status': 'OK',
-            'pdf': serialize_one(newPdf)
+            'pdf': serialize_one(newPdf),
+            'url': newPdf.source.url
         }
         return json_response(response)
 

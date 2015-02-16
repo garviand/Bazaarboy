@@ -1,0 +1,58 @@
+extends ../layout
+
+block title
+    | Create Reward
+
+block sidebar
+    +sidebarItem('ss-newspaper')(href="{% url index %}")
+        | Events
+    +sidebarItem('ss-database')(href="{% url list:index %}")
+        | Lists
+    +sidebarItem('ss-share')(href="{% url user:settings %}")
+        | Settings
+
+block header
+    div.header-title.large-9.medium-10.columns.small-centered
+        div.row.clearfix
+            div.icon.left
+                span.ss-file
+            div.text.left
+                | Create Reward |
+                span.sub &nbsp; {{ profile.name }}
+
+block content
+    div#wrapper-new-reward.large-9.medium-10.columns.small-centered
+        div#new-reward
+            form#new-reward-form
+                {% csrf_token %}
+                br
+                div.row
+                    div.small-12.columns
+                        label Reward Name
+                        input(type="text", name="name", placeholder="Name of Reward")
+                div.row
+                    div.small-12.columns
+                        label Reward Description
+                        textarea(name="description", placeholder="Reward Description")
+                div.row
+                    div.small-12.columns
+                        label Reward Details
+                        textarea(name="details", placeholder="Reward Details")
+                div.row
+                    div.small-12.medium-4.columns
+                        label Attachment (JPG, PNG, PDF)
+                        input.hide(type="file", name="attachment_file")
+                        a.add-attachment.primary-btn-inverse.full-btn(href="javascript:;") Add Attachment
+                        br
+                        a.attachment-name.hide(href="javascript:;", target="_blank") &nbsp;
+                br
+                div.row
+                    div.small-12.medium-4.columns
+                        a.create-reward.primary-btn.full-btn(href="javascript:;") Create Reward
+                    
+
+
+append script
+    script.
+        var profileId = {{ profile.id }};
+    script(src="{{ STATIC_URL }}js/reward/new.js")
