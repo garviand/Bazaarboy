@@ -917,26 +917,27 @@ def sendEventConfirmationEmail(purchase, manual=False, inviter=None):
     organizers = event.organizers.all()
     organizer_list_html = ''
     for organizer in organizers:
-        if organizer.image:
-            organizer_image = """
-                <img width="38" class="organizer_logo" src='""" + organizer.image.source.url + """' style="outline: none; text-decoration: none; width:40px; max-width: 40px; float: left; display: block;" align="left" />
+        if organizer.is_public:
+            if organizer.image:
+                organizer_image = """
+                    <img width="38" class="organizer_logo" src='""" + organizer.image.source.url + """' style="outline: none; text-decoration: none; width:40px; max-width: 40px; float: left; display: block;" align="left" />
+                """
+            else:
+                organizer_image = ''
+            organizer_list_html += """
+                <tr class="organizer" style="vertical-align: top; text-align: left; padding: 0;" align="left">
+                    <td width="40" class="three sub-columns center text-pad-left" style="word-break: break-word; -webkit-hyphens: auto; -moz-hyphens: auto; hyphens: auto; border-collapse: collapse !important; vertical-align: top; text-align: center; min-width: 0px; width: 25%; line-height: 19px; font-size: 14px; color: #4A4A4A !important; margin: 0; padding: 0px 10px 10px;" align="center" valign="top">
+                        """ + organizer_image + """
+                    </td>
+                    <td class="nine sub-columns last" style="word-break: break-word; -webkit-hyphens: auto; -moz-hyphens: auto; hyphens: auto; border-collapse: collapse !important; vertical-align: top; text-align: left; min-width: 0px; width: 75%; line-height: 19px; font-size: 14px; color: #4A4A4A !important; margin: 0; padding: 0px 0px 10px;" align="left" valign="top">
+                        <div class="organizer_name" style="font-size: 16px; margin-top: 10px;">
+                            """ + organizer.name + """
+                        </div>
+                    </td>
+                    <td class="expander" style="word-break: break-word; -webkit-hyphens: auto; -moz-hyphens: auto; hyphens: auto; border-collapse: collapse !important; vertical-align: top; text-align: left; visibility: hidden; width: 0px; line-height: 19px; font-size: 14px; color: #4A4A4A !important; margin: 0; padding: 0;" align="left" valign="top">
+                    </td>
+                </tr>
             """
-        else:
-            organizer_image = ''
-        organizer_list_html += """
-            <tr class="organizer" style="vertical-align: top; text-align: left; padding: 0;" align="left">
-                <td width="40" class="three sub-columns center text-pad-left" style="word-break: break-word; -webkit-hyphens: auto; -moz-hyphens: auto; hyphens: auto; border-collapse: collapse !important; vertical-align: top; text-align: center; min-width: 0px; width: 25%; line-height: 19px; font-size: 14px; color: #4A4A4A !important; margin: 0; padding: 0px 10px 10px;" align="center" valign="top">
-                    """ + organizer_image + """
-                </td>
-                <td class="nine sub-columns last" style="word-break: break-word; -webkit-hyphens: auto; -moz-hyphens: auto; hyphens: auto; border-collapse: collapse !important; vertical-align: top; text-align: left; min-width: 0px; width: 75%; line-height: 19px; font-size: 14px; color: #4A4A4A !important; margin: 0; padding: 0px 0px 10px;" align="left" valign="top">
-                    <div class="organizer_name" style="font-size: 16px; margin-top: 10px;">
-                        """ + organizer.name + """
-                    </div>
-                </td>
-                <td class="expander" style="word-break: break-word; -webkit-hyphens: auto; -moz-hyphens: auto; hyphens: auto; border-collapse: collapse !important; vertical-align: top; text-align: left; visibility: hidden; width: 0px; line-height: 19px; font-size: 14px; color: #4A4A4A !important; margin: 0; padding: 0;" align="left" valign="top">
-                </td>
-            </tr>
-        """
     to = [{
         'email':user.email, 
         'name':user.first_name + ' ' + user.last_name
