@@ -19,6 +19,7 @@ from mandrill import Mandrill
 from django.conf import settings
 from django.template import Context
 from django.template.loader import *
+from django.db.models import F, Q, Count, Sum
 from kernel.models import *
 from src.config import *
 from src.timezone import localize
@@ -718,7 +719,10 @@ def sendManualEventInvite(event, email, subject, inviter, custom_message=''):
     event_month = event_month.format('M')
     event_day = DateFormat(localize(event.start_time))
     event_day = event_day.format('j')
-    organizers = event.organizers.all()
+    organizer_list = Organizer.objects.filter(Q(event = event), Q(is_creator = True) | Q(is_public = True))
+    organizers = []
+    for organizer in organizer_list:
+        organizers.append(organizer.profile)
     organizer_list_html = ''
     if event.slug:
         event_url = 'https://bazaarboy.com/' + event.slug
@@ -813,7 +817,10 @@ def sendEventReminder(purchase, tz):
     event_month = event_month.format('M')
     event_day = DateFormat(localize(event.start_time))
     event_day = event_day.format('j')
-    organizers = event.organizers.all()
+    organizer_list = Organizer.objects.filter(Q(event = event), Q(is_creator = True) | Q(is_public = True))
+    organizers = []
+    for organizer in organizer_list:
+        organizers.append(organizer.profile)
     to = [{
         'email':user.email, 
         'name':user.first_name + ' ' + user.last_name
@@ -914,7 +921,10 @@ def sendEventConfirmationEmail(purchase, manual=False, inviter=None):
     event_month = event_month.format('M')
     event_day = DateFormat(localize(event.start_time))
     event_day = event_day.format('j')
-    organizers = event.organizers.all()
+    organizer_list = Organizer.objects.filter(Q(event = event), Q(is_creator = True) | Q(is_public = True))
+    organizers = []
+    for organizer in organizer_list:
+        organizers.append(organizer.profile)
     organizer_list_html = ''
     for organizer in organizers:
         if organizer.image:
