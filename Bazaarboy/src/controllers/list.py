@@ -28,7 +28,8 @@ def index(request, user):
     return render(request, 'list/index.html', locals())
 
 @login_required()
-def list(request, lt, user):
+@validate('GET', [], ['eid'])
+def list(request, lt, user, params):
     """
     Single List Page
     """
@@ -74,6 +75,9 @@ def list(request, lt, user):
         return redirect('index:index')
     if not Profile_manager.objects.filter(profile = lt.owner, user = user).exists():
         return redirect('index:index')
+    if params['eid'] is not None:
+        if Event.objects.filter(id = params['eid']).exists():
+            event = Event.objects.get(id = params['eid'])
     return render(request, 'list/list.html', locals())
 @login_required()
 @validate('POST', ['profile', 'name', 'is_hidden'])

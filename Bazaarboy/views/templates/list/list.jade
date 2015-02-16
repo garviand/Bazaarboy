@@ -23,6 +23,9 @@ block header
 block content
     div#wrapper-list-management.large-9.medium-10.columns.small-centered
         div#list-management.small-12.columns
+            div.row
+                div.small-12.columns.invitation-back
+                    a(href="{% url event:invite event.id %}") &lt; Back to Invitations for '{{ event.name }}'
             // HEADER
             div.row.list-title
                 div.small-12.columns

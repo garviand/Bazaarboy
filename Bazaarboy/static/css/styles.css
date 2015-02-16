@@ -12145,8 +12145,11 @@ div#new-list-modal div.new-list-cancel a.close-list-modal {
 div#new-list-modal div.controls {
   margin-top: 20px;
 }
+div#list-management div.invitation-back {
+  margin-top: 20px;
+}
 div#list-management div.list-title {
-  margin-top: 40px;
+  margin-top: 20px;
   margin-bottom: 5px;
 }
 div#list-management div.list-title h3 {

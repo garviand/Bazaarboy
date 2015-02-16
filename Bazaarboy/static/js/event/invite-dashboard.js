@@ -32,7 +32,7 @@
             is_hidden: 1
           }, function(response) {
             if (response.status === 'OK') {
-              Bazaarboy.redirect('lists/' + response.list.pk);
+              Bazaarboy.redirect('lists/' + response.list.pk + '/?eid=' + String(eventId));
             }
           });
         } else {

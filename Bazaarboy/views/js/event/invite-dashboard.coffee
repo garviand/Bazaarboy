@@ -23,7 +23,7 @@ Bazaarboy.event.invite_dashboard =
             if list_name.trim() isnt ''
                 Bazaarboy.post 'lists/create/', {profile:profileId, name:list_name, is_hidden:1}, (response) ->
                     if response.status is 'OK'
-                        Bazaarboy.redirect 'lists/' + response.list.pk
+                        Bazaarboy.redirect 'lists/' + response.list.pk + '/?eid=' + String(eventId)
                     return
             else
                 swal 'List name can\'t be empty'
