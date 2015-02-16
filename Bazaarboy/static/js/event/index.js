@@ -132,6 +132,9 @@
         phone: $('input[name=phone]').val().trim(),
         details: {}
       };
+      if ($('input[name=invite_id]').val().trim() !== '') {
+        params['invite'] = $('input[name=invite_id]').val();
+      }
       if (this.requiresAddress) {
         if ($('input[name=address]').val().trim() === '' || $('input[name=state]').val().trim() === '' || $('input[name=city]').val().trim() === '' || $('input[name=zip]').val().trim() === '') {
           alert('All Address Fields Are Required');
