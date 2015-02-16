@@ -61,7 +61,7 @@
           });
         }
       });
-      $('body').on('click', '.autocomplete_result', function(event) {
+      $('body').on('click', '.autocomplete_result, .admin-login', function(event) {
         var id;
         id = $(this).data('id');
         Bazaarboy.get('admin/login/profile/', {

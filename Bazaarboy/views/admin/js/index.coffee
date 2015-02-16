@@ -35,7 +35,7 @@ Bazaarboy.admin.login =
 		  			profiles.push({label: thisLabel, value: profile.name})
 		  		return response(profiles)
 		  	return
-		$('body').on 'click', '.autocomplete_result', (event) ->
+		$('body').on 'click', '.autocomplete_result, .admin-login', (event) ->
 			id = $(this).data('id')
 			Bazaarboy.get 'admin/login/profile/', {id: id}, (response) ->
 				if response.status is 'OK'

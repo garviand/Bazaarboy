@@ -37,7 +37,8 @@ block content
                         div.row.event(data-date="{{ event.start_time|date:'U' }}", data-rsvps="{{ event.totalRSVP }}", data-revenue="{{ event.totalRevenue }}")
                             div.small-12.hide-for-small-only.medium-1.columns
                                 {% if event.organizers.all.0.image %}
-                                div.image(style="background:url({{ event.organizers.all.0.image.source.url }}); background-size:contain; background-position:center;")
+                                a.admin-login(href="javascript:;", data-id="{{ event.organizers.all.0.id }}")
+                                    div.image(style="background:url({{ event.organizers.all.0.image.source.url }}); background-size:contain; background-position:center;")
                                 {% else %}
                                 | &nbsp;
                                 {% endif %}
