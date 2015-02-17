@@ -39,17 +39,15 @@ div#raffle-modal{
             div.to-dash{
                 margin-left: 0;
                 padding-right: 0;
-            }
-            a.primary-btn{
-                display: block;
-                width: 100%;
-                margin-top: 20px;
-                padding-top: 11px;
-                padding-bottom: 14px;
-                font-size: 15px;
-                text-transform: uppercase;
-                &:hover{
-                    color: #FFF;
+                a{
+                    display: block;
+                    width: 100%;
+                    margin-top: 20px;
+                    font-size: 15px;
+                    text-transform: uppercase;
+                    &:hover{
+                        color: #FFF;
+                    }
                 }
             }
             div.close-launch-modal{
@@ -63,6 +61,42 @@ div#raffle-modal{
                     right: 0;
                     color: @orange;
                     font-weight: normal;
+                }
+            }
+        }
+    }
+    div.reward-container{
+        display: none;
+        div.headline{
+            padding-top: 20px;
+            padding-bottom: 20px;
+        }
+        div.reward{
+            padding: 12px 5px;
+            margin-bottom: 10px;
+            border-radius: 3px;
+            border: @dark_grey thin solid;
+            &:hover{
+                background: @light-grey;
+            }
+            div.reward-name{
+                font-size: 16px;
+                font-weight: 500;
+            }
+            div.reward-members{
+                font-weight: 300;
+                font-style: italic;
+                font-size: 14px;
+            }
+            div.reward-action{
+                a{
+                    font-weight: 300;
+                    color: @dark;
+                    text-decoration: underline;
+                    font-size: 14px;
+                    &:hover{
+                        color: @orange;
+                    }
                 }
             }
         }

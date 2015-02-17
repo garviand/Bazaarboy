@@ -310,6 +310,7 @@ def manage(request, id, params, user):
             }
     checked_in = purchase_items.exclude(Q(checked_in_time = None)).count()
     purchases = OrderedDict(reversed(sorted(purchases.items())))
+    rewards = Reward_item.objects.filter(owner = profiles[0], quantity__gt = 0)
     return render(request, 'event/manage.html', locals())
 
 @login_required()

@@ -8577,16 +8577,14 @@ div#raffle-modal div.empty-state-container div.empty-state-content div.to-dash {
   margin-left: 0;
   padding-right: 0;
 }
-div#raffle-modal div.empty-state-container div.empty-state-content a.primary-btn {
+div#raffle-modal div.empty-state-container div.empty-state-content div.to-dash a {
   display: block;
   width: 100%;
   margin-top: 20px;
-  padding-top: 11px;
-  padding-bottom: 14px;
   font-size: 15px;
   text-transform: uppercase;
 }
-div#raffle-modal div.empty-state-container div.empty-state-content a.primary-btn:hover {
+div#raffle-modal div.empty-state-container div.empty-state-content div.to-dash a:hover {
   color: #FFF;
 }
 div#raffle-modal div.empty-state-container div.empty-state-content div.close-launch-modal {
@@ -8601,6 +8599,40 @@ div#raffle-modal div.empty-state-container div.empty-state-content div.close-lau
   right: 0;
   color: #c57724;
   font-weight: normal;
+}
+div#raffle-modal div.reward-container {
+  display: none;
+}
+div#raffle-modal div.reward-container div.headline {
+  padding-top: 20px;
+  padding-bottom: 20px;
+}
+div#raffle-modal div.reward-container div.reward {
+  padding: 12px 5px;
+  margin-bottom: 10px;
+  border-radius: 3px;
+  border: #7a7a7a thin solid;
+}
+div#raffle-modal div.reward-container div.reward:hover {
+  background: #f6f6f6;
+}
+div#raffle-modal div.reward-container div.reward div.reward-name {
+  font-size: 16px;
+  font-weight: 500;
+}
+div#raffle-modal div.reward-container div.reward div.reward-members {
+  font-weight: 300;
+  font-style: italic;
+  font-size: 14px;
+}
+div#raffle-modal div.reward-container div.reward div.reward-action a {
+  font-weight: 300;
+  color: #4a4a4a;
+  text-decoration: underline;
+  font-size: 14px;
+}
+div#raffle-modal div.reward-container div.reward div.reward-action a:hover {
+  color: #c57724;
 }
 #wrapper-sidebar form.list_search {
   position: relative;
@@ -12066,8 +12098,6 @@ div#wrapper-reward-dashboard div#reward-dashboard {
 div#wrapper-reward-dashboard div#reward-dashboard a.new-reward-btn {
   text-align: center;
   display: block;
-  padding-top: 9px;
-  padding-bottom: 12px;
   color: #ffffff;
   font-size: 15px;
   text-transform: uppercase;

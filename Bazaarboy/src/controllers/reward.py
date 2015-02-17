@@ -225,7 +225,7 @@ def add_item(request, params, user):
     return json_response(response)
 
 @login_required()
-@validate('POST', ['item', 'email'], ['owner'])
+@validate('POST', ['item'], ['owner', 'email'])
 def add_claim(request, params, user):
     if not Reward_item.objects.filter(id = params['item']).exists():
         response = {
@@ -251,7 +251,7 @@ def add_claim(request, params, user):
         }
         return json_response(response)
     if params['owner'] is None:
-        if not REGEX_EMAIL.match(params['email']):
+        if not params['email'] or not REGEX_EMAIL.match(params['email']):
             response = {
                 'status':'FAIL',
                 'error':'INVALID_EMAIL',

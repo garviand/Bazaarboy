@@ -147,9 +147,14 @@
         winner = $("div.list_guests div.guest").not('div.guest_template').eq(winner_id);
         winner_name = winner.find("div.name").html();
         winner_email = winner.attr('data-email');
+        winner_id = winner.attr('data-user');
         $('div#raffle-modal div.subtext-name').html(winner_name);
         $('div#raffle-modal div.subtext-email').html(winner_email);
+        $('input[name=reward_user]').val(winner_id);
         $('div#raffle-modal').foundation('reveal', 'open');
+      });
+      $('a.show-rewards-btn').click(function() {
+        $('div.reward-container').slideDown(200);
       });
       $("div.guest-add-invite a.start-guest-invite").click(function(e) {
         e.preventDefault();
