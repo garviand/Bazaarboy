@@ -132,7 +132,11 @@ def index(request, params, user):
                                        is_deleted = False,
                                        organizers__in = pids).order_by('-id')
     draftEventsCount = draftEvents.count()
-    draftEvents = draftEvents.filter()[:10]
+    draftEvents = draftEvents.filter()[:30]
+    for i in range(0, len(draftEvents)):
+        draftEvents[i].creator = True
+        if not Organizer.objects.filter(event = draftEvents[i], profile__managers = user, is_creator = True).exists():
+            draftEvents[i].creator = False
     collaboration_requests = Collaboration_request.objects.filter(profile__in = pids, accepted__isnull = True, is_rejected = False).exclude(event__organizer__profile__in = pids)
     return render(request, 'index/index.html', locals())
 
