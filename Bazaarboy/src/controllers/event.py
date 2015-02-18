@@ -290,6 +290,7 @@ def manage(request, id, params, user):
                 'refundable': refundable,
                 'name': item.purchase.owner.first_name + ' ' + item.purchase.owner.last_name,
                 'email': item.purchase.owner.email,
+                'owner_id': item.purchase.owner.id,
                 'code': item.purchase.code,
                 'checked_in': checkedIn,
                 'tickets': {

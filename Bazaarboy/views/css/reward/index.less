@@ -78,47 +78,24 @@ div#wrapper-reward-dashboard{
     }
 }
 
-div#new-reward-modal{
-    div.new-reward-title{
-        h3{
-            font-weight: bold;
-            font-size: 24px;
-            color: @dark;
+div#send-reward-modal{
+    form{
+        > div{
+            margin-top: 15px;
         }
-    }
-    input{
-        display: block;
-        width: 100%;
-        padding: 12px 10px;
-        font-weight: 300;
-        font-size: 14px;
-        border-radius: 3px;
-        border: #D4D4D4 thin solid;
-    }
-    div.new-reward-inputs{
-        margin-top: 10px;
-        a.create-reward{
-            display: block;
-            width: 100%;
-            padding-top: 11px;
-            padding-bottom: 13px;
-            &:hover, &:focus{
-                color: @white;
+        label, input{
+            margin-bottom: 0;
+        }
+        div.organizer{
+            div.organizer-name{
+                padding-top: 10px;
+            }
+            div.organizer-image{
+                text-align: center;
+                img{
+                    max-height: 40px;
+                }
             }
         }
-
-    }
-    div.new-reward-cancel{
-        margin-top: 20px;
-        a.close-reward-modal{
-            color: @orange;
-            font-size: 14px;
-            font-weight: 300;
-            text-decoration: underline;
-            font-style: italic;
-        }
-    }
-    div.controls{
-        margin-top: 20px;
     }
 }

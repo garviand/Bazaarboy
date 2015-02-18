@@ -11,17 +11,23 @@ Bazaarboy.reward.new =
         swal 'Description Cannot Be Blank'
         return
       description = $('textarea[name=description]').val()
-      if $('textarea[name=details]').val().trim() is ''
-        swal 'Details Cannot Be Blank'
+      if not $.isNumeric($('input[name=value]').val()) or $('input[name=value]').val() <= 0
+        swal 'Value Must Be a Positive Number'
         return
-      details = $('textarea[name=details]').val()
+      value = $('input[name=value]').val()
       if scope.attachment?
         attachmentId = scope.attachment.pk
       else
         attachmentId = ''
-      Bazaarboy.post 'reward/create/', {profile:profileId, name:name, description:description, details:details, attachment:attachmentId}, (response) ->
+      Bazaarboy.post 'rewards/create/', {profile:profileId, name:name, description:description, value:value, attachment:attachmentId}, (response) ->
         if response.status is 'OK'
-          console.log response
+          swal
+            type: "success"
+            title: 'Reward Created'
+            text: 'You can now send it to your own attendees, or allow other organizations to share your reward.'
+            , () ->
+              Bazaarboy.redirect 'rewards/'
+              return
         else
           swal response.message
         return
@@ -36,8 +42,8 @@ Bazaarboy.reward.new =
         $('a.add-attachment').html('loading...')
         csrfmiddlewaretoken = $('input[name=csrfmiddlewaretoken]').val()
         data.formData = {name:data.files[0].name, csrfmiddlewaretoken: csrfmiddlewaretoken}
-        if data.files[0].type not in ['application/pdf', 'image/jpeg', 'image/jpg', 'image/png', 'image/gif']
-          swal 'Must Be A PDF, PNG, JPG or GIF'
+        if data.files[0].type not in ['image/jpeg', 'image/jpg', 'image/png', 'image/gif']
+          swal 'Must Be A PNG, JPG or GIF'
         else
           data.submit()
         return

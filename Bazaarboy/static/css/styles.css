@@ -12135,45 +12135,21 @@ div#wrapper-reward-dashboard div#reward-dashboard div.rewards div.reward div.rew
 div#wrapper-reward-dashboard div#reward-dashboard div.rewards div.reward div.reward-action a:hover {
   color: #c57724;
 }
-div#new-reward-modal div.new-reward-title h3 {
-  font-weight: bold;
-  font-size: 24px;
-  color: #4a4a4a;
+div#send-reward-modal form > div {
+  margin-top: 15px;
 }
-div#new-reward-modal input {
-  display: block;
-  width: 100%;
-  padding: 12px 10px;
-  font-weight: 300;
-  font-size: 14px;
-  border-radius: 3px;
-  border: #D4D4D4 thin solid;
+div#send-reward-modal form label,
+div#send-reward-modal form input {
+  margin-bottom: 0;
 }
-div#new-reward-modal div.new-reward-inputs {
-  margin-top: 10px;
+div#send-reward-modal form div.organizer div.organizer-name {
+  padding-top: 10px;
 }
-div#new-reward-modal div.new-reward-inputs a.create-reward {
-  display: block;
-  width: 100%;
-  padding-top: 11px;
-  padding-bottom: 13px;
+div#send-reward-modal form div.organizer div.organizer-image {
+  text-align: center;
 }
-div#new-reward-modal div.new-reward-inputs a.create-reward:hover,
-div#new-reward-modal div.new-reward-inputs a.create-reward:focus {
-  color: #ffffff;
-}
-div#new-reward-modal div.new-reward-cancel {
-  margin-top: 20px;
-}
-div#new-reward-modal div.new-reward-cancel a.close-reward-modal {
-  color: #c57724;
-  font-size: 14px;
-  font-weight: 300;
-  text-decoration: underline;
-  font-style: italic;
-}
-div#new-reward-modal div.controls {
-  margin-top: 20px;
+div#send-reward-modal form div.organizer div.organizer-image img {
+  max-height: 40px;
 }
 div#wrapper-list-dashboard div.empty-state-container {
   margin-top: 40px;

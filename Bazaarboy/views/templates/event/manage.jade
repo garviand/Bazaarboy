@@ -114,7 +114,7 @@ block content
                                 div.name.medium-4.columns &nbsp;
                             {% for k, purchase in purchases.items %}
                             {% with tickets=purchase.tickets.items %}
-                            div.guest.row(class="{% if purchase.checked_in %}checked_in{% endif %}", data-ticket="{% for k, ticket in tickets %}{% if not forloop.first %},{% endif %}{{ ticket.id }}{% endfor %}", data-id="{{ purchase.id }}", data-email="{{ purchase.email }}", data-user="{{ purchase.owner.id }}")
+                            div.guest.row(class="{% if purchase.checked_in %}checked_in{% endif %}", data-ticket="{% for k, ticket in tickets %}{% if not forloop.first %},{% endif %}{{ ticket.id }}{% endfor %}", data-id="{{ purchase.id }}", data-email="{{ purchase.email }}", data-user="{{ purchase.owner_id }}")
                                 div.checkin.medium-2.small-12.columns.hide-for-small-only
                                     a.secondary-btn(href="javascript:;") 
                                         {% if purchase.checked_in %}Arrived{% else %}Check In{% endif %}

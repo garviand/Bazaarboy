@@ -8,6 +8,8 @@ block sidebar
         | Events
     +sidebarItem('ss-database')(href="{% url list:index %}")
         | Lists
+    +sidebarItem('ss-tag')(href="{% url reward:index %}")
+        | Rewards
     +sidebarItem('ss-share')(href="{% url user:settings %}")
         | Settings
 
@@ -36,11 +38,11 @@ block content
                         textarea(name="description", placeholder="Reward Description")
                 div.row
                     div.small-12.columns
-                        label Reward Details
-                        textarea(name="details", placeholder="Reward Details")
+                        label Reward Value ($)
+                        input(type="text", name="value", placeholder="Value of the reward in Dollars (USD)")
                 div.row
                     div.small-12.medium-4.columns
-                        label Attachment (JPG, PNG, PDF)
+                        label Attachment (JPG, PNG, GIF)
                         input.hide(type="file", name="attachment_file")
                         a.add-attachment.primary-btn-inverse.full-btn(href="javascript:;") Add Attachment
                         br

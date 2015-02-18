@@ -156,6 +156,25 @@
       $('a.show-rewards-btn').click(function() {
         $('div.reward-container').slideDown(200);
       });
+      $('a.send-reward-btn').click(function() {
+        var rewardId, rewardUser;
+        rewardId = $(this).data('id');
+        rewardUser = $('input[name=reward_user]').val();
+        return Bazaarboy.post('rewards/claim/add/', {
+          item: rewardId,
+          owner: rewardUser
+        }, function(response) {
+          if (response.status === 'OK') {
+            swal({
+              type: 'success',
+              title: 'Reward Sent',
+              text: 'The reward has been sent.'
+            });
+          } else {
+            swal(response.message);
+          }
+        });
+      });
       $("div.guest-add-invite a.start-guest-invite").click(function(e) {
         e.preventDefault();
         $('div#invite-modal').foundation('reveal', 'open');

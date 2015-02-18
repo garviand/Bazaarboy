@@ -123,6 +123,18 @@ Bazaarboy.event.manage =
         $('a.show-rewards-btn').click () ->
             $('div.reward-container').slideDown(200)
             return
+        $('a.send-reward-btn').click () ->
+            rewardId = $(this).data('id')
+            rewardUser = $('input[name=reward_user]').val()
+            Bazaarboy.post 'rewards/claim/add/', {item:rewardId, owner:rewardUser}, (response) ->
+                if response.status is 'OK'
+                    swal
+                        type: 'success'
+                        title: 'Reward Sent'
+                        text: 'The reward has been sent.'
+                else
+                    swal response.message
+                return
         # INVITE MODAL INIT
         $("div.guest-add-invite a.start-guest-invite").click (e) ->
             e.preventDefault()

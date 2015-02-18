@@ -40,7 +40,7 @@ def new(request, user):
     return render(request, 'reward/new.html', locals())
 
 @login_required()
-@validate('POST', ['profile', 'name', 'description', 'details'], ['attachment'])
+@validate('POST', ['profile', 'name', 'description', 'value'], ['attachment'])
 def create(request, params, user):
     """
     Create a reward
@@ -78,15 +78,14 @@ def create(request, params, user):
             'message':'The description must be within 350 characters.'
         }
         return json_response(response)
-    params['details'] = cgi.escape(params['details'])
-    if len(params['details']) > 350:
+    if params['value'] <= 0:
         response = {
             'status':'FAIL',
-            'error':'INVALID_NAME',
-            'message':'The details must be within 350 characters.'
+            'error':'BAD_VALUE',
+            'message':'Reward value must be a positive number.'
         }
         return json_response(response)
-    reward = Reward (creator = profile, name = params['name'], description = params['description'], details = params['details'])
+    reward = Reward (creator = profile, name = params['name'], description = params['description'], value = params['value'])
     if params['attachment'] is not None:
         if Pdf.objects.filter(id = params['attachment']).exists():
             reward.attachment = Pdf.objects.get(id = params['attachment'])
@@ -105,7 +104,7 @@ def create(request, params, user):
     return json_response(response)
 
 @login_required()
-@validate('POST', ['reward', 'name', 'description', 'details'], ['attachment'])
+@validate('POST', ['reward', 'name', 'description', 'value'], ['attachment'])
 def edit(request, params, user):
     """
     Edit a reward
@@ -143,17 +142,16 @@ def edit(request, params, user):
             'message':'The description must be within 350 characters.'
         }
         return json_response(response)
-    params['details'] = cgi.escape(params['details'])
-    if len(params['details']) > 350:
+    if params['value'] <= 0:
         response = {
             'status':'FAIL',
-            'error':'INVALID_NAME',
-            'message':'The details must be within 350 characters.'
+            'error':'BAD_VALUE',
+            'message':'Reward value must be a positive number.'
         }
         return json_response(response)
     reward.name = params['name']
     reward.description = params['description']
-    reward.details = params['details']
+    reward.value = params['value']
     if params['attachment'] is not None:
         if Pdf.objects.filter(id = params['attachment']).exists():
             reward.attachment = Pdf.objects.get(id = params['attachment'])

@@ -448,7 +448,7 @@ class Reward(models.Model):
     creator = models.ForeignKey('Profile')
     name = models.CharField(max_length = 150)
     description = models.CharField(max_length = 350)
-    details = models.CharField(max_length = 350)
+    value = models.FloatField()
     attachment = models.ForeignKey('Pdf', null = True, default = None, on_delete = models.SET_NULL)
     is_deleted = models.BooleanField(default = False)
     created_time = models.DateTimeField(auto_now_add = True)

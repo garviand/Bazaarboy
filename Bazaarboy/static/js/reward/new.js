@@ -5,7 +5,7 @@
       var scope;
       scope = this;
       $('a.create-reward').click(function() {
-        var attachmentId, description, details, name;
+        var attachmentId, description, name, value;
         if ($('input[name=name]').val().trim() === '') {
           swal('Name Cannot Be Blank');
           return;
@@ -16,25 +16,31 @@
           return;
         }
         description = $('textarea[name=description]').val();
-        if ($('textarea[name=details]').val().trim() === '') {
-          swal('Details Cannot Be Blank');
+        if (!$.isNumeric($('input[name=value]').val()) || $('input[name=value]').val() <= 0) {
+          swal('Value Must Be a Positive Number');
           return;
         }
-        details = $('textarea[name=details]').val();
+        value = $('input[name=value]').val();
         if (scope.attachment != null) {
           attachmentId = scope.attachment.pk;
         } else {
           attachmentId = '';
         }
-        Bazaarboy.post('reward/create/', {
+        Bazaarboy.post('rewards/create/', {
           profile: profileId,
           name: name,
           description: description,
-          details: details,
+          value: value,
           attachment: attachmentId
         }, function(response) {
           if (response.status === 'OK') {
-            console.log(response);
+            swal({
+              type: "success",
+              title: 'Reward Created',
+              text: 'You can now send it to your own attendees, or allow other organizations to share your reward.'
+            }, function() {
+              Bazaarboy.redirect('rewards/');
+            });
           } else {
             swal(response.message);
           }
@@ -54,8 +60,8 @@
             name: data.files[0].name,
             csrfmiddlewaretoken: csrfmiddlewaretoken
           };
-          if ((_ref = data.files[0].type) !== 'application/pdf' && _ref !== 'image/jpeg' && _ref !== 'image/jpg' && _ref !== 'image/png' && _ref !== 'image/gif') {
-            swal('Must Be A PDF, PNG, JPG or GIF');
+          if ((_ref = data.files[0].type) !== 'image/jpeg' && _ref !== 'image/jpg' && _ref !== 'image/png' && _ref !== 'image/gif') {
+            swal('Must Be A PNG, JPG or GIF');
           } else {
             data.submit();
           }
