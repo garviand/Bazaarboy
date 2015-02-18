@@ -39,7 +39,7 @@ def email_hook(request, params):
     """
     mandrill_info = json.loads(params['mandrill_events'])
     for info in mandrill_info:
-        if 'invite_id' in info['msg']['metadata']:
+        if 'metadata' in info['msg'] and 'invite_id' in info['msg']['metadata']:
             if Invite.objects.filter(id = info['msg']['metadata']['invite_id'].split("-", 1)[-1]).exists():
                 invite = Invite.objects.get(id = info['msg']['metadata']['invite_id'].split("-", 1)[-1])
                 stat, created = Invite_stat.objects.get_or_create(email_id = info['_id'])
@@ -55,7 +55,7 @@ def email_hook(request, params):
                     stat.zip_code = info['location']['postal_code']
                 stat.save()
                 return json_response(serialize_one(stat))
-        if 'follow_up_id' in info['msg']['metadata']:
+        if 'metadata' in info['msg'] and 'follow_up_id' in info['msg']['metadata']:
             if Follow_up.objects.filter(id = info['msg']['metadata']['follow_up_id'].split("-", 1)[-1]).exists():
                 follow_up = Follow_up.objects.get(id = info['msg']['metadata']['follow_up_id'].split("-", 1)[-1])
                 stat, created = Follow_up_stat.objects.get_or_create(email_id = info['_id'])
