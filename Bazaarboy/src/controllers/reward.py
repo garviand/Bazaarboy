@@ -6,6 +6,7 @@ import cgi
 from kernel.models import *
 from src.controllers.request import *
 from src.serializer import serialize_one
+from src.email import sendReward
 from datetime import timedelta
 from django.utils import timezone
 from src.regex import REGEX_EMAIL, REGEX_NAME, REGEX_SLUG
@@ -272,6 +273,7 @@ def add_claim(request, params, user):
     item.quantity -= 1
     item.save()
     claim.save()
+    sendReward(claim)
     response = {
         'status':'OK',
         'reward_item':serialize_one(item),
