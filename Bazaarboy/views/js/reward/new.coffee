@@ -18,7 +18,8 @@ Bazaarboy.reward.new =
       if scope.attachment?
         attachmentId = scope.attachment.pk
       else
-        attachmentId = ''
+        swal 'Must Include An Image for the Reward'
+        return
       Bazaarboy.post 'rewards/create/', {profile:profileId, name:name, description:description, value:value, attachment:attachmentId}, (response) ->
         if response.status is 'OK'
           swal

@@ -157,9 +157,13 @@
         $('div.reward-container').slideDown(200);
       });
       $('a.send-reward-btn').click(function() {
-        var rewardId, rewardUser;
+        var button, quantityAmount, quantityElement, rewardId, rewardUser;
+        button = $(this);
+        button.html('Sending...');
         rewardId = $(this).data('id');
         rewardUser = $('input[name=reward_user]').val();
+        quantityElement = $(this).closest('.reward').find('span.quantity');
+        quantityAmount = parseInt(quantityElement.html());
         return Bazaarboy.post('rewards/claim/add/', {
           item: rewardId,
           owner: rewardUser
@@ -170,8 +174,13 @@
               title: 'Reward Sent',
               text: 'The reward has been sent.'
             });
+            quantityElement.html(quantityAmount - 1);
+            $('div#raffle-modal').foundation('reveal', 'close');
+            $('div.reward-container').slideUp(200);
+            button.html('Send');
           } else {
             swal(response.message);
+            button.html('Send');
           }
         });
       });

@@ -1,34 +1,49 @@
 (function() {
   Bazaarboy.reward.claim = {
+    claiming: false,
     init: function() {
       var scope;
       scope = this;
       $('form#claim-form').submit(function(e) {
         var params;
-        e.preventDefault();
-        params = $('form#claim-form').serializeObject();
-        if (params.phone.trim() === '') {
-          params.phone = void 0;
-        }
-        if (params.first_name === '') {
-          swal('Must Enter A First Name');
-          return;
-        }
-        if (params.last_name === '') {
-          swal('Must Enter A Last Name');
-          return;
-        }
-        if (params.email === '') {
-          swal('Must Enter An Email');
-          return;
-        }
-        return Bazaarboy.post('rewards/claim/complete/', params, function(response) {
-          if (response.status === 'OK') {
-            return console.log(response);
-          } else {
-            return console.log(response.message);
+        if (!scope.claiming) {
+          scope.claiming = true;
+          $('input.submit-claim').val('Claiming...');
+          e.preventDefault();
+          params = $('form#claim-form').serializeObject();
+          if (params.phone.trim() === '') {
+            params.phone = void 0;
           }
-        });
+          if (params.first_name === '') {
+            swal('Must Enter A First Name');
+            $('input.submit-claim').val('Claim Reward!');
+            scope.claiming = false;
+            return;
+          }
+          if (params.last_name === '') {
+            swal('Must Enter A Last Name');
+            $('input.submit-claim').val('Claim Reward!');
+            scope.claiming = false;
+            return;
+          }
+          if (params.email === '') {
+            swal('Must Enter An Email');
+            $('input.submit-claim').val('Claim Reward!');
+            scope.claiming = false;
+            return;
+          }
+          Bazaarboy.post('rewards/claim/complete/', params, function(response) {
+            scope.claiming = false;
+            $('input.submit-claim').val('Claim Reward!');
+            if (response.status === 'OK') {
+              $('div.claim-success b.code').html(response.claim.code);
+              $('div.claim-inputs').addClass('hide');
+              return $('div.claim-success').removeClass('hide');
+            } else {
+              return swal(response.message);
+            }
+          });
+        }
       });
     }
   };

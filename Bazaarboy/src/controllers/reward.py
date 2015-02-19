@@ -28,7 +28,7 @@ def index(request, user):
     for reward in rewards:
         items = Reward_item.objects.filter(reward = reward)
         reward.given = items
-    reward_items = Reward_item.objects.filter(owner = profile).order_by('-expiration_time')
+    reward_items = Reward_item.objects.filter(owner = profile).order_by('expiration_time')
     for item in reward_items:
         claims = Claim.objects.filter(item = item)
         item.claims = claims
@@ -329,11 +329,14 @@ def complete_claim(request, params, user):
             }
             return json_response(response)
         sendMMS = True
-    if claim.owner:
+    if User.objects.filter(email = params['email']).exists():
+        claim.owner = User.objects.get(email = params['email'])
+        claim.owner.first_name = params['first_name']
+        claim.owner.last_name = params['last_name']
+    elif claim.owner:
         claim.owner.email = params['email']
         claim.owner.first_name = params['first_name']
         claim.owner.last_name = params['last_name']
-        claim.owner.save()
     else:
         if User.objects.filter(email = params['email']).exists():
             claim.owner = User.objects.get(email = params['email'])
@@ -341,7 +344,7 @@ def complete_claim(request, params, user):
             claim.owner.last_name = params['last_name']
         else:
             claim.owner = User(email = params['email'], first_name = params['first_name'], last_name = params['last_name'])
-        claim.owner.save()
+    claim.owner.save()
     claim.is_claimed = True
     claim.claimed_time = timezone.now()
     claim.save()
@@ -349,6 +352,9 @@ def complete_claim(request, params, user):
         claim.owner.phone = params['phone']
         claim.owner.save()
         sendClaimMMS(claim)
+    else:
+        #SEND AN EMAIL
+        pass
     response = {
         'status':'OK',
         'claim':serialize_one(claim)

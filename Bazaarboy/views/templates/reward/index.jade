@@ -52,6 +52,7 @@ block content
                     div.headline Current Rewards
                     hr
                     {% for reward_item in reward_items %}
+                    {% if reward_item.quantity > 0 %}
                     div
                         div.row.reward
                             div.small-6.columns.reward-name
@@ -61,6 +62,7 @@ block content
                                 | exp. {{ reward_item.expiration_time|date:"m/d/Y" }}
                             div.small-3.columns.text-right.reward-action
                                 a.send-reward(href="javascript:;") Reward Details
+                    {% endif %}
                     {% endfor %}
                 {% endif %}
                 {% if rewards.count > 0 %}

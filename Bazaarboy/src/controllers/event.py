@@ -2979,7 +2979,8 @@ def purchase(request, params, user):
             if timezone.now() < (event.start_time - timedelta(days = 1)):
                 dayBefore = event.start_time - timedelta(days = 1)
                 send_event_reminder.apply_async(args = [purchase, timezone.get_current_timezone()], eta = dayBefore)
-            sendEventConfirmationSMS(purchase)
+            if params['phone']:
+                sendEventConfirmationSMS(purchase)
             # Success
             response = {
                 'status':'OK',
@@ -3272,7 +3273,7 @@ def add_purchase(request, params, user):
         # Send confirmation email and sms
         if params['send_email'] and params['send_email'] == 'true':
             sendEventConfirmationEmail(purchase, True, inviter)
-            sendEventConfirmationSMS(purchase)
+            #sendEventConfirmationSMS(purchase)
         # Success
         response = {
             'status':'OK',

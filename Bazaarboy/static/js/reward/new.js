@@ -24,7 +24,8 @@
         if (scope.attachment != null) {
           attachmentId = scope.attachment.pk;
         } else {
-          attachmentId = '';
+          swal('Must Include An Image for the Reward');
+          return;
         }
         Bazaarboy.post('rewards/create/', {
           profile: profileId,

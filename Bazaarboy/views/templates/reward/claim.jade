@@ -33,6 +33,11 @@ block body
                                         input(type="hidden", name="claim_id", value="{{ claim.id }}")
                                         input(type="hidden", name="claim_token", value="{{ claim.token }}")
                                         input.primary-btn.full-btn.submit-claim(type="submit", value="Claim Reward!")
+                                div.row.claim-success.hide
+                                    div.small-12.columns
+                                        | Congrats on your reward! Go and redeem it with the code 
+                                        b.code &nbsp;
+                                        |!
 
 append script
     script(type="text/javascript", src="{{ STATIC_URL }}hashchange/jquery.ba-hashchange.min.js")

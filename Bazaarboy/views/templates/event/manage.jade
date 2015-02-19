@@ -150,7 +150,7 @@ block content
                     div.subtext.subtext-email example@example.com
                     div.row
                         {% if rewards.count > 0 %}
-                        div.large-6.medium-6.small-12.columns.to-dash
+                        div.large-6.medium-6.small-12.columns.to-dash.show-rewards-container
                             a.show-rewards-btn.secondary-btn(href="javascript:;") Send Reward
                         {% endif %}
                         div.large-6.medium-6.small-12.columns.to-dash
@@ -166,7 +166,8 @@ block content
                     div.small-8.columns.reward-name
                         | {{ reward.reward.name|truncatechars:30 }}
                     div.small-2.columns.text-right.reward-members
-                        | {{ reward.quantity }} Left
+                        span.quantity {{ reward.quantity }}
+                        | &nbsp;Left
                     div.small-2.columns.text-right.reward-action
                         a.send-reward-btn(href="javascript:;", data-id="{{ reward.id }}") Send
             {% endfor %}
