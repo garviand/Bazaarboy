@@ -3,6 +3,7 @@ Controller for rewards
 """
 
 import cgi
+import re
 from kernel.models import *
 from src.controllers.request import *
 from src.serializer import serialize_one
@@ -12,6 +13,9 @@ from django.utils import timezone
 from src.regex import REGEX_EMAIL, REGEX_NAME, REGEX_SLUG
 from django.shortcuts import render, redirect
 from django.db.models import F, Q, Count
+from src.sms import sendClaimMMS
+
+import pdb
 
 @login_required()
 def index(request, user):
@@ -39,6 +43,14 @@ def new(request, user):
     profiles = Profile.objects.filter(managers = user)
     profile = profiles[0]
     return render(request, 'reward/new.html', locals())
+
+@validate('GET', ['id', 'token'])
+def claim(request, params):
+    if not Claim.objects.filter(id = params['id'], token = params['token']).exists():
+        claim = None
+    else:
+        claim = Claim.objects.get(id = params['id'])
+    return render(request, 'reward/claim.html', locals())
 
 @login_required()
 @validate('POST', ['profile', 'name', 'description', 'value'], ['attachment'])
@@ -277,6 +289,68 @@ def add_claim(request, params, user):
     response = {
         'status':'OK',
         'reward_item':serialize_one(item),
+        'claim':serialize_one(claim)
+    }
+    return json_response(response)
+
+@login_required()
+@validate('POST', ['claim_id', 'claim_token', 'email', 'first_name', 'last_name'], ['phone'])
+def complete_claim(request, params, user):
+    if not Claim.objects.filter(id = params['claim_id'], token = params['claim_token']).exists():
+        response = {
+            'status':'FAIL',
+            'error':'CLAIM_NOT_FOUND',
+            'message':'The reward doesn\'t exist.'
+        }
+        return json_response(response)
+    claim = Claim.objects.get(id = params['claim_id'])
+    if claim.is_claimed:
+        response = {
+            'status':'FAIL',
+            'error':'ALREADY_CLAIMED',
+            'message':'This reward has already been claimed.'
+        }
+        return json_response(response)
+    if not REGEX_EMAIL.match(params['email']):
+        response = {
+            'status':'FAIL',
+            'error':'INVALID_EMAIL',
+            'message':'Email format is invalid.'
+        }
+        return json_response(response)
+    sendMMS = False
+    if params['phone'] is not None:
+        params['phone'] = re.compile(r'[^\d]+').sub('', params['phone'])
+        if len(params['phone']) != 10:
+            response = {
+                'status':'FAIL',
+                'error':'INVALID_PHONE',
+                'message':'The phone number is invalid. Just use numbers (no spaces or \'-\').'
+            }
+            return json_response(response)
+        sendMMS = True
+    if claim.owner:
+        claim.owner.email = params['email']
+        claim.owner.first_name = params['first_name']
+        claim.owner.last_name = params['last_name']
+        claim.owner.save()
+    else:
+        if User.objects.filter(email = params['email']).exists():
+            claim.owner = User.objects.get(email = params['email'])
+            claim.owner.first_name = params['first_name']
+            claim.owner.last_name = params['last_name']
+        else:
+            claim.owner = User(email = params['email'], first_name = params['first_name'], last_name = params['last_name'])
+        claim.owner.save()
+    claim.is_claimed = True
+    claim.claimed_time = timezone.now()
+    claim.save()
+    if sendMMS:
+        claim.owner.phone = params['phone']
+        claim.owner.save()
+        sendClaimMMS(claim)
+    response = {
+        'status':'OK',
         'claim':serialize_one(claim)
     }
     return json_response(response)

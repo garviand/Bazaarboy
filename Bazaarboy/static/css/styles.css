@@ -12121,6 +12121,9 @@ div#wrapper-reward-dashboard div#reward-dashboard div.rewards div.reward div.rew
   font-size: 16px;
   font-weight: 500;
 }
+div#wrapper-reward-dashboard div#reward-dashboard div.rewards div.reward div.reward-name span {
+  font-weight: 300;
+}
 div#wrapper-reward-dashboard div#reward-dashboard div.rewards div.reward div.reward-members {
   font-weight: 300;
   font-style: italic;
@@ -12150,6 +12153,70 @@ div#send-reward-modal form div.organizer div.organizer-image {
 }
 div#send-reward-modal form div.organizer div.organizer-image img {
   max-height: 40px;
+}
+div#claim {
+  min-width: 100%;
+  min-height: 100%;
+  background: #F6F6F6;
+}
+div#claim div.phone input {
+  margin-bottom: 5px !important;
+}
+div#claim div.phone small {
+  margin-bottom: 15px;
+  display: block;
+}
+div#claim div#container {
+  width: 450px;
+  max-width: 98%;
+  margin: 0 auto;
+}
+div#claim div.request_logo_container {
+  margin-top: 15px;
+}
+div#claim div.request_logo_container img {
+  max-width: 100px;
+  max-height: 100px;
+}
+div#claim div.request_info {
+  margin-top: 15px;
+  line-height: 18px;
+}
+div#claim div#claim-container {
+  background: #ffffff;
+  margin-top: 75px;
+}
+div#claim div#claim-container form#claim-form div.logo-small {
+  margin: 0 auto;
+  margin-top: 50px;
+  height: 50px;
+  width: 50px;
+  border-radius: 50%;
+  background: url(/static/images/logo-big.png);
+  background-size: cover;
+}
+div#claim div#claim-container form#claim-form div.title {
+  font-weight: 500;
+  text-transform: uppercase;
+  margin-top: 16px;
+}
+div#claim div#claim-container form#claim-form div.title div.site-title {
+  font-size: 1.5em;
+}
+div#claim div#claim-container form#claim-form div.title span.page-title {
+  color: #9B9B9B;
+}
+div#claim div#claim-container form#claim-form hr.separator {
+  margin-top: 24px;
+  margin-bottom: 26px;
+}
+div#claim div#claim-container form#claim-form .claim-inputs input[type=text],
+div#claim div#claim-container form#claim-form .claim-inputs input[type=password] {
+  border-radius: 3px;
+  box-shadow: none;
+}
+div#claim div#claim-container form#claim-form .submit-claim {
+  margin-bottom: 16px;
 }
 div#wrapper-list-dashboard div.empty-state-container {
   margin-top: 40px;

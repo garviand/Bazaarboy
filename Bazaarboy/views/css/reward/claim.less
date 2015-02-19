@@ -1,0 +1,71 @@
+@import (reference) "vars.less";
+
+div#claim {
+    div.phone{
+        input{
+            margin-bottom: 5px !important;
+        }
+        small{
+            margin-bottom: 15px;
+            display: block;
+        }
+    }
+    min-width: 100%;
+    min-height: 100%;
+    background: #F6F6F6;
+    div#container{
+        width: 450px;
+        max-width: 98%;
+        margin: 0 auto;
+    }
+    div.request_logo_container{
+        margin-top: 15px;
+        img{
+            max-width: 100px;
+            max-height: 100px;
+        }
+    }
+    div.request_info{
+        margin-top: 15px;
+        line-height: 18px;
+    }
+    div#claim-container{
+        background: @white;
+        margin-top: 75px;
+        form#claim-form{
+            div.logo-small{
+                margin: 0 auto;
+                margin-top: 50px;
+                height: 50px;
+                width: 50px;
+                border-radius: 50%;
+                background: url(/static/images/logo-big.png);
+                background-size: cover;
+            }
+            div.title{
+                font-weight: 500;
+                text-transform: uppercase;
+                margin-top: 16px;
+                div.site-title{
+                    font-size: 1.5em;
+                }
+                span.page-title{
+                    color: #9B9B9B;
+                }
+            }
+            hr.separator{
+                margin-top: 24px;
+                margin-bottom: 26px;
+            }
+            .claim-inputs{
+                input[type=text], input[type=password]{
+                    border-radius: 3px;
+                    box-shadow: none;
+                }
+            }
+            .submit-claim{
+                margin-bottom: 16px;
+            }
+        }
+    }
+}

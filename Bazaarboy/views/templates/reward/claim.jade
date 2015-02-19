@@ -1,0 +1,39 @@
+// Index.Login
+
+extends ../layout
+
+block body
+    div#claim
+        div.row
+            div#container
+                div#claim-container
+                    form#claim-form
+                        div.row
+                            div.small-10.small-offset-1.columns
+                                div.row
+                                    div.small-12.columns.text-center.request_logo_container
+                                        img.request_logo(src="{{ claim.item.reward.creator.image.source.url }}")
+                                div.row
+                                    div.small-12.columns.request_info
+                                        | Claim your&nbsp;
+                                        b {{ claim.item.reward.name }}&nbsp;
+                                        | from '{{ claim.item.reward.creator.name }}'
+                                hr.separator
+                                div.row.claim-inputs
+                                    div.small-12.columns
+                                        input(name="first_name", type="text", placeholder="Your First Name", value="{{ claim.owner.first_name }}")
+                                    div.small-12.columns
+                                        input(name="last_name", type="text", placeholder="Your Last Name", value="{{ claim.owner.last_name }}")
+                                    div.small-12.columns
+                                        input(name="email", type="text", placeholder="Email", value="{{ claim.email }}")
+                                    div.small-12.columns.phone
+                                        input(name="phone", type="text", name="phone", placeholder="Phone # (optional)")
+                                        small *enter to recieve reward via MMS
+                                    div.small-12.columns
+                                        input(type="hidden", name="claim_id", value="{{ claim.id }}")
+                                        input(type="hidden", name="claim_token", value="{{ claim.token }}")
+                                        input.primary-btn.full-btn.submit-claim(type="submit", value="Claim Reward!")
+
+append script
+    script(type="text/javascript", src="{{ STATIC_URL }}hashchange/jquery.ba-hashchange.min.js")
+    script(type="text/javascript", src="{{ STATIC_URL }}js/reward/claim.js")

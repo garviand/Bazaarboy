@@ -11,7 +11,7 @@ block sidebar
         | Events
     +sidebarItem('ss-database')(href="{% url list:index %}")
         | Lists
-    +sidebarItem('ss-tag')(href="{% url reward:index %}")
+    +sidebarItem('ss-tag')(href="{% url reward:index %}")(class="selected")
         | Rewards
     +sidebarItem('ss-share')(href="{% url user:settings %}")
         | Settings
@@ -56,8 +56,9 @@ block content
                         div.row.reward
                             div.small-6.columns.reward-name
                                 | {{ reward_item.reward.name|truncatechars:30 }}
+                                span &nbsp;({{ reward_item.quantity }} Left)
                             div.small-3.columns.text-right.reward-members
-                                | {{ reward_item.quantity }} Left
+                                | exp. {{ reward_item.expiration_time|date:"m/d/Y" }}
                             div.small-3.columns.text-right.reward-action
                                 a.send-reward(href="javascript:;") Reward Details
                     {% endfor %}
@@ -74,7 +75,7 @@ block content
                             div.small-3.columns.text-right.reward-action
                                 a.send-reward-btn(href="javascript:;", data-id="{{ reward.id }}", data-name="{{ reward.name }}") Send Reward
                             div.small-3.columns.text-right.reward-action
-                                a.manage-reward(href="javascript:;", data-id="{{ reward.id }}") Manage Reward
+                                a.manage-reward(href="javascript:;", data-id="{{ reward.id }}") Manage/Redeem
                     {% endfor %}
                 {% endif %}
     div#send-reward-modal.reveal-modal.medium(data-reveal)

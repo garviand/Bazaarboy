@@ -6,6 +6,7 @@ import hashlib
 import os
 import random
 import string
+import uuid
 from django.db import models
 from django.db.models import Q, Sum, Count
 from django.utils import timezone
@@ -483,7 +484,7 @@ class Claim(models.Model):
         Override save to generate token at creation
         """
         if self.pk is None:
-            self.token = os.urandom(128).encode('base_64')[:128]
+            self.token = uuid.uuid4().hex
         if self.pk is None:
             self.code = randomConfirmationCode()
         super(Claim, self).save(*args, **kwargs)

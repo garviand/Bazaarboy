@@ -490,6 +490,7 @@ def sendReward(claim):
         firstName = ''
     df = DateFormat(claim.item.expiration_time)
     expirationDate = df.format('m/d/Y')
+
     mergeVars = [{
         'rcpt': claim.email,
         'vars': [
@@ -516,6 +517,14 @@ def sendReward(claim):
             {
                 'name': 'expiration', 
                 'content': expirationDate
+            },
+            {
+                'name': 'claim_id', 
+                'content': claim.id
+            },
+            {
+                'name': 'token', 
+                'content': claim.token
             }
         ]
     }]
