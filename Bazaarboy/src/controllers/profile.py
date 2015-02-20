@@ -15,6 +15,7 @@ from src.controllers.request import *
 from src.regex import REGEX_EMAIL, REGEX_URL, REGEX_EIN
 from src.serializer import serialize, serialize_one
 from src.email import sendProfileMessageEmail, sendNewAccountEmail
+from instagram.client import InstagramAPI
 
 import pdb
 
@@ -26,14 +27,20 @@ def index(request, id, user):
     if not Profile.objects.filter(id = id).exists():
         raise Http404
     profile = Profile.objects.get(id = id)
-    organizers = Organizer.objects.filter(profile = profile, event__is_launched = True, event__is_deleted = False)
-    created_events = []
-    collab_events = []
+    organizers = Organizer.objects.filter(profile = profile, event__is_launched = True, event__is_deleted = False, is_creator = True).order_by('-event__start_time')
+    current_events = []
+    past_events = []
     for organizer in organizers:
-        if organizer.is_creator:
-            created_events.append(organizer.event)
+        if not layout.hasStartedOrEnded(organizer.event):
+            current_events.append(organizer.event)
         else:
-            collab_events.append(organizer.event)
+            past_events.append(organizer.event)
+    current_events = reversed(current_events)
+    api = InstagramAPI(client_id=INSTAGRAM_CLIENT_ID, client_secret=INSTAGRAM_SECRET)
+    instagram_photos = api.tag_recent_media(count=20, tag_name='wchof')
+    images = []
+    for photo in instagram_photos[0]:
+        images.append({'high_res':photo.images['standard_resolution'].url, 'thumb':photo.images['thumbnail'].url})
     return render(request, 'profile/index.html', locals())
 
 @login_required()

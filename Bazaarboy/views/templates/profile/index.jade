@@ -43,28 +43,33 @@ block body
                                                 div.info 
                                                     span.bigger e:&nbsp;
                                                     | {{ profile.email }}
+                                                {% if profile.phone %}
                                                 div.info 
                                                     span.bigger p:&nbsp;
                                                     | {{ profile.phone }}
+                                                {% endif %}
                                         div.row.info-container
                                             div.small-12.columns.text-center
                                                 div.title.bigger Contact
                                                 div.info 
                                                     span.bigger e:&nbsp;
                                                     | {{ profile.email }}
+                                                {% if profile.phone %}
                                                 div.info 
                                                     span.bigger p:&nbsp;
                                                     | {{ profile.phone }}
+                                                {% endif %}
                                 div.small-12.medium-8.columns
                                     div.event-content
+                                        {% if current_events.count > 0 %}
                                         div.row
                                             div.small-12.columns
                                                 div.upcoming-events
                                                     div.row
                                                         div.small-12.columns
                                                             div.events-title.bigger Upcoming Events
-                                                    {% for event in created_events %}
-                                                    {% if not event|hasStartedOrEnded and event.cover %}
+                                                    {% for event in current_events %}
+                                                    {% if event.cover %}
                                                     div.row
                                                         div.small-12.columns
                                                             div.upcoming-event
@@ -81,6 +86,8 @@ block body
                                                     {% endif %}
                                                     {% endfor %}
                                         hr
+                                        {% endif %}
+                                        {% if past_events.count > 0 %}
                                         div.row
                                             div.small-12.columns
                                                 div.past-events
@@ -88,8 +95,8 @@ block body
                                                         div.small-12.columns
                                                             div.events-title.bigger Past Events
                                                     div.row.past-events-container
-                                                        {% for event in created_events %}
-                                                        {% if event|hasStartedOrEnded and event.cover %}
+                                                        {% for event in past_events %}
+                                                        {% if event.cover %}
                                                         div.small-12.medium-4.columns.end
                                                             div.past-event
                                                                 div.row
@@ -101,6 +108,25 @@ block body
                                                                             div.event-name {{ event.name }}
                                                         {% endif %}
                                                         {% endfor %}
+                                        hr
+                                        {% endif %}
+                                        {% if images.count > 0 %}
+                                        div.row
+                                            div.small-12.columns
+                                                div.photo-feed
+                                                    div.row
+                                                        div.small-12.columns
+                                                            div.events-title.bigger Photo Feed
+                                                    div.row
+                                                        div.small-12.columns
+                                                            div
+                                                                ul.clearing-thumbs.small-block-grid-2.medium-block-grid-5(data-clearing)
+                                                                    {% for image in images %}
+                                                                    li
+                                                                        a(href="{{ image.high_res }}")
+                                                                            img(src="{{ image.thumb }}")
+                                                                    {% endfor %}
+                                        {% endif %}
 
 
 

@@ -8317,6 +8317,7 @@ div#profile div#profile-container div.profile-body div.body-container div.body-b
   width: 40px;
   background: rgba(0, 0, 0, 0.5);
   border-top-left-radius: 2px;
+  transition: all .1s;
 }
 div#profile div#profile-container div.profile-body div.body-container div.body-bottom div.event-content div.event-image div.event-date div.month {
   padding-top: 4px;
@@ -8381,6 +8382,9 @@ div#profile div#profile-container div.profile-body div.body-container div.body-b
   font-size: 12px;
   line-height: 1rem;
 }
+div#profile div#profile-container div.profile-body div.body-container div.body-bottom div.event-content div.upcoming-events div.upcoming-event a:hover div.event-date {
+  background: #000000;
+}
 div#profile div#profile-container div.profile-body div.body-container div.body-bottom div.event-content div.past-events div.past-events-container {
   margin-right: .9375rem;
 }
@@ -8423,6 +8427,22 @@ div#profile div#profile-container div.profile-body div.body-container div.body-b
   border-bottom-left-radius: 2px;
   border-bottom-right-radius: 2px;
   width: 100%;
+  transition: all .1s;
+}
+div#profile div#profile-container div.profile-body div.body-container div.body-bottom div.event-content div.past-events div.past-event a:hover div.event-name {
+  background: #c57724;
+}
+div#profile div#profile-container div.profile-body div.body-container div.body-bottom div.event-content div.past-events div.past-event a:hover div.event-date {
+  background: #000000;
+}
+div#profile div#profile-container div.profile-body div.body-container div.body-bottom div.event-content div.photo-feed {
+  margin-right: .9375rem;
+}
+div#profile div#profile-container div.profile-body div.body-container div.body-bottom div.event-content div.photo-feed ul.clearing-thumbs li {
+  margin-right: 0 !important;
+}
+div#profile div#profile-container div.profile-body div.body-container div.body-bottom div.event-content div.photo-feed ul.clearing-thumbs li:hover {
+  opacity: .6;
 }
 div#wrapper-profile-new div.profile-new-container {
   overflow: hidden;
