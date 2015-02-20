@@ -9,6 +9,7 @@ from django.shortcuts import render, redirect
 from django.db.models import Q, Sum, Count
 from django.utils import timezone as tz
 from kernel.models import *
+from kernel.templatetags import layout
 from src.config import *
 from src.controllers.request import *
 from src.regex import REGEX_EMAIL, REGEX_URL, REGEX_EIN
@@ -24,25 +25,15 @@ def index(request, id, user):
     """
     if not Profile.objects.filter(id = id).exists():
         raise Http404
-    profile = Profile.objects.select_related().get(id = id)
-    pids = [profile.id]
-    manager = None
-    if Profile_manager.objects.filter(user = user, profile = profile).exists():
-        manager = Profile_manager.objects.get(user = user, profile = profile)
-    currentEvents = Event.objects.filter(Q(end_time = None, 
-                                           start_time__gt = tz.now()) | 
-                                         Q(end_time__isnull = False, 
-                                           end_time__gt = tz.now()),   
-                                         is_launched = True, 
-                                         organizers__in = pids) \
-                                 .order_by('start_time')
-    pastEvents = Event.objects.filter(Q(end_time = None, 
-                                        start_time__lt = tz.now()) | 
-                                      Q(end_time__isnull = False, 
-                                        end_time__lt = tz.now()), 
-                                      is_launched = True, 
-                                      organizers__in = pids) \
-                              .order_by('-start_time')
+    profile = Profile.objects.get(id = id)
+    organizers = Organizer.objects.filter(profile = profile)
+    created_events = []
+    collab_events = []
+    for organizer in organizers:
+        if organizer.is_creator:
+            created_events.append(organizer.event)
+        else:
+            collab_events.append(organizer.event)
     return render(request, 'profile/index.html', locals())
 
 @login_required()

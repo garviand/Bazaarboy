@@ -20,6 +20,7 @@ def index(request, params, user):
     """
     Index page
     """
+    print request.subdomain
     # Check if logged in
     if user is None:
         return render(request, 'index/landing.html', locals())
