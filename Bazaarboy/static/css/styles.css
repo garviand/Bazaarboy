@@ -8352,6 +8352,11 @@ div#profile div#profile-container div.profile-body div.body-container div.body-b
   padding-bottom: 25%;
 }
 @media only screen and (max-width: 40em) {
+  div#profile div#profile-container div.profile-body div.body-container div.body-bottom div.event-content div.upcoming-events div.upcoming-event div.event-image {
+    padding-bottom: 50%;
+  }
+}
+@media only screen and (max-width: 40em) {
   div#profile div#profile-container div.profile-body div.body-container div.body-bottom div.event-content div.upcoming-events div.upcoming-event div.event-info-container {
     padding-left: 0;
     margin-top: 20px;
@@ -8400,7 +8405,7 @@ div#profile div#profile-container div.profile-body div.body-container div.body-b
 }
 @media only screen and (max-width: 40em) {
   div#profile div#profile-container div.profile-body div.body-container div.body-bottom div.event-content div.past-events div.past-event div.event-image {
-    padding-bottom: 25%;
+    padding-bottom: 50%;
   }
 }
 div#profile div#profile-container div.profile-body div.body-container div.body-bottom div.event-content div.past-events div.past-event div.event-image div.event-name {
