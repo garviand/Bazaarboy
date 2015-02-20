@@ -453,49 +453,49 @@ block content
             +pastEvent()
             {% endfor %}
 
-    div.list-template.hide
-        div.row.list(data-id="")
-            div.small-9.columns.list-name
-            div.small-3.columns.text-right.list-action
-    div#add-list-modal.reveal-modal.medium(data-reveal)
-        input(type="hidden", name="event_id", value="")
-        input(type="hidden", name="profile_id", value="{{ profile.id }}")
-        div.row
-            div.small-12.columns.text-center
-                div.headline
-                    | Add&nbsp;'
-                    span.event-name name
-                    | ' Attendees to Lists &nbsp;(
-                    span.attendee-count 0
-                    | &nbsp;Attendees)
-        hr
-        div.row.new-list-inputs
-            div.medium-8.small-12.columns
-                input(name="list_name", placeholder="List Name (required)")
-            div.small-12.medium-4.columns
-                a.create-list.primary-btn(href="javascript:;") + Add New List
-        hr
-        div.row
-            div.small-12.columns.text-center
-                div.headline Choose Lists
-        div.row
-            div.small-12.columns.lists
-                {% for list in lists %}
-                div
-                    div.row.list(data-id="{{ list.id }}")
-                        div.small-9.columns.list-name
-                            | {{ list.name|truncatechars:40 }}
-                        div.small-3.columns.text-right.list-action
-                            | {{ list.items }} Membe{{ list.items|pluralize:"r,rs" }}
-                {% endfor %}
-        div.row
-            div.small-12.columns.submit-actions
-                div.row
-                    div.small-6.columns.status &nbsp;
-                    div.small-3.columns
-                        a.primary-btn.full-btn.submit-add-btn(href="javascript:;") Submit
-                    div.small-3.columns
-                        a.primary-btn-inverse.full-btn.add-cancel-btn(href="javascript:;") Cancel
+        div.list-template.hide
+            div.row.list(data-id="")
+                div.small-9.columns.list-name
+                div.small-3.columns.text-right.list-action
+        div#add-list-modal.reveal-modal.medium(data-reveal)
+            input(type="hidden", name="event_id", value="")
+            input(type="hidden", name="profile_id", value="{{ profile.id }}")
+            div.row
+                div.small-12.columns.text-center
+                    div.headline
+                        | Add&nbsp;'
+                        span.event-name name
+                        | ' Attendees to Lists &nbsp;(
+                        span.attendee-count 0
+                        | &nbsp;Attendees)
+            hr
+            div.row.new-list-inputs
+                div.medium-8.small-12.columns
+                    input(name="list_name", placeholder="List Name (required)")
+                div.small-12.medium-4.columns
+                    a.create-list.primary-btn(href="javascript:;") + Add New List
+            hr
+            div.row
+                div.small-12.columns.text-center
+                    div.headline Choose Lists
+            div.row
+                div.small-12.columns.lists
+                    {% for list in lists %}
+                    div
+                        div.row.list(data-id="{{ list.id }}")
+                            div.small-9.columns.list-name
+                                | {{ list.name|truncatechars:40 }}
+                            div.small-3.columns.text-right.list-action
+                                | {{ list.items }} Membe{{ list.items|pluralize:"r,rs" }}
+                    {% endfor %}
+            div.row
+                div.small-12.columns.submit-actions
+                    div.row
+                        div.small-6.columns.status &nbsp;
+                        div.small-3.columns
+                            a.primary-btn.full-btn.submit-add-btn(href="javascript:;") Submit
+                        div.small-3.columns
+                            a.primary-btn-inverse.full-btn.add-cancel-btn(href="javascript:;") Cancel
 
 append script
     script(src="{{ STATIC_URL }}js/index/index.js")

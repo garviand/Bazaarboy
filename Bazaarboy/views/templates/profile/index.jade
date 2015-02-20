@@ -11,12 +11,12 @@ block body
             div.profile-header
                 div.row.header-top
                     div.small-12.medium-6.columns
-                        a(href="{% url index %}")
-                            img(src="{{ STATIC_URL }}images/profile-logo.png")
+                        a.brand-logo(href="{% url index %}")
+                            //img(src="{{ STATIC_URL }}images/logo.png")
                     div.small-12.medium-6.columns.text-right
                         div.row
                             div.small-12.medium-4.medium-offset-8.large-offset-9.large-3.columns
-                                a.secondary-btn.full-btn(href="javascript:;") Learn More
+                                a.learn-more.secondary-btn.full-btn.medium-btn(href="javascript:;") Learn More
                 div.row.header-bottom
                     div.small-12.medium-8.columns
                         div.profile-name {{ profile.name }}
@@ -24,22 +24,84 @@ block body
                         div.subscribe-container
                             input(type="text", name="email", placeholder="Email Address")
             div.profile-body
-                div.row.body-top
+                div.row
                     div.small-12.columns
-                        div.profile-description {{ profile.description }}
-                div.row.body-bottom
-                    div.small-12.medium-4.columns
-                        div.business-info
-                            div.row
-                                div.small-12.columns
-                                    div.profile-logo
-                                        img(src="{{ profile.image.source.url }}")
-                            div.row
+                        div.body-container
+                            div.row.body-top
                                 div.small-12.columns.text-center
-                                    div.title Contact
-                                    div.info e: {{ profile.email }}
-                                    div.info p: {{ profile.phone }}
-                    div.small-12.medium-8.columns
+                                    div.profile-description Committed to building awareness for the cultural and artistic significance of chess.
+                            div.row.body-bottom
+                                div.small-12.medium-4.columns
+                                    div.business-info.text-center
+                                        div.row
+                                            div.small-12.columns
+                                                div.profile-logo
+                                                    img(src="{{ profile.image.source.url }}")
+                                        div.row.info-container
+                                            div.small-12.columns.text-center
+                                                div.title.bigger Contact
+                                                div.info 
+                                                    span.bigger e:&nbsp;
+                                                    | {{ profile.email }}
+                                                div.info 
+                                                    span.bigger p:&nbsp;
+                                                    | {{ profile.phone }}
+                                        div.row.info-container
+                                            div.small-12.columns.text-center
+                                                div.title.bigger Contact
+                                                div.info 
+                                                    span.bigger e:&nbsp;
+                                                    | {{ profile.email }}
+                                                div.info 
+                                                    span.bigger p:&nbsp;
+                                                    | {{ profile.phone }}
+                                div.small-12.medium-8.columns
+                                    div.event-content
+                                        div.row
+                                            div.small-12.columns
+                                                div.upcoming-events
+                                                    div.row
+                                                        div.small-12.columns
+                                                            div.events-title.bigger Upcoming Events
+                                                    {% for event in created_events %}
+                                                    {% if not event|hasStartedOrEnded and event.cover %}
+                                                    div.row
+                                                        div.small-12.columns
+                                                            div.upcoming-event
+                                                                div.row
+                                                                    a(href="{{ event|eventUrl }}")
+                                                                        div.event-image.small-12.medium-3.columns(style="background:url({{ event.cover.source.url }}); background-size:cover; background-position:center;") &nbsp;
+                                                                            div.event-date
+                                                                                div.month {{ event.start_time|date:'M' }}
+                                                                                div.day {{ event.start_time|date:'j' }}
+                                                                    div.small-12.medium-9.columns.event-info-container
+                                                                        div.event-info
+                                                                            a.event-name(href="{{ event|eventUrl }}") {{ event.name }}
+                                                                            div.event-summary {{ event.summary }}
+                                                    {% endif %}
+                                                    {% endfor %}
+                                        hr
+                                        div.row
+                                            div.small-12.columns
+                                                div.past-events
+                                                    div.row
+                                                        div.small-12.columns
+                                                            div.events-title.bigger Past Events
+                                                    div.row.past-events-container
+                                                        {% for event in created_events %}
+                                                        {% if event|hasStartedOrEnded and event.cover %}
+                                                        div.small-12.medium-4.columns.end
+                                                            div.past-event
+                                                                div.row
+                                                                    a(href="{{ event|eventUrl }}")
+                                                                        div.event-image.small-12.columns(style="background:url({{ event.cover.source.url }}); background-size:cover; background-position:center;") &nbsp;
+                                                                            div.event-date
+                                                                                div.month {{ event.start_time|date:'M' }}
+                                                                                div.day {{ event.start_time|date:'j' }}
+                                                                            div.event-name {{ event.name }}
+                                                        {% endif %}
+                                                        {% endfor %}
+
 
 
 append script

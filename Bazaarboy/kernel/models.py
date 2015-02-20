@@ -143,15 +143,6 @@ class Profile_manager(models.Model):
     is_creator = models.BooleanField(default = False)
     created_time = models.DateTimeField(auto_now_add = True)
 
-class Profile_page(models.Model):
-    """
-    Premium Profile Page
-    """
-    profile = models.ForeignKey('Profile')
-    cover = models.ForeignKey('Image', null = True, default = None)
-    is_active = models.BooleanField(default = False)
-    created_time = models.DateTimeField(auto_now_add = True)
-
 class Event(models.Model):
     """
     Event model

@@ -1,5 +1,247 @@
 @import (reference) "vars.less";
 
 div#profile {
-
+  .bigger{
+    font-size: 14px;
+    font-weight: bold;
+  }
+  div#profile-container{
+    div.profile-header{
+      background-image: url('../images/top-banner.jpg');
+      background-size: cover;
+      div.header-top{
+        padding-top: 50px;
+        @media @media_small{
+          text-align: center;
+        }
+        a.brand-logo{
+          img{
+            height: 45px;
+          }
+        }
+        a.learn-more{
+          @media @media_small{
+            display: none;
+          }
+        }
+      }
+      div.header-bottom{
+        padding-top: 150px;
+        padding-bottom: 80px;
+        @media @media_small{
+          padding-top: 50px;
+        }
+        div.profile-name{
+          color: @white;
+          font-size: 42px;
+          @media @media_small{
+            text-align: center;
+          }
+        }
+        div.subscribe-container{
+          background-color: rgba(0, 0, 0, .2);
+          padding: 5px;
+          border-radius: 4px;
+          @media @media_small{
+            margin-top: 20px;
+          }
+          input{
+            margin-bottom: 0;
+          }
+        }
+      }
+    }
+    div.profile-body{
+      border-top: 10px solid @medium_grey;
+      background: @light-grey;
+      padding-bottom: 50px;
+      div.body-container{
+        background: @white;
+        box-shadow: 0px 0px 3px rgba(0, 0, 0, 0.2);
+        padding-bottom: 50px;
+        div.body-top{
+          div.profile-description{
+            position: relative;
+            min-height: 70px;
+            top: -70px;
+            background: @white;
+            border-bottom: thin solid @medium_grey;
+            font-size: 20px;
+            color: @dark_grey;
+            padding-top: 24px;
+            padding-bottom: 24px;
+          }
+        }
+        div.body-bottom{
+          div.business-info{
+            word-wrap:break-word;
+            border-radius: 4px;
+            margin-left: 1.875rem;
+            padding-left: 10px;
+            padding-right: 10px;
+            @media @media_small{
+              margin-right: 1.875rem;
+            }
+            background: @medium_grey;
+            div.profile-logo{
+              position: relative;
+              top: -25px;
+              height: 150px;
+              width: 150px;
+              background-color: rgba(0, 0, 0, .1);
+              padding: 5px;
+              margin: 0 auto;
+              border-radius: 75px;
+              img{
+                border-radius: 70px;
+                height: 140px;
+                width: 140px;
+              }
+            }
+            div.info-container{
+              padding-bottom: 30px;
+              div.title{
+                color: @light-orange;
+                margin-bottom: 10px;
+              }
+              div.info{
+                margin-bottom: 5px;
+              }
+            }
+          }
+          div.event-content{
+            hr{
+              margin: 0;
+              margin-top: 20px;
+              margin-bottom: 30px;
+              margin-right: .9375rem;
+              @media @media_small{
+                margin-right: 0;
+              }
+            }
+            @media @media_small{
+              padding-left: 1.875rem;
+              padding-right: 2.8125rem;
+              margin-top: 20px;
+            }
+            div.events-title{
+              color: @dark_grey;
+              margin-bottom: 20px;
+            }
+            div.event-image{
+              position: relative;
+              height: 0;
+              border-radius: 2px;
+              div.event-date{
+                position: absolute;
+                top: 0;
+                left: 0;
+                height: 40px;
+                width: 40px;
+                background: rgba(0, 0, 0, 0.5);
+                border-top-left-radius: 2px;
+                div.month{
+                  padding-top: 4px;
+                  padding-bottom: 1px;
+                  width: 100%;
+                  text-align: center;
+                  color: @white;
+                  font-size: 12px;
+                  font-weight: bold;
+                  text-transform: uppercase;
+                }
+                div.day{
+                  width: 100%;
+                  text-align: center;
+                  color: @white;
+                  font-size: 18px;
+                  font-weight: bold;
+                }
+              }
+            }
+            div.upcoming-events{
+              div.upcoming-event{
+                margin-left: .9375rem;
+                margin-bottom: 20px;
+                @media @media_small{
+                  margin-left: 0;
+                }
+                > .row{
+                  @media @media_small{
+                    margin-left: 0;
+                  }
+                }
+                div.event-image{
+                  padding-bottom: 25%;
+                }
+                div.event-info-container{
+                  @media @media_small{
+                    padding-left: 0;
+                    margin-top: 20px;
+                  }
+                  div.event-info{
+                    margin-right: .9375rem;
+                    a.event-name{
+                      display: block;
+                      color: @orange;
+                      font-size: 16px;
+                      font-weight: bold;
+                      margin-bottom: 10px;
+                      &:hover{
+                        color: @light-orange;
+                      }
+                    }
+                    div.event-summary{
+                      color: @dark_grey;
+                      font-size: 12px;
+                      line-height: 1rem;
+                    }
+                  }
+                }
+              }
+            }
+            div.past-events{
+              div.past-events-container{
+                margin-right: .9375rem;
+              }
+              div.past-event{
+                margin-left: .9375rem;
+                margin-bottom: 20px;
+                padding-right: .9375rem;
+                @media @media_small{
+                  margin-left: 0;
+                  margin-right: -.9375rem;
+                  padding-right: 0;
+                }
+                > .row{
+                  @media @media_small{
+                    margin-left: 0;
+                  }
+                }
+                div.event-image{
+                  padding-bottom: 100%;
+                  @media @media_small{
+                    padding-bottom: 25%;
+                  }
+                  div.event-name{
+                    background: rgba(197, 119, 36, 0.6);
+                    padding: 5px;
+                    color: @white;
+                    position: absolute;
+                    font-size: 12px;
+                    line-height: 1rem;
+                    font-weight: bold;
+                    left: 0;
+                    bottom: 0;
+                    border-bottom-left-radius: 2px;
+                    border-bottom-right-radius: 2px;
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  }
 }

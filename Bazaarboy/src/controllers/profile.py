@@ -26,7 +26,7 @@ def index(request, id, user):
     if not Profile.objects.filter(id = id).exists():
         raise Http404
     profile = Profile.objects.get(id = id)
-    organizers = Organizer.objects.filter(profile = profile)
+    organizers = Organizer.objects.filter(profile = profile, event__is_launched = True, event__is_deleted = False)
     created_events = []
     collab_events = []
     for organizer in organizers:
