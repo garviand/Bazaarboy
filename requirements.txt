@@ -49,3 +49,4 @@ pygeocoder==1.2.5
 python-magic==0.4.6
 palette==0.2
 django-subdomains==2.0.4
+python-instagram==1.3.0
