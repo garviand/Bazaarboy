@@ -628,6 +628,7 @@
       if (design) {
         $('div#event-description div.description div.inner').redactor({
           buttons: ['formatting', 'bold', 'italic', 'deleted', 'fontcolor', 'alignment', '|', 'unorderedlist', 'orderedlist', 'outdent', 'indent', '|', 'horizontalrule', 'table', 'image', 'video', 'link', '|', 'html'],
+          plugins: ['instagram'],
           boldTag: 'b',
           italicTag: 'i',
           imageUpload: rootUrl + 'file/image/upload/',

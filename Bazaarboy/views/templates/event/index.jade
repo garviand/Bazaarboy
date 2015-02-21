@@ -10,6 +10,7 @@ append head
 
     {% if editable %}
     link(rel="stylesheet", href="{{ STATIC_URL }}jQueryUI/jquery-ui.css")
+    link(rel="stylesheet", href="//cdnjs.cloudflare.com/ajax/libs/font-awesome/4.0.3/css/font-awesome.min.css")
     link(rel="stylesheet", href="{{ STATIC_URL }}redactor/redactor.css")
     link(rel="stylesheet", href="{{ STATIC_URL }}pikaday/pikaday.css")
     {% endif %}
@@ -761,6 +762,7 @@ append script
     script(type="text/javascript", src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAasW6vqPCn18g6UMaFWV90qGMSo6pErwo&sensor=false&libraries=places")
     
     {% if editable %}
+    script(type="text/javascript", src="{{ STATIC_URL }}redactor/instagram.js")
     script(type="text/javascript", src="{{ STATIC_URL }}redactor/redactor.min.js")
     {% endif %}
     script(type="text/javascript", src="{{ STATIC_URL }}debounce/jquery.debounce.js")

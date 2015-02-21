@@ -537,6 +537,7 @@ Bazaarboy.event.index =
                     'horizontalrule', 'table', 'image', 'video', 'link', '|',
                     'html'
                 ]
+                plugins: ['instagram']
                 boldTag: 'b'
                 italicTag: 'i'
                 imageUpload: rootUrl + 'file/image/upload/'
