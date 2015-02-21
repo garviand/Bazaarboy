@@ -35,7 +35,7 @@ def index(request, id, user):
             current_events.append(organizer.event)
         else:
             past_events.append(organizer.event)
-    current_events = reversed(current_events)
+    current_events.reverse()
     api = InstagramAPI(client_id=INSTAGRAM_CLIENT_ID, client_secret=INSTAGRAM_SECRET)
     instagram_photos = api.tag_recent_media(count=20, tag_name='wchof')
     images = []
