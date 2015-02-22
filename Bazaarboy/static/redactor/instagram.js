@@ -5,8 +5,8 @@ RedactorPlugins.instagram = function(){
     getTemplate: function(){
       return String()
       + '<section id="redactor-modal-advanced">'
-      + '<label>Enter a Hashtag</label>'
-      + '<input style="display:block; margin-top:20px;" type="text" id="mymodal-textarea", placeholder="Hashtag (ex. nye2015, nofilter)" />'
+      + '<label>Insert Instagram Slideshow</label>'
+      + '<input style="display:block; margin-top:20px;" type="text" id="mymodal-textarea", placeholder="Enter Hashtag" />'
       + '</section>';
     },
     init: function(){
