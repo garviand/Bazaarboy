@@ -292,6 +292,7 @@ def manage(request, id, params, user):
                 'refundable': refundable,
                 'name': item.purchase.owner.first_name + ' ' + item.purchase.owner.last_name,
                 'email': item.purchase.owner.email,
+                'owner_id': item.purchase.owner.id,
                 'code': item.purchase.code,
                 'checked_in': checkedIn,
                 'tickets': {
@@ -312,6 +313,7 @@ def manage(request, id, params, user):
             }
     checked_in = purchase_items.exclude(Q(checked_in_time = None)).count()
     purchases = OrderedDict(reversed(sorted(purchases.items())))
+    rewards = Reward_item.objects.filter(owner = profiles[0], quantity__gt = 0)
     return render(request, 'event/manage.html', locals())
 
 @login_required()
@@ -1131,7 +1133,8 @@ def follow_up_attachment(request, user, params):
         newPdf.save()
         response = {
             'status': 'OK',
-            'pdf': serialize_one(newPdf)
+            'pdf': serialize_one(newPdf),
+            'url': newPdf.source.url
         }
         return json_response(response)
 

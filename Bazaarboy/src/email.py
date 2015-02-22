@@ -467,6 +467,69 @@ def sendResetRequestEmail(resetCode):
     }]
     return sendEmails(to, MANDRILL_FROM_NAME, subject, template, mergeVars)
 
+def sendReward(claim):
+    """
+    Reward Initial Email
+    """
+    to = [{
+        'email':claim.email
+    }]
+    subject = claim.item.reward.name + ' - Reward from ' + claim.item.reward.creator.name
+    template = 'reward'
+    if claim.item.reward.attachment:
+        rewardImage = '<img src="' + claim.item.reward.attachment.source.url.split("?", 1)[0] + '" style="max-width:520px;" mc:label="coupon_image" mc:edit="coupon_image">'
+    else:
+        rewardImage = ''
+    if claim.item.reward.creator.image:
+        profileLogo = '<img src="' + claim.item.reward.creator.image.source.url.split("?", 1)[0] + '" id="headerImage campaign-icon" mc:label="header_image" mc:edit="header_image" mc:allowdesigner="" mc:allowtext="" style="max-width:560px; max-height:100px;">'
+    else:
+        profileLogo = ''
+    if claim.owner:
+        firstName = ', ' + claim.owner.first_name
+    else:
+        firstName = ''
+    df = DateFormat(claim.item.expiration_time)
+    expirationDate = df.format('m/d/Y')
+
+    mergeVars = [{
+        'rcpt': claim.email,
+        'vars': [
+            {
+                'name':'profile_logo', 
+                'content':profileLogo
+            }, 
+            {
+                'name': 'reward_image', 
+                'content': rewardImage
+            },
+            {
+                'name': 'first_name', 
+                'content': firstName
+            },
+            {
+                'name': 'reward_name', 
+                'content': claim.item.reward.name
+            },
+            {
+                'name': 'reward_description', 
+                'content': claim.item.reward.description
+            },
+            {
+                'name': 'expiration', 
+                'content': expirationDate
+            },
+            {
+                'name': 'claim_id', 
+                'content': claim.id
+            },
+            {
+                'name': 'token', 
+                'content': claim.token
+            }
+        ]
+    }]
+    return sendEmails(to, MANDRILL_FROM_NAME, subject, template, mergeVars)
+
 def sendCollaborationRequest(collaboration):
     """
     Email prompting event collaboration

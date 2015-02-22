@@ -1,0 +1,124 @@
+extends ../layout
+
+block title
+    | Rewards Dashboard
+
+append head
+    link(rel="stylesheet", href="{{ STATIC_URL }}pikaday/pikaday.css")
+
+block sidebar
+    +sidebarItem('ss-newspaper')(href="{% url index %}")
+        | Events
+    +sidebarItem('ss-database')(href="{% url list:index %}")
+        | Lists
+    +sidebarItem('ss-tag')(href="{% url reward:index %}")(class="selected")
+        | Rewards
+    +sidebarItem('ss-share')(href="{% url user:settings %}")
+        | Settings
+
+block header
+    div.header-title.large-9.medium-10.columns.small-centered
+        div.row.clearfix
+            div.icon.left
+                span.ss-file
+            div.text.left
+                | Reward Management |
+                span.sub &nbsp;All Rewards
+
+block content
+    div#wrapper-reward-dashboard.large-9.medium-10.columns.small-centered
+        {% if rewards.count == 0 and reward_items.count == 0 %}
+        div.empty-state-container
+            div.row
+                div.medium-5.columns
+                    &nbsp;
+                div.medium-7.columns.end.empty-state-content
+                    div.text YOU HAVEN'T MADE A REWARD YET
+                    hr
+                    div.subtext Do some stuff with this thing
+                    div.row
+                        div.large-5.medium-7.small-9
+                            a.new-reward-btn(href="{% url reward:new %}")
+                                div.secondary-btn.btn.full-btn
+                                    | <span class="plus">+</span> Add New Reward
+        {% endif %}
+        div#reward-dashboard.small-12.columns
+            div.row.new-reward-container(class="{% if rewards.count == 0 %}hide{% endif %}")
+                div.medium-4.columns.new-reward
+                    a.new-reward-btn.primary-btn(href="{% url reward:new %}") + New Reward
+            div.row
+                {% if reward_items.count > 0 %}
+                div.small-12.columns.rewards
+                    div.headline Current Rewards
+                    hr
+                    {% for reward_item in reward_items %}
+                    {% if reward_item.quantity > 0 %}
+                    div
+                        div.row.reward
+                            div.small-6.columns.reward-name
+                                | {{ reward_item.reward.name|truncatechars:30 }}
+                                span &nbsp;({{ reward_item.quantity }} Left)
+                            div.small-3.columns.text-right.reward-members
+                                | exp. {{ reward_item.expiration_time|date:"m/d/Y" }}
+                            div.small-3.columns.text-right.reward-action
+                                a.send-reward(href="javascript:;") Reward Details
+                    {% endif %}
+                    {% endfor %}
+                {% endif %}
+                {% if rewards.count > 0 %}
+                div.small-12.columns.rewards
+                    div.headline Reward Templates
+                    hr
+                    {% for reward in rewards %}
+                    div
+                        div.row.reward
+                            div.small-6.columns.reward-name
+                                | {{ reward.name|truncatechars:30 }}
+                            div.small-3.columns.text-right.reward-action
+                                a.send-reward-btn(href="javascript:;", data-id="{{ reward.id }}", data-name="{{ reward.name }}") Send Reward
+                            div.small-3.columns.text-right.reward-action
+                                a.manage-reward(href="javascript:;", data-id="{{ reward.id }}") Manage/Redeem
+                    {% endfor %}
+                {% endif %}
+    div#send-reward-modal.reveal-modal.medium(data-reveal)
+        div.organizer-model.hide
+            div.row.organizer
+                div.medium-3.columns.organizer-image &nbsp;
+                div.medium-6.columns.organizer-name &nbsp;
+                div.medium-3.columns.organizer-submit
+                    a.add-reward-submit.secondary-btn-inverse.full-btn(href="javascript:;") Add Rewards
+        div.row
+            div.small-12.columns
+                div.headline Send&nbsp;'
+                    span.reward-name &nbsp;
+                    |'
+                br
+                div You can either add this reward to your own 'current rewards' or you can send it to another profile.
+                hr
+        div.row
+            div.small-12.columns
+                input(type="hidden", name="reward_id", value="")
+                div.row
+                    div.small-12.medium-6.columns
+                        label Quantity
+                        input(type="text", name="quantity", placeholder="How Many Rewards?")
+                    div.small-12.medium-6.columns
+                        label Expiration Date
+                        input(type="text", name="expiration", placeholder="Reward Expiration (MM/DD/YYYY)")
+                hr
+                div.row
+                    div.small-12.medium-4.columns
+                        a.add-reward-submit.primary-btn-inverse.full-btn(href="javascript:;", data-profile="{{ profile.id }}") Add to My Profile
+                    div.small-12.medium-8.columns
+                        input(type="text", name="profile_search", placeholder="Search Profile Name")
+        form.add-organizer-form(name="add-organizer")
+                    
+
+
+append script
+    script.
+        var profileId = {{ profile.id }};
+    script(type="text/javascript", src="{{ STATIC_URL }}pikaday/pikaday.js")
+    script(type="text/javascript", src="{{ STATIC_URL }}pikaday/pikaday.jquery.js")
+    script(type="text/javascript", src="{{ STATIC_URL }}debounce/jquery.debounce.js")
+    script(src="{{ STATIC_URL }}js/reward/index.js")

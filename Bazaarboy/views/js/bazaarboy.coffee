@@ -8,6 +8,7 @@
         modify: {}
     }
     list: {}
+    reward: {}
     admin: {}
     # Shortcut for endpoint redirect
     redirect: (endpoint) ->

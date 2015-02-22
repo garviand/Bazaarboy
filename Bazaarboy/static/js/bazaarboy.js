@@ -7,6 +7,7 @@
       modify: {}
     },
     list: {},
+    reward: {},
     admin: {},
     redirect: function(endpoint) {
       var redirectUrl;

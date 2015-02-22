@@ -8599,16 +8599,14 @@ div#raffle-modal div.empty-state-container div.empty-state-content div.to-dash {
   margin-left: 0;
   padding-right: 0;
 }
-div#raffle-modal div.empty-state-container div.empty-state-content a.primary-btn {
+div#raffle-modal div.empty-state-container div.empty-state-content div.to-dash a {
   display: block;
   width: 100%;
   margin-top: 20px;
-  padding-top: 11px;
-  padding-bottom: 14px;
   font-size: 15px;
   text-transform: uppercase;
 }
-div#raffle-modal div.empty-state-container div.empty-state-content a.primary-btn:hover {
+div#raffle-modal div.empty-state-container div.empty-state-content div.to-dash a:hover {
   color: #FFF;
 }
 div#raffle-modal div.empty-state-container div.empty-state-content div.close-launch-modal {
@@ -8623,6 +8621,40 @@ div#raffle-modal div.empty-state-container div.empty-state-content div.close-lau
   right: 0;
   color: #c57724;
   font-weight: normal;
+}
+div#raffle-modal div.reward-container {
+  display: none;
+}
+div#raffle-modal div.reward-container div.headline {
+  padding-top: 20px;
+  padding-bottom: 20px;
+}
+div#raffle-modal div.reward-container div.reward {
+  padding: 12px 5px;
+  margin-bottom: 10px;
+  border-radius: 3px;
+  border: #7a7a7a thin solid;
+}
+div#raffle-modal div.reward-container div.reward:hover {
+  background: #f6f6f6;
+}
+div#raffle-modal div.reward-container div.reward div.reward-name {
+  font-size: 16px;
+  font-weight: 500;
+}
+div#raffle-modal div.reward-container div.reward div.reward-members {
+  font-weight: 300;
+  font-style: italic;
+  font-size: 14px;
+}
+div#raffle-modal div.reward-container div.reward div.reward-action a {
+  font-weight: 300;
+  color: #4a4a4a;
+  text-decoration: underline;
+  font-size: 14px;
+}
+div#raffle-modal div.reward-container div.reward div.reward-action a:hover {
+  color: #c57724;
 }
 #wrapper-sidebar form.list_search {
   position: relative;
@@ -10812,6 +10844,9 @@ div#wrapper-event-collaborators div#event-collaborators div.pending div.request 
 div#wrapper-event-collaborators div#event-collaborators div.organizers {
   margin-top: 40px;
 }
+div#wrapper-event-collaborators div#event-collaborators div.organizers div.organizer {
+  margin-bottom: 20px;
+}
 div#wrapper-event-collaborators div#event-collaborators div.organizers div.organizer div.text {
   padding-top: 8px;
 }
@@ -12065,6 +12100,166 @@ div#confirmation div.confirmation-note {
     right: 91.66667%;
     left: auto;
   }
+}
+div#wrapper-reward-dashboard div.empty-state-container {
+  margin-top: 40px;
+  border: #F6F6F6 thin solid;
+  border-radius: 4px;
+  background: url('../images/emptystates/tag_bg.jpg');
+  background-size: 80%;
+  background-position: left center;
+  background-repeat: no-repeat;
+}
+div#wrapper-reward-dashboard div.empty-state-container div.empty-state-content {
+  margin: 80px 0;
+  padding-right: 50px;
+}
+div#wrapper-reward-dashboard div.empty-state-container div.empty-state-content div.text {
+  font-size: 1.3rem;
+  font-weight: 600;
+  color: #4a4a4a;
+}
+div#wrapper-reward-dashboard div.empty-state-container div.empty-state-content hr {
+  margin: 10px 0;
+}
+div#wrapper-reward-dashboard div.empty-state-container div.empty-state-content div.btn {
+  width: 100%;
+  margin-top: 20px;
+  margin-left: 10px;
+  padding-top: 11px;
+  padding-bottom: 14px;
+  font-size: 15px;
+  text-transform: uppercase;
+}
+div#wrapper-reward-dashboard div#reward-dashboard {
+  margin-top: 40px;
+}
+div#wrapper-reward-dashboard div#reward-dashboard a.new-reward-btn {
+  text-align: center;
+  display: block;
+  color: #ffffff;
+  font-size: 15px;
+  text-transform: uppercase;
+}
+div#wrapper-reward-dashboard div#reward-dashboard div.rewards {
+  margin-top: 40px;
+}
+div#wrapper-reward-dashboard div#reward-dashboard div.rewards > a {
+  color: #4a4a4a;
+}
+div#wrapper-reward-dashboard div#reward-dashboard div.rewards div.reward {
+  padding: 12px 5px;
+  margin-bottom: 10px;
+  border-radius: 3px;
+  border: #7a7a7a thin solid;
+}
+div#wrapper-reward-dashboard div#reward-dashboard div.rewards div.reward:hover {
+  background: #f6f6f6;
+}
+div#wrapper-reward-dashboard div#reward-dashboard div.rewards div.reward div.reward-name {
+  font-size: 16px;
+  font-weight: 500;
+}
+div#wrapper-reward-dashboard div#reward-dashboard div.rewards div.reward div.reward-name span {
+  font-weight: 300;
+}
+div#wrapper-reward-dashboard div#reward-dashboard div.rewards div.reward div.reward-members {
+  font-weight: 300;
+  font-style: italic;
+  font-size: 14px;
+}
+div#wrapper-reward-dashboard div#reward-dashboard div.rewards div.reward div.reward-action a {
+  font-weight: 300;
+  color: #4a4a4a;
+  text-decoration: underline;
+  font-size: 14px;
+}
+div#wrapper-reward-dashboard div#reward-dashboard div.rewards div.reward div.reward-action a:hover {
+  color: #c57724;
+}
+div#send-reward-modal form > div {
+  margin-top: 15px;
+}
+div#send-reward-modal form label,
+div#send-reward-modal form input {
+  margin-bottom: 0;
+}
+div#send-reward-modal form div.organizer div.organizer-name {
+  padding-top: 10px;
+}
+div#send-reward-modal form div.organizer div.organizer-image {
+  text-align: center;
+}
+div#send-reward-modal form div.organizer div.organizer-image img {
+  max-height: 40px;
+}
+div#claim {
+  min-width: 100%;
+  min-height: 100%;
+  background: #F6F6F6;
+}
+div#claim div.phone input {
+  margin-bottom: 5px !important;
+}
+div#claim div.phone small {
+  margin-bottom: 15px;
+  display: block;
+}
+div#claim div.claim-success {
+  padding-bottom: 20px;
+  line-height: 1.5rem;
+}
+div#claim div#container {
+  width: 450px;
+  max-width: 98%;
+  margin: 0 auto;
+}
+div#claim div.request_logo_container {
+  margin-top: 15px;
+}
+div#claim div.request_logo_container img {
+  max-width: 100px;
+  max-height: 100px;
+}
+div#claim div.request_info {
+  margin-top: 15px;
+  line-height: 18px;
+}
+div#claim div#claim-container {
+  background: #ffffff;
+  margin-top: 75px;
+}
+div#claim div#claim-container form#claim-form div.logo-small {
+  margin: 0 auto;
+  margin-top: 50px;
+  height: 50px;
+  width: 50px;
+  border-radius: 50%;
+  background: url(/static/images/logo-big.png);
+  background-size: cover;
+}
+div#claim div#claim-container form#claim-form div.title {
+  font-weight: 500;
+  text-transform: uppercase;
+  margin-top: 16px;
+}
+div#claim div#claim-container form#claim-form div.title div.site-title {
+  font-size: 1.5em;
+}
+div#claim div#claim-container form#claim-form div.title span.page-title {
+  color: #9B9B9B;
+}
+div#claim div#claim-container form#claim-form hr.separator {
+  margin-top: 24px;
+  margin-bottom: 26px;
+}
+div#claim div#claim-container form#claim-form .claim-inputs input[type=text],
+div#claim div#claim-container form#claim-form .claim-inputs input[type=password] {
+  border-radius: 3px;
+  box-shadow: none;
+}
+div#claim div#claim-container form#claim-form .submit-claim {
+  margin-bottom: 16px;
 }
 div#wrapper-list-dashboard div.empty-state-container {
   margin-top: 40px;

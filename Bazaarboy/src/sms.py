@@ -20,6 +20,19 @@ def sendSMS(to, body):
     else:
         return sms
 
+def sendMMS(to, message, image):
+    """
+    Send an MMS
+    """
+    try:
+        client = TwilioRestClient(TWILIO_ACCOUNT_SID, TWILIO_AUTH_TOKEN)
+        mms = client.messages.create(to=to, from_=TWILIO_FROM, body=message, media_url=[image])
+    except Exception, e:
+        logging.error(str(e))
+        return False
+    else:
+        return mms
+
 def sendEventConfirmationSMS(purchase):
     """
     Send out event confirmation SMS
@@ -31,4 +44,13 @@ def sendEventConfirmationSMS(purchase):
         body += purchase.code
         body += '. Thanks!'
         return sendSMS(purchase.owner.phone, body)
+    return True
+
+def sendClaimMMS(claim):
+    """
+    Send out claim MMS
+    """
+    if len(claim.owner.phone) == 10:
+        message = 'Reward Code for \'' + claim.item.reward.name + '\' - ' + claim.code
+        return sendMMS(claim.owner.phone, message, claim.item.reward.attachment.source.url.split("?", 1)[0])
     return True

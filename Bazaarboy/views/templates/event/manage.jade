@@ -114,7 +114,7 @@ block content
                                 div.name.medium-4.columns &nbsp;
                             {% for k, purchase in purchases.items %}
                             {% with tickets=purchase.tickets.items %}
-                            div.guest.row(class="{% if purchase.checked_in %}checked_in{% endif %}", data-ticket="{% for k, ticket in tickets %}{% if not forloop.first %},{% endif %}{{ ticket.id }}{% endfor %}", data-id="{{ purchase.id }}", data-email="{{ purchase.email }}")
+                            div.guest.row(class="{% if purchase.checked_in %}checked_in{% endif %}", data-ticket="{% for k, ticket in tickets %}{% if not forloop.first %},{% endif %}{{ ticket.id }}{% endfor %}", data-id="{{ purchase.id }}", data-email="{{ purchase.email }}", data-user="{{ purchase.owner_id }}")
                                 div.checkin.medium-2.small-12.columns.hide-for-small-only
                                     a.secondary-btn(href="javascript:;") 
                                         {% if purchase.checked_in %}Arrived{% else %}Check In{% endif %}
@@ -149,8 +149,28 @@ block content
                     div.subtext.subtext-name Example Person
                     div.subtext.subtext-email example@example.com
                     div.row
-                        div.large-7.medium-7.small-8.columns.to-dash
+                        {% if rewards.count > 0 %}
+                        div.large-6.medium-6.small-12.columns.to-dash.show-rewards-container
+                            a.show-rewards-btn.secondary-btn(href="javascript:;") Send Reward
+                        {% endif %}
+                        div.large-6.medium-6.small-12.columns.to-dash
                             a.back-to-list.primary-btn(href="javascript:;") Back To List
+        div.reward-container.text-left
+            input(name="reward_user", value="", type="hidden")
+            div.row
+                div.small-12.columns
+                    div.headline Available Rewards
+            {% for reward in rewards %}
+            div
+                div.row.reward
+                    div.small-8.columns.reward-name
+                        | {{ reward.reward.name|truncatechars:30 }}
+                    div.small-2.columns.text-right.reward-members
+                        span.quantity {{ reward.quantity }}
+                        | &nbsp;Left
+                    div.small-2.columns.text-right.reward-action
+                        a.send-reward-btn(href="javascript:;", data-id="{{ reward.id }}") Send
+            {% endfor %}
     div#invite-modal.reveal-modal.medium(data-reveal)
         form.invite-form(name="invite")
             div.row

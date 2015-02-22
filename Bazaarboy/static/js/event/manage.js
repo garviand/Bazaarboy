@@ -143,13 +143,46 @@
       $("div.guest-add-invite a.raffle-btn").click(function(e) {
         var winner, winner_email, winner_id, winner_name;
         e.preventDefault();
-        winner_id = Math.floor(Math.random() * ($("div.guest").not('div.guest_template').length)) - 1;
-        winner = $("div.list_guests div.guest").eq(winner_id);
+        winner_id = Math.floor(Math.random() * ($("div.guest").not('div.guest_template').length));
+        winner = $("div.list_guests div.guest").not('div.guest_template').eq(winner_id);
         winner_name = winner.find("div.name").html();
         winner_email = winner.attr('data-email');
+        winner_id = winner.attr('data-user');
         $('div#raffle-modal div.subtext-name').html(winner_name);
         $('div#raffle-modal div.subtext-email').html(winner_email);
+        $('input[name=reward_user]').val(winner_id);
         $('div#raffle-modal').foundation('reveal', 'open');
+      });
+      $('a.show-rewards-btn').click(function() {
+        $('div.reward-container').slideDown(200);
+      });
+      $('a.send-reward-btn').click(function() {
+        var button, quantityAmount, quantityElement, rewardId, rewardUser;
+        button = $(this);
+        button.html('Sending...');
+        rewardId = $(this).data('id');
+        rewardUser = $('input[name=reward_user]').val();
+        quantityElement = $(this).closest('.reward').find('span.quantity');
+        quantityAmount = parseInt(quantityElement.html());
+        return Bazaarboy.post('rewards/claim/add/', {
+          item: rewardId,
+          owner: rewardUser
+        }, function(response) {
+          if (response.status === 'OK') {
+            swal({
+              type: 'success',
+              title: 'Reward Sent',
+              text: 'The reward has been sent.'
+            });
+            quantityElement.html(quantityAmount - 1);
+            $('div#raffle-modal').foundation('reveal', 'close');
+            $('div.reward-container').slideUp(200);
+            button.html('Send');
+          } else {
+            swal(response.message);
+            button.html('Send');
+          }
+        });
       });
       $("div.guest-add-invite a.start-guest-invite").click(function(e) {
         e.preventDefault();

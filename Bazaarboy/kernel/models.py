@@ -6,6 +6,7 @@ import hashlib
 import os
 import random
 import string
+import uuid
 from django.db import models
 from django.db.models import Q, Sum, Count
 from django.utils import timezone
@@ -441,28 +442,36 @@ class Sponsorship(models.Model):
     image = models.ForeignKey('Image', null = True, default = None)
     created_time = models.DateTimeField(auto_now_add = True)
 
-class Bonus(models.Model):
+class Reward(models.Model):
     """
-    Bonus model
+    Reward model
     """
-    event = models.ForeignKey('Event')
-    name = models.CharField(max_length = 50)
-    description = models.CharField(max_length = 150)
-    image = models.ForeignKey('Image', null = True, default = None, 
-                              on_delete = models.SET_NULL)
-    quantity = models.IntegerField(null = True, default = None)
-    code = models.CharField(max_length = 255, null = True, default = None)
-    expiration_time = models.DateTimeField(null = True, default = None)
-    is_sent = models.BooleanField(default = False)
-    sent_time = models.DateTimeField(auto_now_add = True)
+    creator = models.ForeignKey('Profile')
+    name = models.CharField(max_length = 150)
+    description = models.CharField(max_length = 350)
+    value = models.FloatField()
+    attachment = models.ForeignKey('Pdf', null = True, default = None, on_delete = models.SET_NULL)
+    is_deleted = models.BooleanField(default = False)
+    created_time = models.DateTimeField(auto_now_add = True)
+
+class Reward_item(models.Model):
+    """
+    Reward item model
+    """
+    reward = models.ForeignKey('Reward')
+    owner = models.ForeignKey('Profile')
+    quantity = models.IntegerField()
+    expiration_time = models.DateTimeField()
     created_time = models.DateTimeField(auto_now_add = True)
 
 class Claim(models.Model):
     """
-    Claim for a bonus
+    Claim for a reward
     """
-    owner = models.ForeignKey('User')
-    bonus = models.ForeignKey('Bonus')
+    email = models.CharField(max_length = 100)
+    owner = models.ForeignKey('User', null = True, default = None)
+    item = models.ForeignKey('Reward_item')
+    code = models.CharField(max_length = 30)
     token = models.CharField(max_length = 128)
     is_claimed = models.BooleanField(default = False)
     claimed_time = models.DateTimeField(null = True, default = None)
@@ -475,7 +484,9 @@ class Claim(models.Model):
         Override save to generate token at creation
         """
         if self.pk is None:
-            self.token = os.urandom(128).encode('base_64')[:128]
+            self.token = uuid.uuid4().hex
+        if self.pk is None:
+            self.code = randomConfirmationCode()
         super(Claim, self).save(*args, **kwargs)
 
 class List(models.Model):
