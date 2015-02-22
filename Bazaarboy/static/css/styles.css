@@ -8839,6 +8839,20 @@ div#event {
   padding-top: 66px;
   background: #F6F6F6;
 }
+div#event ul.clearing-thumbs > li {
+  margin-right: 0;
+}
+.slick-container {
+  padding-left: 1.875rem !important;
+  padding-right: 1.875rem !important;
+}
+.slick-container .slick-slider .slick-slide {
+  padding: 10px;
+}
+.slick-prev:before,
+.slick-next:before {
+  color: #c57724 !important;
+}
 #event-hero {
   height: 400px;
   position: relative;

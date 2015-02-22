@@ -20,7 +20,7 @@ Bazaarboy.event.index =
         this.initEvents()
     saveDescription: () ->
         scope = this
-        description = $('div#event-description div.description div.inner').redactor('get')
+        description = $('div#event-description div.description div.inner').redactor('code.get')
         $('div.save-status').html 'Saving...'
         @savingInProgress = true
         Bazaarboy.post 'event/edit/', 
@@ -529,14 +529,8 @@ Bazaarboy.event.index =
                 window.open @url, '_blank'
                 return
         if design
-            $('div#event-description div.description div.inner').redactor
-                buttons: [
-                    'formatting','bold', 'italic', 'deleted', 'fontcolor', 
-                    'alignment', '|',
-                    'unorderedlist', 'orderedlist', 'outdent', 'indent', '|',
-                    'horizontalrule', 'table', 'image', 'video', 'link', '|',
-                    'html'
-                ]
+            currentHTML = $('div#event-description div.description div.inner').html()
+            redactorContent = $('div#event-description div.description div.inner').redactor
                 plugins: ['instagram']
                 boldTag: 'b'
                 italicTag: 'i'
@@ -554,7 +548,7 @@ Bazaarboy.event.index =
             $('div#event-description div.description div.inner').keyup () ->
                 $('div.save-status').html 'Unsaved Changes'
                 return
-            scope.redactorContent = $('div#event-description div.description div.inner').redactor('get')
+            scope.redactorContent = $('div#event-description div.description div.inner').redactor('code.get')
             # Cover image
             $('form.upload_cover a.upload_cover_btn').click () ->
                 $('form.upload_cover input[name=image_file]').click()

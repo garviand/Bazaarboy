@@ -12,7 +12,8 @@ from datetime import timedelta
 from django.db import transaction, IntegrityError
 from django.db.models import F, Q, Count, Sum
 from django.http import Http404
-from django.shortcuts import render, redirect
+from django.shortcuts import render, redirect, render_to_response
+from django.template import RequestContext
 from django.http import HttpResponse, HttpResponseBadRequest
 from django.utils import timezone
 from django.utils.dateformat import DateFormat
@@ -33,6 +34,7 @@ from src.serializer import serialize, serialize_one
 from src.sms import sendEventConfirmationSMS
 from mandrill import Mandrill
 import logging
+from instagram.client import InstagramAPI
 
 import pdb
 import operator
@@ -1388,6 +1390,19 @@ def edit(request, params, user):
         'event':serialize_one(event)
     }
     return json_response(response)
+
+@validate('GET', ['hashtag'], ['event_id'])
+def instagram_photos(request, params):
+    api = InstagramAPI(client_id=INSTAGRAM_CLIENT_ID, client_secret=INSTAGRAM_SECRET)
+    instagram_photos = api.tag_recent_media(count=30, tag_name=params['hashtag'])
+    images = []
+    if params['event_id'] is not None:
+        if Event.objects.filter(id = params['event_id']).exists():
+            event = Event.objects.get(id = params['event_id'])
+            color = event.color
+    for photo in instagram_photos[0]:
+        images.append({'high_res':photo.images['standard_resolution'].url, 'thumb':photo.images['thumbnail'].url})
+    return render_to_response('components/instagram.html', locals(), context_instance=RequestContext(request))
 
 @login_required()
 @validate('POST', ['id'], ['profile', 'email'])

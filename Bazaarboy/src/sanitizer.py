@@ -1,4 +1,5 @@
 from bs4 import BeautifulSoup
+import pdb
 
 redactorAllowedTags = [
     'code', 'span', 'div', 'label', 'a', 'br', 'p', 'b', 'i', 'del', 'strike', 
@@ -11,7 +12,7 @@ redactorAllowedTags = [
 redactorAllowedAttrs = [
     'height', 'width', 'style', 'src', 'href', 'target', 'srolling', 
     'frameborder', 'allowfullscreen', 'webkitAllowFullScreen', 
-    'mozallowfullscreen'
+    'mozallowfullscreen', 'class'
 ]
 iframeAllowedDomains = [
     'www.youtube.com', 'player.vimeo.com', 'w.soundcloud.com', 'bandcamp.com'
@@ -35,7 +36,7 @@ def sanitize_redactor_input(string):
                 for attr, value in tag.attrs.items():
                     if attr not in redactorAllowedAttrs:
                         del tag[attr]
-                    elif attr == 'src' and tag.name == 'iframe':
+                    elif attr == 'src' and tag.name == 'iframe' and '//' in value:
                         domain = value[value.index('//') + 2:].split('/')[0]
                         if domain not in iframeAllowedDomains:
                             shouldExtractTag = True

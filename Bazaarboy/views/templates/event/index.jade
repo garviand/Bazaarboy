@@ -760,21 +760,18 @@ append script
             onhover: false
         });
     script(type="text/javascript", src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAasW6vqPCn18g6UMaFWV90qGMSo6pErwo&sensor=false&libraries=places")
-    
     {% if editable %}
     script(type="text/javascript", src="{{ STATIC_URL }}redactor/instagram.js")
-    script(type="text/javascript", src="{{ STATIC_URL }}redactor/redactor.min.js")
+    script(type="text/javascript", src="{{ STATIC_URL }}redactor/redactor.js")
     {% endif %}
     script(type="text/javascript", src="{{ STATIC_URL }}debounce/jquery.debounce.js")
     script(type="text/javascript", src="{{ STATIC_URL }}addthisevent/atemay.js")
     script(type="text/javascript", src="{{ STATIC_URL }}payment/jquery.payment.js")
     script(type="text/javascript", src="https://checkout.stripe.com/v2/checkout.js")
     script(type="text/javascript", src="https://js.stripe.com/v2/")
+    script(type="text/javascript", src="//code.jquery.com/jquery-migrate-1.2.1.min.js")
     script(type="text/javascript").
         var eventId = {{ event.id }};
         var eventUrl = '{{ event|eventUrl }}';
         var design = {% if design %}true{% else %}false{% endif %};
-        $(window).load(function(){
-            $('div#event-calendar-add').removeClass('hidden')
-        });
     script(type="text/javascript", src="{{ STATIC_URL }}js/event/index.js")

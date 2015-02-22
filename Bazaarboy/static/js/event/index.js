@@ -23,7 +23,7 @@
     saveDescription: function() {
       var description, scope;
       scope = this;
-      description = $('div#event-description div.description div.inner').redactor('get');
+      description = $('div#event-description div.description div.inner').redactor('code.get');
       $('div.save-status').html('Saving...');
       this.savingInProgress = true;
       Bazaarboy.post('event/edit/', {
@@ -311,7 +311,7 @@
       }
     },
     init: function() {
-      var geocoder, iconImage, latitude, latlng, longitude, map, mapCenter, mapOptions, mapStyles, marker, postData, scope,
+      var currentHTML, geocoder, iconImage, latitude, latlng, longitude, map, mapCenter, mapOptions, mapStyles, marker, postData, redactorContent, scope,
         _this = this;
       scope = this;
       $('.cc-exp').payment('formatCardExpiry');
@@ -626,8 +626,8 @@
         });
       }
       if (design) {
-        $('div#event-description div.description div.inner').redactor({
-          buttons: ['formatting', 'bold', 'italic', 'deleted', 'fontcolor', 'alignment', '|', 'unorderedlist', 'orderedlist', 'outdent', 'indent', '|', 'horizontalrule', 'table', 'image', 'video', 'link', '|', 'html'],
+        currentHTML = $('div#event-description div.description div.inner').html();
+        redactorContent = $('div#event-description div.description div.inner').redactor({
           plugins: ['instagram'],
           boldTag: 'b',
           italicTag: 'i',
@@ -646,7 +646,7 @@
         $('div#event-description div.description div.inner').keyup(function() {
           $('div.save-status').html('Unsaved Changes');
         });
-        scope.redactorContent = $('div#event-description div.description div.inner').redactor('get');
+        scope.redactorContent = $('div#event-description div.description div.inner').redactor('code.get');
         $('form.upload_cover a.upload_cover_btn').click(function() {
           $('form.upload_cover input[name=image_file]').click();
         });

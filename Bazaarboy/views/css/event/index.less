@@ -1,10 +1,31 @@
 @import (reference) "vars.less";
 
+
+
 div#event {
     min-width: 100%;
     min-height: 100%;
     padding-top: 66px;
     background: #F6F6F6;
+    ul.clearing-thumbs{
+        > li{
+            margin-right: 0;
+        }
+    }
+}
+
+.slick-container{
+    padding-left: 1.875rem !important;
+    padding-right: 1.875rem !important;
+    .slick-slider{
+        .slick-slide{
+            padding: 10px;
+        }
+    }
+}
+
+.slick-prev:before, .slick-next:before{
+    color: @orange !important;
 }
 
 #event-hero {

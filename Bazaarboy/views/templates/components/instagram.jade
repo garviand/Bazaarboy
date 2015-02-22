@@ -1,0 +1,48 @@
+!!! 5
+html(class='no-js')
+    head
+        meta(charset='utf-8')
+        meta(http-equiv='X-UA-Compatible', content='IE=edge')
+
+        title Slideshow
+
+        link(rel="stylesheet", href="{{ STATIC_URL }}css/styles.css")
+        link(rel="stylesheet", href="{{ STATIC_URL }}slick/slick-theme.css")
+        link(rel="stylesheet", href="{{ STATIC_URL }}slick/slick.css")
+
+        {% if color %}
+        style(type="text/css").
+            .slick-prev:before, .slick-next:before{
+                color: {{ color }} !important;
+            }
+        {% endif %}
+
+    body
+        div.row
+            div.small-12.columns.slick-container
+                {% if images.count > 0 %}
+                div.slick-slider
+                    {% for image in images %}
+                    div
+                        img(src="{{ image.high_res }}")
+                    {% endfor %}
+                {% endif %}
+        script(type="text/javascript").
+            var rootUrl = '{% url index %}';
+            var mediaUrl = '{{ MEDIA_URL }}';
+            var staticUrl = '{{ STATIC_URL }}';
+            var csrfToken = '{{ csrf_token }}';
+            var loggedIn = {% if user %}true{% else %}false{% endif %};
+        script(src="{{ STATIC_URL }}js/libraries.js")
+        script(src="{{ STATIC_URL }}js/bazaarboy.js")
+        script(type="text/javascript", src="//code.jquery.com/jquery-migrate-1.2.1.min.js")
+        script(type="text/javascript", src="{{ STATIC_URL }}slick/slick.min.js")
+        script(type="text/javascript").
+            $(document).ready(function(){
+                $(document).foundation();
+                $('div.slick-slider').slick({
+                    infinite: true,
+                    slidesToShow: 3,
+                    slidesToScroll: 3
+                });
+            });

@@ -37,7 +37,7 @@ def index(request, id, user):
             past_events.append(organizer.event)
     current_events.reverse()
     api = InstagramAPI(client_id=INSTAGRAM_CLIENT_ID, client_secret=INSTAGRAM_SECRET)
-    instagram_photos = api.tag_recent_media(count=20, tag_name='wchof')
+    instagram_photos = api.tag_recent_media(count=10, tag_name='wchof')
     images = []
     for photo in instagram_photos[0]:
         images.append({'high_res':photo.images['standard_resolution'].url, 'thumb':photo.images['thumbnail'].url})
