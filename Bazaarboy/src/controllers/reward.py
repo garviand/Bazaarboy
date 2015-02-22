@@ -294,7 +294,7 @@ def add_claim(request, params, user):
     return json_response(response)
 
 @login_required()
-@validate('POST', ['claim_id', 'claim_token', 'email', 'first_name', 'last_name'], ['phone'])
+@validate('POST', ['claim_id', 'claim_token', 'first_name', 'last_name'], ['phone'])
 def complete_claim(request, params, user):
     if not Claim.objects.filter(id = params['claim_id'], token = params['claim_token']).exists():
         response = {
@@ -311,13 +311,6 @@ def complete_claim(request, params, user):
             'message':'This reward has already been claimed.'
         }
         return json_response(response)
-    if not REGEX_EMAIL.match(params['email']):
-        response = {
-            'status':'FAIL',
-            'error':'INVALID_EMAIL',
-            'message':'Email format is invalid.'
-        }
-        return json_response(response)
     sendMMS = False
     if params['phone'] is not None:
         params['phone'] = re.compile(r'[^\d]+').sub('', params['phone'])
@@ -329,21 +322,16 @@ def complete_claim(request, params, user):
             }
             return json_response(response)
         sendMMS = True
-    if User.objects.filter(email = params['email']).exists():
-        claim.owner = User.objects.get(email = params['email'])
+    if User.objects.filter(email = claim.email).exists():
+        claim.owner = User.objects.get(email = claim.email)
         claim.owner.first_name = params['first_name']
         claim.owner.last_name = params['last_name']
     elif claim.owner:
-        claim.owner.email = params['email']
+        claim.owner.email = claim.email
         claim.owner.first_name = params['first_name']
         claim.owner.last_name = params['last_name']
     else:
-        if User.objects.filter(email = params['email']).exists():
-            claim.owner = User.objects.get(email = params['email'])
-            claim.owner.first_name = params['first_name']
-            claim.owner.last_name = params['last_name']
-        else:
-            claim.owner = User(email = params['email'], first_name = params['first_name'], last_name = params['last_name'])
+        claim.owner = User(email = claim.email, first_name = params['first_name'], last_name = params['last_name'])
     claim.owner.save()
     claim.is_claimed = True
     claim.claimed_time = timezone.now()

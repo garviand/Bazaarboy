@@ -24,11 +24,9 @@ block body
                                         input(name="first_name", type="text", placeholder="Your First Name", value="{{ claim.owner.first_name }}")
                                     div.small-12.columns
                                         input(name="last_name", type="text", placeholder="Your Last Name", value="{{ claim.owner.last_name }}")
-                                    div.small-12.columns
-                                        input(name="email", type="text", placeholder="Email", value="{{ claim.email }}")
                                     div.small-12.columns.phone
-                                        input(name="phone", type="text", name="phone", placeholder="Phone # (optional)")
-                                        small *enter to recieve reward via MMS
+                                        input(name="phone", type="text", name="phone", placeholder="Phone #")
+                                        small * You will recieve the reward via MMS.
                                     div.small-12.columns
                                         input(type="hidden", name="claim_id", value="{{ claim.id }}")
                                         input(type="hidden", name="claim_token", value="{{ claim.token }}")

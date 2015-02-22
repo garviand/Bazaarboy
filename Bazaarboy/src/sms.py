@@ -51,6 +51,6 @@ def sendClaimMMS(claim):
     Send out claim MMS
     """
     if len(claim.owner.phone) == 10:
-        message = 'Reward Code - ' + claim.code
+        message = 'Reward Code for \'' + claim.item.reward.name + '\' - ' + claim.code
         return sendMMS(claim.owner.phone, message, claim.item.reward.attachment.source.url.split("?", 1)[0])
     return True
