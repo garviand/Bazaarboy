@@ -397,6 +397,21 @@ block content
                     a.primary-btn-inverse.full-btn.reject-request(href="javascript:;", data-id="{{ request.id }}") Reject
             {% endfor %}
         {% endif %}
+        {% if reward_list.count > 0 %}
+        div.active-rewards
+            div.row
+                div.small-12.columns
+                    div.headline Active Rewards
+            {% for reward in reward_list %}
+            div.row.reward
+                div.small-12.medium-4.columns.text
+                    a(href="{{ reward.attachment.source.url }}", target="_blank") {{ reward.name }}
+                div.small-12.medium-2.columns.text {{ reward.claims }} claim{{ reward.claims|pluralize }}
+                div.small-12.medium-2.columns.text {{ reward.redemptions }} redemption{{ reward.redemptions|pluralize }}
+                div.small-12.medium-4.columns
+                    a.primary-btn-inverse.full-btn(href="{% url reward:manage reward.id %}") Manage Redemptions
+            {% endfor %}
+        {% endif %}
         div.event-tiles-container.summary-events.active
             {% if pastEventsAttentionCount > 0 %}
             div.events-overview-title

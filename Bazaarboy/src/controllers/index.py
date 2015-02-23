@@ -13,6 +13,8 @@ from kernel.models import *
 from src.config import *
 from src.controllers.request import validate, login_check, json_response
 
+import pdb
+
 @never_cache
 @login_check()
 @validate('GET', [], ['next'])
@@ -138,6 +140,13 @@ def index(request, params, user):
         if not Organizer.objects.filter(event = draftEvents[i], profile__managers = user, is_creator = True).exists():
             draftEvents[i].creator = False
     collaboration_requests = Collaboration_request.objects.filter(profile__in = pids, accepted__isnull = True, is_rejected = False).exclude(event__organizer__profile__in = pids)
+    active_rewards = Reward_item.objects.filter(reward__creator__managers = user, expiration_time__gte = tz.now())
+    reward_list = []
+    for reward in active_rewards:
+        if not reward.reward in reward_list:
+            reward.reward.claims = len(Claim.objects.filter(item__reward = reward.reward, is_claimed = True))
+            reward.reward.redemptions = len(Claim.objects.filter(item__reward = reward.reward, is_redeemed = True))
+            reward_list.append(reward.reward)
     return render(request, 'index/index.html', locals())
 
 @login_check()

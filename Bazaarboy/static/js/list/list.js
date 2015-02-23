@@ -8,6 +8,38 @@
       var scope,
         _this = this;
       scope = this;
+      $('a.reward-member').click(function() {
+        $("div#rewards-modal").foundation('reveal', 'open');
+        $("div#rewards-modal input[name=reward_email]").val($(this).data('email'));
+        $("div#rewards-modal span.reward-reciever").html($(this).data('name'));
+      });
+      $('a.send-reward').click(function() {
+        var button, quantityAmount, quantityElement, rewardEmail, rewardId;
+        button = $(this);
+        button.html('Sending...');
+        rewardId = $(this).data('id');
+        rewardEmail = $("div#rewards-modal input[name=reward_email]").val();
+        quantityElement = $(this).closest('.reward').find('span.quantity');
+        quantityAmount = parseInt(quantityElement.html());
+        return Bazaarboy.post('rewards/claim/add/', {
+          item: rewardId,
+          email: rewardEmail
+        }, function(response) {
+          if (response.status === 'OK') {
+            swal({
+              type: 'success',
+              title: 'Reward Sent',
+              text: 'The reward has been sent.'
+            });
+            quantityElement.html(quantityAmount - 1);
+            $("div#rewards-modal").foundation('reveal', 'close');
+            button.html('Send Reward');
+          } else {
+            swal(response.message);
+            button.html('Send Reward');
+          }
+        });
+      });
       $('div.list').on('click', 'a.remove-member', function() {
         var member, member_id;
         member = $(this).closest('div.list-item');

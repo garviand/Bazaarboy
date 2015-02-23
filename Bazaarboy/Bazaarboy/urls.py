@@ -127,10 +127,12 @@ reward_urlpatterns = patterns('src.controllers.reward',
     url(r'^new/$', 'new', name = 'new'),
     url(r'^create/$', 'create', name = 'create'),
     url(r'^edit/$', 'edit', name = 'edit'),
+    url(r'^(?P<reward>\d+)/manage/$', 'manage', name = 'manage'),
     url(r'^item/add/$', 'add_item', name = 'add-item'),
     url(r'^claim/$', 'claim', name = 'claim'),
     url(r'^claim/add/$', 'add_claim', name = 'add-claim'),
     url(r'^claim/complete/$', 'complete_claim', name = 'complete-claim'),
+    url(r'^redeem/$', 'redeem', name = 'redeem'),
 )
 
 file_urlpatterns = patterns('src.controllers.file', 

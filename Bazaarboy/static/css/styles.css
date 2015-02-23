@@ -5703,7 +5703,7 @@ h3 {
   border-color: #fdc758 !important;
 }
 .disabled-btn {
-  background: #c57724;
+  background: #7a7a7a;
   color: #ffffff;
   display: block;
   text-align: center;
@@ -5717,7 +5717,6 @@ h3 {
 .disabled-btn:hover,
 .disabled-btn:focus {
   color: #ffffff;
-  background: #d69e5f;
 }
 .tiny-btn-group > div:first-child a {
   border-top-left-radius: 3px;
@@ -6341,17 +6340,24 @@ div#landing div.section-4 div.content img.glass {
   float: right;
   max-height: 250px;
 }
-div.collaboration-requests {
+div.collaboration-requests,
+div.active-rewards {
   margin-top: 25px;
 }
-div.collaboration-requests div.request {
+div.collaboration-requests div.request,
+div.active-rewards div.request,
+div.collaboration-requests div.reward,
+div.active-rewards div.reward {
   margin-top: 15px;
   padding-top: 8px;
   padding-bottom: 8px;
   border: #d4d4d4 thin solid;
   border-radius: 3px;
 }
-div.collaboration-requests div.request div.text {
+div.collaboration-requests div.request div.text,
+div.active-rewards div.request div.text,
+div.collaboration-requests div.reward div.text,
+div.active-rewards div.reward div.text {
   padding-top: 12px;
   padding-bottom: 12px;
 }
@@ -12261,6 +12267,122 @@ div#claim div#claim-container form#claim-form .claim-inputs input[type=password]
 div#claim div#claim-container form#claim-form .submit-claim {
   margin-bottom: 16px;
 }
+@media only screen and (max-width: 40.063em) {
+  div#main-header {
+    display: none;
+  }
+}
+#wrapper-sidebar form.reward-search-container {
+  position: relative;
+}
+#wrapper-sidebar div.reward-search {
+  width: 100%;
+  color: #FFF;
+  font-weight: 500;
+  padding: 20px 0;
+  border-bottom: solid 1px #464646;
+}
+#wrapper-sidebar div.reward-search label {
+  color: #ffffff;
+  width: 80%;
+  margin-left: 10%;
+}
+#wrapper-sidebar div.reward-search input {
+  margin-bottom: 0px;
+  width: 80%;
+  margin-left: 10%;
+  border: none;
+  outline: none;
+  border-radius: 3px;
+  height: 1.9rem;
+}
+#wrapper-sidebar div.reward-search input[name=reward_name],
+#wrapper-sidebar div.reward-search input[name=reward_email] {
+  margin-bottom: 5px;
+}
+#wrapper-sidebar div.reward-search a {
+  color: #FFF;
+  display: block;
+  width: 80%;
+  margin-left: 10%;
+  border: 1px solid #464646;
+  text-decoration: none;
+  border-top: none;
+  padding: 5px;
+  text-align: center;
+  font-weight: 300;
+}
+#wrapper-sidebar div.reward-search a:first-child {
+  border-top: 1px solid #464646;
+}
+#wrapper-sidebar div.reward-search a:hover,
+#wrapper-sidebar div.reward-search a.active {
+  color: #FFF;
+  background: #7F7F7F;
+}
+form.mobile-reward-search input[name=reward_name] {
+  margin-top: 20px;
+}
+form.mobile-reward-search input[name=reward_code] {
+  margin-bottom: 0px;
+}
+form.mobile-reward-search input {
+  margin-bottom: 20px;
+}
+form.mobile-reward-search .mobile-reward-input-container {
+  padding: 0 30px;
+}
+div#reward-manage {
+  padding-left: 0;
+}
+div#reward-manage .rewards .list_headers {
+  color: #4a4a4a;
+  font-weight: 500;
+}
+div#reward-manage .rewards .list_headers > div {
+  padding-top: 20px;
+  padding-bottom: 20px;
+  border-right: 2px solid #f6f6f6;
+}
+div#reward-manage .rewards .list_headers > div:last-child {
+  border-right: none;
+}
+div#reward-manage .rewards .list_headers .name {
+  border-right: 0;
+}
+div#reward-manage .rewards .reward {
+  color: #4a4a4a;
+  font-size: 14px;
+  padding: 10px 0px;
+  border-top: 2px solid #f6f6f6;
+}
+div#reward-manage .rewards .reward div.reward-expiration {
+  line-height: 1.3em;
+  font-weight: 300;
+  padding-top: 12px;
+}
+div#reward-manage .rewards .reward div.code {
+  font-weight: 600;
+  padding-top: 12px;
+}
+@media only screen and (max-width: 40.063em) {
+  div#reward-manage .rewards .reward div.code {
+    margin-top: 0;
+    line-height: 1.3em;
+  }
+}
+div#reward-manage .rewards .reward div.name {
+  font-weight: 300;
+  padding-top: 12px;
+}
+@media only screen and (max-width: 40.063em) {
+  div#reward-manage .rewards .reward div.name {
+    margin-top: 20px;
+  }
+  div#reward-manage .rewards .reward div.redeem {
+    margin-top: 10px;
+  }
+}
 div#wrapper-list-dashboard div.empty-state-container {
   margin-top: 40px;
   border: #F6F6F6 thin solid;
@@ -12641,6 +12763,15 @@ div#list-management div.list div.list-item a.remove-member {
 }
 div#list-management div.list div.list-item a.remove-member:hover {
   text-decoration: underline;
+}
+div#rewards-modal div.rewards div.reward {
+  padding: 12px 5px;
+  margin-bottom: 10px;
+  border-radius: 3px;
+  border: #7a7a7a thin solid;
+}
+div#rewards-modal div.rewards div.reward div.expiration {
+  font-style: italic;
 }
 div#wrapper-user-settings {
   padding-top: 40px;

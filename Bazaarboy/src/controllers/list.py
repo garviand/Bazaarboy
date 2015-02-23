@@ -78,6 +78,7 @@ def list(request, lt, user, params):
     if params['eid'] is not None:
         if Event.objects.filter(id = params['eid']).exists():
             event = Event.objects.get(id = params['eid'])
+    rewards = Reward_item.objects.filter(owner = profile, quantity__gt = 0, expiration_time__gte = timezone.now())
     return render(request, 'list/list.html', locals())
 @login_required()
 @validate('POST', ['profile', 'name', 'is_hidden'])

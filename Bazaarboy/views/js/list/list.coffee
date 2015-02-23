@@ -4,6 +4,32 @@ Bazaarboy.list.list =
     submitting: false
     init: () ->
         scope = this
+        # REWARD 
+        $('a.reward-member').click () ->
+            $("div#rewards-modal").foundation('reveal', 'open')
+            $("div#rewards-modal input[name=reward_email]").val($(this).data('email'))
+            $("div#rewards-modal span.reward-reciever").html($(this).data('name'))
+            return
+        $('a.send-reward').click () ->
+            button = $(this)
+            button.html 'Sending...'
+            rewardId = $(this).data('id')
+            rewardEmail = $("div#rewards-modal input[name=reward_email]").val()
+            quantityElement = $(this).closest('.reward').find('span.quantity')
+            quantityAmount = parseInt(quantityElement.html())
+            Bazaarboy.post 'rewards/claim/add/', {item:rewardId, email:rewardEmail}, (response) ->
+                if response.status is 'OK'
+                    swal
+                        type: 'success'
+                        title: 'Reward Sent'
+                        text: 'The reward has been sent.'
+                    quantityElement.html(quantityAmount - 1)
+                    $("div#rewards-modal").foundation('reveal', 'close')
+                    button.html 'Send Reward'
+                else
+                    swal response.message
+                    button.html 'Send Reward'
+                return
         # REMOVE LIST MEMBER
         $('div.list').on 'click', 'a.remove-member', () ->
             member = $(this).closest('div.list-item')

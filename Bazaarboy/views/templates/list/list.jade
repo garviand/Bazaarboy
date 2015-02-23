@@ -138,10 +138,34 @@ block content
                     {% for item in list_items %}
                     div.row.list-item
                         div.medium-3.small-12.columns {{ item.first_name }} {{ item.last_name }}
-                        div.medium-6.small-12.columns {{ item.email }}
+                        div.medium-3.small-12.columns(class="{% if not rewards.count == 0 %}medium-3{% else %}medium-6{% endif %}") {{ item.email }}
+                        {% if not rewards.count == 0 %}
+                        div.medium-3.small-12.columns.text-right
+                            a.reward-member(href="javascript:;", data-email="{{ item.email }}", data-name="{{ item.first_name }} {{ item.last_name }}") Send Reward
+                        {% endif %}
                         div.medium-3.small-12.columns.text-right
                             a.remove-member(href="javascript:;", data-id="{{ item.id }}") Remove From List
                     {% endfor %}
+    div#rewards-modal.reveal-modal.medium(data-reveal)
+        input(type="hidden", name="reward_email", value="")
+        div.row.new-list-title
+            div.small-12.columns
+                h3 Send a reward to '
+                    span.reward-reciever &nbsp;
+                    |'
+        div.row.rewards
+            div.small-12.columns
+                {% for reward in rewards %}
+                div.row.reward
+                    div.small-12.medium-4.columns 
+                        a(href="{{ reward.reward.attachment.source.url }}", target="_blank") {{ reward.reward.name }} (
+                            span.quantity {{ reward.quantity }}
+                            | &nbsp;left)
+                    div.small-12.medium-4.columns.text-right.expiration exp. {{ reward.expiration_time|date:"m/d/Y" }}
+                    div.small-12.medium-4.columns.text-right
+                        a.send-reward(href="javascript:;", data-id="{{ reward.id }}") Send Reward
+                {% endfor %}
+            
 
 append script
     script.

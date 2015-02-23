@@ -28,7 +28,7 @@ def index(request, user):
     for reward in rewards:
         items = Reward_item.objects.filter(reward = reward)
         reward.given = items
-    reward_items = Reward_item.objects.filter(owner = profile).order_by('expiration_time')
+    reward_items = Reward_item.objects.filter(owner = profile, expiration_time__gte = timezone.now()).order_by('expiration_time')
     for item in reward_items:
         claims = Claim.objects.filter(item = item)
         item.claims = claims
@@ -51,6 +51,28 @@ def claim(request, params):
     else:
         claim = Claim.objects.get(id = params['id'])
     return render(request, 'reward/claim.html', locals())
+
+@login_required()
+def manage(request, reward, user):
+    if not Reward.objects.filter(id = reward).exists():
+        response = {
+            'status':'FAIL',
+            'error':'REWARD_NOT_FOUND',
+            'message':'The reward doesn\'t exist.'
+        }
+        return json_response(response)
+    reward = Reward.objects.get(id = reward)
+    # Check if the user is a manager of the profile
+    if not Profile_manager.objects.filter(profile = reward.creator, 
+                                          user = user).exists():
+        response = {
+            'status':'FAIL',
+            'error':'NOT_A_MANAGER',
+            'message':'You don\'t have permission for the reward.'
+        }
+        return json_response(response)
+    claims = Claim.objects.filter(item__reward = reward, is_claimed = True).order_by("item__expiration_time")
+    return render(request, 'reward/manage.html', locals())
 
 @login_required()
 @validate('POST', ['profile', 'name', 'description', 'value'], ['attachment'])
@@ -343,6 +365,41 @@ def complete_claim(request, params, user):
     else:
         #SEND AN EMAIL
         pass
+    response = {
+        'status':'OK',
+        'claim':serialize_one(claim)
+    }
+    return json_response(response)
+
+@login_required()
+@validate('POST', ['claim_id'])
+def redeem(request, params, user):
+    if not Claim.objects.filter(id = params['claim_id']).exists():
+        response = {
+            'status':'FAIL',
+            'error':'CLAIM_NOT_FOUND',
+            'message':'The reward doesn\'t exist.'
+        }
+        return json_response(response)
+    claim = Claim.objects.get(id = params['claim_id'])
+    if claim.is_redeemed:
+        response = {
+            'status':'FAIL',
+            'error':'ALREADY_REDEEMED',
+            'message':'This reward has already been redeemed.'
+        }
+        return json_response(response)
+    if not Profile_manager.objects.filter(profile = claim.item.reward.creator, 
+                                          user = user).exists():
+        response = {
+            'status':'FAIL',
+            'error':'NOT_A_MANAGER',
+            'message':'You don\'t have permission for the reward.'
+        }
+        return json_response(response)
+    claim.is_redeemed = True
+    claim.redemption_time = timezone.now()
+    claim.save()
     response = {
         'status':'OK',
         'claim':serialize_one(claim)

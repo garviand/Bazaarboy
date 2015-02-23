@@ -1,0 +1,125 @@
+@import (reference) "vars.less";
+
+@media only screen and (max-width: 40.063em) {
+    div#main-header{
+        display: none;
+    }
+}
+
+#wrapper-sidebar{
+    form.reward-search-container{
+        position: relative;
+    }
+    div.reward-search{
+        width: 100%;
+        color: #FFF;
+        font-weight: 500;
+        padding: 20px 0;
+        border-bottom: solid 1px #464646;
+        label{
+            color: @white;
+            width: 80%;
+            margin-left: 10%;
+        }
+        input{
+            margin-bottom: 0px;
+            width: 80%;
+            margin-left: 10%;
+            border: none;
+            outline: none;
+            border-radius: 3px;
+            height: 1.9rem;
+            &[name=reward_name], &[name=reward_email]{
+                margin-bottom: 5px;
+            }
+        }
+        a{
+            color: #FFF;
+            display: block;
+            width: 80%;
+            margin-left: 10%;
+            border: 1px solid #464646;
+            text-decoration: none;
+            border-top: none;
+            padding: 5px;
+            text-align: center;
+            font-weight: 300;
+            &:first-child{
+                border-top: 1px solid #464646;
+            }
+            &:hover, &.active{
+                color: #FFF;
+                background: #7F7F7F;
+            }
+        }
+    }
+}
+
+form.mobile-reward-search{
+    input[name=reward_name]{
+        margin-top: 20px;
+    }
+    input[name=reward_code]{
+        margin-bottom: 0px;
+    }
+    input{
+        margin-bottom: 20px;
+    }
+    .mobile-reward-input-container{
+        padding: 0 30px;
+    }
+}
+
+div#reward-manage {
+    padding-left: 0;
+    .rewards{
+        .list_headers{
+            color: @dark;
+            font-weight: 500;
+            > div{
+                padding-top: 20px;
+                padding-bottom: 20px;
+                border-right: 2px solid @light-grey;
+                &:last-child{
+                    border-right: none;
+                }
+            }
+            .name{
+                border-right: 0;
+            }
+        }
+        .reward{
+            color: @dark;
+            font-size: 14px;
+            padding: 10px 0px;
+            border-top: 2px solid @light-grey;
+            div.reward-expiration{
+                line-height: 1.3em;
+                font-weight: 300;
+                padding-top: 12px;
+            }
+            div.code{
+                font-weight: 600;
+                padding-top: 12px;
+            }
+            @media only screen and (max-width: 40.063em) {
+                div.code{
+                    margin-top: 0;
+                    line-height: 1.3em;
+                }
+            }
+            div.name{
+                font-weight: 300;
+                padding-top: 12px;
+            }
+            @media only screen and (max-width: 40.063em) {
+                div.name{
+                    margin-top: 20px;
+                }
+                div.redeem{
+                    margin-top: 10px;
+                }
+            }
+        }
+    }
+}
