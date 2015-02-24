@@ -193,7 +193,7 @@ def remove_item(request, params, user):
     return json_response(response)
 
 @login_required()
-@validate('POST', ['id', 'first_name', 'last_name', 'email'], ['note'])
+@validate('POST', ['id', 'email'], ['first_name', 'last_name', 'note'])
 def add_item(request, params, user):
     """
     Add an item to a list
@@ -224,26 +224,11 @@ def add_item(request, params, user):
             'message':'Email format is invalid.'
         }
         return json_response(response)
-    # Check if the name is valid
-    if (not REGEX_NAME.match(params['first_name']) or 
-        not REGEX_NAME.match(params['last_name'])):
-        response = {
-            'status':'FAIL',
-            'error':'INVALID_NAME',
-            'message':'First or last name contain illegal characters.'
-        }
-        return json_response(response)
-    if len(params['first_name']) > 50 or len(params['last_name']) > 50:
-        response = {
-            'status':'FAIL',
-            'error':'NAME_TOO_LONG',
-            'message':'First or last name is too long.'
-        }
-        return json_response(response)
-    item, created = List_item.objects.get_or_create(_list = lt, 
-                                                    email = params['email'])
-    item.first_name = params['first_name']
-    item.last_name = params['last_name']
+    item, created = List_item.objects.get_or_create(_list = lt, email = params['email'])
+    if params['first_name'] is not None:
+        item.first_name = params['first_name']
+    if params['last_name'] is not None:
+        item.last_name = params['last_name']
     if params['note']:
         item.note = params['note']
     item.save()
@@ -398,7 +383,8 @@ def add_from_csv(request, params, user):
         if 'email' in format and len(row) >= format['email'] and REGEX_EMAIL.match(row[format['email']]):
             if not List_item.objects.filter(_list = lt, email = row[format['email']]).exists():
                 item = List_item(_list = lt, email = row[format['email']])
-                item.first_name = row[format['first_name']]
+                if 'first_name' in format:
+                    item.first_name = row[format['first_name']]
                 if 'last_name' in format:
                     item.last_name = row[format['last_name']]
                 item.save()

@@ -82,9 +82,12 @@ Bazaarboy.list.list =
             params.id = listId
             Bazaarboy.post 'lists/add/item/', params, (response) ->
                 if response.status is 'OK'
+                    console.log response
                     new_item = $('div#list-management div.list div.list-item.template').clone()
-                    new_item.find('div.name').html response.item.first_name + " " + response.item.last_name
+                    new_item.find('div.name').html response.item.first_name + " " + response.item.last_name + "&nbsp;"
                     new_item.find('div.email').html response.item.email
+                    new_item.find('a.reward-member').attr('data-email', response.item.email)
+                    new_item.find('a.reward-member').attr('data-name', response.item.first_name + " " + response.item.last_name)
                     new_item.find('a.remove-member').attr('data-id', response.item.pk)
                     new_item.removeClass 'template'
                     new_item.removeClass 'hide'
@@ -145,6 +148,7 @@ Bazaarboy.list.list =
         # CSV UPLOAD
         $('div#list-management div.member-add-interface a.upload-csv-btn').click () ->
             $('div#list-management form.upload_csv input[name=csv_file]').click()
+            $('div.csv_upload_interface').find('select[name=field] option').attr('disabled', false)
             return
         $('div.csv_upload_interface a.cancel-csv-upload').click () ->
             $('div.csv_upload_interface').addClass 'hide'
@@ -156,6 +160,7 @@ Bazaarboy.list.list =
             $('div.member-add-interface').addClass 'hide'
             $('div.csv_upload_interface div.csv-controls').addClass 'hide'
             $('a.cancel-add').css('display', 'none')
+            $('div.csv_upload_interface').find('select[name=field] option').attr('disabled', false)
             return
         $('body').on 'change', 'div.csv_upload_interface select[name=field]', () ->
             if $(this).val() is 'none'
@@ -180,15 +185,6 @@ Bazaarboy.list.list =
                     format[$(this).val()] = $(this).parents('div.upload_row').data('col')
                 if not format.hasOwnProperty('email')
                     $('div.csv_upload_interface div.csv-controls div.error-message').html 'You Must Select an EMAIL Column'
-                    setTimeout -> 
-                        $('div.csv_upload_interface div.csv-controls div.error-message').html '&nbsp;'
-                    , 5000
-                    button.html 'Submit'
-                    scope.submitting = false
-                    button.removeClass 'disabled-btn'
-                    return
-                if not format.hasOwnProperty('first_name')
-                    $('div.csv_upload_interface div.csv-controls div.error-message').html 'You Must Select a FIRST_NAME Column'
                     setTimeout -> 
                         $('div.csv_upload_interface div.csv-controls div.error-message').html '&nbsp;'
                     , 5000

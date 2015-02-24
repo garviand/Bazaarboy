@@ -131,16 +131,18 @@ block content
                 div.small-12.list-title List Members
                 div.small-12.columns.list-items
                     div.row.list-item.template.hide
-                        div.medium-3.small-12.columns.name
-                        div.medium-6.small-12.columns.email
+                        div.medium-3.small-12.columns.name &nbsp;
+                        div.medium-4.small-12.columns.email
+                        div.medium-2.small-12.columns.text-right
+                            a.reward-member(href="javascript:;") Send Reward
                         div.medium-3.small-12.columns.text-right
                             a.remove-member(href="javascript:;") Remove From List
                     {% for item in list_items %}
                     div.row.list-item
-                        div.medium-3.small-12.columns {{ item.first_name }} {{ item.last_name }}
-                        div.medium-3.small-12.columns(class="{% if not rewards.count == 0 %}medium-3{% else %}medium-6{% endif %}") {{ item.email }}
+                        div.medium-3.small-12.columns {{ item.first_name }} {{ item.last_name }}&nbsp;
+                        div.medium-4.small-12.columns(class="{% if not rewards.count == 0 %}medium-3{% else %}medium-6{% endif %}") {{ item.email }}
                         {% if not rewards.count == 0 %}
-                        div.medium-3.small-12.columns.text-right
+                        div.medium-2.small-12.columns.text-right
                             a.reward-member(href="javascript:;", data-email="{{ item.email }}", data-name="{{ item.first_name }} {{ item.last_name }}") Send Reward
                         {% endif %}
                         div.medium-3.small-12.columns.text-right

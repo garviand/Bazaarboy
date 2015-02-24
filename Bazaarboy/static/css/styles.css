@@ -12755,6 +12755,7 @@ div#list-management div.list div.list-item {
   margin-bottom: 10px;
   border-radius: 3px;
   border: #7a7a7a thin solid;
+  word-wrap: break-word;
 }
 div#list-management div.list div.list-item a.remove-member {
   color: #c57724;
