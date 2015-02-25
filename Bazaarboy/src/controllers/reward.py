@@ -118,7 +118,7 @@ def subscribe(request, params, user):
             email = params['email'],
             plan = "gifts"
         )
-        subscription = Subscription(owner = profile, customer_id = customer.id, subscription_id = customer.subscriptions.data[0].id, plan_id = 'gifts', credits = 0)
+        subscription = Subscription(owner = profile, customer_id = customer.id, subscription_id = customer.subscriptions.data[0].id, plan_id = 'gifts', credits = 10)
         subscription.save()
     except stripe.CardError, e:
         response = {

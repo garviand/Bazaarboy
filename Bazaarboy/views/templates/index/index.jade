@@ -402,7 +402,7 @@ block content
             div.row
                 div.small-12.columns
                     div.headline {{ reward_list|length }} Active Gift{{ reward_list|length|pluralize }}&nbsp;&nbsp;|&nbsp;&nbsp;
-                        a.show-btn.primary-btn.small-btn(href="javascript:;") Show Gifts
+                        a.show-btn.primary-btn.small-btn(href="javascript:;") Show Gift{{ reward_list|length|pluralize }}
             div.reward-list
                 {% for reward in reward_list %}
                 div.row.reward
