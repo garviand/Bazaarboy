@@ -18,6 +18,36 @@ Bazaarboy.reward.index =
             $('form.add-organizer-form').append(newProfile.html())
   init: () ->
     scope = this
+    # SUBSCRIPTION
+    $('a.create-subscription').click () ->
+      $('div#add-subscription-modal').foundation('reveal', 'open')
+      return
+    $('div#add-subscription-modal a.create-subscription').click () ->
+      StripeCheckout.open
+        key: publishableKey
+        address: false
+        amount: 0
+        currency: 'usd'
+        name: 'Bazaarboy Gifts Account'
+        description: 'Create Account'
+        panelLabel: 'Subscribe'
+        closed: () ->
+          $('div#add-subscription-modal').foundation('reveal', 'close')
+          return
+        token: (token) =>
+          Bazaarboy.post 'rewards/subscribe/',
+            stripe_token: token.id
+            email: token.email
+            profile: profileId
+          , (response) =>
+            if response.status is 'OK'
+              console.log response
+            else
+              alert response.message
+            return
+          return
+      return
+    # SEND REWARD
     $('a.send-reward-btn').click () ->
       $('input[name=reward_id]').val($(this).data('id'))
       $('div#send-reward-modal span.reward-name').html($(this).data('name'))

@@ -4,10 +4,12 @@ Controller for rewards
 
 import cgi
 import re
+import stripe
 from kernel.models import *
 from src.controllers.request import *
 from src.serializer import serialize_one
 from src.email import sendReward
+from src.config import *
 from datetime import timedelta
 from django.utils import timezone
 from src.regex import REGEX_EMAIL, REGEX_NAME, REGEX_SLUG
@@ -33,6 +35,11 @@ def index(request, user):
         claims = Claim.objects.filter(item = item)
         item.claims = claims
         item.redeemed = claims.filter(is_redeemed = True).count()
+    publishable_key = STRIPE_PUBLISHABLE_KEY
+    if Subscription.objects.filter(owner = profile).exists():
+        subscription = Subscription.objects.get(owner = profile)
+    else:
+        subscription = None
     return render(request, 'reward/index.html', locals())
 
 @login_required()
@@ -73,6 +80,58 @@ def manage(request, reward, user):
         return json_response(response)
     claims = Claim.objects.filter(item__reward = reward, is_claimed = True).order_by("item__expiration_time")
     return render(request, 'reward/manage.html', locals())
+
+@login_required()
+@validate('POST', ['stripe_token', 'profile', 'email'])
+def subscribe(request, params, user):
+    """
+    Subscribe to rewards account
+    """
+    if not Profile.objects.filter(id = params['profile']).exists():
+        response = {
+            'status':'FAIL',
+            'error':'PROFILE_NOT_FOUND',
+            'message':'The profile doesn\'t exist.'
+        }
+        return json_response(response)
+    profile = Profile.objects.get(id = params['profile'])
+    if not Profile_manager.objects.filter(profile = profile, 
+                                          user = user).exists():
+        response = {
+            'status':'FAIL',
+            'error':'NOT_A_MANAGER',
+            'message':'You don\'t have permission for the profile.'
+        }
+        return json_response(response)
+    if not REGEX_EMAIL.match(params['email']):
+        response = {
+            'status':'FAIL',
+            'error':'INVALID_EMAIL',
+            'message':'Email format is invalid.'
+        }
+        return json_response(response)
+    stripe.api_key = STRIPE_SECRET_KEY
+    try:
+        customer = stripe.Customer.create(
+            description = "Gifts Account for " + params['email'],
+            source = params['stripe_token'],
+            email = params['email'],
+            plan = "gifts"
+        )
+        subscription = Subscription(owner = profile, customer_id = customer.id, subscription_id = customer.subscriptions.data[0].id, plan_id = 'gifts', credits = 0)
+        subscription.save()
+    except stripe.CardError, e:
+        response = {
+            'status':'FAIL',
+            'error':'CARD_DECLINED',
+            'message':'The card is declined.'
+        }
+        return json_response(response)
+    response = {
+        'status':'OK',
+        'subscription': serialize_one(subscription)
+    }
+    return json_response(response)
 
 @login_required()
 @validate('POST', ['profile', 'name', 'description', 'value'], ['attachment'])
@@ -354,6 +413,28 @@ def complete_claim(request, params, user):
         claim.owner.last_name = params['last_name']
     else:
         claim.owner = User(email = claim.email, first_name = params['first_name'], last_name = params['last_name'])
+    if Subscription.objects.filter(owner = claim.item.reward.creator, plan_id = 'gifts'):
+        subscription = Subscription.objects.get(owner = claim.item.reward.creator, plan_id = 'gifts')
+        if subscription.credits > 0:
+            subscription.credits -= 1
+            subscription.save()
+        else:
+            stripe.api_key = STRIPE_SECRET_KEY
+            try:
+                invoice = stripe.InvoiceItem.create(
+                    customer = subscription.customer_id,
+                    subscription = subscription.subscription_id,
+                    amount = 100,
+                    currency = "usd",
+                    description = claim.item.reward.name  + " claimed by " + claim.owner.email
+                )
+            except stripe.error.StripeError, e:
+                response = {
+                    'status':'FAIL',
+                    'error':'STRIPE_ERROR',
+                    'message':'The reward is not available.'
+                }
+                return json_response(response)
     claim.owner.save()
     claim.is_claimed = True
     claim.claimed_time = timezone.now()
@@ -362,9 +443,6 @@ def complete_claim(request, params, user):
         claim.owner.phone = params['phone']
         claim.owner.save()
         sendClaimMMS(claim)
-    else:
-        #SEND AN EMAIL
-        pass
     response = {
         'status':'OK',
         'claim':serialize_one(claim)

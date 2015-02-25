@@ -73,7 +73,7 @@ block content
                             div.small-6.columns.reward-name
                                 | {{ reward.name|truncatechars:30 }}
                             div.small-3.columns.text-right.reward-action
-                                a.send-reward-btn(href="javascript:;", data-id="{{ reward.id }}", data-name="{{ reward.name }}") Send Reward
+                                a(class="{% if subscription %}send-reward-btn{% else %}create-subscription{% endif %}", href="javascript:;", data-id="{{ reward.id }}", data-name="{{ reward.name }}") Send Reward
                             div.small-3.columns.text-right.reward-action
                                 a.manage-reward(href="{% url reward:manage reward.id %}") Manage/Redeem
                     {% endfor %}
@@ -110,13 +110,33 @@ block content
                     div.small-12.medium-8.columns
                         input(type="text", name="profile_search", placeholder="Search Profile Name")
         form.add-organizer-form(name="add-organizer")
+    div#add-subscription-modal.reveal-modal.medium(data-reveal)
+        div.subscription-model.row
+            div.small-12.columns
+                div.row
+                    div.small-12.columns
+                        div.headline Create Subscription
+                    hr
+                div.row
+                    div.small-12.columns
+                        | Before sending a reward, you must subscribe to a Bazaarboy Gifts account. This account will be charged $1 for every gift that is claimed by a user. Charges will be invoiced on a monthly basis. By signing up, you are agreeing to pay for each claimed gift that you send.
+                div.row
+                    div.small-12.medium-8.medium-offset-4.columns
+                        div.row
+                            div.small-12.medium-6.columns
+                                a.create-subscription.primary-btn.full-btn(href="javascript:;") Subscribe
+                            div.small-12.medium-6.columns
+                                a.cancel-subscription.primary-btn-inverse.full-btn(href="javascript:;") Cancel
                     
 
 
 append script
     script.
         var profileId = {{ profile.id }};
+        var publishableKey = '{{ publishable_key }}';
     script(type="text/javascript", src="{{ STATIC_URL }}pikaday/pikaday.js")
     script(type="text/javascript", src="{{ STATIC_URL }}pikaday/pikaday.jquery.js")
     script(type="text/javascript", src="{{ STATIC_URL }}debounce/jquery.debounce.js")
+    script(type="text/javascript", src="https://checkout.stripe.com/v2/checkout.js")
+    script(type="text/javascript", src="https://js.stripe.com/v2/")
     script(src="{{ STATIC_URL }}js/reward/index.js")

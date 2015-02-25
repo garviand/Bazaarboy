@@ -86,6 +86,19 @@ class Payment_account(models.Model):
     publishable_key = models.CharField(max_length = 255)
     created_time = models.DateTimeField(auto_now_add = True)
 
+class Subscription(models.Model):
+    """
+    A model to hold information about a Stripe subscription
+    """
+    owner = models.ForeignKey('Profile')
+    customer_id = models.CharField(max_length = 255)
+    subscription_id = models.CharField(max_length = 255)
+    plan_id = models.CharField(max_length = 255)
+    is_active = models.BooleanField(default = True)
+    credits = models.IntegerField(default = 0)
+    created_time = models.DateTimeField(auto_now_add = True)
+    
+
 class Checkout(models.Model):
     """
     A model for checkouts

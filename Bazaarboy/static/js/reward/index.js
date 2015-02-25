@@ -33,6 +33,37 @@
     init: function() {
       var add_organizer_debounce, scope;
       scope = this;
+      $('a.create-subscription').click(function() {
+        $('div#add-subscription-modal').foundation('reveal', 'open');
+      });
+      $('div#add-subscription-modal a.create-subscription').click(function() {
+        var _this = this;
+        StripeCheckout.open({
+          key: publishableKey,
+          address: false,
+          amount: 0,
+          currency: 'usd',
+          name: 'Bazaarboy Gifts Account',
+          description: 'Create Account',
+          panelLabel: 'Subscribe',
+          closed: function() {
+            $('div#add-subscription-modal').foundation('reveal', 'close');
+          },
+          token: function(token) {
+            Bazaarboy.post('rewards/subscribe/', {
+              stripe_token: token.id,
+              email: token.email,
+              profile: profileId
+            }, function(response) {
+              if (response.status === 'OK') {
+                console.log(response);
+              } else {
+                alert(response.message);
+              }
+            });
+          }
+        });
+      });
       $('a.send-reward-btn').click(function() {
         $('input[name=reward_id]').val($(this).data('id'));
         $('div#send-reward-modal span.reward-name').html($(this).data('name'));
