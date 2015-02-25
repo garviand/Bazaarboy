@@ -6361,6 +6361,19 @@ div.active-rewards div.reward div.text {
   padding-top: 12px;
   padding-bottom: 12px;
 }
+div.active-rewards div.reward-list {
+  display: none;
+}
+div.active-rewards div.reward {
+  margin-left: 0 !important;
+  margin-right: 0 !important;
+}
+div.active-rewards a.show-btn {
+  display: inline;
+  padding: 2px 10px;
+  position: relative;
+  top: -1px;
+}
 div.summary-events div.current-event,
 div.summary-events div.draft-event,
 div.summary-events div.past-event {
@@ -12198,6 +12211,21 @@ div#send-reward-modal form div.organizer div.organizer-image {
 }
 div#send-reward-modal form div.organizer div.organizer-image img {
   max-height: 40px;
+}
+div#add-subscription-modal {
+  margin-bottom: 150px;
+}
+div#add-subscription-modal div.headline {
+  margin-bottom: 10px;
+}
+div#add-subscription-modal div.description {
+  line-height: 1.2rem;
+  margin-bottom: 20px;
+}
+div#add-subscription-modal div.description img {
+  display: block;
+  margin-top: 20px;
+  margin-bottom: 20px;
 }
 div#claim {
   min-width: 100%;

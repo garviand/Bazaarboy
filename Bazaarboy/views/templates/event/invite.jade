@@ -8,6 +8,8 @@ block sidebar
         | Events
     +sidebarItem('ss-database')(href="{% url list:index %}")
         | Lists
+    +sidebarItem('ss-tag')(href="{% url reward:index %}", class="selected")
+        | Gifts
     +sidebarItem('ss-share')(href="{% url user:settings %}")
         | Settings
 

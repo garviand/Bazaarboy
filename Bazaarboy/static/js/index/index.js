@@ -179,6 +179,9 @@
     init: function() {
       var scope;
       scope = this;
+      $('div.active-rewards a.show-btn').click(function() {
+        return $('div.active-rewards div.reward-list').slideDown(200);
+      });
       $('div.request a.accept-request').click(function() {
         var requestId, thisRequest;
         requestId = $(this).data('id');

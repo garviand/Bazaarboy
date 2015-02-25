@@ -26,14 +26,14 @@ block body
                                         input(name="last_name", type="text", placeholder="Your Last Name", value="{{ claim.owner.last_name }}")
                                     div.small-12.columns.phone
                                         input(name="phone", type="text", name="phone", placeholder="Phone #")
-                                        small * You will recieve the reward via MMS.
+                                        small * You will recieve the gift via MMS.
                                     div.small-12.columns
                                         input(type="hidden", name="claim_id", value="{{ claim.id }}")
                                         input(type="hidden", name="claim_token", value="{{ claim.token }}")
-                                        input.primary-btn.full-btn.submit-claim(type="submit", value="Claim Reward!")
+                                        input.primary-btn.full-btn.submit-claim(type="submit", value="Claim Gift!")
                                 div.row.claim-success.hide
                                     div.small-12.columns
-                                        | Congrats on your reward! Go and redeem it with the code 
+                                        | Congrats on your gift! Go and redeem it with the code 
                                         b.code &nbsp;
                                         |!
 

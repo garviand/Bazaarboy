@@ -12,7 +12,7 @@ block sidebar
     +sidebarItem('ss-database')(href="{% url list:index %}")
         | Lists
     +sidebarItem('ss-tag')(href="{% url reward:index %}")(class="selected")
-        | Rewards
+        | Gifts
     +sidebarItem('ss-share')(href="{% url user:settings %}")
         | Settings
 
@@ -22,8 +22,8 @@ block header
             div.icon.left
                 span.ss-file
             div.text.left
-                | Reward Management |
-                span.sub &nbsp;All Rewards
+                | Gift Management |
+                span.sub &nbsp;All Gifts
 
 block content
     div#wrapper-reward-dashboard.large-9.medium-10.columns.small-centered
@@ -33,23 +33,23 @@ block content
                 div.medium-5.columns
                     &nbsp;
                 div.medium-7.columns.end.empty-state-content
-                    div.text YOU HAVEN'T MADE A REWARD YET
+                    div.text YOU HAVEN'T MADE A GIFT YET
                     hr
                     div.subtext Do some stuff with this thing
                     div.row
                         div.large-5.medium-7.small-9
                             a.new-reward-btn(href="{% url reward:new %}")
                                 div.secondary-btn.btn.full-btn
-                                    | <span class="plus">+</span> Add New Reward
+                                    | <span class="plus">+</span> Add New Gift
         {% endif %}
         div#reward-dashboard.small-12.columns
             div.row.new-reward-container(class="{% if rewards.count == 0 %}hide{% endif %}")
                 div.medium-4.columns.new-reward
-                    a.new-reward-btn.primary-btn(href="{% url reward:new %}") + New Reward
+                    a.new-reward-btn.primary-btn(href="{% url reward:new %}") + New Gift
             div.row
                 {% if reward_items.count > 0 %}
                 div.small-12.columns.rewards
-                    div.headline Current Rewards
+                    div.headline Current Gifts
                     hr
                     {% for reward_item in reward_items %}
                     {% if reward_item.quantity > 0 %}
@@ -59,13 +59,13 @@ block content
                                 | {{ reward_item.reward.name|truncatechars:30 }}
                                 span &nbsp;({{ reward_item.quantity }} Left)
                             div.small-4.columns.text-left.reward-members
-                                | Reward Expires - {{ reward_item.expiration_time|date:"m/d/Y" }}
+                                | Gift Expires - {{ reward_item.expiration_time|date:"m/d/Y" }}
                     {% endif %}
                     {% endfor %}
                 {% endif %}
                 {% if rewards.count > 0 %}
                 div.small-12.columns.rewards
-                    div.headline Reward Templates
+                    div.headline Gift Templates
                     hr
                     {% for reward in rewards %}
                     div
@@ -73,7 +73,7 @@ block content
                             div.small-6.columns.reward-name
                                 | {{ reward.name|truncatechars:30 }}
                             div.small-3.columns.text-right.reward-action
-                                a(class="{% if subscription %}send-reward-btn{% else %}create-subscription{% endif %}", href="javascript:;", data-id="{{ reward.id }}", data-name="{{ reward.name }}") Send Reward
+                                a(class="{% if subscription %}send-reward-btn{% else %}create-subscription{% endif %}", href="javascript:;", data-id="{{ reward.id }}", data-name="{{ reward.name }}") Send Gift
                             div.small-3.columns.text-right.reward-action
                                 a.manage-reward(href="{% url reward:manage reward.id %}") Manage/Redeem
                     {% endfor %}
@@ -84,14 +84,14 @@ block content
                 div.medium-3.columns.organizer-image &nbsp;
                 div.medium-6.columns.organizer-name &nbsp;
                 div.medium-3.columns.organizer-submit
-                    a.add-reward-submit.secondary-btn-inverse.full-btn(href="javascript:;") Add Rewards
+                    a.add-reward-submit.secondary-btn-inverse.full-btn(href="javascript:;") Add Gifts
         div.row
             div.small-12.columns
                 div.headline Send&nbsp;'
                     span.reward-name &nbsp;
                     |'
                 br
-                div You can either add this reward to your own 'current rewards' or you can send it to another profile.
+                div You can either add this gift to your own 'current gifts' or you can send it to another profile.
                 hr
         div.row
             div.small-12.columns
@@ -99,10 +99,10 @@ block content
                 div.row
                     div.small-12.medium-6.columns
                         label Quantity
-                        input(type="text", name="quantity", placeholder="How Many Rewards?")
+                        input(type="text", name="quantity", placeholder="How Many Gifts?")
                     div.small-12.medium-6.columns
                         label Expiration Date
-                        input(type="text", name="expiration", placeholder="Reward Expiration (MM/DD/YYYY)")
+                        input(type="text", name="expiration", placeholder="Gift Expiration (MM/DD/YYYY)")
                 hr
                 div.row
                     div.small-12.medium-4.columns
@@ -110,7 +110,7 @@ block content
                     div.small-12.medium-8.columns
                         input(type="text", name="profile_search", placeholder="Search Profile Name")
         form.add-organizer-form(name="add-organizer")
-    div#add-subscription-modal.reveal-modal.medium(data-reveal)
+    div#add-subscription-modal.reveal-modal.small(data-reveal)
         div.subscription-model.row
             div.small-12.columns
                 div.row
@@ -118,15 +118,17 @@ block content
                         div.headline Create Subscription
                     hr
                 div.row
-                    div.small-12.columns
-                        | Before sending a reward, you must subscribe to a Bazaarboy Gifts account. This account will be charged $1 for every gift that is claimed by a user. Charges will be invoiced on a monthly basis. By signing up, you are agreeing to pay for each claimed gift that you send.
+                    div.small-12.columns.description
+                        | Before sending a gift, you must subscribe to a Bazaarboy Gifts account. This account will be charged $1 for every gift that is claimed. A 'Claim' is when the user enters thier information, and an MMS with the attached gift is sent (shown below).
+                        img(src="{{ STATIC_URL }}images/claim.png")
+                        | By subscribing, you are agreeing to this payment. You will get 10 FREE gift credits after your subscription is complete.
                 div.row
-                    div.small-12.medium-8.medium-offset-4.columns
+                    div.small-12.columns
                         div.row
-                            div.small-12.medium-6.columns
-                                a.create-subscription.primary-btn.full-btn(href="javascript:;") Subscribe
-                            div.small-12.medium-6.columns
-                                a.cancel-subscription.primary-btn-inverse.full-btn(href="javascript:;") Cancel
+                            div.small-12.medium-8.columns
+                                a.create-subscription.primary-btn-inverse.full-btn(href="javascript:;") Subscribe
+                            div.small-12.medium-4.columns
+                                a.cancel-subscription.btn.full-btn(href="javascript:;") Cancel
                     
 
 

@@ -129,6 +129,9 @@ Bazaarboy.index.index =
             return
     init: () ->
         scope = this
+        # Rewards
+        $('div.active-rewards a.show-btn').click () ->
+            $('div.active-rewards div.reward-list').slideDown(200)
         # Collaboration Request
         $('div.request a.accept-request').click () ->
             requestId = $(this).data('id')

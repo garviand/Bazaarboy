@@ -6,13 +6,12 @@ block title
     | Manage | {{ event.name }}
 
 block sidebar
-    +sidebarItem('ss-newspaper')(href="{% url index %}")
+    +sidebarItem('ss-newspaper')(href="{% url index %}", class="selected")
         | Events
-    //div.checkin_numbers.show-for-large-only
-        span.checked_in {{ checked_in }}
-        | /
-        span.total_guests {{ purchases|length }}
-        span.checkin_label &nbsp;Checked In
+    +sidebarItem('ss-database')(href="{% url list:index %}")
+        | Lists
+    +sidebarItem('ss-tag')(href="{% url reward:index %}")
+        | Gifts
     form.list_search
         div.guest-search.show-for-large-only
             label Search Guests
@@ -151,7 +150,7 @@ block content
                     div.row
                         {% if rewards.count > 0 %}
                         div.large-6.medium-6.small-12.columns.to-dash.show-rewards-container
-                            a.show-rewards-btn.secondary-btn(href="javascript:;") Send Reward
+                            a.show-rewards-btn.secondary-btn(href="javascript:;") Send Gift
                         {% endif %}
                         div.large-6.medium-6.small-12.columns.to-dash
                             a.back-to-list.primary-btn(href="javascript:;") Back To List
@@ -159,7 +158,7 @@ block content
             input(name="reward_user", value="", type="hidden")
             div.row
                 div.small-12.columns
-                    div.headline Available Rewards
+                    div.headline Available Gifts
             {% for reward in rewards %}
             div
                 div.row.reward

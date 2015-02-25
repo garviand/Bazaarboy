@@ -2,8 +2,15 @@ from django import template
 from django.utils import timezone
 from django.core.urlresolvers import reverse
 from src.timezone import localize
+import math
 
 register = template.Library()
+
+@register.filter
+def daysUntil(value):
+    now = timezone.now()
+    diff  = value - now
+    return diff.days
 
 @register.filter
 def split(value, delimiter):

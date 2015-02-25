@@ -8,6 +8,8 @@ block sidebar
         | Events
     +sidebarItem('ss-database')(href="{% url list:index %}", class="selected")
         | Lists
+    +sidebarItem('ss-tag')(href="{% url reward:index %}")
+        | Gifts
     +sidebarItem('ss-share')(href="{% url user:settings %}")
         | Settings
 
@@ -134,7 +136,7 @@ block content
                         div.medium-3.small-12.columns.name &nbsp;
                         div.medium-4.small-12.columns.email
                         div.medium-2.small-12.columns.text-right
-                            a.reward-member(href="javascript:;") Send Reward
+                            a.reward-member(href="javascript:;") Send Gift
                         div.medium-3.small-12.columns.text-right
                             a.remove-member(href="javascript:;") Remove From List
                     {% for item in list_items %}
@@ -143,7 +145,7 @@ block content
                         div.medium-4.small-12.columns(class="{% if not rewards.count == 0 %}medium-3{% else %}medium-6{% endif %}") {{ item.email }}
                         {% if not rewards.count == 0 %}
                         div.medium-2.small-12.columns.text-right
-                            a.reward-member(href="javascript:;", data-email="{{ item.email }}", data-name="{{ item.first_name }} {{ item.last_name }}") Send Reward
+                            a.reward-member(href="javascript:;", data-email="{{ item.email }}", data-name="{{ item.first_name }} {{ item.last_name }}") Send Gift
                         {% endif %}
                         div.medium-3.small-12.columns.text-right
                             a.remove-member(href="javascript:;", data-id="{{ item.id }}") Remove From List
@@ -152,7 +154,7 @@ block content
         input(type="hidden", name="reward_email", value="")
         div.row.new-list-title
             div.small-12.columns
-                h3 Send a reward to '
+                h3 Send a gift to '
                     span.reward-reciever &nbsp;
                     |'
         div.row.rewards
@@ -165,7 +167,7 @@ block content
                             | &nbsp;left)
                     div.small-12.medium-4.columns.text-right.expiration exp. {{ reward.expiration_time|date:"m/d/Y" }}
                     div.small-12.medium-4.columns.text-right
-                        a.send-reward(href="javascript:;", data-id="{{ reward.id }}") Send Reward
+                        a.send-reward(href="javascript:;", data-id="{{ reward.id }}") Send Gift
                 {% endfor %}
             
 

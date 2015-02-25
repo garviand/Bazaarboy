@@ -8,9 +8,13 @@ block title
 block sidebar
     +sidebarItem('ss-newspaper')(href="{% url index %}")
         | Events
+    +sidebarItem('ss-database')(href="{% url list:index %}")
+        | Lists
+    +sidebarItem('ss-tag')(href="{% url reward:index %}", class="selected")
+        | Gifts
     form.reward-search-container
         div.reward-search.show-for-large-only
-            label Search Rewards
+            label Search Gifts
             input(type="text", name="reward_name", data-type="name", placeholder="Search Name")
             input(type="text", name="reward_email", data-type="email",, placeholder="Search Email")
             input(type="text", name="reward_code", data-type="code",, placeholder="Search Code")
@@ -19,7 +23,7 @@ block header
     div.header-title.large-9.medium-10.columns.small-centered.hide-for-small-only
         div.row.clearfix
             div.text.left
-                | Reward Management | 
+                | Gift Management | 
                 span.sub {{ reward.name }}
 
 

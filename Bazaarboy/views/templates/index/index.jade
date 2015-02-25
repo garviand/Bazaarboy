@@ -18,8 +18,8 @@ block sidebar
         | Past Events
     +sidebarItem('ss-database')(href="{% url list:index %}")
         | Lists
-    //+sidebarItem('ss-tag')(href="{% url reward:index %}")
-        | Rewards
+    +sidebarItem('ss-tag')(href="{% url reward:index %}")
+        | Gifts
     +sidebarItem('ss-share')(href="{% url user:settings %}")
         | Settings
 
@@ -397,20 +397,23 @@ block content
                     a.primary-btn-inverse.full-btn.reject-request(href="javascript:;", data-id="{{ request.id }}") Reject
             {% endfor %}
         {% endif %}
-        {% if reward_list.count > 0 %}
+        {% if reward_list|length > 0 %}
         div.active-rewards
             div.row
                 div.small-12.columns
-                    div.headline Active Rewards
-            {% for reward in reward_list %}
-            div.row.reward
-                div.small-12.medium-4.columns.text
-                    a(href="{{ reward.attachment.source.url }}", target="_blank") {{ reward.name }}
-                div.small-12.medium-2.columns.text {{ reward.claims }} claim{{ reward.claims|pluralize }}
-                div.small-12.medium-2.columns.text {{ reward.redemptions }} redemption{{ reward.redemptions|pluralize }}
-                div.small-12.medium-4.columns
-                    a.primary-btn-inverse.full-btn(href="{% url reward:manage reward.id %}") Manage Redemptions
-            {% endfor %}
+                    div.headline {{ reward_list|length }} Active Gift{{ reward_list|length|pluralize }}&nbsp;&nbsp;|&nbsp;&nbsp;
+                        a.show-btn.primary-btn.small-btn(href="javascript:;") Show Gifts
+            div.reward-list
+                {% for reward in reward_list %}
+                div.row.reward
+                    div.small-12.medium-4.columns.text
+                        a(href="{{ reward.attachment.source.url }}", target="_blank") {{ reward.name }}
+                    div.small-12.medium-2.columns.text {{ reward.claims }} claim{{ reward.claims|pluralize }}
+                    div.small-12.medium-2.columns.text {{ reward.redemptions }} redeem{{ reward.redemptions|pluralize }}
+                    div.small-12.medium-4.columns
+                        a.primary-btn-inverse.full-btn(href="{% url reward:manage reward.id %}") Manage Redemptions
+                {% endfor %}
+        hr
         {% endif %}
         div.event-tiles-container.summary-events.active
             {% if pastEventsAttentionCount > 0 %}

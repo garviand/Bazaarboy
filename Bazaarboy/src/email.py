@@ -474,7 +474,7 @@ def sendReward(claim):
     to = [{
         'email':claim.email
     }]
-    subject = claim.item.reward.name + ' - Reward from ' + claim.item.reward.creator.name
+    subject = claim.item.reward.name + ' - Gift from ' + claim.item.reward.creator.name
     template = 'reward'
     if claim.item.reward.attachment:
         rewardImage = '<img src="' + claim.item.reward.attachment.source.url.split("?", 1)[0] + '" style="max-width:520px;" mc:label="coupon_image" mc:edit="coupon_image">'
@@ -490,7 +490,7 @@ def sendReward(claim):
         firstName = ''
     df = DateFormat(claim.item.expiration_time)
     expirationDate = df.format('m/d/Y')
-
+    expirationDuration = layout.daysUntil(claim.item.expiration_time)
     mergeVars = [{
         'rcpt': claim.email,
         'vars': [
@@ -516,7 +516,7 @@ def sendReward(claim):
             },
             {
                 'name': 'expiration', 
-                'content': expirationDate
+                'content': str(expirationDuration) + ' days'
             },
             {
                 'name': 'claim_id', 

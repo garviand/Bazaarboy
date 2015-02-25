@@ -33,7 +33,7 @@
     init: function() {
       var add_organizer_debounce, scope;
       scope = this;
-      $('a.create-subscription').click(function() {
+      $('body').on('click', 'a.create-subscription', function() {
         $('div#add-subscription-modal').foundation('reveal', 'open');
       });
       $('div#add-subscription-modal a.create-subscription').click(function() {
@@ -56,7 +56,15 @@
               profile: profileId
             }, function(response) {
               if (response.status === 'OK') {
-                console.log(response);
+                swal({
+                  type: "success",
+                  title: 'Subscribed!',
+                  text: 'You have successfully subscribed for a Bazaarboy Gifts account. You will not be charged for the first 10 claimed items, so gift away!'
+                }, function() {
+                  $('a.create-subscription').addClass('send-reward-btn');
+                  $('a.create-subscription').removeClass('create-subscription');
+                  $('div#add-subscription-modal').foundation('reveal', 'close');
+                });
               } else {
                 alert(response.message);
               }
@@ -64,7 +72,7 @@
           }
         });
       });
-      $('a.send-reward-btn').click(function() {
+      $('body').on('click', 'a.send-reward-btn', function() {
         $('input[name=reward_id]').val($(this).data('id'));
         $('div#send-reward-modal span.reward-name').html($(this).data('name'));
         $('div#send-reward-modal').foundation('reveal', 'open');
