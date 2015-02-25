@@ -29,15 +29,18 @@ block content
             div.row
                 div.small-12.columns.invitation-stats
                     div.row
-                        div.small-12.medium-4.columns
+                        div.small-12.medium-3.columns
                             h3 Recipients
                             h1 {{ invt.recipients }}
-                        div.small-12.medium-4.columns
+                        div.small-12.medium-3.columns
                             h3 Unique Opens
                             h1 {{ totalOpens }}
-                        div.small-12.medium-4.columns
+                        div.small-12.medium-3.columns
                             h3 Unique Clicks
                             h1 {{ totalClicks }}
+                        div.small-12.medium-3.columns
+                            h3 Converted (RSVPs)
+                            h1 {{ totalRSVPs }}
             div.row
                 div.small-12.columns.invitations
                     h3.title Recipient List

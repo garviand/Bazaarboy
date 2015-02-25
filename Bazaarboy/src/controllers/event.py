@@ -448,6 +448,7 @@ def invite_details(request, invite, user):
     results = client.messages.search(query='u_invite_id:' + settings.INVITATION_PREFIX + '-' + str(invt.id), limit = 1000, date_from='2014-01-01')
     totalOpens = 0
     totalClicks = 0
+    totalRSVPs = len(Purchase.objects.filter(invite = invt))
     for email in results:
         if email['opens'] > 0:
             totalOpens += 1
