@@ -444,15 +444,14 @@ def invite_details(request, invite, user):
     if not Invite.objects.filter(id = invite, profile__managers = user, is_sent = True, is_deleted = False).exists():
         return redirect('index')
     invt = Invite.objects.get(id = invite)
-    client = Mandrill(MANDRILL_API_KEY)
-    results = client.messages.search(query='u_invite_id:' + settings.INVITATION_PREFIX + '-' + str(invt.id), limit = 1000, date_from='2014-01-01')
     totalOpens = 0
     totalClicks = 0
     totalRSVPs = len(Purchase.objects.filter(invite = invt))
+    results = Invite_stat.objects.filter(invite = invt).order_by('-clicks', '-opens')
     for email in results:
-        if email['opens'] > 0:
+        if email.opens > 0:
             totalOpens += 1
-        if email['clicks'] > 0:
+        if email.clicks > 0:
             totalClicks += 1
     return render(request, 'event/invite-details.html', locals())
 
