@@ -41,7 +41,7 @@ block content
             div.row
                 div.small-12.columns.invitations
                     h3.title Recipient List
-                    {% if results|length == 0 %}
+                    {% if results.count == 0 %}
                     div
                         div.row.invitation
                             div.small-12
@@ -51,7 +51,7 @@ block content
                     div
                         div.row.invitation
                             div.small-12.medium-6.columns.invitation-name
-                                | {{ fu.email }}
+                                | {{ fu.to }}
                             div.small-12.medium-3.columns.text-right.invitation-details
                                 | {{ fu.opens }} Ope{{ fu.opens|pluralize:"n,ns" }}
                             div.small-12.medium-3.columns.text-right.invitation-details

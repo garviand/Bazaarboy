@@ -637,10 +637,9 @@ def preview_invite(request, invite, user):
     unsubscribes = 0
     alreadyInvited = 0
     invitedList = []
-    client = Mandrill(MANDRILL_API_KEY)
-    results = client.messages.search(query='u_invite_event_id:' + settings.INVITATION_PREFIX + '-' + str(invite.event.id), limit = 1000, date_from='2014-01-01')
+    results = Invite_stat.objects.filter(event = invite.event)
     for result in results:
-        invitedList.append(result['email'].lower())
+        invitedList.append(result.to.lower())
     for lt in invite.lists.all():
         list_items = List_item.objects.filter(_list = lt)
         for item in list_items:
@@ -684,9 +683,9 @@ def send_invite(request, params, user):
     alreadyInvited = 0
     invitedList = []
     client = Mandrill(MANDRILL_API_KEY)
-    results = client.messages.search(query='u_invite_event_id:' + settings.INVITATION_PREFIX + '-' + str(invite.event.id), limit = 1000, date_from='2014-01-01')
+    results = Invite_stat.objects.filter(event = invite.event)
     for result in results:
-        invitedList.append(result['email'].lower())
+        invitedList.append(result.to.lower())
     for lt in invite.lists.all():
         list_items = List_item.objects.filter(_list = lt)
         for item in list_items:
@@ -826,14 +825,13 @@ def follow_up_details(request, follow_up, user):
     if not Follow_up.objects.filter(id = follow_up, recap__organizer__profile__managers = user, is_deleted = False, is_sent = True).exists():
         return redirect('index')
     follow_up = Follow_up.objects.get(id = follow_up)
-    client = Mandrill(MANDRILL_API_KEY)
-    results = client.messages.search(query='u_follow_up_id:' + settings.INVITATION_PREFIX + '-' + str(follow_up.id), limit = 1000, date_from='2014-01-01')
     totalOpens = 0
     totalClicks = 0
+    results = Follow_up_stat.objects.filter(follow_up = follow_up).order_by('-clicks', '-opens')
     for email in results:
-        if email['opens'] > 0:
+        if email.opens > 0:
             totalOpens += 1
-        if email['clicks'] > 0:
+        if email.clicks > 0:
             totalClicks += 1
     return render(request, 'event/follow-up-details.html', locals())
 
@@ -1020,10 +1018,9 @@ def preview_follow_up(request, follow_up, user):
     unsubscribes = 0
     alreadyEmailed = 0
     emailedList = []
-    client = Mandrill(MANDRILL_API_KEY)
-    results = client.messages.search(query='u_follow_up_event_id:' + settings.INVITATION_PREFIX + '-' + str(follow_up.recap.organizer.event.id), limit = 1000, date_from='2014-01-01')
+    results = Follow_up_stat.objects.filter(event = follow_up.recap.organizer.event)
     for result in results:
-        emailedList.append(result['email'].lower())
+        emailedList.append(result.to.lower())
     for ticket in follow_up.tickets.all():
         list_items = Purchase_item.objects.filter(ticket = ticket)
         for item in list_items:
@@ -1065,10 +1062,9 @@ def send_follow_up(request, params, user):
     unsubscribes = 0
     alreadyEmailed = 0
     emailedList = []
-    client = Mandrill(MANDRILL_API_KEY)
-    results = client.messages.search(query='u_follow_up_event_id:' + settings.INVITATION_PREFIX + '-' + str(follow_up.recap.organizer.event.id), limit = 1000, date_from='2014-01-01')
+    results = Follow_up_stat.objects.filter(event = follow_up.recap.organizer.event)
     for result in results:
-        emailedList.append(result['email'].lower())
+        emailedList.append(result.to.lower())
     for ticket in follow_up.tickets.all():
         list_items = Purchase_item.objects.filter(ticket = ticket)
         for item in list_items:
