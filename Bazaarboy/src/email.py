@@ -1146,10 +1146,7 @@ def sendEventConfirmationEmail(purchase, manual=False, inviter=None):
     for f in attFiles:
         parts = f.split('/')
         name, filetype, tail = parts[-1].partition('.pdf')
-        if settings.BBOY_ENV == 'development':
-            content = open(f.lstrip('/')).read().encode('base64')
-        else:
-            content = urllib2.urlopen(f).read().encode('base64')
+        content = urllib2.urlopen(f).read().encode('base64')
         attachments.append({
             'type': mimetypes.guess_type(f)[0], 
             'name': name+filetype,

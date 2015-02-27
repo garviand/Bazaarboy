@@ -7,6 +7,8 @@ from twilio import TwilioRestException
 from twilio.rest import TwilioRestClient
 from src.config import *
 
+import pdb
+
 def sendSMS(to, body):
     """
     Send an SMS
@@ -43,7 +45,12 @@ def sendEventConfirmationSMS(purchase):
         body += '\' and your confirmation code is '
         body += purchase.code
         body += '. Thanks!'
-        return sendSMS(purchase.owner.phone, body)
+    for item in purchase.items.all():
+        name, extension = os.path.splitext(item.attachment.name)
+        if extension.lower() in ['.gif', '.jpg', '.jpeg', '.png']:
+            return sendMMS(purchase.owner.phone, body, item.attachment.url.split("?", 1)[0])
+        else:
+            return sendSMS(purchase.owner.phone, body)
     return True
 
 def sendClaimMMS(claim):

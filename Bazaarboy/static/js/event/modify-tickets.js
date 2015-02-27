@@ -307,15 +307,15 @@
         url: rootUrl + 'event/set_attachment/',
         type: 'POST',
         add: function(event, data) {
-          var csrfmiddlewaretoken, ticketId;
+          var csrfmiddlewaretoken, ticketId, _ref;
           ticketId = $(this).data('ticket');
           csrfmiddlewaretoken = $(this).parent().find('input[name=csrfmiddlewaretoken]').val();
           data.formData = {
             id: ticketId,
             csrfmiddlewaretoken: csrfmiddlewaretoken
           };
-          if (data.files[0].type !== 'application/pdf') {
-            alert('Must Be A PDF File');
+          if ((_ref = data.files[0].type) !== 'application/pdf' && _ref !== 'image/jpeg' && _ref !== 'image/jpg' && _ref !== 'image/png' && _ref !== 'image/gif') {
+            swal('Must Be A PDF, PNG, JPG or GIF');
           } else {
             data.submit();
           }
@@ -559,7 +559,7 @@
                   ticketOption = $('div.templates div.ticket-option').clone();
                   $(ticketOption).attr('data-id', response.ticket.pk);
                   $(ticketOption).prependTo('div#ticket-canvas');
-                  $(ticketOption).find('a.attach-pdf-btn').html('+ Add PDF To Confirmation');
+                  $(ticketOption).find('a.attach-pdf-btn').html('+ Add Attachment To Confirmation');
                   $(ticketOption).find('.move-ticket-up').parent().addClass('hide');
                   $(ticketOption).next('.ticket-option').find('.move-ticket-up').parent().removeClass('hide');
                   $(ticketOption).find('div.top div.secondary-btn').click(function() {

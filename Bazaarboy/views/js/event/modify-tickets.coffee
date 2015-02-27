@@ -257,8 +257,8 @@ Bazaarboy.event.modify.tickets =
             ticketId = $(this).data('ticket')
             csrfmiddlewaretoken = $(this).parent().find('input[name=csrfmiddlewaretoken]').val()
             data.formData = {id: ticketId, csrfmiddlewaretoken: csrfmiddlewaretoken}
-            if data.files[0].type isnt 'application/pdf'
-              alert 'Must Be A PDF File'
+            if data.files[0].type not in ['application/pdf', 'image/jpeg', 'image/jpg', 'image/png', 'image/gif']
+              swal 'Must Be A PDF, PNG, JPG or GIF'
             else
               data.submit()
             return
@@ -460,7 +460,7 @@ Bazaarboy.event.modify.tickets =
                               ticketOption = $('div.templates div.ticket-option').clone()
                               $(ticketOption).attr 'data-id', response.ticket.pk
                               $(ticketOption).prependTo 'div#ticket-canvas'
-                              $(ticketOption).find('a.attach-pdf-btn').html('+ Add PDF To Confirmation')
+                              $(ticketOption).find('a.attach-pdf-btn').html('+ Add Attachment To Confirmation')
                               $(ticketOption).find('.move-ticket-up').parent().addClass 'hide'
                               $(ticketOption).next('.ticket-option').find('.move-ticket-up').parent().removeClass 'hide'
                               $(ticketOption).find('div.top div.secondary-btn').click () ->
