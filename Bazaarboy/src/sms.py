@@ -46,9 +46,10 @@ def sendEventConfirmationSMS(purchase):
         body += purchase.code
         body += '. Thanks!'
     for item in purchase.items.all():
-        name, extension = os.path.splitext(item.attachment.name)
-        if extension.lower() in ['.gif', '.jpg', '.jpeg', '.png']:
-            return sendMMS(purchase.owner.phone, body, item.attachment.url.split("?", 1)[0])
+        if item.attachment:
+            name, extension = os.path.splitext(item.attachment.name)
+            if extension.lower() in ['.gif', '.jpg', '.jpeg', '.png']:
+                return sendMMS(purchase.owner.phone, body, item.attachment.url.split("?", 1)[0])
         else:
             return sendSMS(purchase.owner.phone, body)
     return True
