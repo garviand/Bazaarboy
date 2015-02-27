@@ -23,24 +23,13 @@ block header
 block content
     div#wrapper-invite-details.large-9.medium-10.columns.small-centered
         div#invite-details.small-12.columns
-            div.row
-                div.small-12.columns.invitation-back
-                    a(href="{% url event:invite invt.event.id %}") &lt; Back To Invitations
-            div.row
-                div.small-12.columns.invitation-stats
-                    div.row
-                        div.small-12.medium-3.columns
-                            h3 Recipients
-                            h1 {{ invt.recipients }}
-                        div.small-12.medium-3.columns
-                            h3 Unique Opens
-                            h1 {{ totalOpens }}
-                        div.small-12.medium-3.columns
-                            h3 Unique Clicks
-                            h1 {{ totalClicks }}
-                        div.small-12.medium-3.columns
-                            h3 Converted (RSVPs)
-                            h1 {{ totalRSVPs }}
+            div.row.graphs
+                div.small-12.medium-4.columns
+                    div.open-graph.pie-graph
+                div.small-12.medium-4.columns
+                    div.click-graph.pie-graph
+                div.small-12.medium-4.columns
+                    div.rsvp-graph.pie-graph
             div.row
                 div.small-12.columns.invitations
                     h3.title Recipient List
@@ -62,4 +51,12 @@ block content
                     {% endfor %}
 
 append script
+    script(type="text/javascript").
+        recipients = {{ invt.recipients }};
+        totalOpens = {{ totalOpens }};
+        totalClicks = {{ totalClicks }};
+        totalRSVPs = {{ totalRSVPs }};
+        openPercent = '{{ openPercent }}';
+        clickPercent = '{{ clickPercent }}';
+        rsvpPercent = '{{ rsvpPercent }}';
     script(src="{{ STATIC_URL }}js/event/invite-details.js")

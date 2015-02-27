@@ -11149,8 +11149,11 @@ div#wrapper-invite-details div#invite-details div.invitation-back {
 div#wrapper-invite-details div#invite-details div.invitation-back a {
   color: #1dbc85;
 }
-div#wrapper-invite-details div#invite-details div.invitation-stats {
-  margin-top: 20px;
+div#wrapper-invite-details div#invite-details div.graphs div.pie-graph {
+  width: 90%;
+  margin-left: auto;
+  margin-right: auto;
+  height: 250px;
 }
 div#wrapper-invite-details div#invite-details div.invitations {
   margin-top: 40px;
