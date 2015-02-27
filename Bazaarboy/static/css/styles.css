@@ -11143,20 +11143,89 @@ div#new-list-modal div.new-list-cancel a.close-list-modal {
 div#new-list-modal div.controls {
   margin-top: 20px;
 }
-div#wrapper-invite-details div#invite-details div.invitation-back {
-  margin-top: 20px;
+div#wrapper-invite-details div#invite-details div.title-container div.title {
+  color: #4a4a4a;
+  margin-top: 40px;
 }
-div#wrapper-invite-details div#invite-details div.invitation-back a {
-  color: #1dbc85;
+div#wrapper-invite-details div#invite-details div.title-container div.title span.recipient-count {
+  color: #c57724;
+  font-weight: normal;
+}
+div#wrapper-invite-details div#invite-details div.info-container {
+  margin-top: 40px;
+}
+div#wrapper-invite-details div#invite-details div.info-container div.title {
+  color: #4a4a4a;
+  font-weight: bold;
+}
+div#wrapper-invite-details div#invite-details div.info-container div.title span.info {
+  color: #7a7a7a;
+  font-weight: normal;
+}
+div#wrapper-invite-details div#invite-details div.info-container div.message-container {
+  margin-top: 20px;
+  margin-bottom: 5px;
+}
+div#wrapper-invite-details div#invite-details hr {
+  margin-bottom: 5px;
+}
+div#wrapper-invite-details div#invite-details div.graphs {
+  margin-top: 0px;
 }
 div#wrapper-invite-details div#invite-details div.graphs div.pie-graph {
   width: 90%;
   margin-left: auto;
   margin-right: auto;
-  height: 250px;
+  height: 240px;
+}
+div#wrapper-invite-details div#invite-details div.graphs div.stats div.title {
+  text-transform: uppercase;
+  font-weight: bold;
+  color: #7a7a7a;
+}
+div#wrapper-invite-details div#invite-details div.graphs div.stats div.title span.info {
+  color: #f3a536;
+}
+div#wrapper-invite-details div#invite-details div.stats-container {
+  margin-top: 40px;
+  margin-bottom: 35px;
+}
+div#wrapper-invite-details div#invite-details div.stats-container div.stats-bg {
+  background: #F1F1F1;
+  border-radius: 4px;
+}
+div#wrapper-invite-details div#invite-details div.stats-container div.stats {
+  text-transform: uppercase;
+  font-weight: bold;
+}
+div#wrapper-invite-details div#invite-details div.stats-container div.stats > div {
+  padding-top: 15px;
+  padding-bottom: 15px;
+}
+div#wrapper-invite-details div#invite-details div.stats-container div.stats span.icon {
+  margin-right: 15px;
+  display: inline-block;
+  height: 36px;
+  width: 36px;
+  border-radius: 18px;
+  color: #FFF;
+  background: #d4d4d4;
+  font-size: 18px;
+  line-height: 36px;
+}
+div#wrapper-invite-details div#invite-details div.stats-container div.stats span.icon:before {
+  position: relative;
+  top: 2px;
+  left: -1;
+}
+div#wrapper-invite-details div#invite-details div.stats-container div.stats span.number {
+  color: #f3a536;
+}
+div#wrapper-invite-details div#invite-details div.stats-container div.stats span.type {
+  color: #7a7a7a;
 }
 div#wrapper-invite-details div#invite-details div.invitations {
-  margin-top: 40px;
+  margin-top: 50px;
 }
 div#wrapper-invite-details div#invite-details div.invitations > div {
   color: #4a4a4a;

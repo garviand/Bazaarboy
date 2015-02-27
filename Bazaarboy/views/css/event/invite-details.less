@@ -2,22 +2,94 @@
 
 div#wrapper-invite-details{
     div#invite-details{
-        div.invitation-back{
-            margin-top: 20px;
-            a{
-                color: @blue;
+        div.title-container{
+            div.title{
+                color: @dark;
+                margin-top: 40px;
+                span.recipient-count{
+                    font-weight: normal;
+                    color: @orange;
+                    font-weight: normal;
+                }
             }
         }
+        div.info-container{
+            margin-top: 40px;
+            div.title{
+                color: @dark;
+                font-weight: bold;
+                span.info{
+                    color: @dark_grey;
+                    font-weight: normal;
+                }
+            }
+            div.message-container{
+                margin-top: 20px;
+                margin-bottom: 5px;
+            }
+        }
+        hr{
+            margin-bottom: 5px;
+        }
         div.graphs{
+            margin-top: 0px;
             div.pie-graph{
                 width: 90%;
                 margin-left: auto;
                 margin-right: auto;
-                height: 250px;
+                height: 240px;
+            }
+            div.stats{
+                div.title{
+                    text-transform: uppercase;
+                    font-weight: bold;
+                    color: @dark_grey;
+                    span.info{
+                        color: @light-orange;
+                    }
+                }
+            }
+        }
+        div.stats-container{
+            margin-top: 40px;
+            margin-bottom: 35px;
+            div.stats-bg{
+                background: #F1F1F1;
+                border-radius: 4px;
+            }
+            div.stats{
+                text-transform: uppercase;
+                font-weight: bold;
+                > div{
+                    padding-top: 15px;
+                    padding-bottom: 15px;
+                }
+                span.icon{
+                    margin-right: 15px;
+                    display: inline-block;
+                    height: 36px;
+                    width: 36px;
+                    border-radius: 18px;
+                    color: #FFF;
+                    background: @grey;
+                    font-size: 18px;
+                    line-height: 36px;
+                    &:before{
+                        position: relative;
+                        top: 2px;
+                        left: -1;
+                    }
+                }
+                span.number{
+                    color: @light-orange;
+                }
+                span.type{
+                    color: @dark_grey;
+                }
             }
         }
         div.invitations{
-            margin-top: 40px;
+            margin-top: 50px;
             > div{
                 color: @dark;
             }

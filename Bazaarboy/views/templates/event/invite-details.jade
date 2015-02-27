@@ -17,19 +17,73 @@ block header
             div.icon.left
                 span.ss-file
             div.text.left
-                | Invitation Details |
+                | Invitation |
                 span.sub &nbsp;{{ invt.event.name }}
 
 block content
     div#wrapper-invite-details.large-9.medium-10.columns.small-centered
         div#invite-details.small-12.columns
+            div.row.title-container
+                div.small-12.columns
+                    div.title.headline
+                        | Invitation Details:
+                        span.recipient-count &nbsp;&nbsp;{{ invt.recipients }} Recipient{{ invt.recipients|pluralize }}
+            div.row.info-container
+                div.small-12.columns
+                    div.row
+                        div.small-12.medium-4.columns
+                            div.title List{{ invt.lists.count|pluralize }}:&nbsp;&nbsp;
+                                span.info {% for list in invt.lists.all %}{{ list.name }}{% if not forloop.last %}, {% endif %}{% endfor %}
+                        div.small-12.medium-8.columns
+                            div.title Delivered:&nbsp;&nbsp;
+                                span.info {{ invt.sent_at|date:"l, F j, o" }}
+                    div.row.message-container
+                        div.small-12.columns
+                            div.title Message:&nbsp;&nbsp;
+                                span.info {{ invt.message|truncatewords:50 }}
+            hr
             div.row.graphs
                 div.small-12.medium-4.columns
-                    div.open-graph.pie-graph
+                    div.row
+                        div.small-12.columns
+                            div.open-graph.pie-graph
+                    div.row
+                        div.small-12.columns.stats.text-center
+                            div.title Open Rate:&nbsp;
+                                span.info {{ openPercent }}
                 div.small-12.medium-4.columns
-                    div.click-graph.pie-graph
+                    div.row
+                        div.small-12.columns
+                            div.click-graph.pie-graph
+                    div.row
+                        div.small-12.columns.stats.text-center
+                            div.title Click Rate:&nbsp;
+                                span.info {{ clickPercent }}
                 div.small-12.medium-4.columns
-                    div.rsvp-graph.pie-graph
+                    div.row
+                        div.small-12.columns
+                            div.rsvp-graph.pie-graph
+                    div.row
+                        div.small-12.columns.stats.text-center
+                            div.title RSVP Rate:&nbsp;
+                                span.info {{ rsvpPercent }}
+            div.row.stats-container
+                div.small-12.columns
+                    div.stats-bg
+                        div.row.stats
+                            div.small-12.medium-4.columns.text-center
+                                span.icon.ss-openfolder
+                                span.number {{ totalOpens }}&nbsp;
+                                span.type Opened
+                            div.small-12.medium-4.columns.text-center
+                                span.icon.ss-mouse
+                                span.number {{ totalClicks }}&nbsp;
+                                span.type Clicked
+                            div.small-12.medium-4.columns.text-center
+                                span.icon.ss-compose
+                                span.number {{ totalRSVPs }}&nbsp;
+                                span.type Conversions
+            hr
             div.row
                 div.small-12.columns.invitations
                     h3.title Recipient List
