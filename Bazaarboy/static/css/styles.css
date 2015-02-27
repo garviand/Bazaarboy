@@ -11143,6 +11143,13 @@ div#new-list-modal div.new-list-cancel a.close-list-modal {
 div#new-list-modal div.controls {
   margin-top: 20px;
 }
+div#wrapper-invite-details div#invite-details div.invitation-back {
+  margin-top: 20px;
+  margin-bottom: 15px;
+}
+div#wrapper-invite-details div#invite-details div.invitation-back a {
+  color: #c57724;
+}
 div#wrapper-invite-details div#invite-details div.title-container div.title {
   color: #4a4a4a;
   margin-top: 40px;
