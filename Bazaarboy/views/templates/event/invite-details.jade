@@ -44,6 +44,7 @@ block content
                             div.title Message:&nbsp;&nbsp;
                                 span.info {{ invt.message|truncatewords:50 }}
             hr
+            {% if results.count > 0 %}
             div.row.graphs
                 div.small-12.medium-4.columns
                     div.row
@@ -86,6 +87,7 @@ block content
                                 span.number {{ totalRSVPs }}&nbsp;
                                 span.type Conversions
             hr
+            {% endif %}
             div.row
                 div.small-12.columns.invitations
                     h3.title Recipient List
