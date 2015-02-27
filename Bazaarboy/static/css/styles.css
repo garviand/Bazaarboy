@@ -11160,6 +11160,7 @@ div#wrapper-invite-details div#invite-details div.title-container div.title span
 }
 div#wrapper-invite-details div#invite-details div.info-container {
   margin-top: 40px;
+  line-height: 1.2rem;
 }
 div#wrapper-invite-details div#invite-details div.info-container div.title {
   color: #4a4a4a;

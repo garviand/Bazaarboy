@@ -453,9 +453,9 @@ def invite_details(request, invite, user):
             totalOpens += 1
         if email.clicks > 0:
             totalClicks += 1
-    openPercent = str(totalOpens*100.0 / invt.recipients) + "%"
-    clickPercent = str(totalClicks*100.0 / invt.recipients) + "%"
-    rsvpPercent = str(totalRSVPs*100.0 / invt.recipients) + "%"
+    openPercent = str("%.1f" % (totalOpens*100.0 / invt.recipients)) + "%"
+    clickPercent = str("%.1f" % (totalClicks*100.0 / invt.recipients)) + "%"
+    rsvpPercent = str("%.1f" % (totalRSVPs*100.0 / invt.recipients)) + "%"
     return render(request, 'event/invite-details.html', locals())
 
 @login_check()
