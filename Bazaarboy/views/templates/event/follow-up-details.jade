@@ -19,27 +19,63 @@ block header
             div.icon.left
                 span.ss-file
             div.text.left
-                | Follow Up Details |
-                span.sub &nbsp;Tickets: {% for ticket in follow_up.tickets.all %}{{ticket.name}}{% if not forloop.last %}, {% endif %}{% endfor %}
+                | Follow Up |
+                span.sub &nbsp;{{ follow_up.recap.organizer.event.name }}
 
 block content
     div#wrapper-invite-details.large-9.medium-10.columns.small-centered
         div#invite-details.small-12.columns
-            div.row
-                div.small-12.columns.invitation-back
-                    a(href="{% url event:follow-up follow_up.recap.organizer.event.id %}") &lt; Back To Follow Ups
-            div.row
-                div.small-12.columns.invitation-stats
+            div.row.title-container
+                div.small-12.columns
+                    div.title.headline
+                        | Follow Up Details:
+                        span.recipient-count &nbsp;&nbsp;{{ follow_up.recipients }} Recipient{{ follow_up.recipients|pluralize }}
+            div.row.info-container
+                div.small-12.columns
                     div.row
                         div.small-12.medium-4.columns
-                            h3 Recipients
-                            h1 {{ follow_up.recipients }}
-                        div.small-12.medium-4.columns
-                            h3 Unique Opens
-                            h1 {{ totalOpens }}
-                        div.small-12.medium-4.columns
-                            h3 Unique Clicks
-                            h1 {{ totalClicks }}
+                            div.title Ticket{{ follow_up.tickets.count|pluralize }}:&nbsp;&nbsp;
+                                span.info {% for ticket in follow_up.tickets.all %}{{ticket.name}}{% if not forloop.last %}, {% endif %}{% endfor %}
+                        div.small-12.medium-8.columns
+                            div.title Delivered:&nbsp;&nbsp;
+                                span.info {{ follow_up.sent_at|date:"l, F j, o" }}
+                    div.row.message-container
+                        div.small-12.columns
+                            div.title Message:&nbsp;&nbsp;
+                                span.info {{ follow_up.message|truncatewords:30 }}
+            hr
+            {% if results.count > 0 %}
+            div.row.graphs
+                div.small-12.medium-6.columns
+                    div.row
+                        div.small-12.columns
+                            div.open-graph.pie-graph
+                    div.row
+                        div.small-12.columns.stats.text-center
+                            div.title Open Rate:&nbsp;
+                                span.info {{ openPercent }}
+                div.small-12.medium-6.columns
+                    div.row
+                        div.small-12.columns
+                            div.click-graph.pie-graph
+                    div.row
+                        div.small-12.columns.stats.text-center
+                            div.title Click Rate:&nbsp;
+                                span.info {{ clickPercent }}
+            div.row.stats-container
+                div.small-12.columns
+                    div.stats-bg
+                        div.row.stats
+                            div.small-12.medium-6.columns.text-center
+                                span.icon.ss-openfolder
+                                span.number {{ totalOpens }}&nbsp;
+                                span.type Opened
+                            div.small-12.medium-6.columns.text-center
+                                span.icon.ss-mouse
+                                span.number {{ totalClicks }}&nbsp;
+                                span.type Clicked
+            hr
+            {% endif %}
             div.row
                 div.small-12.columns.invitations
                     h3.title Recipient List
@@ -61,4 +97,10 @@ block content
                     {% endfor %}
 
 append script
+    script(type="text/javascript").
+        recipients = {{ follow_up.recipients }};
+        totalOpens = {{ totalOpens }};
+        totalClicks = {{ totalClicks }};
+        openPercent = '{{ openPercent }}';
+        clickPercent = '{{ clickPercent }}';
     script(src="{{ STATIC_URL }}js/event/follow-up-details.js")

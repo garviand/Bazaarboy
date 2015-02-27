@@ -42,7 +42,7 @@ block content
                     div.row.message-container
                         div.small-12.columns
                             div.title Message:&nbsp;&nbsp;
-                                span.info {{ invt.message|truncatewords:50 }}
+                                span.info {{ invt.message|truncatewords:30 }}
             hr
             {% if results.count > 0 %}
             div.row.graphs

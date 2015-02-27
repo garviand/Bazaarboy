@@ -836,6 +836,8 @@ def follow_up_details(request, follow_up, user):
             totalOpens += 1
         if email.clicks > 0:
             totalClicks += 1
+    openPercent = str("%.1f" % (totalOpens*100.0 / follow_up.recipients)) + "%"
+    clickPercent = str("%.1f" % (totalClicks*100.0 / follow_up.recipients)) + "%"
     return render(request, 'event/follow-up-details.html', locals())
 
 @login_check()
