@@ -109,10 +109,7 @@
               title: 'Reward Sent',
               text: 'You sent ' + response.reward_item.quantity + ' \'' + response.reward_item.reward.name + '\' rewards to ' + response.reward_item.owner.name
             }, function() {
-              $('form.add-organizer-form div.organizer').remove();
-              $('input[name=profile_search]').val('');
-              $('input[name=expiration]').val('');
-              $('input[name=quantity]').val('');
+              location.reload();
             });
           }
         });

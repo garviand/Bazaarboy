@@ -474,7 +474,7 @@ def sendReward(claim):
     to = [{
         'email':claim.email
     }]
-    subject = claim.item.reward.name + ' - Gift from ' + claim.item.reward.creator.name
+    subject = 'Get your Gift from ' + claim.item.reward.creator.name + ' - ' + claim.item.reward.name
     template = 'reward'
     if claim.item.reward.attachment:
         rewardImage = '<img src="' + claim.item.reward.attachment.source.url.split("?", 1)[0] + '" style="max-width:520px;" mc:label="coupon_image" mc:edit="coupon_image">'
@@ -528,7 +528,7 @@ def sendReward(claim):
             }
         ]
     }]
-    return sendEmails(to, MANDRILL_FROM_NAME, subject, template, mergeVars)
+    return sendEmails(to, claim.item.owner.name, subject, template, mergeVars)
 
 def sendCollaborationRequest(collaboration):
     """

@@ -44,7 +44,7 @@ block content
                                 a.delete-image-btn.secondary-btn-inverse.btn.full-btn(href="javascript:;", style="{% if not invite.image %}display:none;{% endif %}") Delete Image
                     div.row.email-content
                         div.small-12.columns.image-preview(class="{% if not invite.image %}hide{% endif %}")
-                            img(src="{% if invite.image %}{{ invite.image.source.url }}{% endif %}")
+                            img#header-image(src="{% if invite.image %}{{ invite.image.source.url }}{% endif %}")
                     div.row.email-content
                         div.small-12.columns.content-message
                             label Message Content
@@ -103,6 +103,7 @@ block content
                 a.close-list-modal(href="javascript:;") Cancel Adding List
 
 append script
+    script(src="https://dme0ih8comzn4.cloudfront.net/js/feather.js")
     script(type="text/javascript", src="{{ STATIC_URL }}spectrum/spectrum.js")
     script.
         mediaUrl = "{{ MEDIA_URL }}"

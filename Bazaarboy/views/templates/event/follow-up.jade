@@ -45,7 +45,7 @@ block content
                                 a.delete-image-btn.primary-btn-inverse.btn.full-btn(href="javascript:;", style="{% if not follow_up.image %}display:none;{% endif %}") Delete Image
                     div.row.email-content
                         div.small-12.columns.image-preview(class="{% if not follow_up.image %}hide{% endif %}")
-                            img(src="{% if follow_up.image %}{{ follow_up.image.source.url }}{% endif %}")
+                            img#header-image(src="{% if follow_up.image %}{{ follow_up.image.source.url }}{% endif %}")
                     div.row.email-content
                         div.small-12.columns.content-details
                             label Header Text
@@ -101,6 +101,7 @@ block content
                     {% endif %}
                     {% endfor %}
 append script
+    script(src="https://dme0ih8comzn4.cloudfront.net/js/feather.js")
     script(type="text/javascript", src="{{ STATIC_URL }}spectrum/spectrum.js")
     script.
         mediaUrl = "{{ MEDIA_URL }}";

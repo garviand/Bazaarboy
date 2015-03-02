@@ -1,7 +1,7 @@
 (function() {
   Bazaarboy.event.follow_up = {
     saving: false,
-    image: void 0,
+    image: {},
     pdf: void 0,
     init: function() {
       var scope,
@@ -61,11 +61,33 @@
           }
         }
       });
+      scope.aviary = new Aviary.Feather({
+        apiKey: 'ce3b87fb1edaa22c',
+        apiVersion: 3,
+        enableCORS: true,
+        onSave: function(imageId, imageUrl) {
+          $("img#header-image").attr('src', imageUrl);
+          scope.aviary.close();
+          console.log(imageUrl);
+          $('a.upload-logo-btn').html('Uploading...');
+          Bazaarboy.post('file/aviary/profile/', {
+            url: imageUrl
+          }, function(response) {
+            console.log(response);
+            $("img#header-image").attr('src', response.image);
+            scope.image.pk = response.image_id;
+            $('div#event-follow-up a.upload-image-btn').html('Upload Image');
+            $('div#event-follow-up div.image-preview').removeClass('hide');
+            $('div#event-follow-up a.upload-image-btn').css('display', 'none');
+            $('div#event-follow-up a.delete-image-btn').css('display', 'block');
+          });
+        }
+      });
       $('div#event-follow-up a.upload-image-btn').click(function() {
         $('div#event-follow-up input[name=image_file]').click();
       });
       $('div#event-follow-up a.delete-image-btn').click(function() {
-        scope.image = void 0;
+        scope.image = {};
         $('div#event-follow-up div.image-preview img').attr('src', '');
         $('div#event-follow-up div.image-preview').addClass('hide');
         $('div#event-follow-up a.upload-image-btn').css('display', 'block');
@@ -82,19 +104,13 @@
           var response;
           response = jQuery.parseJSON(data.result);
           if (response.status === 'OK') {
-            if (scope.image != null) {
-              Bazaarboy.post('file/image/delete/', {
-                id: scope.image.pk
-              });
-            }
-            scope.image = response.image;
-            $('div#event-follow-up a.upload-image-btn').html('Upload Image');
-            $('div#event-follow-up div.image-preview').removeClass('hide');
-            $('div#event-follow-up a.upload-image-btn').css('display', 'none');
-            $('div#event-follow-up a.delete-image-btn').css('display', 'block');
-            $('div#event-follow-up div.image-preview img').attr('src', mediaUrl + response.image.source);
+            $('img#header-image').attr('src', mediaUrl + response.image.source);
+            scope.aviary.launch({
+              image: 'header-image',
+              url: mediaUrl + response.image.source
+            });
           } else {
-            alert(response.message);
+            swal(response.message);
             $('div#event-follow-up a.upload-image-btn').html('Upload Image');
           }
         }
@@ -166,7 +182,7 @@
           }
           imageId = '';
           deleteImg = true;
-          if (scope.image != null) {
+          if (scope.image.pk != null) {
             imageId = scope.image.pk;
             deleteImg = false;
           }

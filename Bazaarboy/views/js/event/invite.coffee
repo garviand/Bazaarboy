@@ -1,6 +1,6 @@
 Bazaarboy.event.invite =
     saving: false
-    image: undefined
+    image: {}
     init: () ->
         scope = this
         if imgId?
@@ -27,12 +27,34 @@ Bazaarboy.event.invite =
         $('div.lists div.list').click () ->
             $(this).toggleClass 'active'
             return
+        # LOGO UPLOAD
+        scope.aviary = new Aviary.Feather
+            apiKey: 'ce3b87fb1edaa22c'
+            apiVersion: 3
+            enableCORS: true
+            onSave: (imageId, imageUrl) =>
+                $("img#header-image").attr 'src', imageUrl
+                scope.aviary.close();
+                console.log imageUrl
+                $('a.upload-logo-btn').html 'Uploading...'
+                Bazaarboy.post 'file/aviary/profile/',
+                    url: imageUrl
+                    , (response) ->
+                        console.log response
+                        $("img#header-image").attr 'src', response.image
+                        scope.image.pk = response.image_id
+                        $('div#event-invite a.upload-image-btn').html 'Upload Image'
+                        $('div#event-invite div.image-preview').removeClass 'hide'
+                        $('div#event-invite a.upload-image-btn').css('display', 'none')
+                        $('div#event-invite a.delete-image-btn').css('display', 'block')
+                        return
+                return
         # IMAGE UPLOAD
         $('div#event-invite a.upload-image-btn').click () ->
             $('div#event-invite input[name=image_file]').click()
             return
         $('div#event-invite a.delete-image-btn').click () ->
-            scope.image = undefined
+            scope.image = {}
             $('div#event-invite div.image-preview img').attr('src', '')
             $('div#event-invite div.image-preview').addClass 'hide'
             $('div#event-invite a.upload-image-btn').css('display', 'block')
@@ -48,18 +70,12 @@ Bazaarboy.event.invite =
             done: (event, data) =>
                 response = jQuery.parseJSON data.result
                 if response.status is 'OK'
-                    # Attempt to delete the last uploaded image
-                    if scope.image?
-                        Bazaarboy.post 'file/image/delete/', 
-                            id: scope.image.pk
-                    scope.image = response.image
-                    $('div#event-invite a.upload-image-btn').html 'Upload Image'
-                    $('div#event-invite div.image-preview').removeClass 'hide'
-                    $('div#event-invite a.upload-image-btn').css('display', 'none')
-                    $('div#event-invite a.delete-image-btn').css('display', 'block')
-                    $('div#event-invite div.image-preview img').attr('src', mediaUrl + response.image.source)
+                    $('img#header-image').attr 'src', mediaUrl + response.image.source
+                    scope.aviary.launch
+                        image: 'header-image'
+                        url: mediaUrl + response.image.source
                 else
-                    alert response.message
+                    swal response.message
                     $('div#event-invite a.upload-image-btn').html 'Upload Image'
                 return
         # COLOR PICKER
@@ -98,7 +114,7 @@ Bazaarboy.event.invite =
                     lists += $(list).data('id')
                 imageId = ''
                 deleteImg = true
-                if scope.image?
+                if scope.image.pk?
                     imageId = scope.image.pk
                     deleteImg = false
                 color = $('input[name=colorpicker]').spectrum("get").toHexString()

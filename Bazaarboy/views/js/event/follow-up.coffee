@@ -1,6 +1,6 @@
 Bazaarboy.event.follow_up =
     saving: false
-    image: undefined
+    image: {}
     pdf: undefined
     init: () ->
         scope = this
@@ -46,12 +46,34 @@ Bazaarboy.event.follow_up =
             else
               swal response.message
             return
+        # LOGO UPLOAD
+        scope.aviary = new Aviary.Feather
+            apiKey: 'ce3b87fb1edaa22c'
+            apiVersion: 3
+            enableCORS: true
+            onSave: (imageId, imageUrl) =>
+                $("img#header-image").attr 'src', imageUrl
+                scope.aviary.close();
+                console.log imageUrl
+                $('a.upload-logo-btn').html 'Uploading...'
+                Bazaarboy.post 'file/aviary/profile/',
+                    url: imageUrl
+                    , (response) ->
+                        console.log response
+                        $("img#header-image").attr 'src', response.image
+                        scope.image.pk = response.image_id
+                        $('div#event-follow-up a.upload-image-btn').html 'Upload Image'
+                        $('div#event-follow-up div.image-preview').removeClass 'hide'
+                        $('div#event-follow-up a.upload-image-btn').css('display', 'none')
+                        $('div#event-follow-up a.delete-image-btn').css('display', 'block')
+                        return
+                return
         # IMAGE UPLOAD
         $('div#event-follow-up a.upload-image-btn').click () ->
             $('div#event-follow-up input[name=image_file]').click()
             return
         $('div#event-follow-up a.delete-image-btn').click () ->
-            scope.image = undefined
+            scope.image = {}
             $('div#event-follow-up div.image-preview img').attr('src', '')
             $('div#event-follow-up div.image-preview').addClass 'hide'
             $('div#event-follow-up a.upload-image-btn').css('display', 'block')
@@ -67,18 +89,12 @@ Bazaarboy.event.follow_up =
             done: (event, data) =>
                 response = jQuery.parseJSON data.result
                 if response.status is 'OK'
-                    # Attempt to delete the last uploaded image
-                    if scope.image?
-                        Bazaarboy.post 'file/image/delete/', 
-                            id: scope.image.pk
-                    scope.image = response.image
-                    $('div#event-follow-up a.upload-image-btn').html 'Upload Image'
-                    $('div#event-follow-up div.image-preview').removeClass 'hide'
-                    $('div#event-follow-up a.upload-image-btn').css('display', 'none')
-                    $('div#event-follow-up a.delete-image-btn').css('display', 'block')
-                    $('div#event-follow-up div.image-preview img').attr('src', mediaUrl + response.image.source)
+                    $('img#header-image').attr 'src', mediaUrl + response.image.source
+                    scope.aviary.launch
+                        image: 'header-image'
+                        url: mediaUrl + response.image.source
                 else
-                    alert response.message
+                    swal response.message
                     $('div#event-follow-up a.upload-image-btn').html 'Upload Image'
                 return
         # BUTTON TYPE SELECTION
@@ -140,7 +156,7 @@ Bazaarboy.event.follow_up =
                     lists += $(list).data('id')
                 imageId = ''
                 deleteImg = true
-                if scope.image?
+                if scope.image.pk?
                     imageId = scope.image.pk
                     deleteImg = false
                 deletePdf = true
