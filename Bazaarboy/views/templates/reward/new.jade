@@ -63,7 +63,7 @@ block content
                     div.small-12.medium-4.columns.end
                         a.secondary-btn-inverse.full-btn(href="{% url reward:index %}") Cancel
     div#gif-modal.reveal-modal.large(data-reveal)
-        div.gif.small-12.medium-4.columns.gif-template.hide(data-url='')
+        div.gif.small-12.columns.end.gif-template.hide(data-url='')
             img(src='')
         div.gif-model-title.row
             div.small-12.headline.text-center Choose A GIF
@@ -71,6 +71,12 @@ block content
         div.gif-model.row
             div.small-12.columns
                 div.gifs.row
+                    div.small-12.medium-4.columns.gifs-1.gif-column
+                        div.row 
+                    div.small-12.medium-4.columns.gifs-2.gif-column
+                        div.row 
+                    div.small-12.medium-4.columns.gifs-3.gif-column
+                        div.row
                 br
 
                     

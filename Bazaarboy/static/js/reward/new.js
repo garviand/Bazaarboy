@@ -22,17 +22,21 @@
         Bazaarboy.get('rewards/search/gif/', {
           q: searchTerm
         }, function(response) {
-          var gif, newGif, _i, _len;
+          var col, count, gif, gifLength, newGif, _i, _len;
           response = jQuery.parseJSON(response['gifs']);
-          $('div#gif-modal div.gifs').empty();
+          $('div#gif-modal div.gifs .gif-column').empty();
+          count = 0;
+          gifLength = Math.floor(response.length / 3);
           for (_i = 0, _len = response.length; _i < _len; _i++) {
             gif = response[_i];
+            count += 1;
+            col = Math.ceil(count / gifLength);
             newGif = $('div#gif-modal .gif-template').clone();
             newGif.find('img').attr('src', gif.fixed_width.url);
             newGif.attr('data-url', gif.original.url);
             newGif.removeClass('gif-template');
             newGif.removeClass('hide');
-            $('div#gif-modal div.gifs').append(newGif);
+            $('div#gif-modal div.gifs .gifs-' + col).append(newGif);
           }
           $('div#gif-modal').foundation('reveal', 'open');
           $('a.gif-search-start').html('Search');

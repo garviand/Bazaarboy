@@ -12315,8 +12315,7 @@ div#wrapper-new-reward div#new-reward div.or {
   padding-bottom: 30px;
 }
 div#gif-modal div.gifs div.gif {
-  height: 200px;
-  padding-bottom: 20px;
+  margin-bottom: 20px;
 }
 div#gif-modal div.gifs div.gif:hover {
   cursor: pointer;
