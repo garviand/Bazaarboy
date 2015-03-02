@@ -1,7 +1,43 @@
 Bazaarboy.reward.new =
   attachment: undefined
+  gif: undefined
   init: () ->
     scope = this
+    # GIF SEARCH
+    $('input[name=gif_search]').keypress (e) ->
+      if e.which == 13
+        $('a.gif-search-start').click()
+      return
+    $('a.gif-search-start').click () ->
+      $('a.gif-search-start').html('Searching...')
+      searchTerm = $('input[name=gif_search]').val()
+      if searchTerm.trim() is ''
+        swal 'You Must Type a Search Term'
+        $('a.gif-search-start').html('Search')
+        return
+      Bazaarboy.get 'rewards/search/gif/', {q:searchTerm}, (response) ->
+        response = jQuery.parseJSON response['gifs']
+        $('div#gif-modal div.gifs').empty()
+        for gif in response
+          newGif = $('div#gif-modal .gif-template').clone()
+          newGif.find('img').attr 'src', gif.fixed_width.url
+          newGif.attr 'data-url', gif.original.url
+          newGif.removeClass 'gif-template'
+          newGif.removeClass 'hide'
+          $('div#gif-modal div.gifs').append(newGif)
+        $('div#gif-modal').foundation('reveal', 'open')
+        $('a.gif-search-start').html('Search')
+        return
+      return
+    $('div#gif-modal div.gifs').on 'click', '.gif', () ->
+      $('input[name=gif_search]').val('')
+      scope.gif = $(this).attr('data-url')
+      $('div#gif-modal').foundation('reveal', 'close')
+      $('a.attachment-name').attr('href', $(this).attr('data-url'))
+      $('a.attachment-name').html('View Attachment')
+      $('a.attachment-name').removeClass('hide')
+      scope.attachment = undefined
+      return
     $('a.create-reward').click () ->
       if $('input[name=name]').val().trim() is ''
         swal 'Name Cannot Be Blank'
@@ -15,12 +51,16 @@ Bazaarboy.reward.new =
         swal 'Value Must Be a Positive Number'
         return
       value = $('input[name=value]').val()
+      useGif = false
       if scope.attachment?
         attachmentId = scope.attachment.pk
+      else if scope.gif?
+        attachmentId = scope.gif
+        useGif = true
       else
         swal 'Must Include An Image for the Reward'
         return
-      Bazaarboy.post 'rewards/create/', {profile:profileId, name:name, description:description, value:value, attachment:attachmentId}, (response) ->
+      Bazaarboy.post 'rewards/create/', {profile:profileId, name:name, description:description, value:value, attachment:attachmentId, gif:useGif}, (response) ->
         if response.status is 'OK'
           swal
             type: "success"
@@ -53,6 +93,7 @@ Bazaarboy.reward.new =
         response = jQuery.parseJSON data.result
         if response.status is 'OK'
           scope.attachment = response.pdf
+          scope.gif = undefined
           $('a.attachment-name').html(pdfName)
           $('a.attachment-name').attr('href', response.url)
           $('a.attachment-name').removeClass('hide')

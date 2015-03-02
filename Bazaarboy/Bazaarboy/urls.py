@@ -134,6 +134,7 @@ reward_urlpatterns = patterns('src.controllers.reward',
     url(r'^claim/add/$', 'add_claim', name = 'add-claim'),
     url(r'^claim/complete/$', 'complete_claim', name = 'complete-claim'),
     url(r'^redeem/$', 'redeem', name = 'redeem'),
+    url(r'^search/gif/$', 'search_gifs', name = 'search-gifs'),
 )
 
 file_urlpatterns = patterns('src.controllers.file', 

@@ -47,12 +47,32 @@ block content
                         a.add-attachment.primary-btn-inverse.full-btn(href="javascript:;") Add Attachment
                         br
                         a.attachment-name.hide(href="javascript:;", target="_blank") &nbsp;
-                br
-                div.row
+                    div.small-12.medium-1.columns
+                        div.or.text-center OR
+                    div.small-12.medium-7.columns.end
+                        label Search For GIF
+                        div.row
+                            div.small-12.medium-8.columns
+                                input(type="text", name="gif_search", placeholder="GIF Search (pizza, coffee, etc)")
+                            div.small-12.medium-4.columns
+                                a.gif-search-start.primary-btn-inverse.full-btn(href="javascript:;") Search
+                hr
+                div.row.create-actions
                     div.small-12.medium-4.columns
                         a.create-reward.primary-btn.full-btn(href="javascript:;") Create Gift
                     div.small-12.medium-4.columns.end
                         a.secondary-btn-inverse.full-btn(href="{% url reward:index %}") Cancel
+    div#gif-modal.reveal-modal.large(data-reveal)
+        div.gif.small-12.medium-4.columns.gif-template.hide(data-url='')
+            img(src='')
+        div.gif-model-title.row
+            div.small-12.headline.text-center Choose A GIF
+        hr
+        div.gif-model.row
+            div.small-12.columns
+                div.gifs.row
+                br
+
                     
 
 

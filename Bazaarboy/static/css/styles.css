@@ -12307,6 +12307,23 @@ div#add-subscription-modal div.description img {
   margin-top: 20px;
   margin-bottom: 20px;
 }
+div#wrapper-new-reward div#new-reward div.create-actions {
+  margin-top: 30px;
+}
+div#wrapper-new-reward div#new-reward div.or {
+  padding-top: 30px;
+  padding-bottom: 30px;
+}
+div#gif-modal div.gifs div.gif {
+  height: 200px;
+  padding-bottom: 20px;
+}
+div#gif-modal div.gifs div.gif:hover {
+  cursor: pointer;
+}
+div#gif-modal div.gifs div.gif:hover img {
+  border: #4a4a4a 2px solid;
+}
 div#claim {
   min-width: 100%;
   min-height: 100%;

@@ -5,6 +5,8 @@ Controller for rewards
 import cgi
 import re
 import stripe
+from giphypop import Giphy
+import json
 from kernel.models import *
 from src.controllers.request import *
 from src.serializer import serialize_one
@@ -16,6 +18,10 @@ from src.regex import REGEX_EMAIL, REGEX_NAME, REGEX_SLUG
 from django.shortcuts import render, redirect
 from django.db.models import F, Q, Count
 from src.sms import sendClaimMMS
+from urlparse import urlparse
+import urllib2
+from django.core.files import File
+from django.core.files.temp import NamedTemporaryFile
 
 import pdb
 
@@ -134,7 +140,7 @@ def subscribe(request, params, user):
     return json_response(response)
 
 @login_required()
-@validate('POST', ['profile', 'name', 'description', 'value'], ['attachment'])
+@validate('POST', ['profile', 'name', 'description', 'value', 'gif'], ['attachment'])
 def create(request, params, user):
     """
     Create a reward
@@ -180,16 +186,27 @@ def create(request, params, user):
         }
         return json_response(response)
     reward = Reward (creator = profile, name = params['name'], description = params['description'], value = params['value'])
+    reward.save()
     if params['attachment'] is not None:
-        if Pdf.objects.filter(id = params['attachment']).exists():
-            reward.attachment = Pdf.objects.get(id = params['attachment'])
+        if params['gif'] == 'true':
+            img_temp = NamedTemporaryFile(delete=True)
+            img_temp.write(urllib2.urlopen(params['attachment']).read())
+            img_temp.flush()
+            img_filename = urlparse(params['attachment']).path.split('/')[-1]
+            pdf = Pdf(source = File(img_temp), name = img_filename)
+            pdf.source.save(uuid.uuid4().hex+img_filename, File(img_temp))
+            pdf.save()
+            reward.attachment = pdf
         else:
-            response = {
-                'status':'FAIL',
-                'error':'INVALID_ATTACHMENT',
-                'message':'The attachment does not exist.'
-            }
-            return json_response(response)
+            if Pdf.objects.filter(id = params['attachment']).exists():
+                reward.attachment = Pdf.objects.get(id = params['attachment'])
+            else:
+                response = {
+                    'status':'FAIL',
+                    'error':'INVALID_ATTACHMENT',
+                    'message':'The attachment does not exist.'
+                }
+                return json_response(response)
     reward.save()
     response = {
         'status':'OK',
@@ -481,5 +498,16 @@ def redeem(request, params, user):
     response = {
         'status':'OK',
         'claim':serialize_one(claim)
+    }
+    return json_response(response)
+
+@login_required()
+@validate('GET', ['q'])
+def search_gifs(request, params, user):
+    g = Giphy()
+    results = [x for x in g.search(term=params['q'], limit=12)]
+    response = {
+        'status':'OK',
+        'gifs': json.dumps(results)
     }
     return json_response(response)

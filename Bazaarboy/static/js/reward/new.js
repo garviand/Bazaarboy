@@ -1,11 +1,54 @@
 (function() {
   Bazaarboy.reward["new"] = {
     attachment: void 0,
+    gif: void 0,
     init: function() {
       var scope;
       scope = this;
+      $('input[name=gif_search]').keypress(function(e) {
+        if (e.which === 13) {
+          $('a.gif-search-start').click();
+        }
+      });
+      $('a.gif-search-start').click(function() {
+        var searchTerm;
+        $('a.gif-search-start').html('Searching...');
+        searchTerm = $('input[name=gif_search]').val();
+        if (searchTerm.trim() === '') {
+          swal('You Must Type a Search Term');
+          $('a.gif-search-start').html('Search');
+          return;
+        }
+        Bazaarboy.get('rewards/search/gif/', {
+          q: searchTerm
+        }, function(response) {
+          var gif, newGif, _i, _len;
+          response = jQuery.parseJSON(response['gifs']);
+          $('div#gif-modal div.gifs').empty();
+          for (_i = 0, _len = response.length; _i < _len; _i++) {
+            gif = response[_i];
+            newGif = $('div#gif-modal .gif-template').clone();
+            newGif.find('img').attr('src', gif.fixed_width.url);
+            newGif.attr('data-url', gif.original.url);
+            newGif.removeClass('gif-template');
+            newGif.removeClass('hide');
+            $('div#gif-modal div.gifs').append(newGif);
+          }
+          $('div#gif-modal').foundation('reveal', 'open');
+          $('a.gif-search-start').html('Search');
+        });
+      });
+      $('div#gif-modal div.gifs').on('click', '.gif', function() {
+        $('input[name=gif_search]').val('');
+        scope.gif = $(this).attr('data-url');
+        $('div#gif-modal').foundation('reveal', 'close');
+        $('a.attachment-name').attr('href', $(this).attr('data-url'));
+        $('a.attachment-name').html('View Attachment');
+        $('a.attachment-name').removeClass('hide');
+        scope.attachment = void 0;
+      });
       $('a.create-reward').click(function() {
-        var attachmentId, description, name, value;
+        var attachmentId, description, name, useGif, value;
         if ($('input[name=name]').val().trim() === '') {
           swal('Name Cannot Be Blank');
           return;
@@ -21,8 +64,12 @@
           return;
         }
         value = $('input[name=value]').val();
+        useGif = false;
         if (scope.attachment != null) {
           attachmentId = scope.attachment.pk;
+        } else if (scope.gif != null) {
+          attachmentId = scope.gif;
+          useGif = true;
         } else {
           swal('Must Include An Image for the Reward');
           return;
@@ -32,7 +79,8 @@
           name: name,
           description: description,
           value: value,
-          attachment: attachmentId
+          attachment: attachmentId,
+          gif: useGif
         }, function(response) {
           if (response.status === 'OK') {
             swal({
@@ -73,6 +121,7 @@
           response = jQuery.parseJSON(data.result);
           if (response.status === 'OK') {
             scope.attachment = response.pdf;
+            scope.gif = void 0;
             $('a.attachment-name').html(pdfName);
             $('a.attachment-name').attr('href', response.url);
             $('a.attachment-name').removeClass('hide');
