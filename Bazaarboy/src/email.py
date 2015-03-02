@@ -1144,6 +1144,7 @@ def sendEventConfirmationEmail(purchase, manual=False, inviter=None):
     }]
     attachments = Ticket_attachment.getTicketAttachments(purchase, items)
     for f in attFiles:
+        f = f.split("?", 1)[0]
         parts = f.split('/')
         name, filetype, tail = parts[-1].partition('.pdf')
         content = urllib2.urlopen(f).read().encode('base64')
