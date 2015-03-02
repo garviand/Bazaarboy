@@ -8,7 +8,7 @@ block title
 block body
     div#profile
         div#profile-container
-            div.profile-header
+            div.profile-header(style="background-image: url('{{ channel.cover.source.url }}'); background-size: cover;")
                 div.row.header-top
                     div.small-12.medium-6.columns
                         a.brand-logo(href="{% url index %}")
@@ -16,12 +16,12 @@ block body
                     div.small-12.medium-6.columns.text-right
                         div.row
                             div.small-12.medium-4.medium-offset-8.large-offset-9.large-3.columns
-                                a.learn-more.secondary-btn.full-btn.medium-btn(href="javascript:;") Learn More
+                                //a.learn-more.secondary-btn.full-btn.medium-btn(href="javascript:;") Learn More
                 div.row.header-bottom
                     div.small-12.medium-8.columns
                         div.profile-name {{ profile.name }}
                     div.small-12.medium-4.columns
-                        div.subscribe-container
+                        //div.subscribe-container
                             input(type="text", name="email", placeholder="Email Address")
             div.profile-body
                 div.row
@@ -29,7 +29,7 @@ block body
                         div.body-container
                             div.row.body-top
                                 div.small-12.columns.text-center
-                                    div.profile-description Committed to building awareness for the cultural and artistic significance of chess.
+                                    div.profile-description {{ channel.tagline }}
                             div.row.body-bottom
                                 div.small-12.medium-4.columns
                                     div.business-info.text-center
@@ -39,15 +39,8 @@ block body
                                                     img(src="{{ profile.image.source.url }}")
                                         div.row.info-container
                                             div.small-12.columns.text-center
-                                                div.title.bigger Contact
-                                                div.info 
-                                                    span.bigger e:&nbsp;
-                                                    | {{ profile.email }}
-                                                {% if profile.phone %}
-                                                div.info 
-                                                    span.bigger p:&nbsp;
-                                                    | {{ profile.phone }}
-                                                {% endif %}
+                                                div.title.bigger Description
+                                                div.info {{ profile.description }}
                                         div.row.info-container
                                             div.small-12.columns.text-center
                                                 div.title.bigger Contact

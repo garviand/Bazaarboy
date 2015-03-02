@@ -8190,10 +8190,6 @@ div#profile .bigger {
   font-size: 14px;
   font-weight: bold;
 }
-div#profile div#profile-container div.profile-header {
-  background-image: url('../images/top-banner.jpg');
-  background-size: cover;
-}
 div#profile div#profile-container div.profile-header div.header-top {
   padding-top: 50px;
 }
@@ -8300,6 +8296,9 @@ div#profile div#profile-container div.profile-body div.body-container div.body-b
 }
 div#profile div#profile-container div.profile-body div.body-container div.body-bottom div.business-info div.info-container div.info {
   margin-bottom: 5px;
+  line-height: 1.2rem;
+  padding-left: 10px;
+  padding-right: 10px;
 }
 div#profile div#profile-container div.profile-body div.body-container div.body-bottom div.event-content hr {
   margin: 0;
@@ -8577,6 +8576,60 @@ div#wrapper-profile-new div.profile-new-container div.next-prev a.prev-btn.hide,
 div#wrapper-profile-new div.profile-new-container div.next-prev a.next-btn.hide,
 div#wrapper-profile-new div.profile-new-container div.next-prev a.finish-btn.hide {
   display: none !important;
+}
+div#wrapper-channel-settings {
+  padding-top: 40px;
+}
+div#channel-settings div.input-container {
+  border: #7a7a7a thin solid;
+  padding: 12px;
+  border-radius: 3px;
+  margin-bottom: 20px;
+}
+div#channel-settings div.input-container a.upload-cover-btn,
+div#channel-settings div.input-container a.delete-cover-btn {
+  margin-top: 20px;
+  margin-bottom: 10px;
+  max-width: 250px;
+}
+div#channel-settings div.input-container.active,
+div#channel-settings div.input-container:focus {
+  border: #c57724 thin solid;
+}
+div#channel-settings div.input-container.active div.input-title,
+div#channel-settings div.input-container:focus div.input-title {
+  color: #c57724;
+}
+div#channel-settings div.input-container div.input-title,
+div#channel-settings div.input-container div.input-note {
+  font-size: 12px;
+  cursor: pointer;
+}
+div#channel-settings div.input-container div.input-title {
+  font-weight: 600 !important;
+}
+div#channel-settings div.input-container div.input-note {
+  font-style: italic;
+}
+div#channel-settings div.input-container input,
+div#channel-settings div.input-container textarea {
+  font-weight: 300 !important;
+  margin-bottom: 0;
+  box-shadow: none;
+  padding-left: 0;
+  margin-top: 10px;
+  border: none !important;
+  outline: none !important;
+  padding: 0;
+  height: auto;
+}
+div#channel-settings div.input-container input.url-input,
+div#channel-settings div.input-container textarea.url-input {
+  padding-left: 230px !important;
+}
+div#channel-settings div.input-container input:focus,
+div#channel-settings div.input-container textarea:focus {
+  box-shadow: none !important;
 }
 @media only screen and (max-width: 40.063em) {
   div#main-header {

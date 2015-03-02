@@ -146,6 +146,17 @@ class Profile(models.Model):
     created_time = models.DateTimeField(auto_now_add = True)
     managers = models.ManyToManyField('User', through = 'Profile_manager')
 
+class Channel(models.Model):
+    """
+    Profile channel model
+    """
+    profile = models.ForeignKey('Profile')
+    subscribe_list = models.ForeignKey('List', null = True, default = None)
+    cover = models.ForeignKey('Image', null = True, default = None)
+    tagline = models.CharField(max_length = 250, null = True, default = None)
+    hashtag = models.CharField(max_length = 250, null = True, default = None)
+    created_time = models.DateTimeField(auto_now_add = True)
+
 class Profile_manager(models.Model):
     """
     Profile-User relation

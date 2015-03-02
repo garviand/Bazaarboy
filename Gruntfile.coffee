@@ -5,6 +5,7 @@ module.exports = (grunt) ->
     grunt.loadNpmTasks('grunt-contrib-less')
     grunt.loadNpmTasks('grunt-contrib-concat')
     grunt.loadNpmTasks('grunt-simple-watch')
+    grunt.loadNpmTasks('grunt-newer');
     grunt.initConfig
         concat:
             css:
@@ -154,21 +155,21 @@ module.exports = (grunt) ->
                     'Bazaarboy/views/templates/**/*.jade',
                     '!Bazaarboy/views/admin/templates/**/*.jade'
                 ]
-                tasks: ['jade:compile']
+                tasks: ['newer:jade:compile']
             jade_admin:
                 options:
                     nospawn: true
                 files: [
                     'Bazaarboy/views/admin/templates/**/*.jade'
                 ]
-                tasks: ['jade:admin']
+                tasks: ['newer:jade:admin']
             jade_designs:
                 options:
                     nospawn: true
                 files: [
                     'Bazaarboy/views/designs/templates/**/*.jade'
                 ]
-                tasks: ['jade:designs']
+                tasks: ['newer:jade:designs']
             coffee:
                 options:
                     nospawn: true
@@ -177,7 +178,7 @@ module.exports = (grunt) ->
                     'Bazaarboy/views/admin/js/**/*.coffee'
                     'Bazaarboy/views/designs/js/**/*.coffee'
                 ]
-                tasks: ['coffee']
+                tasks: ['newer:coffee']
             less:
                 options:
                     nospawn: true

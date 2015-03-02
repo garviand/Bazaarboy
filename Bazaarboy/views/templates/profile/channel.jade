@@ -1,0 +1,73 @@
+extends ../layout
+
+block title
+    | Channel Settings
+
+append head
+    link(rel="stylesheet", href="{{ STATIC_URL }}jQueryUI/jquery-ui.css")
+
+block sidebar
+    +sidebarItem('ss-newspaper')(href="{% url index %}")
+        | Events
+    +sidebarItem('ss-database')(href="{% url list:index %}")
+        | Lists
+    +sidebarItem('ss-tag')(href="{% url reward:index %}")
+        | Gifts
+    +sidebarItem('ss-share')(href="{% url user:settings %}", class="selected")
+        | Settings
+
+block header
+    div.header-title.large-9.medium-10.columns.small-centered
+        div.row.clearfix
+            div.icon.left
+                span.ss-file
+            div.text.left
+                | {% if channel %}Edit{% else %}Create{% endif %} Channel | 
+                span.sub {{ profile.name }}
+
+block content
+    div#wrapper-channel-settings.large-9.medium-10.columns.small-centered
+        div#channel-settings.small-12.columns
+            form.channel-settings
+                div.row
+                    div.small-12.columns
+                        div.input-container
+                            div.row
+                                div.small-4.columns.input-title Profile Tagline
+                                div.small-8.columns.input-note.text-right Short and Sweet
+                            input.field(type="text", name="tagline", value="{% if channel.tagline %}{{ channel.tagline }}{% endif %}", placeholder="Tagline")
+                div.row
+                    div.small-12.columns
+                        div.input-container
+                            div.row
+                                div.small-4.columns.input-title Profile Hashtag
+                                div.small-8.columns.input-note.text-right For Instagram Photo Feed
+                            input.field(type="text", name="hashtag", value="{% if channel.hashtag %}{{ channel.hashtag }}{% endif %}", placeholder="Hashtag (Do NOT include '#')")
+                div.row
+                    div.small-12.columns
+                        div.input-container
+                            div.row
+                                div.small-4.columns.input-title Cover Image
+                                div.small-8.columns.input-note.text-right Full-Width Channel Image
+                            a.upload-cover-btn.primary-btn-inverse(href="javascript:;", style="{% if channel.cover %}display:none;{% endif %}") Upload Image
+                            a.delete-cover-btn.primary-btn-inverse.hide(href="javascript:;", style="{% if not channel.cover %}display:none;{% endif %}") Delete Image
+                            input.hide(type="file", name="image_file", value="")
+                            img#cover-image(src="{% if channel.cover %}{{ channel.cover.source.url }}{% endif %}")
+                            
+                div.row
+                    div.medium-4.columns.end
+                        {% if not channel %}
+                        a.create-channel-btn.primary-btn.full-btn(href="javascript:;") Create Channel
+                        {% else %}
+                        a.save-channel-btn.primary-btn.full-btn(href="javascript:;") Save Channel
+                        {% endif %}
+                    div.medium-4.columns.end
+                        {% if channel %}
+                        a.secondary-btn.full-btn(href="{% url profile:index profile.id %}") View Profile
+                        {% endif %}
+append script
+    script(src="https://dme0ih8comzn4.cloudfront.net/js/feather.js")
+    script.
+        var profileId = {{ profile.id }};
+        var imageId = {% if channel.cover %}{{ channel.cover.id }}{% else %}undefined{% endif %};
+    script(src="{{ STATIC_URL }}js/profile/channel.js")

@@ -27,6 +27,9 @@ def index(request, id, user):
     if not Profile.objects.filter(id = id).exists():
         raise Http404
     profile = Profile.objects.get(id = id)
+    if not Channel.objects.filter(profile = profile).exists():
+        raise Http404
+    channel = Channel.objects.get(profile = profile)
     organizers = Organizer.objects.filter(profile = profile, event__is_launched = True, event__is_deleted = False, is_creator = True).order_by('-event__start_time')
     current_events = []
     past_events = []
@@ -37,16 +40,142 @@ def index(request, id, user):
             past_events.append(organizer.event)
     current_events.reverse()
     api = InstagramAPI(client_id=INSTAGRAM_CLIENT_ID, client_secret=INSTAGRAM_SECRET)
-    instagram_photos = api.tag_recent_media(count=10, tag_name='wchof')
+    instagram_photos = api.tag_recent_media(count=10, tag_name=str(channel.hashtag))
     images = []
     for photo in instagram_photos[0]:
         images.append({'high_res':photo.images['standard_resolution'].url, 'thumb':photo.images['thumbnail'].url})
     return render(request, 'profile/index.html', locals())
 
 @login_required()
+def channel(request, profile, user):
+    # Check if the profile is valid
+    if not Profile.objects.filter(id = profile).exists():
+        return redirect('user:settings')
+    profile = Profile.objects.get(id = profile)
+    # Check if the user has permission for the profile
+    if not Profile_manager.objects.filter(user = user, profile = profile) \
+                                  .exists():
+        return redirect('user:settings')
+    if Channel.objects.filter(profile = profile).exists():
+        channel = Channel.objects.get(profile = profile)
+    return render(request, 'profile/channel.html', locals())
+
+
+@login_required()
+@validate('POST', ['profile', 'cover', 'tagline'], ['hashtag'])
+def create_channel(request, params, user):
+    # Check if the profile is valid
+    if not Profile.objects.filter(id = params['profile']).exists():
+        response = {
+            'status':'FAIL',
+            'error':'PROFILE_NOT_FOUND',
+            'message':'The profile doesn\'t exist.'
+        }
+        return json_response(response)
+    profile = Profile.objects.get(id = params['profile'])
+    # Check if the user has permission for the profile
+    if not Profile_manager.objects.filter(user = user, profile = profile) \
+                                  .exists():
+        response = {
+            'status':'FAIL',
+            'error':'NOT_A_MANAGER',
+            'message':'You don\'t have permission for the profile.'
+        }
+        return json_response(response)
+    if Channel.objects.filter(profile = profile).exists():
+        response = {
+            'status':'FAIL',
+            'error':'CHANNEL_CREATED',
+            'message':'This profile already has a channel.'
+        }
+        return json_response(response)
+    if not Image.objects.filter(id = params['cover']).exists():
+        response = {
+            'status':'FAIL',
+            'error':'NO_IMAGE',
+            'message':'The cover image does not exist.'
+        }
+        return json_response(response)
+    cover = Image.objects.get(id = params['cover'])
+    if len(params['tagline']) > 100:
+        response = {
+            'status':'FAIL',
+            'error':'TAGLINE_TOO_LONG',
+            'message':'The tagline you chose is too long. Shorten it to less than 100 characters.'
+        }
+        return json_response(response)
+    channel = Channel(profile = profile, cover = cover, tagline = params['tagline'])
+    if params['hashtag'] is not None:
+        channel.hashtag = params['hashtag'].replace(" ", "")
+    channel.save()
+    response = {
+        'status':'OK',
+        'profile':serialize_one(profile),
+        'channel':serialize_one(channel)
+    }
+    return json_response(response)
+
+@login_required()
+@validate('POST', ['profile'], ['hashtag', 'cover', 'tagline'])
+def edit_channel(request, params, user):
+    # Check if the profile is valid
+    if not Profile.objects.filter(id = params['profile']).exists():
+        response = {
+            'status':'FAIL',
+            'error':'PROFILE_NOT_FOUND',
+            'message':'The profile doesn\'t exist.'
+        }
+        return json_response(response)
+    profile = Profile.objects.get(id = params['profile'])
+    # Check if the user has permission for the profile
+    if not Profile_manager.objects.filter(user = user, profile = profile) \
+                                  .exists():
+        response = {
+            'status':'FAIL',
+            'error':'NOT_A_MANAGER',
+            'message':'You don\'t have permission for the profile.'
+        }
+        return json_response(response)
+    if not Channel.objects.filter(profile = profile).exists():
+        response = {
+            'status':'FAIL',
+            'error':'NO_CHANNEL',
+            'message':'This profile does not have a channel.'
+        }
+        return json_response(response)
+    channel = Channel.objects.get(profile = profile)
+    if params['cover'] is not None:
+        if not Image.objects.filter(id = params['cover']).exists():
+            response = {
+                'status':'FAIL',
+                'error':'NO_IMAGE',
+                'message':'The cover image does not exist.'
+            }
+            return json_response(response)
+        channel.cover = Image.objects.get(id = params['cover'])
+    if params['tagline'] is not None:
+        if len(params['tagline']) > 100:
+            response = {
+                'status':'FAIL',
+                'error':'TAGLINE_TOO_LONG',
+                'message':'The tagline you chose is too long. Shorten it to less than 100 characters.'
+            }
+            return json_response(response)
+        channel.tagline = params['tagline']
+    if params['hashtag'] is not None:
+        channel.hashtag = params['hashtag'].replace(" ", "")
+    channel.save()
+    response = {
+        'status':'OK',
+        'profile':serialize_one(profile),
+        'channel':serialize_one(channel)
+    }
+    return json_response(response)
+
+@login_required()
 def new(request, user):
     """
-    Create profile page
+    Create profile
     """
     profiles = Profile.objects.filter(managers = user)
     if len(profiles) > 0:
