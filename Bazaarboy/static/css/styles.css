@@ -8292,7 +8292,7 @@ div#profile div#profile-container div.profile-body div.body-container div.body-b
   margin: 0 auto;
   border-radius: 75px;
 }
-div#profile div#profile-container div.profile-body div.body-container div.body-bottom div.business-info div.profile-logo img {
+div#profile div#profile-container div.profile-body div.body-container div.body-bottom div.business-info div.profile-logo div.logo {
   border-radius: 70px;
   height: 140px;
   width: 140px;
