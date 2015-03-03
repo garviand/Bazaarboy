@@ -106,7 +106,7 @@
               image: 'cover-image',
               url: mediaUrl + response.image.source,
               cropPresetsStrict: true,
-              cropPresetDefault: ['Cover Photo Size', '4:1'],
+              cropPresetDefault: ['Cover Photo Size', '1000x400'],
               initTool: 'crop'
             });
           } else {

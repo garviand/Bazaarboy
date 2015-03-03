@@ -54,7 +54,7 @@ block body
                                                 {% endif %}
                                 div.small-12.medium-8.columns
                                     div.event-content
-                                        {% if current_events.count > 0 %}
+                                        {% if current_events|length > 0 %}
                                         div.row
                                             div.small-12.columns
                                                 div.upcoming-events
@@ -80,7 +80,7 @@ block body
                                                     {% endfor %}
                                         hr
                                         {% endif %}
-                                        {% if past_events.count > 0 %}
+                                        {% if past_events|length > 0 %}
                                         div.row
                                             div.small-12.columns
                                                 div.past-events
@@ -103,7 +103,7 @@ block body
                                                         {% endfor %}
                                         hr
                                         {% endif %}
-                                        {% if images.count > 0 %}
+                                        {% if images|length > 0 %}
                                         div.row
                                             div.small-12.columns
                                                 div.photo-feed
