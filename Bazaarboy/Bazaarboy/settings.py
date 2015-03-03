@@ -28,12 +28,12 @@ MANAGERS = ADMINS
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.mysql', 
-        'NAME': 'Bazaarboy', 
-        'USER': 'root', 
-        'PASSWORD': 'L33che$', 
-        'HOST': '', 
-        'PORT': '', 
+        'ENGINE': 'django.db.backends.mysql',
+        'NAME': 'Bazaarboy',
+        'USER': 'root',
+        'PASSWORD': 'L33che$',
+        'HOST': '',
+        'PORT': '',
     }
 }
 

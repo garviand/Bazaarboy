@@ -8190,6 +8190,15 @@ div#profile .bigger {
   font-size: 14px;
   font-weight: bold;
 }
+div#profile div#profile-container div.profile-header {
+  position: relative;
+}
+div#profile div#profile-container div.profile-header div.overlay {
+  position: absolute;
+  height: 100%;
+  width: 100%;
+  background: rgba(0, 0, 0, 0.1);
+}
 div#profile div#profile-container div.profile-header div.header-top {
   padding-top: 50px;
 }
@@ -8218,6 +8227,8 @@ div#profile div#profile-container div.profile-header div.header-bottom {
 div#profile div#profile-container div.profile-header div.header-bottom div.profile-name {
   color: #ffffff;
   font-size: 42px;
+  text-shadow: 0 1px 3px rgba(0, 0, 0, 0.6);
+  font-weight: 500;
 }
 @media only screen and (max-width: 40em) {
   div#profile div#profile-container div.profile-header div.header-bottom div.profile-name {

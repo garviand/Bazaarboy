@@ -3,8 +3,23 @@ from django.utils import timezone
 from django.core.urlresolvers import reverse
 from src.timezone import localize
 import math
+import re
+
+import pdb
 
 register = template.Library()
+
+@register.filter
+def firstImage(event):
+    if event.cover:
+        return event.cover.source.url.split("?", 1)[0]
+    pat = re.compile('<img [^>]*src="([^"]+)')
+    images = pat.findall(event.description)
+    if len(images) > 0:
+        return images[0].split("?", 1)[0]
+    else:
+        return False
+
 
 @register.filter
 def daysUntil(value):

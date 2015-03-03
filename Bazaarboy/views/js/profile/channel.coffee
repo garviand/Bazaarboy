@@ -92,7 +92,7 @@ Bazaarboy.profile.channel =
                     scope.aviary.launch
                         image: 'cover-image'
                         url: mediaUrl + response.image.source
-                        maxSize: 1160
+                        maxSize: 1260
                         cropPresetsStrict: true
                         cropPresetDefault: ['Cover Photo Size','1000x400']
                         initTool: 'crop'

@@ -34,12 +34,13 @@ def index(request, id, user):
     current_events = []
     past_events = []
     for organizer in organizers:
-        if organizer.event.cover is not None:
+        if layout.firstImage(organizer.event):
             if not layout.hasStartedOrEnded(organizer.event):
                 current_events.append(organizer.event)
             else:
                 past_events.append(organizer.event)
     current_events.reverse()
+    past_events = past_events[:9]
     api = InstagramAPI(client_id=INSTAGRAM_CLIENT_ID, client_secret=INSTAGRAM_SECRET)
     instagram_photos = api.tag_recent_media(count=10, tag_name=str(channel.hashtag))
     images = []

@@ -9,6 +9,7 @@ block body
     div#profile
         div#profile-container
             div.profile-header(style="background-image: url('{{ channel.cover.source.url }}'); background-size: cover;")
+                div.overlay
                 div.row.header-top
                     div.small-12.medium-6.columns
                         a.brand-logo(href="{% url index %}")
@@ -62,13 +63,12 @@ block body
                                                         div.small-12.columns
                                                             div.events-title.bigger Upcoming Events
                                                     {% for event in current_events %}
-                                                    {% if event.cover %}
                                                     div.row
                                                         div.small-12.columns
                                                             div.upcoming-event
                                                                 div.row
                                                                     a(href="{{ event|eventUrl }}")
-                                                                        div.event-image.small-12.medium-3.columns(style="background:url({{ event.cover.source.url }}); background-size:cover; background-position:center;") &nbsp;
+                                                                        div.event-image.small-12.medium-3.columns(style="background:url({{ event|firstImage }}); background-size:cover; background-position:center;") &nbsp;
                                                                             div.event-date
                                                                                 div.month {{ event.start_time|date:'M' }}
                                                                                 div.day {{ event.start_time|date:'j' }}
@@ -76,7 +76,6 @@ block body
                                                                         div.event-info
                                                                             a.event-name(href="{{ event|eventUrl }}") {{ event.name }}
                                                                             div.event-summary {{ event.summary }}
-                                                    {% endif %}
                                                     {% endfor %}
                                         hr
                                         {% endif %}
@@ -89,17 +88,15 @@ block body
                                                             div.events-title.bigger Past Events
                                                     div.row.past-events-container
                                                         {% for event in past_events %}
-                                                        {% if event.cover %}
                                                         div.small-12.medium-4.columns.end
                                                             div.past-event
                                                                 div.row
                                                                     a(href="{{ event|eventUrl }}")
-                                                                        div.event-image.small-12.columns(style="background:url({{ event.cover.source.url }}); background-size:cover; background-position:center;") &nbsp;
+                                                                        div.event-image.small-12.columns(style="background:url({{ event|firstImage }}); background-size:cover; background-position:center;") &nbsp;
                                                                             div.event-date
                                                                                 div.month {{ event.start_time|date:'M' }}
                                                                                 div.day {{ event.start_time|date:'j' }}
                                                                             div.event-name {{ event.name }}
-                                                        {% endif %}
                                                         {% endfor %}
                                         hr
                                         {% endif %}

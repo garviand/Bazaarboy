@@ -7,6 +7,13 @@ div#profile {
   }
   div#profile-container{
     div.profile-header{
+      position: relative;
+      div.overlay{
+        position: absolute;
+        height: 100%;
+        width: 100%;
+        background: rgba(0, 0, 0, 0.1)
+      }
       div.header-top{
         padding-top: 50px;
         @media @media_small{
@@ -32,6 +39,8 @@ div#profile {
         div.profile-name{
           color: @white;
           font-size: 42px;
+          text-shadow: 0 1px 3px rgba(0, 0, 0, .6);
+          font-weight: 500;
           @media @media_small{
             text-align: center;
           }
