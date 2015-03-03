@@ -391,9 +391,9 @@ def add_claim(request, params, user):
     }
     return json_response(response)
 
-@login_required()
+
 @validate('POST', ['claim_id', 'claim_token', 'first_name', 'last_name'], ['phone'])
-def complete_claim(request, params, user):
+def complete_claim(request, params):
     if not Claim.objects.filter(id = params['claim_id'], token = params['claim_token']).exists():
         response = {
             'status':'FAIL',
