@@ -34,10 +34,11 @@ def index(request, id, user):
     current_events = []
     past_events = []
     for organizer in organizers:
-        if not layout.hasStartedOrEnded(organizer.event):
-            current_events.append(organizer.event)
-        else:
-            past_events.append(organizer.event)
+        if organizer.event.cover is not None:
+            if not layout.hasStartedOrEnded(organizer.event):
+                current_events.append(organizer.event)
+            else:
+                past_events.append(organizer.event)
     current_events.reverse()
     api = InstagramAPI(client_id=INSTAGRAM_CLIENT_ID, client_secret=INSTAGRAM_SECRET)
     instagram_photos = api.tag_recent_media(count=10, tag_name=str(channel.hashtag))
@@ -47,15 +48,11 @@ def index(request, id, user):
     return render(request, 'profile/index.html', locals())
 
 @login_required()
-def channel(request, profile, user):
+def channel(request, user):
     # Check if the profile is valid
-    if not Profile.objects.filter(id = profile).exists():
-        return redirect('user:settings')
-    profile = Profile.objects.get(id = profile)
+    profiles = Profile.objects.filter(managers = user)
+    profile = profiles[0]
     # Check if the user has permission for the profile
-    if not Profile_manager.objects.filter(user = user, profile = profile) \
-                                  .exists():
-        return redirect('user:settings')
     if Channel.objects.filter(profile = profile).exists():
         channel = Channel.objects.get(profile = profile)
     return render(request, 'profile/channel.html', locals())

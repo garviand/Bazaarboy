@@ -30,7 +30,7 @@ payment_urlpatterns = patterns('src.controllers.payment',
 
 profile_urlpatterns = patterns('src.controllers.profile', 
     url(r'^(?P<id>\d+)/$', 'index', name = 'index'),
-    url(r'^(?P<profile>\d+)/channel/$', 'channel', name = 'channel'),
+    url(r'^channel/$', 'channel', name = 'channel'),
     url(r'^channel/create/$', 'create_channel', name = 'create-channel'),
     url(r'^channel/edit/$', 'edit_channel', name = 'edit-channel'),
     url(r'^new/$', 'new', name = 'new'),
