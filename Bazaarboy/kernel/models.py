@@ -155,6 +155,7 @@ class Channel(models.Model):
     cover = models.ForeignKey('Image', null = True, default = None)
     tagline = models.CharField(max_length = 250, null = True, default = None)
     hashtag = models.CharField(max_length = 250, null = True, default = None)
+    active = models.BooleanField(default = False)
     created_time = models.DateTimeField(auto_now_add = True)
 
 class Profile_manager(models.Model):

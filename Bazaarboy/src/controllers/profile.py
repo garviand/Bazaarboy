@@ -30,6 +30,8 @@ def index(request, id, user):
     if not Channel.objects.filter(profile = profile).exists():
         raise Http404
     channel = Channel.objects.get(profile = profile)
+    if not channel.active and not Profile_manager.objects.filter(user = user, profile = profile).exists():
+        return redirect('index')
     organizers = Organizer.objects.filter(profile = profile, event__is_launched = True, event__is_deleted = False, is_creator = True).order_by('-event__start_time')
     current_events = []
     past_events = []
