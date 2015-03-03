@@ -704,7 +704,8 @@
               $('img#cover-image').attr('src', mediaUrl + response.image.source);
               _this.aviary.launch({
                 image: 'cover-image',
-                url: mediaUrl + response.image.source
+                url: mediaUrl + response.image.source,
+                maxSize: 1160
               });
             } else {
               alert(response.message);

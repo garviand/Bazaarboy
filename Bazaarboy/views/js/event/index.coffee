@@ -603,6 +603,7 @@ Bazaarboy.event.index =
                         @aviary.launch
                             image: 'cover-image'
                             url: mediaUrl + response.image.source
+                            maxSize: 1160
                             #cropPresets: ['1000x400']
                             #cropPresetsStrict: true
                             #forceCropPreset: ['Cover Image Size','10:4']
