@@ -64,7 +64,15 @@ Bazaarboy.reward.new =
       else
         swal 'Must Include An Image for the Reward'
         return
-      Bazaarboy.post 'rewards/create/', {profile:profileId, name:name, description:description, value:value, attachment:attachmentId, gif:useGif}, (response) ->
+      formattedFields = {}
+      if $('input[name=extra_fields]').val().trim() isnt ''
+        fields = $('input[name=extra_fields]').val().split(",")
+        num = 0
+        for field in fields
+          formattedFields[num] = field.trim()
+          num++
+        formattedFields = JSON.stringify(formattedFields)
+      Bazaarboy.post 'rewards/create/', {profile:profileId, name:name, description:description, value:value, attachment:attachmentId, gif:useGif, extra_fields:formattedFields}, (response) ->
         if response.status is 'OK'
           swal
             type: "success"

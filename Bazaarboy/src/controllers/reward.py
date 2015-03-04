@@ -5,8 +5,10 @@ Controller for rewards
 import cgi
 import re
 import stripe
+import ordereddict
 from giphypop import Giphy
 import json
+import simplejson
 from kernel.models import *
 from src.controllers.request import *
 from src.serializer import serialize_one
@@ -36,7 +38,7 @@ def index(request, user):
     for reward in rewards:
         items = Reward_item.objects.filter(reward = reward)
         reward.given = items
-    reward_items = Reward_item.objects.filter(owner = profile, expiration_time__gte = timezone.now()).order_by('expiration_time')
+    reward_items = Reward_item.objects.filter(owner = profile, expiration_time__gte = timezone.now(), quantity__gt = 0).order_by('expiration_time')
     for item in reward_items:
         claims = Claim.objects.filter(item = item)
         item.claims = claims
@@ -63,6 +65,11 @@ def claim(request, params):
         claim = None
     else:
         claim = Claim.objects.get(id = params['id'])
+        extra_fields = []
+        if claim.item.reward.extra_fields:
+            custom_fields = simplejson.loads(claim.item.reward.extra_fields, object_pairs_hook=ordereddict.OrderedDict)
+            for field in ordereddict.OrderedDict(sorted(custom_fields.items())).items():
+                extra_fields.append(field[1])
     return render(request, 'reward/claim.html', locals())
 
 @login_required()
@@ -85,6 +92,18 @@ def manage(request, reward, user):
         }
         return json_response(response)
     claims = Claim.objects.filter(item__reward = reward, is_claimed = True).order_by("item__expiration_time")
+    for claim in claims:
+        try:
+            fields = json.loads(claim.extra_fields)
+        except:
+            response = {
+                'status':'FAIL',
+                'error':'INVALID_FIELD_FORMAT',
+                'message':'The extra field format is not correct.'
+            }
+            return json_response(response)
+        finally:
+            claim.extra_fields = fields
     return render(request, 'reward/manage.html', locals())
 
 @login_required()
@@ -140,7 +159,7 @@ def subscribe(request, params, user):
     return json_response(response)
 
 @login_required()
-@validate('POST', ['profile', 'name', 'description', 'value', 'gif'], ['attachment'])
+@validate('POST', ['profile', 'name', 'description', 'value', 'gif'], ['attachment', 'extra_fields'])
 def create(request, params, user):
     """
     Create a reward
@@ -187,6 +206,18 @@ def create(request, params, user):
         return json_response(response)
     reward = Reward (creator = profile, name = params['name'], description = params['description'], value = params['value'])
     reward.save()
+    if params['extra_fields'] is not None:
+        try:
+            fields = json.loads(params['extra_fields'])
+        except:
+            response = {
+                'status':'FAIL',
+                'error':'INVALID_FIELD_FORMAT',
+                'message':'The extra field format is not correct.'
+            }
+            return json_response(response)
+        finally:
+            reward.extra_fields = json.dumps(fields)
     if params['attachment'] is not None:
         if params['gif'] == 'true':
             img_temp = NamedTemporaryFile(delete=True)
@@ -392,7 +423,7 @@ def add_claim(request, params, user):
     return json_response(response)
 
 
-@validate('POST', ['claim_id', 'claim_token', 'first_name', 'last_name'], ['phone'])
+@validate('POST', ['claim_id', 'claim_token', 'first_name', 'last_name'], ['phone', 'extra_fields'])
 def complete_claim(request, params):
     if not Claim.objects.filter(id = params['claim_id'], token = params['claim_token']).exists():
         response = {
@@ -455,6 +486,18 @@ def complete_claim(request, params):
     claim.owner.save()
     claim.is_claimed = True
     claim.claimed_time = timezone.now()
+    if params['extra_fields'] is not None:
+        try:
+            fields = json.loads(params['extra_fields'])
+        except:
+            response = {
+                'status':'FAIL',
+                'error':'INVALID_FIELD_FORMAT',
+                'message':'The extra field format is not correct.'
+            }
+            return json_response(response)
+        finally:
+            claim.extra_fields = json.dumps(fields)
     claim.save()
     if sendMMS:
         claim.owner.phone = params['phone']

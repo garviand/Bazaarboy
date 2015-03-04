@@ -44,8 +44,9 @@ block content
                             div.list_headers.row.hide-for-small-only
                                 div.checkin.medium-2.columns Status
                                 div.confirmation.medium-2.columns Code
-                                div.ticket_name.medium-3.columns Expiration
-                                div.name.medium-5.columns Name
+                                div.ticket_name.medium-2.columns Expiration
+                                div.medium-2.columns Name
+                                div.info.medium-4.columns Extra Info
                             {% for claim in claims %}
                             div.reward.row(class="{% if claim.is_redeemed %}claimed{% endif %}", data-id="{{ claim.id }}", data-code="{{ claim.code|lower }}", data-email="{{ claim.owner.email|lower }}", data-name="{{ claim.owner.first_name|lower }} {{ claim.owner.last_name|lower }}")
                                 div.redeem.medium-2.small-12.columns.hide-for-small-only
@@ -53,11 +54,17 @@ block content
                                         {% if claim.is_redeemed %}Redeemed{% else %}Redeem{% endif %}
                                 div.code.medium-2.small-6.columns
                                     {{ claim.code }}&nbsp;
-                                div.reward-expiration.medium-3.small-6.columns.clearfix
+                                div.reward-expiration.medium-2.small-6.columns.clearfix
                                     {{ claim.item.expiration_time|date:"m/d/Y" }}
                                 div.spacer.show-for-small-only
-                                div.name.medium-5.small-6.columns
+                                div.name.medium-2.small-6.columns
                                     {{ claim.owner.first_name }} {{ claim.owner.last_name }}
+                                div.info.medium-4.columns.hide-for-small-only
+                                    {% for field, info in claim.extra_fields.items %}
+                                    div 
+                                        b {{ field }}:&nbsp;
+                                        | {{ info }}
+                                    {% endfor %}
                                 div.redeem.small-6.columns.show-for-small-only
                                     a.full-btn(href="javascript:;", class="{% if claim.is_redeemed %}disabled-btn{% else %}secondary-btn{% endif %}") 
                                         {% if claim.is_redeemed %}Redeemed{% else %}Redeem{% endif %}
