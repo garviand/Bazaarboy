@@ -8268,6 +8268,8 @@ div#profile div#profile-container div.profile-body div.body-container div.body-t
   color: #7a7a7a;
   padding-top: 24px;
   padding-bottom: 24px;
+  padding-right: 10px;
+  padding-left: 10px;
 }
 div#profile div#profile-container div.profile-body div.body-container div.body-bottom div.business-info {
   word-wrap: break-word;
@@ -8325,7 +8327,7 @@ div#profile div#profile-container div.profile-body div.body-container div.body-b
 @media only screen and (max-width: 40em) {
   div#profile div#profile-container div.profile-body div.body-container div.body-bottom div.event-content {
     padding-left: 1.875rem;
-    padding-right: 2.8125rem;
+    padding-right: 1.875rem;
     margin-top: 20px;
   }
 }
@@ -8372,6 +8374,7 @@ div#profile div#profile-container div.profile-body div.body-container div.body-b
 @media only screen and (max-width: 40em) {
   div#profile div#profile-container div.profile-body div.body-container div.body-bottom div.event-content div.upcoming-events div.upcoming-event {
     margin-left: 0;
+    padding-right: .9375rem;
   }
 }
 @media only screen and (max-width: 40em) {
@@ -8467,8 +8470,19 @@ div#profile div#profile-container div.profile-body div.body-container div.body-b
 div#profile div#profile-container div.profile-body div.body-container div.body-bottom div.event-content div.photo-feed {
   margin-right: .9375rem;
 }
+@media only screen and (max-width: 40em) {
+  div#profile div#profile-container div.profile-body div.body-container div.body-bottom div.event-content div.photo-feed div.photo-container {
+    padding-right: 0;
+  }
+}
 div#profile div#profile-container div.profile-body div.body-container div.body-bottom div.event-content div.photo-feed ul.clearing-thumbs li {
   margin-right: 0 !important;
+}
+@media only screen and (max-width: 40em) {
+  div#profile div#profile-container div.profile-body div.body-container div.body-bottom div.event-content div.photo-feed ul.clearing-thumbs li {
+    padding-right: 0;
+    padding-bottom: 10px;
+  }
 }
 div#profile div#profile-container div.profile-body div.body-container div.body-bottom div.event-content div.photo-feed ul.clearing-thumbs li:hover {
   opacity: .6;

@@ -77,6 +77,8 @@ div#profile {
             color: @dark_grey;
             padding-top: 24px;
             padding-bottom: 24px;
+            padding-right: 10px;
+            padding-left: 10px;
           }
         }
         div.body-bottom{
@@ -132,7 +134,7 @@ div#profile {
             }
             @media @media_small{
               padding-left: 1.875rem;
-              padding-right: 2.8125rem;
+              padding-right: 1.875rem;
               margin-top: 20px;
             }
             div.events-title{
@@ -177,6 +179,7 @@ div#profile {
                 margin-bottom: 20px;
                 @media @media_small{
                   margin-left: 0;
+                  padding-right: .9375rem;
                 }
                 > .row{
                   @media @media_small{
@@ -272,9 +275,18 @@ div#profile {
             }
             div.photo-feed{
               margin-right: .9375rem;
+              div.photo-container{
+                @media @media_small{
+                  padding-right: 0;
+                }
+              }
               ul.clearing-thumbs{
                 li{
                   margin-right: 0 !important;
+                  @media @media_small{
+                    padding-right: 0;
+                    padding-bottom: 10px;
+                  }
                   &:hover{
                     opacity: .6;
                   }
