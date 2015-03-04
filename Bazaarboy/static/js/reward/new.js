@@ -52,7 +52,7 @@
         scope.attachment = void 0;
       });
       $('a.create-reward').click(function() {
-        var attachmentId, description, name, useGif, value;
+        var attachmentId, description, field, fields, formattedFields, name, num, useGif, value, _i, _len;
         if ($('input[name=name]').val().trim() === '') {
           swal('Name Cannot Be Blank');
           return;
@@ -78,13 +78,25 @@
           swal('Must Include An Image for the Reward');
           return;
         }
+        formattedFields = {};
+        if ($('input[name=extra_fields]').val().trim() !== '') {
+          fields = $('input[name=extra_fields]').val().split(",");
+          num = 0;
+          for (_i = 0, _len = fields.length; _i < _len; _i++) {
+            field = fields[_i];
+            formattedFields[num] = field.trim();
+            num++;
+          }
+          formattedFields = JSON.stringify(formattedFields);
+        }
         Bazaarboy.post('rewards/create/', {
           profile: profileId,
           name: name,
           description: description,
           value: value,
           attachment: attachmentId,
-          gif: useGif
+          gif: useGif,
+          extra_fields: formattedFields
         }, function(response) {
           if (response.status === 'OK') {
             swal({

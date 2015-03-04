@@ -12437,6 +12437,9 @@ div#claim div#claim-container {
   background: #ffffff;
   margin-top: 75px;
 }
+div#claim div#claim-container form#claim-form {
+  margin-bottom: 80px;
+}
 div#claim div#claim-container form#claim-form div.logo-small {
   margin: 0 auto;
   margin-top: 50px;
@@ -12576,6 +12579,9 @@ div#reward-manage .rewards .reward div.code {
 div#reward-manage .rewards .reward div.name {
   font-weight: 300;
   padding-top: 12px;
+}
+div#reward-manage .rewards .reward div.info {
+  line-height: 1.2rem;
 }
 @media only screen and (max-width: 40.063em) {
   div#reward-manage .rewards .reward div.name {
