@@ -1,6 +1,6 @@
 # Production Settings
 
-PREPEND_WWW = True
+PREPEND_WWW = False
 
 # Use RDS as database backend
 
