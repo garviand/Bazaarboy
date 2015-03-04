@@ -156,6 +156,7 @@ class Channel(models.Model):
     tagline = models.CharField(max_length = 250, null = True, default = None)
     hashtag = models.CharField(max_length = 250, null = True, default = None)
     active = models.BooleanField(default = False)
+    slug = models.CharField(max_length = 30, null = True, default = None, unique = True)
     created_time = models.DateTimeField(auto_now_add = True)
 
 class Profile_manager(models.Model):
