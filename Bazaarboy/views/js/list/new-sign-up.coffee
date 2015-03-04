@@ -1,33 +1,38 @@
 Bazaarboy.profile.channel =
-    image:imageId
+    image:undefined
     init: () ->
         scope = this
-        # create channel
-        $('a.create-channel-btn').click () ->
+        $('input[name=end_date]').pikaday
+            format: 'MM/DD/YYYY'
+        $('a.create-sign-up-btn').click () ->
             params = {}
-            params.profile = profileId
-            if $('input[name=tagline]').val().trim() == ''
-                swal 'You Must Add a Tagline'
+            if $('input[name=name]').val().trim() == ''
+                swal 'You Must Add a Name'
                 return
-            params.tagline = $('input[name=tagline]').val()
-            if $('input[name=hashtag]').val().trim() != ''
-                params.hashtag = $('input[name=hashtag]').val()
-            if not scope.image?
-                swal 'You Must Upload A Cover Image'
+            params.name = $('input[name=name]').val()
+            if $('textarea[name=description]').val().trim() == ''
+                swal 'You Must Add a Description'
                 return
-            params.cover = scope.image
-            Bazaarboy.post 'profile/channel/create/', params, (response) ->
+            params.description = $('textarea[name=description]').val()
+            if not moment($('input[name=end_date]').val(), 'MM/DD/YYYY').isValid()
+                swal 'The End Date Format is Invalid (MM/DD/YYYY)'
+                return
+            params.end_time = moment($('input[name=end_date]').val(), 'MM/DD/YYYY').utc().format('YYYY-MM-DD HH:mm:ss')
+            if scope.image
+                params.image = scope.image
+            Bazaarboy.post 'lists/signup/create/', params, (response) ->
                 if response.status is 'OK'
                     swal
                         type: 'success'
                         title: 'Success'
-                        text: 'Channel Created!'
+                        text: 'Sign Up Form Created!'
                         () ->
-                            location.reload()
+                            Bazaarboy.redirect 'lists/'
                 else
                     swal response.message
                 return
             return
+        ###
         # edit channel
         $('a.save-channel-btn').click () ->
             params = {}
@@ -50,6 +55,7 @@ Bazaarboy.profile.channel =
                     swal response.message
                 return
             return
+        ###
         # cover image upload
         scope.aviary = new Aviary.Feather
             apiKey: 'ce3b87fb1edaa22c'
@@ -62,10 +68,10 @@ Bazaarboy.profile.channel =
                     url: imageUrl
                 , (response) ->
                     $("img#cover-image").attr 'src', response.image
-                    $('a.upload-cover-btn').css('display', 'none')
-                    $('a.delete-cover-btn').css('display', 'block')
-                    $('a.upload-cover-btn').html 'Upload Image'
-                    scope.image = (response.image_id)
+                    $('a.upload-image-btn').css('display', 'none')
+                    $('a.delete-image-btn').css('display', 'block')
+                    $('a.upload-image-btn').html 'Upload Image'
+                    scope.image = response.image_id
                     return
                 return
         $('input[name=image_file]').fileupload
@@ -90,10 +96,10 @@ Bazaarboy.profile.channel =
                     swal response.message
                     $('a.upload-cover-btn').html 'Upload Image'
                 return
-        $('a.upload-cover-btn').click () ->
+        $('a.upload-image-btn').click () ->
             $('input[name=image_file]').click()
             return
-         $('a.delete-cover-btn').click () ->
+         $('a.delete-image-btn').click () ->
             scope.image = undefined
             $('img#cover-image').attr 'src', ''
             $('a.upload-cover-btn').css('display', 'block')

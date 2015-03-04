@@ -80,6 +80,15 @@
             @adjustBottomPosition()
             return
         ###
+        $('div.input-container').click () ->
+            $(this).find('input, textarea').focus()
+            return
+        $('div.input-container input,div.input-container textarea').focus () ->
+            $(this).closest('div.input-container').addClass 'active'
+            return
+        $('div.input-container input,div.input-container textarea').blur () ->
+            $(this).closest('div.input-container').removeClass 'active'
+            return
         return
 
 Bazaarboy.init()

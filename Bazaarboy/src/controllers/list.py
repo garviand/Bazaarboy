@@ -22,6 +22,7 @@ def index(request, user):
     profile = profiles[0]
     lists = List.objects.filter(owner = profile, is_deleted = False)
     listsCount = lists.count()
+    active_sign_ups = Sign_up.objects.filter(end_time__gt = timezone.now())
     for lt in lists:
         list_items = List_item.objects.filter(_list = lt)
         lt.items = list_items.count()
@@ -429,5 +430,75 @@ def delete(request, params, user):
     response = {
         'status': 'OK',
         'list': serialize_one(lt)
+    }
+    return json_response(response)
+
+@login_check()
+def sign_up(request, signup, user):
+    """
+    Sign Up Page
+    """
+    if not Sign_up.objects.filter(id = signup).exists():
+        return redirect('index')
+    else:
+        signup = Sign_up.objects.get(id = signup)
+    return render(request, 'list/sign-up.html', locals())
+
+@login_required()
+def new_sign_up(request, user):
+    """
+    Sign Up Create Page
+    """
+    profiles = Profile.objects.filter(managers = user)
+    profile = profiles[0]
+    return render(request, 'list/new-sign-up.html', locals())
+
+@login_required()
+@validate('POST', ['name', 'description', 'end_time'], ['image', 'extra_fields'])
+def create_sign_up(request, params, user):
+    """
+    Create Sign Up Form
+    """
+    profiles = Profile.objects.filter(managers = user)
+    profile = profiles[0]
+    params['name'] = cgi.escape(params['name'])
+    if not (0 < len(params['name']) <= 100):
+        response = {
+            'status':'FAIL',
+            'error':'INVALID_NAME',
+            'message':'Form name cannot be blank or over 100 characters.'
+        }
+        return json_response(response)
+    params['description'] = cgi.escape(params['description'])
+    if not (0 < len(params['description']) <= 500):
+        response = {
+            'status':'FAIL',
+            'error':'INVALID_DESCRIPTION',
+            'message':'Form description cannot be blank or over 500 characters.'
+        }
+        return json_response(response)
+    if params['end_time'] < timezone.now():
+        response = {
+            'status':'FAIL',
+            'error':'INVALID_END_TIME',
+            'message':'The Sign Up End Time Must Be After Today'
+        }
+        return json_response(response)
+    sign_up = Sign_up(owner = profile, name = params['name'], description = params['description'], end_time = params['end_time'])
+    if params['image'] is not None:
+        if not Image.objects.filter(id = params['image']).exists():
+            response = {
+                'status':'FAIL',
+                'error':'IMAGE_NOT_FOUND',
+                'message':'The image doesn\'t exist.'
+            }
+            return json_response(response)
+        else:
+            image = Image.objects.get(id = params['image'])
+            sign_up.image = image
+    sign_up.save()
+    response = {
+        'status':'OK',
+        'sign_up': serialize_one(sign_up)
     }
     return json_response(response)

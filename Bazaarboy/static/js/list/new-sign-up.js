@@ -1,68 +1,73 @@
 (function() {
   Bazaarboy.profile.channel = {
-    image: imageId,
+    image: void 0,
     init: function() {
       var scope,
         _this = this;
       scope = this;
-      $('a.create-channel-btn').click(function() {
+      $('input[name=end_date]').pikaday({
+        format: 'MM/DD/YYYY'
+      });
+      $('a.create-sign-up-btn').click(function() {
         var params;
         params = {};
-        params.profile = profileId;
-        if ($('input[name=tagline]').val().trim() === '') {
-          swal('You Must Add a Tagline');
+        if ($('input[name=name]').val().trim() === '') {
+          swal('You Must Add a Name');
           return;
         }
-        params.tagline = $('input[name=tagline]').val();
-        if ($('input[name=hashtag]').val().trim() !== '') {
-          params.hashtag = $('input[name=hashtag]').val();
-        }
-        if (scope.image == null) {
-          swal('You Must Upload A Cover Image');
+        params.name = $('input[name=name]').val();
+        if ($('textarea[name=description]').val().trim() === '') {
+          swal('You Must Add a Description');
           return;
         }
-        params.cover = scope.image;
-        Bazaarboy.post('profile/channel/create/', params, function(response) {
+        params.description = $('textarea[name=description]').val();
+        if (!moment($('input[name=end_date]').val(), 'MM/DD/YYYY').isValid()) {
+          swal('The End Date Format is Invalid (MM/DD/YYYY)');
+          return;
+        }
+        params.end_time = moment($('input[name=end_date]').val(), 'MM/DD/YYYY').utc().format('YYYY-MM-DD HH:mm:ss');
+        if (scope.image) {
+          params.image = scope.image;
+        }
+        Bazaarboy.post('lists/signup/create/', params, function(response) {
           if (response.status === 'OK') {
             swal({
               type: 'success',
               title: 'Success',
-              text: 'Channel Created!'
+              text: 'Sign Up Form Created!'
             }, function() {
-              return location.reload();
+              return Bazaarboy.redirect('lists/');
             });
           } else {
             swal(response.message);
           }
         });
       });
-      $('a.save-channel-btn').click(function() {
-        var params;
-        params = {};
-        params.profile = profileId;
-        if ($('input[name=tagline]').val().trim() !== '') {
-          params.tagline = $('input[name=tagline]').val();
-        }
-        if ($('input[name=hashtag]').val().trim() !== '') {
-          params.hashtag = $('input[name=hashtag]').val();
-        }
-        if (scope.image != null) {
-          params.cover = scope.image;
-        }
-        Bazaarboy.post('profile/channel/edit/', params, function(response) {
-          if (response.status === 'OK') {
-            swal({
-              type: 'success',
-              title: 'Success',
-              text: 'Channel Saved!'
-            }, function() {
-              return location.reload();
-            });
-          } else {
-            swal(response.message);
-          }
-        });
-      });
+      /*
+      # edit channel
+      $('a.save-channel-btn').click () ->
+          params = {}
+          params.profile = profileId
+          if $('input[name=tagline]').val().trim() != ''
+              params.tagline = $('input[name=tagline]').val()
+          if $('input[name=hashtag]').val().trim() != ''
+              params.hashtag = $('input[name=hashtag]').val()
+          if scope.image?
+              params.cover = scope.image
+          Bazaarboy.post 'profile/channel/edit/', params, (response) ->
+              if response.status is 'OK'
+                  swal
+                      type: 'success'
+                      title: 'Success'
+                      text: 'Channel Saved!'
+                      () ->
+                          location.reload()
+              else
+                  swal response.message
+              return
+          return
+      */
+
       scope.aviary = new Aviary.Feather({
         apiKey: 'ce3b87fb1edaa22c',
         apiVersion: 3,
@@ -74,9 +79,9 @@
             url: imageUrl
           }, function(response) {
             $("img#cover-image").attr('src', response.image);
-            $('a.upload-cover-btn').css('display', 'none');
-            $('a.delete-cover-btn').css('display', 'block');
-            $('a.upload-cover-btn').html('Upload Image');
+            $('a.upload-image-btn').css('display', 'none');
+            $('a.delete-image-btn').css('display', 'block');
+            $('a.upload-image-btn').html('Upload Image');
             scope.image = response.image_id;
           });
         }
@@ -107,10 +112,10 @@
           }
         }
       });
-      $('a.upload-cover-btn').click(function() {
+      $('a.upload-image-btn').click(function() {
         $('input[name=image_file]').click();
       });
-      $('a.delete-cover-btn').click(function() {
+      $('a.delete-image-btn').click(function() {
         scope.image = void 0;
         $('img#cover-image').attr('src', '');
         $('a.upload-cover-btn').css('display', 'block');

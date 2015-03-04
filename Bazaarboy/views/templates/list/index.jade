@@ -43,20 +43,50 @@ block content
             div.row.new-list-container(class="{% if listsCount == 0 %}hide{% endif %}")
                 div.medium-4.columns.new-list
                     a.new-list-btn.primary-btn(href="javascript:;") + New List
+                div.medium-4.columns.new-list.end
+                    a.primary-btn-inverse(href="{% url list:new-sign-up %}") + New Sign Up Form
+            div.row
+                {% if active_sign_ups|length > 0 %}
+                div.small-12.columns.lists
+                    div.row
+                        div.small-12.columns
+                            div.headline Sign Up Forms
+                    hr
+                    div.row
+                        div.small-12.columns
+                            {% for signup in active_sign_ups %}
+                            div
+                                div.row.list
+                                    div.small-3.columns.list-name
+                                        | {{ signup.name }}
+                                    div.small-5.columns.text-left.list-members
+                                        | {{ signup.description|truncatechars:30 }}
+                                    div.small-2.columns.text-center.list-action
+                                        a(href="{% url list:sign-up signup.id %}") View Form
+                                    div.small-2.columns.text-center.list-action
+                                        a(href="javascript:;") View Signups
+                            {% endfor %}
+                {% endif %}
             div.row
                 div.small-12.columns.lists
-                    {% for list in lists %}
-                    div
-                        div.row.list
-                            div.small-6.columns.list-name
-                                | {{ list.name|truncatechars:30 }}
-                            div.small-2.columns.text-left.list-members
-                                | {{ list.items }} Membe{{ list.items|pluralize:"r,rs" }}
-                            div.small-2.columns.text-right.list-action
-                                a(href="{% url list:list list.id %}") Manage List
-                            div.small-2.columns.text-right.list-action
-                                a.delete-list-btn(href="javascript:;", data-id="{{ list.id }}") Delete List
-                    {% endfor %}
+                    div.row
+                        div.small-12.columns
+                            div.headline Lists
+                    hr
+                    div.row
+                        div.small-12.columns
+                            {% for list in lists %}
+                            div
+                                div.row.list
+                                    div.small-6.columns.list-name
+                                        | {{ list.name|truncatechars:30 }}
+                                    div.small-2.columns.text-left.list-members
+                                        | {{ list.items }} Membe{{ list.items|pluralize:"r,rs" }}
+                                    div.small-2.columns.text-center.list-action
+                                        a(href="{% url list:list list.id %}") Manage List
+                                    div.small-2.columns.text-center.list-action
+                                        a.delete-list-btn(href="javascript:;", data-id="{{ list.id }}") Delete List
+                            {% endfor %}
     div#new-list-modal.reveal-modal.medium(data-reveal)
         div.row.new-list-title
             div.small-12.columns

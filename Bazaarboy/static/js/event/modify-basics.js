@@ -148,15 +148,6 @@
         showInput: true,
         showButtons: true
       });
-      $('div.input-container').click(function() {
-        $(this).find('input, textarea').focus();
-      });
-      $('div.input-container input,div.input-container textarea').focus(function() {
-        $(this).closest('div.input-container').addClass('active');
-      });
-      $('div.input-container input,div.input-container textarea').blur(function() {
-        $(this).closest('div.input-container').removeClass('active');
-      });
       $('form.event-modify').submit(function(e) {
         e.preventDefault();
         _this.saveBasics(false);

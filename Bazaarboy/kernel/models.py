@@ -535,6 +535,34 @@ class List_item(models.Model):
     last_name = models.CharField(max_length = 50)
     note = models.TextField()
 
+class Sign_up(models.Model):
+    """
+    Sign Up Form
+    """
+    owner = models.ForeignKey('Profile')
+    name = models.CharField(max_length = 100)
+    description = models.CharField(max_length = 500)
+    image = models.ForeignKey('Image', null = True, default = None)
+    start_time = models.DateTimeField(null = True, default = None)
+    end_time = models.DateTimeField(null = True, default = None)
+    extra_fields = models.TextField(default = '{}')
+    created_time = models.DateTimeField(auto_now_add = True)
+
+class Sign_up_item(models.Model):
+    """
+    Sign Up Member - Can belong to a Sign Up or just a Profile
+    """
+    sign_up = models.ForeignKey('Sign_up', null = True, default = None)
+    profile = models.ForeignKey('Profile', null = True, default = None)
+    email = models.CharField(max_length = 100)
+    first_name = models.CharField(max_length = 100)
+    last_name = models.CharField(max_length = 100)
+    extra_fields = models.TextField(default = '{}')
+    assigned = models.BooleanField(default = False)
+    created_time = models.DateTimeField(auto_now_add = True)
+
+
+
 class Unsubscribe(models.Model):
     """
     Unsubscribe from Invites and Follow-Ups

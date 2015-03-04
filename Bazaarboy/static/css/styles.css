@@ -5606,6 +5606,49 @@ input[type="password"]:focus::-webkit-input-placeholder,
 textarea:focus::-webkit-input-placeholder {
   color: #c57724;
 }
+div.input-container {
+  border: #7a7a7a thin solid;
+  padding: 12px;
+  border-radius: 3px;
+  margin-bottom: 20px;
+}
+div.input-container.active {
+  border: #c57724 thin solid;
+}
+div.input-container.active div.input-title {
+  color: #c57724;
+}
+div.input-container div.input-title,
+div.input-container div.input-note {
+  font-size: 12px;
+  cursor: pointer;
+}
+div.input-container div.input-title {
+  font-weight: 600 !important;
+}
+div.input-container div.input-note {
+  font-style: italic;
+}
+div.input-container input,
+div.input-container textarea {
+  font-weight: 300 !important;
+  margin-bottom: 0;
+  box-shadow: none;
+  padding-left: 0;
+  margin-top: 10px;
+  border: none !important;
+  outline: none !important;
+  padding: 0;
+  height: auto;
+}
+div.input-container input.url-input,
+div.input-container textarea.url-input {
+  padding-left: 230px !important;
+}
+div.input-container input:focus,
+div.input-container textarea:focus {
+  box-shadow: none !important;
+}
 .headline {
   font-size: 18px;
   font-weight: bold;
@@ -8605,56 +8648,11 @@ div#wrapper-profile-new div.profile-new-container div.next-prev a.finish-btn.hid
 div#wrapper-channel-settings {
   padding-top: 40px;
 }
-div#channel-settings div.input-container {
-  border: #7a7a7a thin solid;
-  padding: 12px;
-  border-radius: 3px;
-  margin-bottom: 20px;
-}
-div#channel-settings div.input-container a.upload-cover-btn,
-div#channel-settings div.input-container a.delete-cover-btn {
+div#channel-settings a.upload-cover-btn,
+div#channel-settings a.delete-cover-btn {
   margin-top: 20px;
   margin-bottom: 10px;
   max-width: 250px;
-}
-div#channel-settings div.input-container.active,
-div#channel-settings div.input-container:focus {
-  border: #c57724 thin solid;
-}
-div#channel-settings div.input-container.active div.input-title,
-div#channel-settings div.input-container:focus div.input-title {
-  color: #c57724;
-}
-div#channel-settings div.input-container div.input-title,
-div#channel-settings div.input-container div.input-note {
-  font-size: 12px;
-  cursor: pointer;
-}
-div#channel-settings div.input-container div.input-title {
-  font-weight: 600 !important;
-}
-div#channel-settings div.input-container div.input-note {
-  font-style: italic;
-}
-div#channel-settings div.input-container input,
-div#channel-settings div.input-container textarea {
-  font-weight: 300 !important;
-  margin-bottom: 0;
-  box-shadow: none;
-  padding-left: 0;
-  margin-top: 10px;
-  border: none !important;
-  outline: none !important;
-  padding: 0;
-  height: auto;
-}
-div#channel-settings div.input-container input.url-input,
-div#channel-settings div.input-container textarea.url-input {
-  padding-left: 230px !important;
-}
-div#channel-settings div.input-container input:focus,
-div#channel-settings div.input-container textarea:focus {
-  box-shadow: none !important;
 }
 @media only screen and (max-width: 40.063em) {
   div#main-header {
@@ -10385,12 +10383,6 @@ div#event-modify-basics form.event-modify .tz-select a.cancel-timezone {
   color: #c57724;
   font-size: 12px;
 }
-div#event-modify-basics form.event-modify div.input-container {
-  border: #7a7a7a thin solid;
-  padding: 12px;
-  border-radius: 3px;
-  margin-bottom: 20px;
-}
 div#event-modify-basics form.event-modify div.input-container .sp-replacer {
   width: 35% !important;
   min-width: 150px;
@@ -10401,43 +10393,6 @@ div#event-modify-basics form.event-modify div.input-container .sp-preview {
 }
 div#event-modify-basics form.event-modify div.input-container .sp-dd {
   display: none !important;
-}
-div#event-modify-basics form.event-modify div.input-container.active {
-  border: #c57724 thin solid;
-}
-div#event-modify-basics form.event-modify div.input-container.active div.input-title {
-  color: #c57724;
-}
-div#event-modify-basics form.event-modify div.input-container div.input-title,
-div#event-modify-basics form.event-modify div.input-container div.input-note {
-  font-size: 12px;
-  cursor: pointer;
-}
-div#event-modify-basics form.event-modify div.input-container div.input-title {
-  font-weight: 600 !important;
-}
-div#event-modify-basics form.event-modify div.input-container div.input-note {
-  font-style: italic;
-}
-div#event-modify-basics form.event-modify div.input-container input,
-div#event-modify-basics form.event-modify div.input-container textarea {
-  font-weight: 300 !important;
-  margin-bottom: 0;
-  box-shadow: none;
-  padding-left: 0;
-  margin-top: 10px;
-  border: none !important;
-  outline: none !important;
-  padding: 0;
-  height: auto;
-}
-div#event-modify-basics form.event-modify div.input-container input.url-input,
-div#event-modify-basics form.event-modify div.input-container textarea.url-input {
-  padding-left: 230px !important;
-}
-div#event-modify-basics form.event-modify div.input-container input:focus,
-div#event-modify-basics form.event-modify div.input-container textarea:focus {
-  box-shadow: none !important;
 }
 div#event-modify-basics div.name {
   padding: 0;
@@ -12610,8 +12565,6 @@ div#wrapper-list-dashboard div.empty-state-container div.empty-state-content div
   width: 100%;
   margin-top: 20px;
   margin-left: 10px;
-  padding-top: 11px;
-  padding-bottom: 14px;
   font-size: 15px;
   text-transform: uppercase;
 }
@@ -12619,12 +12572,6 @@ div#wrapper-list-dashboard div#list-dashboard {
   margin-top: 40px;
 }
 div#wrapper-list-dashboard div#list-dashboard a.new-list-btn {
-  text-align: center;
-  display: block;
-  padding-top: 9px;
-  padding-bottom: 12px;
-  color: #ffffff;
-  font-size: 15px;
   text-transform: uppercase;
 }
 div#wrapper-list-dashboard div#list-dashboard div.lists {
@@ -12634,6 +12581,8 @@ div#wrapper-list-dashboard div#list-dashboard div.lists > a {
   color: #4a4a4a;
 }
 div#wrapper-list-dashboard div#list-dashboard div.lists div.list {
+  margin-left: 0;
+  margin-right: 0;
   padding: 12px 5px;
   margin-bottom: 10px;
   border-radius: 3px;
@@ -12975,6 +12924,234 @@ div#rewards-modal div.rewards div.reward {
 }
 div#rewards-modal div.rewards div.reward div.expiration {
   font-style: italic;
+}
+div#sign-up {
+  min-width: 100%;
+  min-height: 100%;
+  background: #F6F6F6;
+}
+div#sign-up div#container {
+  width: 450px;
+  max-width: 98%;
+  margin: 0 auto;
+}
+div#sign-up div.request_info {
+  margin-top: 15px;
+  line-height: 18px;
+}
+div#sign-up div#sign-up-container {
+  background: #ffffff;
+  margin-top: 75px;
+}
+div#sign-up div#sign-up-container form#sign-up-form div.image-container {
+  margin-top: 15px;
+}
+div#sign-up div#sign-up-container form#sign-up-form div.image-container img {
+  max-height: 120px;
+}
+div#sign-up div#sign-up-container form#sign-up-form div.logo-small {
+  margin: 0 auto;
+  margin-top: 50px;
+  height: 50px;
+  width: 50px;
+  border-radius: 50%;
+  background: url(/static/images/logo-big.png);
+  background-size: cover;
+}
+div#sign-up div#sign-up-container form#sign-up-form div.title {
+  font-weight: 500;
+  text-transform: uppercase;
+  margin-top: 16px;
+}
+div#sign-up div#sign-up-container form#sign-up-form div.title div.site-title {
+  font-size: 1.5em;
+}
+div#sign-up div#sign-up-container form#sign-up-form div.title span.page-title {
+  color: #9B9B9B;
+}
+div#sign-up div#sign-up-container form#sign-up-form hr.separator {
+  margin-top: 24px;
+  margin-bottom: 26px;
+}
+div#sign-up div#sign-up-container form#sign-up-form .login-inputs input[type=text],
+div#sign-up div#sign-up-container form#sign-up-form .login-inputs input[type=password] {
+  border-radius: 3px;
+  box-shadow: none;
+}
+div#sign-up div#sign-up-container form#sign-up-form div.login-bottom {
+  margin-top: 16px;
+  padding-bottom: 16px;
+}
+div#sign-up div#sign-up-container form#sign-up-form div.login-bottom .submit-login {
+  width: 100%;
+  font-weight: 400;
+  padding: 8px 0px 10px;
+  position: relative;
+  top: -10px;
+}
+div#sign-up div#register-container {
+  background: #ffffff;
+  margin-top: 75px;
+}
+div#sign-up div#register-container form#register-form div.logo-small {
+  margin: 0 auto;
+  margin-top: 50px;
+  height: 50px;
+  width: 50px;
+  border-radius: 50%;
+  background: url(/static/images/logo-big.png);
+  background-size: cover;
+}
+div#sign-up div#register-container form#register-form div.title {
+  font-weight: 500;
+  text-transform: uppercase;
+  margin-top: 16px;
+}
+div#sign-up div#register-container form#register-form div.title div.site-title {
+  font-size: 1.5em;
+}
+div#sign-up div#register-container form#register-form div.title span.page-title {
+  color: #9B9B9B;
+}
+div#sign-up div#register-container form#register-form hr.separator {
+  margin-top: 24px;
+  margin-bottom: 26px;
+}
+div#sign-up div#register-container form#register-form .register-inputs input[type=text],
+div#sign-up div#register-container form#register-form .register-inputs input[type=password] {
+  border-radius: 3px;
+  box-shadow: none;
+}
+div#sign-up div#register-container form#register-form .register-inputs div.logo-title {
+  color: #4a4a4a;
+}
+div#sign-up div#register-container form#register-form .register-inputs a.upload-logo-btn {
+  margin-top: 15px;
+  margin-bottom: 30px;
+}
+div#sign-up div#register-container form#register-form .register-inputs img#organization-logo {
+  max-width: 120px;
+  max-height: 120px;
+  margin-bottom: 20px;
+}
+div#sign-up div#register-container form#register-form div.register-bottom {
+  margin-top: 16px;
+  padding-bottom: 16px;
+}
+div#sign-up div#register-container form#register-form div.register-bottom .submit-register {
+  width: 100%;
+  font-weight: 400;
+  padding: 8px 0px 10px;
+  position: relative;
+  top: -10px;
+}
+div#sign-up div#reset-container {
+  background: #ffffff;
+  margin-top: 75px;
+}
+div#sign-up div#reset-container form#reset-form div.logo-small,
+div#sign-up div#reset-container form#password-form div.logo-small {
+  margin: 0 auto;
+  margin-top: 50px;
+  height: 50px;
+  width: 50px;
+  border-radius: 50%;
+  background: url(/static/images/logo-big.png);
+  background-size: cover;
+}
+div#sign-up div#reset-container form#reset-form div.title,
+div#sign-up div#reset-container form#password-form div.title {
+  font-weight: 500;
+  text-transform: uppercase;
+  margin-top: 16px;
+}
+div#sign-up div#reset-container form#reset-form div.title div.site-title,
+div#sign-up div#reset-container form#password-form div.title div.site-title {
+  font-size: 1.5em;
+}
+div#sign-up div#reset-container form#reset-form div.title span.page-title,
+div#sign-up div#reset-container form#password-form div.title span.page-title {
+  color: #9B9B9B;
+}
+div#sign-up div#reset-container form#reset-form hr.separator,
+div#sign-up div#reset-container form#password-form hr.separator {
+  margin-top: 24px;
+  margin-bottom: 26px;
+}
+div#sign-up div#reset-container form#reset-form .reset-inputs input[type=text],
+div#sign-up div#reset-container form#password-form .reset-inputs input[type=text],
+div#sign-up div#reset-container form#reset-form .reset-inputs input[type=password],
+div#sign-up div#reset-container form#password-form .reset-inputs input[type=password] {
+  border-radius: 3px;
+  box-shadow: none;
+}
+div#sign-up div#reset-container form#reset-form div.reset-bottom,
+div#sign-up div#reset-container form#password-form div.reset-bottom {
+  margin-top: 16px;
+  padding-bottom: 16px;
+}
+div#sign-up div#reset-container form#reset-form div.reset-bottom .submit-reset,
+div#sign-up div#reset-container form#password-form div.reset-bottom .submit-reset,
+div#sign-up div#reset-container form#reset-form div.reset-bottom .submit-password,
+div#sign-up div#reset-container form#password-form div.reset-bottom .submit-password {
+  width: 100%;
+  font-weight: 400;
+  padding: 8px 0px 10px;
+  position: relative;
+  top: -10px;
+}
+div#sign-up div#reset-container form#reset-form div.password-form-confirmation div.message,
+div#sign-up div#reset-container form#password-form div.password-form-confirmation div.message,
+div#sign-up div#reset-container form#reset-form div.reset-form-confirmation div.message,
+div#sign-up div#reset-container form#password-form div.reset-form-confirmation div.message {
+  width: 100%;
+  text-align: center;
+  margin: 20px 0;
+  font-size: 18px;
+}
+div#sign-up div#reset-container form#reset-form div.password-form-confirmation div.details,
+div#sign-up div#reset-container form#password-form div.password-form-confirmation div.details,
+div#sign-up div#reset-container form#reset-form div.reset-form-confirmation div.details,
+div#sign-up div#reset-container form#password-form div.reset-form-confirmation div.details {
+  width: 100%;
+  text-align: center;
+  font-size: 13px;
+  margin-bottom: 40px;
+}
+div#sign-up div#footer {
+  margin-top: 32px;
+}
+div#sign-up div#footer .trouble {
+  text-decoration: underline;
+  font-size: .8em;
+  color: #F4A534;
+}
+div#sign-up div#footer .switch {
+  display: block;
+  width: 100%;
+  text-align: center;
+  background: #ffffff;
+  color: #F4A534;
+  padding: 10px 0px 10px;
+  border-radius: 4px;
+  position: relative;
+  top: -8px;
+  cursor: pointer;
+  transition: color .2s;
+  transition: background .2s;
+}
+div#sign-up div#footer .switch:hover {
+  color: #ffffff;
+  background: #F4A534;
+}
+div#wrapper-new-sign-up {
+  padding-top: 40px;
+}
+div#new-sign-up a.upload-image-btn,
+div#new-sign-up a.delete-image-btn {
+  margin-top: 20px;
+  margin-bottom: 10px;
+  max-width: 250px;
 }
 div#wrapper-user-settings {
   padding-top: 40px;

@@ -10,7 +10,7 @@ Bazaarboy.event.modify.basics =
             if response.status is 'OK'
                 return cb null, response.event
             else
-                err = 
+                err =
                     error: response.error
                     message: response.message
                 return cb err, null
@@ -123,15 +123,6 @@ Bazaarboy.event.modify.basics =
             preferredFormat: "hex"
             showInput: true
             showButtons: true
-        $('div.input-container').click () ->
-            $(this).find('input, textarea').focus()
-            return
-        $('div.input-container input,div.input-container textarea').focus () ->
-            $(this).closest('div.input-container').addClass 'active'
-            return
-        $('div.input-container input,div.input-container textarea').blur () ->
-            $(this).closest('div.input-container').removeClass 'active'
-            return
         # Submit Form
         $('form.event-modify').submit (e) =>
             e.preventDefault()
