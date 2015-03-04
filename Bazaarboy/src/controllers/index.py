@@ -10,8 +10,10 @@ from django.shortcuts import render, redirect
 from django.utils import timezone as tz
 from django.views.decorators.cache import never_cache
 from kernel.models import *
+from kernel.templatetags import layout
 from src.config import *
 from src.controllers.request import validate, login_check, json_response
+from instagram.client import InstagramAPI
 
 import pdb
 
@@ -22,6 +24,31 @@ def index(request, params, user):
     """
     Index page
     """
+    try:
+        subdomain = request.META['HTTP_HOST'].split('.')[0]
+    except KeyError:
+        subdomain = None
+    if subdomain is not None and subdomain not in ['www', 'bazaarboy']:
+        if Channel.objects.filter(slug = subdomain, active = True).exists():
+            channel = Channel.objects.get(slug = subdomain)
+            profile = channel.profile
+            organizers = Organizer.objects.filter(profile = profile, event__is_launched = True, event__is_deleted = False, is_creator = True).order_by('-event__start_time')
+            current_events = []
+            past_events = []
+            for organizer in organizers:
+                if layout.firstImage(organizer.event):
+                    if not layout.hasStartedOrEnded(organizer.event):
+                        current_events.append(organizer.event)
+                    else:
+                        past_events.append(organizer.event)
+            current_events.reverse()
+            past_events = past_events[:9]
+            api = InstagramAPI(client_id=INSTAGRAM_CLIENT_ID, client_secret=INSTAGRAM_SECRET)
+            instagram_photos = api.tag_recent_media(count=10, tag_name=str(channel.hashtag))
+            images = []
+            for photo in instagram_photos[0]:
+                images.append({'high_res':photo.images['standard_resolution'].url, 'thumb':photo.images['thumbnail'].url})
+            return render(request, 'profile/index.html', locals())
     # Check if logged in
     if user is None:
         return render(request, 'index/landing.html', locals())
