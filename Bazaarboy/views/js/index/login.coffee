@@ -112,7 +112,7 @@
                                         window.location.href = "/designs?auth=true"
                             else
                                 Bazaarboy.redirect 'index'
-                        else if response.status is 'REWARD'
+                        else if response.status == 'REWARD'
                             swal
                                 type:'success'
                                 title:'Gift Claimed!'
@@ -120,6 +120,8 @@
                                 , () ->
                                     Bazaarboy.redirect 'rewards/'
                         else
+                            console.log response
+                            console.log 'not rewarded'
                             alert response.message
                             window.clearTimeout(scope.timer)
                             $('div.logo-small').css({ WebkitTransform: 'none'}) 

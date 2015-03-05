@@ -144,6 +144,8 @@
                 return Bazaarboy.redirect('rewards/');
               });
             } else {
+              console.log(response);
+              console.log('not rewarded');
               alert(response.message);
               window.clearTimeout(scope.timer);
               $('div.logo-small').css({
