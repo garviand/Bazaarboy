@@ -407,7 +407,7 @@ def add_claim(request, params, user):
         }
         return json_response(response)
     # Check if the user is a manager of the profile
-    if not Profile_manager.objects.filter(profile = item.reward.creator, user = user).exists():
+    if not Profile_manager.objects.filter(profile = item.owner, user = user).exists():
         response = {
             'status':'FAIL',
             'error':'NOT_A_MANAGER',
