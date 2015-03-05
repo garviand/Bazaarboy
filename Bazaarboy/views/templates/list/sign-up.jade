@@ -2,6 +2,9 @@
 
 extends ../layout
 
+block title
+    | {{ signup.name }}
+
 block body
     div#sign-up
         div.row
@@ -34,6 +37,5 @@ block body
 append script
     script(type="text/javascript", src="{{ STATIC_URL }}hashchange/jquery.ba-hashchange.min.js")
     script(type="text/javascript").
-        redirect = {% if next %}'{{ next }}'{% else %}false{% endif %};
-        code = {% if code %}'{{ code }}'{% else %}false{% endif %};
-    script(type="text/javascript", src="{{ STATIC_URL }}js/index/login.js")
+        signup = {{ signup.id }};
+    script(type="text/javascript", src="{{ STATIC_URL }}js/list/sign-up.js")

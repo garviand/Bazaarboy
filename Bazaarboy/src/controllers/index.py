@@ -174,6 +174,7 @@ def index(request, params, user):
             reward.reward.claims = len(Claim.objects.filter(item__reward = reward.reward, is_claimed = True))
             reward.reward.redemptions = len(Claim.objects.filter(item__reward = reward.reward, is_redeemed = True))
             reward_list.append(reward.reward)
+    newSignups = Sign_up_item.objects.filter(Q(sign_up__owner__in = pids) | Q(profile__in = pids), assigned = False)
     return render(request, 'index/index.html', locals())
 
 @login_check()

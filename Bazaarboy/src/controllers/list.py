@@ -502,3 +502,47 @@ def create_sign_up(request, params, user):
         'sign_up': serialize_one(sign_up)
     }
     return json_response(response)
+
+@validate('POST', ['first_name', 'last_name', 'email', 'sign_up'])
+def submit_sign_up(request, params):
+    """
+    Submit Sign Up Form
+    """
+    if not Sign_up.objects.filter(id = params['sign_up']).exists():
+        response = {
+            'status':'FAIL',
+            'error':'INVALID_FORM',
+            'message':'The Sign Up form does not exist'
+        }
+        return json_response(response)
+    sign_up = Sign_up.objects.get(id = params['sign_up'])
+    if sign_up.end_time is not None and sign_up.end_time < timezone.now():
+        response = {
+            'status':'FAIL',
+            'error':'FORM_ENDED',
+            'message':'The sign up form is no longer active.'
+        }
+        return json_response(response)
+    params['first_name'] = cgi.escape(params['first_name'])
+    if not (0 < len(params['first_name']) <= 100):
+        response = {
+            'status':'FAIL',
+            'error':'INVALID_NAME',
+            'message':'First Name cannot be blank or over 100 characters.'
+        }
+        return json_response(response)
+    params['last_name'] = cgi.escape(params['last_name'])
+    if not (0 < len(params['last_name']) <= 100):
+        response = {
+            'status':'FAIL',
+            'error':'INVALID_NAME',
+            'message':'Last Name cannot be blank or over 100 characters.'
+        }
+        return json_response(response)
+    sign_up_item = Sign_up_item(sign_up = sign_up, first_name = params['first_name'], last_name = params['last_name'], email = params['email'])
+    sign_up_item.save()
+    response = {
+        'status':'OK',
+        'sign_up_item': serialize_one(sign_up_item)
+    }
+    return json_response(response)

@@ -5837,6 +5837,9 @@ div#wrapper-sidebar {
     width: 50px;
   }
 }
+div#wrapper-sidebar span.signup-count {
+  color: #f3a536;
+}
 div#wrapper-main {
   box-sizing: border-box;
   position: absolute;
@@ -12938,7 +12941,7 @@ div#sign-up {
 }
 div#sign-up div#container {
   width: 450px;
-  max-width: 98%;
+  max-width: 95%;
   margin: 0 auto;
 }
 div#sign-up div.request_info {

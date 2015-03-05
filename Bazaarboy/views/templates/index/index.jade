@@ -18,6 +18,9 @@ block sidebar
         | Past Events
     +sidebarItem('ss-database')(href="{% url list:index %}")
         | Lists
+        {% if newSignups|length > 0 %}
+        span.signup-count &nbsp;({{ newSignups|length }} New)
+        {% endif %}
     +sidebarItem('ss-tag')(href="{% url reward:index %}")
         | Gifts
     +sidebarItem('ss-share')(href="{% url user:settings %}")
