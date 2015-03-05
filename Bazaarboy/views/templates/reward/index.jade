@@ -43,7 +43,7 @@ block content
                                     | <span class="plus">+</span> Add New Gift
         {% endif %}
         div#reward-dashboard.small-12.columns
-            div.row.new-reward-container(class="{% if rewards.count == 0 %}hide{% endif %}")
+            div.row.new-reward-container(class="{% if rewards.count == 0 and reward_items.count == 0 %}hide{% endif %}")
                 div.medium-4.columns.new-reward
                     a.new-reward-btn.primary-btn(href="{% url reward:new %}") + New Gift
             div.row
@@ -54,12 +54,18 @@ block content
                     {% for reward_item in reward_items %}
                     {% if reward_item.quantity > 0 %}
                     div
-                        div.row.reward
-                            div.small-8.columns.reward-name
+                        div.row.reward(data-id="{{ reward_item.id }}")
+                            div.small-5.columns.reward-name
                                 | {{ reward_item.reward.name|truncatechars:30 }}
-                                span &nbsp;({{ reward_item.quantity }} Left)
-                            div.small-4.columns.text-left.reward-members
-                                | Gift Expires - {{ reward_item.expiration_time|date:"m/d/Y" }}
+                                span &nbsp;(
+                                span.quantity {{ reward_item.quantity }}
+                                span &nbsp;Left)
+                            div.small-3.columns.text-right.reward-members
+                                | Expires - {{ reward_item.expiration_time|date:"m/d/Y" }}
+                            div.small-2.columns.text-right.reward-action
+                                a(href="{{ reward_item.reward.attachment.source.url }}", target="_blank") View Gift
+                            div.small-2.columns.text-right.reward-action
+                                a.send-gift-item(href="javascript:;", data-id="{{ reward_item.id }}", data-quantity="{{ reward_item.quantity }}", data-name="{{ reward_item.reward.name }}") Send Gift
                     {% endif %}
                     {% endfor %}
                 {% endif %}
@@ -78,6 +84,7 @@ block content
                                 a.manage-reward(href="{% url reward:manage reward.id %}") Manage/Redeem
                     {% endfor %}
                 {% endif %}
+    
     div#send-reward-modal.reveal-modal.medium(data-reveal)
         div.organizer-model.hide
             div.row.organizer
@@ -91,7 +98,7 @@ block content
                     span.reward-name &nbsp;
                     |'
                 br
-                div You can either add this gift to your own 'current gifts' or you can send it to another profile.
+                div.send-description Send a gift via email.Send gifts to other organizations so they can distribute them to their audience. If you want to send gifts to your own audience, use the 'Add to My Profile' button.
                 hr
         div.row
             div.small-12.columns
@@ -104,12 +111,43 @@ block content
                         label Expiration Date
                         input(type="text", name="expiration", placeholder="Gift Expiration (MM/DD/YYYY)")
                 hr
-                div.row
+                div.row.send-actions
                     div.small-12.medium-4.columns
                         a.add-reward-submit.primary-btn-inverse.full-btn(href="javascript:;", data-profile="{{ profile.id }}") Add to My Profile
-                    div.small-12.medium-8.columns
-                        input(type="text", name="profile_search", placeholder="Search Profile Name")
+                    div.small-12.medium-4.columns
+                        a.add-reward-email.primary-btn-inverse.full-btn(href="javascript:;") Send Via Email
+                    div.small-12.medium-4.columns
+                        a.add-reward-profile.primary-btn-inverse.full-btn(href="javascript:;") Search Accounts
+                    div.small-12.columns.profile-search.hide
+                        input(type="text", name="profile_search", placeholder="Search Account Name")
+                    div.small-12.columns.email-send.hide
+                        div.row
+                            div.small-12.medium-8.columns
+                                input(type="text", name="email_send", placeholder="Organization's Email")
+                            div.small-12.medium-4.columns
+                                a.send-via-email.primary-btn.full-btn(href="javascript:;") Send Gifts
         form.add-organizer-form(name="add-organizer")
+
+    div#distribute-reward-modal.reveal-modal.medium(data-reveal)
+        div.row
+            div.small-12.columns
+                div.headline Send&nbsp;'
+                    span.reward-name &nbsp;
+                    |'
+                br
+                div.send-description Send a gift via email.
+                hr
+        div.row
+            div.small-12.columns
+                input(type="hidden", name="reward_item_id", value="")
+                div.row.send-actions
+                    div.small-12.columns.email-send
+                        div.row
+                            div.small-12.medium-8.columns
+                                input(type="text", name="email_distribute", placeholder="Reciever Email")
+                            div.small-12.medium-4.columns
+                                a.send-gift-btn.primary-btn.full-btn(href="javascript:;") Send Gift
+
     div#add-subscription-modal.reveal-modal.small(data-reveal)
         div.subscription-model.row
             div.small-12.columns

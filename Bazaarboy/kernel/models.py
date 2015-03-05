@@ -491,6 +491,26 @@ class Reward_item(models.Model):
     expiration_time = models.DateTimeField()
     created_time = models.DateTimeField(auto_now_add = True)
 
+class Reward_send(models.Model):
+    """
+    A reward sent via email
+    """
+    reward = models.ForeignKey('Reward')
+    email = models.CharField(max_length = 150)
+    quantity = models.IntegerField()
+    expiration_time = models.DateTimeField()
+    token = models.CharField(max_length = 128)
+    claimed = models.BooleanField(default = False)
+    created_time = models.DateTimeField(auto_now_add = True)
+
+    def save(self, *args, **kwargs):
+        """
+        Override save to generate token at creation
+        """
+        if self.pk is None:
+            self.token = uuid.uuid4().hex
+        super(Reward_send, self).save(*args, **kwargs)
+
 class Claim(models.Model):
     """
     Claim for a reward

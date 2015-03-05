@@ -10,7 +10,7 @@ block body
                     form#login-form
                         div.row
                             div.small-10.small-offset-1.columns
-                                {% if not organizer_request %}
+                                {% if not organizer_request and not reward_send %}
                                 div.row
                                     div.small-12.medium-7.columns.text-center
                                         div.logo-small &nbsp;
@@ -20,7 +20,7 @@ block body
                                         span.page-title 
                                             span.hide-for-small-only &nbsp;&nbsp;|&nbsp;
                                             | &nbsp;Login
-                                {% else %}
+                                {% elif organizer_request %}
                                 div.row
                                     div.small-12.columns.text-center.request_logo_container
                                         img.request_logo(src="{{ organizer_request.sender.profile.image.source.url }}")
@@ -29,6 +29,15 @@ block body
                                         | '{{ organizer_request.sender.profile.name }}' has invited you to collaborate on the event&nbsp;
                                         b {{ organizer_request.event.name }}
                                         | . Log in to accept the request!
+                                {% else %}
+                                div.row
+                                    div.small-12.columns.text-center.request_logo_container
+                                        img.request_logo(src="{{ reward_send.reward.creator.image.source.url }}")
+                                div.row
+                                    div.small-12.columns.request_info
+                                        | '{{ reward_send.reward.creator.name }}' has sent you a gift to distribute to your audience -&nbsp;
+                                        b {{ reward_send.reward.name }}
+                                        | . Log in to view the gift!
                                 {% endif %}
                                 hr.separator
                                 div.row.login-inputs
@@ -45,6 +54,10 @@ block body
                                         input(type="hidden", name="request_id", value="{{ organizer_request.id }}")
                                         input(type="hidden", name="request_code", value="{{ organizer_request.code }}")
                                         {% endif %}
+                                        {% if reward_send %}
+                                        input(type="hidden", name="reward_id", value="{{ reward_send.id }}")
+                                        input(type="hidden", name="reward_token", value="{{ reward_send.token }}")
+                                        {% endif %}
                                         input.primary-btn.submit-login(type="submit", value="SIGN IN")
                 div#footer
                     div.row
@@ -53,7 +66,7 @@ block body
                                 div.small-12.medium-8.columns
                                     a.trouble(href="{% url user:reset %}") Forgot your password?
                                 div.small-12.medium-4.columns
-                                    a.switch(href="{% url index:register %}{% if next %}?next={{ next }}{% endif %}{% if code %}&code={{ code }}{% endif %}{% if organizer_request %}?requestid={{ organizer_request.id }}&requestc={{ organizer_request.code }}{% endif %}") Register
+                                    a.switch(href="{% url index:register %}{% if reward_send %}?rewid={{ reward_send.id }}&rewtok={{ reward_send.token }}{% endif %}{% if next %}?next={{ next }}{% endif %}{% if code %}&code={{ code }}{% endif %}{% if organizer_request %}?requestid={{ organizer_request.id }}&requestc={{ organizer_request.code }}{% endif %}") Register
 
 append script
     script(type="text/javascript", src="{{ STATIC_URL }}hashchange/jquery.ba-hashchange.min.js")

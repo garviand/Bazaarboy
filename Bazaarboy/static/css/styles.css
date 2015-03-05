@@ -12354,6 +12354,13 @@ div#wrapper-reward-dashboard div#reward-dashboard div.rewards div.reward div.rew
 div#wrapper-reward-dashboard div#reward-dashboard div.rewards div.reward div.reward-action a:hover {
   color: #c57724;
 }
+div#send-reward-modal div.send-description {
+  line-height: 1.2rem;
+}
+div#send-reward-modal div.send-actions div.profile-search,
+div#send-reward-modal div.send-actions div.email-send {
+  margin-top: 30px;
+}
 div#send-reward-modal form > div {
   margin-top: 15px;
 }

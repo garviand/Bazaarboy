@@ -128,7 +128,7 @@ def settings(request, user):
     return render(request, 'user/settings.html', locals())
 
 @login_check()
-@validate('POST', ['email', 'password', 'first_name', 'last_name'], ['request_id', 'request_code', 'organization_name', 'logo_id'])
+@validate('POST', ['email', 'password', 'first_name', 'last_name'], ['request_id', 'request_code', 'reward_id', 'reward_token', 'organization_name', 'logo_id'])
 def create(request, params, user):
     """
     Create a new user using email and password
@@ -204,7 +204,7 @@ def create(request, params, user):
             }
             return json_response(response)
         profile = Profile(name = params['organization_name'], description = params['organization_name'], location = ' ', email = params['email'])
-        if params['logo_id'] is not None:
+        if params['logo_id'] is not None and params['logo_id'].strip() != '':
             if Image.objects.filter(id = params['logo_id']).exists():
                 profile.image = Image.objects.get(id = params['logo_id'])
         profile.save()
@@ -218,6 +218,30 @@ def create(request, params, user):
                                          is_creator = True)
         profileManager.save()
         sendNewAccountEmail(profile)
+        if params['reward_id'] is not None and params['reward_token'] is not None:
+            if Reward_send.objects.filter(id = params['reward_id'], token = params['reward_token']).exists():
+                reward_send = Reward_send.objects.get(id = params['reward_id'])
+                if reward_send.expiration_time < timezone.now():
+                    response = {
+                        'status':'FAIL',
+                        'message':'This gift has already expired.'
+                    }
+                    return json_response(response)
+                if reward_send.claimed:
+                    response = {
+                        'status':'FAIL',
+                        'message':'This gift has already been claimed.'
+                    }
+                    return json_response(response)
+                reward_item = Reward_item(reward = reward_send.reward, owner = profile, quantity = reward_send.quantity, expiration_time = reward_send.expiration_time)
+                reward_item.save()
+                reward_send.claimed = True
+                reward_send.save()
+                request.session['user'] = user.id
+                response = {
+                    'status':'REWARD'
+                }
+                return json_response(response)
     request.session['user'] = user.id
     response = {
         'status':'OK'
@@ -225,7 +249,7 @@ def create(request, params, user):
     return json_response(response)
 
 @login_check()
-@validate('POST', ['email', 'password'], ['request_id', 'request_code'])
+@validate('POST', ['email', 'password'], ['request_id', 'request_code', 'reward_id', 'reward_token'])
 def auth(request, params, user):
     """
     Authenticate a user using email and password
@@ -259,6 +283,30 @@ def auth(request, params, user):
                     collaboration = Collaboration_request.objects.get(id = params['request_id'])
                     collaboration.profile = profile
                     collaboration.save()
+            if Profile.objects.filter(managers = user).exists() and params['reward_id'] and params['reward_token']:
+                profile = Profile.objects.filter(managers = user)[0]
+                if Reward_send.objects.filter(id = params['reward_id'], token = params['reward_token']).exists():
+                    reward_send = Reward_send.objects.get(id = params['reward_id'])
+                    if reward_send.expiration_time < timezone.now():
+                        response = {
+                            'status':'FAIL',
+                            'message':'This gift has already expired.'
+                        }
+                        return json_response(response)
+                    if reward_send.claimed:
+                        response = {
+                            'status':'FAIL',
+                            'message':'This gift has already been claimed.'
+                        }
+                        return json_response(response)
+                    reward_item = Reward_item(reward = reward_send.reward, owner = profile, quantity = reward_send.quantity, expiration_time = reward_send.expiration_time)
+                    reward_item.save()
+                    reward_send.claimed = True
+                    reward_send.save()
+                    response = {
+                        'status':'REWARD'
+                    }
+                    return json_response(response)
             response = {
                 'status':'OK'
             }

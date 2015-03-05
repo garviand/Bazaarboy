@@ -33,6 +33,13 @@
                                         window.location.href = "/designs?auth=true"
                             else
                                 Bazaarboy.redirect 'index'
+                        else if response.status is 'REWARD'
+                            swal
+                                type:'success'
+                                title:'Gift Claimed!'
+                                text: 'You can now send this gift out to your audience.'
+                                , () ->
+                                    Bazaarboy.redirect 'rewards/'
                         else
                             alert response.message
                             window.clearTimeout(scope.timer)
@@ -105,6 +112,13 @@
                                         window.location.href = "/designs?auth=true"
                             else
                                 Bazaarboy.redirect 'index'
+                        else if response.status is 'REWARD'
+                            swal
+                                type:'success'
+                                title:'Gift Claimed!'
+                                text: 'You can now send this gift out to your audience.'
+                                , () ->
+                                    Bazaarboy.redirect 'rewards/'
                         else
                             alert response.message
                             window.clearTimeout(scope.timer)

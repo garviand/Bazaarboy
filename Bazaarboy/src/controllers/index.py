@@ -177,7 +177,7 @@ def index(request, params, user):
     return render(request, 'index/index.html', locals())
 
 @login_check()
-@validate('GET', [], ['next', 'code', 'requestid', 'requestc'])
+@validate('GET', [], ['next', 'code', 'requestid', 'requestc', 'rewid', 'rewtok'])
 def login(request, user, params):
     """
     Login Page
@@ -192,10 +192,13 @@ def login(request, user, params):
         if params['requestid'] and params['requestc']:
             if Collaboration_request.objects.filter(id = params['requestid'], code = params['requestc']).exists():
                 organizer_request = Collaboration_request.objects.get(id = params['requestid'], code = params['requestc'])
+        if params['rewid'] and params['rewtok']:
+            if Reward_send.objects.filter(id = params['rewid'], token = params['rewtok']).exists():
+                reward_send = Reward_send.objects.get(id = params['rewid'])
         return render(request, 'index/login.html', locals())
 
 @login_check()
-@validate('GET', [], ['next', 'code', 'requestid', 'requestc'])
+@validate('GET', [], ['next', 'code', 'requestid', 'requestc', 'rewid', 'rewtok'])
 def register(request, user, params):
     """
     Register Page
@@ -210,6 +213,9 @@ def register(request, user, params):
         if params['requestid'] and params['requestc']:
             if Collaboration_request.objects.filter(id = params['requestid'], code = params['requestc']).exists():
                 organizer_request = Collaboration_request.objects.get(id = params['requestid'], code = params['requestc'])
+        if params['rewid'] and params['rewtok']:
+            if Reward_send.objects.filter(id = params['rewid'], token = params['rewtok']).exists():
+                reward_send = Reward_send.objects.get(id = params['rewid'])
         return render(request, 'index/register.html', locals())
 
 @login_check()

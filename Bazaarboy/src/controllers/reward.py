@@ -12,7 +12,7 @@ import simplejson
 from kernel.models import *
 from src.controllers.request import *
 from src.serializer import serialize_one
-from src.email import sendReward
+from src.email import sendReward, sendRewardSend
 from src.config import *
 from datetime import timedelta
 from django.utils import timezone
@@ -314,7 +314,7 @@ def edit(request, params, user):
     return json_response(response)
 
 @login_required()
-@validate('POST', ['reward', 'owner', 'quantity', 'expiration_time'])
+@validate('POST', ['reward', 'quantity', 'expiration_time'], ['owner', 'email'])
 def add_item(request, params, user):
     if not Reward.objects.filter(id = params['reward']).exists():
         response = {
@@ -333,13 +333,6 @@ def add_item(request, params, user):
             'message':'You don\'t have permission for the reward.'
         }
         return json_response(response)
-    if not Profile.objects.filter(id = params['owner']).exists():
-        response = {
-            'status':'FAIL',
-            'error':'NO_PROFILE',
-            'message':'The profile you are sending to does not exist.'
-        }
-        return json_response(response)
     params['quantity'] = int(params['quantity'])
     if params['quantity'] <= 0:
         response = {
@@ -348,21 +341,52 @@ def add_item(request, params, user):
             'message':'Quantity must be a positive integer.'
         }
         return json_response(response)
-    owner = Profile.objects.get(id = params['owner'])
-    if params['expiration_time'] < timezone.now():
+    if params['owner'] is not None:
+        if not Profile.objects.filter(id = params['owner']).exists():
+            response = {
+                'status':'FAIL',
+                'error':'NO_PROFILE',
+                'message':'The profile you are sending to does not exist.'
+            }
+            return json_response(response)
+        owner = Profile.objects.get(id = params['owner'])
+        if params['expiration_time'] < timezone.now():
+            response = {
+                'status':'FAIL',
+                'error':'EXPIRE_BEFORE_NOW',
+                'message':'The expiration date must be in the future.'
+            }
+            return json_response(response)
+        reward_item = Reward_item(reward = reward, owner = owner, quantity = params['quantity'], expiration_time = params['expiration_time'])
+        reward_item.save()
         response = {
-            'status':'FAIL',
-            'error':'EXPIRE_BEFORE_NOW',
-            'message':'The expiration date must be in the future.'
+            'status':'OK',
+            'reward_item':serialize_one(reward_item)
         }
         return json_response(response)
-    reward_item = Reward_item(reward = reward, owner = owner, quantity = params['quantity'], expiration_time = params['expiration_time'])
-    reward_item.save()
-    response = {
-        'status':'OK',
-        'reward_item':serialize_one(reward_item)
-    }
-    return json_response(response)
+    elif params['email'] is not None:
+        if not REGEX_EMAIL.match(params['email']):
+            response = {
+                'status':'FAIL',
+                'error':'INVALID_EMAIL',
+                'message':'The email you entered is invalid.'
+            }
+            return json_response(response)
+        reward_send = Reward_send(reward = reward, email = params['email'], quantity = params['quantity'], expiration_time = params['expiration_time'])
+        reward_send.save()
+        sendRewardSend(reward_send)
+        response = {
+            'status':'OK',
+            'reward_send':serialize_one(reward_send)
+        }
+        return json_response(response)
+    else:
+        response = {
+            'status':'FAIL',
+            'error':'EMAIL_OR_OWNER',
+            'message':'Must choose an email or profile.'
+        }
+        return json_response(response)
 
 @login_required()
 @validate('POST', ['item'], ['owner', 'email'])
