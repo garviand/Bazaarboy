@@ -4,6 +4,8 @@ Controller for admin
 
 from __future__ import absolute_import
 import hashlib
+import django
+import platform
 from django.conf import settings
 from django.shortcuts import render, redirect
 from django.http import HttpResponse, HttpResponseForbidden
@@ -21,6 +23,8 @@ def index(request):
     """
     Admin index
     """
+    djangoVer = django.VERSION
+    pythonVer = platform.python_version()
     if not request.session.has_key('admin'):
         # No admin session, redirect to login
         return redirect('admin:login')
