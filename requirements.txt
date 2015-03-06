@@ -1,5 +1,5 @@
 CairoSVG==1.0.3
-Django==1.7.5
+Django==1.6.10
 Fabric==1.6.1
 MySQL-python==1.2.3
 Pillow==2.4.0
