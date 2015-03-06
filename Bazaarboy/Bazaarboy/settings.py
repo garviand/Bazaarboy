@@ -182,6 +182,8 @@ SESSION_EXPIRE_AT_BROWSER_CLOSE = True
 
 FILE_UPLOAD_PERMISSIONS = 0600
 
+TEST_RUNNER = 'django.test.runner.DiscoverRunner'
+
 # Celery
 
 CELERY_IMPORTS = (
