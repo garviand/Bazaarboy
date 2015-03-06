@@ -23,8 +23,6 @@ def index(request):
     """
     Admin index
     """
-    djangoVer = django.VERSION
-    pythonVer = platform.python_version()
     if not request.session.has_key('admin'):
         # No admin session, redirect to login
         return redirect('admin:login')
