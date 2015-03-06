@@ -4,13 +4,13 @@ block title
     | Follow Up Details
 
 block sidebar
-    +sidebarItem('ss-newspaper')(href="{% url index %}")
+    +sidebarItem('ss-newspaper')(href="{% url 'index' %}")
         | Events
-    +sidebarItem('ss-database')(href="{% url list:index %}")
+    +sidebarItem('ss-database')(href="{% url 'list:index' %}")
         | Lists
-    +sidebarItem('ss-tag')(href="{% url reward:index %}")
+    +sidebarItem('ss-tag')(href="{% url 'reward:index' %}")
         | Gifts
-    +sidebarItem('ss-share')(href="{% url user:settings %}")
+    +sidebarItem('ss-share')(href="{% url 'user:settings' %}")
         | Settings
 
 block header

@@ -7,13 +7,13 @@ append head
     link(rel="stylesheet", href="{{ STATIC_URL }}pikaday/pikaday.css")
 
 block sidebar
-    +sidebarItem('ss-newspaper')(href="{% url index %}")
+    +sidebarItem('ss-newspaper')(href="{% url 'index' %}")
         | Events
-    +sidebarItem('ss-database')(href="{% url list:index %}")
+    +sidebarItem('ss-database')(href="{% url 'list:index' %}")
         | Lists
-    +sidebarItem('ss-tag')(href="{% url reward:index %}")(class="selected")
+    +sidebarItem('ss-tag')(href="{% url 'reward:index' %}")(class="selected")
         | Gifts
-    +sidebarItem('ss-share')(href="{% url user:settings %}")
+    +sidebarItem('ss-share')(href="{% url 'user:settings' %}")
         | Settings
 
 block header
@@ -38,14 +38,14 @@ block content
                     div.subtext Create your first gift now!
                     div.row
                         div.large-5.medium-7.small-9
-                            a.new-reward-btn(href="{% url reward:new %}")
+                            a.new-reward-btn(href="{% url 'reward:new' %}")
                                 div.secondary-btn.btn.full-btn
                                     | <span class="plus">+</span> Add New Gift
         {% endif %}
         div#reward-dashboard.small-12.columns
             div.row.new-reward-container(class="{% if rewards.count == 0 and reward_items.count == 0 %}hide{% endif %}")
                 div.medium-4.columns.new-reward
-                    a.new-reward-btn.primary-btn(href="{% url reward:new %}") + New Gift
+                    a.new-reward-btn.primary-btn(href="{% url 'reward:new' %}") + New Gift
             div.row
                 {% if reward_items.count > 0 %}
                 div.small-12.columns.rewards
@@ -81,7 +81,7 @@ block content
                             div.small-3.columns.text-right.reward-action
                                 a(class="{% if subscription %}send-reward-btn{% else %}create-subscription{% endif %}", href="javascript:;", data-id="{{ reward.id }}", data-name="{{ reward.name }}") Send Gift
                             div.small-3.columns.text-right.reward-action
-                                a.manage-reward(href="{% url reward:manage reward.id %}") Manage/Redeem
+                                a.manage-reward(href="{% url 'reward:manage' reward.id %}") Manage/Redeem
                     {% endfor %}
                 {% endif %}
     

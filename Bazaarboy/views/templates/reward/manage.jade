@@ -6,11 +6,11 @@ block title
     | Manage/Redeem | {{ reward.name }}
 
 block sidebar
-    +sidebarItem('ss-newspaper')(href="{% url index %}")
+    +sidebarItem('ss-newspaper')(href="{% url 'index' %}")
         | Events
-    +sidebarItem('ss-database')(href="{% url list:index %}")
+    +sidebarItem('ss-database')(href="{% url 'list:index' %}")
         | Lists
-    +sidebarItem('ss-tag')(href="{% url reward:index %}", class="selected")
+    +sidebarItem('ss-tag')(href="{% url 'reward:index' %}", class="selected")
         | Gifts
     form.reward-search-container
         div.reward-search.show-for-large-only

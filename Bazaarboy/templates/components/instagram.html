@@ -1,6 +1,6 @@
 <!DOCTYPE html><html class="no-js"><head><meta charset="utf-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><title>Slideshow</title><link rel="stylesheet" href="{{ STATIC_URL }}css/styles.css"><link rel="stylesheet" href="{{ STATIC_URL }}slick/slick-theme.css"><link rel="stylesheet" href="{{ STATIC_URL }}slick/slick.css">{% if color %}<style type="text/css">.slick-prev:before, .slick-next:before{
     color: {{ color }} !important;
-}</style>{% endif %}</head><body><div class="row"><div class="small-12 columns slick-container">{% if images.count > 0 %}<div class="slick-slider">{% for image in images %}<div><img src="{{ image.high_res }}"></div>{% endfor %}</div>{% endif %}</div></div><script type="text/javascript">var rootUrl = '{% url index %}';
+}</style>{% endif %}</head><body><div class="row"><div class="small-12 columns slick-container">{% if images.count > 0 %}<div class="slick-slider">{% for image in images %}<div><img src="{{ image.high_res }}"></div>{% endfor %}</div>{% endif %}</div></div><script type="text/javascript">var rootUrl = '{% url 'index' %}';
 var mediaUrl = '{{ MEDIA_URL }}';
 var staticUrl = '{{ STATIC_URL }}';
 var csrfToken = '{{ csrf_token }}';

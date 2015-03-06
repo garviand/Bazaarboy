@@ -12,13 +12,13 @@ block sidebar
             | <span class="plus">+</span> Create Event
         div.secondary-btn.secondary-btn.show-for-medium-only
             | <span class="plus">+</span>
-    +sidebarItem('ss-newspaper')(href="{% url index %}")
+    +sidebarItem('ss-newspaper')(href="{% url 'index' %}")
         | Events
-    +sidebarItem('ss-database')(href="{% url list:index %}")
+    +sidebarItem('ss-database')(href="{% url 'list:index' %}")
         | Lists
-    +sidebarItem('ss-tag')(href="{% url reward:index %}")
+    +sidebarItem('ss-tag')(href="{% url 'reward:index' %}")
         | Gifts
-    +sidebarItem('ss-share')(href="{% url user:settings %}", class="selected")
+    +sidebarItem('ss-share')(href="{% url 'user:settings' %}", class="selected")
         | Settings
 
 block header

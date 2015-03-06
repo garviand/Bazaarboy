@@ -55,7 +55,7 @@ block body
                                     div.message Your password has been changed!
                                     div.details
                                         | You can now
-                                        a(href="{% url index:login %}") &nbsp;login&nbsp;
+                                        a(href="{% url 'index:login' %}") &nbsp;login&nbsp;
                                         | with your new credentials.
                     {% endif %}
                 div#footer
@@ -63,7 +63,7 @@ block body
                         div.small-10.small-offset-1.columns
                             div.row
                                 div.small-12.medium-4.medium-offset-8.columns
-                                    a.switch(href="{% url index:login %}") Login
+                                    a.switch(href="{% url 'index:login' %}") Login
 
 append script
     script(type="text/javascript", src="{{ STATIC_URL }}hashchange/jquery.ba-hashchange.min.js")

@@ -24,6 +24,6 @@ html(lang="en")
             script(type="text/javascript", src="{{ STATIC_URL }}sweetalert/sweet-alert.min.js")
             script(type="text/javascript", src="{{ STATIC_URL }}fastclick/fastclick.js")
             script(type="text/javascript").
-                var rootUrl = '{% url index %}';
+                var rootUrl = '{% url 'index' %}';
                 var csrfToken = '{{ csrf_token }}';
             script(type="text/javascript", src="{{ STATIC_URL }}designs/js/layout.js")

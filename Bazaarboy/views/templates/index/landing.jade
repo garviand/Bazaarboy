@@ -11,15 +11,15 @@ block body
                         img(src="{{ STATIC_URL }}images/logo-big.png")
                         div.text BAZAARBOY
                 div.small-12.medium-7.columns.links.clearfix.hide-for-small-only
-                    a.sign_up(href="{% url index:register %}") SIGN UP
-                    a(href="{% url index:login %}") LOG IN
+                    a.sign_up(href="{% url 'index:register' %}") SIGN UP
+                    a(href="{% url 'index:login' %}") LOG IN
                     a(href="mailto:build@bazaarboy.com") CONTACT
-                    a(href="{% url designs:index %}") DESIGNS
-                    a(href="{% url index:pricing %}") PRICING
+                    a(href="{% url 'designs:index' %}") DESIGNS
+                    a(href="{% url 'index:pricing' %}") PRICING
                 div.small-12.columns.mobile-links.clearfix.show-for-small-only
                     div.row
-                        a.small-5.small-offset-1.columns.text-center(href="{% url index:login %}") LOG IN
-                        a.small-5.end.columns.text-center(href="{% url index:pricing %}") PRICING
+                        a.small-5.small-offset-1.columns.text-center(href="{% url 'index:login' %}") LOG IN
+                        a.small-5.end.columns.text-center(href="{% url 'index:pricing' %}") PRICING
             div.row.title
                 div.small-12.columns
                     | DISCOVER YOUR EVENT POTENTIAL
@@ -31,7 +31,7 @@ block body
                     | We are an online ticketing &amp; registration company helping event organizers connect the dots. 
             div.row.sign_up
                 div.small-8.small-offset-2.medium-2.medium-offset-5.columns
-                    a.secondary-btn(href="{% url index:register %}") SIGN UP
+                    a.secondary-btn(href="{% url 'index:register' %}") SIGN UP
         div.section.section-2
             div.row.content
                 div.small-12.medium-5.medium-offset-1.columns

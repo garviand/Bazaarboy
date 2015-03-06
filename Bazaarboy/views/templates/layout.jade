@@ -25,12 +25,12 @@ html(lang="en")
             div#wrapper-sidebar
                 div#sidebar-frame
                     div#sidebar-logo
-                        a(href="{% url index %}").clearfix
+                        a(href="{% url 'index' %}").clearfix
                             div.logo.left
                                 img.hide-for-medium-only(src="{{ STATIC_URL }}images/logo_radiating.png")
                                 img.small-logo.show-for-medium-only(src="{{ STATIC_URL }}images/big_logo_radiating.png")
                     block sidebar
-                    +sidebarItem('ss-login')(href="{% url user:logout %}")
+                    +sidebarItem('ss-login')(href="{% url 'user:logout' %}")
                         | Log Out
             div#wrapper-main
                 div#main-header
@@ -50,7 +50,7 @@ html(lang="en")
                 script(src="{{ STATIC_URL }}js/libraries.js")
                 script(src="{{ STATIC_URL }}sweetalert/sweet-alert.min.js")
                 script.
-                    var rootUrl = '{% url index %}';
+                    var rootUrl = "{% url 'index' %}";
                     var mediaUrl = '{{ MEDIA_URL }}';
                     var staticUrl = '{{ STATIC_URL }}';
                     var csrfToken = '{{ csrf_token }}';

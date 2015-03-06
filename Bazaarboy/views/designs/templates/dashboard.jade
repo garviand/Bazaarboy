@@ -5,13 +5,13 @@ block body
         div#top
             div.header.row
                 div.small-12.medium-4.columns.logo-container
-                    a(href="{% url index %}")
+                    a(href="{% url 'index' %}")
                         img.logo(src="{{ STATIC_URL }}images/designs/logo2.png")
                 div.small-12.medium-8.columns.links-container.hide-for-small-only
-                    a.orange-btn(href="{% url designs:create %}") New Project
+                    a.orange-btn(href="{% url 'designs:create' %}") New Project
                     a(href="mailto:build@bazaarboy.com", target="_blank") Contact
-                    a.active(href="{% url designs:index %}") Designs
-                    a(href="{% url index:pricing %}") Pricing
+                    a.active(href="{% url 'designs:index' %}") Designs
+                    a(href="{% url 'index:pricing' %}") Pricing
         div.row
             div.dashobard-title.small-12.columns
                 img(src="{{ STATIC_URL }}images/designs/home-orange.png") 
@@ -46,7 +46,7 @@ block body
                             | {{ project.status }}
                         div.small-12.medium-2.columns.project-actions
                             {% if project.hasSubmissions %}
-                            a.review-btn.orange-btn(href="{% url designs:review project.id %}") Review
+                            a.review-btn.orange-btn(href="{% url 'designs:review' project.id %}") Review
                             {% endif %}
                     {% endfor %}
         {% endif %}
@@ -79,7 +79,7 @@ block body
                         div.small-12.medium-3.columns.project-status
                             | {{ project.status }}
                         div.small-12.medium-2.columns.project-actions
-                            a.download-btn.orange-btn(href="{% url designs:download_final %}?project={{ project.id }}") Download
+                            a.download-btn.orange-btn(href="{% url 'designs:download_final' %}?project={{ project.id }}") Download
                     {% endfor %}
         {% endif %}
         div#footer
@@ -88,12 +88,12 @@ block body
                     | &copy; 2014 Bazaarboy, LLC
                 div.small-12.medium-9.hide-for-small-only.columns.footer-links
                     {% if not user %}
-                    a.sign-up(href="{% url index:register %}?next=designs") Sign Up
-                    a(href="{% url index:login %}?next=designs") Log In
+                    a.sign-up(href="{% url 'index:register' %}?next=designs") Sign Up
+                    a(href="{% url 'index:login' %}?next=designs") Log In
                     {% endif %}
                     a(href="mailto:build@bazaarboy.com") Contact
-                    a(href="{% url designs:index %}") Designs
-                    a(href="{% url index:pricing %}") Pricing
+                    a(href="{% url 'designs:index' %}") Designs
+                    a(href="{% url 'index:pricing' %}") Pricing
     
 
 append script

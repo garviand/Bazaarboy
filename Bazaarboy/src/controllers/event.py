@@ -2920,7 +2920,7 @@ def purchase(request, params, user):
         # Mark the old purchase as expired
         mark_purchase_as_expired(purchase, True)
     # Start a database transaction
-    with transaction.commit_on_success():
+    with transaction.atomic():
         # Place a lock on the ticket information (quantity)
         tids = details.keys()
         tickets = Ticket.objects.select_for_update().filter(id__in = tids)
@@ -3242,7 +3242,7 @@ def add_purchase(request, params, user):
             }
             return json_response(response)
     # Start a database transaction
-    with transaction.commit_on_success():
+    with transaction.atomic():
         # Place a lock on the ticket information (quantity)
         tids = details.keys()
         tickets = Ticket.objects.select_for_update().filter(id__in = tids)

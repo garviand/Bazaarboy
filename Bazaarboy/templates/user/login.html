@@ -26,7 +26,7 @@ _gaq.push(['_trackPageview']);
     js = d.createElement(s); js.id = id;
     js.src = "//connect.facebook.net/en_US/all.js";
     fjs.parentNode.insertBefore(js, fjs);
-}(document, 'script', 'facebook-jssdk'));</script><div id="login"><h2>Login</h2><br><form name="login"><label>Email</label><input type="text" name="email"><br><label>Password</label><input type="password" name="password"><br><input type="submit" name="submit" value="Login"></form></div><div id="scripts"><script src="{{ STATIC_URL }}js/libraries.js"></script><script src="{{ STATIC_URL }}sweetalert/sweet-alert.min.js"></script><script>var rootUrl = '{% url index %}';
+}(document, 'script', 'facebook-jssdk'));</script><div id="login"><h2>Login</h2><br><form name="login"><label>Email</label><input type="text" name="email"><br><label>Password</label><input type="password" name="password"><br><input type="submit" name="submit" value="Login"></form></div><div id="scripts"><script src="{{ STATIC_URL }}js/libraries.js"></script><script src="{{ STATIC_URL }}sweetalert/sweet-alert.min.js"></script><script>var rootUrl = "{% url 'index' %}";
 var mediaUrl = '{{ MEDIA_URL }}';
 var staticUrl = '{{ STATIC_URL }}';
 var csrfToken = '{{ csrf_token }}';

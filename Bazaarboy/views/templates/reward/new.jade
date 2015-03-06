@@ -4,13 +4,13 @@ block title
     | Create Reward
 
 block sidebar
-    +sidebarItem('ss-newspaper')(href="{% url index %}")
+    +sidebarItem('ss-newspaper')(href="{% url 'index' %}")
         | Events
-    +sidebarItem('ss-database')(href="{% url list:index %}")
+    +sidebarItem('ss-database')(href="{% url 'list:index' %}")
         | Lists
-    +sidebarItem('ss-tag')(href="{% url reward:index %}", class="selected")
+    +sidebarItem('ss-tag')(href="{% url 'reward:index' %}", class="selected")
         | Gifts
-    +sidebarItem('ss-share')(href="{% url user:settings %}")
+    +sidebarItem('ss-share')(href="{% url 'user:settings' %}")
         | Settings
 
 block header
@@ -65,7 +65,7 @@ block content
                     div.small-12.medium-4.columns
                         a.create-reward.primary-btn.full-btn(href="javascript:;") Create Gift
                     div.small-12.medium-4.columns.end
-                        a.secondary-btn-inverse.full-btn(href="{% url reward:index %}") Cancel
+                        a.secondary-btn-inverse.full-btn(href="{% url 'reward:index' %}") Cancel
     div#gif-modal.reveal-modal.large(data-reveal)
         div.gif.small-12.columns.end.gif-template.hide(data-url='')
             img(src='')

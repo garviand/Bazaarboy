@@ -5,16 +5,16 @@ block body
         div#top
             div.header.row
                 div.small-12.medium-4.columns.logo-container
-                    a(href="{% url index %}")
+                    a(href="{% url 'index' %}")
                         img.logo(src="{{ STATIC_URL }}images/designs/logo2.png")
                 div.small-12.medium-8.columns.links-container.hide-for-small-only
                     {% if not user %}
-                    a.orange-btn(href="{% url index:register %}?next=designs") Sign Up
-                    a(href="{% url index:login %}?next=designs") Log In
+                    a.orange-btn(href="{% url 'index:register' %}?next=designs") Sign Up
+                    a(href="{% url 'index:login' %}?next=designs") Log In
                     {% endif %}
                     a(href="mailto:build@bazaarboy.com", target="_blank") Contact
-                    a.active(href="{% url designs:index %}") Designs
-                    a(href="{% url index:pricing %}") Pricing
+                    a.active(href="{% url 'designs:index' %}") Designs
+                    a(href="{% url 'index:pricing' %}") Pricing
         form#new-project
             div.services
                 div.row
@@ -65,12 +65,12 @@ block body
                     | &copy; 2014 Bazaarboy, LLC
                 div.small-12.medium-9.hide-for-small-only.columns.footer-links
                     {% if not user %}
-                    a.sign-up(href="{% url index:register %}?next=designs") Sign Up
-                    a(href="{% url index:login %}?next=designs") Log In
+                    a.sign-up(href="{% url 'index:register' %}?next=designs") Sign Up
+                    a(href="{% url 'index:login' %}?next=designs") Log In
                     {% endif %}
                     a(href="mailto:build@bazaarboy.com") Contact
-                    a(href="{% url designs:index %}") Designs
-                    a(href="{% url index:pricing %}") Pricing
+                    a(href="{% url 'designs:index' %}") Designs
+                    a(href="{% url 'index:pricing' %}") Pricing
 
 append script
     script(type="text/javascript", src="https://checkout.stripe.com/v2/checkout.js")

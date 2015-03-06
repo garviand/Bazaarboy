@@ -16,19 +16,19 @@ block sidebar
                 {% endif %}
         div.primary-btn.show-for-medium-only
             | <span class="plus">+</span>
-    +sidebarItem('ss-file')(href="{% url event:modify id 'basics' %}")
+    +sidebarItem('ss-file')(href="{% url 'event:modify' id 'basics' %}")
         | Basic Info
-    +sidebarItem('ss-tag')(href="{% url event:modify id 'tickets' %}", class="selected")
+    +sidebarItem('ss-tag')(href="{% url 'event:modify' id 'tickets' %}", class="selected")
         | Ticket Options
-    +sidebarItem('ss-picture')(href="{% url event:index id %}?design")
+    +sidebarItem('ss-picture')(href="{% url 'event:index' id %}?design")
         | Page Design
-    +sidebarItem('ss-usergroup')(href="{% url event:collaborators event.id %}")
+    +sidebarItem('ss-usergroup')(href="{% url 'event:collaborators' event.id %}")
         | Collaborators
-    +sidebarItem('ss-newspaper')(href="{% url index %}")(class="sidebar-separate")
+    +sidebarItem('ss-newspaper')(href="{% url 'index' %}")(class="sidebar-separate")
         | Events
-    +sidebarItem('ss-database')(href="{% url list:index %}")
+    +sidebarItem('ss-database')(href="{% url 'list:index' %}")
         | Lists
-    +sidebarItem('ss-tag')(href="{% url reward:index %}")
+    +sidebarItem('ss-tag')(href="{% url 'reward:index' %}")
         | Gifts
 
 block header
@@ -173,7 +173,7 @@ block content
                                 span.dates
                                     != tags ? "{% if ticket.start_time or ticket.end_time %}&nbsp;|&nbsp;{% if ticket.start_time %}{{ ticket.start_time|date:'n/j/Y' }}{% endif %}{% if ticket.end_time %}- {{ ticket.end_time|date:'n/j/Y' }}{% endif %}{% endif %}" : ""
                             div.action.medium-4.columns
-                                a(href="{% url event:manage event.id %}") 
+                                a(href="{% url 'event:manage' event.id %}") 
                                     | View&nbsp;
                                     span.wording-object
                                         != tags ? '{% if ticket.price == 0 %}RSVPs{% else %}Ticket Holders{% endif %}' : ''
@@ -276,7 +276,7 @@ block content
             div.next-step
                 div.row
                     div.medium-4.medium-centered.columns.end
-                        a.secondary-btn.btn.full-btn.right(href="{% url event:index event.id %}?design") Page Design &gt;
+                        a.secondary-btn.btn.full-btn.right(href="{% url 'event:index' event.id %}?design") Page Design &gt;
 
 append script
     script(src="{{ STATIC_URL }}jQueryUI/jquery-ui.min.js")

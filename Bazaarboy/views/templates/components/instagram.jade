@@ -28,7 +28,7 @@ html(class='no-js')
                     {% endfor %}
                 {% endif %}
         script(type="text/javascript").
-            var rootUrl = '{% url index %}';
+            var rootUrl = '{% url 'index' %}';
             var mediaUrl = '{{ MEDIA_URL }}';
             var staticUrl = '{{ STATIC_URL }}';
             var csrfToken = '{{ csrf_token }}';
