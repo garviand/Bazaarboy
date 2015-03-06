@@ -247,5 +247,5 @@ def timezone(request, params):
     """
     Set timezone info for this session
     """
-    request.session['django_timezone'] = pytz.timezone(params['timezone'])
+    request.session['django_timezone'] = params['timezone']
     return json_response({})
