@@ -24,11 +24,11 @@ AWS_ACCESS_KEY_ID = 'AKIAIX6AKR4TMQL5FSRQ'
 AWS_SECRET_ACCESS_KEY = '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'
 AWS_STORAGE_BUCKET_NAME = 'bazaarboy'
 
-DEFAULT_FILE_STORAGE = 'src.s3utils.MediaS3BotoStorage'
-STATICFILES_STORAGE = 'src.s3utils.StaticS3BotoStorage'
-
 S3_URL = 'https://%s.s3.amazonaws.com' % AWS_STORAGE_BUCKET_NAME
 STATIC_URL = S3_URL + '/static/'
 MEDIA_URL = S3_URL + '/media/'
+
+DEFAULT_FILE_STORAGE = 'src.s3utils.MediaS3BotoStorage'
+STATICFILES_STORAGE = 'src.s3utils.StaticS3BotoStorage'
 
 INVITATION_PREFIX = 'prod'
