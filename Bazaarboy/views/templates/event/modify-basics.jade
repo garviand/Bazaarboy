@@ -17,19 +17,19 @@ block sidebar
                 {% endif %}
         div.btn.secondary-btn.show-for-medium-only
             | <span class="plus">+</span>
-    +sidebarItem('ss-file')(href="{% url event:modify id 'basics' %}", class="selected")
+    +sidebarItem('ss-file')(href="{% url 'event:modify' id 'basics' %}", class="selected")
         | Basic Info
-    +sidebarItem('ss-tag')(href="{% url event:modify id 'tickets' %}")
+    +sidebarItem('ss-tag')(href="{% url 'event:modify' id 'tickets' %}")
         | Ticket Options
-    +sidebarItem('ss-picture')(href="{% url event:index id %}?design")
+    +sidebarItem('ss-picture')(href="{% url 'event:index' id %}?design")
         | Page Design
-    +sidebarItem('ss-usergroup')(href="{% url event:collaborators event.id %}")
+    +sidebarItem('ss-usergroup')(href="{% url 'event:collaborators' event.id %}")
         | Collaborators
-    +sidebarItem('ss-newspaper')(href="{% url index %}")(class="sidebar-separate")
+    +sidebarItem('ss-newspaper')(href="{% url 'index' %}")(class="sidebar-separate")
         | Events
-    +sidebarItem('ss-database')(href="{% url list:index %}")
+    +sidebarItem('ss-database')(href="{% url 'list:index' %}")
         | Lists
-    +sidebarItem('ss-tag')(href="{% url reward:index %}")
+    +sidebarItem('ss-tag')(href="{% url 'reward:index' %}")
         | Gifts
 
 block header

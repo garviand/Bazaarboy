@@ -4,11 +4,11 @@ block title
     | Follow Up Dashboard
 
 block sidebar
-    +sidebarItem('ss-newspaper')(href="{% url index %}")
+    +sidebarItem('ss-newspaper')(href="{% url 'index' %}")
         | Events
-    +sidebarItem('ss-database')(href="{% url list:index %}")
+    +sidebarItem('ss-database')(href="{% url 'list:index' %}")
         | Lists
-    +sidebarItem('ss-share')(href="{% url user:settings %}")
+    +sidebarItem('ss-share')(href="{% url 'user:settings' %}")
         | Settings
 
 block header
@@ -34,13 +34,13 @@ block content
                     div.row
                         div.large-6.medium-7.small-9
                             div.new-list-btn
-                                a(href="{% url event:create-follow-up event.id %}").secondary-btn.btn.full-btn
+                                a(href="{% url 'event:create-follow-up' event.id %}").secondary-btn.btn.full-btn
                                     | <span class="plus">+</span> New Follow Up
         {% endif %}
         div#follow-up-dashboard.small-12.columns
             div.row.new-comm-container(class="{% if sentFollowUps.count == 0 and draftFollowUps.count == 0 %}hide{% endif %}")
                 div.medium-4.columns.new-list
-                    a.new-comm-btn.primary-btn.text-center(href="{% url event:create-follow-up event.id %}", style="{% if sentFollowUps.count == 0 and draftFollowUps.count == 0 %}display:none;{% endif %}") + New Follow Up
+                    a.new-comm-btn.primary-btn.text-center(href="{% url 'event:create-follow-up' event.id %}", style="{% if sentFollowUps.count == 0 and draftFollowUps.count == 0 %}display:none;{% endif %}") + New Follow Up
             div.row
                 {% if sentFollowUps.count > 0 %}
                 div.small-12.columns.comms
@@ -52,7 +52,7 @@ block content
                         div.small-12.medium-2.columns.text-right.comm-details
                             | {{ follow_up.recipients }} Recipien{{ follow_up.recipients|pluralize:"t,ts" }}
                         div.small-12.medium-2.columns.text-right.comm-details
-                            a(href="{% url event:follow-up-details follow_up.id %}") View Stats
+                            a(href="{% url 'event:follow-up-details' follow_up.id %}") View Stats
                         div.small-12.medium-2.columns.text-right.comm-details.hide
                             a.copy-follow-up(data-id="{{ follow_up.id }}", href="javascript:;") Copy Email
                     {% endfor %}
@@ -65,7 +65,7 @@ block content
                         div.small-12.medium-6.columns.comm-name
                             | Tickets: {% for ticket in follow_up.tickets.all %}{{ticket.name}}{% if not forloop.last %}, {% endif %}{% endfor %}
                         div.small-12.medium-3.columns.text-right.comm-details
-                            a(href="{% url event:edit-follow-up follow_up.id %}") Edit Follow Up
+                            a(href="{% url 'event:edit-follow-up' follow_up.id %}") Edit Follow Up
                         div.small-12.medium-3.columns.text-right.comm-details
                             a.delete-follow-up(href="javascript:;", data-id="{{ follow_up.id }}") Delete Follow Up
                     {% endfor %}

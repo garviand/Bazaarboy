@@ -12,15 +12,15 @@ block sidebar
                 {% endif %}
         div.primary-btn.show-for-medium-only
             | <span class="plus">+</span>
-    +sidebarItem('ss-file')(href="{% url event:modify id 'basics' %}")
+    +sidebarItem('ss-file')(href="{% url 'event:modify' id 'basics' %}")
         | Basic Info
-    +sidebarItem('ss-picture')(href="{% url event:index id %}?design")(class="selected")
+    +sidebarItem('ss-picture')(href="{% url 'event:index' id %}?design")(class="selected")
         | Page Design
-    +sidebarItem('ss-tag')(href="{% url event:modify id 'tickets' %}")
+    +sidebarItem('ss-tag')(href="{% url 'event:modify' id 'tickets' %}")
         | Ticket Options
-    //-+sidebarItem('ss-star')(href="{% url event:modify id 'bonus' %}")
+    //-+sidebarItem('ss-star')(href="{% url 'event:modify' id 'bonus' %}")
         | Bonus
-    //-+sidebarItem('ss-mail')(href="{% url event:modify id 'emails' %}")
+    //-+sidebarItem('ss-mail')(href="{% url 'event:modify' id 'emails' %}")
         | Emails
 
 block header
@@ -35,7 +35,7 @@ block header
 block content
     div#wrapper-event-modify.large-9.medium-10.columns.small-centered
         div#event-modify-design.small-12.columns
-            iframe(src="{% url event:index event.id %}?design")
+            iframe(src="{% url 'event:index' event.id %}?design")
 
 append script
     script(src="{{ STATIC_URL }}js/event/modify.js")

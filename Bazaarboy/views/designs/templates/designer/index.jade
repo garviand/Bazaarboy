@@ -5,7 +5,7 @@ block body
         div#top
             div.header.row
                 div.small-12.medium-4.columns.logo-container
-                    a(href="{% url index %}")
+                    a(href="{% url 'index' %}")
                         img.logo(src="{{ STATIC_URL }}images/designs/logo2.png")
                 div.small-12.medium-8.columns.links-container.hide-for-small-only
                     a.active(href="javascript:;") Hi, {{ designer.first_name }}!
@@ -19,7 +19,7 @@ block body
                 div.small-12.medium-4.columns
                     div.row
                         div.small-12.columns
-                            a(href="{% url designs:designer_project project.id %}") View/Submit
+                            a(href="{% url 'designs:designer_project' project.id %}") View/Submit
             {% endfor %}
 
     

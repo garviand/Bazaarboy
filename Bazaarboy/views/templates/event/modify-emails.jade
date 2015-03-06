@@ -1,13 +1,13 @@
 extends ../layout
 
 block sidebar
-    +sidebarItem('ss-file')(href="{% url event:modify id 'basics' %}")
+    +sidebarItem('ss-file')(href="{% url 'event:modify' id 'basics' %}")
         | Basic Info
-    +sidebarItem('ss-picture')(href="{% url event:index id %}?design")
+    +sidebarItem('ss-picture')(href="{% url 'event:index' id %}?design")
         | Page Design
-    +sidebarItem('ss-tag')(href="{% url event:modify id 'tickets' %}")
+    +sidebarItem('ss-tag')(href="{% url 'event:modify' id 'tickets' %}")
         | Ticket Options
-    +sidebarItem('ss-star')(href="{% url event:modify id 'bonus' %}")
+    +sidebarItem('ss-star')(href="{% url 'event:modify' id 'bonus' %}")
         | Bonus
-    +sidebarItem('ss-mail')(href="{% url event:modify id 'emails' %}", class="selected")
+    +sidebarItem('ss-mail')(href="{% url 'event:modify' id 'emails' %}", class="selected")
         | Emails

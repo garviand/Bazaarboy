@@ -77,7 +77,7 @@ block body
                         div.small-10.small-offset-1.columns
                             div.row
                                 div.small-12.medium-4.medium-offset-8.columns.end
-                                    a.switch(href="{% url index:login %}{% if reward_send %}?rewid={{ reward_send.id }}&rewtok={{ reward_send.token }}{% endif %}{% if next %}?next={{ next }}{% endif %}{% if code %}&code={{ code }}{% endif %}{% if organizer_request %}?requestid={{ organizer_request.id }}&requestc={{ organizer_request.code }}{% endif %}") Login
+                                    a.switch(href="{% url 'index:login' %}{% if reward_send %}?rewid={{ reward_send.id }}&rewtok={{ reward_send.token }}{% endif %}{% if next %}?next={{ next }}{% endif %}{% if code %}&code={{ code }}{% endif %}{% if organizer_request %}?requestid={{ organizer_request.id }}&requestc={{ organizer_request.code }}{% endif %}") Login
 
 append script
     script(src="https://dme0ih8comzn4.cloudfront.net/js/feather.js")

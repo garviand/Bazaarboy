@@ -1,11 +1,11 @@
 extends ../layout
 
 block sidebar
-    +sidebarItem('ss-newspaper')(href="{% url index %}")
+    +sidebarItem('ss-newspaper')(href="{% url 'index' %}")
         | Events
-    +sidebarItem('ss-database')(href="{% url list:index %}")
+    +sidebarItem('ss-database')(href="{% url 'list:index' %}")
         | Lists
-    +sidebarItem('ss-share')(href="{% url user:settings %}")
+    +sidebarItem('ss-share')(href="{% url 'user:settings' %}")
         | Settings
 
 block header
@@ -30,7 +30,7 @@ block content
                         div.small-12.medium-6.columns
                             a.btn.full-btn.secondary-btn.send-email(href="javascript:;", data-id="{{ follow_up.id }}") Send Email
                         div.small-12.medium-6.columns
-                            a.btn.full-btn.secondary-btn-inverse(href="{% url event:edit-follow-up follow_up.id %}") Edit Email
+                            a.btn.full-btn.secondary-btn-inverse(href="{% url 'event:edit-follow-up' follow_up.id %}") Edit Email
                     //div.email-pricing
                         div.small-12.columns
                             | Cost - {% if cost == 0 %}Free{% else %}${{ cost }}{% endif %}&nbsp;

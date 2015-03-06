@@ -4,13 +4,13 @@ block title
     | List Dashboard
 
 block sidebar
-    +sidebarItem('ss-newspaper')(href="{% url index %}")
+    +sidebarItem('ss-newspaper')(href="{% url 'index' %}")
         | Events
-    +sidebarItem('ss-database')(href="{% url list:index %}", class="selected")
+    +sidebarItem('ss-database')(href="{% url 'list:index' %}", class="selected")
         | Lists
-    +sidebarItem('ss-tag')(href="{% url reward:index %}")
+    +sidebarItem('ss-tag')(href="{% url 'reward:index' %}")
         | Gifts
-    +sidebarItem('ss-share')(href="{% url user:settings %}")
+    +sidebarItem('ss-share')(href="{% url 'user:settings' %}")
         | Settings
 
 block header
@@ -53,7 +53,7 @@ block content
                             div.small-2.columns.text-left.list-members
                                 | {{ list.items }} Membe{{ list.items|pluralize:"r,rs" }}
                             div.small-2.columns.text-right.list-action
-                                a(href="{% url list:list list.id %}") Manage List
+                                a(href="{% url 'list:list' list.id %}") Manage List
                             div.small-2.columns.text-right.list-action
                                 a.delete-list-btn(href="javascript:;", data-id="{{ list.id }}") Delete List
                     {% endfor %}

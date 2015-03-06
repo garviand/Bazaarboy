@@ -250,7 +250,7 @@ block body
                     div.subtext Your event is live!
                     div.row
                         div.large-7.medium-7.small-8.columns.to-dash
-                            a.start-invite.primary-btn(href="{% url event:invite event.id %}") Invite Guests
+                            a.start-invite.primary-btn(href="{% url 'event:invite' event.id %}") Invite Guests
                         div.large-5.medium-5.small-4.columns.close-launch-modal
                             | or&nbsp;&nbsp;
                             a.close-reveal-modal Close
@@ -313,11 +313,11 @@ block body
         div.row
             div.medium-12.columns.code-container
                 h4 Paste this code into your website HTML
-                textarea.embed-code(disabled, style="height:150px;") &lt;iframe src='https://www.bazaarboy.com{% url event:ticket-embed event.id %}' width='100%', height='[IFRAME_HEIGHT]' frameborder='0'&gt;&lt;/iframe&gt;
+                textarea.embed-code(disabled, style="height:150px;") &lt;iframe src='https://www.bazaarboy.com{% url 'event:ticket-embed' event.id %}' width='100%', height='[IFRAME_HEIGHT]' frameborder='0'&gt;&lt;/iframe&gt;
         hr
         div.row
             div.medium-12.columns.iframe-container
-                iframe#ticket-embed-iframe(src="{% url event:ticket-embed event.id %}", width="100%", height="100", frameborder="0", scrolling="auto")
+                iframe#ticket-embed-iframe(src="{% url 'event:ticket-embed' event.id %}", width="100%", height="100", frameborder="0", scrolling="auto")
     {% endif %}            
 
     div#contact-organizer-modal.reveal-modal.medium(data-reveal)
@@ -404,7 +404,7 @@ block body
             div.event-header-body(class="{% if design %}medium-8{% elif preview and editable %}medium-6{% elif preview %}medium-6{% else %}medium-7{% endif %} columns")
                 div.profile-icon
                     div.inner
-                        a(href="{% url index %}")
+                        a(href="{% url 'index' %}")
                             img(src="{{ STATIC_URL }}images/logo-white.png")
                 div.event-name
                     span {{ event.name }}
@@ -583,7 +583,7 @@ block body
                         {% elif design %}
                         div.row.add-organizer
                             div.small-12.columns
-                                a.btn.primary-btn.full-btn.add-organizer-btn(href="{% url event:collaborators event.id %}") Add Collaborator
+                                a.btn.primary-btn.full-btn.add-organizer-btn(href="{% url 'event:collaborators' event.id %}") Add Collaborator
                         {% endif %}
                         div#event-sponsors.row
             
@@ -606,10 +606,10 @@ block body
                 div.poweredby.left
                     | Powered by 
                 div.logo.left
-                    a(href="{% url index %}", target="_blank")
+                    a(href="{% url 'index' %}", target="_blank")
                         img(src="{{ STATIC_URL }}images/logo-inverse.png")
                 div.links.left
-                    a(href="{% url index:pricing %}") Pricing
+                    a(href="{% url 'index:pricing' %}") Pricing
                     | &nbsp;&nbsp;&nbsp;
                     a(href="{{ STATIC_URL }}bboy-terms.pdf") Terms
 

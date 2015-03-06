@@ -5,18 +5,18 @@ block body
 		div#top
 			div.header.row
 				div.small-12.medium-4.columns.logo-container
-					a(href="{% url index %}")
+					a(href="{% url 'index' %}")
 						img.logo(src="{{ STATIC_URL }}images/designs/logo1.png")
 				div.small-12.medium-8.columns.links-container.hide-for-small-only
 					{% if not user %}
-					a.orange-btn(href="{% url index:register %}?next=designs") Sign Up
-					a(href="{% url index:login %}?next=designs") Log In
+					a.orange-btn(href="{% url 'index:register' %}?next=designs") Sign Up
+					a(href="{% url 'index:login' %}?next=designs") Log In
 					{% else %}
-					a.orange-btn(href="{% url designs:create %}") Create Project
+					a.orange-btn(href="{% url 'designs:create' %}") Create Project
 					{% endif %}
 					a(href="mailto:build@bazaarboy.com", target="_blank") Contact
-					a.active(href="{% url designs:index %}") Designs
-					a(href="{% url index:pricing %}") Pricing
+					a.active(href="{% url 'designs:index' %}") Designs
+					a(href="{% url 'index:pricing' %}") Pricing
 			div.tagline-container.row
 				div.small-12.medium-10.medium-offset-1.columns.tagline
 					| Create beautiful marketing materials with Bazaarboy
@@ -25,7 +25,7 @@ block body
 					| Expert local designers are ready to create your next banner or poster in under 72 hours.
 			div.get-started.row
 				div.small-12.medium-3.medium-centered.columns
-					a.orange-btn(href="{% url designs:create %}") Get Started
+					a.orange-btn(href="{% url 'designs:create' %}") Get Started
 		div#steps
 			div.row.title-container
 				div.small-12.columns.title How It Works
@@ -88,19 +88,19 @@ block body
 		div#go
 			div.row.go-container
 				div.small-12.medium-3.medium-centered.columns
-					a.orange-btn.go-btn(href="{% url designs:create %}") Let's go!
+					a.orange-btn.go-btn(href="{% url 'designs:create' %}") Let's go!
 		div#footer
 			div.row.footer-container
 				div.small-12.medium-3.columns.copyright.small-only-text-center
 					| &copy; 2014 Bazaarboy, LLC
 				div.small-12.medium-9.hide-for-small-only.columns.footer-links
 					{% if not user %}
-					a.sign-up(href="{% url index:register %}?next=designs") Sign Up
-					a(href="{% url index:login %}?next=designs") Log In
+					a.sign-up(href="{% url 'index:register' %}?next=designs") Sign Up
+					a(href="{% url 'index:login' %}?next=designs") Log In
 					{% endif %}
 					a(href="mailto:build@bazaarboy.com") Contact
-					a(href="{% url designs:index %}") Designs
-					a(href="{% url index:pricing %}") Pricing
+					a(href="{% url 'designs:index' %}") Designs
+					a(href="{% url 'index:pricing' %}") Pricing
 
 
 

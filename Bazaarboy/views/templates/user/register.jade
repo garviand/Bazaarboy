@@ -20,7 +20,7 @@ block body
         div.inner
             div.logo
                 div.image
-                    a(href="{% url index %}")
+                    a(href="{% url 'index' %}")
                         img(src="{{ STATIC_URL }}images/logo-big.png")
                 div.caption Get Started With Your First Event
             div.register_content.content
@@ -40,6 +40,6 @@ block body
                 | &copy; 2013 Bazaarboy LLC. All rights reserved. 
                 a(href="http://blog.bazaarboy.com") Blog
                 | &nbsp;|&nbsp;
-                a(href="{% url index:pricing %}") Pricing
+                a(href="{% url 'index:pricing' %}") Pricing
                 | &nbsp;|&nbsp;
                 a(href="mailto:build@bazaarboy.com") Contact Us
