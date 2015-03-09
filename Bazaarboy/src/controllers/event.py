@@ -433,8 +433,6 @@ def invite(request, event, user):
             opens += email.opens
             if email.opens > 0:
                 totalOpens += 1
-            if email.clicks > 0:
-                totalClicks += 1
         invt.opens = opens
         invt.total_opens = totalOpens
     draftInvites = Invite.objects.filter(event = event, profile__managers = user, is_sent = False, is_deleted = False).order_by('-created_time')
