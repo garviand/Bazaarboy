@@ -428,11 +428,13 @@ def invite(request, event, user):
     for invt in sentInvites:
         opens = 0
         totalOpens = 0
-        result = client.messages.search(query='u_invite_id:'  + settings.INVITATION_PREFIX + '-' + str(invt.id), limit = 1000, date_from='2014-01-01')
-        for email in result:
-            opens += email['opens']
-            if email['opens'] > 0:
+        results = Invite_stat.objects.filter(invite = invt).order_by('-clicks', '-opens')
+        for email in results:
+            opens += email.opens
+            if email.opens > 0:
                 totalOpens += 1
+            if email.clicks > 0:
+                totalClicks += 1
         invt.opens = opens
         invt.total_opens = totalOpens
     draftInvites = Invite.objects.filter(event = event, profile__managers = user, is_sent = False, is_deleted = False).order_by('-created_time')
