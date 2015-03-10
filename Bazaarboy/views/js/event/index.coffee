@@ -341,7 +341,7 @@ Bazaarboy.event.index =
             $(this).addClass 'active'
             return
         # MOBILE HEADER FIX
-        if $('div#event-header').height() > 66
+        if $('div#event-header').height() > 66 and not design
             $('div#event-header').css('position', 'absolute')
             $('div#event').css('padding-top', $('div#event-header').height() + 'px')
             $('div#tickets').css('top', ($('div#event-header').height() + 20) + 'px')
@@ -350,8 +350,9 @@ Bazaarboy.event.index =
                 $('div#event-header').css('position', 'absolute')
                 $('div#tickets').css('top', ($('div#event-header').height() + 20) + 'px')
             else
-                $('div#event-header').css('position', 'fixed')
-                $('div#tickets').css('top', '100px')
+                if not design
+                    $('div#event-header').css('position', 'fixed')
+                    $('div#tickets').css('top', '100px')
             $('div#event').css('padding-top', $('div#event-header').height() + 'px')
             return
         # INVITE MODAL INIT

@@ -420,7 +420,7 @@
         $(this).parents('div.custom-option-group').find('div.custom-option').removeClass('active');
         $(this).addClass('active');
       });
-      if ($('div#event-header').height() > 66) {
+      if ($('div#event-header').height() > 66 && !design) {
         $('div#event-header').css('position', 'absolute');
         $('div#event').css('padding-top', $('div#event-header').height() + 'px');
         $('div#tickets').css('top', ($('div#event-header').height() + 20) + 'px');
@@ -430,8 +430,10 @@
           $('div#event-header').css('position', 'absolute');
           $('div#tickets').css('top', ($('div#event-header').height() + 20) + 'px');
         } else {
-          $('div#event-header').css('position', 'fixed');
-          $('div#tickets').css('top', '100px');
+          if (!design) {
+            $('div#event-header').css('position', 'fixed');
+            $('div#tickets').css('top', '100px');
+          }
         }
         $('div#event').css('padding-top', $('div#event-header').height() + 'px');
       });
