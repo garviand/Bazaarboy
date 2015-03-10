@@ -48,8 +48,11 @@ Bazaarboy.event.invite =
             if @image.pk?
                 imageId = @image.pk
                 deleteImg = false
+            force = true
+            if toPreview
+                force = false
             color = $('input[name=colorpicker]').spectrum("get").toHexString()
-            Bazaarboy.post targetUrl, {id:targetId, message:message, details:details, lists:lists, image:imageId, color:color, deleteImg:deleteImg, force:toPreview}, (response) =>
+            Bazaarboy.post targetUrl, {id:targetId, message:message, details:details, lists:lists, image:imageId, color:color, deleteImg:deleteImg, force:force}, (response) =>
                 if toPreview
                     if response.status is 'OK'
                         inviteId = response.invite.pk

@@ -3,7 +3,7 @@
     saving: false,
     image: {},
     saveInvite: function(toPreview) {
-      var activeLists, color, deleteImg, details, imageId, list, list_name, lists, message, targetId, targetUrl, _i, _len,
+      var activeLists, color, deleteImg, details, force, imageId, list, list_name, lists, message, targetId, targetUrl, _i, _len,
         _this = this;
       if (!this.saving) {
         $('a.save-invite').html('Saving...');
@@ -62,6 +62,10 @@
           imageId = this.image.pk;
           deleteImg = false;
         }
+        force = true;
+        if (toPreview) {
+          force = false;
+        }
         color = $('input[name=colorpicker]').spectrum("get").toHexString();
         Bazaarboy.post(targetUrl, {
           id: targetId,
@@ -71,7 +75,7 @@
           image: imageId,
           color: color,
           deleteImg: deleteImg,
-          force: toPreview
+          force: force
         }, function(response) {
           var inviteId;
           if (toPreview) {
