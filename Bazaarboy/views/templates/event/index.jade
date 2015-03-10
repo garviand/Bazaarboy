@@ -293,11 +293,11 @@ block body
                             {% endif %}
                     div.btn.secondary-btn.show-for-medium-only
                         | <span class="plus">+</span>
-                +sidebarItem('ss-file')(href="{% url 'event:modify' id 'basics' %}")
+                +sidebarItem('ss-file')(href="{% url 'event:modify' event.id 'basics' %}")
                     | Basic Info
-                +sidebarItem('ss-tag')(href="{% url 'event:modify' id 'tickets' %}")
+                +sidebarItem('ss-tag')(href="{% url 'event:modify' event.id 'tickets' %}")
                     | Ticket Options
-                +sidebarItem('ss-picture')(href="{% url 'event:index' id %}?design", class="selected")
+                +sidebarItem('ss-picture')(href="{% url 'event:index' event.id %}?design", class="selected")
                     | Page Design
                 +sidebarItem('ss-usergroup')(href="{% url 'event:collaborators' event.id %}")
                     | Collaborators
