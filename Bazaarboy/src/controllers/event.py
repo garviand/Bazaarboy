@@ -518,7 +518,7 @@ def copy_invite(request, params, invite, user):
     return json_response(response)
 
 @login_check()
-@validate('POST', ['id', 'lists', 'message'], ['details', 'image', 'color'])
+@validate('POST', ['id', 'lists', 'message'], ['details', 'image', 'color', 'force'])
 def new_invite(request, params, user):
     event = params['id']
     if not Event.objects.filter(id = event, is_deleted = False).exists():
@@ -539,15 +539,18 @@ def new_invite(request, params, user):
         return json_response(response)
     profiles = Profile.objects.filter(managers = user)
     profile = profiles[0]
-    if List.objects.filter(id__in = [x.strip() for x in params['lists'].split(',')], owner__managers = user).exists():
-        lists = List.objects.filter(id__in = [x.strip() for x in params['lists'].split(',')], owner__managers = user, is_deleted = False)
+    if params['force'] != 'true' or params['lists'].strip() != '':
+        if List.objects.filter(id__in = [x.strip() for x in params['lists'].split(',')], owner__managers = user).exists():
+            lists = List.objects.filter(id__in = [x.strip() for x in params['lists'].split(',')], owner__managers = user, is_deleted = False)
+        else:
+            response = {
+                'status':'FAIL',
+                'error':'NO_VALID_LISTS',
+                'message':'No Valid Lists Were Selected.'
+            }
+            return json_response(response)
     else:
-        response = {
-            'status':'FAIL',
-            'error':'NO_VALID_LISTS',
-            'message':'No Valid Lists Were Selected.'
-        }
-        return json_response(response)
+        lists = []
     invite = Invite(event = event, profile = profile, message = params['message'])
     if params['details']:
         invite.details = params['details']
@@ -567,7 +570,7 @@ def new_invite(request, params, user):
     return json_response(response)
 
 @login_check()
-@validate('POST', ['id', 'lists', 'message'], ['details', 'image', 'color', 'deleteImg'])
+@validate('POST', ['id', 'lists', 'message'], ['details', 'image', 'color', 'deleteImg', 'force'])
 def save_invite(request, params, user):
     invite = params['id']
     if not Invite.objects.filter(id = invite, profile__managers = user, is_deleted = False).exists():
@@ -580,15 +583,18 @@ def save_invite(request, params, user):
     invite = Invite.objects.get(id = invite)
     profiles = Profile.objects.filter(managers = user)
     profile = profiles[0]
-    if List.objects.filter(id__in = [x.strip() for x in params['lists'].split(',')], owner__managers = user).exists():
-        lists = List.objects.filter(id__in = [x.strip() for x in params['lists'].split(',')], owner__managers = user)
+    if params['force'] != 'true' or params['lists'].strip() != '':
+        if List.objects.filter(id__in = [x.strip() for x in params['lists'].split(',')], owner__managers = user).exists():
+            lists = List.objects.filter(id__in = [x.strip() for x in params['lists'].split(',')], owner__managers = user)
+        else:
+            response = {
+                'status':'FAIL',
+                'error':'NO_VALID_LISTS',
+                'message':'No Valid Lists Were Selected.'
+            }
+            return json_response(response)
     else:
-        response = {
-            'status':'FAIL',
-            'error':'NO_VALID_LISTS',
-            'message':'No Valid Lists Were Selected.'
-        }
-        return json_response(response)
+        lists = []
     invite.message = params['message']
     if params['details']:
         invite.details = params['details']

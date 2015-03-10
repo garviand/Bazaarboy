@@ -52,7 +52,7 @@ block content
                     div.row.email-content
                         div.small-12.columns.content-details
                             label Details
-                                textarea(name="details", placeholder="Enter any details here (menu items, parking info, etc.)") {{ invite.details }}
+                                textarea(name="details", placeholder="Enter any details here (menu items, parking info, etc.)") {% if invite.details %}{{ invite.details }}{% endif %}
                     div.row.email-content
                         div.small-12.columns.content-details
                             label RSVP Button Color
@@ -92,7 +92,6 @@ block content
         div.row.new-list-title
             div.small-12.columns
                 h3 Create List
-                    span &nbsp;&nbsp;(Note: All Unsaved Changes to Invite Will Be Lost)
         div.row.new-list-inputs
             div.medium-8.small-12.columns
                 input(name="list_name", placeholder="List Name (required)")
@@ -108,6 +107,7 @@ append script
     script.
         mediaUrl = "{{ MEDIA_URL }}"
         profileId = {{ profile.id }};
+        eventId = {{ event.id }};
         {% if invite.image %}imgId = "{{ invite.image.id }}"{% endif %}
         {% if invite %}inviteEdit = true{% else %}inviteEdit = false{% endif %}
     script(src="{{ STATIC_URL }}js/event/invite.js")
