@@ -32,7 +32,7 @@ def index(request, params, user):
         if Channel.objects.filter(slug = subdomain, active = True).exists():
             channel = Channel.objects.get(slug = subdomain)
             profile = channel.profile
-            organizers = Organizer.objects.filter(profile = profile, event__is_launched = True, event__is_deleted = False, is_creator = True).order_by('-event__start_time')
+            organizers = Organizer.objects.filter(profile = profile, event__is_launched = True, event__is_deleted = False).order_by('-event__start_time')
             current_events = []
             past_events = []
             for organizer in organizers:
