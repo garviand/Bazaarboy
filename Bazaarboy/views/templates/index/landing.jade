@@ -14,7 +14,6 @@ block body
                     a.sign_up(href="{% url 'index:register' %}") SIGN UP
                     a(href="{% url 'index:login' %}") LOG IN
                     a(href="mailto:build@bazaarboy.com") CONTACT
-                    a(href="{% url 'designs:index' %}") DESIGNS
                     a(href="{% url 'index:pricing' %}") PRICING
                 div.small-12.columns.mobile-links.clearfix.show-for-small-only
                     div.row
@@ -22,13 +21,13 @@ block body
                         a.small-5.end.columns.text-center(href="{% url 'index:pricing' %}") PRICING
             div.row.title
                 div.small-12.columns
-                    | DISCOVER YOUR EVENT POTENTIAL
+                    | Each event is an opportunity to strengthen your brand.
             div.row.hr
                 div.small-8.small-offset-2.medium-2.medium-offset-5.columns.hr
                     hr
             div.row.subtext
                 div.small-10.small-offset-1.medium-6.medium-offset-3.columns
-                    | We are an online ticketing &amp; registration company helping event organizers connect the dots. 
+                    | We specialize in event registration, sponsor fulfillment and hospitality interaction.
             div.row.sign_up
                 div.small-8.small-offset-2.medium-2.medium-offset-5.columns
                     a.secondary-btn(href="{% url 'index:register' %}") SIGN UP
@@ -40,7 +39,7 @@ block body
                         br
                         | &amp; WHAT WE DO
                     div.subtext
-                        | Bazaarboy offers simple tools for event ticketing &amp; registration to businesses, non-profits, organizations and membership associations. Our mission is to simplify event commerce and communication.
+                        | Bazaarboy helps event organizers and sponsors convert attendee data into mobile commerce opportunities. We work with businesses, non-profits, schools, media outlets, festivals and special taxing districts.
                 div.small-12.medium-6.columns.ticket-container
                     img.ticket(src="{{ STATIC_URL }}images/landing/ticket.png")
         //div.section.section-3

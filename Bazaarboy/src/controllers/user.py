@@ -217,7 +217,7 @@ def create(request, params, user):
                                          profile = profile,
                                          is_creator = True)
         profileManager.save()
-        #sendNewAccountEmail(profile)
+        sendNewAccountEmail(profile)
         if params['reward_id'] is not None and params['reward_token'] is not None:
             if Reward_send.objects.filter(id = params['reward_id'], token = params['reward_token']).exists():
                 reward_send = Reward_send.objects.get(id = params['reward_id'])
