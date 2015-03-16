@@ -181,7 +181,7 @@ Bazaarboy.event.index =
                 alert 'Please Add an Email'
                 $('a#tickets-confirm').html 'Confirm RSVP'
                 @purchasing = false
-                return
+                return 
             else
                 Bazaarboy.post 'event/purchase/', params, (response) =>
                     if response.status isnt 'OK'
