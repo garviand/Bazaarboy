@@ -139,6 +139,7 @@ class Profile(models.Model):
     link_facebook = models.CharField(max_length = 1024, null = True, 
                                      default = None)
     EIN = models.CharField(max_length = 10, null = True, default = None)
+    color = models.CharField(max_length = 30, default="#FAA638")
     is_non_profit = models.BooleanField(default = False)
     is_verified = models.BooleanField(default = False)
     payment_account = models.ForeignKey('Payment_account', 

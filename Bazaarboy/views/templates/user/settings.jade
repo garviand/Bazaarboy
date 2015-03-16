@@ -5,6 +5,7 @@ block title
 
 append head
     link(rel="stylesheet", href="{{ STATIC_URL }}jQueryUI/jquery-ui.css")
+    link(rel="stylesheet", href="{{ STATIC_URL }}spectrum/spectrum.css")
 
 block sidebar
     div.create-event(data-profile-id="{{ profiles.0.id }}")
@@ -110,6 +111,13 @@ block content
                             {% if profile.image %}
                             img(src="{{ profile.image.source.url }}")
                             {% endif %}
+                div.row.color
+                    div.name.medium-2.columns
+                        | Profile Color
+                    div.medium-10.columns
+                        input.field(type='color', name='colorpicker', value='{% if profile.color %}{{ profile.color }}{% else %}#FAA638{% endif %}')
+                    div.text.medium-10.medium-offset-2.columns
+                        p Default Color To Use for your Events and Email Communications
                 div.row
                     div.name.medium-2.columns
                         | Location
@@ -135,6 +143,7 @@ block content
 append script
     script(src="{{ STATIC_URL }}jQueryUI/jquery-ui.min.js")
     script(src="{{ STATIC_URL }}jQueryUI/jquery-ui.autocomplete.html.js")
+    script(type="text/javascript", src="{{ STATIC_URL }}spectrum/spectrum.js")
     script(type="text/javascript", src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAasW6vqPCn18g6UMaFWV90qGMSo6pErwo&sensor=false&libraries=places")
     script.
         var profileId = {{ profile.id }};

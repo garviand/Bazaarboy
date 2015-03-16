@@ -12995,6 +12995,22 @@ div#rewards-modal div.rewards div.reward div.expiration {
 div#wrapper-user-settings {
   padding-top: 40px;
 }
+div#user-settings div.row.color {
+  margin-top: 20px;
+  margin-bottom: 20px;
+}
+div#user-settings .sp-replacer {
+  width: 46% !important;
+  min-width: 150px;
+  margin-top: 2px !important;
+  margin-bottom: 10px !important;
+}
+div#user-settings .sp-replacer .sp-preview {
+  width: 100% !important;
+}
+div#user-settings .sp-replacer .sp-dd {
+  display: none !important;
+}
 div#user-settings div#payment {
   margin-bottom: 40px;
 }

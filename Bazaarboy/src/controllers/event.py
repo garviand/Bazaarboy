@@ -1170,6 +1170,8 @@ def create(request, params, user):
         return json_response(response)
     # Create event
     event = Event(start_time = timezone.now() + timedelta(days = 7))
+    if profile.color:
+        event.color = profile.color
     event.save()
     # Set the profile as the organizer and creator of the event
     organizer = Organizer(event = event, profile = profile, is_creator = True)

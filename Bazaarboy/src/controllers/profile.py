@@ -12,7 +12,7 @@ from kernel.models import *
 from kernel.templatetags import layout
 from src.config import *
 from src.controllers.request import *
-from src.regex import REGEX_EMAIL, REGEX_URL, REGEX_EIN
+from src.regex import REGEX_EMAIL, REGEX_URL, REGEX_EIN, REGEX_HEX_COLOR
 from src.serializer import serialize, serialize_one
 from src.email import sendProfileMessageEmail, sendNewAccountEmail
 from instagram.client import InstagramAPI
@@ -390,7 +390,7 @@ def create(request, params, user):
 @login_required()
 @validate('POST', ['id'], 
           ['name', 'description', 'email', 'phone', 'link_website', 'link_facebook', 'EIN', 'is_non_profit', 'image', 'cover', 'location', 'latitude', 
-           'longitude', 'payment'])
+           'longitude', 'payment', 'color'])
 def edit(request, params, user):
     """
     Edit an existing profile
@@ -526,6 +526,16 @@ def edit(request, params, user):
             return json_response(response)
         else:
             profile.link_facebook = params['link_facebook']
+    if params['color'] is not None:
+        if REGEX_HEX_COLOR.match(params['color']):
+            profile.color = params['color']
+        else:
+            response = {
+                'status':'FAIL',
+                'error':'INVALID_COLOR',
+                'message':'The Color Is Invalid'
+            }
+            return json_response(response)
     if params['EIN'] is not None:
         if params['EIN'] == '':
             profile.EIN = None
