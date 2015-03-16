@@ -51,12 +51,24 @@
       var scope;
       scope = this;
       $('div.email-actions a.send-email').click(function() {
-        var inviteId;
+        var _this = this;
         if (!scope.sending) {
-          $(this).html('Sending...');
-          scope.sending = true;
-          inviteId = $(this).data('id');
-          scope.sendEmail(inviteId);
+          swal({
+            title: "Confirm Details",
+            html: "Title: " + eventName + "<br /><br />Date: " + eventDate + "<br /><br />Recipients: " + sentNumber,
+            type: "success",
+            showCancelButton: true,
+            confirmButtonText: "Send Email",
+            closeOnConfirm: true
+          }, function(isConfirm) {
+            var inviteId;
+            if (isConfirm) {
+              $(_this).html('Sending...');
+              scope.sending = true;
+              inviteId = $(_this).data('id');
+              return scope.sendEmail(inviteId);
+            }
+          });
         }
       });
     }

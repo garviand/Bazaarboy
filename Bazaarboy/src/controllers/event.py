@@ -2919,12 +2919,13 @@ def purchase(request, params, user):
                                owner = user, event = event, 
                                is_expired = False).exists():
         # If so, release its holding quantity if necessary
-        purchase = Purchase.objects.get(Q(checkout__isnull = False, 
+        purchases = Purchase.objects.filter(Q(checkout__isnull = False, 
                                           checkout__is_charged = False), 
                                         owner = user, event = event, 
                                         is_expired = False)
         # Mark the old purchase as expired
-        mark_purchase_as_expired(purchase, True)
+        for purchase in purchases:
+            mark_purchase_as_expired(purchase, True)
     # Start a database transaction
     with transaction.atomic():
         # Place a lock on the ticket information (quantity)

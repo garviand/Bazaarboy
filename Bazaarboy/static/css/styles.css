@@ -6071,6 +6071,7 @@ div#main-header div.header-title div.text {
   height: 64px;
   padding: 23px 0;
   text-transform: uppercase;
+  float: none !important;
   font-size: 18px;
   font-weight: bold;
 }

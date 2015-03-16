@@ -10,6 +10,7 @@ Bazaarboy.event.index =
     currentCheckout: 'HI'
     ticketMenu: undefined
     ticketId: undefined
+    purchasing: false
     DropDown: (el) ->
         this.dd = el
         this.placeholder = this.dd.children('span')
@@ -79,10 +80,13 @@ Bazaarboy.event.index =
                 closeOnConfirm: true
                 confirmButtonColor: "#1DBC85"
                 , (isConfirm) =>
+                    @purchasing = false
+                    sendSms = $('input[name=phone]').val().trim() isnt ''
                     if isConfirm
                         Bazaarboy.post 'payment/charge/',
                             checkout: @currentCheckout
                             stripe_token: response.id
+                            send_sms: sendSms
                             , (response) =>
                                 console.log response
                                 if response.status is 'OK'
@@ -103,123 +107,124 @@ Bazaarboy.event.index =
                     return
         return
     purchase: () ->
-        $('a#tickets-confirm').html 'Processing...'
-        params = 
-            event: eventId
-            first_name: $('input[name=first_name]').val().trim()
-            last_name: $('input[name=last_name]').val().trim()
-            email: $('input[name=email]').val().trim()
-            phone: $('input[name=phone]').val().trim()
-            details: {}
-        if $('input[name=invite_id]').val().trim() != ''
-            params['invite'] = $('input[name=invite_id]').val()
-        if @requiresAddress
-            if $('input[name=address]').val().trim() == '' or $('input[name=state]').val().trim() == '' or $('input[name=city]').val().trim() == '' or $('input[name=zip]').val().trim() == ''
-                alert 'All Address Fields Are Required'
-                $('a#tickets-confirm').html 'Confirm RSVP'
-                return
-        address = $('input[name=address]').val().trim()
-        if $('input[name=city]').val().trim() != ''
-            address += ', ' + $('input[name=city]').val().trim()
-        if $('input[name=state]').val().trim() != ''
-            address += ', ' + $('input[name=state]').val().trim()
-        if $('input[name=zip]').val().trim() != ''
-            address += ' ' + $('input[name=zip]').val().trim()
-        params.address = address
-        if $('input[name=promos]').length > 0
-            if $('input[name=promos]').val().trim() isnt ''
-                params['promos'] = $('input[name=promos]').val().trim()
-        tickets = $('div#tickets-canvas div.ticket')
-        ticketSelected = false
-        for ticket in tickets
-            if $(ticket).hasClass('active')
-                ticketSelected = true
-                quantity = parseInt $(ticket).find('input.ticket-quantity').val()
-                params.details[$(ticket).attr('data-id')] = {'quantity':quantity, 'extra_fields': {}}
-                if $(ticket).find('div.custom-option-group').length > 0
-                    options = $(ticket).find('div.custom-option-group')
-                    $.each options, (target) ->
-                        if $(this).find('div.custom-option.active').length > 0
-                            params.details[$(ticket).attr('data-id')]['extra_fields'][$(this).data('field')] = $(this).find('div.custom-option.active').data('option')
-                        return
-                if $(ticket).find('div.custom-field-group').length > 0
-                    fields = $(ticket).find('div.custom-field-group')
-                    $.each fields, (target) ->
-                        fieldValue = $(this).find('input.custom-field-input').val()
-                        if String(fieldValue).trim() isnt ''
-                            params.details[$(ticket).attr('data-id')]['extra_fields'][$(this).data('field')] = String(fieldValue).trim()
-                        else
-                            params.details[$(ticket).attr('data-id')]['extra_fields'][$(this).data('field')] = ' '
-        params.details = JSON.stringify params.details
-        if params.phone.length is 0
-            delete params.phone
-        if not ticketSelected
-            alert 'You Must Select A Ticket'
-            $('a#tickets-confirm').html 'Confirm RSVP'
-        else if params.first_name is ''
-            alert 'Please Add a First Name'
-            $('a#tickets-confirm').html 'Confirm RSVP'
-            return
-        else if params.last_name is ''
-            alert 'Please Add a Last Name'
-            $('a#tickets-confirm').html 'Confirm RSVP'
-            return
-        else if params.email is ''
-            alert 'Please Add an Email'
-            $('a#tickets-confirm').html 'Confirm RSVP'
-            return
-        else
-            Bazaarboy.post 'event/purchase/', params, (response) =>
-                if response.status isnt 'OK'
-                    alert response.message
+        if not @purchasing
+            @purchasing = true
+            $('a#tickets-confirm').html 'Processing...'
+            params = 
+                event: eventId
+                first_name: $('input[name=first_name]').val().trim()
+                last_name: $('input[name=last_name]').val().trim()
+                email: $('input[name=email]').val().trim()
+                phone: $('input[name=phone]').val().trim()
+                details: {}
+            if $('input[name=invite_id]').val().trim() != ''
+                params['invite'] = $('input[name=invite_id]').val()
+            if @requiresAddress
+                if $('input[name=address]').val().trim() == '' or $('input[name=state]').val().trim() == '' or $('input[name=city]').val().trim() == '' or $('input[name=zip]').val().trim() == ''
+                    alert 'All Address Fields Are Required'
                     $('a#tickets-confirm').html 'Confirm RSVP'
-                else
-                    if not response.publishable_key?
-                        @completePurchase(response.tickets)
-                    else
-                        total = response.purchase.amount * 100
-                        a = (1 + 0.05) * total + 50
-                        b = (1 + 0.029) * total + 30 + 1000
-                        total = Math.round(Math.min(a, b))
-                        ###
-                        StripeCheckout.open
-                            key: response.publishable_key
-                            address: false
-                            amount: total
-                            currency: 'usd'
-                            name: response.purchase.event.name
-                            description: 'Tickets for ' + response.purchase.event.name
-                            panelLabel: 'Checkout'
-                            email: params.email
-                            image: response.logo
-                            closed: () ->
-                                $('a#tickets-confirm').html 'Confirm RSVP'
-                                return
-                            token: (token) =>
-                                Bazaarboy.post 'payment/charge/', 
-                                    checkout: response.purchase.checkout
-                                    stripe_token: token.id
-                                , (response) =>
-                                    if response.status is 'OK'
-                                        @completePurchase(response.tickets)
-                                    else
-                                        alert response.message
-                                    return
-                                return
-                        ###
-                        @currentCheckout = response.purchase.checkout
-                        Stripe.setPublishableKey response.publishable_key
-                        paymentInfo =
-                            number: $('.cc-number').val().replace(/\ /g, '')
-                            cvc: $('.cc-cvc').val()
-                            exp_month: $('.cc-exp').val().split('/')[0].trim()
-                            exp_year: $('.cc-exp').val().split('/')[1].trim()
-                        Stripe.card.createToken paymentInfo, (status, response) =>
-                            @stripeResponseHandler status, response, total
+                    @purchasing = false
+                    return
+            address = $('input[name=address]').val().trim()
+            if $('input[name=city]').val().trim() != ''
+                address += ', ' + $('input[name=city]').val().trim()
+            if $('input[name=state]').val().trim() != ''
+                address += ', ' + $('input[name=state]').val().trim()
+            if $('input[name=zip]').val().trim() != ''
+                address += ' ' + $('input[name=zip]').val().trim()
+            params.address = address
+            if $('input[name=promos]').length > 0
+                if $('input[name=promos]').val().trim() isnt ''
+                    params['promos'] = $('input[name=promos]').val().trim()
+            tickets = $('div#tickets-canvas div.ticket')
+            ticketSelected = false
+            for ticket in tickets
+                if $(ticket).hasClass('active')
+                    ticketSelected = true
+                    quantity = parseInt $(ticket).find('input.ticket-quantity').val()
+                    params.details[$(ticket).attr('data-id')] = {'quantity':quantity, 'extra_fields': {}}
+                    if $(ticket).find('div.custom-option-group').length > 0
+                        options = $(ticket).find('div.custom-option-group')
+                        $.each options, (target) ->
+                            if $(this).find('div.custom-option.active').length > 0
+                                params.details[$(ticket).attr('data-id')]['extra_fields'][$(this).data('field')] = $(this).find('div.custom-option.active').data('option')
                             return
-                        return
+                    if $(ticket).find('div.custom-field-group').length > 0
+                        fields = $(ticket).find('div.custom-field-group')
+                        $.each fields, (target) ->
+                            fieldValue = $(this).find('input.custom-field-input').val()
+                            if String(fieldValue).trim() isnt ''
+                                params.details[$(ticket).attr('data-id')]['extra_fields'][$(this).data('field')] = String(fieldValue).trim()
+                            else
+                                params.details[$(ticket).attr('data-id')]['extra_fields'][$(this).data('field')] = ' '
+            params.details = JSON.stringify params.details
+            console.log $('.cc-number').val() is ''
+            console.log $('.cc-number').val()
+            if params.phone.length is 0
+                delete params.phone
+            if not ticketSelected
+                alert 'You Must Select A Ticket'
+                $('a#tickets-confirm').html 'Confirm RSVP'
+                @purchasing = false
+                return
+            else if params.first_name is ''
+                alert 'Please Add a First Name'
+                $('a#tickets-confirm').html 'Confirm RSVP'
+                @purchasing = false
+                return
+            else if params.last_name is ''
+                alert 'Please Add a Last Name'
+                $('a#tickets-confirm').html 'Confirm RSVP'
+                @purchasing = false
+                return
+            else if params.email is ''
+                alert 'Please Add an Email'
+                $('a#tickets-confirm').html 'Confirm RSVP'
+                @purchasing = false
+                return
+            else if $('.cc-number').val() is ''
+                alert 'Please Add Credit Card Number'
+                $('a#tickets-confirm').html 'Confirm RSVP'
+                @purchasing = false
+                return
+            else if $('.cc-exp').val() is ''
+                alert 'Please Add Credit Card Expiration'
+                $('a#tickets-confirm').html 'Confirm RSVP'
+                @purchasing = false
+                return
+            else if $('.cc-cvc').val() is ''
+                alert 'Please Add Credit Card Security Code (CVC)'
+                $('a#tickets-confirm').html 'Confirm RSVP'
+                @purchasing = false
+                return
+            else
+                Bazaarboy.post 'event/purchase/', params, (response) =>
+                    if response.status isnt 'OK'
+                        alert response.message
+                        $('a#tickets-confirm').html 'Confirm RSVP'
+                        @purchasing = false
+                    else
+                        if not response.publishable_key?
+                            @completePurchase(response.tickets)
+                            @purchasing = false
+                        else
+                            total = response.purchase.amount * 100
+                            a = (1 + 0.05) * total + 50
+                            b = (1 + 0.029) * total + 30 + 1000
+                            total = Math.round(Math.min(a, b))
+                            @currentCheckout = response.purchase.checkout
+                            Stripe.setPublishableKey response.publishable_key
+                            paymentInfo =
+                                number: $('.cc-number').val().replace(/\ /g, '')
+                                cvc: $('.cc-cvc').val()
+                                exp_month: $('.cc-exp').val().split('/')[0].trim()
+                                exp_year: $('.cc-exp').val().split('/')[1].trim()
+                            Stripe.card.createToken paymentInfo, (status, response) =>
+                                @stripeResponseHandler status, response, total
+                                return
+                            return
+                return
             return
-        return
     completePurchase: (tickets) ->
         scope = this
         if not @overlayAnimationInProgress

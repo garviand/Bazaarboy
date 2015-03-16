@@ -74,6 +74,9 @@ block content
 
 append script
     script.
+        eventName = '{{ invite.event.name }}';
+        eventDate = '{{ invite.event|standardDate }}';
+        sentNumber = '{{ sent }}'
         function iframeLoaded() {
           var iFrameID = document.getElementById('email-preview');
           if(iFrameID) {

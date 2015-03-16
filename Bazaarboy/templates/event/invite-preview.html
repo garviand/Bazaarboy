@@ -11,7 +11,10 @@ _gaq.push(['_trackPageview']);
 var mediaUrl = '{{ MEDIA_URL }}';
 var staticUrl = '{{ STATIC_URL }}';
 var csrfToken = '{{ csrf_token }}';
-var loggedIn = {% if user %}true{% else %}false{% endif %};</script><script src="{{ STATIC_URL }}fastclick/fastclick.js"></script><script src="{{ STATIC_URL }}js/bazaarboy.js"></script><script>function iframeLoaded() {
+var loggedIn = {% if user %}true{% else %}false{% endif %};</script><script src="{{ STATIC_URL }}fastclick/fastclick.js"></script><script src="{{ STATIC_URL }}js/bazaarboy.js"></script><script>eventName = '{{ invite.event.name }}';
+eventDate = '{{ invite.event|standardDate }}';
+sentNumber = '{{ sent }}'
+function iframeLoaded() {
   var iFrameID = document.getElementById('email-preview');
   if(iFrameID) {
     console.log(iFrameID)
