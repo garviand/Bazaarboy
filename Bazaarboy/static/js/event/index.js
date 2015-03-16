@@ -225,21 +225,6 @@
           $('a#tickets-confirm').html('Confirm RSVP');
           this.purchasing = false;
           return;
-        } else if ($('.cc-number').val() === '') {
-          alert('Please Add Credit Card Number');
-          $('a#tickets-confirm').html('Confirm RSVP');
-          this.purchasing = false;
-          return;
-        } else if ($('.cc-exp').val() === '') {
-          alert('Please Add Credit Card Expiration');
-          $('a#tickets-confirm').html('Confirm RSVP');
-          this.purchasing = false;
-          return;
-        } else if ($('.cc-cvc').val() === '') {
-          alert('Please Add Credit Card Security Code (CVC)');
-          $('a#tickets-confirm').html('Confirm RSVP');
-          this.purchasing = false;
-          return;
         } else {
           Bazaarboy.post('event/purchase/', params, function(response) {
             var a, b, paymentInfo, total;

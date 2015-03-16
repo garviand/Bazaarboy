@@ -182,21 +182,6 @@ Bazaarboy.event.index =
                 $('a#tickets-confirm').html 'Confirm RSVP'
                 @purchasing = false
                 return
-            else if $('.cc-number').val() is ''
-                alert 'Please Add Credit Card Number'
-                $('a#tickets-confirm').html 'Confirm RSVP'
-                @purchasing = false
-                return
-            else if $('.cc-exp').val() is ''
-                alert 'Please Add Credit Card Expiration'
-                $('a#tickets-confirm').html 'Confirm RSVP'
-                @purchasing = false
-                return
-            else if $('.cc-cvc').val() is ''
-                alert 'Please Add Credit Card Security Code (CVC)'
-                $('a#tickets-confirm').html 'Confirm RSVP'
-                @purchasing = false
-                return
             else
                 Bazaarboy.post 'event/purchase/', params, (response) =>
                     if response.status isnt 'OK'
