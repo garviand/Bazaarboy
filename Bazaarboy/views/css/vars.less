@@ -25,6 +25,9 @@
 @green: #1DBC85;
 @blue: #1DBC85;
 
+@brown: rgb(121, 80, 22);
+@brown-50: rgba(121, 80, 22, .5);
+
 /* Sizes */
 
 @top-height: 64px;
@@ -87,6 +90,13 @@ div#map-canvas {
 }
 
 /* Styles */
+
+.fullWidth {
+   width: 100%;
+   margin-left: auto;
+   margin-right: auto;
+   max-width: initial;
+}
 
 .hidden{
     display: none;
@@ -196,6 +206,18 @@ h3{
     &:hover, &:focus{
         color: @light-orange-50;
         border-color: @light-orange-50 !important;
+    }
+}
+
+.brown-btn{
+    background: @brown;
+    color: @white;
+    border: @brown thin solid;
+    .btn;
+    &:hover, &:focus{
+        color: @white;
+        background: @brown-50;
+        border-color: @brown-50 !important;
     }
 }
 

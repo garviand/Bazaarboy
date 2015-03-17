@@ -17,6 +17,13 @@ from instagram.client import InstagramAPI
 
 import pdb
 
+
+@never_cache
+@login_check()
+@validate('GET', [], ['next'])
+def splash(request, params, user):
+    return render(request, 'index/splash.html', locals())
+
 @never_cache
 @login_check()
 @validate('GET', [], ['next'])
