@@ -119,7 +119,7 @@ def index(request, params, user):
                                       organizers__in = pids) \
                               .order_by('-start_time')
     pastEventsCount = pastEvents.count()
-    pastEvents = pastEvents.filter()[:10]
+    pastEvents = pastEvents.filter()[:30]
     pastEvents = list(pastEvents)
     pastEventsAttention = []
     for i in range(0, len(pastEvents)):
