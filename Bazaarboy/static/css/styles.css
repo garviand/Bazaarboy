@@ -6169,374 +6169,204 @@ div#show404 div.controls a.home {
 div#show404 div.controls a.home:hover {
   background-color: #ffa61a;
 }
-div.autocomplete_result {
-  padding: 5px;
-  border-bottom: #f6f6f6 thin solid;
-  min-height: 55px;
-}
-div.autocomplete_result:hover {
-  background: #f6f6f6;
-}
-div.autocomplete_result:hover div.autocomplete_image {
-  background-color: #f6f6f6 !important;
-}
-div.autocomplete_result div.autocomplete_image {
-  height: 40px;
-}
-.ui-state-focus {
-  border: none !important;
-  background: #f6f6f6;
-}
-div#landing {
+div#landing div.section-1 {
+  background: url('../images/landing/bg.jpg');
   background-size: cover;
-  background-repeat: no-repeat;
+  min-height: 700px;
+  padding-bottom: 60px;
 }
-div#landing div.splash-top {
-  overflow: hidden;
-  background: url(/static/images/splash/hero_image.jpg);
-  background-size: cover;
-  background-repeat: no-repeat;
-}
-div#landing div.splash-top div.logo-container {
-  position: relative;
-  overflow: visible;
-  width: 100%;
-  height: 0;
-}
-div#landing div.splash-top div.logo-container img.top-logo {
-  width: 100%;
-}
-div#landing div.splash-top div.links-container {
+div#landing div.section-1 div.header {
   padding-top: 40px;
 }
-div#landing div.splash-top div.links-container div.links a {
-  display: inline-block;
-  color: #ffffff;
-  font-size: 12px;
-  padding: 9px 14px;
-  margin-left: 10px;
+@media only screen and (max-width: 40em) {
+  div#landing div.section-1 div.header div.logo-container {
+    text-align: center;
+  }
 }
-div#landing div.splash-top div.links-container div.links a.sign-up-btn {
-  border-radius: 3px;
-  border: #c57724 thin solid;
+div#landing div.section-1 div.header a.logo img {
+  display: inline;
+  height: 50px;
+  width: 50px;
 }
-div#landing div.splash-top div.title {
-  padding-top: 140px;
-  color: #ffffff;
-  font-size: 52px;
-  font-weight: 200;
-  line-height: 3.5rem;
-}
-div#landing div.splash-top div.subtitle {
-  padding-top: 40px;
-  color: #ffffff;
-  font-size: 32px;
-  font-weight: 300;
-}
-div#landing div.splash-top div.see-how {
-  padding-top: 40px;
-  padding-bottom: 100px;
-}
-div#landing div.find-event-container {
-  background: #2e2e2c;
-}
-div#landing div.find-event-container::after {
-  content: " ";
-  background-image: linear-gradient(to right, #181715, #513f1e);
-  height: 2px;
-  display: block;
-}
-div#landing div.find-event-container .border::before {
-  content: "";
-  background-image: linear-gradient(to right, #181715, #513f1e);
-  height: 2px;
-  display: block;
-}
-div#landing div.find-event-container .five-border {
-  height: 6px;
-}
-div#landing div.find-event-container .ten-border {
-  height: 12px;
-}
-div#landing div.find-event-container .twenty-border {
-  height: 40px;
-}
-div#landing div.find-event-container .forty-border {
-  height: 80px;
-}
-div#landing div.find-event-container .eighty-border {
-  height: 100px;
-}
-div#landing div.find-event-container .eighty-border div.search-events-container {
-  background: #2e2e2c;
+div#landing div.section-1 div.header a.logo div.text {
   position: relative;
-  top: -28px;
-  padding: 10px;
-  padding-top: 0;
-  padding-bottom: 0;
+  top: 5px;
+  display: inline;
+  margin-left: 15px;
+  color: #ff9137;
+  font-size: 26px;
+  font-weight: 600;
 }
-div#landing div.find-event-container .eighty-border div.search-events-container::before,
-div#landing div.find-event-container .eighty-border div.search-events-container::after {
-  content: " ";
-  background-image: linear-gradient(to left, #181715, #513f1e);
-  height: 1px;
-  display: block;
-}
-div#landing div.find-event-container .eighty-border div.search-events-container input {
-  background: transparent;
-  border-left: #513f1e thin solid;
-  border-right: #181715 thin solid;
-  border-top: none;
-  border-bottom: none;
-  border-radius: 0 !important;
-  height: 50px !important;
-  line-height: 50px;
-  font-weight: 300;
-  font-size: 20px;
-  display: block;
-  margin-bottom: 0 !important;
-}
-div#landing div.find-event-container .eighty-border div.search-events-container input:focus {
-  color: #ffffff !important;
-  background: transparent !important;
-  border-left: #513f1e thin solid !important;
-  border-right: #181715 thin solid !important;
-}
-div#landing div.find-event-container .eighty-border div.search-events-container input::-webkit-input-placeholder {
-  color: #FFF;
-}
-div#landing div.tagline-container {
-  background: #222220;
-  padding-top: 70px;
-  padding-bottom: 70px;
-}
-div#landing div.tagline-container div.tagline {
+div#landing div.section-1 div.header div.links a {
+  float: right;
+  padding-top: 14px;
   color: #ffffff;
-  font-size: 32px;
-  font-weight: 200;
-  line-height: 3rem;
+  margin-left: 20px;
+  font-size: 18px;
+  font-weight: 600;
 }
-div#landing div.uses-container {
-  border-bottom: thin solid #222220;
+div#landing div.section-1 div.header div.links a.sign_up {
+  color: #ff9137;
 }
-div#landing div.uses-container div.box {
-  color: #ffffff;
-  background-position: top center;
-  background-repeat: no-repeat;
-  min-height: 350px;
-  text-align: center;
-  padding-left: 0;
-  padding-right: 0;
-  border-top: #000 thin solid;
-}
-div#landing div.uses-container div.box div.box-icon {
-  padding-top: 80px;
-  font-size: 20px;
-}
-div#landing div.uses-container div.box div.box-icon > div {
-  height: 25px;
-}
-div#landing div.uses-container div.box div.box-title {
-  font-size: 20px;
-  font-weight: 300;
-}
-div#landing div.uses-container div.box div.box-gradient {
-  height: 1px;
-  background: linear-gradient(to right, #754e16 0%, #c1b49e 50%, #754e16 100%);
-  margin-top: 20px;
-  margin-bottom: 20px;
-}
-div#landing div.uses-container div.box div.box-items {
-  line-height: 40px;
-}
-div#landing div.uses-container div.box.gather {
-  background: url(/static/images/splash/gather_image.jpg);
-  background-size: cover;
-}
-div#landing div.uses-container div.box.organize {
-  background: url(/static/images/splash/organize_image.jpg);
-  background-size: cover;
-}
-div#landing div.uses-container div.box.give {
-  background: url(/static/images/splash/give_image.jpg);
-  background-size: cover;
-}
-div#landing div.organizer-showcase-container {
-  background-color: #4c3c28;
-  /* background: url(/static/images/splash/organizer_background.jpg); */
-  background-size: cover;
-  background-position: bottom center;
-}
-div#landing div.organizer-showcase-container div.title {
-  font-size: 16px;
-  font-weight: bold;
-  color: #ffffff;
-  padding-top: 120px;
-}
-div#landing div.organizer-showcase-container div.organizers {
-  padding-top: 40px;
-}
-div#landing div.organizer-showcase-container div.organizers .slider-controls div.logo-container {
-  background: #FFF;
-  height: 100px;
-  width: 100px;
-  margin-left: auto;
-  margin-right: auto;
-  border-radius: 50px;
-  overflow: hidden;
-  opacity: .5;
-}
-div#landing div.organizer-showcase-container div.organizers .slider-controls div.logo-container.active,
-div#landing div.organizer-showcase-container div.organizers .slider-controls div.logo-container:hover {
-  opacity: 1;
-}
-div#landing div.organizer-showcase-container div.organizers .slider-controls div.logo-container a {
-  position: relative;
-  width: 100%;
-  height: 100%;
-  display: block;
-}
-div#landing div.organizer-showcase-container div.organizers .slider-controls div.logo-container .froyo {
-  background: url(/static/images/splash/logo_froyo.png);
-  background-size: 80%;
-  background-position: center;
-  background-repeat: no-repeat;
-}
-div#landing div.organizer-showcase-container div.organizers .slider-controls div.logo-container .pujols {
-  background: url(/static/images/splash/logo_pujols.png);
-  background-size: 80%;
-  background-position: center;
-  background-repeat: no-repeat;
-}
-div#landing div.organizer-showcase-container div.organizers .slider-controls div.logo-container .surge {
-  background: url(/static/images/splash/logo_surge.jpg);
-  background-size: 80%;
-  background-position: center;
-  background-repeat: no-repeat;
-}
-div#landing div.organizer-showcase-container div.organizers .slider-controls div.logo-container .chess {
-  background: url(/static/images/splash/logo_chess.png);
-  background-size: 80%;
-  background-position: center;
-  background-repeat: no-repeat;
-}
-div#landing div.organizer-showcase-container div.organizers .slider-controls div.logo-container .techartista {
-  background: url(/static/images/splash/logo_ta.png);
-  background-size: 80%;
-  background-position: center;
-  background-repeat: no-repeat;
-}
-div#landing div.organizer-showcase-container div.slider-container {
-  padding-top: 20px;
-  padding-bottom: 100px;
-}
-div#landing div.organizer-showcase-container div.slider-container div.slider-content {
-  position: relative;
-  border: thin solid #c57724;
-  border-radius: 3px;
-  padding: 10px;
-  /*&:before, &:after {
-                    content: "";
-                    position: absolute;
-                    width: 0;
-                    height: 0;
-                    border-style: solid;
-                    border-color: transparent;
-                    border-top: 0;
-                }
-                &:before{
-                    top: -25px;
-                    left: 42px;
-                    border-bottom-color: @orange;
-                    border-width: 25px;
-                }
-                &:after{
-                    top: -24px;
-                    left: 43px;
-                    border-bottom-color: rgb(76, 60, 40);
-                    border-width: 24px;
-                }
-                */
-}
-div#landing div.organizer-showcase-container div.slider-container div.slider-content div.organizer-slider.slick-slider {
-  margin-bottom: 0 !important;
-}
-div#landing div.organizer-showcase-container div.slider-container div.slider-content div.organizer-slider div.slide div.image-container {
-  position: relative;
-  background-size: cover;
-  background-repeat: no-repeat;
-  width: 100%;
-  height: 450px;
-}
-div#landing div.organizer-showcase-container div.slider-container div.slider-content div.organizer-slider div.slide div.image-container div.brand-name-container {
-  position: absolute;
-  width: 100%;
+div#landing div.section-1 div.header div.mobile-links a {
+  padding-top: 25px;
   color: #ffffff;
   font-size: 18px;
-  font-weight: 500;
-  height: 100px;
-  bottom: 0;
-  background: rgba(0, 0, 0, 0.8);
-  padding-left: 20px;
-  padding-right: 20px;
+  font-weight: 600;
 }
-div#landing div.organizer-showcase-container div.slider-container div.slider-content div.organizer-slider div.slide div.image-container div.brand-name-container div.brand-name {
-  line-height: 100px;
+div#landing div.section-1 div.header div.mobile-links a.sign_up {
+  color: #ff9137;
 }
-div#landing div.organizer-showcase-container div.slider-container div.slider-content div.organizer-slider div.slide div.image-container div.brand-name-container a.view-channel {
+div#landing div.section-1 div.title {
+  text-align: center;
+  margin-top: 180px;
+  color: #ffffff;
+  font-size: 48px;
+  font-weight: 600;
+  text-transform: uppercase;
+  line-height: 3.5rem;
+}
+@media only screen and (max-width: 40em) {
+  div#landing div.section-1 div.title {
+    margin-top: 100px !important;
+  }
+}
+div#landing div.section-1 div.hr hr {
+  margin: 30px 0;
+}
+div#landing div.section-1 div.subtext {
+  color: #ffffff;
+  text-align: center;
+  line-height: 1.75rem;
+}
+div#landing div.section-1 div.sign_up {
+  margin-top: 60px;
+}
+div#landing div.section-1 div.sign_up a {
+  display: block;
+  background: #ff9137;
+  width: 100%;
+  padding-top: 10px;
+  padding-bottom: 13px;
+  border: none;
+  -moz-box-shadow: inset 0px -3px 0px 0px #c25f00;
+  -webkit-box-shadow: inset 0px -3px 0px 0px #c25f00;
+  box-shadow: inset 0px -3px 0px 0px #c25f00;
+  text-shadow: 1px 1px 0px #c25f00;
+}
+div#landing div.section-1 div.sign_up a:hover {
+  color: #FFF;
+}
+@media only screen and (max-width: 40em) {
+  div#landing div.section-2 {
+    padding: 75px 0 !important;
+  }
+}
+div#landing div.section-2 {
+  color: #ffffff;
+  padding: 150px 0;
+  background: #ff9137;
+}
+div#landing div.section-2 div.content div.title {
+  font-size: 36px;
+  font-weight: 600;
+  text-align: right;
+  line-height: 2.5rem;
+}
+div#landing div.section-2 div.content div.title .dark {
+  color: #4a4a4a;
+}
+@media only screen and (max-width: 40em) {
+  div#landing div.section-2 div.content div.title {
+    text-align: center !important;
+  }
+}
+div#landing div.section-2 div.content div.subtext {
   margin-top: 30px;
+  margin-bottom: 30px;
+  text-align: right;
+  line-height: 1.5rem;
 }
-div#landing div.sign-up-container {
-  background: #2e2e2c;
-  padding-top: 70px;
-  padding-bottom: 70px;
-  border-top: thin solid #000;
+@media only screen and (max-width: 40em) {
+  div#landing div.section-2 div.content div.subtext {
+    text-align: center !important;
+  }
 }
-div#landing div.sign-up-container div.title {
-  color: #ffffff;
-  font-size: 32px;
-  font-weight: 200;
+div#landing div.section-2 div.content img.ticket {
+  margin-left: 30px;
+  max-height: 250px;
 }
-div#landing div.sign-up-container div.subtitle {
-  padding-top: 40px;
-  color: #ffffff;
+@media only screen and (max-width: 40em) {
+  div#landing div.section-2 div.content div.ticket-container {
+    text-align: center !important;
+  }
+  div#landing div.section-2 div.content div.ticket-container img.ticket {
+    margin-left: 0px;
+  }
+}
+div#landing div.section-3 {
+  background: #ffffff;
+  padding: 100px 0;
+}
+div#landing div.section-3 .content div.logo img {
+  max-width: 80%;
+}
+div#landing div.section-3 .content hr {
+  color: #4a4a4a;
+  background: #4a4a4a;
+  margin: 30px 0;
+  border: none;
+  height: 2px;
+  width: 80%;
+}
+div#landing div.section-3 .content div.quote {
+  color: #ff9137;
   font-size: 20px;
-  font-weight: 300;
-}
-div#landing div.sign-up-container div.inputs {
-  padding-top: 25px;
-}
-div#landing div.sign-up-container div.inputs input[type=text] {
-  color: #FFF;
-  border-color: #795016 !important;
-  background: transparent !important;
-}
-div#landing div.sign-up-container div.inputs input[type=text]::-webkit-input-placeholder {
-  font-style: italic;
-  color: #FFF;
-}
-div#landing div.bottom {
-  background: #222220;
-  height: 100px;
-  line-height: 100px;
-}
-div#landing div.bottom div.tagline {
-  color: #ffffff;
-  font-size: 20px;
-  font-weight: 300;
-}
-div#landing div.footer {
-  background: #161615;
-  min-height: 100px;
-}
-div#landing div.footer span,
-div#landing div.footer a {
-  font-size: 12px;
-  display: inline-block;
-  color: #FFF;
-  margin-top: 20px;
+  font-weight: bold;
+  line-height: 1.7rem;
   margin-bottom: 20px;
-  margin-right: 10px;
+}
+div#landing div.section-3 .content div.subquote {
+  margin-bottom: 40px;
+}
+div#landing div.section-3 .content div.event_details {
+  margin-bottom: 60px;
+}
+div#landing div.section-3 .content div.event_details a {
+  background: #ff9137;
+  padding: 10px 20px;
+  padding-bottom: 13px;
+  border: none;
+  -moz-box-shadow: inset 0px -3px 0px 0px #c25f00;
+  -webkit-box-shadow: inset 0px -3px 0px 0px #c25f00;
+  box-shadow: inset 0px -3px 0px 0px #c25f00;
+  text-shadow: none;
+  font-weight: 600;
+}
+div#landing div.section-3 .content div.event_details a:hover {
+  color: #FFF;
+}
+div#landing div.section-4 {
+  color: #ffffff;
+  padding: 150px 0;
+  background: #01bd8a;
+}
+div#landing div.section-4 div.content div.title {
+  font-size: 36px;
+  font-weight: 600;
+  line-height: 2.5rem;
+}
+div#landing div.section-4 div.content div.title .dark {
+  color: #4a4a4a;
+}
+div#landing div.section-4 div.content div.subtext {
+  margin-top: 30px;
+  margin-bottom: 30px;
+  line-height: 1.5rem;
+}
+div#landing div.section-4 div.content img.glass {
+  float: right;
+  max-height: 250px;
 }
 div.autocomplete_result {
   padding: 5px;
