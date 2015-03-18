@@ -6442,13 +6442,13 @@ div#landing div.find-event-container {
 div#landing div.find-event-container::after {
   content: " ";
   background-image: linear-gradient(to right, #181715, #513f1e);
-  height: 2px;
+  height: 1px;
   display: block;
 }
 div#landing div.find-event-container .border::before {
   content: "";
   background-image: linear-gradient(to right, #181715, #513f1e);
-  height: 2px;
+  height: 1px;
   display: block;
 }
 div#landing div.find-event-container .five-border {
@@ -6716,8 +6716,8 @@ div#landing div.sign-up-container div.inputs input[type=text]::-webkit-input-pla
 }
 div#landing div.bottom {
   background: #222220;
-  height: 100px;
-  line-height: 100px;
+  padding-top: 40px;
+  padding-bottom: 40px;
 }
 div#landing div.bottom div.tagline {
   color: #ffffff;
@@ -6734,7 +6734,6 @@ div#landing div.footer a {
   display: inline-block;
   color: #FFF;
   margin-top: 20px;
-  margin-bottom: 20px;
   margin-right: 10px;
 }
 div.collaboration-requests,

@@ -50,7 +50,7 @@ block body
                                     div.small-12.columns
                                         input(type="text", name="organization_name", placeholder="Organization Name")
                                     div.small-12.columns
-                                        input(type="text", name="email", placeholder="Organization Email")
+                                        input(type="text", name="email", placeholder="Organization Email", value="{% if prepopulated_email %}{{ prepopulated_email }}{% endif %}")
                                     div.small-12.medium-5.columns
                                         div.logo-title Organization Logo
                                         a.upload-logo-btn.primary-btn-inverse.full-btn(href="javascript:;") Upload

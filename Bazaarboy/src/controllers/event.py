@@ -346,6 +346,7 @@ def search(request, params):
     results = []
     for event in events:
         eventObj = serialize_one(event)
+        eventObj['event_url'] = layout.eventUrl(event)
         if event.organizers.all()[0].image:
             eventObj['image_url'] = event.organizers.all()[0].image.source.url
         else:

@@ -18,7 +18,7 @@ from instagram.client import InstagramAPI
 import pdb
 
 
-@never_cache
+
 @login_check()
 @validate('GET', [], ['next'])
 def splash(request, params, user):
@@ -205,7 +205,7 @@ def login(request, user, params):
         return render(request, 'index/login.html', locals())
 
 @login_check()
-@validate('GET', [], ['next', 'code', 'requestid', 'requestc', 'rewid', 'rewtok'])
+@validate('GET', [], ['next', 'code', 'requestid', 'requestc', 'rewid', 'rewtok', 'sem'])
 def register(request, user, params):
     """
     Register Page
@@ -213,6 +213,8 @@ def register(request, user, params):
     if user:
         return redirect('index')
     else:
+        if params['sem']:
+            prepopulated_email = params['sem']
         if params['next']:
             next = params['next']
         if params['code']:
