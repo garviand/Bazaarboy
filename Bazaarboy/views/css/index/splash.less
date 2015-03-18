@@ -25,20 +25,28 @@ div#landing{
     background-repeat: no-repeat;
     div.splash-top{
         overflow: hidden;
+        position: relative;
         div.logo-container{
-            position: relative;
+            position: absolute;
             overflow: visible;
             width: 100%;
-            height: 0;
-            img.top-logo{
-                width: 100%;
+            height: 100%;
+            background: url(/static/images/splash/logo.png);
+            @media @media_small{
+                background-position: -35px 0;
             }
         }
         background: url(/static/images/splash/hero_image.jpg);
         background-size: cover;
         background-repeat: no-repeat;
         div.links-container{
-            padding-top: 40px;
+            padding-top: 45px;
+            @media @media_small{
+                padding-top: 120px;
+                div.links{
+                    text-align: center !important;
+                }
+            }
             div.links{
                 a{
                     display: inline-block;
@@ -46,9 +54,13 @@ div#landing{
                     font-size: 12px;
                     padding: 9px 14px;
                     margin-left: 10px;
+                    border-radius: 3px;
+                    border: thin solid transparent;
                     &.sign-up-btn{
-                        border-radius: 3px;
                         border: @orange thin solid;
+                    }
+                    &:hover{
+                        border: @light-orange thin solid;
                     }
                 }
             }
@@ -59,6 +71,9 @@ div#landing{
             font-size: 52px;
             font-weight: 200;
             line-height: 3.5rem;
+            @media @media_small{
+                padding-top: 80px;
+            }
         }
         div.subtitle{
             padding-top: 40px;
@@ -313,6 +328,12 @@ div#landing{
                                 padding-right: 20px;
                                 div.brand-name{
                                     line-height: 100px;
+                                    a{
+                                        color: #FFF !important;
+                                        &:hover{
+                                            text-decoration: underline;
+                                        }
+                                    }
                                 }
                                 a.view-channel{
                                     margin-top: 30px;
