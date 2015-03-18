@@ -38,9 +38,11 @@ div#wrapper-main{
 
 {% else %}
 
-div#event{
-    padding-left: .9375rem;
-    padding-right: .9375rem;
+@media only screen and (max-width: 40.063em){
+    div#wrapper-content{
+        margin-left: 0;
+        margin-right: 0;
+    }
 }
 
 div#wrapper-main > .row{
