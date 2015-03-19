@@ -24,9 +24,6 @@ import pdb
 @login_check()
 @validate('GET', [], ['next'])
 def splash(request, params, user):
-    subdomain = request.subdomain
-    domain = get_domain()
-    host = request.get_host()
     return render(request, 'index/splash.html', locals())
 
 @never_cache
@@ -36,11 +33,8 @@ def index(request, params, user):
     """
     Index page
     """
-    try:
-        subdomain = request.META['HTTP_HOST'].split('.')[0]
-    except KeyError:
-        subdomain = None
-    if subdomain is not None and subdomain not in ['www', 'bazaarboy']:
+    if request.subdomain is not None and request.subdomain not in ['www']:
+        subdomain = request.subdomain
         if Channel.objects.filter(slug = subdomain, active = True).exists():
             channel = Channel.objects.get(slug = subdomain)
             profile = channel.profile
