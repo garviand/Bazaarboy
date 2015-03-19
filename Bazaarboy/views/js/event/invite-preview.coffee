@@ -44,10 +44,19 @@ Bazaarboy.event.invite_preview =
         scope = this
         $('div.email-actions a.send-email').click () ->
             if not scope.sending
-                $(this).html 'Sending...'
-                scope.sending = true
-                inviteId = $(this).data('id')
-                scope.sendEmail(inviteId)
+                swal
+                    title: "Confirm Details"
+                    html: "Title: " + eventName + "<br /><br />Date: " + eventDate + "<br /><br />Recipients: " + sentNumber
+                    type: "success"
+                    showCancelButton: true
+                    confirmButtonText: "Send Email"
+                    closeOnConfirm: true
+                    , (isConfirm) =>
+                        if isConfirm
+                            $(this).html 'Sending...'
+                            scope.sending = true
+                            inviteId = $(this).data('id')
+                            scope.sendEmail(inviteId)
             return
         return
         

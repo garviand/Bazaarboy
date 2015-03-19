@@ -58,7 +58,7 @@ def connect(request, params, user):
     return redirect('user:settings')
 
 @login_check()
-@validate('POST', ['checkout', 'stripe_token'])
+@validate('POST', ['checkout', 'stripe_token'], ['send_sms'])
 def charge(request, params, user):
     """
     Charge the checkout
@@ -121,7 +121,8 @@ def charge(request, params, user):
         return json_response(response)
     else:
         sendEventConfirmationEmail(purchase)
-        sendEventConfirmationSMS(purchase)
+        if params['send_sms'] == 'true':
+            sendEventConfirmationSMS(purchase)
         response = {
             'status':'OK',
             'tickets': items

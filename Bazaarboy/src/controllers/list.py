@@ -3,6 +3,9 @@ Controller for contact lists
 """
 
 import cgi
+import ordereddict
+import json
+import simplejson
 from kernel.models import *
 from src.controllers.request import *
 from src.serializer import serialize_one
@@ -442,6 +445,11 @@ def sign_up(request, signup, user):
         return redirect('index')
     else:
         signup = Sign_up.objects.get(id = signup)
+        extra_fields = []
+        if signup.extra_fields:
+            custom_fields = simplejson.loads(signup.extra_fields, object_pairs_hook=ordereddict.OrderedDict)
+            for field in ordereddict.OrderedDict(sorted(custom_fields.items())).items():
+                extra_fields.append(field[1])
     return render(request, 'list/sign-up.html', locals())
 
 @login_required()
@@ -485,6 +493,18 @@ def create_sign_up(request, params, user):
         }
         return json_response(response)
     sign_up = Sign_up(owner = profile, name = params['name'], description = params['description'], end_time = params['end_time'])
+    if params['extra_fields'] is not None:
+        try:
+            fields = json.loads(params['extra_fields'])
+        except:
+            response = {
+                'status':'FAIL',
+                'error':'INVALID_FIELD_FORMAT',
+                'message':'The extra field format is not correct.'
+            }
+            return json_response(response)
+        finally:
+            sign_up.extra_fields = json.dumps(fields)
     if params['image'] is not None:
         if not Image.objects.filter(id = params['image']).exists():
             response = {
@@ -503,7 +523,7 @@ def create_sign_up(request, params, user):
     }
     return json_response(response)
 
-@validate('POST', ['first_name', 'last_name', 'email', 'sign_up'])
+@validate('POST', ['first_name', 'last_name', 'email', 'sign_up'], ['extra_fields'])
 def submit_sign_up(request, params):
     """
     Submit Sign Up Form
@@ -540,6 +560,18 @@ def submit_sign_up(request, params):
         }
         return json_response(response)
     sign_up_item = Sign_up_item(sign_up = sign_up, first_name = params['first_name'], last_name = params['last_name'], email = params['email'])
+    if params['extra_fields'] is not None:
+        try:
+            fields = json.loads(params['extra_fields'])
+        except:
+            response = {
+                'status':'FAIL',
+                'error':'INVALID_FIELD_FORMAT',
+                'message':'The extra field format is not correct.'
+            }
+            return json_response(response)
+        finally:
+            sign_up_item.extra_fields = json.dumps(fields)
     sign_up_item.save()
     response = {
         'status':'OK',

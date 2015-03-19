@@ -46,6 +46,7 @@ Bazaarboy.user.settings =
             link_website: save_data.link_website
             link_facebook: save_data.link_facebook
             EIN: save_data.ein
+            color: $('input[name=colorpicker]').spectrum("get").toHexString()
         , (err, event) =>
             unless err
                 setTimeout (() ->
@@ -127,6 +128,10 @@ Bazaarboy.user.settings =
         return
     init: () ->
         scope = this
+        $('input[name=colorpicker]').spectrum
+            preferredFormat: "hex"
+            showInput: true
+            showButtons: true
         $('div.create-event').click () ->
             profileId = $(this).attr('data-profile-id')
             scope.createEvent profileId

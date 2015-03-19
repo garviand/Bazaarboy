@@ -20,6 +20,17 @@ def firstImage(event):
     else:
         return False
 
+@register.filter
+def channelUrl(profile):
+    """
+    Only works on production, return subdomain + url for profile's channel
+    """
+    channel_url = False
+    if Channel.objects.filter(profile = profile).exists():
+        channel = Channel.objects.get(profile = profile)
+        if channel.slug:
+            channel_url = 'https://' + channel.slug + '.bazaarboy.com'
+    return channel_url
 
 @register.filter
 def daysUntil(value):

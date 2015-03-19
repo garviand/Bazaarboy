@@ -110,6 +110,7 @@ TEMPLATE_LOADERS = (
 )
 
 MIDDLEWARE_CLASSES = (
+    'subdomains.middleware.SubdomainURLRoutingMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
@@ -121,6 +122,11 @@ MIDDLEWARE_CLASSES = (
 )
 
 ROOT_URLCONF = 'Bazaarboy.urls'
+
+SUBDOMAIN_URLCONFS = {
+    None: 'Bazaarboy.urls',
+    'www': 'Bazaarboy.urls'
+}
 
 # Python dotted path to the WSGI application used by Django's runserver.
 WSGI_APPLICATION = 'Bazaarboy.wsgi.application'
@@ -175,12 +181,19 @@ LOGGING = {
             'level': 'ERROR',
             'propagate': True,
         },
+        'subdomains.middleware': {
+            'handlers': ['mail_admins'],
+            'level': 'ERROR',
+            'propagate': True,
+        },
     }
 }
 
 SESSION_EXPIRE_AT_BROWSER_CLOSE = True
 
 FILE_UPLOAD_PERMISSIONS = 0600
+
+TEST_RUNNER = 'django.test.runner.DiscoverRunner'
 
 # Celery
 

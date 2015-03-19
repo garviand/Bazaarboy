@@ -12,7 +12,7 @@ block body
                     form#register-form
                         div.row
                             div.small-10.small-offset-1.columns
-                                {% if not organizer_request %}
+                                {% if not organizer_request and not reward_send %}
                                 div.row
                                     div.small-12.medium-7.columns.text-center
                                         div.logo-small &nbsp;
@@ -22,7 +22,7 @@ block body
                                         span.page-title
                                             span.hide-for-small-only &nbsp;&nbsp;|&nbsp;
                                             | &nbsp;Register
-                                {% else %}
+                                {% elif organizer_request %}
                                 div.row
                                     div.small-12.columns.text-center.request_logo_container
                                         img.request_logo(src="{{ organizer_request.sender.profile.image.source.url }}")
@@ -31,6 +31,15 @@ block body
                                         | '{{ organizer_request.sender.profile.name }}' has invited you to collaborate on the event&nbsp;
                                         b {{ organizer_request.event.name }}
                                         | . Create an account to accept the request!
+                                {% else %}
+                                div.row
+                                    div.small-12.columns.text-center.request_logo_container
+                                        img.request_logo(src="{{ reward_send.reward.creator.image.source.url }}")
+                                div.row
+                                    div.small-12.columns.request_info
+                                        | '{{ reward_send.reward.creator.name }}' has sent you a gift to distribute to your audience -&nbsp;
+                                        b {{ reward_send.reward.name }}
+                                        | . Register to view the gift!
                                 {% endif %}
                                 hr.separator
                                 div.row.register-inputs
@@ -41,7 +50,7 @@ block body
                                     div.small-12.columns
                                         input(type="text", name="organization_name", placeholder="Organization Name")
                                     div.small-12.columns
-                                        input(type="text", name="email", placeholder="Organization Email")
+                                        input(type="text", name="email", placeholder="Organization Email", value="{% if prepopulated_email %}{{ prepopulated_email }}{% endif %}")
                                     div.small-12.medium-5.columns
                                         div.logo-title Organization Logo
                                         a.upload-logo-btn.primary-btn-inverse.full-btn(href="javascript:;") Upload
@@ -58,13 +67,17 @@ block body
                                         input(type="hidden", name="request_id", value="{{ organizer_request.id }}")
                                         input(type="hidden", name="request_code", value="{{ organizer_request.code }}")
                                         {% endif %}
+                                        {% if reward_send %}
+                                        input(type="hidden", name="reward_id", value="{{ reward_send.id }}")
+                                        input(type="hidden", name="reward_token", value="{{ reward_send.token }}")
+                                        {% endif %}
                                         input.primary-btn.full-btn.submit-register(type="submit", value="Create Bazaarboy Account")
                 div#footer
                     div.row
                         div.small-10.small-offset-1.columns
                             div.row
                                 div.small-12.medium-4.medium-offset-8.columns.end
-                                    a.switch(href="{% url index:login %}{% if next %}?next={{ next }}{% endif %}{% if code %}&code={{ code }}{% endif %}{% if organizer_request %}?requestid={{ organizer_request.id }}&requestc={{ organizer_request.code }}{% endif %}") Login
+                                    a.switch(href="{% url 'index:login' %}{% if reward_send %}?rewid={{ reward_send.id }}&rewtok={{ reward_send.token }}{% endif %}{% if next %}?next={{ next }}{% endif %}{% if code %}&code={{ code }}{% endif %}{% if organizer_request %}?requestid={{ organizer_request.id }}&requestc={{ organizer_request.code }}{% endif %}") Login
 
 append script
     script(src="https://dme0ih8comzn4.cloudfront.net/js/feather.js")

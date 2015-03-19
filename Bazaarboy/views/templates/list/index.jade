@@ -4,13 +4,13 @@ block title
     | List Dashboard
 
 block sidebar
-    +sidebarItem('ss-newspaper')(href="{% url index %}")
+    +sidebarItem('ss-newspaper')(href="{% url 'index' %}")
         | Events
-    +sidebarItem('ss-database')(href="{% url list:index %}", class="selected")
+    +sidebarItem('ss-database')(href="{% url 'list:index' %}", class="selected")
         | Lists
-    +sidebarItem('ss-tag')(href="{% url reward:index %}")
+    +sidebarItem('ss-tag')(href="{% url 'reward:index' %}")
         | Gifts
-    +sidebarItem('ss-share')(href="{% url user:settings %}")
+    +sidebarItem('ss-share')(href="{% url 'user:settings' %}")
         | Settings
 
 block header
@@ -44,7 +44,7 @@ block content
                 div.medium-4.columns.new-list
                     a.new-list-btn.primary-btn(href="javascript:;") + New List
                 div.medium-4.columns.new-list.end
-                    a.primary-btn-inverse(href="{% url list:new-sign-up %}") + New Sign Up Form
+                    a.primary-btn-inverse(href="{% url 'list:new-sign-up' %}") + New Sign Up Form
             div.row
                 {% if active_sign_ups|length > 0 %}
                 div.small-12.columns.lists
@@ -62,7 +62,7 @@ block content
                                     div.small-5.columns.text-left.list-members
                                         | {{ signup.description|truncatechars:30 }}
                                     div.small-2.columns.text-center.list-action
-                                        a(href="{% url list:sign-up signup.id %}") View Form
+                                        a(href="{% url 'list:sign-up' signup.id %}") View Form
                                     div.small-2.columns.text-center.list-action
                                         a(href="javascript:;") View Signups
                             {% endfor %}
@@ -83,7 +83,7 @@ block content
                                     div.small-2.columns.text-left.list-members
                                         | {{ list.items }} Membe{{ list.items|pluralize:"r,rs" }}
                                     div.small-2.columns.text-center.list-action
-                                        a(href="{% url list:list list.id %}") Manage List
+                                        a(href="{% url 'list:list' list.id %}") Manage List
                                     div.small-2.columns.text-center.list-action
                                         a.delete-list-btn(href="javascript:;", data-id="{{ list.id }}") Delete List
                             {% endfor %}

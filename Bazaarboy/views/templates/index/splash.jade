@@ -1,0 +1,190 @@
+// Index.Landing
+
+extends ../layout
+
+append head
+    link(rel="stylesheet", href="{{ STATIC_URL }}slick/slick-theme.css")
+    link(rel="stylesheet", href="{{ STATIC_URL }}slick/slick.css")
+    link(rel="stylesheet", href="{{ STATIC_URL }}jQueryUI/jquery-ui.css")
+
+block body
+    div#landing
+        div.fullWidth.splash-top
+            div.logo-container &nbsp;
+            div.row.links-container
+                div.small-12.medium-4.columns
+                    div.logo-container
+                        | &nbsp;
+                div.small-12.medium-8.columns.links.text-right
+                    a(href="javascript:;") Pricing
+                    a(href="javascript:;") Contact
+                    a(href="javascript:;") Log In
+                    a.sign-up-btn(href="javascript:;") Sign Up
+            div.row
+                div.small-12.columns.text-center
+                    div.title Each event is an opportunity to strengthen your brand.
+            div.row
+                div.small-12.columns.text-center
+                    div.subtitle Increase your brand's outreach efficacy with Bazaarboy.
+            div.row.see-how
+                div.small-10.medium-2.large-1.small-centered.text-center.columns
+                    a.primary-btn.full-btn.see-how-btn(href="javascript:;") See How
+        div.fullWidth.find-event-container
+            div.fullWidth.five-border.border &nbsp;
+            div.fullWidth.ten-border.border &nbsp;
+            div.fullWidth.twenty-border.border &nbsp;
+            div.fullWidth.forty-border.border &nbsp;
+            div.fullWidth.eighty-border.border
+                div.row
+                    div.small-12.columns.medium-6.large-4.small-centered.columns
+                        div.search-events-container
+                            input(type="text", name="event_name", placeholder="Find an Event...")
+        div.fullWidth.tagline-container
+            div.row
+                div.small-12.tagline.columns.text-center
+                    | Organizers, sponsors, and promoters use Bazaarboy to streamline...here's how.
+        div.fullWidth.row.uses-container
+            div.small-12.medium-4.columns.box.gather
+                div.box-icon
+                    div.ss-usergroup &nbsp;
+                div.box-title Gather
+                div.box-gradient &nbsp;
+                div.box-items
+                    div 1. Fake Item
+                    div 1. Fake Item
+                    div 1. Fake Item
+            div.small-12.medium-4.columns.box.organize
+                div.box-icon
+                    div.ss-bookmark &nbsp;
+                div.box-title Organize
+                div.box-gradient &nbsp;
+                div.box-items
+                    div 1. Fake Item
+                    div 1. Fake Item
+                    div 1. Fake Item
+            div.small-12.medium-4.columns.box.give
+                div.box-icon
+                    div.ss-storagebox &nbsp;
+                div.box-title Give
+                div.box-gradient &nbsp;
+                div.box-items
+                    div 1. Fake Item
+                    div 1. Fake Item
+                    div 1. Fake Item
+        div.fullWidth.organizer-showcase-container
+            div.row
+                div.small-12.columns.text-center
+                    div.title ORGANIZER SHOWCASE
+            div.row
+                div.small-12.columns.organizers.text-center
+                    ul.small-block-grid-2.medium-block-grid-3.large-block-grid-5.slider-controls
+                        li
+                            div.logo-container.active(data-slidenum="0")
+                                a.froyo(href="javascript:;") &nbsp;
+                        li
+                            div.logo-container(data-slidenum="1")
+                                a.pujols(href="javascript:;") &nbsp;
+                        li
+                            div.logo-container(data-slidenum="2")
+                                a.surge(href="javascript:;") &nbsp;
+                        li
+                            div.logo-container(data-slidenum="3")
+                                a.chess(href="javascript:;") &nbsp;
+                        li
+                            div.logo-container(data-slidenum="4")
+                                a.techartista(href="javascript:;") &nbsp;
+            div.row
+                div.small-12.columns
+                    div.slider-container
+                        div.slider-content
+                            div.organizer-slider
+                                div.slide.slide-froyo
+                                    div.image-container(style="background:url(/static/images/splash/org_froyo.png); background-size:cover; background-position:center;")
+                                        div.brand-name-container
+                                            div.row
+                                                div.small-12.medium-9.large-10.columns
+                                                    div.brand-name
+                                                        a(href="https://froyo.bazaarboy.com") Froyo
+                                                div.small-12.medium-3.large-2.columns
+                                                    a.view-channel.primary-btn(href="https://froyo.bazaarboy.com") View Channel
+                                div.slide.slide-pujols
+                                    div.image-container(style="background:url(/static/images/splash/org_pujols.jpg); background-size:cover; background-position:center;")
+                                        div.brand-name-container
+                                            div.row
+                                                div.small-12.medium-9.large-10.columns
+                                                    div.brand-name 
+                                                        a(href="https://pujolsfamilyfoundation.bazaarboy.com") Albert Pujols Family Foundation
+                                                div.small-12.medium-3.large-2.columns
+                                                    a.view-channel.primary-btn(href="https://pujolsfamilyfoundation.bazaarboy.com") View Channel
+                                div.slide.slide-surge
+                                    div.image-container(style="background:url(/static/images/splash/org_surge.jpg); background-size:cover; background-position:center;")
+                                        div.brand-name-container
+                                            div.row
+                                                div.small-12.medium-9.large-10.columns
+                                                    div.brand-name 
+                                                        a(href="https://stlsurgebasketball.bazaarboy.com") St. Louis Surge
+                                                div.small-12.medium-3.large-2.columns
+                                                    a.view-channel.primary-btn(href="https://stlsurgebasketball.bazaarboy.com") View Channel
+                                div.slide.slide-chess
+                                    div.image-container(style="background:url(/static/images/splash/org_chess.jpg); background-size:cover; background-position:center;")
+                                        div.brand-name-container
+                                            div.row
+                                                div.small-12.medium-9.large-10.columns
+                                                    div.brand-name 
+                                                        a(href="https://worldchesshof.bazaarboy.com") World Chess Hall of Fame
+                                                div.small-12.medium-3.large-2.columns
+                                                    a.view-channel.primary-btn(href="https://worldchesshof.bazaarboy.com") View Channel
+                                div.slide.slide-techartista
+                                    div.image-container(style="background:url(/static/images/splash/org_ta.jpg); background-size:cover; background-position:center;")
+                                        div.brand-name-container
+                                            div.row
+                                                div.small-12.medium-9.large-10.columns
+                                                    div.brand-name 
+                                                        a(href="https://techartista.bazaarboy.com") TechArtista Collaborative Working Evironment
+                                                div.small-12.medium-3.large-2.columns
+                                                    a.view-channel.primary-btn(href="https://techartista.bazaarboy.com") View Channel
+        div.fullWidth.sign-up-container
+            div.row
+                div.small-12.columns.text-center
+                    div.row
+                        div.small-12.columns
+                            div.title Interested?
+                    div.row
+                        div.small-12.columns
+                            div.subtitle Sign up with Bazaarboy to maximize engagement at your next event.
+                    div.row.inputs
+                        div.small-12.medium-8.large-5.small-centered.columns
+                            div.row
+                                div.small-12.medium-8.large-9.columns
+                                    input(type="text", name="sign_up_email", placeholder="Organization Email Address")
+                                div.small-12.medium-4.large-3.columns
+                                    a.brown-btn.full-btn.sign-up-submit(href="javascript:;") Sign Up
+        div.fullWidth.bottom
+            div.row
+                div.small-12.columns
+                    div.tagline Increase your brand's outreach efficacy with Bazaarboy.
+        div.fullWidth.footer
+            div.row
+                div.small-12.columns
+                    div.links
+                        span &copy; 2015 Bazaarboy, LLC
+                        span |
+                        a(href="javascript:;") Terms of Use
+                        a(href="javascript:;") Pricing
+                        a(href="javascript:;") Contact
+                        a(href="javascript:;") Log In
+                        a(href="javascript:;") Sign Up
+
+
+
+
+
+
+        
+
+append script
+    script(type="text/javascript", src="//code.jquery.com/jquery-migrate-1.2.1.min.js")
+    script(type="text/javascript", src="{{ STATIC_URL }}jQueryUI/jquery-ui.min.js")
+    script(type="text/javascript", src="{{ STATIC_URL }}jQueryUI/jquery-ui.autocomplete.html.js")
+    script(type="text/javascript", src="{{ STATIC_URL }}slick/slick.min.js")
+    script(type="text/javascript", src="{{ STATIC_URL }}js/index/splash.js")

@@ -15,7 +15,16 @@ from src.config import *
 from src.controllers.request import validate, login_check, json_response
 from instagram.client import InstagramAPI
 
+from subdomains.utils import get_domain
+
 import pdb
+
+
+
+@login_check()
+@validate('GET', [], ['next'])
+def splash(request, params, user):
+    return render(request, 'index/splash.html', locals())
 
 @never_cache
 @login_check()
@@ -24,15 +33,12 @@ def index(request, params, user):
     """
     Index page
     """
-    try:
-        subdomain = request.META['HTTP_HOST'].split('.')[0]
-    except KeyError:
-        subdomain = None
-    if subdomain is not None and subdomain not in ['www', 'bazaarboy']:
+    if request.subdomain is not None and request.subdomain not in ['www']:
+        subdomain = request.subdomain
         if Channel.objects.filter(slug = subdomain, active = True).exists():
             channel = Channel.objects.get(slug = subdomain)
             profile = channel.profile
-            organizers = Organizer.objects.filter(profile = profile, event__is_launched = True, event__is_deleted = False, is_creator = True).order_by('-event__start_time')
+            organizers = Organizer.objects.filter(profile = profile, event__is_launched = True, event__is_deleted = False).order_by('-event__start_time')
             current_events = []
             past_events = []
             for organizer in organizers:
@@ -119,7 +125,7 @@ def index(request, params, user):
                                       organizers__in = pids) \
                               .order_by('-start_time')
     pastEventsCount = pastEvents.count()
-    pastEvents = pastEvents.filter()[:10]
+    pastEvents = pastEvents.filter()[:30]
     pastEvents = list(pastEvents)
     pastEventsAttention = []
     for i in range(0, len(pastEvents)):
@@ -178,7 +184,7 @@ def index(request, params, user):
     return render(request, 'index/index.html', locals())
 
 @login_check()
-@validate('GET', [], ['next', 'code', 'requestid', 'requestc'])
+@validate('GET', [], ['next', 'code', 'requestid', 'requestc', 'rewid', 'rewtok'])
 def login(request, user, params):
     """
     Login Page
@@ -193,10 +199,13 @@ def login(request, user, params):
         if params['requestid'] and params['requestc']:
             if Collaboration_request.objects.filter(id = params['requestid'], code = params['requestc']).exists():
                 organizer_request = Collaboration_request.objects.get(id = params['requestid'], code = params['requestc'])
+        if params['rewid'] and params['rewtok']:
+            if Reward_send.objects.filter(id = params['rewid'], token = params['rewtok']).exists():
+                reward_send = Reward_send.objects.get(id = params['rewid'])
         return render(request, 'index/login.html', locals())
 
 @login_check()
-@validate('GET', [], ['next', 'code', 'requestid', 'requestc'])
+@validate('GET', [], ['next', 'code', 'requestid', 'requestc', 'rewid', 'rewtok', 'sem'])
 def register(request, user, params):
     """
     Register Page
@@ -204,6 +213,8 @@ def register(request, user, params):
     if user:
         return redirect('index')
     else:
+        if params['sem']:
+            prepopulated_email = params['sem']
         if params['next']:
             next = params['next']
         if params['code']:
@@ -211,6 +222,9 @@ def register(request, user, params):
         if params['requestid'] and params['requestc']:
             if Collaboration_request.objects.filter(id = params['requestid'], code = params['requestc']).exists():
                 organizer_request = Collaboration_request.objects.get(id = params['requestid'], code = params['requestc'])
+        if params['rewid'] and params['rewtok']:
+            if Reward_send.objects.filter(id = params['rewid'], token = params['rewtok']).exists():
+                reward_send = Reward_send.objects.get(id = params['rewid'])
         return render(request, 'index/register.html', locals())
 
 @login_check()
@@ -242,5 +256,5 @@ def timezone(request, params):
     """
     Set timezone info for this session
     """
-    request.session['django_timezone'] = pytz.timezone(params['timezone'])
+    request.session['django_timezone'] = params['timezone']
     return json_response({})

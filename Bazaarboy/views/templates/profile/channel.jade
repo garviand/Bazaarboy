@@ -7,13 +7,13 @@ append head
     link(rel="stylesheet", href="{{ STATIC_URL }}jQueryUI/jquery-ui.css")
 
 block sidebar
-    +sidebarItem('ss-newspaper')(href="{% url index %}")
+    +sidebarItem('ss-newspaper')(href="{% url 'index' %}")
         | Events
-    +sidebarItem('ss-database')(href="{% url list:index %}")
+    +sidebarItem('ss-database')(href="{% url 'list:index' %}")
         | Lists
-    +sidebarItem('ss-tag')(href="{% url reward:index %}")
+    +sidebarItem('ss-tag')(href="{% url 'reward:index' %}")
         | Gifts
-    +sidebarItem('ss-share')(href="{% url user:settings %}", class="selected")
+    +sidebarItem('ss-share')(href="{% url 'user:settings' %}", class="selected")
         | Settings
 
 block header
@@ -63,7 +63,7 @@ block content
                         {% endif %}
                     div.medium-4.columns.end
                         {% if channel %}
-                        a.secondary-btn.full-btn(href="{% url profile:index profile.id %}") Preview Profile
+                        a.secondary-btn.full-btn(href="{% url 'profile:index' profile.id %}") Preview Profile
                         {% endif %}
 append script
     script(src="https://dme0ih8comzn4.cloudfront.net/js/feather.js")

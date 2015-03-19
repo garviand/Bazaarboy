@@ -44,6 +44,14 @@
               } else {
                 Bazaarboy.redirect('index');
               }
+            } else if (response.status === 'REWARD') {
+              swal({
+                type: 'success',
+                title: 'Gift Claimed!',
+                text: 'You can now send this gift out to your audience.'
+              }, function() {
+                return Bazaarboy.redirect('rewards/');
+              });
             } else {
               alert(response.message);
               window.clearTimeout(scope.timer);
@@ -127,7 +135,17 @@
               } else {
                 Bazaarboy.redirect('index');
               }
+            } else if (response.status === 'REWARD') {
+              swal({
+                type: 'success',
+                title: 'Gift Claimed!',
+                text: 'You can now send this gift out to your audience.'
+              }, function() {
+                return Bazaarboy.redirect('rewards/');
+              });
             } else {
+              console.log(response);
+              console.log('not rewarded');
               alert(response.message);
               window.clearTimeout(scope.timer);
               $('div.logo-small').css({

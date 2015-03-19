@@ -1,6 +1,76 @@
 Bazaarboy.event.invite =
     saving: false
     image: {}
+    saveInvite: (toPreview) ->
+        if not @saving
+            $('a.save-invite').html 'Saving...'
+            @saving = true
+            if not toPreview
+                list_name = $("div#new-list-modal div.new-list-inputs input[name=list_name]").val()
+                if list_name.trim() is ''
+                    swal("Wait!", "List Name Cannot Be Empty", "warning")
+                    @saving = false
+                    $('div#new-list-modal div.new-list-inputs a.create-list').html '+ Add New List'
+                    $('a.save-invite').html 'Save &amp; Preview'
+            if not inviteEdit
+                targetId = $('div.email input[name=event]').val()
+                targetUrl = 'event/invite/new/'
+            else
+                targetId = $('div.email input[name=invite]').val()
+                targetUrl = 'event/invite/save/'
+            message = $('div.email textarea[name=message]').val()
+            if message.trim() is ''
+                if toPreview
+                    swal("Wait!", "Email Message Cannot Be Empty", "warning")
+                    @saving = false
+                    $('a.save-invite').html 'Save &amp; Preview'
+                    $('div#new-list-modal div.new-list-inputs a.create-list').html '+ Add New List'
+                    return
+                else
+                    message = 'Draft'
+            details = $('div.email textarea[name=details]').val()
+            activeLists = $('div.lists div.list.active')
+            if activeLists.length is 0 and toPreview
+                swal("Wait!", "You Must Select At Least 1 List", "warning")
+                @saving = false
+                $('a.save-invite').html 'Save &amp; Preview'
+                $('div#new-list-modal div.new-list-inputs a.create-list').html '+ Add New List'
+                return
+            lists = ''
+            for list in activeLists
+                if lists != ''
+                    lists += ', '
+                lists += $(list).data('id')
+            if lists == ''
+                lists = ' '
+            imageId = ''
+            deleteImg = true
+            if @image.pk?
+                imageId = @image.pk
+                deleteImg = false
+            force = true
+            if toPreview
+                force = false
+            color = $('input[name=colorpicker]').spectrum("get").toHexString()
+            Bazaarboy.post targetUrl, {id:targetId, message:message, details:details, lists:lists, image:imageId, color:color, deleteImg:deleteImg, force:force}, (response) =>
+                if toPreview
+                    if response.status is 'OK'
+                        inviteId = response.invite.pk
+                        Bazaarboy.redirect 'event/invite/' + inviteId + '/preview'
+                        return
+                    @saving = false
+                    $('a.save-invite').html 'Save &amp; Preview'
+                    $('div#new-list-modal div.new-list-inputs a.create-list').html '+ Add New List'
+                else
+                    Bazaarboy.post 'lists/create/', {profile:profileId, name:list_name, is_hidden:1}, (response) ->
+                        if response.status is 'OK'
+                            Bazaarboy.redirect 'lists/' + response.list.pk + '/?eid=' + String(eventId)
+                        else
+                            swal response.message
+                            $('div#new-list-modal div.new-list-inputs a.create-list').html '+ Add New List'
+                        return
+                return
+        return
     init: () ->
         scope = this
         if imgId?
@@ -14,14 +84,7 @@ Bazaarboy.event.invite =
             return
         $("div#new-list-modal div.new-list-inputs a.create-list").click () ->
             $(this).html 'Creating...'
-            list_name = $("div#new-list-modal div.new-list-inputs input[name=list_name]").val()
-            if list_name.trim() isnt ''
-                Bazaarboy.post 'lists/create/', {profile:profileId, name:list_name, is_hidden:1}, (response) ->
-                    if response.status is 'OK'
-                        Bazaarboy.redirect 'lists/' + response.list.pk
-                    return
-            else
-                alert 'List name can\'t be empty'
+            scope.saveInvite(false)
             return
         # SELECT LISTS
         $('div.lists div.list').click () ->
@@ -85,48 +148,7 @@ Bazaarboy.event.invite =
             showButtons: true
         # SAVE & PREVIEW
         $('a.save-invite').click () ->
-            if not scope.saving
-                $('a.save-invite').html 'Saving...'
-                scope.saving = true
-                if not inviteEdit
-                    targetId = $('div.email input[name=event]').val()
-                    targetUrl = 'event/invite/new/'
-                else
-                    targetId = $('div.email input[name=invite]').val()
-                    targetUrl = 'event/invite/save/'
-                message = $('div.email textarea[name=message]').val()
-                if message.trim() is ''
-                    swal("Wait!", "Email Message Cannot Be Empty", "warning")
-                    scope.saving = false
-                    $('a.save-invite').html 'Save &amp; Preview'
-                    return
-                details = $('div.email textarea[name=details]').val()
-                activeLists = $('div.lists div.list.active')
-                if activeLists.length is 0
-                    swal("Wait!", "You Must Select At Least 1 List", "warning")
-                    scope.saving = false
-                    $('a.save-invite').html 'Save &amp; Preview'
-                    return
-                lists = ''
-                for list in activeLists
-                    if lists != ''
-                        lists += ', '
-                    lists += $(list).data('id')
-                imageId = ''
-                deleteImg = true
-                if scope.image.pk?
-                    imageId = scope.image.pk
-                    deleteImg = false
-                color = $('input[name=colorpicker]').spectrum("get").toHexString()
-                Bazaarboy.post targetUrl, {id:targetId, message:message, details:details, lists:lists, image:imageId, color:color, deleteImg:deleteImg}, (response) ->
-                    if response.status is 'OK'
-                        inviteId = response.invite.pk
-                        Bazaarboy.redirect 'event/invite/' + inviteId + '/preview'
-                        return
-                    scope.saving = false
-                    $('a.save-invite').html 'Save &amp; Preview'
-                    return
-            return
+            scope.saveInvite(true)
         return
         
 Bazaarboy.event.invite.init()

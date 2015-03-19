@@ -30,6 +30,10 @@ block body
                                         input(type="text", name="last_name", placeholder="Last Name")
                                     div.small-12.columns
                                         input(type="text", name="email", placeholder="Email")
+                                    {% for field in extra_fields %}
+                                    div.small-12.columns
+                                        input.extra-field(type="text", data-field="{{ field }}", placeholder="{{ field }}", value="")
+                                    {% endfor %}
                                 div.row.login-bottom
                                     div.small-12.medium-4.medium-offset-8.columns
                                         input.primary-btn.submit-login(type="submit", value="SUBMIT")

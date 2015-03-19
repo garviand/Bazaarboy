@@ -337,6 +337,27 @@ def event(request, params, user):
     }
     return json_response(response)
 
+@validate('GET', ['keyword'])
+def search(request, params):
+    """
+    Search events by keyword
+    """
+    events = Event.objects.filter(Q(end_time = None, start_time__gt = timezone.now()) | Q(end_time__isnull = False, end_time__gt = timezone.now()), is_launched = True, name__icontains = params['keyword'])
+    results = []
+    for event in events:
+        eventObj = serialize_one(event)
+        eventObj['event_url'] = layout.eventUrl(event)
+        if event.organizers.all()[0].image:
+            eventObj['image_url'] = event.organizers.all()[0].image.source.url
+        else:
+            eventObj['image_url'] = None
+        results.append(eventObj)
+    response = {
+        'status':'OK',
+        'events':results
+    }
+    return json_response(response)
+
 @login_required()
 @validate('GET', ['id'])
 def graph_data(request, params, user):
@@ -375,19 +396,6 @@ def graph_data(request, params, user):
             'purchases': purchase_data
         }
         return json_response(response)
-
-@validate('GET', ['keyword'])
-def search(request, params):
-    """
-    Search events by keyword
-    """
-    events = Event.objects.filter(name__icontains = params['keyword'], 
-                                  is_deleted = False)
-    response = {
-        'status':'OK',
-        'events':serialize(events)
-    }
-    return json_response(response)
 
 @validate('POST', ['name', 'useremail', 'message', 'event'])
 def issue(request, params):
@@ -428,10 +436,10 @@ def invite(request, event, user):
     for invt in sentInvites:
         opens = 0
         totalOpens = 0
-        result = client.messages.search(query='u_invite_id:'  + settings.INVITATION_PREFIX + '-' + str(invt.id), limit = 1000, date_from='2014-01-01')
-        for email in result:
-            opens += email['opens']
-            if email['opens'] > 0:
+        results = Invite_stat.objects.filter(invite = invt).order_by('-clicks', '-opens')
+        for email in results:
+            opens += email.opens
+            if email.opens > 0:
                 totalOpens += 1
         invt.opens = opens
         invt.total_opens = totalOpens
@@ -518,7 +526,7 @@ def copy_invite(request, params, invite, user):
     return json_response(response)
 
 @login_check()
-@validate('POST', ['id', 'lists', 'message'], ['details', 'image', 'color'])
+@validate('POST', ['id', 'lists', 'message'], ['details', 'image', 'color', 'force'])
 def new_invite(request, params, user):
     event = params['id']
     if not Event.objects.filter(id = event, is_deleted = False).exists():
@@ -539,15 +547,18 @@ def new_invite(request, params, user):
         return json_response(response)
     profiles = Profile.objects.filter(managers = user)
     profile = profiles[0]
-    if List.objects.filter(id__in = [x.strip() for x in params['lists'].split(',')], owner__managers = user).exists():
-        lists = List.objects.filter(id__in = [x.strip() for x in params['lists'].split(',')], owner__managers = user, is_deleted = False)
+    if params['force'] != 'true' or params['lists'].strip() != '':
+        if List.objects.filter(id__in = [x.strip() for x in params['lists'].split(',')], owner__managers = user).exists():
+            lists = List.objects.filter(id__in = [x.strip() for x in params['lists'].split(',')], owner__managers = user, is_deleted = False)
+        else:
+            response = {
+                'status':'FAIL',
+                'error':'NO_VALID_LISTS',
+                'message':'No Valid Lists Were Selected.'
+            }
+            return json_response(response)
     else:
-        response = {
-            'status':'FAIL',
-            'error':'NO_VALID_LISTS',
-            'message':'No Valid Lists Were Selected.'
-        }
-        return json_response(response)
+        lists = []
     invite = Invite(event = event, profile = profile, message = params['message'])
     if params['details']:
         invite.details = params['details']
@@ -567,7 +578,7 @@ def new_invite(request, params, user):
     return json_response(response)
 
 @login_check()
-@validate('POST', ['id', 'lists', 'message'], ['details', 'image', 'color', 'deleteImg'])
+@validate('POST', ['id', 'lists', 'message'], ['details', 'image', 'color', 'deleteImg', 'force'])
 def save_invite(request, params, user):
     invite = params['id']
     if not Invite.objects.filter(id = invite, profile__managers = user, is_deleted = False).exists():
@@ -580,15 +591,18 @@ def save_invite(request, params, user):
     invite = Invite.objects.get(id = invite)
     profiles = Profile.objects.filter(managers = user)
     profile = profiles[0]
-    if List.objects.filter(id__in = [x.strip() for x in params['lists'].split(',')], owner__managers = user).exists():
-        lists = List.objects.filter(id__in = [x.strip() for x in params['lists'].split(',')], owner__managers = user)
+    if params['force'] != 'true' or params['lists'].strip() != '':
+        if List.objects.filter(id__in = [x.strip() for x in params['lists'].split(',')], owner__managers = user).exists():
+            lists = List.objects.filter(id__in = [x.strip() for x in params['lists'].split(',')], owner__managers = user)
+        else:
+            response = {
+                'status':'FAIL',
+                'error':'NO_VALID_LISTS',
+                'message':'No Valid Lists Were Selected.'
+            }
+            return json_response(response)
     else:
-        response = {
-            'status':'FAIL',
-            'error':'NO_VALID_LISTS',
-            'message':'No Valid Lists Were Selected.'
-        }
-        return json_response(response)
+        lists = []
     invite.message = params['message']
     if params['details']:
         invite.details = params['details']
@@ -1164,6 +1178,8 @@ def create(request, params, user):
         return json_response(response)
     # Create event
     event = Event(start_time = timezone.now() + timedelta(days = 7))
+    if profile.color:
+        event.color = profile.color
     event.save()
     # Set the profile as the organizer and creator of the event
     organizer = Organizer(event = event, profile = profile, is_creator = True)
@@ -2913,14 +2929,15 @@ def purchase(request, params, user):
                                owner = user, event = event, 
                                is_expired = False).exists():
         # If so, release its holding quantity if necessary
-        purchase = Purchase.objects.get(Q(checkout__isnull = False, 
+        purchases = Purchase.objects.filter(Q(checkout__isnull = False, 
                                           checkout__is_charged = False), 
                                         owner = user, event = event, 
                                         is_expired = False)
         # Mark the old purchase as expired
-        mark_purchase_as_expired(purchase, True)
+        for purchase in purchases:
+            mark_purchase_as_expired(purchase, True)
     # Start a database transaction
-    with transaction.commit_on_success():
+    with transaction.atomic():
         # Place a lock on the ticket information (quantity)
         tids = details.keys()
         tickets = Ticket.objects.select_for_update().filter(id__in = tids)
@@ -3242,7 +3259,7 @@ def add_purchase(request, params, user):
             }
             return json_response(response)
     # Start a database transaction
-    with transaction.commit_on_success():
+    with transaction.atomic():
         # Place a lock on the ticket information (quantity)
         tids = details.keys()
         tickets = Ticket.objects.select_for_update().filter(id__in = tids)

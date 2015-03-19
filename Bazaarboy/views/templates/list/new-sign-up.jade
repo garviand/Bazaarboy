@@ -8,13 +8,13 @@ append head
     link(rel="stylesheet", href="{{ STATIC_URL }}pikaday/pikaday.css")
 
 block sidebar
-    +sidebarItem('ss-newspaper')(href="{% url index %}")
+    +sidebarItem('ss-newspaper')(href="{% url 'index' %}")
         | Events
-    +sidebarItem('ss-database')(href="{% url list:index %}", class="selected")
+    +sidebarItem('ss-database')(href="{% url 'list:index' %}", class="selected")
         | Lists
-    +sidebarItem('ss-tag')(href="{% url reward:index %}")
+    +sidebarItem('ss-tag')(href="{% url 'reward:index' %}")
         | Gifts
-    +sidebarItem('ss-share')(href="{% url user:settings %}")
+    +sidebarItem('ss-share')(href="{% url 'user:settings' %}")
         | Settings
 
 block header
@@ -55,6 +55,13 @@ block content
                                 div.small-4.columns.input-title End Date
                                 div.small-8.columns.input-note.text-right When is this no longer valid?
                             input.field(type="text", name="end_date", value="", placeholder="MM/DD/YYYY")
+                div.row
+                    div.small-12.columns
+                        div.input-container
+                            div.row
+                                div.small-4.columns.input-title Additional Details
+                                div.small-8.columns.input-note.text-right Separated by commas
+                            input.field(type="text", name="extra_fields", placeholder="ex: Address, Shirt Size, Favorite Color")
                 div.row
                     div.small-12.columns
                         div.input-container

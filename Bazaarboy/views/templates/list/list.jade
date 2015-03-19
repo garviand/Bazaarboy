@@ -4,13 +4,13 @@ block title
     | List Management
 
 block sidebar
-    +sidebarItem('ss-newspaper')(href="{% url index %}")
+    +sidebarItem('ss-newspaper')(href="{% url 'index' %}")
         | Events
-    +sidebarItem('ss-database')(href="{% url list:index %}", class="selected")
+    +sidebarItem('ss-database')(href="{% url 'list:index' %}", class="selected")
         | Lists
-    +sidebarItem('ss-tag')(href="{% url reward:index %}")
+    +sidebarItem('ss-tag')(href="{% url 'reward:index' %}")
         | Gifts
-    +sidebarItem('ss-share')(href="{% url user:settings %}")
+    +sidebarItem('ss-share')(href="{% url 'user:settings' %}")
         | Settings
 
 block header
@@ -28,7 +28,7 @@ block content
             {% if event %}
             div.row
                 div.small-12.columns.invitation-back
-                    a(href="{% url event:invite event.id %}") &lt; Back to Invitations for '{{ event.name }}'
+                    a(href="{% url 'event:invite' event.id %}") &lt; Back to Invitations for '{{ event.name }}'
             {% endif %}
             // HEADER
             div.row.list-title

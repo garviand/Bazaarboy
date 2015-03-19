@@ -11,6 +11,7 @@
     currentCheckout: 'HI',
     ticketMenu: void 0,
     ticketId: void 0,
+    purchasing: false,
     DropDown: function(el) {
       this.dd = el;
       this.placeholder = this.dd.children('span');
@@ -93,10 +94,14 @@
           closeOnConfirm: true,
           confirmButtonColor: "#1DBC85"
         }, function(isConfirm) {
+          var sendSms;
+          _this.purchasing = false;
+          sendSms = $('input[name=phone]').val().trim() !== '';
           if (isConfirm) {
             return Bazaarboy.post('payment/charge/', {
               checkout: _this.currentCheckout,
-              stripe_token: response.id
+              stripe_token: response.id,
+              send_sms: sendSms
             }, function(response) {
               console.log(response);
               if (response.status === 'OK') {
@@ -123,149 +128,135 @@
     purchase: function() {
       var address, fields, options, params, quantity, ticket, ticketSelected, tickets, _i, _len,
         _this = this;
-      $('a#tickets-confirm').html('Processing...');
-      params = {
-        event: eventId,
-        first_name: $('input[name=first_name]').val().trim(),
-        last_name: $('input[name=last_name]').val().trim(),
-        email: $('input[name=email]').val().trim(),
-        phone: $('input[name=phone]').val().trim(),
-        details: {}
-      };
-      if ($('input[name=invite_id]').val().trim() !== '') {
-        params['invite'] = $('input[name=invite_id]').val();
-      }
-      if (this.requiresAddress) {
-        if ($('input[name=address]').val().trim() === '' || $('input[name=state]').val().trim() === '' || $('input[name=city]').val().trim() === '' || $('input[name=zip]').val().trim() === '') {
-          alert('All Address Fields Are Required');
-          $('a#tickets-confirm').html('Confirm RSVP');
-          return;
+      if (!this.purchasing) {
+        this.purchasing = true;
+        $('a#tickets-confirm').html('Processing...');
+        params = {
+          event: eventId,
+          first_name: $('input[name=first_name]').val().trim(),
+          last_name: $('input[name=last_name]').val().trim(),
+          email: $('input[name=email]').val().trim(),
+          phone: $('input[name=phone]').val().trim(),
+          details: {}
+        };
+        if ($('input[name=invite_id]').val().trim() !== '') {
+          params['invite'] = $('input[name=invite_id]').val();
         }
-      }
-      address = $('input[name=address]').val().trim();
-      if ($('input[name=city]').val().trim() !== '') {
-        address += ', ' + $('input[name=city]').val().trim();
-      }
-      if ($('input[name=state]').val().trim() !== '') {
-        address += ', ' + $('input[name=state]').val().trim();
-      }
-      if ($('input[name=zip]').val().trim() !== '') {
-        address += ' ' + $('input[name=zip]').val().trim();
-      }
-      params.address = address;
-      if ($('input[name=promos]').length > 0) {
-        if ($('input[name=promos]').val().trim() !== '') {
-          params['promos'] = $('input[name=promos]').val().trim();
-        }
-      }
-      tickets = $('div#tickets-canvas div.ticket');
-      ticketSelected = false;
-      for (_i = 0, _len = tickets.length; _i < _len; _i++) {
-        ticket = tickets[_i];
-        if ($(ticket).hasClass('active')) {
-          ticketSelected = true;
-          quantity = parseInt($(ticket).find('input.ticket-quantity').val());
-          params.details[$(ticket).attr('data-id')] = {
-            'quantity': quantity,
-            'extra_fields': {}
-          };
-          if ($(ticket).find('div.custom-option-group').length > 0) {
-            options = $(ticket).find('div.custom-option-group');
-            $.each(options, function(target) {
-              if ($(this).find('div.custom-option.active').length > 0) {
-                params.details[$(ticket).attr('data-id')]['extra_fields'][$(this).data('field')] = $(this).find('div.custom-option.active').data('option');
-              }
-            });
-          }
-          if ($(ticket).find('div.custom-field-group').length > 0) {
-            fields = $(ticket).find('div.custom-field-group');
-            $.each(fields, function(target) {
-              var fieldValue;
-              fieldValue = $(this).find('input.custom-field-input').val();
-              if (String(fieldValue).trim() !== '') {
-                return params.details[$(ticket).attr('data-id')]['extra_fields'][$(this).data('field')] = String(fieldValue).trim();
-              } else {
-                return params.details[$(ticket).attr('data-id')]['extra_fields'][$(this).data('field')] = ' ';
-              }
-            });
+        if (this.requiresAddress) {
+          if ($('input[name=address]').val().trim() === '' || $('input[name=state]').val().trim() === '' || $('input[name=city]').val().trim() === '' || $('input[name=zip]').val().trim() === '') {
+            alert('All Address Fields Are Required');
+            $('a#tickets-confirm').html('Confirm RSVP');
+            this.purchasing = false;
+            return;
           }
         }
-      }
-      params.details = JSON.stringify(params.details);
-      if (params.phone.length === 0) {
-        delete params.phone;
-      }
-      if (!ticketSelected) {
-        alert('You Must Select A Ticket');
-        $('a#tickets-confirm').html('Confirm RSVP');
-      } else if (params.first_name === '') {
-        alert('Please Add a First Name');
-        $('a#tickets-confirm').html('Confirm RSVP');
-        return;
-      } else if (params.last_name === '') {
-        alert('Please Add a Last Name');
-        $('a#tickets-confirm').html('Confirm RSVP');
-        return;
-      } else if (params.email === '') {
-        alert('Please Add an Email');
-        $('a#tickets-confirm').html('Confirm RSVP');
-        return;
-      } else {
-        Bazaarboy.post('event/purchase/', params, function(response) {
-          var a, b, paymentInfo, total;
-          if (response.status !== 'OK') {
-            alert(response.message);
-            return $('a#tickets-confirm').html('Confirm RSVP');
-          } else {
-            if (response.publishable_key == null) {
-              return _this.completePurchase(response.tickets);
-            } else {
-              total = response.purchase.amount * 100;
-              a = (1 + 0.05) * total + 50;
-              b = (1 + 0.029) * total + 30 + 1000;
-              total = Math.round(Math.min(a, b));
-              /*
-              StripeCheckout.open
-                  key: response.publishable_key
-                  address: false
-                  amount: total
-                  currency: 'usd'
-                  name: response.purchase.event.name
-                  description: 'Tickets for ' + response.purchase.event.name
-                  panelLabel: 'Checkout'
-                  email: params.email
-                  image: response.logo
-                  closed: () ->
-                      $('a#tickets-confirm').html 'Confirm RSVP'
-                      return
-                  token: (token) =>
-                      Bazaarboy.post 'payment/charge/', 
-                          checkout: response.purchase.checkout
-                          stripe_token: token.id
-                      , (response) =>
-                          if response.status is 'OK'
-                              @completePurchase(response.tickets)
-                          else
-                              alert response.message
-                          return
-                      return
-              */
-
-              _this.currentCheckout = response.purchase.checkout;
-              Stripe.setPublishableKey(response.publishable_key);
-              paymentInfo = {
-                number: $('.cc-number').val().replace(/\ /g, ''),
-                cvc: $('.cc-cvc').val(),
-                exp_month: $('.cc-exp').val().split('/')[0].trim(),
-                exp_year: $('.cc-exp').val().split('/')[1].trim()
-              };
-              Stripe.card.createToken(paymentInfo, function(status, response) {
-                _this.stripeResponseHandler(status, response, total);
+        address = $('input[name=address]').val().trim();
+        if ($('input[name=city]').val().trim() !== '') {
+          address += ', ' + $('input[name=city]').val().trim();
+        }
+        if ($('input[name=state]').val().trim() !== '') {
+          address += ', ' + $('input[name=state]').val().trim();
+        }
+        if ($('input[name=zip]').val().trim() !== '') {
+          address += ' ' + $('input[name=zip]').val().trim();
+        }
+        params.address = address;
+        if ($('input[name=promos]').length > 0) {
+          if ($('input[name=promos]').val().trim() !== '') {
+            params['promos'] = $('input[name=promos]').val().trim();
+          }
+        }
+        tickets = $('div#tickets-canvas div.ticket');
+        ticketSelected = false;
+        for (_i = 0, _len = tickets.length; _i < _len; _i++) {
+          ticket = tickets[_i];
+          if ($(ticket).hasClass('active')) {
+            ticketSelected = true;
+            quantity = parseInt($(ticket).find('input.ticket-quantity').val());
+            params.details[$(ticket).attr('data-id')] = {
+              'quantity': quantity,
+              'extra_fields': {}
+            };
+            if ($(ticket).find('div.custom-option-group').length > 0) {
+              options = $(ticket).find('div.custom-option-group');
+              $.each(options, function(target) {
+                if ($(this).find('div.custom-option.active').length > 0) {
+                  params.details[$(ticket).attr('data-id')]['extra_fields'][$(this).data('field')] = $(this).find('div.custom-option.active').data('option');
+                }
+              });
+            }
+            if ($(ticket).find('div.custom-field-group').length > 0) {
+              fields = $(ticket).find('div.custom-field-group');
+              $.each(fields, function(target) {
+                var fieldValue;
+                fieldValue = $(this).find('input.custom-field-input').val();
+                if (String(fieldValue).trim() !== '') {
+                  return params.details[$(ticket).attr('data-id')]['extra_fields'][$(this).data('field')] = String(fieldValue).trim();
+                } else {
+                  return params.details[$(ticket).attr('data-id')]['extra_fields'][$(this).data('field')] = ' ';
+                }
               });
             }
           }
-        });
-        return;
+        }
+        params.details = JSON.stringify(params.details);
+        console.log($('.cc-number').val() === '');
+        console.log($('.cc-number').val());
+        if (params.phone.length === 0) {
+          delete params.phone;
+        }
+        if (!ticketSelected) {
+          alert('You Must Select A Ticket');
+          $('a#tickets-confirm').html('Confirm RSVP');
+          this.purchasing = false;
+          return;
+        } else if (params.first_name === '') {
+          alert('Please Add a First Name');
+          $('a#tickets-confirm').html('Confirm RSVP');
+          this.purchasing = false;
+          return;
+        } else if (params.last_name === '') {
+          alert('Please Add a Last Name');
+          $('a#tickets-confirm').html('Confirm RSVP');
+          this.purchasing = false;
+          return;
+        } else if (params.email === '') {
+          alert('Please Add an Email');
+          $('a#tickets-confirm').html('Confirm RSVP');
+          this.purchasing = false;
+          return;
+        } else {
+          Bazaarboy.post('event/purchase/', params, function(response) {
+            var a, b, paymentInfo, total;
+            if (response.status !== 'OK') {
+              alert(response.message);
+              $('a#tickets-confirm').html('Confirm RSVP');
+              return _this.purchasing = false;
+            } else {
+              if (response.publishable_key == null) {
+                _this.completePurchase(response.tickets);
+                return _this.purchasing = false;
+              } else {
+                total = response.purchase.amount * 100;
+                a = (1 + 0.05) * total + 50;
+                b = (1 + 0.029) * total + 30 + 1000;
+                total = Math.round(Math.min(a, b));
+                _this.currentCheckout = response.purchase.checkout;
+                Stripe.setPublishableKey(response.publishable_key);
+                paymentInfo = {
+                  number: $('.cc-number').val().replace(/\ /g, ''),
+                  cvc: $('.cc-cvc').val(),
+                  exp_month: $('.cc-exp').val().split('/')[0].trim(),
+                  exp_year: $('.cc-exp').val().split('/')[1].trim()
+                };
+                Stripe.card.createToken(paymentInfo, function(status, response) {
+                  _this.stripeResponseHandler(status, response, total);
+                });
+              }
+            }
+          });
+          return;
+        }
       }
     },
     completePurchase: function(tickets) {
@@ -420,7 +411,7 @@
         $(this).parents('div.custom-option-group').find('div.custom-option').removeClass('active');
         $(this).addClass('active');
       });
-      if ($('div#event-header').height() > 66) {
+      if ($('div#event-header').height() > 66 && !design) {
         $('div#event-header').css('position', 'absolute');
         $('div#event').css('padding-top', $('div#event-header').height() + 'px');
         $('div#tickets').css('top', ($('div#event-header').height() + 20) + 'px');
@@ -430,8 +421,10 @@
           $('div#event-header').css('position', 'absolute');
           $('div#tickets').css('top', ($('div#event-header').height() + 20) + 'px');
         } else {
-          $('div#event-header').css('position', 'fixed');
-          $('div#tickets').css('top', '100px');
+          if (!design) {
+            $('div#event-header').css('position', 'fixed');
+            $('div#tickets').css('top', '100px');
+          }
         }
         $('div#event').css('padding-top', $('div#event-header').height() + 'px');
       });

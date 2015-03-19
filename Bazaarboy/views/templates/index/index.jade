@@ -16,14 +16,14 @@ block sidebar
         | Event Drafts
     +sidebarItemSub('{{ pastEventsCount }}')(class="events-filter events-filter-past")
         | Past Events
-    +sidebarItem('ss-database')(href="{% url list:index %}")
+    +sidebarItem('ss-database')(href="{% url 'list:index' %}")
         | Lists
         {% if newSignups|length > 0 %}
         span.signup-count &nbsp;({{ newSignups|length }} New)
         {% endif %}
-    +sidebarItem('ss-tag')(href="{% url reward:index %}")
+    +sidebarItem('ss-tag')(href="{% url 'reward:index' %}")
         | Gifts
-    +sidebarItem('ss-share')(href="{% url user:settings %}")
+    +sidebarItem('ss-share')(href="{% url 'user:settings' %}")
         | Settings
 
 block header
@@ -79,17 +79,17 @@ block content
                                             {{ event.summary }}
                         div.draft-event-actions.medium-3.small-12.columns
                             {% if event.creator %}
-                            a.draft-event-action.first(href="{% url event:modify event.id 'basics' %}")
+                            a.draft-event-action.first(href="{% url 'event:modify' event.id 'basics' %}")
                                 div.icon
                                     span.ss-info
                                 div.text
                                     span Edit Info
-                            a.draft-event-action(href="{% url event:modify event.id 'tickets' %}")
+                            a.draft-event-action(href="{% url 'event:modify' event.id 'tickets' %}")
                                 div.icon
                                     span.ss-creditcard
                                 div.text
                                     span Ticket Options
-                            a.draft-event-action(href="{% url event:collaborators event.id %}")
+                            a.draft-event-action(href="{% url 'event:collaborators' event.id %}")
                                 div.icon
                                     span.ss-usergroup
                                 div.text
@@ -161,29 +161,29 @@ block content
                                             div.graph-canvas
                         div.current-event-actions.medium-3.small-12.columns
                             {% if event.creator %}
-                            a.current-event-action.first(href="{% url event:modify event.id 'basics' %}")
+                            a.current-event-action.first(href="{% url 'event:modify' event.id 'basics' %}")
                                 div.icon
                                     span.ss-write
                                 div.text
                                     span Edit Event
-                            a.current-event-action(href="{% url event:collaborators event.id %}")
+                            a.current-event-action(href="{% url 'event:collaborators' event.id %}")
                                 div.icon
                                     span.ss-usergroup
                                 div.text
                                     span Collaborators
                             {% endif %}
-                            a.current-event-action(href="{% url event:invite event.id %}")
+                            a.current-event-action(href="{% url 'event:invite' event.id %}")
                                 div.icon
                                     span.ss-mail
                                 div.text
                                     span Invitations
-                            a.current-event-action(href="{% url event:manage event.id %}")
+                            a.current-event-action(href="{% url 'event:manage' event.id %}")
                                 div.icon
                                     span.ss-file
                                 div.text
                                     span Guest List
                             {% if event.creator %}
-                            a.current-event-action.last(href="{% url event:export %}?id={{ event.id }}")
+                            a.current-event-action.last(href="{% url 'event:export' %}?id={{ event.id }}")
                                 div.icon
                                     span.ss-outbox
                                 div.text
@@ -243,7 +243,7 @@ block content
                                             div.graph-canvas
                         div.past-event-actions.medium-3.small-12.columns
                             {% if event.creator %}
-                            a.past-event-action.first(href="{% url event:follow-up event.id %}")
+                            a.past-event-action.first(href="{% url 'event:follow-up' event.id %}")
                                 div.icon
                                     span.ss-mail
                                 div.text
@@ -255,19 +255,19 @@ block content
                                 div.text
                                     span Add To List
                             {% if event.creator %}
-                            a.past-event-action(href="{% url event:modify event.id 'basics' %}")
+                            a.past-event-action(href="{% url 'event:modify' event.id 'basics' %}")
                                 div.icon
                                     span.ss-info
                                 div.text
                                     span Edit Event
                             {% endif %}
-                            a.past-event-action(href="{% url event:manage event.id %}")
+                            a.past-event-action(href="{% url 'event:manage' event.id %}")
                                 div.icon
                                     span.ss-file
                                 div.text
                                     span Guest List
                             {% if event.creator %}
-                            a.past-event-action.last(href="{% url event:export %}?id={{ event.id }}")
+                            a.past-event-action.last(href="{% url 'event:export' %}?id={{ event.id }}")
                                 div.icon
                                     span.ss-outbox
                                 div.text
@@ -292,7 +292,7 @@ block content
                         | {% if event.creator %}Follow Up and {% endif %}Add Attendees to List
                     {% if event.creator %}
                     div.small-12.medium-3.columns
-                        a.secondary-btn-inverse.btn-full(href="{% url event:follow-up event.id %}") Follow Up
+                        a.secondary-btn-inverse.btn-full(href="{% url 'event:follow-up' event.id %}") Follow Up
                     {% endif %}
                     div.small-12.medium-3.columns
                         a.secondary-btn-inverse.btn-full.add-to-list-btn(href="javascript:;", data-id="{{ event.id }}", data-name="{{ event.name }}", data-count="{{ event.rsvpCount }}") Add to List
@@ -336,7 +336,7 @@ block content
                                             div.graph-canvas
                         div.past-event-actions.medium-3.small-12.columns
                             {% if event.creator %}
-                            a.past-event-action.first(href="{% url event:follow-up event.id %}")
+                            a.past-event-action.first(href="{% url 'event:follow-up' event.id %}")
                                 div.icon
                                     span.ss-mail
                                 div.text
@@ -348,19 +348,19 @@ block content
                                 div.text
                                     span Add To List
                             {% if event.creator %}
-                            a.past-event-action(href="{% url event:modify event.id 'basics' %}")
+                            a.past-event-action(href="{% url 'event:modify' event.id 'basics' %}")
                                 div.icon
                                     span.ss-info
                                 div.text
                                     span Edit Event
                             {% endif %}
-                            a.past-event-action(href="{% url event:manage event.id %}")
+                            a.past-event-action(href="{% url 'event:manage' event.id %}")
                                 div.icon
                                     span.ss-file
                                 div.text
                                     span Guest List
                             {% if event.creator %}
-                            a.past-event-action.last(href="{% url event:export %}?id={{ event.id }}")
+                            a.past-event-action.last(href="{% url 'event:export' %}?id={{ event.id }}")
                                 div.icon
                                     span.ss-outbox
                                 div.text
@@ -391,7 +391,7 @@ block content
             {% for request in collaboration_requests %}
             div.row.request
                 div.small-12.medium-5.columns.text
-                    a(href="{% url event:index request.event.id %}?preview", target="_blank") {{ request.event.name }}
+                    a(href="{% url 'event:index' request.event.id %}?preview", target="_blank") {{ request.event.name }}
                 div.small-12.medium-3.columns.text
                     | {{ request.sender.profile.name }}
                 div.small-12.medium-2.columns
@@ -414,7 +414,7 @@ block content
                     div.small-12.medium-2.columns.text {{ reward.claims }} claim{{ reward.claims|pluralize }}
                     div.small-12.medium-2.columns.text {{ reward.redemptions }} redeem{{ reward.redemptions|pluralize }}
                     div.small-12.medium-4.columns
-                        a.primary-btn-inverse.full-btn(href="{% url reward:manage reward.id %}") Manage Redemptions
+                        a.primary-btn-inverse.full-btn(href="{% url 'reward:manage' reward.id %}") Manage Redemptions
                 {% endfor %}
         hr
         {% endif %}

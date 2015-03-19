@@ -12,17 +12,17 @@ block sidebar
                 {% endif %}
         div.btn.secondary-btn.show-for-medium-only
             | <span class="plus">+</span>
-    +sidebarItem('ss-file')(href="{% url event:modify event.id 'basics' %}")
+    +sidebarItem('ss-file')(href="{% url 'event:modify' event.id 'basics' %}")
         | Basic Info
-    +sidebarItem('ss-tag')(href="{% url event:modify event.id 'tickets' %}")
+    +sidebarItem('ss-tag')(href="{% url 'event:modify' event.id 'tickets' %}")
         | Ticket Options
-    +sidebarItem('ss-picture')(href="{% url event:index event.id %}?design")
+    +sidebarItem('ss-picture')(href="{% url 'event:index' event.id %}?design")
         | Page Design
-    +sidebarItem('ss-usergroup')(href="{% url event:collaborators event.id %}", class="selected")
+    +sidebarItem('ss-usergroup')(href="{% url 'event:collaborators' event.id %}", class="selected")
         | Collaborators
-    +sidebarItem('ss-newspaper')(href="{% url index %}")(class="sidebar-separate")
+    +sidebarItem('ss-newspaper')(href="{% url 'index' %}")(class="sidebar-separate")
         | Events
-    +sidebarItem('ss-database')(href="{% url list:index %}")
+    +sidebarItem('ss-database')(href="{% url 'list:index' %}")
         | Lists
 
 block header

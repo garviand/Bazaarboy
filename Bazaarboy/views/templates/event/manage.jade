@@ -6,11 +6,11 @@ block title
     | Manage | {{ event.name }}
 
 block sidebar
-    +sidebarItem('ss-newspaper')(href="{% url index %}", class="selected")
+    +sidebarItem('ss-newspaper')(href="{% url 'index' %}", class="selected")
         | Events
-    +sidebarItem('ss-database')(href="{% url list:index %}")
+    +sidebarItem('ss-database')(href="{% url 'list:index' %}")
         | Lists
-    +sidebarItem('ss-tag')(href="{% url reward:index %}")
+    +sidebarItem('ss-tag')(href="{% url 'reward:index' %}")
         | Gifts
     form.list_search
         div.guest-search.show-for-large-only
@@ -21,7 +21,7 @@ block sidebar
             {% if isCreator %}
             a.start-guest-add(href="javascript:;") Manually Add a Guest
             {% endif %}
-            a(href="{% url event:invite event.id %}") Invite Guests
+            a(href="{% url 'event:invite' event.id %}") Invite Guests
             a.raffle-btn(href="javascript:;") Generate Random Raffle
         div.ticket-filters-container.show-for-large-only
             label Filter Tickets

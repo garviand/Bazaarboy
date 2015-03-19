@@ -139,6 +139,7 @@ class Profile(models.Model):
     link_facebook = models.CharField(max_length = 1024, null = True, 
                                      default = None)
     EIN = models.CharField(max_length = 10, null = True, default = None)
+    color = models.CharField(max_length = 30, default="#FAA638")
     is_non_profit = models.BooleanField(default = False)
     is_verified = models.BooleanField(default = False)
     payment_account = models.ForeignKey('Payment_account', 
@@ -490,6 +491,26 @@ class Reward_item(models.Model):
     quantity = models.IntegerField()
     expiration_time = models.DateTimeField()
     created_time = models.DateTimeField(auto_now_add = True)
+
+class Reward_send(models.Model):
+    """
+    A reward sent via email
+    """
+    reward = models.ForeignKey('Reward')
+    email = models.CharField(max_length = 150)
+    quantity = models.IntegerField()
+    expiration_time = models.DateTimeField()
+    token = models.CharField(max_length = 128)
+    claimed = models.BooleanField(default = False)
+    created_time = models.DateTimeField(auto_now_add = True)
+
+    def save(self, *args, **kwargs):
+        """
+        Override save to generate token at creation
+        """
+        if self.pk is None:
+            self.token = uuid.uuid4().hex
+        super(Reward_send, self).save(*args, **kwargs)
 
 class Claim(models.Model):
     """

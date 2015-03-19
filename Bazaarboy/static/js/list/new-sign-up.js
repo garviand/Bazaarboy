@@ -9,7 +9,7 @@
         format: 'MM/DD/YYYY'
       });
       $('a.create-sign-up-btn').click(function() {
-        var params;
+        var field, fields, formattedFields, num, params, _i, _len;
         params = {};
         if ($('input[name=name]').val().trim() === '') {
           swal('You Must Add a Name');
@@ -29,6 +29,17 @@
         if (scope.image) {
           params.image = scope.image;
         }
+        formattedFields = {};
+        if ($('input[name=extra_fields]').val().trim() !== '') {
+          fields = $('input[name=extra_fields]').val().split(",");
+          num = 0;
+          for (_i = 0, _len = fields.length; _i < _len; _i++) {
+            field = fields[_i];
+            formattedFields[num] = field.trim();
+            num++;
+          }
+          params.extra_fields = JSON.stringify(formattedFields);
+        }
         Bazaarboy.post('lists/signup/create/', params, function(response) {
           if (response.status === 'OK') {
             swal({
@@ -43,31 +54,6 @@
           }
         });
       });
-      /*
-      # edit channel
-      $('a.save-channel-btn').click () ->
-          params = {}
-          params.profile = profileId
-          if $('input[name=tagline]').val().trim() != ''
-              params.tagline = $('input[name=tagline]').val()
-          if $('input[name=hashtag]').val().trim() != ''
-              params.hashtag = $('input[name=hashtag]').val()
-          if scope.image?
-              params.cover = scope.image
-          Bazaarboy.post 'profile/channel/edit/', params, (response) ->
-              if response.status is 'OK'
-                  swal
-                      type: 'success'
-                      title: 'Success'
-                      text: 'Channel Saved!'
-                      () ->
-                          location.reload()
-              else
-                  swal response.message
-              return
-          return
-      */
-
       scope.aviary = new Aviary.Feather({
         apiKey: 'ce3b87fb1edaa22c',
         apiVersion: 3,

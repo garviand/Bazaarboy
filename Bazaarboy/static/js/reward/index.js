@@ -1,5 +1,6 @@
 (function() {
   Bazaarboy.reward.index = {
+    sendingGift: false,
     search_organizers: function() {
       var organizerModel, value,
         _this = this;
@@ -72,6 +73,67 @@
           }
         });
       });
+      $('div.reward a.send-gift-item').click(function() {
+        var rewardItemId, rewardItemName;
+        rewardItemId = $(this).data('id');
+        rewardItemName = $(this).data('name');
+        $('div#distribute-reward-modal input[name=reward_item_id]').val(rewardItemId);
+        $('div#distribute-reward-modal span.reward-name').html(rewardItemName);
+        $('div#distribute-reward-modal').foundation('reveal', 'open');
+      });
+      $('div#distribute-reward-modal a.send-gift-btn').click(function() {
+        var button, rewardEmail, rewardItem;
+        if (!scope.sendingGift) {
+          button = $(this);
+          button.html('Sending...');
+          scope.sendingGift = true;
+          rewardEmail = $('div#distribute-reward-modal input[name=email_distribute]').val();
+          rewardItem = $('div#distribute-reward-modal input[name=reward_item_id]').val();
+          if (rewardEmail.trim() === '') {
+            swal('Must Enter an Email');
+            scope.sendingGift = false;
+            return;
+          }
+          Bazaarboy.post('rewards/claim/add/', {
+            item: rewardItem,
+            email: rewardEmail
+          }, function(response) {
+            if (response.status === 'OK') {
+              swal({
+                type: 'success',
+                title: 'Reward Sent',
+                text: 'The reward has been sent.'
+              });
+              $('div#distribute-reward-modal').foundation('reveal', 'close');
+              button.html('Send Gift');
+              scope.sendingGift = false;
+              $('div.rewards div.reward[data-id=' + rewardItem + '] span.quantity').html(response.reward_item.quantity);
+              $('div#distribute-reward-modal input[name=email_distribute]').val('');
+            } else {
+              swal(response.message);
+              button.html('Send Gift');
+              scope.sendingGift = false;
+            }
+          });
+        }
+      });
+      $('div#send-reward-modal a.add-reward-profile').click(function() {
+        $('div#send-reward-modal div.profile-search').removeClass('hide');
+        $('div#send-reward-modal div.email-send').addClass('hide');
+        $(this).addClass('primary-btn');
+        $(this).removeClass('primary-btn-inverse');
+        $('div#send-reward-modal a.add-reward-email').removeClass('primary-btn');
+        $('div#send-reward-modal a.add-reward-email').addClass('primary-btn-inverse');
+      });
+      $('div#send-reward-modal a.add-reward-email').click(function() {
+        $('div#send-reward-modal form.add-organizer-form').empty();
+        $('div#send-reward-modal div.email-send').removeClass('hide');
+        $('div#send-reward-modal div.profile-search').addClass('hide');
+        $(this).addClass('primary-btn');
+        $(this).removeClass('primary-btn-inverse');
+        $('div#send-reward-modal a.add-reward-profile').removeClass('primary-btn');
+        $('div#send-reward-modal a.add-reward-profile').addClass('primary-btn-inverse');
+      });
       $('body').on('click', 'a.send-reward-btn', function() {
         $('input[name=reward_id]').val($(this).data('id'));
         $('div#send-reward-modal span.reward-name').html($(this).data('name'));
@@ -82,6 +144,42 @@
       });
       add_organizer_debounce = jQuery.debounce(1000, false, scope.search_organizers);
       $('input[name=profile_search]').bind('keypress', add_organizer_debounce);
+      $('div#send-reward-modal a.send-via-email').click(function() {
+        var email, expiration, expirationTime, quantity, rewardId;
+        if (!$.isNumeric($('input[name=quantity]').val()) || $('input[name=quantity]').val() <= 0) {
+          swal('Quantity Must Be a Positive Number');
+          return;
+        }
+        quantity = Math.floor($('input[name=quantity]').val());
+        expiration = $('input[name=expiration]').val();
+        if (!moment(expiration, 'MM/DD/YYYY').isValid()) {
+          swal('Expiration Date is Not Valid');
+          return;
+        }
+        expirationTime = moment(expiration, 'MM/DD/YYYY').utc().format('YYYY-MM-DD HH:mm:ss');
+        rewardId = $('input[name=reward_id]').val();
+        email = $('div#send-reward-modal input[name=email_send]').val();
+        if (email.trim() === '') {
+          swal('Must Enter An Email');
+          return;
+        }
+        Bazaarboy.post('rewards/item/add/', {
+          reward: rewardId,
+          email: email,
+          quantity: quantity,
+          expiration_time: expirationTime
+        }, function(response) {
+          if (response.status === 'OK') {
+            return swal({
+              type: "success",
+              title: 'Reward Sent',
+              text: 'You sent ' + response.reward_send.quantity + ' \'' + response.reward_send.reward.name + '\' rewards to ' + response.reward_send.email
+            }, function() {
+              location.reload();
+            });
+          }
+        });
+      });
       $('body').on('click', 'a.add-reward-submit', function() {
         var expiration, expirationTime, profileId, quantity, rewardId;
         if (!$.isNumeric($('input[name=quantity]').val()) || $('input[name=quantity]').val() <= 0) {

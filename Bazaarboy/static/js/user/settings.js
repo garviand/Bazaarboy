@@ -58,7 +58,8 @@
         phone: save_data.phone,
         link_website: save_data.link_website,
         link_facebook: save_data.link_facebook,
-        EIN: save_data.ein
+        EIN: save_data.ein,
+        color: $('input[name=colorpicker]').spectrum("get").toHexString()
       }, function(err, event) {
         if (!err) {
           setTimeout((function() {
@@ -145,6 +146,11 @@
       var googleAutocomplete, initial_lat, initial_lng, mapOptions, map_center, scope,
         _this = this;
       scope = this;
+      $('input[name=colorpicker]').spectrum({
+        preferredFormat: "hex",
+        showInput: true,
+        showButtons: true
+      });
       $('div.create-event').click(function() {
         var profileId;
         profileId = $(this).attr('data-profile-id');

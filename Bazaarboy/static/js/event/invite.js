@@ -2,6 +2,108 @@
   Bazaarboy.event.invite = {
     saving: false,
     image: {},
+    saveInvite: function(toPreview) {
+      var activeLists, color, deleteImg, details, force, imageId, list, list_name, lists, message, targetId, targetUrl, _i, _len,
+        _this = this;
+      if (!this.saving) {
+        $('a.save-invite').html('Saving...');
+        this.saving = true;
+        if (!toPreview) {
+          list_name = $("div#new-list-modal div.new-list-inputs input[name=list_name]").val();
+          if (list_name.trim() === '') {
+            swal("Wait!", "List Name Cannot Be Empty", "warning");
+            this.saving = false;
+            $('div#new-list-modal div.new-list-inputs a.create-list').html('+ Add New List');
+            $('a.save-invite').html('Save &amp; Preview');
+          }
+        }
+        if (!inviteEdit) {
+          targetId = $('div.email input[name=event]').val();
+          targetUrl = 'event/invite/new/';
+        } else {
+          targetId = $('div.email input[name=invite]').val();
+          targetUrl = 'event/invite/save/';
+        }
+        message = $('div.email textarea[name=message]').val();
+        if (message.trim() === '') {
+          if (toPreview) {
+            swal("Wait!", "Email Message Cannot Be Empty", "warning");
+            this.saving = false;
+            $('a.save-invite').html('Save &amp; Preview');
+            $('div#new-list-modal div.new-list-inputs a.create-list').html('+ Add New List');
+            return;
+          } else {
+            message = 'Draft';
+          }
+        }
+        details = $('div.email textarea[name=details]').val();
+        activeLists = $('div.lists div.list.active');
+        if (activeLists.length === 0 && toPreview) {
+          swal("Wait!", "You Must Select At Least 1 List", "warning");
+          this.saving = false;
+          $('a.save-invite').html('Save &amp; Preview');
+          $('div#new-list-modal div.new-list-inputs a.create-list').html('+ Add New List');
+          return;
+        }
+        lists = '';
+        for (_i = 0, _len = activeLists.length; _i < _len; _i++) {
+          list = activeLists[_i];
+          if (lists !== '') {
+            lists += ', ';
+          }
+          lists += $(list).data('id');
+        }
+        if (lists === '') {
+          lists = ' ';
+        }
+        imageId = '';
+        deleteImg = true;
+        if (this.image.pk != null) {
+          imageId = this.image.pk;
+          deleteImg = false;
+        }
+        force = true;
+        if (toPreview) {
+          force = false;
+        }
+        color = $('input[name=colorpicker]').spectrum("get").toHexString();
+        Bazaarboy.post(targetUrl, {
+          id: targetId,
+          message: message,
+          details: details,
+          lists: lists,
+          image: imageId,
+          color: color,
+          deleteImg: deleteImg,
+          force: force
+        }, function(response) {
+          var inviteId;
+          if (toPreview) {
+            if (response.status === 'OK') {
+              inviteId = response.invite.pk;
+              Bazaarboy.redirect('event/invite/' + inviteId + '/preview');
+              return;
+            }
+            _this.saving = false;
+            $('a.save-invite').html('Save &amp; Preview');
+            $('div#new-list-modal div.new-list-inputs a.create-list').html('+ Add New List');
+          } else {
+            Bazaarboy.post('lists/create/', {
+              profile: profileId,
+              name: list_name,
+              is_hidden: 1
+            }, function(response) {
+              if (response.status === 'OK') {
+                Bazaarboy.redirect('lists/' + response.list.pk + '/?eid=' + String(eventId));
+              } else {
+                swal(response.message);
+                $('div#new-list-modal div.new-list-inputs a.create-list').html('+ Add New List');
+              }
+            });
+          }
+        });
+      }
+    },
     init: function() {
       var scope,
         _this = this;
@@ -18,22 +120,8 @@
         $("div#new-list-modal").foundation('reveal', 'close');
       });
       $("div#new-list-modal div.new-list-inputs a.create-list").click(function() {
-        var list_name;
         $(this).html('Creating...');
-        list_name = $("div#new-list-modal div.new-list-inputs input[name=list_name]").val();
-        if (list_name.trim() !== '') {
-          Bazaarboy.post('lists/create/', {
-            profile: profileId,
-            name: list_name,
-            is_hidden: 1
-          }, function(response) {
-            if (response.status === 'OK') {
-              Bazaarboy.redirect('lists/' + response.list.pk);
-            }
-          });
-        } else {
-          alert('List name can\'t be empty');
-        }
+        scope.saveInvite(false);
       });
       $('div.lists div.list').click(function() {
         $(this).toggleClass('active');
@@ -98,66 +186,7 @@
         showButtons: true
       });
       $('a.save-invite').click(function() {
-        var activeLists, color, deleteImg, details, imageId, list, lists, message, targetId, targetUrl, _i, _len;
-        if (!scope.saving) {
-          $('a.save-invite').html('Saving...');
-          scope.saving = true;
-          if (!inviteEdit) {
-            targetId = $('div.email input[name=event]').val();
-            targetUrl = 'event/invite/new/';
-          } else {
-            targetId = $('div.email input[name=invite]').val();
-            targetUrl = 'event/invite/save/';
-          }
-          message = $('div.email textarea[name=message]').val();
-          if (message.trim() === '') {
-            swal("Wait!", "Email Message Cannot Be Empty", "warning");
-            scope.saving = false;
-            $('a.save-invite').html('Save &amp; Preview');
-            return;
-          }
-          details = $('div.email textarea[name=details]').val();
-          activeLists = $('div.lists div.list.active');
-          if (activeLists.length === 0) {
-            swal("Wait!", "You Must Select At Least 1 List", "warning");
-            scope.saving = false;
-            $('a.save-invite').html('Save &amp; Preview');
-            return;
-          }
-          lists = '';
-          for (_i = 0, _len = activeLists.length; _i < _len; _i++) {
-            list = activeLists[_i];
-            if (lists !== '') {
-              lists += ', ';
-            }
-            lists += $(list).data('id');
-          }
-          imageId = '';
-          deleteImg = true;
-          if (scope.image.pk != null) {
-            imageId = scope.image.pk;
-            deleteImg = false;
-          }
-          color = $('input[name=colorpicker]').spectrum("get").toHexString();
-          Bazaarboy.post(targetUrl, {
-            id: targetId,
-            message: message,
-            details: details,
-            lists: lists,
-            image: imageId,
-            color: color,
-            deleteImg: deleteImg
-          }, function(response) {
-            var inviteId;
-            if (response.status === 'OK') {
-              inviteId = response.invite.pk;
-              Bazaarboy.redirect('event/invite/' + inviteId + '/preview');
-              return;
-            }
-            scope.saving = false;
-            $('a.save-invite').html('Save &amp; Preview');
-          });
-        }
+        return scope.saveInvite(true);
       });
     }
   };
