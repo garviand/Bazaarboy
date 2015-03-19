@@ -15,6 +15,8 @@ from src.config import *
 from src.controllers.request import validate, login_check, json_response
 from instagram.client import InstagramAPI
 
+from subdomains.utils import get_domain
+
 import pdb
 
 
@@ -23,6 +25,8 @@ import pdb
 @validate('GET', [], ['next'])
 def splash(request, params, user):
     subdomain = request.subdomain
+    domain = get_domain()
+    host = request.get_host()
     return render(request, 'index/splash.html', locals())
 
 @never_cache
