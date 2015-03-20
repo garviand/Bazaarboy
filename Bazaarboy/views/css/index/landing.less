@@ -356,13 +356,17 @@ div#landing{
                                 color: @white;
                                 font-size: 18px;
                                 font-weight: 500;
-                                height: 100px;
                                 bottom: 0;
                                 background: rgba(0, 0, 0, 0.8);
                                 padding-left: 20px;
                                 padding-right: 20px;
                                 div.brand-name{
-                                    line-height: 100px;
+                                    padding-top: 43px;
+                                    padding-bottom: 40px;
+                                    @media @media_small{
+                                        padding-bottom: 10px;
+                                        line-height: 1.5rem;
+                                    }
                                     a{
                                         color: #FFF !important;
                                         &:hover{
@@ -372,6 +376,10 @@ div#landing{
                                 }
                                 a.view-channel{
                                     margin-top: 30px;
+                                    @media @media_small{
+                                        margin-top: 20px;
+                                        margin-bottom: 20px;
+                                    }
                                 }
                             }
                         }
