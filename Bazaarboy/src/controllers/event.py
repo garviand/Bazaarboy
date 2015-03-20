@@ -342,7 +342,11 @@ def search(request, params):
     """
     Search events by keyword
     """
-    events = Event.objects.filter(Q(end_time = None, start_time__gt = timezone.now()) | Q(end_time__isnull = False, end_time__gt = timezone.now()), is_launched = True, name__icontains = params['keyword'])
+    profiles = Profile.objects.filter(name__icontains = params['keyword'])
+    pids = []
+    for profile in profiles:
+        pids.append(profile.id)
+    events = Event.objects.filter(Q(end_time = None, start_time__gt = timezone.now()) | Q(end_time__isnull = False, end_time__gt = timezone.now()), Q(name__icontains = params['keyword']) | Q(organizers__in = pids), is_launched = True)
     results = []
     for event in events:
         eventObj = serialize_one(event)

@@ -6,26 +6,28 @@ append head
     link(rel="stylesheet", href="{{ STATIC_URL }}slick/slick-theme.css")
     link(rel="stylesheet", href="{{ STATIC_URL }}slick/slick.css")
     link(rel="stylesheet", href="{{ STATIC_URL }}jQueryUI/jquery-ui.css")
+    style(type="text/css").
+        html, body{
+            background: rgb(46, 46, 44);
+        }
 
 block body
     div#landing
         div.fullWidth.splash-top
-            div.logo-container &nbsp;
+            div.logo-container
+                img(src="{{ STATIC_URL }}images/splash/logo.png")
             div.row.links-container
-                div.small-12.medium-4.columns
-                    div.logo-container
-                        | &nbsp;
-                div.small-12.medium-8.columns.links.text-right
+                div.small-12.columns.links.text-right
                     a(href="javascript:;") Pricing
                     a(href="javascript:;") Contact
                     a(href="javascript:;") Log In
                     a.sign-up-btn(href="javascript:;") Sign Up
             div.row
                 div.small-12.columns.text-center
-                    div.title Each event is an opportunity to strengthen your brand.
+                    div.title Events drive customers
             div.row
                 div.small-12.columns.text-center
-                    div.subtitle Increase your brand's outreach efficacy with Bazaarboy.
+                    div.subtitle How are you reaching your audience?
             div.row.see-how
                 div.small-10.medium-2.large-1.small-centered.text-center.columns
                     a.primary-btn.full-btn.see-how-btn(href="javascript:;") See How
@@ -42,18 +44,19 @@ block body
         div.fullWidth.tagline-container
             div.row
                 div.small-12.tagline.columns.text-center
-                    | Organizers, sponsors, and promoters use Bazaarboy to streamline...here's how.
+                    | Event organizers and sponsors use Bazaarboy to manage every step of an event lifecycle.
         div.fullWidth.row.uses-container
-            div.small-12.medium-4.columns.box.gather
+            div.small-12.medium-6.columns.box.gather
                 div.box-icon
                     div.ss-usergroup &nbsp;
-                div.box-title Gather
+                div.box-title Event Organizers
                 div.box-gradient &nbsp;
                 div.box-items
-                    div 1. Fake Item
-                    div 1. Fake Item
-                    div 1. Fake Item
-            div.small-12.medium-4.columns.box.organize
+                    div Design an event page
+                    div Add co-organizers to the event
+                    div Send targeted invitations
+                    div Collect customer information
+            //div.small-12.medium-4.columns.box.organize
                 div.box-icon
                     div.ss-bookmark &nbsp;
                 div.box-title Organize
@@ -62,15 +65,16 @@ block body
                     div 1. Fake Item
                     div 1. Fake Item
                     div 1. Fake Item
-            div.small-12.medium-4.columns.box.give
+            div.small-12.medium-6.columns.box.give
                 div.box-icon
                     div.ss-storagebox &nbsp;
-                div.box-title Give
+                div.box-title Event Sponsors
                 div.box-gradient &nbsp;
                 div.box-items
-                    div 1. Fake Item
-                    div 1. Fake Item
-                    div 1. Fake Item
+                    div Customize gifts for customers
+                    div Submit gifts to organizers
+                    div Participate in a follow-up message
+                    div Manage gift redemption
         div.fullWidth.organizer-showcase-container
             div.row
                 div.small-12.columns.text-center
@@ -151,7 +155,7 @@ block body
                             div.title Interested?
                     div.row
                         div.small-12.columns
-                            div.subtitle Sign up with Bazaarboy to maximize engagement at your next event.
+                            div.subtitle Sign up with Bazaarboy to maximize participation and success at your next event.
                     div.row.inputs
                         div.small-12.medium-8.large-5.small-centered.columns
                             div.row
@@ -162,7 +166,7 @@ block body
         div.fullWidth.bottom
             div.row
                 div.small-12.columns
-                    div.tagline Increase your brand's outreach efficacy with Bazaarboy.
+                    div.tagline How are you reaching your audience?
         div.fullWidth.footer
             div.row
                 div.small-12.columns

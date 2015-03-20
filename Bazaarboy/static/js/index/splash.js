@@ -23,7 +23,7 @@
       });
       $('a.see-how-btn').click(function() {
         $('html, body').animate({
-          scrollTop: $("div.uses-container").offset().top
+          scrollTop: $("div.tagline-container").offset().top
         }, 500);
       });
       $('body').on('click', '.event_link', function(event) {
