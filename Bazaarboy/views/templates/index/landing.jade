@@ -2,74 +2,205 @@
 
 extends ../layout
 
+append head
+    link(rel="stylesheet", href="{{ STATIC_URL }}slick/slick-theme.css")
+    link(rel="stylesheet", href="{{ STATIC_URL }}slick/slick.css")
+    link(rel="stylesheet", href="{{ STATIC_URL }}jQueryUI/jquery-ui.css")
+    style(type="text/css").
+        html, body{
+            background: rgb(46, 46, 44);
+        }
+
 block body
     div#landing
-        div.section.section-1
-            div.row.header
-                div.small-12.medium-5.columns.logo-container
-                    a.logo(href="/")
-                        img(src="{{ STATIC_URL }}images/logo-big.png")
-                        div.text BAZAARBOY
-                div.small-12.medium-7.columns.links.clearfix.hide-for-small-only
-                    a.sign_up(href="{% url 'index:register' %}") SIGN UP
-                    a(href="{% url 'index:login' %}") LOG IN
-                    a(href="mailto:build@bazaarboy.com") CONTACT
-                    a(href="{% url 'index:pricing' %}") PRICING
-                div.small-12.columns.mobile-links.clearfix.show-for-small-only
-                    div.row
-                        a.small-5.small-offset-1.columns.text-center(href="{% url 'index:login' %}") LOG IN
-                        a.small-5.end.columns.text-center(href="{% url 'index:pricing' %}") PRICING
-            div.row.title
+        div.fullWidth.splash-top
+            div.logo-container
+                img(src="{{ STATIC_URL }}images/splash/logo.png")
+            div.row.links-container
+                div.small-12.columns.links.text-right
+                    a(href="{% url 'index:pricing' %}") Pricing
+                    a(href="mailto:build@bazaarboy.com") Contact
+                    a(href="{% url 'index:login' %}") Log In
+                    a.sign-up-btn(href="{% url 'index:register' %}") Sign Up
+            div.row
+                div.small-12.columns.text-center
+                    div.title Events drive&nbsp;
+                        span.changing-text &nbsp;
+            div.row
+                div.small-12.columns.text-center
+                    div.subtitle Deliver your brand promise with Bazaarboy event tools
+            div.row.see-how
+                div.small-10.medium-2.large-1.small-centered.text-center.columns
+                    a.primary-btn.full-btn.see-how-btn(href="javascript:;") See How
+        div.fullWidth.find-event-container
+            div.fullWidth.five-border.border &nbsp;
+            div.fullWidth.ten-border.border &nbsp;
+            div.fullWidth.twenty-border.border &nbsp;
+            div.fullWidth.forty-border.border &nbsp;
+            div.fullWidth.eighty-border.border
+                div.row
+                    div.small-12.columns.medium-6.large-4.small-centered.columns
+                        div.search-events-container
+                            input(type="text", name="event_name", placeholder="Find an Event...")
+        div.fullWidth.tagline-container
+            div.row
+                div.small-12.tagline.columns.text-center
+                    | Event organizers and sponsors use Bazaarboy to manage every step of an event lifecycle.
+        div.fullWidth.row.uses-container
+            div.small-12.medium-6.columns.box.gather
+                div.box-icon
+                    div.ss-usergroup &nbsp;
+                div.box-title Event Organizers
+                div.box-gradient &nbsp;
+                div.box-items
+                    div Design an event page
+                    div Send targeted invitations
+                    div Collect customer information
+            //div.small-12.medium-4.columns.box.organize
+                div.box-icon
+                    div.ss-bookmark &nbsp;
+                div.box-title Organize
+                div.box-gradient &nbsp;
+                div.box-items
+                    div 1. Fake Item
+                    div 1. Fake Item
+                    div 1. Fake Item
+            div.small-12.medium-6.columns.box.give
+                div.box-icon
+                    div.ss-storagebox &nbsp;
+                div.box-title Event Sponsors
+                div.box-gradient &nbsp;
+                div.box-items
+                    div Customize gifts for customers
+                    div Submit gifts to organizers
+                    div Manage gift redemption
+        div.fullWidth.organizer-showcase-container
+            div.row
+                div.small-12.columns.text-center
+                    div.title ORGANIZER SHOWCASE
+            div.row
+                div.small-12.columns.organizers.text-center
+                    ul.small-block-grid-2.medium-block-grid-3.large-block-grid-5.slider-controls
+                        li
+                            div.logo-container.active(data-slidenum="0")
+                                a.froyo(href="javascript:;") &nbsp;
+                        li
+                            div.logo-container(data-slidenum="1")
+                                a.pujols(href="javascript:;") &nbsp;
+                        li
+                            div.logo-container(data-slidenum="2")
+                                a.surge(href="javascript:;") &nbsp;
+                        li
+                            div.logo-container(data-slidenum="3")
+                                a.chess(href="javascript:;") &nbsp;
+                        li
+                            div.logo-container(data-slidenum="4")
+                                a.techartista(href="javascript:;") &nbsp;
+            div.row
                 div.small-12.columns
-                    | Each event is an opportunity to strengthen your brand.
-            div.row.hr
-                div.small-8.small-offset-2.medium-2.medium-offset-5.columns.hr
-                    hr
-            div.row.subtext
-                div.small-10.small-offset-1.medium-6.medium-offset-3.columns
-                    | We specialize in event registration, sponsor fulfillment and hospitality interaction.
-            div.row.sign_up
-                div.small-8.small-offset-2.medium-2.medium-offset-5.columns
-                    a.secondary-btn(href="{% url 'index:register' %}") SIGN UP
-        div.section.section-2
-            div.row.content
-                div.small-12.medium-5.medium-offset-1.columns
-                    div.title
-                        span.dark WHO WE ARE
-                        br
-                        | &amp; WHAT WE DO
-                    div.subtext
-                        | Bazaarboy helps event organizers and sponsors convert attendee data into mobile commerce opportunities. We work with businesses, non-profits, schools, media outlets, festivals and special taxing districts.
-                div.small-12.medium-6.columns.ticket-container
-                    img.ticket(src="{{ STATIC_URL }}images/landing/ticket.png")
-        //div.section.section-3
-            div.row.content
-                div.small-12.medium-7.columns
-                    div.logo
-                        img(src="{{ STATIC_URL }}images/landing/magdalene.jpg")
-                    hr
-                    div.quote
-                        | &quot;Bazaarboy is the most impressive event management company I have ever worked with.&quot;
-                    div.subquote
-                        b - Angela Mullins,
-                        | &nbsp;Deputy Director at Magdalene St. Louis
-                    div.event_details
-                        a.secondary-btn(href="javascript:;") EVENT DETAILS
-                div.small-12.medium-5.columns
-                    img(src="{{ STATIC_URL }}images/landing/checkin.jpg")
-        //div.section.section-4
-            div.row.content
-                div.small-12.medium-6.columns
-                    img.glass(src="{{ STATIC_URL }}images/landing/magnifying_glass.png")
-                div.small-12.medium-6.columns
-                    div.title
-                        span.dark WHERE WE ARE
-                        br
-                        | &amp; HOW WE CAN HELP
-                    div.subtext
-                        | Bazaarboy is located at the TechArtista Collaborative Working Environment in St. Louis, MO. We understand selling tickets is just one hurdle for event organizers. Our team can also provide strategic planning to help your marketing and communication efforts. 
+                    div.slider-container
+                        div.slider-content
+                            div.organizer-slider
+                                div.slide.slide-froyo
+                                    div.image-container(style="background:url(/static/images/splash/org_froyo.png); background-size:cover; background-position:center;")
+                                        div.brand-name-container
+                                            div.row
+                                                div.small-12.medium-9.large-10.columns
+                                                    div.brand-name
+                                                        a(href="https://froyo.bazaarboy.com") Froyo
+                                                div.small-12.medium-3.large-2.columns
+                                                    a.view-channel.primary-btn(href="https://froyo.bazaarboy.com") View Channel
+                                div.slide.slide-pujols
+                                    div.image-container(style="background:url(/static/images/splash/org_pujols.png); background-size:cover; background-position:center;")
+                                        div.brand-name-container
+                                            div.row
+                                                div.small-12.medium-9.large-10.columns
+                                                    div.brand-name 
+                                                        a(href="https://pujolsfamilyfoundation.bazaarboy.com") Albert Pujols Family Foundation
+                                                div.small-12.medium-3.large-2.columns
+                                                    a.view-channel.primary-btn(href="https://pujolsfamilyfoundation.bazaarboy.com") View Channel
+                                div.slide.slide-surge
+                                    div.image-container(style="background:url(/static/images/splash/org_surge.jpg); background-size:cover; background-position:center;")
+                                        div.brand-name-container
+                                            div.row
+                                                div.small-12.medium-9.large-10.columns
+                                                    div.brand-name 
+                                                        a(href="https://stlsurgebasketball.bazaarboy.com") St. Louis Surge
+                                                div.small-12.medium-3.large-2.columns
+                                                    a.view-channel.primary-btn(href="https://stlsurgebasketball.bazaarboy.com") View Channel
+                                div.slide.slide-chess
+                                    div.image-container(style="background:url(/static/images/splash/org_chess.jpg); background-size:cover; background-position:center;")
+                                        div.brand-name-container
+                                            div.row
+                                                div.small-12.medium-9.large-10.columns
+                                                    div.brand-name 
+                                                        a(href="https://worldchesshof.bazaarboy.com") World Chess Hall of Fame
+                                                div.small-12.medium-3.large-2.columns
+                                                    a.view-channel.primary-btn(href="https://worldchesshof.bazaarboy.com") View Channel
+                                div.slide.slide-techartista
+                                    div.image-container(style="background:url(/static/images/splash/org_ta.jpg); background-size:cover; background-position:center;")
+                                        div.brand-name-container
+                                            div.row
+                                                div.small-12.medium-9.large-10.columns
+                                                    div.brand-name 
+                                                        a(href="https://techartista.bazaarboy.com") TechArtista Collaborative Working Evironment
+                                                div.small-12.medium-3.large-2.columns
+                                                    a.view-channel.primary-btn(href="https://techartista.bazaarboy.com") View Channel
+        div.fullWidth.sign-up-container
+            div.row
+                div.small-12.columns.text-center
+                    div.row
+                        div.small-12.columns
+                            div.title Interested?
+                    div.row
+                        div.small-12.columns
+                            div.subtitle Sign up with Bazaarboy to maximize engagement at your next event
+                    div.row.inputs
+                        div.small-12.medium-8.large-5.small-centered.columns
+                            div.row
+                                div.small-12.medium-8.large-9.columns
+                                    input(type="text", name="sign_up_email", placeholder="Email Address")
+                                div.small-12.medium-4.large-3.columns
+                                    a.brown-btn.full-btn.sign-up-submit(href="javascript:;") Sign Up
+        //div.fullWidth.bottom
+            div.row
+                div.small-12.columns
+                    div.tagline How are you reaching your audience?
+        div.fullWidth.footer
+            div.row
+                div.small-12.columns
+                    div.links
+                        span &copy; 2015 Bazaarboy, LLC
+                        span |
+                        a(href="{{ STATIC_URL }}bboy-terms.pdf") Terms of Use
+                        a(href="{% url 'index:pricing' %}") Pricing
+                        a(href="mailto:build@bazaarboy.com") Contact
+                        a(href="{% url 'index:login' %}") Log In
+                        a(href="{% url 'index:register' %}") Sign Up
+
+
+
+
+
 
         
 
 append script
-    script(type="text/javascript", src="{{ STATIC_URL }}js/index/landing.js")
+    script(type="text/javascript", src="//code.jquery.com/jquery-migrate-1.2.1.min.js")
+    script(type="text/javascript", src="{{ STATIC_URL }}jQueryUI/jquery-ui.min.js")
+    script(type="text/javascript", src="{{ STATIC_URL }}jQueryUI/jquery-ui.autocomplete.html.js")
+    script(type="text/javascript", src="{{ STATIC_URL }}slick/slick.min.js")
+    script(type="text/javascript", src="{{ STATIC_URL }}typedjs/typed.js")
+    script(type="text/javascript", src="{{ STATIC_URL }}js/index/splash.js")
+    script().
+        $(document).ready(function(){
+            $("span.changing-text").typed({
+                strings: ["conversation", "customers", "sponsors", "experiences"],
+                loop:true,
+                startDelay: 300,
+                showCursor: false,
+                backDelay: 2000,
+                backSpeed: 15,
+                typeSpeed: 30
+            });
+        });

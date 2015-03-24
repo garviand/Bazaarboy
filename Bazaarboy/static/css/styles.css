@@ -6215,205 +6215,6 @@ div#show404 div.controls a.home {
 div#show404 div.controls a.home:hover {
   background-color: #ffa61a;
 }
-div#landing div.section-1 {
-  background: url('../images/landing/bg.jpg');
-  background-size: cover;
-  min-height: 700px;
-  padding-bottom: 60px;
-}
-div#landing div.section-1 div.header {
-  padding-top: 40px;
-}
-@media only screen and (max-width: 40em) {
-  div#landing div.section-1 div.header div.logo-container {
-    text-align: center;
-  }
-}
-div#landing div.section-1 div.header a.logo img {
-  display: inline;
-  height: 50px;
-  width: 50px;
-}
-div#landing div.section-1 div.header a.logo div.text {
-  position: relative;
-  top: 5px;
-  display: inline;
-  margin-left: 15px;
-  color: #ff9137;
-  font-size: 26px;
-  font-weight: 600;
-}
-div#landing div.section-1 div.header div.links a {
-  float: right;
-  padding-top: 14px;
-  color: #ffffff;
-  margin-left: 20px;
-  font-size: 18px;
-  font-weight: 600;
-}
-div#landing div.section-1 div.header div.links a.sign_up {
-  color: #ff9137;
-}
-div#landing div.section-1 div.header div.mobile-links a {
-  padding-top: 25px;
-  color: #ffffff;
-  font-size: 18px;
-  font-weight: 600;
-}
-div#landing div.section-1 div.header div.mobile-links a.sign_up {
-  color: #ff9137;
-}
-div#landing div.section-1 div.title {
-  text-align: center;
-  margin-top: 180px;
-  color: #ffffff;
-  font-size: 48px;
-  font-weight: 600;
-  text-transform: uppercase;
-  line-height: 3.5rem;
-}
-@media only screen and (max-width: 40em) {
-  div#landing div.section-1 div.title {
-    margin-top: 100px !important;
-  }
-}
-div#landing div.section-1 div.hr hr {
-  margin: 30px 0;
-}
-div#landing div.section-1 div.subtext {
-  color: #ffffff;
-  text-align: center;
-  line-height: 1.75rem;
-}
-div#landing div.section-1 div.sign_up {
-  margin-top: 60px;
-}
-div#landing div.section-1 div.sign_up a {
-  display: block;
-  background: #ff9137;
-  width: 100%;
-  padding-top: 10px;
-  padding-bottom: 13px;
-  border: none;
-  -moz-box-shadow: inset 0px -3px 0px 0px #c25f00;
-  -webkit-box-shadow: inset 0px -3px 0px 0px #c25f00;
-  box-shadow: inset 0px -3px 0px 0px #c25f00;
-  text-shadow: 1px 1px 0px #c25f00;
-}
-div#landing div.section-1 div.sign_up a:hover {
-  color: #FFF;
-}
-@media only screen and (max-width: 40em) {
-  div#landing div.section-2 {
-    padding: 75px 0 !important;
-  }
-}
-div#landing div.section-2 {
-  color: #ffffff;
-  padding: 150px 0;
-  background: #ff9137;
-}
-div#landing div.section-2 div.content div.title {
-  font-size: 36px;
-  font-weight: 600;
-  text-align: right;
-  line-height: 2.5rem;
-}
-div#landing div.section-2 div.content div.title .dark {
-  color: #4a4a4a;
-}
-@media only screen and (max-width: 40em) {
-  div#landing div.section-2 div.content div.title {
-    text-align: center !important;
-  }
-}
-div#landing div.section-2 div.content div.subtext {
-  margin-top: 30px;
-  margin-bottom: 30px;
-  text-align: right;
-  line-height: 1.5rem;
-}
-@media only screen and (max-width: 40em) {
-  div#landing div.section-2 div.content div.subtext {
-    text-align: center !important;
-  }
-}
-div#landing div.section-2 div.content img.ticket {
-  margin-left: 30px;
-  max-height: 250px;
-}
-@media only screen and (max-width: 40em) {
-  div#landing div.section-2 div.content div.ticket-container {
-    text-align: center !important;
-  }
-  div#landing div.section-2 div.content div.ticket-container img.ticket {
-    margin-left: 0px;
-  }
-}
-div#landing div.section-3 {
-  background: #ffffff;
-  padding: 100px 0;
-}
-div#landing div.section-3 .content div.logo img {
-  max-width: 80%;
-}
-div#landing div.section-3 .content hr {
-  color: #4a4a4a;
-  background: #4a4a4a;
-  margin: 30px 0;
-  border: none;
-  height: 2px;
-  width: 80%;
-}
-div#landing div.section-3 .content div.quote {
-  color: #ff9137;
-  font-size: 20px;
-  font-weight: bold;
-  line-height: 1.7rem;
-  margin-bottom: 20px;
-}
-div#landing div.section-3 .content div.subquote {
-  margin-bottom: 40px;
-}
-div#landing div.section-3 .content div.event_details {
-  margin-bottom: 60px;
-}
-div#landing div.section-3 .content div.event_details a {
-  background: #ff9137;
-  padding: 10px 20px;
-  padding-bottom: 13px;
-  border: none;
-  -moz-box-shadow: inset 0px -3px 0px 0px #c25f00;
-  -webkit-box-shadow: inset 0px -3px 0px 0px #c25f00;
-  box-shadow: inset 0px -3px 0px 0px #c25f00;
-  text-shadow: none;
-  font-weight: 600;
-}
-div#landing div.section-3 .content div.event_details a:hover {
-  color: #FFF;
-}
-div#landing div.section-4 {
-  color: #ffffff;
-  padding: 150px 0;
-  background: #01bd8a;
-}
-div#landing div.section-4 div.content div.title {
-  font-size: 36px;
-  font-weight: 600;
-  line-height: 2.5rem;
-}
-div#landing div.section-4 div.content div.title .dark {
-  color: #4a4a4a;
-}
-div#landing div.section-4 div.content div.subtext {
-  margin-top: 30px;
-  margin-bottom: 30px;
-  line-height: 1.5rem;
-}
-div#landing div.section-4 div.content img.glass {
-  float: right;
-  max-height: 250px;
-}
 div.autocomplete_result {
   padding: 5px;
   border-bottom: #f6f6f6 thin solid;
@@ -6448,11 +6249,16 @@ div#landing div.splash-top div.logo-container {
   overflow: visible;
   width: 100%;
   height: 100%;
-  background: url(/static/images/splash/logo.png);
+}
+div#landing div.splash-top div.logo-container img {
+  display: block;
+  min-width: 1240px;
 }
 @media only screen and (max-width: 40em) {
-  div#landing div.splash-top div.logo-container {
-    background-position: -35px 0;
+  div#landing div.splash-top div.logo-container img {
+    position: absolute;
+    left: -125px;
+    top: -20px;
   }
 }
 div#landing div.splash-top div.links-container {
@@ -6460,10 +6266,14 @@ div#landing div.splash-top div.links-container {
 }
 @media only screen and (max-width: 40em) {
   div#landing div.splash-top div.links-container {
-    padding-top: 120px;
+    padding-top: 70px;
   }
   div#landing div.splash-top div.links-container div.links {
-    text-align: center !important;
+    text-align: left !important;
+  }
+  div#landing div.splash-top div.links-container div.links a {
+    padding: 8px 7px !important;
+    margin-left: 8px !important;
   }
 }
 div#landing div.splash-top div.links-container div.links a {
@@ -6490,8 +6300,14 @@ div#landing div.splash-top div.title {
 }
 @media only screen and (max-width: 40em) {
   div#landing div.splash-top div.title {
-    padding-top: 80px;
+    padding-top: 30px;
+    font-size: 1.75rem;
+    line-height: 2.25rem;
   }
+}
+div#landing div.splash-top div.title span.changing-text {
+  display: inline-block;
+  min-width: 240px;
 }
 div#landing div.splash-top div.subtitle {
   padding-top: 40px;
@@ -6499,9 +6315,21 @@ div#landing div.splash-top div.subtitle {
   font-size: 32px;
   font-weight: 300;
 }
+@media only screen and (max-width: 40em) {
+  div#landing div.splash-top div.subtitle {
+    font-size: 1.2rem;
+    line-height: 1.5rem;
+    padding-top: 15px;
+  }
+}
 div#landing div.splash-top div.see-how {
   padding-top: 40px;
   padding-bottom: 100px;
+}
+@media only screen and (max-width: 40em) {
+  div#landing div.splash-top div.see-how {
+    padding-top: 20px;
+  }
 }
 div#landing div.find-event-container {
   background: #2e2e2c;
@@ -6576,11 +6404,24 @@ div#landing div.tagline-container {
   padding-top: 70px;
   padding-bottom: 70px;
 }
+@media only screen and (max-width: 40em) {
+  div#landing div.tagline-container {
+    padding-top: 50px;
+    padding-bottom: 70px;
+  }
+}
 div#landing div.tagline-container div.tagline {
   color: #ffffff;
   font-size: 32px;
   font-weight: 200;
   line-height: 3rem;
+}
+@media only screen and (max-width: 40em) {
+  div#landing div.tagline-container div.tagline {
+    padding-top: 25px;
+    font-size: 1.25rem;
+    line-height: 1.75rem;
+  }
 }
 div#landing div.uses-container {
   border-bottom: thin solid #222220;
@@ -6614,6 +6455,7 @@ div#landing div.uses-container div.box div.box-gradient {
 }
 div#landing div.uses-container div.box div.box-items {
   line-height: 40px;
+  padding-bottom: 70px;
 }
 div#landing div.uses-container div.box.gather {
   background: url(/static/images/splash/gather_image.jpg);
@@ -6629,7 +6471,7 @@ div#landing div.uses-container div.box.give {
 }
 div#landing div.organizer-showcase-container {
   background-color: #4c3c28;
-  /* background: url(/static/images/splash/organizer_background.jpg); */
+  background: url(/static/images/splash/organizer_background.jpg);
   background-size: cover;
   background-position: bottom center;
 }
@@ -6670,7 +6512,7 @@ div#landing div.organizer-showcase-container div.organizers .slider-controls div
 }
 div#landing div.organizer-showcase-container div.organizers .slider-controls div.logo-container .pujols {
   background: url(/static/images/splash/logo_pujols.png);
-  background-size: 80%;
+  background-size: 100%;
   background-position: center;
   background-repeat: no-repeat;
 }
@@ -6732,7 +6574,7 @@ div#landing div.organizer-showcase-container div.slider-container div.slider-con
   background-size: cover;
   background-repeat: no-repeat;
   width: 100%;
-  height: 450px;
+  height: 600px;
 }
 div#landing div.organizer-showcase-container div.slider-container div.slider-content div.organizer-slider div.slide div.image-container div.brand-name-container {
   position: absolute;
@@ -6740,14 +6582,20 @@ div#landing div.organizer-showcase-container div.slider-container div.slider-con
   color: #ffffff;
   font-size: 18px;
   font-weight: 500;
-  height: 100px;
   bottom: 0;
   background: rgba(0, 0, 0, 0.8);
   padding-left: 20px;
   padding-right: 20px;
 }
 div#landing div.organizer-showcase-container div.slider-container div.slider-content div.organizer-slider div.slide div.image-container div.brand-name-container div.brand-name {
-  line-height: 100px;
+  padding-top: 43px;
+  padding-bottom: 40px;
+}
+@media only screen and (max-width: 40em) {
+  div#landing div.organizer-showcase-container div.slider-container div.slider-content div.organizer-slider div.slide div.image-container div.brand-name-container div.brand-name {
+    padding-bottom: 10px;
+    line-height: 1.5rem;
+  }
 }
 div#landing div.organizer-showcase-container div.slider-container div.slider-content div.organizer-slider div.slide div.image-container div.brand-name-container div.brand-name a {
   color: #FFF !important;
@@ -6757,6 +6605,12 @@ div#landing div.organizer-showcase-container div.slider-container div.slider-con
 }
 div#landing div.organizer-showcase-container div.slider-container div.slider-content div.organizer-slider div.slide div.image-container div.brand-name-container a.view-channel {
   margin-top: 30px;
+}
+@media only screen and (max-width: 40em) {
+  div#landing div.organizer-showcase-container div.slider-container div.slider-content div.organizer-slider div.slide div.image-container div.brand-name-container a.view-channel {
+    margin-top: 20px;
+    margin-bottom: 20px;
+  }
 }
 div#landing div.sign-up-container {
   background: #2e2e2c;

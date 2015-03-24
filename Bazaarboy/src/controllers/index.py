@@ -19,13 +19,6 @@ from subdomains.utils import get_domain
 
 import pdb
 
-
-
-@login_check()
-@validate('GET', [], ['next'])
-def splash(request, params, user):
-    return render(request, 'index/splash.html', locals())
-
 @never_cache
 @login_check()
 @validate('GET', [], ['next'])

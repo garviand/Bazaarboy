@@ -15,7 +15,7 @@
             return
         $('a.see-how-btn').click () ->
             $('html, body').animate
-                scrollTop: $("div.uses-container").offset().top
+                scrollTop: $("div.tagline-container").offset().top
                 , 500
             return
         $('body').on 'click', '.event_link', (event) ->

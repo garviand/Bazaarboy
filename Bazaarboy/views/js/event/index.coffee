@@ -522,7 +522,7 @@ Bazaarboy.event.index =
         if design
             currentHTML = $('div#event-description div.description div.inner').html()
             redactorContent = $('div#event-description div.description div.inner').redactor
-                plugins: ['instagram']
+                plugins: ['instagram', 'video']
                 boldTag: 'b'
                 italicTag: 'i'
                 imageUpload: rootUrl + 'file/image/upload/'

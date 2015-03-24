@@ -31,9 +31,16 @@ div#landing{
             overflow: visible;
             width: 100%;
             height: 100%;
-            background: url(/static/images/splash/logo.png);
+            img{
+                display: block;
+                min-width: 1240px;
+            }
             @media @media_small{
-                background-position: -35px 0;
+                img{
+                    position: absolute;
+                    left: -125px;
+                    top: -20px;
+                }
             }
         }
         background: url(/static/images/splash/hero_image.jpg);
@@ -42,9 +49,13 @@ div#landing{
         div.links-container{
             padding-top: 45px;
             @media @media_small{
-                padding-top: 120px;
+                padding-top: 70px;
                 div.links{
-                    text-align: center !important;
+                    text-align: left !important;
+                    a{
+                        padding: 8px 7px !important;
+                        margin-left: 8px !important;
+                    }
                 }
             }
             div.links{
@@ -72,7 +83,9 @@ div#landing{
             font-weight: 200;
             line-height: 3.5rem;
             @media @media_small{
-                padding-top: 80px;
+                padding-top: 30px;
+                font-size: 1.75rem;
+                line-height: 2.25rem;
             }
         }
         div.subtitle{
@@ -80,10 +93,18 @@ div#landing{
             color: @white;
             font-size: 32px;
             font-weight: 300;
+            @media @media_small{
+                font-size: 1.2rem;
+                line-height: 1.5rem;
+                padding-top: 15px;
+            }
         }
         div.see-how{
             padding-top: 40px;
             padding-bottom: 100px;
+            @media @media_small{
+                padding-top: 20px;
+            }
         }
     }
     div.find-event-container{
@@ -157,11 +178,20 @@ div#landing{
         background: rgb(34, 34, 32);
         padding-top: 70px;
         padding-bottom: 70px;
+        @media @media_small{
+            padding-top: 50px;
+            padding-bottom: 70px;
+        }
         div.tagline{
             color: @white;
             font-size: 32px;
             font-weight: 200;
             line-height: 3rem;
+            @media @media_small{
+                padding-top: 25px;
+                font-size: 1.25rem;
+                line-height: 1.75rem;
+            }
         }
     }
     div.uses-container{
@@ -194,6 +224,7 @@ div#landing{
             }
             div.box-items{
                 line-height: 40px;
+                padding-bottom: 70px;
             }
             &.gather{
                 background: url(/static/images/splash/gather_image.jpg);
@@ -211,7 +242,7 @@ div#landing{
     }
     div.organizer-showcase-container{
         background-color: rgb(76, 60, 40);
-        /* background: url(/static/images/splash/organizer_background.jpg); */
+        background: url(/static/images/splash/organizer_background.jpg);
         background-size: cover;
         background-position: bottom center;
         div.title{
@@ -249,7 +280,7 @@ div#landing{
                     }
                     .pujols{
                         background: url(/static/images/splash/logo_pujols.png);
-                        background-size: 80%;
+                        background-size: 100%;
                         background-position: center;
                         background-repeat: no-repeat;
                     }
@@ -314,7 +345,7 @@ div#landing{
                             background-size: cover;
                             background-repeat: no-repeat;
                             width: 100%;
-                            height: 450px;
+                            height: 600px;
                             div.brand-name-container{
                                 position: absolute;
                                 width: 100%;
