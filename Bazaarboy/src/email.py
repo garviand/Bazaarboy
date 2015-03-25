@@ -474,14 +474,16 @@ def sendReward(claim):
     to = [{
         'email':claim.email
     }]
-    subject = 'Get your Gift from ' + claim.item.reward.creator.name + ' - ' + claim.item.reward.name
+    subject = 'Get your Gift from ' + claim.item.owner.name + ' - ' + claim.item.reward.name
     template = 'reward'
     if claim.item.reward.attachment:
         rewardImage = '<img src="' + claim.item.reward.attachment.source.url.split("?", 1)[0] + '" style="max-width:520px;" mc:label="coupon_image" mc:edit="coupon_image">'
     else:
         rewardImage = ''
-    if claim.item.reward.creator.image:
-        profileLogo = '<img src="' + claim.item.reward.creator.image.source.url.split("?", 1)[0] + '" id="headerImage campaign-icon" mc:label="header_image" mc:edit="header_image" mc:allowdesigner="" mc:allowtext="" style="max-width:560px; max-height:100px;">'
+    if claim.item.owner.image:
+        profileLogo = '<img src="' + claim.item.owner.image.source.url.split("?", 1)[0] + '" id="headerImage campaign-icon" mc:label="header_image" mc:edit="header_image" mc:allowdesigner="" mc:allowtext="" style="max-width:200px; max-height:100px; margin-right:40px;">'
+        if claim.item.reward.creator.image and claim.item.reward.creator != claim.item.owner:
+            profileLogo += '<img src="' + claim.item.reward.creator.image.source.url.split("?", 1)[0] + '" id="headerImage campaign-icon" mc:label="header_image" mc:edit="header_image" mc:allowdesigner="" mc:allowtext="" style="max-width:200px; max-height:100px;">'
     else:
         profileLogo = ''
     if claim.owner:
@@ -515,8 +517,12 @@ def sendReward(claim):
                 'content': claim.item.reward.description
             },
             {
+                'name': 'reward_message', 
+                'content': claim.message
+            },
+            {
                 'name': 'expiration', 
-                'content': str(expirationDuration) + ' days'
+                'content': str(expirationDuration)
             },
             {
                 'name': 'claim_id', 

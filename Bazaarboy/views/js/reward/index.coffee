@@ -70,12 +70,13 @@ Bazaarboy.reward.index =
         button.html('Sending...')
         scope.sendingGift = true
         rewardEmail = $('div#distribute-reward-modal input[name=email_distribute]').val()
+        rewardMessage = $('div#distribute-reward-modal textarea[name=email_message]').val()
         rewardItem = $('div#distribute-reward-modal input[name=reward_item_id]').val()
         if rewardEmail.trim() is ''
           swal 'Must Enter an Email'
           scope.sendingGift = false
           return
-        Bazaarboy.post 'rewards/claim/add/', {item:rewardItem, email:rewardEmail}, (response) ->
+        Bazaarboy.post 'rewards/claim/add/', {item:rewardItem, email:rewardEmail, message:rewardMessage}, (response) ->
           if response.status is 'OK'
               swal
                   type: 'success'

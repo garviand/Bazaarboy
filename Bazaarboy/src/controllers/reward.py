@@ -404,7 +404,7 @@ def add_item(request, params, user):
         return json_response(response)
 
 @login_required()
-@validate('POST', ['item'], ['owner', 'email'])
+@validate('POST', ['item'], ['owner', 'email', 'message'])
 def add_claim(request, params, user):
     if not Reward_item.objects.filter(id = params['item']).exists():
         response = {
@@ -449,7 +449,11 @@ def add_claim(request, params, user):
             return json_response(response)
         owner = User.objects.get(id = params['owner'])
         email = owner.email
-    claim = Claim(email = email, owner = owner, item = item)
+    if params['message']:
+        claimMessage = params['message']
+    else:
+        claimMessage = ''
+    claim = Claim(email = email, owner = owner, item = item, message = claimMessage)
     item.quantity -= 1
     item.save()
     claim.save()

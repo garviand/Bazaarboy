@@ -83,12 +83,13 @@
         $('div#distribute-reward-modal').foundation('reveal', 'open');
       });
       $('div#distribute-reward-modal a.send-gift-btn').click(function() {
-        var button, rewardEmail, rewardItem;
+        var button, rewardEmail, rewardItem, rewardMessage;
         if (!scope.sendingGift) {
           button = $(this);
           button.html('Sending...');
           scope.sendingGift = true;
           rewardEmail = $('div#distribute-reward-modal input[name=email_distribute]').val();
+          rewardMessage = $('div#distribute-reward-modal textarea[name=email_message]').val();
           rewardItem = $('div#distribute-reward-modal input[name=reward_item_id]').val();
           if (rewardEmail.trim() === '') {
             swal('Must Enter an Email');
@@ -97,7 +98,8 @@
           }
           Bazaarboy.post('rewards/claim/add/', {
             item: rewardItem,
-            email: rewardEmail
+            email: rewardEmail,
+            message: rewardMessage
           }, function(response) {
             if (response.status === 'OK') {
               swal({

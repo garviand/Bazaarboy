@@ -522,6 +522,7 @@ class Claim(models.Model):
     item = models.ForeignKey('Reward_item')
     code = models.CharField(max_length = 30)
     token = models.CharField(max_length = 128)
+    message = models.CharField(max_length = 350, default = '')
     extra_fields = models.TextField(default = '{}')
     is_claimed = models.BooleanField(default = False)
     claimed_time = models.DateTimeField(null = True, default = None)

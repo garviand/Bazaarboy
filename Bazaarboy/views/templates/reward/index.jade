@@ -149,8 +149,12 @@ block content
                 div.row.send-actions
                     div.small-12.columns.email-send
                         div.row
-                            div.small-12.medium-8.columns
+                            div.small-12.columns
                                 input(type="text", name="email_distribute", placeholder="Receiver Email")
+                        div.row
+                            div.small-12.columns
+                                textarea(name="email_message", placeholder="Message To Reciever (ex. Thanks for attending our event, here is your gift!)")
+                        div.row
                             div.small-12.medium-4.columns
                                 a.send-gift-btn.primary-btn.full-btn(href="javascript:;") Send Gift
 

@@ -40,7 +40,10 @@ def channelUrl(profile):
 def daysUntil(value):
     now = timezone.now()
     diff  = value - now
-    return diff.days
+    if diff.days > 0:
+        return str(diff.days) + ' days'
+    else:
+        return str(diff.seconds//3600) + ' hours'
 
 @register.filter
 def split(value, delimiter):
