@@ -25,7 +25,7 @@ def index(request, user):
     profile = profiles[0]
     lists = List.objects.filter(owner = profile, is_deleted = False)
     listsCount = lists.count()
-    active_sign_ups = Sign_up.objects.filter(end_time__gt = timezone.now())
+    active_sign_ups = Sign_up.objects.filter()
     for lt in lists:
         list_items = List_item.objects.filter(_list = lt)
         lt.items = list_items.count()
@@ -451,6 +451,46 @@ def sign_up(request, signup, user):
             for field in ordereddict.OrderedDict(sorted(custom_fields.items())).items():
                 extra_fields.append(field[1])
     return render(request, 'list/sign-up.html', locals())
+
+@login_required()
+def manage_sign_up(request, signup, user):
+    if not Sign_up.objects.filter(id = signup).exists():
+        response = {
+            'status':'FAIL',
+            'error':'SIGN_UP_NOT_FOUND',
+            'message':'The sign up doesn\'t exist.'
+        }
+        return json_response(response)
+    sign_up = Sign_up.objects.get(id = signup)
+    # Check if the user is a manager of the profile
+    if not Profile_manager.objects.filter(profile = sign_up.owner, 
+                                          user = user).exists():
+        response = {
+            'status':'FAIL',
+            'error':'NOT_A_MANAGER',
+            'message':'You don\'t have permission for the sign up.'
+        }
+        return json_response(response)
+    sign_ups = Sign_up_item.objects.filter(sign_up = sign_up).order_by('-created_time')
+    for item in sign_ups:
+        if not item.assigned:
+            item.new = True
+            item.assigned = True
+            item.save()
+        else:
+            item.new = False
+        try:
+            fields = json.loads(item.extra_fields)
+        except:
+            response = {
+                'status':'FAIL',
+                'error':'INVALID_FIELD_FORMAT',
+                'message':'The extra field format is not correct.'
+            }
+            return json_response(response)
+        finally:
+            item.extra_fields = fields
+    return render(request, 'list/manage-sign-up.html', locals())
 
 @login_required()
 def new_sign_up(request, user):

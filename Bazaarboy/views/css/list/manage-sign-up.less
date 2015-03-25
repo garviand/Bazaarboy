@@ -1,0 +1,76 @@
+@import (reference) "vars.less";
+
+#wrapper-sidebar{
+    form.sign-up-search-container{
+        position: relative;
+    }
+    div.sign-up-search{
+        width: 100%;
+        color: #FFF;
+        font-weight: 500;
+        padding: 20px 0;
+        label{
+            color: @white;
+            width: 80%;
+            margin-left: 10%;
+            text-decoration: underline;
+        }
+        a{
+            color: @light-orange;
+            display: block;
+            width: 80%;
+            margin-left: 10%;
+            margin-top: 10px;
+            line-height: 1.1rem;
+        }
+    }
+}
+
+div#manage-sign-up {
+    padding-left: 0;
+    div.sign-ups{
+        .list_headers{
+            color: @dark;
+            font-weight: 500;
+            > div{
+                padding-top: 20px;
+                padding-bottom: 20px;
+                border-right: 2px solid @light-grey;
+                &:last-child{
+                    border-right: none;
+                }
+            }
+            .name{
+                border-right: 0;
+            }
+        }
+        div.sign-up{
+            color: @dark;
+            font-size: 14px;
+            padding: 10px 0px;
+            border-top: 2px solid @light-grey;
+            div.name-email{
+                div.name{
+                    font-weight: bold;
+                    margin-bottom: 5px;
+                }
+                div.new{
+                    margin-top: 5px;
+                    font-size: 12px;
+                    color: @light-orange;
+                }
+            }
+            div.info{
+                div.info-item{
+                    margin-bottom: 5px;
+                }
+            }
+            div.actions{
+                a{
+                    display: block;
+                    margin-bottom: 5px;
+                }
+            }
+        }
+    }
+}

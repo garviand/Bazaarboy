@@ -1,0 +1,61 @@
+// Event.Manage
+
+extends ../layout
+
+block title
+    | Manage Sign Ups | {{ sign_up.name }}
+
+block sidebar
+    +sidebarItem('ss-newspaper')(href="{% url 'index' %}")
+        | Events
+    +sidebarItem('ss-database')(href="{% url 'list:index' %}", class="selected")
+        | Lists
+    +sidebarItem('ss-tag')(href="{% url 'reward:index' %}")
+        | Gifts
+    form.sign-up-search-container
+        div.sign-up-search.show-for-large-only
+            label Sign Up Actions
+            a(href="javascript:;") Add All To List
+            a(href="javascript:;") Generate Random Raffle
+
+block header
+    div.header-title.large-9.medium-10.columns.small-centered.hide-for-small-only
+        div.row.clearfix
+            div.text.left
+                | Sign Up Management | 
+                span.sub {{ sign_up.name }}
+
+
+block content
+    div.small-12.columns
+        div#wrapper-manage-sign-up.large-9.medium-10.columns.small-centered
+            div#manage-sign-up.small-12.columns
+                div.row
+                    div.small-12.columns
+                        div.sign-ups
+                            div.list_headers.row.hide-for-small-only
+                                div.medium-4.columns Name/Email
+                                div.medium-4.columns Info
+                                div.name.medium-4.columns Actions
+                            {% for sign_up_item in sign_ups %}
+                            div.sign-up.row(class="{% if claim.is_redeemed %}claimed{% endif %}", data-id="{{ claim.id }}", data-code="{{ claim.code|lower }}", data-email="{{ claim.owner.email|lower }}", data-name="{{ claim.owner.first_name|lower }} {{ claim.owner.last_name|lower }}")
+                                div.name-email.medium-4.small-12.columns
+                                    div.name {{ sign_up_item.first_name }} {{ sign_up_item.last_name }}
+                                    div.email {{ sign_up_item.email }}
+                                    {% if sign_up_item.new %}
+                                    div.new new
+                                    {% endif %}
+                                div.info.medium-4.small-12.columns.hide-for-small-only
+                                    {% for field, info in sign_up_item.extra_fields.items %}
+                                    div.info-item
+                                        b {{ field }}:&nbsp;
+                                        | {{ info }}
+                                    {% endfor %}
+                                div.actions.medium-4.small-12.columns
+                                    a(href="javascript:;") Add To List
+                                    a(href="javascript:;") Send Gift
+                            {% endfor %}
+
+
+append script
+    script(type="text/javascript", src="{{ STATIC_URL }}js/list/manage-sign-up.js")

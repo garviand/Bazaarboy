@@ -64,7 +64,7 @@ block content
                                     div.small-2.columns.text-center.list-action
                                         a(href="{% url 'list:sign-up' signup.id %}") View Form
                                     div.small-2.columns.text-center.list-action
-                                        a(href="javascript:;") View Signups
+                                        a(href="{% url 'list:manage-sign-up' signup.id %}") View Signups
                             {% endfor %}
                 {% endif %}
             div.row

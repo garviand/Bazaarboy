@@ -13437,6 +13437,69 @@ div#sign-up div#footer .switch:hover {
   color: #ffffff;
   background: #F4A534;
 }
+#wrapper-sidebar form.sign-up-search-container {
+  position: relative;
+}
+#wrapper-sidebar div.sign-up-search {
+  width: 100%;
+  color: #FFF;
+  font-weight: 500;
+  padding: 20px 0;
+}
+#wrapper-sidebar div.sign-up-search label {
+  color: #ffffff;
+  width: 80%;
+  margin-left: 10%;
+  text-decoration: underline;
+}
+#wrapper-sidebar div.sign-up-search a {
+  color: #f3a536;
+  display: block;
+  width: 80%;
+  margin-left: 10%;
+  margin-top: 10px;
+  line-height: 1.1rem;
+}
+div#manage-sign-up {
+  padding-left: 0;
+}
+div#manage-sign-up div.sign-ups .list_headers {
+  color: #4a4a4a;
+  font-weight: 500;
+}
+div#manage-sign-up div.sign-ups .list_headers > div {
+  padding-top: 20px;
+  padding-bottom: 20px;
+  border-right: 2px solid #f6f6f6;
+}
+div#manage-sign-up div.sign-ups .list_headers > div:last-child {
+  border-right: none;
+}
+div#manage-sign-up div.sign-ups .list_headers .name {
+  border-right: 0;
+}
+div#manage-sign-up div.sign-ups div.sign-up {
+  color: #4a4a4a;
+  font-size: 14px;
+  padding: 10px 0px;
+  border-top: 2px solid #f6f6f6;
+}
+div#manage-sign-up div.sign-ups div.sign-up div.name-email div.name {
+  font-weight: bold;
+  margin-bottom: 5px;
+}
+div#manage-sign-up div.sign-ups div.sign-up div.name-email div.new {
+  margin-top: 5px;
+  font-size: 12px;
+  color: #f3a536;
+}
+div#manage-sign-up div.sign-ups div.sign-up div.info div.info-item {
+  margin-bottom: 5px;
+}
+div#manage-sign-up div.sign-ups div.sign-up div.actions a {
+  display: block;
+  margin-bottom: 5px;
+}
 div#wrapper-new-sign-up {
   padding-top: 40px;
 }
