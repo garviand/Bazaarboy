@@ -33,19 +33,21 @@ block content
                 div.medium-5.columns
                     &nbsp;
                 div.medium-7.columns.end.empty-state-content
-                    div.text YOU HAVEN'T MADE A GIFT YET
+                    div.text YOU DO NOT HAVE ANY INVENTORY
                     hr
-                    div.subtext Create your first gift now!
+                    div.subtext Create your first inventory item now. You will have 
+                        b 10 FREE GIFTS
+                        | &nbsp;to distribute before subscribing to a Bazaarboy account.
                     div.row
                         div.large-5.medium-7.small-9
                             a.new-reward-btn(href="{% url 'reward:new' %}")
                                 div.secondary-btn.btn.full-btn
-                                    | <span class="plus">+</span> Add New Gift
+                                    | <span class="plus">+</span> Create Inventory
         {% endif %}
         div#reward-dashboard.small-12.columns
             div.row.new-reward-container(class="{% if rewards.count == 0 and reward_items.count == 0 %}hide{% endif %}")
                 div.medium-4.columns.new-reward
-                    a.new-reward-btn.primary-btn(href="{% url 'reward:new' %}") + New Gift
+                    a.new-reward-btn.primary-btn(href="{% url 'reward:new' %}") + Create Inventory
             div.row
                 {% if reward_items.count > 0 %}
                 div.small-12.columns.rewards
@@ -71,7 +73,7 @@ block content
                 {% endif %}
                 {% if rewards.count > 0 %}
                 div.small-12.columns.rewards
-                    div.headline Gift Templates
+                    div.headline Inventory
                     hr
                     {% for reward in rewards %}
                     div
@@ -79,7 +81,7 @@ block content
                             div.small-6.columns.reward-name
                                 | {{ reward.name|truncatechars:30 }}
                             div.small-3.columns.text-right.reward-action
-                                a(class="{% if subscription %}send-reward-btn{% else %}create-subscription{% endif %}", href="javascript:;", data-id="{{ reward.id }}", data-name="{{ reward.name }}") Send Gift
+                                a(class="send-reward-btn", href="javascript:;", data-id="{{ reward.id }}", data-name="{{ reward.name }}") Transfer Inventory
                             div.small-3.columns.text-right.reward-action
                                 a.manage-reward(href="{% url 'reward:manage' reward.id %}") Manage/Redeem
                     {% endfor %}
@@ -98,7 +100,11 @@ block content
                     span.reward-name &nbsp;
                     |'
                 br
-                div.send-description Send gifts to other organizations so they can distribute them to their audience. If you want to send gifts to your own audience, use the 'Add to My Profile' button.
+                div.send-description Send inventory to other organizations so they can distribute them as 'gifts' to their audience. If you want to send 'gifts' to your own audience, use the 'Add to My Account' button.
+                    span.free_gifts &nbsp;You currently have&nbsp;
+                        b.quantity_free {{ totalSent|subtract:10 }}
+                        b &nbsp;Free Gifts
+                        | &nbsp;Remaining.
                 hr
         div.row
             div.small-12.columns
@@ -113,9 +119,9 @@ block content
                 hr
                 div.row.send-actions
                     div.small-12.medium-4.columns
-                        a.add-reward-submit.primary-btn-inverse.full-btn(href="javascript:;", data-profile="{{ profile.id }}") Add to My Profile
+                        a.add-reward-submit.primary-btn-inverse.full-btn(href="javascript:;", data-profile="{{ profile.id }}") Add to My Account
                     div.small-12.medium-4.columns
-                        a.add-reward-email.primary-btn-inverse.full-btn(href="javascript:;") Send Via Email
+                        a.add-reward-email.primary-btn-inverse.full-btn(href="javascript:;") Transfer Via Email
                     div.small-12.medium-4.columns
                         a.add-reward-profile.primary-btn-inverse.full-btn(href="javascript:;") Search Accounts
                     div.small-12.columns.profile-search.hide
@@ -125,7 +131,7 @@ block content
                             div.small-12.medium-8.columns
                                 input(type="text", name="email_send", placeholder="Organization's Email")
                             div.small-12.medium-4.columns
-                                a.send-via-email.primary-btn.full-btn(href="javascript:;") Send Gifts
+                                a.send-via-email.primary-btn.full-btn(href="javascript:;") Send Inventory
         form.add-organizer-form(name="add-organizer")
 
     div#distribute-reward-modal.reveal-modal.medium(data-reveal)
@@ -144,7 +150,7 @@ block content
                     div.small-12.columns.email-send
                         div.row
                             div.small-12.medium-8.columns
-                                input(type="text", name="email_distribute", placeholder="Reciever Email")
+                                input(type="text", name="email_distribute", placeholder="Receiver Email")
                             div.small-12.medium-4.columns
                                 a.send-gift-btn.primary-btn.full-btn(href="javascript:;") Send Gift
 
@@ -157,9 +163,9 @@ block content
                     hr
                 div.row
                     div.small-12.columns.description
-                        | Before sending a gift, you must subscribe to a Bazaarboy Gifts account. This account will be charged $1 for every gift that is claimed. A 'Claim' is when the user enters thier information, and an MMS with the attached gift is sent (shown below).
+                        | Your 10 Gift Free Trial has ended. Before sending any more gifts, you must subscribe to a Bazaarboy account. This account will be charged $1 for every gift that is claimed. A 'Claim' is when the user enters thier information, and an MMS with the attached gift is sent (shown below).
                         img(src="{{ STATIC_URL }}images/claim.png")
-                        | By subscribing, you are agreeing to this payment. You will get 10 FREE gift credits after your subscription is complete.
+                        | By subscribing, you are agreeing to this payment.
                 div.row
                     div.small-12.columns
                         div.row
@@ -174,6 +180,8 @@ append script
     script.
         var profileId = {{ profile.id }};
         var publishableKey = '{{ publishable_key }}';
+        var totalSent = {{ totalSent }};
+        var hasSubscription = {% if subscription %}true{% else %}false{% endif %};
     script(type="text/javascript", src="{{ STATIC_URL }}pikaday/pikaday.js")
     script(type="text/javascript", src="{{ STATIC_URL }}pikaday/pikaday.jquery.js")
     script(type="text/javascript", src="{{ STATIC_URL }}debounce/jquery.debounce.js")

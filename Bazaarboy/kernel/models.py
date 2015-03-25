@@ -489,6 +489,7 @@ class Reward_item(models.Model):
     reward = models.ForeignKey('Reward')
     owner = models.ForeignKey('Profile')
     quantity = models.IntegerField()
+    received = models.IntegerField()
     expiration_time = models.DateTimeField()
     created_time = models.DateTimeField(auto_now_add = True)
 

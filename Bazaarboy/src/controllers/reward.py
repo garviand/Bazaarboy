@@ -44,6 +44,13 @@ def index(request, user):
         item.claims = claims
         item.redeemed = claims.filter(is_redeemed = True).count()
     publishable_key = STRIPE_PUBLISHABLE_KEY
+    totalRewards = Reward_item.objects.filter(reward__creator = profile).aggregate(Sum('received'))['received__sum']
+    if totalRewards is None:
+        totalRewards = 0
+    totalSends = Reward_send.objects.filter(reward__creator = profile, claimed = False).aggregate(Sum('quantity'))['quantity__sum']
+    if totalSends is None:
+        totalSends = 0
+    totalSent = totalRewards + totalSends
     if Subscription.objects.filter(owner = profile).exists():
         subscription = Subscription.objects.get(owner = profile)
     else:
@@ -143,7 +150,15 @@ def subscribe(request, params, user):
             email = params['email'],
             plan = "gifts"
         )
-        subscription = Subscription(owner = profile, customer_id = customer.id, subscription_id = customer.subscriptions.data[0].id, plan_id = 'gifts', credits = 10)
+        totalRewards = Reward_item.objects.filter(reward__creator = profile).aggregate(Sum('received'))['received__sum']
+        if totalRewards is None:
+            totalRewards = 0
+        totalSends = Reward_send.objects.filter(reward__creator = profile, claimed = False).aggregate(Sum('quantity'))['quantity__sum']
+        if totalSends is None:
+            totalSends = 0
+        previouslyClaimed = len(Claim.objects.filter(item__reward__creator = profile, is_claimed = True))
+        totalCredits = totalRewards + totalSends - previouslyClaimed
+        subscription = Subscription(owner = profile, customer_id = customer.id, subscription_id = customer.subscriptions.data[0].id, plan_id = 'gifts', credits = totalCredits)
         subscription.save()
     except stripe.CardError, e:
         response = {
@@ -357,7 +372,7 @@ def add_item(request, params, user):
                 'message':'The expiration date must be in the future.'
             }
             return json_response(response)
-        reward_item = Reward_item(reward = reward, owner = owner, quantity = params['quantity'], expiration_time = params['expiration_time'])
+        reward_item = Reward_item(reward = reward, owner = owner, quantity = params['quantity'], received = params['quantity'], expiration_time = params['expiration_time'])
         reward_item.save()
         response = {
             'status':'OK',

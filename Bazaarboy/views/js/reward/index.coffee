@@ -19,9 +19,11 @@ Bazaarboy.reward.index =
             $('form.add-organizer-form').append(newProfile.html())
   init: () ->
     scope = this
+    if totalSent > 9 or hasSubscription
+      $('span.free_gifts').addClass('hide')
     # SUBSCRIPTION
-    $('body').on 'click', 'a.create-subscription', () ->
-      $('div#add-subscription-modal').foundation('reveal', 'open')
+    $('a.cancel-subscription').click () ->
+      $('div#add-subscription-modal').foundation('reveal', 'close')
       return
     $('div#add-subscription-modal a.create-subscription').click () ->
       StripeCheckout.open
@@ -45,11 +47,9 @@ Bazaarboy.reward.index =
               swal
                 type: "success"
                 title: 'Subscribed!'
-                text: 'You have successfully subscribed for a Bazaarboy Gifts account. You will not be charged for the first 10 claimed items, so gift away!'
+                text: 'You have successfully subscribed for a Bazaarboy account!'
                 , () ->
-                  $('a.create-subscription').addClass('send-reward-btn')
-                  $('a.create-subscription').removeClass('create-subscription')
-                  $('div#add-subscription-modal').foundation('reveal', 'close')
+                  location.reload()
                   return
             else
               alert response.message
@@ -79,8 +79,8 @@ Bazaarboy.reward.index =
           if response.status is 'OK'
               swal
                   type: 'success'
-                  title: 'Reward Sent'
-                  text: 'The reward has been sent.'
+                  title: 'Gift Sent'
+                  text: 'The gift has been sent.'
               $('div#distribute-reward-modal').foundation('reveal', 'close')
               button.html 'Send Gift'
               scope.sendingGift = false
@@ -111,9 +111,12 @@ Bazaarboy.reward.index =
       $('div#send-reward-modal a.add-reward-profile').addClass('primary-btn-inverse')
       return
     $('body').on 'click', 'a.send-reward-btn', () ->
-      $('input[name=reward_id]').val($(this).data('id'))
-      $('div#send-reward-modal span.reward-name').html($(this).data('name'))
-      $('div#send-reward-modal').foundation('reveal', 'open')
+      if totalSent > 9 and not hasSubscription
+        $('div#add-subscription-modal').foundation('reveal', 'open')
+      else
+        $('input[name=reward_id]').val($(this).data('id'))
+        $('div#send-reward-modal span.reward-name').html($(this).data('name'))
+        $('div#send-reward-modal').foundation('reveal', 'open')
       return
     $('input[name=expiration]').pikaday
       format: 'MM/DD/YYYY'
@@ -125,6 +128,19 @@ Bazaarboy.reward.index =
         swal 'Quantity Must Be a Positive Number'
         return
       quantity = Math.floor($('input[name=quantity]').val())
+      if (10 - totalSent) < quantity and not hasSubscription
+        swal
+          type: "warning"
+          title: "Trial Exceeded"
+          text: "You do not have enough free gifts left to send this much inventory. Subscribe to a Bazaarboy account now?"
+          showCancelButton: true
+          confirmButtonText: 'Subscribe'
+          cancelButtonText: 'Cancel'
+          , (isConfirm) ->
+            if isConfirm
+              $('div#add-subscription-modal').foundation('reveal', 'open')
+            return
+        return
       expiration = $('input[name=expiration]').val()
       if not moment(expiration, 'MM/DD/YYYY').isValid()
         swal 'Expiration Date is Not Valid'
@@ -151,6 +167,19 @@ Bazaarboy.reward.index =
         swal 'Quantity Must Be a Positive Number'
         return
       quantity = Math.floor($('input[name=quantity]').val())
+      if (10 - totalSent) < quantity and not hasSubscription
+        swal
+          type: "warning"
+          title: "Trial Exceeded"
+          text: "You do not have enough free gifts left to send this much inventory. Subscribe to a Bazaarboy account now?"
+          showCancelButton: true
+          confirmButtonText: 'Subscribe'
+          cancelButtonText: 'Cancel'
+          , (isConfirm) ->
+            if isConfirm
+              $('div#add-subscription-modal').foundation('reveal', 'open')
+            return
+        return
       expiration = $('input[name=expiration]').val()
       if not moment(expiration, 'MM/DD/YYYY').isValid()
         swal 'Expiration Date is Not Valid'

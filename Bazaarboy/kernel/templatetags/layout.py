@@ -10,6 +10,10 @@ import pdb
 register = template.Library()
 
 @register.filter
+def subtract(value, arg):
+    return arg - value
+
+@register.filter
 def firstImage(event):
     if event.cover:
         return event.cover.source.url.split("?", 1)[0]

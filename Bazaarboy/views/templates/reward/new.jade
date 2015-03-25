@@ -19,7 +19,7 @@ block header
             div.icon.left
                 span.ss-file
             div.text.left
-                | Create Gift |
+                | Create Inventory Item |
                 span.sub &nbsp; {{ profile.name }}
 
 block content
@@ -30,16 +30,16 @@ block content
                 br
                 div.row
                     div.small-12.columns
-                        label Gift Name
-                        input(type="text", name="name", placeholder="Name of Reward")
+                        label Item Name
+                        input(type="text", name="name", placeholder="Name of Inventory Item")
                 div.row
                     div.small-12.columns
-                        label Gift Description
-                        textarea(name="description", placeholder="Reward Description")
+                        label Item Description
+                        textarea(name="description", placeholder="Item Description")
                 div.row
                     div.small-12.columns
-                        label Gift Value ($)
-                        input(type="text", name="value", placeholder="Value of the reward in Dollars (USD)")
+                        label Item Value ($)
+                        input(type="text", name="value", placeholder="Value of the item in Dollars (USD)")
                 div.row
                     div.small-12.columns
                         label Additional Details (Separated by commas)
@@ -63,7 +63,7 @@ block content
                 hr
                 div.row.create-actions
                     div.small-12.medium-4.columns
-                        a.create-reward.primary-btn.full-btn(href="javascript:;") Create Gift
+                        a.create-reward.primary-btn.full-btn(href="javascript:;") Create Inventory Item
                     div.small-12.medium-4.columns.end
                         a.secondary-btn-inverse.full-btn(href="{% url 'reward:index' %}") Cancel
     div#gif-modal.reveal-modal.large(data-reveal)
