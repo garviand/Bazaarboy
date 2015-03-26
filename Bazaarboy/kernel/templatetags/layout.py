@@ -10,6 +10,10 @@ import pdb
 register = template.Library()
 
 @register.filter
+def subtract(value, arg):
+    return arg - value
+
+@register.filter
 def firstImage(event):
     if event.cover:
         return event.cover.source.url.split("?", 1)[0]
@@ -36,7 +40,10 @@ def channelUrl(profile):
 def daysUntil(value):
     now = timezone.now()
     diff  = value - now
-    return diff.days
+    if diff.days > 0:
+        return str(diff.days) + ' days'
+    else:
+        return str(diff.seconds//3600) + ' hours'
 
 @register.filter
 def split(value, delimiter):

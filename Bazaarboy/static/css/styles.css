@@ -12531,6 +12531,9 @@ div#wrapper-reward-dashboard div.empty-state-container div.empty-state-content d
   font-weight: 600;
   color: #4a4a4a;
 }
+div#wrapper-reward-dashboard div.empty-state-container div.empty-state-content div.subtext {
+  line-height: 1.1rem;
+}
 div#wrapper-reward-dashboard div.empty-state-container div.empty-state-content hr {
   margin: 10px 0;
 }
@@ -12538,9 +12541,6 @@ div#wrapper-reward-dashboard div.empty-state-container div.empty-state-content d
   width: 100%;
   margin-top: 20px;
   margin-left: 10px;
-  padding-top: 11px;
-  padding-bottom: 14px;
-  font-size: 15px;
   text-transform: uppercase;
 }
 div#wrapper-reward-dashboard div#reward-dashboard {

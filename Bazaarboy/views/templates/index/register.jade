@@ -37,9 +37,10 @@ block body
                                         img.request_logo(src="{{ reward_send.reward.creator.image.source.url }}")
                                 div.row
                                     div.small-12.columns.request_info
-                                        | '{{ reward_send.reward.creator.name }}' has sent you a gift to distribute to your audience -&nbsp;
-                                        b {{ reward_send.reward.name }}
-                                        | . Register to view the gift!
+                                        | '{{ reward_send.reward.creator.name }}' has transfered you an item!&nbsp;
+                                        | Register to distribute&nbsp;
+                                        b {{ reward_send.reward.name }}&nbsp;
+                                        | to your audience!
                                 {% endif %}
                                 hr.separator
                                 div.row.register-inputs

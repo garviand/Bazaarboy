@@ -34,8 +34,11 @@
     init: function() {
       var add_organizer_debounce, scope;
       scope = this;
-      $('body').on('click', 'a.create-subscription', function() {
-        $('div#add-subscription-modal').foundation('reveal', 'open');
+      if (totalSent > 9 || hasSubscription) {
+        $('span.free_gifts').addClass('hide');
+      }
+      $('a.cancel-subscription').click(function() {
+        $('div#add-subscription-modal').foundation('reveal', 'close');
       });
       $('div#add-subscription-modal a.create-subscription').click(function() {
         var _this = this;
@@ -60,11 +63,9 @@
                 swal({
                   type: "success",
                   title: 'Subscribed!',
-                  text: 'You have successfully subscribed for a Bazaarboy Gifts account. You will not be charged for the first 10 claimed items, so gift away!'
+                  text: 'You have successfully subscribed for a Bazaarboy account!'
                 }, function() {
-                  $('a.create-subscription').addClass('send-reward-btn');
-                  $('a.create-subscription').removeClass('create-subscription');
-                  $('div#add-subscription-modal').foundation('reveal', 'close');
+                  location.reload();
                 });
               } else {
                 alert(response.message);
@@ -82,12 +83,13 @@
         $('div#distribute-reward-modal').foundation('reveal', 'open');
       });
       $('div#distribute-reward-modal a.send-gift-btn').click(function() {
-        var button, rewardEmail, rewardItem;
+        var button, rewardEmail, rewardItem, rewardMessage;
         if (!scope.sendingGift) {
           button = $(this);
           button.html('Sending...');
           scope.sendingGift = true;
           rewardEmail = $('div#distribute-reward-modal input[name=email_distribute]').val();
+          rewardMessage = $('div#distribute-reward-modal textarea[name=email_message]').val();
           rewardItem = $('div#distribute-reward-modal input[name=reward_item_id]').val();
           if (rewardEmail.trim() === '') {
             swal('Must Enter an Email');
@@ -96,13 +98,14 @@
           }
           Bazaarboy.post('rewards/claim/add/', {
             item: rewardItem,
-            email: rewardEmail
+            email: rewardEmail,
+            message: rewardMessage
           }, function(response) {
             if (response.status === 'OK') {
               swal({
                 type: 'success',
-                title: 'Reward Sent',
-                text: 'The reward has been sent.'
+                title: 'Gift Sent',
+                text: 'The gift has been sent.'
               });
               $('div#distribute-reward-modal').foundation('reveal', 'close');
               button.html('Send Gift');
@@ -135,9 +138,13 @@
         $('div#send-reward-modal a.add-reward-profile').addClass('primary-btn-inverse');
       });
       $('body').on('click', 'a.send-reward-btn', function() {
-        $('input[name=reward_id]').val($(this).data('id'));
-        $('div#send-reward-modal span.reward-name').html($(this).data('name'));
-        $('div#send-reward-modal').foundation('reveal', 'open');
+        if (totalSent > 9 && !hasSubscription) {
+          $('div#add-subscription-modal').foundation('reveal', 'open');
+        } else {
+          $('input[name=reward_id]').val($(this).data('id'));
+          $('div#send-reward-modal span.reward-name').html($(this).data('name'));
+          $('div#send-reward-modal').foundation('reveal', 'open');
+        }
       });
       $('input[name=expiration]').pikaday({
         format: 'MM/DD/YYYY'
@@ -151,6 +158,21 @@
           return;
         }
         quantity = Math.floor($('input[name=quantity]').val());
+        if ((10 - totalSent) < quantity && !hasSubscription) {
+          swal({
+            type: "warning",
+            title: "Trial Exceeded",
+            text: "You do not have enough free gifts left to send this much inventory. Subscribe to a Bazaarboy account now?",
+            showCancelButton: true,
+            confirmButtonText: 'Subscribe',
+            cancelButtonText: 'Cancel'
+          }, function(isConfirm) {
+            if (isConfirm) {
+              $('div#add-subscription-modal').foundation('reveal', 'open');
+            }
+          });
+          return;
+        }
         expiration = $('input[name=expiration]').val();
         if (!moment(expiration, 'MM/DD/YYYY').isValid()) {
           swal('Expiration Date is Not Valid');
@@ -187,6 +209,21 @@
           return;
         }
         quantity = Math.floor($('input[name=quantity]').val());
+        if ((10 - totalSent) < quantity && !hasSubscription) {
+          swal({
+            type: "warning",
+            title: "Trial Exceeded",
+            text: "You do not have enough free gifts left to send this much inventory. Subscribe to a Bazaarboy account now?",
+            showCancelButton: true,
+            confirmButtonText: 'Subscribe',
+            cancelButtonText: 'Cancel'
+          }, function(isConfirm) {
+            if (isConfirm) {
+              $('div#add-subscription-modal').foundation('reveal', 'open');
+            }
+          });
+          return;
+        }
         expiration = $('input[name=expiration]').val();
         if (!moment(expiration, 'MM/DD/YYYY').isValid()) {
           swal('Expiration Date is Not Valid');

@@ -233,7 +233,7 @@ def create(request, params, user):
                         'message':'This gift has already been claimed.'
                     }
                     return json_response(response)
-                reward_item = Reward_item(reward = reward_send.reward, owner = profile, quantity = reward_send.quantity, expiration_time = reward_send.expiration_time)
+                reward_item = Reward_item(reward = reward_send.reward, owner = profile, quantity = reward_send.quantity, received = reward_send.quantity, expiration_time = reward_send.expiration_time)
                 reward_item.save()
                 reward_send.claimed = True
                 reward_send.save()
@@ -299,7 +299,7 @@ def auth(request, params, user):
                             'message':'This gift has already been claimed.'
                         }
                         return json_response(response)
-                    reward_item = Reward_item(reward = reward_send.reward, owner = profile, quantity = reward_send.quantity, expiration_time = reward_send.expiration_time)
+                    reward_item = Reward_item(reward = reward_send.reward, owner = profile, quantity = reward_send.quantity, received = reward_send.quantity, expiration_time = reward_send.expiration_time)
                     reward_item.save()
                     reward_send.claimed = True
                     reward_send.save()

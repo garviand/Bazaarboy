@@ -2,6 +2,7 @@
   Bazaarboy.reward["new"] = {
     attachment: void 0,
     gif: void 0,
+    creating: false,
     init: function() {
       var scope;
       scope = this;
@@ -53,63 +54,77 @@
       });
       $('a.create-reward').click(function() {
         var attachmentId, description, field, fields, formattedFields, name, num, useGif, value, _i, _len;
-        if ($('input[name=name]').val().trim() === '') {
-          swal('Name Cannot Be Blank');
-          return;
-        }
-        name = $('input[name=name]').val();
-        if ($('textarea[name=description]').val().trim() === '') {
-          swal('Description Cannot Be Blank');
-          return;
-        }
-        description = $('textarea[name=description]').val();
-        if (!$.isNumeric($('input[name=value]').val()) || $('input[name=value]').val() <= 0) {
-          swal('Value Must Be a Positive Number');
-          return;
-        }
-        value = $('input[name=value]').val();
-        useGif = false;
-        if (scope.attachment != null) {
-          attachmentId = scope.attachment.pk;
-        } else if (scope.gif != null) {
-          attachmentId = scope.gif;
-          useGif = true;
-        } else {
-          swal('Must Include An Image for the Reward');
-          return;
-        }
-        formattedFields = {};
-        if ($('input[name=extra_fields]').val().trim() !== '') {
-          fields = $('input[name=extra_fields]').val().split(",");
-          num = 0;
-          for (_i = 0, _len = fields.length; _i < _len; _i++) {
-            field = fields[_i];
-            formattedFields[num] = field.trim();
-            num++;
+        if (!scope.creating) {
+          scope.creating = true;
+          $('a.create-reward').html('Creating...');
+          if ($('input[name=name]').val().trim() === '') {
+            swal('Name Cannot Be Blank');
+            $('a.create-reward').html('Create Inventory Item');
+            scope.creating = false;
+            return;
           }
-          formattedFields = JSON.stringify(formattedFields);
-        }
-        Bazaarboy.post('rewards/create/', {
-          profile: profileId,
-          name: name,
-          description: description,
-          value: value,
-          attachment: attachmentId,
-          gif: useGif,
-          extra_fields: formattedFields
-        }, function(response) {
-          if (response.status === 'OK') {
-            swal({
-              type: "success",
-              title: 'Reward Created',
-              text: 'You can now send it to your own attendees, or allow other organizations to share your reward.'
-            }, function() {
-              Bazaarboy.redirect('rewards/');
-            });
+          name = $('input[name=name]').val();
+          if ($('textarea[name=description]').val().trim() === '') {
+            swal('Description Cannot Be Blank');
+            $('a.create-reward').html('Create Inventory Item');
+            scope.creating = false;
+            return;
+          }
+          description = $('textarea[name=description]').val();
+          if (!$.isNumeric($('input[name=value]').val()) || $('input[name=value]').val() <= 0) {
+            swal('Value Must Be a Positive Number');
+            $('a.create-reward').html('Create Inventory Item');
+            scope.creating = false;
+            return;
+          }
+          value = $('input[name=value]').val();
+          useGif = false;
+          if (scope.attachment != null) {
+            attachmentId = scope.attachment.pk;
+          } else if (scope.gif != null) {
+            attachmentId = scope.gif;
+            useGif = true;
           } else {
-            swal(response.message);
+            swal('Must Include An Image for the Reward');
+            $('a.create-reward').html('Create Inventory Item');
+            scope.creating = false;
+            return;
           }
-        });
+          formattedFields = {};
+          if ($('input[name=extra_fields]').val().trim() !== '') {
+            fields = $('input[name=extra_fields]').val().split(",");
+            num = 0;
+            for (_i = 0, _len = fields.length; _i < _len; _i++) {
+              field = fields[_i];
+              formattedFields[num] = field.trim();
+              num++;
+            }
+            formattedFields = JSON.stringify(formattedFields);
+          }
+          Bazaarboy.post('rewards/create/', {
+            profile: profileId,
+            name: name,
+            description: description,
+            value: value,
+            attachment: attachmentId,
+            gif: useGif,
+            extra_fields: formattedFields
+          }, function(response) {
+            if (response.status === 'OK') {
+              swal({
+                type: "success",
+                title: 'Inventory Created',
+                text: 'You can now transfer this item to other organiztions for distribution to their audience, or you can add gifts to share with your own people.'
+              }, function() {
+                Bazaarboy.redirect('rewards/');
+              });
+            } else {
+              $('a.create-reward').html('Create Inventory Item');
+              scope.creating = false;
+              swal(response.message);
+            }
+          });
+        }
       });
       $('a.add-attachment').click(function() {
         $('input[name=attachment_file]').click();
