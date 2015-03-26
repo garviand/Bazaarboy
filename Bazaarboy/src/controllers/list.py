@@ -25,7 +25,9 @@ def index(request, user):
     profile = profiles[0]
     lists = List.objects.filter(owner = profile, is_deleted = False)
     listsCount = lists.count()
-    active_sign_ups = Sign_up.objects.filter()
+    active_sign_ups = Sign_up.objects.filter(owner = profile).order_by('-end_time')
+    for su in active_sign_ups:
+        su.newSignups = len(Sign_up_item.objects.filter(sign_up = su, assigned = False))
     for lt in lists:
         list_items = List_item.objects.filter(_list = lt)
         lt.items = list_items.count()

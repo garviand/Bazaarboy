@@ -59,6 +59,9 @@ block content
                                 div.row.list
                                     div.small-3.columns.list-name
                                         | {{ signup.name }}
+                                        {% if signup.newSignups > 0 %}
+                                        span.new-signups ({{ signup.newSignups }} new)
+                                        {% endif %}
                                     div.small-5.columns.text-left.list-members
                                         | {{ signup.description|truncatechars:30 }}
                                     div.small-2.columns.text-center.list-action

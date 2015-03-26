@@ -12903,6 +12903,10 @@ div#wrapper-list-dashboard div#list-dashboard div.lists div.list div.list-name {
   font-size: 16px;
   font-weight: 500;
 }
+div#wrapper-list-dashboard div#list-dashboard div.lists div.list div.list-name span.new-signups {
+  color: #f3a536;
+  font-weight: 300;
+}
 div#wrapper-list-dashboard div#list-dashboard div.lists div.list div.list-members {
   font-weight: 300;
   font-style: italic;
@@ -13257,7 +13261,7 @@ div#sign-up div#sign-up-container form#sign-up-form div.image-container {
   margin-top: 15px;
 }
 div#sign-up div#sign-up-container form#sign-up-form div.image-container img {
-  max-height: 120px;
+  max-height: 200px;
 }
 div#sign-up div#sign-up-container form#sign-up-form div.logo-small {
   margin: 0 auto;
