@@ -13,17 +13,17 @@ block sidebar
     +sidebarItem('ss-tag')(href="{% url 'reward:index' %}")
         | Gifts
     form.list_search
-        div.guest-search.show-for-large-only
+        div.guest-search
             label Search Guests
             input(type="text", name="guest_name", placeholder="Name")
             input(type="text", name="guest_code", placeholder="Confirmation #")
-        div.guest-add-invite.show-for-large-only
+        div.guest-add-invite
             {% if isCreator %}
             a.start-guest-add(href="javascript:;") Manually Add a Guest
             {% endif %}
             a(href="{% url 'event:invite' event.id %}") Invite Guests
             a.raffle-btn(href="javascript:;") Generate Random Raffle
-        div.ticket-filters-container.show-for-large-only
+        div.ticket-filters-container
             label Filter Tickets
             div.ticket_filters
                 a.all_tickets.active(href="javascript:;", data-id="all") All Tickets
