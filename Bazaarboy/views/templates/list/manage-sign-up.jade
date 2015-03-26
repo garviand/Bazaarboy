@@ -15,8 +15,8 @@ block sidebar
     form.sign-up-search-container
         div.sign-up-search.show-for-large-only
             label Sign Up Actions
-            a(href="javascript:;") Add All To List
-            a(href="javascript:;") Generate Random Raffle
+            a.add-to-list-btn(href="javascript:;") Add All To List
+            a.raffle-btn(href="javascript:;") Generate Random Raffle
 
 block header
     div.header-title.large-9.medium-10.columns.small-centered.hide-for-small-only
@@ -38,7 +38,7 @@ block content
                                 div.medium-4.columns Info
                                 div.name.medium-4.columns Actions
                             {% for sign_up_item in sign_ups %}
-                            div.sign-up.row(class="{% if claim.is_redeemed %}claimed{% endif %}", data-id="{{ claim.id }}", data-code="{{ claim.code|lower }}", data-email="{{ claim.owner.email|lower }}", data-name="{{ claim.owner.first_name|lower }} {{ claim.owner.last_name|lower }}")
+                            div.sign-up.row(data-id="{{ sign_up_item.id }}", data-email="{{ sign_up_item.email }}", data-name="{{ sign_up_item.first_name }} {{ sign_up_item.last_name }}")
                                 div.name-email.medium-4.small-12.columns
                                     div.name {{ sign_up_item.first_name }} {{ sign_up_item.last_name }}
                                     div.email {{ sign_up_item.email }}
@@ -52,9 +52,115 @@ block content
                                         | {{ info }}
                                     {% endfor %}
                                 div.actions.medium-4.small-12.columns
-                                    a(href="javascript:;") Add To List
-                                    a(href="javascript:;") Send Gift
+                                    a.add-to-list-single-btn(href="javascript:;", data-email="{{ sign_up_item.email }}", data-first="{{ sign_up_item.first_name }}", data-last="{{ sign_up_item.last_name }}") Add To List
+                                    a.reward-member(href="javascript:;", data-email="{{ sign_up_item.email }}", data-first="{{ sign_up_item.first_name }}", data-last="{{ sign_up_item.last_name }}") Send Gift
                             {% endfor %}
+
+    div#rewards-modal.reveal-modal.medium(data-reveal)
+        input(type="hidden", name="reward_email", value="")
+        div.row.new-list-title
+            div.small-12.columns
+                h3 Send a gift to '
+                    span.reward-reciever &nbsp;
+                    |'
+        div.row.message
+            div.small-12.columns
+                div.row
+                    div.small-12.columns
+                        textarea(name="message", placeholder="Message for the Gift Recipient")
+        div.row.rewards
+            div.small-12.columns
+                {% for reward in rewards %}
+                div.row.reward
+                    div.small-12.medium-4.columns 
+                        a(href="{{ reward.reward.attachment.source.url }}", target="_blank") {{ reward.reward.name }} (
+                            span.quantity {{ reward.quantity }}
+                            | &nbsp;left)
+                    div.small-12.medium-4.columns.text-right.expiration exp. {{ reward.expiration_time|date:"m/d/Y" }}
+                    div.small-12.medium-4.columns.text-right
+                        a.send-reward(href="javascript:;", data-id="{{ reward.id }}") Send Gift
+                {% endfor %}
+
+    div#raffle-modal.reveal-modal.text-center.medium(data-reveal)
+        div.empty-state-container
+            div.row
+                div.medium-5.columns
+                    | &nbsp;
+                div.medium-6.columns.end.empty-state-content
+                    div.text AND THE WINNER IS...
+                    hr
+                    div.subtext.subtext-name Example Person
+                    div.subtext.subtext-email example@example.com
+                    div.row
+                        {% if rewards.count > 0 %}
+                        div.large-6.medium-6.small-12.columns.to-dash.show-rewards-container
+                            a.show-rewards-btn.secondary-btn(href="javascript:;") Send Gift
+                        {% endif %}
+                        div.large-6.medium-6.small-12.columns.to-dash
+                            a.back-to-list.primary-btn(href="javascript:;") Back To List
+
+    div#add-list-modal.reveal-modal.medium(data-reveal)
+        input(type="hidden", name="signup_id", value="{{ sign_up.id }}")
+        input(type="hidden", name="profile_id", value="{{ sign_up.owner.id }}")
+        div.row
+            div.small-12.columns.text-center
+                div.headline
+                    | Add Sign Ups to List
+        hr
+        div.row.new-list-inputs
+            div.medium-8.small-12.columns
+                input(name="list_name", placeholder="List Name (required)")
+            div.small-12.medium-4.columns
+                a.create-list.primary-btn(href="javascript:;") + Add New List
+        hr
+        div.row
+            div.small-12.columns.text-center
+                div.headline Choose Lists
+        div.row
+            div.small-12.columns.lists
+                {% for list in lists %}
+                div
+                    div.row.list(data-id="{{ list.id }}")
+                        div.small-9.columns.list-name
+                            | {{ list.name|truncatechars:40 }}
+                        div.small-3.columns.text-right.list-action
+                            | {{ list.items }} Membe{{ list.items|pluralize:"r,rs" }}
+                {% endfor %}
+        div.row
+            div.small-12.columns.submit-actions
+                div.row
+                    div.small-6.columns.status &nbsp;
+                    div.small-3.columns
+                        a.primary-btn.full-btn.submit-add-btn(href="javascript:;") Submit
+                    div.small-3.columns
+                        a.primary-btn-inverse.full-btn.add-cancel-btn(href="javascript:;") Cancel
+
+    div#add-list-single-modal.reveal-modal.medium(data-reveal)
+        input(type="hidden", name="signup_id", value="{{ sign_up.id }}")
+        input(type="hidden", name="email", value="")
+        input(type="hidden", name="first_name", value="")
+        input(type="hidden", name="last_name", value="")
+        div.row
+            div.small-12.columns.text-center
+                div.headline Choose Lists
+        div.row
+            div.small-12.columns.lists
+                {% for list in lists %}
+                div
+                    div.row.list(data-id="{{ list.id }}")
+                        div.small-9.columns.list-name
+                            | {{ list.name|truncatechars:40 }}
+                        div.small-3.columns.text-right.list-action
+                            | {{ list.items }} Membe{{ list.items|pluralize:"r,rs" }}
+                {% endfor %}
+        div.row
+            div.small-12.columns.submit-actions
+                div.row
+                    div.small-6.columns.status &nbsp;
+                    div.small-3.columns
+                        a.primary-btn.full-btn.submit-add-btn(href="javascript:;") Submit
+                    div.small-3.columns
+                        a.primary-btn-inverse.full-btn.add-cancel-btn(href="javascript:;") Cancel
 
 
 append script

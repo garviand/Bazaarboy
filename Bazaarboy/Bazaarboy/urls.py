@@ -54,6 +54,7 @@ list_urlpatterns = patterns('src.controllers.list',
     url(r'^add/item/$', 'add_item', name = 'add_item'),
     url(r'^remove/item/$', 'remove_item', name = 'remove_item'),
     url(r'^add/event/$', 'add_from_event', name = 'add_from_event'),
+    url(r'^add/signup/$', 'add_from_sign_up', name = 'add_from_sign_up'),
     url(r'^add/csv/$', 'add_from_csv', name = 'add_from_csv'),
     url(r'^csv/prepare/$', 'prepare_csv', name = 'prepare_csv'),
 )

@@ -14,16 +14,18 @@
         $("div#rewards-modal span.reward-reciever").html($(this).data('name'));
       });
       $('a.send-reward').click(function() {
-        var button, quantityAmount, quantityElement, rewardEmail, rewardId;
+        var button, quantityAmount, quantityElement, rewardEmail, rewardId, rewardMessage;
         button = $(this);
         button.html('Sending...');
         rewardId = $(this).data('id');
         rewardEmail = $("div#rewards-modal input[name=reward_email]").val();
+        rewardMessage = $('div#rewards-modal textarea[name=message]').val();
         quantityElement = $(this).closest('.reward').find('span.quantity');
         quantityAmount = parseInt(quantityElement.html());
         return Bazaarboy.post('rewards/claim/add/', {
           item: rewardId,
-          email: rewardEmail
+          email: rewardEmail,
+          message: rewardMessage
         }, function(response) {
           if (response.status === 'OK') {
             swal({

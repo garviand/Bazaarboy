@@ -157,6 +157,11 @@ block content
                 h3 Send a gift to '
                     span.reward-reciever &nbsp;
                     |'
+        div.row.message
+            div.small-12.columns
+                div.row
+                    div.small-12.columns
+                        textarea(name="message", placeholder="Message for the Gift Recipient")
         div.row.rewards
             div.small-12.columns
                 {% for reward in rewards %}

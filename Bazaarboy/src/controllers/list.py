@@ -317,6 +317,62 @@ def add_from_event(request, params, user):
     return json_response(response)
 
 @login_required()
+@validate('POST', ['id', 'signup'])
+def add_from_sign_up(request, params, user):
+    """
+    Add items from a sign up list
+    """
+    if not List.objects.filter(id = params['id'], is_deleted = False).exists():
+        response = {
+            'status':'FAIL',
+            'error':'LIST_NOT_FOUND',
+            'message':'The list doesn\'t exist.'
+        }
+        return json_response(response)
+    lt = List.objects.get(id = params['id'])
+    profile = lt.owner
+    if not Profile_manager.objects.filter(profile = profile, 
+                                          user = user).exists():
+        response = {
+            'status':'FAIL',
+            'error':'NOT_A_MANAGER',
+            'message':'You don\'t have permission for the list.'
+        }
+        return json_response(response)
+    if not Sign_up.objects.filter(id = params['signup'], owner = profile).exists():
+        response = {
+            'status':'FAIL',
+            'error':'SIGNUP_NOT_FOUND',
+            'message':'The sign up doesn\'t exist.'
+        }
+        return json_response(response)
+    signup = Sign_up.objects.get(id = params['signup'])
+    signup_items = Sign_up_item.objects.filter(sign_up = signup)
+    added = 0
+    duplicates = 0
+    for signup_item in signup_items:
+        if not List_item.objects.filter(_list = lt, email = signup_item.email).exists():
+            item = List_item(_list = lt, email = signup_item.email, first_name = signup_item.first_name, last_name = signup_item.last_name)
+            try:
+                item.save()
+                added += 1
+            except Exception, e:
+                pass
+        else:
+            item = List_item.objects.filter(_list = lt, email = signup_item.email)[0]
+            item.first_name = signup_item.first_name
+            item.last_name = signup_item.last_name
+            item.save()
+            duplicates += 1
+    response = {
+        'status':'OK',
+        'list':serialize_one(lt),
+        'added': added,
+        'duplicates': duplicates
+    }
+    return json_response(response)
+
+@login_required()
 @validate('POST', ['csv'])
 def prepare_csv(request, params, user):
     """
@@ -490,6 +546,11 @@ def manage_sign_up(request, signup, user):
             return json_response(response)
         finally:
             item.extra_fields = fields
+    lists = List.objects.filter(owner = sign_up.owner, is_deleted = False)
+    for lt in lists:
+        list_items = List_item.objects.filter(_list = lt)
+        lt.items = list_items.count()
+    rewards = Reward_item.objects.filter(owner = sign_up.owner, quantity__gt = 0, expiration_time__gte = timezone.now())
     return render(request, 'list/manage-sign-up.html', locals())
 
 @login_required()

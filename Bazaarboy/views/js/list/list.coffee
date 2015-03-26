@@ -15,9 +15,10 @@ Bazaarboy.list.list =
             button.html 'Sending...'
             rewardId = $(this).data('id')
             rewardEmail = $("div#rewards-modal input[name=reward_email]").val()
+            rewardMessage = $('div#rewards-modal textarea[name=message]').val()
             quantityElement = $(this).closest('.reward').find('span.quantity')
             quantityAmount = parseInt(quantityElement.html())
-            Bazaarboy.post 'rewards/claim/add/', {item:rewardId, email:rewardEmail}, (response) ->
+            Bazaarboy.post 'rewards/claim/add/', {item:rewardId, email:rewardEmail, message:rewardMessage}, (response) ->
                 if response.status is 'OK'
                     swal
                         type: 'success'
