@@ -3,6 +3,10 @@ Bazaarboy.reward.redeem =
   init: () ->
     scope = this
     $('a.redeem-btn').click () ->
+      $('form#redeem-form').submit()
+      return
+    $('form#redeem-form').submit (e) ->
+      e.preventDefault()
       if not scope.redeeming
         scope.redeeming = true
         Bazaarboy.post 'rewards/redeem/', {claim_id:claim_id, token:claim_token}, (response) ->

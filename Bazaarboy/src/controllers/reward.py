@@ -566,7 +566,7 @@ def complete_claim(request, params):
     }
     return json_response(response)
 
-@login_required()
+@login_check()
 @validate('POST', ['claim_id'], ['token'])
 def redeem(request, params, user):
     if not Claim.objects.filter(id = params['claim_id']).exists():
