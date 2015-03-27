@@ -12777,6 +12777,10 @@ div#redeem div#redeem-container div.redeem-info span.warning {
 div#redeem div#redeem-container div.redeem-btn-container {
   margin-bottom: 20px;
 }
+div#redeem div#redeem-container div.redeem-btn-container .submit-redeem {
+  trasition: none;
+  cursor: pointer;
+}
 @media only screen and (max-width: 40.063em) {
   div#main-header {
     display: none;

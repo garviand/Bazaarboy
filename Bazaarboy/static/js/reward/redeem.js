@@ -4,8 +4,7 @@
     init: function() {
       var scope;
       scope = this;
-      $('form#redeem-form').submit(function(e) {
-        e.preventDefault();
+      $('a.redeem-btn').click(function() {
         if (!scope.redeeming) {
           scope.redeeming = true;
           return Bazaarboy.post('rewards/redeem/', {
