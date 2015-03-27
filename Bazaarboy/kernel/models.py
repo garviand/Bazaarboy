@@ -644,3 +644,11 @@ class Pdf(models.Model):
         """
         self.source.delete(save = False)
         super(Pdf, self).delete(*args, **kwargs)
+
+class Instagram_feed(models.Model):
+    """
+    Feed of instagram images model
+    """
+    hashtag = models.CharField(max_length = 200)
+    images = models.TextField(default = '{}')
+    updated_time = models.DateTimeField(auto_now_add = True)

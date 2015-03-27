@@ -1417,15 +1417,29 @@ def edit(request, params, user):
 
 @validate('GET', ['hashtag'], ['event_id'])
 def instagram_photos(request, params):
-    api = InstagramAPI(client_id=INSTAGRAM_CLIENT_ID, client_secret=INSTAGRAM_SECRET)
-    instagram_photos = api.tag_recent_media(count=30, tag_name=params['hashtag'])
-    images = []
+    tenMinutesAgo = timezone.now() - timedelta(minutes = 10)
+    update_feed = True
+    if Instagram_feed.objects.filter(hashtag = params['hashtag'].lower()).exists():
+        feed = Instagram_feed.objects.filter(hashtag = params['hashtag'].lower())[0]
+        if feed.updated_time > tenMinutesAgo:
+            images = json.loads(feed.images)
+            update_feed = False
+        else:
+            update_feed = True
+    if update_feed is True:
+        api = InstagramAPI(client_id=INSTAGRAM_CLIENT_ID, client_secret=INSTAGRAM_SECRET)
+        instagram_photos = api.tag_recent_media(count=30, tag_name=params['hashtag'])
+        images = []
+        for photo in instagram_photos[0]:
+            images.append({'high_res':photo.images['standard_resolution'].url, 'thumb':photo.images['thumbnail'].url})
+        feed, created = Instagram_feed.objects.get_or_create(hashtag = params['hashtag'].lower())
+        feed.images = json.dumps(images)
+        feed.updated_time = timezone.now()
+        feed.save()
     if params['event_id'] is not None:
         if Event.objects.filter(id = params['event_id']).exists():
             event = Event.objects.get(id = params['event_id'])
             color = event.color
-    for photo in instagram_photos[0]:
-        images.append({'high_res':photo.images['standard_resolution'].url, 'thumb':photo.images['thumbnail'].url})
     return render_to_response('components/instagram.html', locals(), context_instance=RequestContext(request))
 
 @login_required()

@@ -5,6 +5,7 @@ Controller for Profile
 import cgi
 import re
 from django.http import Http404
+from datetime import timedelta
 from django.shortcuts import render, redirect
 from django.db.models import Q, Sum, Count
 from django.utils import timezone as tz
@@ -43,11 +44,25 @@ def index(request, id, user):
                 past_events.append(organizer.event)
     current_events.reverse()
     past_events = past_events[:9]
-    api = InstagramAPI(client_id=INSTAGRAM_CLIENT_ID, client_secret=INSTAGRAM_SECRET)
-    instagram_photos = api.tag_recent_media(count=10, tag_name=str(channel.hashtag))
-    images = []
-    for photo in instagram_photos[0]:
-        images.append({'high_res':photo.images['standard_resolution'].url, 'thumb':photo.images['thumbnail'].url})
+    tenMinutesAgo = tz.now() - timedelta(minutes = 10)
+    update_feed = True
+    if Instagram_feed.objects.filter(hashtag = str(channel.hashtag).lower()).exists():
+        feed = Instagram_feed.objects.filter(hashtag = str(channel.hashtag).lower())[0]
+        if feed.updated_time > tenMinutesAgo:
+            images = json.loads(feed.images)
+            update_feed = False
+        else:
+            update_feed = True
+    if update_feed is True:
+        api = InstagramAPI(client_id=INSTAGRAM_CLIENT_ID, client_secret=INSTAGRAM_SECRET)
+        instagram_photos = api.tag_recent_media(count=30, tag_name=str(channel.hashtag))
+        images = []
+        for photo in instagram_photos[0]:
+            images.append({'high_res':photo.images['standard_resolution'].url, 'thumb':photo.images['thumbnail'].url})
+        feed, created = Instagram_feed.objects.get_or_create(hashtag = str(channel.hashtag).lower())
+        feed.images = json.dumps(images)
+        feed.updated_time = tz.now()
+        feed.save()
     return render(request, 'profile/index.html', locals())
 
 @login_required()
