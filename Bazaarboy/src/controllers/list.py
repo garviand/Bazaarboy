@@ -29,7 +29,7 @@ def index(request, user):
     for su in active_sign_ups:
         su.newSignups = len(Sign_up_item.objects.filter(sign_up = su, assigned = False))
     for lt in lists:
-        list_items = List_item.objects.filter(_list = lt)
+        list_items = List_item.objects.filter(_list = lt, is_deleted = False)
         lt.items = list_items.count()
     return render(request, 'list/index.html', locals())
 
@@ -47,7 +47,7 @@ def list(request, lt, user, params):
         lt = List.objects.get(id = lt)
         if not Profile_manager.objects.filter(profile = lt.owner, user = user).exists():
             return redirect('index:index')
-        list_items = List_item.objects.filter(_list = lt).order_by('-id')
+        list_items = List_item.objects.filter(_list = lt, is_deleted = False).order_by('-id')
         pastEventList = {}
         profiles = Profile.objects.filter(managers = user)
         pids = []
@@ -192,7 +192,8 @@ def remove_item(request, params, user):
             'message':'You don\'t have permission for the list.'
         }
         return json_response(response)
-    item.delete()
+    item.is_deleted = True
+    item.save()
     response = {
             'status':'OK'
     }
@@ -550,7 +551,7 @@ def manage_sign_up(request, signup, user):
             item.extra_fields = fields
     lists = List.objects.filter(owner = sign_up.owner, is_deleted = False)
     for lt in lists:
-        list_items = List_item.objects.filter(_list = lt)
+        list_items = List_item.objects.filter(_list = lt, is_deleted = False)
         lt.items = list_items.count()
     rewards = Reward_item.objects.filter(owner = sign_up.owner, quantity__gt = 0, expiration_time__gte = timezone.now())
     return render(request, 'list/manage-sign-up.html', locals())

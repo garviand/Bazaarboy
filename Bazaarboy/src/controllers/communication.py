@@ -39,34 +39,44 @@ def email_hook(request, params):
     """
     mandrill_info = json.loads(params['mandrill_events'])
     for info in mandrill_info:
-        if 'metadata' in info['msg'] and 'invite_id' in info['msg']['metadata']:
-            if Invite.objects.filter(id = info['msg']['metadata']['invite_id'].split("-", 1)[-1]).exists():
-                invite = Invite.objects.get(id = info['msg']['metadata']['invite_id'].split("-", 1)[-1])
-                stat, created = Invite_stat.objects.get_or_create(email_id = info['_id'])
-                if created:
-                    stat.invite = invite
-                    stat.event = invite.event
-                    stat.profile = invite.profile
-                    stat.to = info['msg']['email']
-                stat.clicks = len(info['msg']['clicks'])
-                stat.opens = len(info['msg']['opens'])
-                if 'location' in info:
-                    stat.city = info['location']['city']
-                    stat.zip_code = info['location']['postal_code']
-                stat.save()
-        if 'metadata' in info['msg'] and 'follow_up_id' in info['msg']['metadata']:
-            if Follow_up.objects.filter(id = info['msg']['metadata']['follow_up_id'].split("-", 1)[-1]).exists():
-                follow_up = Follow_up.objects.get(id = info['msg']['metadata']['follow_up_id'].split("-", 1)[-1])
-                stat, created = Follow_up_stat.objects.get_or_create(email_id = info['_id'])
-                if created:
-                    stat.follow_up = follow_up
-                    stat.event = follow_up.recap.organizer.event
-                    stat.profile = follow_up.recap.organizer.profile
-                    stat.to = info['msg']['email']
-                stat.clicks = len(info['msg']['clicks'])
-                stat.opens = len(info['msg']['opens'])
-                if 'location' in info:
-                    stat.city = info['location']['city']
-                    stat.zip_code = info['location']['postal_code']
-                stat.save()
+        if info['event'] == 'hard_bounce' or info['event'] == 'soft_bounce' or info['event'] == 'reject' or info['event'] == 'spam':
+            bounced_items = List_item.objects.filter(email = info['msg']['email'])
+            for bounced_item in bounced_items:
+                bounced_item.is_deleted = True
+                if bounced_item.created_time is None:
+                    bounced_item.created_time = timezone.now()
+                bounced_item.save()
+        else:
+            # INVITE STATS
+            if 'metadata' in info['msg'] and 'invite_id' in info['msg']['metadata']:
+                if Invite.objects.filter(id = info['msg']['metadata']['invite_id'].split("-", 1)[-1]).exists():
+                    invite = Invite.objects.get(id = info['msg']['metadata']['invite_id'].split("-", 1)[-1])
+                    stat, created = Invite_stat.objects.get_or_create(email_id = info['_id'])
+                    if created:
+                        stat.invite = invite
+                        stat.event = invite.event
+                        stat.profile = invite.profile
+                        stat.to = info['msg']['email']
+                    stat.clicks = len(info['msg']['clicks'])
+                    stat.opens = len(info['msg']['opens'])
+                    if 'location' in info:
+                        stat.city = info['location']['city']
+                        stat.zip_code = info['location']['postal_code']
+                    stat.save()
+            # FOLLOW UP STATS
+            if 'metadata' in info['msg'] and 'follow_up_id' in info['msg']['metadata']:
+                if Follow_up.objects.filter(id = info['msg']['metadata']['follow_up_id'].split("-", 1)[-1]).exists():
+                    follow_up = Follow_up.objects.get(id = info['msg']['metadata']['follow_up_id'].split("-", 1)[-1])
+                    stat, created = Follow_up_stat.objects.get_or_create(email_id = info['_id'])
+                    if created:
+                        stat.follow_up = follow_up
+                        stat.event = follow_up.recap.organizer.event
+                        stat.profile = follow_up.recap.organizer.profile
+                        stat.to = info['msg']['email']
+                    stat.clicks = len(info['msg']['clicks'])
+                    stat.opens = len(info['msg']['opens'])
+                    if 'location' in info:
+                        stat.city = info['location']['city']
+                        stat.zip_code = info['location']['postal_code']
+                    stat.save()
     return json_response({})

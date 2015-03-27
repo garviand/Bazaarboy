@@ -448,7 +448,7 @@ def invite(request, event, user):
         invt.opens = opens
         invt.total_opens = totalOpens
     draftInvites = Invite.objects.filter(event = event, profile__managers = user, is_sent = False, is_deleted = False).order_by('-created_time')
-    numLists = List_item.objects.filter(_list__owner = profile).count()
+    numLists = List_item.objects.filter(_list__owner = profile, is_deleted = False).count()
     return render(request, 'event/invite-dashboard.html', locals())
 
 @login_check()
@@ -482,7 +482,7 @@ def create_invite(request, event, user):
     profile = profiles[0]
     lists = List.objects.filter(owner = profile, is_deleted = False)
     for lt in lists:
-        list_items = List_item.objects.filter(_list = lt)
+        list_items = List_item.objects.filter(_list = lt, is_deleted = False)
         lt.items = list_items.count()
     previousInvites = Invite.objects.filter(event = event)
     return render(request, 'event/invite.html', locals())
@@ -497,7 +497,7 @@ def edit_invite(request, invite, user):
     profile = profiles[0]
     lists = List.objects.filter(owner = profile, is_deleted = False)
     for lt in lists:
-        list_items = List_item.objects.filter(_list = lt)
+        list_items = List_item.objects.filter(_list = lt, is_deleted = False)
         lt.items = list_items.count()
         lt.selected = False
         if invite.lists.filter(id = lt.id).exists():
@@ -662,7 +662,7 @@ def preview_invite(request, invite, user):
     for result in results:
         invitedList.append(result.to.lower())
     for lt in invite.lists.all():
-        list_items = List_item.objects.filter(_list = lt)
+        list_items = List_item.objects.filter(_list = lt, is_deleted = False)
         for item in list_items:
             if not Unsubscribe.objects.filter(Q(email = item.email), Q(profile = invite.profile) | Q(profile__isnull = True)).exists():
                 if item.email.lower() not in recipients:
@@ -708,7 +708,7 @@ def send_invite(request, params, user):
     for result in results:
         invitedList.append(result.to.lower())
     for lt in invite.lists.all():
-        list_items = List_item.objects.filter(_list = lt)
+        list_items = List_item.objects.filter(_list = lt, is_deleted = False)
         for item in list_items:
             if not Unsubscribe.objects.filter(Q(email = item.email), Q(profile = invite.profile) | Q(profile__isnull = True)).exists():
                 if item.email.lower() not in recipients:

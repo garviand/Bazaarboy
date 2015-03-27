@@ -634,7 +634,7 @@ def sendCollaborationRequest(collaboration):
                 'content': action_text
             },
             {
-                'name': 'action_button', 
+                'name': 'action_button',
                 'content': buttonHtml
             }
         ]

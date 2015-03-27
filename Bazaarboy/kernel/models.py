@@ -559,6 +559,8 @@ class List_item(models.Model):
     first_name = models.CharField(max_length = 50)
     last_name = models.CharField(max_length = 50)
     note = models.TextField()
+    is_deleted = models.BooleanField(default = False)
+    created_time = models.DateTimeField(auto_now_add = True)
 
 class Sign_up(models.Model):
     """
