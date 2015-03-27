@@ -1,0 +1,19 @@
+{% load humanize %}
+{% load layout %}
+{% load tz %}<!DOCTYPE html><html lang="en"><head><title>Bazaarboy</title><meta charset="utf-8"><meta name="viewport" content="width=device-width"><link rel="shortcut icon" href="{{ STATIC_URL }}images/logo.png"><link rel="stylesheet" href="//cloud.typography.com/7993072/806564/css/fonts.css"><link rel="stylesheet" href="{{ STATIC_URL }}css/styles.css"><link rel="stylesheet" href="{{ STATIC_URL }}gizmo/ss-gizmo.css"><link rel="stylesheet" href="{{ STATIC_URL }}sweetalert/sweet-alert.css"><script type="text/javascript">var _gaq = _gaq || [];
+_gaq.push(['_setAccount', 'UA-39060503-1']);
+_gaq.push(['_trackPageview']);
+(function() {
+    var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+    ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+    var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+})();</script></head><body><div id="redeem"><div class="row"><div id="container"><div id="redeem-container"><form id="redeem-form"><div class="row"><div class="small-10 small-offset-1 columns"><div class="row"><div class="small-12 columns text-center request_logo_container"><img src="{{ claim.item.reward.creator.image.source.url }}" class="request_logo"></div></div><div class="row"><div class="small-12 columns request_info text-center"><div class="headline">Redeem {{ claim.item.reward.name }}</div></div></div><hr class="separator">{% if claim %}<div class="redemption-info {% if claim.is_redeemed %}hide{% endif %}"><div class="row redeem-info"><div class="small-12 columns"><div>Email: {{ claim.email }}</div></div></div><div class="row redeem-info"><div class="small-12 columns"><div>Expires In:
+{% if claim.item.expiration_time > now %}
+{{ claim.item.expiration_time|daysUntil }}
+{% else %}<span class="warning">Gift Expired</span>{% endif %}</div></div></div><div class="row redeem-info"><div class="small-12 columns info"><div>Item Description: {{ claim.item.reward.description }}</div></div></div><div class="row redeem-info"><div class="small-12 columns redeem-btn-container"><a href="javascript:;" class="primary-btn full-btn redeem-btn">Redeem Gift</a></div><div class="small-12 columns redeem-btn-container"><small>DO NOT PRESS REDEEM TO RECIEVE YOUR GIFT! This is for the organization sending you the gift. Show this page to them when receiving the gift.</small></div></div></div><div class="redemption-success {% if not claim.is_redeemed %}hide{% endif %}"><div class="row redeem-info"><div class="small-12 columns info">'{{ claim.item.reward.name }}' has been redeemed! We hope you enjoy your gift.</div></div></div>{% else %}<div class="redemption-success"><div class="row redeem-info"><div class="small-12 columns info">There is no gift with this code. Sorry.</div></div></div>{% endif %}</div></div></form></div></div></div></div><div id="scripts"><script src="{{ STATIC_URL }}js/libraries.js"></script><script src="{{ STATIC_URL }}sweetalert/sweet-alert.min.js"></script><script>var rootUrl = "{% url 'index' %}";
+var mediaUrl = '{{ MEDIA_URL }}';
+var staticUrl = '{{ STATIC_URL }}';
+var csrfToken = '{{ csrf_token }}';
+var loggedIn = {% if user %}true{% else %}false{% endif %};</script><script src="{{ STATIC_URL }}fastclick/fastclick.js"></script><script src="{{ STATIC_URL }}js/bazaarboy.js"></script><script type="text/javascript">var claim_id = '{{ claim.id }}';
+var claim_code = '{{ claim.code }}';
+var claim_token = '{{ claim.token }}';</script><script type="text/javascript" src="{{ STATIC_URL }}hashchange/jquery.ba-hashchange.min.js"></script><script type="text/javascript" src="{{ STATIC_URL }}js/reward/redeem.js"></script></div></body></html>

@@ -79,6 +79,20 @@ def claim(request, params):
                 extra_fields.append(field[1])
     return render(request, 'reward/claim.html', locals())
 
+@validate('GET', ['id', 'code'])
+def redeem_confirm(request, params):
+    now = timezone.now()
+    if not Claim.objects.filter(id = params['id'], code = params['code']).exists():
+        claim = None
+    else:
+        claim = Claim.objects.get(id = params['id'])
+        extra_fields = []
+        if claim.item.reward.extra_fields:
+            custom_fields = simplejson.loads(claim.item.reward.extra_fields, object_pairs_hook=ordereddict.OrderedDict)
+            for field in ordereddict.OrderedDict(sorted(custom_fields.items())).items():
+                extra_fields.append(field[1])
+    return render(request, 'reward/redeem.html', locals())
+
 @login_required()
 def manage(request, reward, user):
     if not Reward.objects.filter(id = reward).exists():
@@ -553,13 +567,13 @@ def complete_claim(request, params):
     return json_response(response)
 
 @login_required()
-@validate('POST', ['claim_id'])
+@validate('POST', ['claim_id'], ['token'])
 def redeem(request, params, user):
     if not Claim.objects.filter(id = params['claim_id']).exists():
         response = {
             'status':'FAIL',
             'error':'CLAIM_NOT_FOUND',
-            'message':'The reward doesn\'t exist.'
+            'message':'The gift doesn\'t exist.'
         }
         return json_response(response)
     claim = Claim.objects.get(id = params['claim_id'])
@@ -567,11 +581,14 @@ def redeem(request, params, user):
         response = {
             'status':'FAIL',
             'error':'ALREADY_REDEEMED',
-            'message':'This reward has already been redeemed.'
+            'message':'This gift has already been redeemed.'
         }
         return json_response(response)
-    if not Profile_manager.objects.filter(profile = claim.item.reward.creator, 
-                                          user = user).exists():
+    token_pass = False
+    if params['token'] is not None:
+        if claim.token == params['token']:
+            token_pass = True
+    if not Profile_manager.objects.filter(profile = claim.item.reward.creator, user = user).exists() and token_pass is False:
         response = {
             'status':'FAIL',
             'error':'NOT_A_MANAGER',

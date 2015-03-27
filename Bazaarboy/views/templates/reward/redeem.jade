@@ -1,0 +1,58 @@
+// Index.Login
+
+extends ../layout
+
+block body
+    div#redeem
+        div.row
+            div#container
+                div#redeem-container
+                    form#redeem-form
+                        div.row
+                            div.small-10.small-offset-1.columns
+                                div.row
+                                    div.small-12.columns.text-center.request_logo_container
+                                        img.request_logo(src="{{ claim.item.reward.creator.image.source.url }}")
+                                div.row
+                                    div.small-12.columns.request_info.text-center
+                                        div.headline Redeem {{ claim.item.reward.name }}
+                                hr.separator
+                                {% if claim %}
+                                div.redemption-info(class="{% if claim.is_redeemed %}hide{% endif %}")
+                                    div.row.redeem-info
+                                        div.small-12.columns
+                                            div Email: {{ claim.email }}
+                                    div.row.redeem-info
+                                        div.small-12.columns
+                                            div Expires In:
+                                                {% if claim.item.expiration_time > now %}
+                                                | {{ claim.item.expiration_time|daysUntil }}
+                                                {% else %}
+                                                span.warning Gift Expired
+                                                {% endif %}
+                                    div.row.redeem-info
+                                        div.small-12.columns.info
+                                            div Item Description: {{ claim.item.reward.description }}
+                                    div.row.redeem-info
+                                        div.small-12.columns.redeem-btn-container
+                                            a.primary-btn.full-btn.redeem-btn(href="javascript:;") Redeem Gift
+                                        div.small-12.columns.redeem-btn-container
+                                            small DO NOT PRESS REDEEM TO RECIEVE YOUR GIFT! This is for the organization sending you the gift. Show this page to them when receiving the gift.
+                                div.redemption-success(class="{% if not claim.is_redeemed %}hide{% endif %}")
+                                    div.row.redeem-info
+                                        div.small-12.columns.info
+                                            | '{{ claim.item.reward.name }}' has been redeemed! We hope you enjoy your gift.
+                                {% else %}
+                                div.redemption-success
+                                    div.row.redeem-info
+                                        div.small-12.columns.info
+                                            | There is no gift with this code. Sorry.
+                                {% endif %}
+
+append script
+    script(type="text/javascript").
+        var claim_id = '{{ claim.id }}';
+        var claim_code = '{{ claim.code }}';
+        var claim_token = '{{ claim.token }}';
+    script(type="text/javascript", src="{{ STATIC_URL }}hashchange/jquery.ba-hashchange.min.js")
+    script(type="text/javascript", src="{{ STATIC_URL }}js/reward/redeem.js")

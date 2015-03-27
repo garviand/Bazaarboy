@@ -12729,6 +12729,54 @@ div#claim div#claim-container form#claim-form .claim-inputs input[type=password]
 div#claim div#claim-container form#claim-form .submit-claim {
   margin-bottom: 16px;
 }
+div#redeem {
+  min-width: 100%;
+  min-height: 100%;
+  background: #F6F6F6;
+}
+div#redeem div.phone input {
+  margin-bottom: 5px !important;
+}
+div#redeem div.phone small {
+  margin-bottom: 15px;
+  display: block;
+}
+div#redeem div.redeem-success {
+  padding-bottom: 20px;
+  line-height: 1.5rem;
+}
+div#redeem div#container {
+  width: 450px;
+  max-width: 98%;
+  margin: 0 auto;
+}
+div#redeem div.request_logo_container {
+  margin-top: 15px;
+}
+div#redeem div.request_logo_container img {
+  max-width: 100px;
+  max-height: 100px;
+}
+div#redeem div.request_info {
+  margin-top: 15px;
+  line-height: 18px;
+}
+div#redeem div#redeem-container {
+  background: #ffffff;
+  margin-top: 75px;
+}
+div#redeem div#redeem-container div.redeem-info {
+  margin-bottom: 20px;
+}
+div#redeem div#redeem-container div.redeem-info div.info {
+  line-height: 1.2rem;
+}
+div#redeem div#redeem-container div.redeem-info span.warning {
+  color: #c57724;
+}
+div#redeem div#redeem-container div.redeem-btn-container {
+  margin-bottom: 20px;
+}
 @media only screen and (max-width: 40.063em) {
   div#main-header {
     display: none;

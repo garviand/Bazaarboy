@@ -143,6 +143,7 @@ reward_urlpatterns = patterns('src.controllers.reward',
     url(r'^claim/add/$', 'add_claim', name = 'add-claim'),
     url(r'^claim/complete/$', 'complete_claim', name = 'complete-claim'),
     url(r'^redeem/$', 'redeem', name = 'redeem'),
+    url(r'^redeem/confirm/$', 'redeem_confirm', name = 'redeem-confirm'),
     url(r'^search/gif/$', 'search_gifs', name = 'search-gifs'),
 )
 
