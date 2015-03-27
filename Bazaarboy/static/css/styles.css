@@ -12778,7 +12778,7 @@ div#redeem div#redeem-container div.redeem-btn-container {
   margin-bottom: 20px;
 }
 div#redeem div#redeem-container div.redeem-btn-container .redeem-btn {
-  trasition: none !important;
+  transition: none !important;
   cursor: pointer;
 }
 @media only screen and (max-width: 40.063em) {
