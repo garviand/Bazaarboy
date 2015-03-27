@@ -12777,7 +12777,7 @@ div#redeem div#redeem-container div.redeem-info span.warning {
 div#redeem div#redeem-container div.redeem-btn-container {
   margin-bottom: 20px;
 }
-div#redeem div#redeem-container div.redeem-btn-container .submit-redeem {
+div#redeem div#redeem-container div.redeem-btn-container .redeem-btn {
   trasition: none;
   cursor: pointer;
 }
