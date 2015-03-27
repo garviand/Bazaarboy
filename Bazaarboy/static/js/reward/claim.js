@@ -54,7 +54,6 @@
             scope.claiming = false;
             $('input.submit-claim').val('Claim Reward!');
             if (response.status === 'OK') {
-              $('div.claim-success b.code').html(response.claim.code);
               $('div.claim-inputs').addClass('hide');
               return $('div.claim-success').removeClass('hide');
             } else {

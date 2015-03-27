@@ -4,7 +4,7 @@
     init: function() {
       var scope;
       scope = this;
-      $('a.redeem-btn').click(function() {
+      $('a.redeem-btn').on('click touchend', function() {
         $('form#redeem-form').submit();
       });
       $('form#redeem-form').submit(function(e) {

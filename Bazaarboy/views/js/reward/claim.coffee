@@ -45,7 +45,6 @@ Bazaarboy.reward.claim =
           scope.claiming = false
           $('input.submit-claim').val('Claim Reward!')
           if response.status is 'OK'
-            $('div.claim-success b.code').html(response.claim.code)
             $('div.claim-inputs').addClass('hide')
             $('div.claim-success').removeClass('hide')
           else
