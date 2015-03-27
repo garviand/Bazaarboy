@@ -2,9 +2,6 @@ Bazaarboy.reward.redeem =
   redeeming:false
   init: () ->
     scope = this
-    $('a.redeem-btn').on 'click touchend', () ->
-      $('form#redeem-form').submit()
-      return
     $('form#redeem-form').submit (e) ->
       e.preventDefault()
       if not scope.redeeming

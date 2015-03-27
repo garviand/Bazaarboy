@@ -4,9 +4,6 @@
     init: function() {
       var scope;
       scope = this;
-      $('a.redeem-btn').on('click touchend', function() {
-        $('form#redeem-form').submit();
-      });
       $('form#redeem-form').submit(function(e) {
         e.preventDefault();
         if (!scope.redeeming) {
