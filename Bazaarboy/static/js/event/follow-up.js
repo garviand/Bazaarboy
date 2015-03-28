@@ -119,6 +119,8 @@
         $('a.button-type-btn').removeClass('primary-btn');
         $('a.button-type-btn').addClass('primary-btn-inverse');
         $('a.button-type-btn').removeClass('active');
+        $('div.custom-link').addClass('hide');
+        $('div.email-content.content-gift').addClass('hide');
         $(this).addClass('active');
         $(this).addClass('primary-btn');
         $(this).removeClass('primary-btn-inverse');
@@ -126,6 +128,16 @@
         if ($(this).data('type') === 'link') {
           $('div.custom-link').removeClass('hide');
         }
+        if ($(this).data('type') === 'gift') {
+          $('div.email-content.content-gift').removeClass('hide');
+        }
+      });
+      $('input[name=gift_expiration]').pikaday({
+        format: 'MM/DD/YYYY'
+      });
+      $('div.rewards div.reward').click(function() {
+        $('div.rewards div.reward').removeClass('active');
+        $(this).addClass('active');
       });
       $('input[name=colorpicker]').spectrum({
         preferredFormat: "hex",
@@ -133,7 +145,7 @@
         showButtons: true
       });
       $('a.save-follow-up').click(function() {
-        var activeLists, button_text, button_type, color, custom_url, deleteImg, deletePdf, heading, imageId, list, lists, message, pdfId, targetId, targetUrl, _i, _len;
+        var activeLists, button_text, button_type, color, custom_url, deleteImg, deletePdf, giftExpiration, giftExpirationDate, giftId, heading, imageId, list, lists, message, params, pdfId, targetId, targetUrl, _i, _len;
         if (!scope.saving) {
           $('a.save-follow-up').html('Saving...');
           scope.saving = true;
@@ -200,7 +212,18 @@
             swal("Custom Link is not valid. Remember, you must include http:// or https://.");
             return;
           }
-          Bazaarboy.post(targetUrl, {
+          if (button_type === 'gift') {
+            giftId = $('div.rewards div.reward.active').data('id');
+            giftExpirationDate = $('input[name=gift_expiration]').val();
+            if (!moment(giftExpirationDate, 'MM/DD/YYYY').isValid()) {
+              swal('The Gift Expiration Time is not Valid');
+              scope.saving = false;
+              $('a.save-follow-up').html('Save &amp; Preview');
+              return;
+            }
+            giftExpiration = moment(giftExpirationDate, 'MM/DD/YYYY').utc().format('YYYY-MM-DD HH:mm:ss');
+          }
+          params = {
             id: targetId,
             heading: heading,
             message: message,
@@ -213,7 +236,12 @@
             deleteImg: deleteImg,
             pdf: pdfId,
             deletePdf: deletePdf
-          }, function(response) {
+          };
+          if (giftId != null) {
+            params.gift_id = giftId;
+            params.gift_expiration = giftExpiration;
+          }
+          Bazaarboy.post(targetUrl, params, function(response) {
             var followUpId;
             if (response.status === 'OK') {
               followUpId = response.follow_up.pk;

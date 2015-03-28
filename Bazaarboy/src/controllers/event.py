@@ -8,6 +8,7 @@ import simplejson
 import os
 import re
 import ordereddict
+from dateutil import parser
 from datetime import timedelta
 from django.db import transaction, IntegrityError
 from django.db.models import F, Q, Count, Sum
@@ -877,6 +878,7 @@ def create_follow_up(request, event, user):
         ticket.items = Purchase_item.objects.filter(ticket = ticket).values_list('purchase__id', flat=True).distinct().count()
     previousFollowUps = Follow_up.objects.filter(recap__organizer__event = event)
     activeButtonType = 'event'
+    rewards = Reward.objects.filter(creator = profile, is_deleted = False)
     return render(request, 'event/follow-up.html', locals())
 
 @login_check()
@@ -903,10 +905,13 @@ def edit_follow_up(request, follow_up, user):
             activeButtonType = 'attachment'
     if (follow_up.button_target) == 'http://bazaarboy.com' + layout.eventUrl(follow_up.recap.organizer.event):
         activeButtonType = 'event'
+    if follow_up.reward_item is not None:
+        activeButtonType = 'gift'
+    rewards = Reward.objects.filter(creator = profile, is_deleted = False)
     return render(request, 'event/follow-up.html', locals())
 
 @login_check()
-@validate('POST', ['id', 'tickets', 'message', 'heading', 'button_text', 'button_type'], ['image', 'pdf', 'color', 'custom_link'])
+@validate('POST', ['id', 'tickets', 'message', 'heading', 'button_text', 'button_type'], ['image', 'pdf', 'color', 'custom_link', 'gift_id', 'gift_expiration'])
 def new_follow_up(request, params, user):
     profiles = Profile.objects.filter(managers = user)
     pids = []
@@ -952,6 +957,26 @@ def new_follow_up(request, params, user):
     follow_up.save()
     for ticket in tickets:
         follow_up.tickets.add(ticket)
+    if params['gift_id'] and params['gift_expiration']:
+        if not Reward.objects.filter(id = params['gift_id'], creator = follow_up.recap.organizer.profile, is_deleted = False).exists():
+            response = {
+                'status':'FAIL',
+                'error':'INVALID_GIFT',
+                'message':'The gift you chose is invalid'
+            }
+            return json_response(response)
+        reward = Reward.objects.get(id = params['gift_id'])
+        exp_time = timezone.make_aware(parser.parse(params['gift_expiration']), timezone.get_current_timezone())
+        if exp_time < timezone.now():
+            response = {
+                'status':'FAIL',
+                'error':'INVALID_GIFT_EXPIRATION',
+                'message':'The gift must expire after today'
+            }
+            return json_response(response)
+        reward_item = Reward_item(reward = reward, owner = follow_up.recap.organizer.profile, quantity = 0, received = 0, expiration_time = params['gift_expiration'])
+        reward_item.save()
+        follow_up.reward_item = reward_item
     follow_up.save()
     response = {
         'status':'OK',
@@ -960,7 +985,7 @@ def new_follow_up(request, params, user):
     return json_response(response)
 
 @login_check()
-@validate('POST', ['id', 'tickets', 'message', 'heading', 'button_text', 'button_type'], ['image', 'pdf', 'color', 'deleteImg', 'deletePdf', 'custom_link'])
+@validate('POST', ['id', 'tickets', 'message', 'heading', 'button_text', 'button_type'], ['image', 'pdf', 'color', 'deleteImg', 'deletePdf', 'custom_link', 'gift_id', 'gift_expiration'])
 def save_follow_up(request, params, user):
     if not Follow_up.objects.filter(id = params['id'], recap__organizer__profile__managers = user).exists():
         response = {
@@ -1002,6 +1027,28 @@ def save_follow_up(request, params, user):
         custom_link = follow_up.attachment.source.url
     if params['button_type'] == 'link' and params['custom_link']:
         custom_link = params['custom_link']
+    if params['gift_id'] and params['gift_expiration']:
+        if not Reward.objects.filter(id = params['gift_id'], creator = follow_up.recap.organizer.profile, is_deleted = False).exists():
+            response = {
+                'status':'FAIL',
+                'error':'INVALID_GIFT',
+                'message':'The gift you chose is invalid'
+            }
+            return json_response(response)
+        reward = Reward.objects.get(id = params['gift_id'])
+        exp_time = timezone.make_aware(parser.parse(params['gift_expiration']), timezone.get_current_timezone())
+        if exp_time < timezone.now():
+            response = {
+                'status':'FAIL',
+                'error':'INVALID_GIFT_EXPIRATION',
+                'message':'The gift must expire after today'
+            }
+            return json_response(response)
+        reward_item = Reward_item(reward = reward, owner = follow_up.recap.organizer.profile, quantity = 0, received = 0, expiration_time = params['gift_expiration'])
+        reward_item.save()
+        follow_up.reward_item = reward_item
+    else:
+        follow_up.reward_item = None
     follow_up.button_target = custom_link
     follow_up.save()
     response = {
@@ -1059,6 +1106,7 @@ def preview_follow_up(request, follow_up, user):
             else:
                 unsubscribes += 1
     cost = FOLLOW_UP_COST(sent) / 100
+    publishable_key = STRIPE_PUBLISHABLE_KEY
     return render(request, 'event/follow-up-preview.html', locals())
 
 @login_check()
@@ -1111,6 +1159,15 @@ def send_follow_up(request, params, user):
         }
         return json_response(response)
     if follow_up.paid == True or FOLLOW_UP_COST(sent) == 0:
+        if follow_up.reward_item is not None:
+            if not Subscription.objects.filter(owner = follow_up.recap.organizer.profile, plan_id = 'gifts').exists():
+                if len(Follow_up.objects.filter(recap__organizer__profile = follow_up.recap.organizer.profile, reward_item__isnull = False)) > 1:
+                    response = {
+                        'status': 'SUBSCRIBE',
+                        'error': 'TRIAL_ENDED',
+                        'message': 'You have already used your free follow up gift. You must subscribe to send another.'
+                    }
+                    return json_response(response)
         sendFollowUp(follow_up, recipients)
     else:
         response = {

@@ -59,9 +59,31 @@ block content
                     li.title Non-profit Pricing
                     li.price $5
 
+    div#add-subscription-modal.reveal-modal.small(data-reveal)
+        div.subscription-model.row
+            div.small-12.columns
+                div.row
+                    div.small-12.columns
+                        div.headline Create Subscription
+                    hr
+                div.row
+                    div.small-12.columns.description
+                        | You have already used your free follow up gift. Before sending any more gifts, you must subscribe to a Bazaarboy account. This account will be charged $1 for every gift that is claimed. A 'Claim' is when the user enters thier information, and an MMS with the attached gift is sent (shown below).
+                        img(src="{{ STATIC_URL }}images/claim.png")
+                        | By subscribing, you are agreeing to this payment.
+                div.row
+                    div.small-12.columns
+                        div.row
+                            div.small-12.medium-8.columns
+                                a.create-subscription.primary-btn-inverse.full-btn(href="javascript:;") Subscribe
+                            div.small-12.medium-4.columns
+                                a.cancel-subscription.btn.full-btn(href="javascript:;") Cancel
+
 
 append script
     script.
+        var publishableKey = '{{ publishable_key }}';
+        var profileId = {{ follow_up.recap.organizer.profile.id }};
         function iframeLoaded() {
           var iFrameID = document.getElementById('email-preview');
           if(iFrameID) {

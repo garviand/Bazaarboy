@@ -518,7 +518,7 @@ def complete_claim(request, params):
         claim.owner.last_name = params['last_name']
     else:
         claim.owner = User(email = claim.email, first_name = params['first_name'], last_name = params['last_name'])
-    if Subscription.objects.filter(owner = claim.item.reward.creator, plan_id = 'gifts'):
+    if Subscription.objects.filter(owner = claim.item.reward.creator, plan_id = 'gifts').exists():
         subscription = Subscription.objects.get(owner = claim.item.reward.creator, plan_id = 'gifts')
         if subscription.credits > 0:
             subscription.credits -= 1
@@ -603,6 +603,26 @@ def redeem(request, params, user):
         'claim':serialize_one(claim)
     }
     return json_response(response)
+
+def send_inventory(reward, recipients, expiration):
+    """
+    Send rewards directly from inventory
+    """
+    reward_item = Reward_item(reward = reward, owner = reward.creator, quantity = 0, received = len(recipients), expiration_time = expiration)
+    reward_item.save()
+    sent = 0
+    for recipient in recipients:
+        if REGEX_EMAIL.match(recipient):
+            claim = Claim(email = recipient, item = reward_item)
+            claim.save()
+            sent += 1
+    response = {
+        'status':'OK',
+        'reward_item': serialize_one(reward_item),
+        'sent': str(sent)
+    }
+    return json_response(response)
+
 
 @login_required()
 @validate('GET', ['q'])

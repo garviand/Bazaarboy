@@ -2,6 +2,7 @@ extends ../layout
 
 append head
     link(rel="stylesheet", href="{{ STATIC_URL }}spectrum/spectrum.css")
+    link(rel="stylesheet", href="{{ STATIC_URL }}pikaday/pikaday.css")
 
 block sidebar
     +sidebarItem('ss-newspaper')(href="{% url 'index' %}")
@@ -62,15 +63,30 @@ block content
                         div.small-12.columns.content-details
                             label Button Link
                                 div.row.collapse.tiny-btn-group
-                                    div.small-12.medium-4.columns
+                                    div.small-12.columns(class="{% if rewards|length = 0 %}medium-4{% else %}medium-3{% endif %}")
                                         a.button-type-btn.full-btn.tiny-btn(href="javascript:;", data-type="event", class="{% if activeButtonType = 'event' %}active primary-btn{% else %}primary-btn-inverse{% endif %}") Event Page
-                                    div.small-12.medium-4.columns
-                                        a.button-type-btn.full-btn.tiny-btn(href="javascript:;", data-type="attachment", class="{% if activeButtonType = 'attachment' %}active primary-btn{% else %}primary-btn-inverse{% endif %}") Attachment
-                                    div.small-12.medium-4.columns
+                                    div.small-12.columns(class="{% if rewards|length = 0 %}medium-4{% else %}medium-3{% endif %}")
+                                        a.button-type-btn.full-btn.tiny-btn(href="javascript:;", data-type="attachment", style="border-right: none;", class="{% if activeButtonType = 'attachment' %}active primary-btn{% else %}primary-btn-inverse{% endif %}") Attachment
+                                    div.small-12.columns(class="{% if rewards|length = 0 %}medium-4{% else %}medium-3{% endif %}")
                                         a.button-type-btn.full-btn.tiny-btn(href="javascript:;", data-type="link", class="{% if activeButtonType = 'link' %}active primary-btn{% else %}primary-btn-inverse{% endif %}") Custom Link
+                                    div.small-12.columns(class="{% if rewards|length = 0 %}hide{% else %}medium-3{% endif %}")
+                                        a.button-type-btn.full-btn.tiny-btn(href="javascript:;", data-type="gift", class="{% if activeButtonType = 'gift' %}active primary-btn{% else %}primary-btn-inverse{% endif %}") Gift
                                 div.custom-link(class="{% if not activeButtonType = 'link' %}hide{% endif %}")
                                     br
                                     input(type="text", name="button_link", value="{% if follow_up.button_target %}{{ follow_up.button_target }}{% endif %}", placeholder="(ex. http://bazaarboy.com)")
+                    div.row.email-content.content-gift(class="{% if not activeButtonType = 'gift' %}hide{% endif %}")
+                        hr
+                        div.small-12.columns
+                            label Gift Expiration
+                               input(type="text", name="gift_expiration", value="{% if follow_up.reward_item %}{{ follow_up.reward_item.expiration_time|date:'m/d/Y' }}{% endif %}", placeholder="Gift Expiration Date (MM/DD/YYYY)") 
+                            label Choose Gift
+                                div.rewards
+                                    {% for reward in rewards %}
+                                    div.reward(data-id="{{ reward.id }}", class="{% ifequal reward.id follow_up.reward_item.reward.id %}active{% endifequal %}")
+                                        div.row
+                                            div.small-12.columns.gift-name {{ reward.name }}
+                                    {% endfor %}
+                        hr
                     div.row.email-content
                         div.small-12.columns.content-image
                             label Attach File to Follow Up (PDF, JPG, PNG, GIF)
@@ -102,6 +118,8 @@ block content
                     {% endfor %}
 append script
     script(src="https://dme0ih8comzn4.cloudfront.net/js/feather.js")
+    script(src="{{ STATIC_URL }}pikaday/pikaday.js")
+    script(src="{{ STATIC_URL }}pikaday/pikaday.jquery.js")
     script(type="text/javascript", src="{{ STATIC_URL }}spectrum/spectrum.js")
     script.
         mediaUrl = "{{ MEDIA_URL }}";

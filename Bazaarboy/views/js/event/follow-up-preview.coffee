@@ -5,6 +5,8 @@ Bazaarboy.event.follow_up_preview =
             if response.status is 'OK'
                 console.log response
                 Bazaarboy.redirect 'event/followup/' + response.follow_up.pk + '/details/'
+            else if response.status is 'SUBSCRIBE'
+                $('div#add-subscription-modal').foundation('reveal', 'open')
             else if response.status is 'PAYMENT'
                 StripeCheckout.open
                     key: response.publishable_key
@@ -43,12 +45,49 @@ Bazaarboy.event.follow_up_preview =
         return
     init: () ->
         scope = this
+        $('a.cancel-subscription').click () ->
+            $('div#add-subscription-modal').foundation('reveal', 'close')
+            return
+        $('div#add-subscription-modal a.create-subscription').click () ->
+            StripeCheckout.open
+                key: publishableKey
+                address: false
+                amount: 0
+                currency: 'usd'
+                name: 'Bazaarboy Gifts Account'
+                description: 'Create Account'
+                panelLabel: 'Subscribe'
+                closed: () ->
+                    $('div#add-subscription-modal').foundation('reveal', 'close')
+                    return
+                token: (token) =>
+                    Bazaarboy.post 'rewards/subscribe/',
+                        stripe_token: token.id
+                        email: token.email
+                        profile: profileId
+                        , (response) =>
+                            if response.status is 'OK'
+                                swal
+                                    type: "success"
+                                    title: 'Subscribed!'
+                                    text: 'You have successfully subscribed for a Bazaarboy account!'
+                                    , () ->
+                                        location.reload()
+                                        return
+                            else
+                                alert response.message
+                            return
+            return
         $('div.email-actions a.send-email').click () ->
             if not scope.sending
                 $(this).html 'Sending...'
                 scope.sending = true
                 followUpId = $(this).data('id')
                 scope.sendEmail(followUpId)
+            return
+        $(document).on 'closed.fndtn.reveal', 'div#add-subscription-modal', () ->
+            Bazaarboy.event.follow_up_preview.sending = false
+            $('div.email-actions a.send-email').html 'Send Email'
             return
         return
         

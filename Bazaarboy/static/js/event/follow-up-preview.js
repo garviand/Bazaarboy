@@ -9,6 +9,8 @@
         if (response.status === 'OK') {
           console.log(response);
           Bazaarboy.redirect('event/followup/' + response.follow_up.pk + '/details/');
+        } else if (response.status === 'SUBSCRIBE') {
+          $('div#add-subscription-modal').foundation('reveal', 'open');
         } else if (response.status === 'PAYMENT') {
           StripeCheckout.open({
             key: response.publishable_key,
@@ -51,6 +53,43 @@
     init: function() {
       var scope;
       scope = this;
+      $('a.cancel-subscription').click(function() {
+        $('div#add-subscription-modal').foundation('reveal', 'close');
+      });
+      $('div#add-subscription-modal a.create-subscription').click(function() {
+        var _this = this;
+        StripeCheckout.open({
+          key: publishableKey,
+          address: false,
+          amount: 0,
+          currency: 'usd',
+          name: 'Bazaarboy Gifts Account',
+          description: 'Create Account',
+          panelLabel: 'Subscribe',
+          closed: function() {
+            $('div#add-subscription-modal').foundation('reveal', 'close');
+          },
+          token: function(token) {
+            return Bazaarboy.post('rewards/subscribe/', {
+              stripe_token: token.id,
+              email: token.email,
+              profile: profileId
+            }, function(response) {
+              if (response.status === 'OK') {
+                swal({
+                  type: "success",
+                  title: 'Subscribed!',
+                  text: 'You have successfully subscribed for a Bazaarboy account!'
+                }, function() {
+                  location.reload();
+                });
+              } else {
+                alert(response.message);
+              }
+            });
+          }
+        });
+      });
       $('div.email-actions a.send-email').click(function() {
         var followUpId;
         if (!scope.sending) {
@@ -59,6 +98,10 @@
           followUpId = $(this).data('id');
           scope.sendEmail(followUpId);
         }
+      });
+      $(document).on('closed.fndtn.reveal', 'div#add-subscription-modal', function() {
+        Bazaarboy.event.follow_up_preview.sending = false;
+        $('div.email-actions a.send-email').html('Send Email');
       });
     }
   };

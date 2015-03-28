@@ -182,6 +182,12 @@ def sendFollowUp(follow_up, recipients):
     mergeVars = []
     for recipient in recipients:
         to.append({'email':recipient})
+        if follow_up.reward_item is not None:
+            claim = Claim(email = recipient, owner = None, item = follow_up.reward_item, message = '')
+            claim.save()
+            button_html = '<a style="color: #222222; text-decoration: none; border-radius: 4px; font-weight: bold; text-align: center; font-size: 1.2em; box-sizing: border-box; padding: 12px 60px;background: transparent; border: thin solid ' + follow_up.color + ';" href="https://bazaarboy.com/rewards/claim?id=' + str(claim.id) + '&token=' + claim.token + '">' + follow_up.button_text + '</a>'
+        else:
+            button_html = '<a href="' + follow_up.button_target.split("?", 1)[0] + '" class="primary-btn view_event_btn" style="color: #222222; text-decoration: none; border-radius: 4px; font-weight: bold; text-align: center; font-size: 1.2em; box-sizing: border-box; padding: 12px 60px;background: transparent; border: thin solid ' + follow_up.color + ';">' + follow_up.button_text + '</a>'
         mergeVars.append({
             'rcpt': recipient,
             'vars': [
@@ -192,10 +198,13 @@ def sendFollowUp(follow_up, recipients):
                 {
                     'name': 'user_email',
                     'content': recipient
+                },
+                {
+                    'name': 'button_html',
+                    'content': button_html
                 }
             ]
         })
-    buttonHtml = '<a href="' + follow_up.button_target.split("?", 1)[0] + '" class="primary-btn view_event_btn" style="color: #222222; text-decoration: none; border-radius: 4px; font-weight: bold; text-align: center; font-size: 1.2em; box-sizing: border-box; padding: 12px 60px;background: transparent; border: thin solid ' + follow_up.color + ';">' + follow_up.button_text + '</a>'
     if follow_up.image:
         headerImageHtml = '<img align="left" alt="" src="' + follow_up.image.source.url.split("?", 1)[0] + '" style="max-width: 600px !important; height: auto; line-height: 100%; outline: none; text-decoration: none; display: block; border: 0;" class="mcnImage">'
     else:
@@ -224,10 +233,6 @@ def sendFollowUp(follow_up, recipients):
         {
             'name':'message', 
             'content': follow_up.message
-        },
-        {
-            'name':'button_html', 
-            'content': buttonHtml
         },
         {
             'name':'heading', 

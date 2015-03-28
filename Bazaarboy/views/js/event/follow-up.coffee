@@ -102,12 +102,23 @@ Bazaarboy.event.follow_up =
             $('a.button-type-btn').removeClass('primary-btn')
             $('a.button-type-btn').addClass('primary-btn-inverse')
             $('a.button-type-btn').removeClass('active')
+            $('div.custom-link').addClass('hide')
+            $('div.email-content.content-gift').addClass('hide')
             $(this).addClass('active')
             $(this).addClass('primary-btn')
             $(this).removeClass('primary-btn-inverse')
             $('div.custom-link').addClass('hide')
             if $(this).data('type') == 'link'
                 $('div.custom-link').removeClass('hide')
+            if $(this).data('type') == 'gift'
+                $('div.email-content.content-gift').removeClass('hide')
+            return
+        # GIFTS
+        $('input[name=gift_expiration]').pikaday
+            format: 'MM/DD/YYYY'
+        $('div.rewards div.reward').click () ->
+            $('div.rewards div.reward').removeClass('active')
+            $(this).addClass('active')
             return
         # COLOR PICKER
         $('input[name=colorpicker]').spectrum
@@ -171,7 +182,20 @@ Bazaarboy.event.follow_up =
                     $('a.save-follow-up').html 'Save &amp; Preview'
                     swal "Custom Link is not valid. Remember, you must include http:// or https://."
                     return
-                Bazaarboy.post targetUrl, {id:targetId, heading:heading, message:message, button_text:button_text, button_type:button_type, custom_link:custom_url, tickets:lists, color:color, image:imageId, deleteImg:deleteImg, pdf:pdfId, deletePdf:deletePdf}, (response) ->
+                if button_type == 'gift'
+                    giftId = $('div.rewards div.reward.active').data('id')
+                    giftExpirationDate = $('input[name=gift_expiration]').val()
+                    if not moment(giftExpirationDate, 'MM/DD/YYYY').isValid()
+                        swal 'The Gift Expiration Time is not Valid'
+                        scope.saving = false
+                        $('a.save-follow-up').html 'Save &amp; Preview'
+                        return
+                    giftExpiration = moment(giftExpirationDate, 'MM/DD/YYYY').utc().format('YYYY-MM-DD HH:mm:ss')
+                params = {id:targetId, heading:heading, message:message, button_text:button_text, button_type:button_type, custom_link:custom_url, tickets:lists, color:color, image:imageId, deleteImg:deleteImg, pdf:pdfId, deletePdf:deletePdf}
+                if giftId?
+                    params.gift_id = giftId
+                    params.gift_expiration = giftExpiration
+                Bazaarboy.post targetUrl, params, (response) ->
                     if response.status is 'OK'
                         followUpId = response.follow_up.pk
                         Bazaarboy.redirect 'event/followup/' + followUpId + '/preview'
