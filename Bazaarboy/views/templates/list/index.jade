@@ -32,7 +32,7 @@ block content
                 div.medium-7.columns.end.empty-state-content
                     div.text YOU HAVEN'T MADE A LIST YET
                     hr
-                    div.subtext Make event communication easier with lists
+                    div.subtext Use lists to create segmented groups of your audience. Targeted lists will allow you send more effective event invitations and gifts to your followers.
                     div.row
                         div.large-5.medium-7.small-9
                             div.new-list-btn
@@ -71,6 +71,7 @@ block content
                             {% endfor %}
                 {% endif %}
             div.row
+                {% if lists|length > 0 %}
                 div.small-12.columns.lists
                     div.row
                         div.small-12.columns
@@ -90,6 +91,7 @@ block content
                                     div.small-2.columns.text-center.list-action
                                         a.delete-list-btn(href="javascript:;", data-id="{{ list.id }}") Delete List
                             {% endfor %}
+                {% endif %}
     div#new-list-modal.reveal-modal.medium(data-reveal)
         div.row.new-list-title
             div.small-12.columns

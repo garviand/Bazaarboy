@@ -5,6 +5,10 @@
       var scope;
       scope = this;
       $('a.redeem-btn').click(function() {
+        $('form#redeem-form').submit();
+      });
+      $('form#redeem-form').submit(function(e) {
+        e.preventDefault();
         if (!scope.redeeming) {
           scope.redeeming = true;
           return Bazaarboy.post('rewards/redeem/', {

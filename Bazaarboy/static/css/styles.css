@@ -7946,6 +7946,9 @@ div#wrapper-dashboard div.empty-state-container div.empty-state-content div.text
   font-weight: 600;
   color: #4a4a4a;
 }
+div#wrapper-dashboard div.empty-state-container div.empty-state-content div.subtext {
+  line-height: 1.3rem;
+}
 div#wrapper-dashboard div.empty-state-container div.empty-state-content hr {
   margin: 10px 0;
 }
@@ -12532,7 +12535,7 @@ div#wrapper-reward-dashboard div.empty-state-container {
   margin-top: 40px;
   border: #F6F6F6 thin solid;
   border-radius: 4px;
-  background: url('../images/emptystates/tag_bg.jpg');
+  background: url('../images/emptystates/champagne_bg.jpg');
   background-size: 80%;
   background-position: left center;
   background-repeat: no-repeat;
@@ -12547,7 +12550,7 @@ div#wrapper-reward-dashboard div.empty-state-container div.empty-state-content d
   color: #4a4a4a;
 }
 div#wrapper-reward-dashboard div.empty-state-container div.empty-state-content div.subtext {
-  line-height: 1.1rem;
+  line-height: 1.3rem;
 }
 div#wrapper-reward-dashboard div.empty-state-container div.empty-state-content hr {
   margin: 10px 0;
@@ -12777,10 +12780,6 @@ div#redeem div#redeem-container div.redeem-info span.warning {
 div#redeem div#redeem-container div.redeem-btn-container {
   margin-bottom: 20px;
 }
-div#redeem div#redeem-container div.redeem-btn-container .redeem-btn {
-  transition: none !important;
-  cursor: pointer;
-}
 @media only screen and (max-width: 40.063em) {
   div#main-header {
     display: none;
@@ -12917,6 +12916,9 @@ div#wrapper-list-dashboard div.empty-state-container div.empty-state-content div
   font-size: 1.3rem;
   font-weight: 600;
   color: #4a4a4a;
+}
+div#wrapper-list-dashboard div.empty-state-container div.empty-state-content div.subtext {
+  line-height: 1.2rem;
 }
 div#wrapper-list-dashboard div.empty-state-container div.empty-state-content hr {
   margin: 10px 0;

@@ -35,7 +35,11 @@ block content
                 div.medium-7.columns.end.empty-state-content
                     div.text YOU DO NOT HAVE ANY INVENTORY
                     hr
-                    div.subtext Create your first inventory item now. You will have 
+                    div.subtext Use gifts to engage your audince. Gifts can be distributed to past event attendees, members of 
+                        a(href="{% url 'list:index' %}") your lists
+                        | &nbsp;or by creating a 
+                        a(href="{% url 'list:new-sign-up' %}") signup form
+                        | &nbsp;for raffles, surveys and more. You have 
                         b 10 FREE GIFTS
                         | &nbsp;to distribute before subscribing to a Bazaarboy account.
                     div.row
