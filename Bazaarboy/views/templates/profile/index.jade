@@ -5,6 +5,12 @@ extends ../layout
 block title
     | {{ profile.name }}
 
+append head
+    meta(name="description", content="{{ profile.description }}")
+    meta(property="og:title", content="{{ profile.name }}")
+    meta(property="og:description", content="{{ profile.description }}")
+    meta(property="og:image", content="{{ channel.cover.source.url|sanitizeUrl }}")
+
 block body
     div#profile
         div#profile-container
