@@ -523,7 +523,7 @@ def complete_claim(request, params):
         if subscription.credits > 0:
             subscription.credits -= 1
             subscription.save()
-        else:
+        elif claim.item.created_time > subscription.created_time:
             stripe.api_key = STRIPE_SECRET_KEY
             try:
                 invoice = stripe.InvoiceItem.create(
