@@ -1,6 +1,7 @@
 from django import template
 from django.utils import timezone
 from django.core.urlresolvers import reverse
+from kernel.models import *
 from src.timezone import localize
 import math
 import re

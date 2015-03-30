@@ -39,12 +39,11 @@ def sendEventConfirmationSMS(purchase):
     """
     Send out event confirmation SMS
     """
-    if len(purchase.owner.phone) == 10:
-        body = 'You have RSVP\'d for \''
-        body += purchase.event.name
-        body += '\' and your confirmation code is '
-        body += purchase.code
-        body += '. Thanks!'
+    body = 'You have RSVP\'d for \''
+    body += purchase.event.name
+    body += '\' and your confirmation code is '
+    body += purchase.code
+    body += '. Thanks!'
     for item in purchase.items.all():
         if item.attachment:
             name, extension = os.path.splitext(item.attachment.name)
