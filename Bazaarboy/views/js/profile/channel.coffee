@@ -32,8 +32,6 @@ Bazaarboy.profile.channel =
         $('a.save-channel-btn').click () ->
             params = {}
             params.profile = profileId
-            if $('input[name=tagline]').val().trim() != ''
-                params.tagline = $('input[name=tagline]').val()
             if $('input[name=hashtag]').val().trim() != ''
                 params.hashtag = $('input[name=hashtag]').val()
             if scope.image?
