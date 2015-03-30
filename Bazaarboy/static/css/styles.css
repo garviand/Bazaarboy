@@ -8538,7 +8538,7 @@ div#profile div#profile-container div.profile-header div.overlay {
   position: absolute;
   height: 100%;
   width: 100%;
-  background: rgba(0, 0, 0, 0.1);
+  background: rgba(0, 0, 0, 0.15);
 }
 div#profile div#profile-container div.profile-header div.header-top {
   padding-top: 50px;
@@ -8557,12 +8557,13 @@ div#profile div#profile-container div.profile-header div.header-top a.brand-logo
   }
 }
 div#profile div#profile-container div.profile-header div.header-bottom {
-  padding-top: 150px;
-  padding-bottom: 80px;
+  padding-top: 350px;
+  padding-bottom: 72px;
 }
 @media only screen and (max-width: 40em) {
   div#profile div#profile-container div.profile-header div.header-bottom {
-    padding-top: 50px;
+    padding-top: 100px;
+    padding-bottom: 125px;
   }
 }
 div#profile div#profile-container div.profile-header div.header-bottom div.profile-name {
@@ -8574,6 +8575,7 @@ div#profile div#profile-container div.profile-header div.header-bottom div.profi
 @media only screen and (max-width: 40em) {
   div#profile div#profile-container div.profile-header div.header-bottom div.profile-name {
     text-align: center;
+    font-size: 32px;
   }
 }
 div#profile div#profile-container div.profile-header div.header-bottom div.subscribe-container {
@@ -8590,69 +8592,95 @@ div#profile div#profile-container div.profile-header div.header-bottom div.subsc
   margin-bottom: 0;
 }
 div#profile div#profile-container div.profile-body {
-  border-top: 10px solid #ebebeb;
+  border-top: 2px solid #ebebeb;
   background: #f6f6f6;
   padding-bottom: 50px;
 }
 div#profile div#profile-container div.profile-body div.body-container {
+  position: relative;
+  top: -50px;
   background: #ffffff;
   box-shadow: 0px 0px 3px rgba(0, 0, 0, 0.2);
   padding-bottom: 50px;
 }
-div#profile div#profile-container div.profile-body div.body-container div.body-top div.profile-description {
-  position: relative;
-  min-height: 70px;
-  top: -70px;
-  background: #ffffff;
-  border-bottom: thin solid #ebebeb;
-  font-size: 20px;
-  color: #7a7a7a;
-  padding-top: 24px;
-  padding-bottom: 24px;
-  padding-right: 10px;
-  padding-left: 10px;
+@media only screen and (max-width: 40em) {
+  div#profile div#profile-container div.profile-body div.body-container {
+    padding-bottom: 0;
+  }
 }
 div#profile div#profile-container div.profile-body div.body-container div.body-bottom div.business-info {
+  position: relative;
+  top: -90px;
   word-wrap: break-word;
   border-radius: 4px;
   margin-left: 1.875rem;
   padding-left: 10px;
   padding-right: 10px;
-  background: #ebebeb;
 }
 @media only screen and (max-width: 40em) {
   div#profile div#profile-container div.profile-body div.body-container div.body-bottom div.business-info {
+    top: -60px;
     margin-right: 1.875rem;
+    padding-left: 0;
+    padding-right: 0;
   }
 }
 div#profile div#profile-container div.profile-body div.body-container div.body-bottom div.business-info div.profile-logo {
-  position: relative;
-  top: -25px;
-  height: 150px;
-  width: 150px;
-  background-color: rgba(0, 0, 0, 0.1);
+  height: 90px;
+  width: 180px;
+  background-color: rgba(122, 122, 122, 0.3);
   padding: 5px;
-  margin: 0 auto;
-  border-radius: 75px;
+  border-radius: 4px;
+  margin-bottom: 110px;
+}
+@media only screen and (max-width: 40em) {
+  div#profile div#profile-container div.profile-body div.body-container div.body-bottom div.business-info div.profile-logo {
+    height: 60px;
+    width: 120px;
+    margin: 0 auto;
+    margin-bottom: 100px;
+  }
 }
 div#profile div#profile-container div.profile-body div.body-container div.body-bottom div.business-info div.profile-logo div.logo {
-  border-radius: 70px;
-  height: 140px;
-  width: 140px;
+  border-radius: 4px;
+  height: 170px;
+  width: 170px;
   background-color: #ffffff;
+  border: #f6f6f6 1px solid;
 }
-div#profile div#profile-container div.profile-body div.body-container div.body-bottom div.business-info div.info-container {
-  padding-bottom: 30px;
+@media only screen and (max-width: 40em) {
+  div#profile div#profile-container div.profile-body div.body-container div.body-bottom div.business-info div.profile-logo div.logo {
+    width: 110px;
+    height: 110px;
+  }
 }
 div#profile div#profile-container div.profile-body div.body-container div.body-bottom div.business-info div.info-container div.title {
   color: #f3a536;
-  margin-bottom: 10px;
+  margin-bottom: 15px;
 }
 div#profile div#profile-container div.profile-body div.body-container div.body-bottom div.business-info div.info-container div.info {
-  margin-bottom: 5px;
-  line-height: 1.2rem;
-  padding-left: 10px;
-  padding-right: 10px;
+  margin-bottom: 20px;
+  font-size: 12px;
+  line-height: 1rem;
+}
+div#profile div#profile-container div.profile-body div.body-container div.body-bottom div.business-info div.info-container div.info div.photo-feed {
+  margin-right: .9375rem;
+}
+div#profile div#profile-container div.profile-body div.body-container div.body-bottom div.business-info div.info-container div.info div.photo-feed div.photo-container {
+  padding-right: 0;
+}
+div#profile div#profile-container div.profile-body div.body-container div.body-bottom div.business-info div.info-container div.info div.photo-feed ul.clearing-thumbs li {
+  margin-right: 0 !important;
+  padding: 5px;
+}
+@media only screen and (max-width: 40em) {
+  div#profile div#profile-container div.profile-body div.body-container div.body-bottom div.business-info div.info-container div.info div.photo-feed ul.clearing-thumbs li {
+    padding-right: 0;
+    padding-bottom: 10px;
+  }
+}
+div#profile div#profile-container div.profile-body div.body-container div.body-bottom div.business-info div.info-container div.info div.photo-feed ul.clearing-thumbs li:hover {
+  opacity: .6;
 }
 div#profile div#profile-container div.profile-body div.body-container div.body-bottom div.event-content hr {
   margin: 0;
@@ -8667,9 +8695,11 @@ div#profile div#profile-container div.profile-body div.body-container div.body-b
 }
 @media only screen and (max-width: 40em) {
   div#profile div#profile-container div.profile-body div.body-container div.body-bottom div.event-content {
-    padding-left: 1.875rem;
-    padding-right: 1.875rem;
-    margin-top: 20px;
+    padding-left: .9375rem;
+    padding-right: .9375rem;
+    position: relative;
+    top: -60px;
+    margin-top: 0;
   }
 }
 div#profile div#profile-container div.profile-body div.body-container div.body-bottom div.event-content div.events-title {
@@ -8687,7 +8717,7 @@ div#profile div#profile-container div.profile-body div.body-container div.body-b
   left: 0;
   height: 40px;
   width: 40px;
-  background: rgba(0, 0, 0, 0.5);
+  background: rgba(0, 0, 0, 0.6);
   border-top-left-radius: 2px;
   transition: all .1s;
 }
@@ -8708,9 +8738,27 @@ div#profile div#profile-container div.profile-body div.body-container div.body-b
   font-size: 18px;
   font-weight: bold;
 }
+div#profile div#profile-container div.profile-body div.body-container div.body-bottom div.event-content div.upcoming-events {
+  margin-top: 30px;
+  background: #f6f6f6;
+  padding: 20px;
+  padding-bottom: 0;
+  margin-right: 30px;
+  border-radius: 4px;
+}
+@media only screen and (max-width: 40em) {
+  div#profile div#profile-container div.profile-body div.body-container div.body-bottom div.event-content div.upcoming-events {
+    margin-right: 0;
+    margin-top: 0;
+  }
+}
+div#profile div#profile-container div.profile-body div.body-container div.body-bottom div.event-content div.upcoming-events div.events-title {
+  padding-top: 5px;
+  padding-bottom: 5px;
+}
 div#profile div#profile-container div.profile-body div.body-container div.body-bottom div.event-content div.upcoming-events div.upcoming-event {
   margin-left: .9375rem;
-  margin-bottom: 20px;
+  margin-bottom: 40px;
 }
 @media only screen and (max-width: 40em) {
   div#profile div#profile-container div.profile-body div.body-container div.body-bottom div.event-content div.upcoming-events div.upcoming-event {
@@ -8724,7 +8772,7 @@ div#profile div#profile-container div.profile-body div.body-container div.body-b
   }
 }
 div#profile div#profile-container div.profile-body div.body-container div.body-bottom div.event-content div.upcoming-events div.upcoming-event div.event-image {
-  padding-bottom: 25%;
+  padding-bottom: 30%;
 }
 @media only screen and (max-width: 40em) {
   div#profile div#profile-container div.profile-body div.body-container div.body-bottom div.event-content div.upcoming-events div.upcoming-event div.event-image {
@@ -8744,7 +8792,7 @@ div#profile div#profile-container div.profile-body div.body-container div.body-b
   display: block;
   color: #c57724;
   font-size: 16px;
-  font-weight: bold;
+  font-weight: 500;
   margin-bottom: 10px;
 }
 div#profile div#profile-container div.profile-body div.body-container div.body-bottom div.event-content div.upcoming-events div.upcoming-event div.event-info-container div.event-info a.event-name:hover {
@@ -8754,18 +8802,43 @@ div#profile div#profile-container div.profile-body div.body-container div.body-b
   color: #7a7a7a;
   font-size: 12px;
   line-height: 1rem;
+  min-height: 60px;
+}
+div#profile div#profile-container div.profile-body div.body-container div.body-bottom div.event-content div.upcoming-events div.upcoming-event div.event-info-container div.event-info div.event-link a {
+  display: block;
+  width: 80px;
+  margin-top: 15px;
+  font-weight: 400;
+  font-size: 14px;
+  padding-top: 6px;
+  padding-bottom: 6px;
 }
 div#profile div#profile-container div.profile-body div.body-container div.body-bottom div.event-content div.upcoming-events div.upcoming-event a:hover div.event-date {
   background: #000000;
 }
+div#profile div#profile-container div.profile-body div.body-container div.body-bottom div.event-content div.past-events {
+  margin-top: 30px;
+}
+div#profile div#profile-container div.profile-body div.body-container div.body-bottom div.event-content div.past-events div.events-title {
+  margin-bottom: 30px;
+}
 div#profile div#profile-container div.profile-body div.body-container div.body-bottom div.event-content div.past-events div.past-events-container {
   margin-right: .9375rem;
 }
+div#profile div#profile-container div.profile-body div.body-container div.body-bottom div.event-content div.past-events div.past-events-container div.slider-container {
+  padding-left: 2rem;
+  padding-right: 2rem;
+}
+@media only screen and (max-width: 40em) {
+  div#profile div#profile-container div.profile-body div.body-container div.body-bottom div.event-content div.past-events div.past-events-container div.slider-container {
+    padding-right: 0;
+  }
+}
 div#profile div#profile-container div.profile-body div.body-container div.body-bottom div.event-content div.past-events div.past-event {
-  margin-left: .9375rem;
+  margin-left: 1.5rem;
+  margin-right: 1.5rem;
   margin-bottom: 20px !important;
   margin-top: 0px !important;
-  padding-right: .9375rem;
 }
 @media only screen and (max-width: 40em) {
   div#profile div#profile-container div.profile-body div.body-container div.body-bottom div.event-content div.past-events div.past-event {
@@ -8807,26 +8880,6 @@ div#profile div#profile-container div.profile-body div.body-container div.body-b
 }
 div#profile div#profile-container div.profile-body div.body-container div.body-bottom div.event-content div.past-events div.past-event a:hover div.event-date {
   background: #000000;
-}
-div#profile div#profile-container div.profile-body div.body-container div.body-bottom div.event-content div.photo-feed {
-  margin-right: .9375rem;
-}
-@media only screen and (max-width: 40em) {
-  div#profile div#profile-container div.profile-body div.body-container div.body-bottom div.event-content div.photo-feed div.photo-container {
-    padding-right: 0;
-  }
-}
-div#profile div#profile-container div.profile-body div.body-container div.body-bottom div.event-content div.photo-feed ul.clearing-thumbs li {
-  margin-right: 0 !important;
-}
-@media only screen and (max-width: 40em) {
-  div#profile div#profile-container div.profile-body div.body-container div.body-bottom div.event-content div.photo-feed ul.clearing-thumbs li {
-    padding-right: 0;
-    padding-bottom: 10px;
-  }
-}
-div#profile div#profile-container div.profile-body div.body-container div.body-bottom div.event-content div.photo-feed ul.clearing-thumbs li:hover {
-  opacity: .6;
 }
 div#wrapper-profile-new div.profile-new-container {
   overflow: hidden;

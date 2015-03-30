@@ -63,6 +63,7 @@ def index(request, id, user):
         feed.images = json.dumps(images)
         feed.updated_time = tz.now()
         feed.save()
+    images = images[:9]
     return render(request, 'profile/index.html', locals())
 
 @login_required()
@@ -77,7 +78,7 @@ def channel(request, user):
 
 
 @login_required()
-@validate('POST', ['profile', 'cover', 'tagline'], ['hashtag'])
+@validate('POST', ['profile', 'cover'], ['hashtag'])
 def create_channel(request, params, user):
     # Check if the profile is valid
     if not Profile.objects.filter(id = params['profile']).exists():
@@ -112,14 +113,7 @@ def create_channel(request, params, user):
         }
         return json_response(response)
     cover = Image.objects.get(id = params['cover'])
-    if len(params['tagline']) > 100:
-        response = {
-            'status':'FAIL',
-            'error':'TAGLINE_TOO_LONG',
-            'message':'The tagline you chose is too long. Shorten it to less than 100 characters.'
-        }
-        return json_response(response)
-    channel = Channel(profile = profile, cover = cover, tagline = params['tagline'])
+    channel = Channel(profile = profile, cover = cover)
     if params['hashtag'] is not None:
         channel.hashtag = params['hashtag'].replace(" ", "")
     channel.save()
@@ -131,7 +125,7 @@ def create_channel(request, params, user):
     return json_response(response)
 
 @login_required()
-@validate('POST', ['profile'], ['hashtag', 'cover', 'tagline'])
+@validate('POST', ['profile'], ['hashtag', 'cover'])
 def edit_channel(request, params, user):
     # Check if the profile is valid
     if not Profile.objects.filter(id = params['profile']).exists():
@@ -168,15 +162,6 @@ def edit_channel(request, params, user):
             }
             return json_response(response)
         channel.cover = Image.objects.get(id = params['cover'])
-    if params['tagline'] is not None:
-        if len(params['tagline']) > 100:
-            response = {
-                'status':'FAIL',
-                'error':'TAGLINE_TOO_LONG',
-                'message':'The tagline you chose is too long. Shorten it to less than 100 characters.'
-            }
-            return json_response(response)
-        channel.tagline = params['tagline']
     if params['hashtag'] is not None:
         channel.hashtag = params['hashtag'].replace(" ", "")
     channel.save()

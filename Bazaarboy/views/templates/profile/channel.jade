@@ -33,13 +33,6 @@ block content
                     div.small-12.columns
                         div.input-container
                             div.row
-                                div.small-4.columns.input-title Profile Tagline
-                                div.small-8.columns.input-note.text-right Short and Sweet
-                            input.field(type="text", name="tagline", value="{% if channel.tagline %}{{ channel.tagline }}{% endif %}", placeholder="Tagline")
-                div.row
-                    div.small-12.columns
-                        div.input-container
-                            div.row
                                 div.small-4.columns.input-title Profile Hashtag
                                 div.small-8.columns.input-note.text-right For Instagram Photo Feed
                             input.field(type="text", name="hashtag", value="{% if channel.hashtag %}{{ channel.hashtag }}{% endif %}", placeholder="Hashtag (Do NOT include '#')")

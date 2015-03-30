@@ -11,6 +11,9 @@ append head
     meta(property="og:description", content="{{ profile.description }}")
     meta(property="og:image", content="{{ channel.cover.source.url|sanitizeUrl }}")
 
+    link(rel="stylesheet", href="{{ STATIC_URL }}slick/slick-theme.css")
+    link(rel="stylesheet", href="{{ STATIC_URL }}slick/slick.css")
+
 block body
     div#profile
         div#profile-container
@@ -25,7 +28,7 @@ block body
                             div.small-12.medium-4.medium-offset-8.large-offset-9.large-3.columns
                                 //a.learn-more.secondary-btn.full-btn.medium-btn(href="javascript:;") Learn More
                 div.row.header-bottom
-                    div.small-12.medium-8.columns
+                    div.small-12.medium-9.medium-offset-3.columns
                         div.profile-name {{ profile.name }}
                     div.small-12.medium-4.columns
                         //div.subscribe-container
@@ -34,23 +37,20 @@ block body
                 div.row
                     div.small-12.columns
                         div.body-container
-                            div.row.body-top
-                                div.small-12.columns.text-center
-                                    div.profile-description {{ channel.tagline }}
                             div.row.body-bottom
                                 div.small-12.medium-4.columns
-                                    div.business-info.text-center
+                                    div.business-info
                                         div.row
                                             div.small-12.columns
                                                 div.profile-logo
-                                                    div.logo(style="background:url({{ profile.image.source.url }}); background-size:100%; background-position:center; background-repeat: no-repeat; background-color:#FFF;")
+                                                    div.logo(style="background:url({{ profile.image.source.url }}); background-size:contain; background-position:center; background-repeat: no-repeat; background-color:#FFF;")
                                         div.row.info-container
-                                            div.small-12.columns.text-center
-                                                div.title.bigger Description
+                                            div.small-12.columns
+                                                div.title.bigger Description:
                                                 div.info {{ profile.description }}
                                         div.row.info-container
-                                            div.small-12.columns.text-center
-                                                div.title.bigger Contact
+                                            div.small-12.columns
+                                                div.title.bigger Contact:
                                                 div.info 
                                                     span.bigger e:&nbsp;
                                                     | {{ profile.email }}
@@ -59,6 +59,22 @@ block body
                                                     span.bigger p:&nbsp;
                                                     | {{ profile.phone }}
                                                 {% endif %}
+                                        {% if images|length > 0 %}
+                                        div.row.info-container.hide-for-small-only
+                                            div.small-12.columns
+                                                div.title.bigger Photo Feed
+                                                div.info
+                                                    div.photo-feed
+                                                        div.row
+                                                            div.small-12.columns.photo-container
+                                                                div
+                                                                    ul.clearing-thumbs.small-block-grid-2.medium-block-grid-3(data-clearing)
+                                                                        {% for image in images %}
+                                                                        li
+                                                                            a(href="{{ image.high_res }}")
+                                                                                img(src="{{ image.thumb }}")
+                                                                        {% endfor %}
+                                        {% endif %}
                                 div.small-12.medium-8.columns
                                     div.event-content
                                         {% if current_events|length > 0 %}
@@ -74,16 +90,17 @@ block body
                                                             div.upcoming-event
                                                                 div.row
                                                                     a(href="{{ event|eventUrl }}")
-                                                                        div.event-image.small-12.medium-3.columns(style="background:url({{ event|firstImage }}); background-size:cover; background-position:center;") &nbsp;
+                                                                        div.event-image.small-12.medium-4.columns(style="background:url({{ event|firstImage }}); background-size:cover; background-position:center;") &nbsp;
                                                                             div.event-date
                                                                                 div.month {{ event.start_time|date:'M' }}
                                                                                 div.day {{ event.start_time|date:'j' }}
-                                                                    div.small-12.medium-9.columns.event-info-container
+                                                                    div.small-12.medium-8.columns.event-info-container
                                                                         div.event-info
                                                                             a.event-name(href="{{ event|eventUrl }}") {{ event.name }}
                                                                             div.event-summary {{ event.summary }}
+                                                                            div.event-link
+                                                                                a.secondary-btn.small-btn(href="{{ event|eventUrl }}") RSVP
                                                     {% endfor %}
-                                        hr
                                         {% endif %}
                                         {% if past_events|length > 0 %}
                                         div.row
@@ -93,38 +110,23 @@ block body
                                                         div.small-12.columns
                                                             div.events-title.bigger Past Events
                                                     div.row.past-events-container
-                                                        {% for event in past_events %}
-                                                        div.small-12.medium-4.columns.end
-                                                            div.past-event
-                                                                div.row
-                                                                    a(href="{{ event|eventUrl }}")
-                                                                        div.event-image.small-12.columns(style="background:url({{ event|firstImage }}); background-size:cover; background-position:center;") &nbsp;
-                                                                            div.event-date
-                                                                                div.month {{ event.start_time|date:'M' }}
-                                                                                div.day {{ event.start_time|date:'j' }}
-                                                                            div.event-name {{ event.name }}
-                                                        {% endfor %}
-                                        hr
-                                        {% endif %}
-                                        {% if images|length > 0 %}
-                                        div.row
-                                            div.small-12.columns
-                                                div.photo-feed
-                                                    div.row
-                                                        div.small-12.columns
-                                                            div.events-title.bigger Photo Feed
-                                                    div.row
-                                                        div.small-12.columns.photo-container
-                                                            div
-                                                                ul.clearing-thumbs.small-block-grid-2.medium-block-grid-5(data-clearing)
-                                                                    {% for image in images %}
-                                                                    li
-                                                                        a(href="{{ image.high_res }}")
-                                                                            img(src="{{ image.thumb }}")
-                                                                    {% endfor %}
+                                                        div.small-12.columns.slider-container
+                                                            div.past-events-slider
+                                                                {% for event in past_events %}
+                                                                div.past-event
+                                                                    div.row
+                                                                        a(href="{{ event|eventUrl }}")
+                                                                            div.event-image.small-12.columns(style="background:url({{ event|firstImage }}); background-size:cover; background-position:center;") &nbsp;
+                                                                                div.event-date
+                                                                                    div.month {{ event.start_time|date:'M' }}
+                                                                                    div.day {{ event.start_time|date:'j' }}
+                                                                                div.event-name {{ event.name }}
+                                                                {% endfor %}
                                         {% endif %}
 
 
 
 append script
+    script(type="text/javascript", src="//code.jquery.com/jquery-migrate-1.2.1.min.js")
+    script(type="text/javascript", src="{{ STATIC_URL }}slick/slick.min.js")
     script(type="text/javascript", src="{{ STATIC_URL }}js/profile/index.js")
