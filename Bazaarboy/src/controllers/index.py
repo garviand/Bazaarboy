@@ -47,6 +47,7 @@ def index(request, params, user):
             images = []
             for photo in instagram_photos[0]:
                 images.append({'high_res':photo.images['standard_resolution'].url, 'thumb':photo.images['thumbnail'].url})
+            images = images[:9]
             return render(request, 'profile/index.html', locals())
     # Check if logged in
     if user is None:
