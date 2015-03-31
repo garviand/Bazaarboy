@@ -78,7 +78,12 @@ def sendEventInvite(invite, recipients):
                 }
             ]
         })
-    buttonHtml = '<a href="https://bazaarboy.com/' + layout.eventUrl(invite.event) + '?iid=' + str(invite.id) + '" class="primary-btn view_event_btn" style="color: #222222; text-decoration: none; border-radius: 4px; font-weight: bold; text-align: center; font-size: 1.2em; box-sizing: border-box; padding: 12px 60px;background: #FFFFFF; border: thin solid ' + invite.color + ';">RSVP</a>'
+    button_text = 'RSVP'
+    if invite.button_text:
+        button_text = invite.button_text
+    buttonHtml = ''
+    if invite.button_target:
+        buttonHtml = '<br><br><a href="https://bazaarboy.com/' + invite.button_target + '?iid=' + str(invite.id) + '" class="primary-btn view_event_btn" style="color: #222222; text-decoration: none; border-radius: 4px; font-weight: bold; text-align: center; font-size: 1.2em; box-sizing: border-box; padding: 12px 60px;background: #FFFFFF; border: thin solid ' + invite.color + ';">' + button_text + '</a><br><br>'
     if invite.image:
         headerImageHtml = '<img align="left" alt="" src="' + invite.image.source.url.split("?", 1)[0] + '" width="564" style="max-width: 757px;padding-bottom: 0;display: inline !important;vertical-align: bottom;border: 0;outline: none;text-decoration: none;-ms-interpolation-mode: bicubic;" class="mcnImage">'
     else:
@@ -90,10 +95,20 @@ def sendEventInvite(invite, recipients):
     inviteDetails = ''
     if invite.details:
         inviteDetails = invite.details
+    subject = 'Invitation to \'' + invite.event.name + '\''
+    if invite.subject:
+        subject = invite.subject
+        email_subject = subject
+    else:
+        email_subject = invite.profile.name + ' Invites You to Attend'
     globalVars = [
         {
             'name':'profile_name', 
             'content': invite.profile.name
+        },
+        {
+            'name':'email_subject', 
+            'content': email_subject
         },
         {
             'name':'profile_id', 
@@ -137,7 +152,6 @@ def sendEventInvite(invite, recipients):
         }
     ]
     template = 'new-invite'
-    subject = 'Invitation to \'' + invite.event.name + '\''
     attachments = []
     try:
         client = Mandrill(MANDRILL_API_KEY)

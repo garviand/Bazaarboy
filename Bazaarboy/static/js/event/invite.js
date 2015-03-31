@@ -3,11 +3,12 @@
     saving: false,
     image: {},
     saveInvite: function(toPreview) {
-      var activeLists, color, deleteImg, details, force, imageId, list, list_name, lists, message, targetId, targetUrl, _i, _len,
+      var activeLists, list, list_name, lists, params, targetUrl, _i, _len,
         _this = this;
       if (!this.saving) {
         $('a.save-invite').html('Saving...');
         this.saving = true;
+        params = {};
         if (!toPreview) {
           list_name = $("div#new-list-modal div.new-list-inputs input[name=list_name]").val();
           if (list_name.trim() === '') {
@@ -18,14 +19,14 @@
           }
         }
         if (!inviteEdit) {
-          targetId = $('div.email input[name=event]').val();
+          params.id = $('div.email input[name=event]').val();
           targetUrl = 'event/invite/new/';
         } else {
-          targetId = $('div.email input[name=invite]').val();
+          params.id = $('div.email input[name=invite]').val();
           targetUrl = 'event/invite/save/';
         }
-        message = $('div.email textarea[name=message]').val();
-        if (message.trim() === '') {
+        params.message = $('div.email textarea[name=message]').val();
+        if (params.message.trim() === '') {
           if (toPreview) {
             swal("Wait!", "Email Message Cannot Be Empty", "warning");
             this.saving = false;
@@ -33,10 +34,10 @@
             $('div#new-list-modal div.new-list-inputs a.create-list').html('+ Add New List');
             return;
           } else {
-            message = 'Draft';
+            params.message = 'Draft';
           }
         }
-        details = $('div.email textarea[name=details]').val();
+        params.details = $('div.email textarea[name=details]').val();
         activeLists = $('div.lists div.list.active');
         if (activeLists.length === 0 && toPreview) {
           swal("Wait!", "You Must Select At Least 1 List", "warning");
@@ -56,27 +57,33 @@
         if (lists === '') {
           lists = ' ';
         }
-        imageId = '';
-        deleteImg = true;
+        params.lists = lists;
+        params.image = '';
+        params.deleteImg = true;
         if (this.image.pk != null) {
-          imageId = this.image.pk;
-          deleteImg = false;
+          params.image = this.image.pk;
+          params.deleteImg = false;
         }
-        force = true;
+        params.force = true;
         if (toPreview) {
-          force = false;
+          params.force = false;
         }
-        color = $('input[name=colorpicker]').spectrum("get").toHexString();
-        Bazaarboy.post(targetUrl, {
-          id: targetId,
-          message: message,
-          details: details,
-          lists: lists,
-          image: imageId,
-          color: color,
-          deleteImg: deleteImg,
-          force: force
-        }, function(response) {
+        if ($('div.email input[name=subject]').val().trim() !== '') {
+          params.subject = $('div.email input[name=subject]').val();
+        }
+        if ($('div.email input[name=button_text]').val().trim() !== '') {
+          params.button_text = $('div.email input[name=button_text]').val();
+        }
+        params.button_target = $('input[name=button_target]').val();
+        params.button_type = $('a.button-type-btn.active').data('type');
+        if (params.button_type === 'link' && !(/^([a-z]([a-z]|\d|\+|-|\.)*):(\/\/(((([a-z]|\d|-|\.|_|~|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])|(%[\da-f]{2})|[!\$&'\(\)\*\+,;=]|:)*@)?((\[(|(v[\da-f]{1,}\.(([a-z]|\d|-|\.|_|~)|[!\$&'\(\)\*\+,;=]|:)+))\])|((\d|[1-9]\d|1\d\d|2[0-4]\d|25[0-5])\.(\d|[1-9]\d|1\d\d|2[0-4]\d|25[0-5])\.(\d|[1-9]\d|1\d\d|2[0-4]\d|25[0-5])\.(\d|[1-9]\d|1\d\d|2[0-4]\d|25[0-5]))|(([a-z]|\d|-|\.|_|~|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])|(%[\da-f]{2})|[!\$&'\(\)\*\+,;=])*)(:\d*)?)(\/(([a-z]|\d|-|\.|_|~|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])|(%[\da-f]{2})|[!\$&'\(\)\*\+,;=]|:|@)*)*|(\/((([a-z]|\d|-|\.|_|~|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])|(%[\da-f]{2})|[!\$&'\(\)\*\+,;=]|:|@)+(\/(([a-z]|\d|-|\.|_|~|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])|(%[\da-f]{2})|[!\$&'\(\)\*\+,;=]|:|@)*)*)?)|((([a-z]|\d|-|\.|_|~|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])|(%[\da-f]{2})|[!\$&'\(\)\*\+,;=]|:|@)+(\/(([a-z]|\d|-|\.|_|~|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])|(%[\da-f]{2})|[!\$&'\(\)\*\+,;=]|:|@)*)*)|((([a-z]|\d|-|\.|_|~|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])|(%[\da-f]{2})|[!\$&'\(\)\*\+,;=]|:|@)){0})(\?((([a-z]|\d|-|\.|_|~|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])|(%[\da-f]{2})|[!\$&'\(\)\*\+,;=]|:|@)|[\uE000-\uF8FF]|\/|\?)*)?(\#((([a-z]|\d|-|\.|_|~|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])|(%[\da-f]{2})|[!\$&'\(\)\*\+,;=]|:|@)|\/|\?)*)?$/i.test(params.button_target))) {
+          scope.saving = false;
+          $('a.save-follow-up').html('Save &amp; Preview');
+          swal("Custom Link is not valid. Remember, you must include http:// or https://.");
+          return;
+        }
+        params.color = $('input[name=colorpicker]').spectrum("get").toHexString();
+        Bazaarboy.post(targetUrl, params, function(response) {
           var inviteId;
           if (toPreview) {
             if (response.status === 'OK') {
@@ -125,6 +132,24 @@
       });
       $('div.lists div.list').click(function() {
         $(this).toggleClass('active');
+      });
+      $('a.button-type-btn').click(function() {
+        $('a.button-type-btn').removeClass('primary-btn');
+        $('a.button-type-btn').addClass('primary-btn-inverse');
+        $('a.button-type-btn').removeClass('active');
+        $('div.custom-link').addClass('hide');
+        $('div.email-content.content-gift').addClass('hide');
+        $(this).addClass('active');
+        $(this).addClass('primary-btn');
+        $(this).removeClass('primary-btn-inverse');
+        $('div.button-text-container').removeClass('hide');
+        $('div.custom-link').addClass('hide');
+        if ($(this).data('type') === 'link') {
+          $('div.custom-link').removeClass('hide');
+        }
+        if ($(this).data('type') === 'none') {
+          $('div.button-text-container').addClass('hide');
+        }
       });
       scope.aviary = new Aviary.Feather({
         apiKey: 'ce3b87fb1edaa22c',

@@ -37,6 +37,10 @@ block content
                         div.title
                             span Email Content
                     div.row.email-content
+                        div.small-12.columns.content-message
+                            label Email Subject
+                                input(type="text", name="subject", value="{% if invite.subject %}{{ invite.subject }}{% endif %}", placeholder="Enter the email subject line")
+                    div.row.email-content
                         div.small-12.columns.content-image
                             label Email Header Image (optional)
                                 input.hide(type="file", name="image_file")
@@ -53,6 +57,23 @@ block content
                         div.small-12.columns.content-details
                             label Details
                                 textarea(name="details", placeholder="Enter any details here (menu items, parking info, etc.)") {% if invite.details %}{{ invite.details }}{% endif %}
+                    div.row.email-content.button-text-container(class="{% if activeButtonType = 'none' %}hide{% endif %}")
+                        div.small-12.columns.content-message
+                            label Button Text
+                                input(type="text", name="button_text", value="{% if invite.button_text %}{{ invite.button_text }}{% endif %}", placeholder="(ex. View Page, Click Here)")
+                    div.row.email-content
+                        div.small-12.columns.content-details
+                            label Button Link
+                                div.row.collapse.tiny-btn-group
+                                    div.small-12.medium-4.columns
+                                        a.button-type-btn.full-btn.tiny-btn(href="javascript:;", data-type="event", class="{% if activeButtonType = 'event' %}active primary-btn{% else %}primary-btn-inverse{% endif %}") Event Page
+                                    div.small-12.medium-4.columns
+                                        a.button-type-btn.full-btn.tiny-btn(href="javascript:;", data-type="link", class="{% if activeButtonType = 'link' %}active primary-btn{% else %}primary-btn-inverse{% endif %}") Custom Link
+                                    div.small-12.medium-4.columns
+                                        a.button-type-btn.full-btn.tiny-btn(href="javascript:;", data-type="none", class="{% if activeButtonType = 'none' %}active primary-btn{% else %}primary-btn-inverse{% endif %}") None
+                                div.custom-link(class="{% if not activeButtonType = 'link' %}hide{% endif %}")
+                                    br
+                                    input(type="text", name="button_target", value="{% if invite.button_target %}{{ invite.button_target }}{% endif %}", placeholder="(ex. http://bazaarboy.com)")
                     div.row.email-content
                         div.small-12.columns.content-details
                             label RSVP Button Color

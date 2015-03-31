@@ -486,6 +486,7 @@ def create_invite(request, event, user):
         list_items = List_item.objects.filter(_list = lt, is_deleted = False)
         lt.items = list_items.count()
     previousInvites = Invite.objects.filter(event = event)
+    activeButtonType = 'event'
     return render(request, 'event/invite.html', locals())
 
 @login_check()
@@ -503,6 +504,12 @@ def edit_invite(request, invite, user):
         lt.selected = False
         if invite.lists.filter(id = lt.id).exists():
             lt.selected = True
+    if invite.button_target is None:
+        activeButtonType = 'none'
+    elif (invite.button_target) == 'http://bazaarboy.com' + layout.eventUrl(invite.event):
+        activeButtonType = 'event'
+    else:
+        activeButtonType = 'link'
     return render(request, 'event/invite.html', locals())
 
 @login_check()
@@ -531,7 +538,7 @@ def copy_invite(request, params, invite, user):
     return json_response(response)
 
 @login_check()
-@validate('POST', ['id', 'lists', 'message'], ['details', 'image', 'color', 'force'])
+@validate('POST', ['id', 'lists', 'message', 'button_type'], ['details', 'image', 'color', 'force', 'button_text', 'button_target', 'subject'])
 def new_invite(request, params, user):
     event = params['id']
     if not Event.objects.filter(id = event, is_deleted = False).exists():
@@ -572,6 +579,16 @@ def new_invite(request, params, user):
             invite.image = Image.objects.get(id = params['image'])
     if params['color'] and params['color'] != '':
         invite.color = params['color']
+    if params['button_text'] and  params['button_text'] != '':
+        invite.button_text = params['button_text']
+    if params['subject'] and  params['subject'] != '':
+        invite.subject = params['subject']
+    custom_link = 'http://bazaarboy.com' + layout.eventUrl(invite.event)
+    if params['button_type'] == 'link' and params['button_target']:
+        custom_link = params['button_target']
+    if params['button_type'] == 'none':
+        custom_link = None
+    invite.button_target = custom_link
     invite.save()
     for lt in lists:
         invite.lists.add(lt)
@@ -583,7 +600,7 @@ def new_invite(request, params, user):
     return json_response(response)
 
 @login_check()
-@validate('POST', ['id', 'lists', 'message'], ['details', 'image', 'color', 'deleteImg', 'force'])
+@validate('POST', ['id', 'lists', 'message', 'button_type'], ['details', 'image', 'color', 'deleteImg', 'force', 'button_text', 'button_target', 'subject'])
 def save_invite(request, params, user):
     invite = params['id']
     if not Invite.objects.filter(id = invite, profile__managers = user, is_deleted = False).exists():
@@ -621,6 +638,20 @@ def save_invite(request, params, user):
         invite.lists.add(lt)
     if params['deleteImg'] and params['deleteImg'] == 'true':
         invite.image = None
+    if params['button_text'] and params['button_text'] != '':
+        invite.button_text = params['button_text']
+    else:
+        invite.button_text = None
+    if params['subject'] and params['subject'] != '':
+        invite.subject = params['subject']
+    else:
+        invite.subject = None
+    custom_link = 'http://bazaarboy.com' + layout.eventUrl(invite.event)
+    if params['button_type'] == 'link' and params['button_target']:
+        custom_link = params['button_target']
+    if params['button_type'] == 'none':
+        custom_link = None
+    invite.button_target = custom_link
     invite.save()
     response = {
         'status':'OK',
