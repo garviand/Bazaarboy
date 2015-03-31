@@ -6528,9 +6528,9 @@ div#landing div.organizer-showcase-container div.organizers .slider-controls div
   background-position: center;
   background-repeat: no-repeat;
 }
-div#landing div.organizer-showcase-container div.organizers .slider-controls div.logo-container .techartista {
-  background: url(/static/images/splash/logo_ta.png);
-  background-size: 80%;
+div#landing div.organizer-showcase-container div.organizers .slider-controls div.logo-container .strange {
+  background: url(/static/images/splash/logo_strange.jpg);
+  background-size: 100%;
   background-position: center;
   background-repeat: no-repeat;
 }

@@ -6,10 +6,6 @@ Bazaarboy.profile.channel =
         $('a.create-channel-btn').click () ->
             params = {}
             params.profile = profileId
-            if $('input[name=tagline]').val().trim() == ''
-                swal 'You Must Add a Tagline'
-                return
-            params.tagline = $('input[name=tagline]').val()
             if $('input[name=hashtag]').val().trim() != ''
                 params.hashtag = $('input[name=hashtag]').val()
             if not scope.image?
