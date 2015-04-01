@@ -41,6 +41,10 @@ block content
                             label Email Subject
                                 input(type="text", name="subject", value="{% if invite.subject %}{{ invite.subject }}{% endif %}", placeholder="Enter the email subject line")
                     div.row.email-content
+                        div.small-12.columns.content-message
+                            label Email Heading
+                                input(type="text", name="heading", value="{% if invite.heading %}{{ invite.heading }}{% endif %}", placeholder="'You have been invited!' or 'Save the Date'")
+                    div.row.email-content
                         div.small-12.columns.content-image
                             label Email Header Image (optional)
                                 input.hide(type="file", name="image_file")

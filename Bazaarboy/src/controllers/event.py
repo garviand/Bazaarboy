@@ -466,9 +466,14 @@ def invite_details(request, invite, user):
             totalOpens += 1
         if email.clicks > 0:
             totalClicks += 1
-    openPercent = str("%.1f" % (totalOpens*100.0 / invt.recipients)) + "%"
-    clickPercent = str("%.1f" % (totalClicks*100.0 / invt.recipients)) + "%"
-    rsvpPercent = str("%.1f" % (totalRSVPs*100.0 / invt.recipients)) + "%"
+    if invt.recipients > 0:
+        openPercent = str("%.1f" % (totalOpens*100.0 / invt.recipients)) + "%"
+        clickPercent = str("%.1f" % (totalClicks*100.0 / invt.recipients)) + "%"
+        rsvpPercent = str("%.1f" % (totalRSVPs*100.0 / invt.recipients)) + "%"
+    else:
+        openPercent = "0%"
+        clickPercent = "0%"
+        rsvpPercent = "0%"
     return render(request, 'event/invite-details.html', locals())
 
 @login_check()
@@ -506,7 +511,7 @@ def edit_invite(request, invite, user):
             lt.selected = True
     if invite.button_target is None:
         activeButtonType = 'none'
-    elif (invite.button_target) == 'http://bazaarboy.com' + layout.eventUrl(invite.event):
+    elif (invite.button_target) == 'http://bazaarboy.com' + layout.eventUrl(invite.event) + '?iid=' + str(invite.id):
         activeButtonType = 'event'
     else:
         activeButtonType = 'link'
@@ -530,6 +535,14 @@ def copy_invite(request, params, invite, user):
         new_invite.message = invite.message
     if invite.details is not None:
         new_invite.details = invite.details
+    if invite.heading is not None:
+        new_invite.heading = invite.heading
+    if invite.button_text is not None:
+        new_invite.button_text = invite.button_text
+    if invite.button_target is not None:
+        new_invite.button_target = invite.button_target
+    if invite.subject is not None:
+        new_invite.subject = invite.subject
     new_invite.save()
     response = {
         'status':'OK',
@@ -538,7 +551,7 @@ def copy_invite(request, params, invite, user):
     return json_response(response)
 
 @login_check()
-@validate('POST', ['id', 'lists', 'message', 'button_type'], ['details', 'image', 'color', 'force', 'button_text', 'button_target', 'subject'])
+@validate('POST', ['id', 'lists', 'message', 'button_type'], ['details', 'image', 'color', 'force', 'button_text', 'button_target', 'subject', 'heading'])
 def new_invite(request, params, user):
     event = params['id']
     if not Event.objects.filter(id = event, is_deleted = False).exists():
@@ -583,7 +596,9 @@ def new_invite(request, params, user):
         invite.button_text = params['button_text']
     if params['subject'] and  params['subject'] != '':
         invite.subject = params['subject']
-    custom_link = 'http://bazaarboy.com' + layout.eventUrl(invite.event)
+    if params['heading'] and  params['heading'] != '':
+        invite.heading = params['heading']
+    custom_link = 'http://bazaarboy.com' + layout.eventUrl(invite.event) + '?iid=' + str(invite.id)
     if params['button_type'] == 'link' and params['button_target']:
         custom_link = params['button_target']
     if params['button_type'] == 'none':
@@ -600,7 +615,7 @@ def new_invite(request, params, user):
     return json_response(response)
 
 @login_check()
-@validate('POST', ['id', 'lists', 'message', 'button_type'], ['details', 'image', 'color', 'deleteImg', 'force', 'button_text', 'button_target', 'subject'])
+@validate('POST', ['id', 'lists', 'message', 'button_type'], ['details', 'image', 'color', 'deleteImg', 'force', 'button_text', 'button_target', 'subject', 'heading'])
 def save_invite(request, params, user):
     invite = params['id']
     if not Invite.objects.filter(id = invite, profile__managers = user, is_deleted = False).exists():
@@ -646,7 +661,9 @@ def save_invite(request, params, user):
         invite.subject = params['subject']
     else:
         invite.subject = None
-    custom_link = 'http://bazaarboy.com' + layout.eventUrl(invite.event)
+    if params['heading'] and  params['heading'] != '':
+        invite.heading = params['heading']
+    custom_link = 'http://bazaarboy.com' + layout.eventUrl(invite.event) + '?iid=' + str(invite.id)
     if params['button_type'] == 'link' and params['button_target']:
         custom_link = params['button_target']
     if params['button_type'] == 'none':
@@ -688,21 +705,14 @@ def preview_invite(request, invite, user):
     sent = 0
     duplicates = 0
     unsubscribes = 0
-    alreadyInvited = 0
     invitedList = []
-    results = Invite_stat.objects.filter(event = invite.event)
-    for result in results:
-        invitedList.append(result.to.lower())
     for lt in invite.lists.all():
         list_items = List_item.objects.filter(_list = lt, is_deleted = False)
         for item in list_items:
             if not Unsubscribe.objects.filter(Q(email = item.email), Q(profile = invite.profile) | Q(profile__isnull = True)).exists():
                 if item.email.lower() not in recipients:
-                    if item.email.lower() not in invitedList:
-                        recipients.append(item.email.lower())
-                        sent += 1
-                    else:
-                        alreadyInvited += 1
+                    sent += 1
+                    recipients.append(item.email.lower())
                 else:
                     duplicates += 1
             else:
@@ -733,22 +743,16 @@ def send_invite(request, params, user):
     sent = 0
     duplicates = 0
     unsubscribes = 0
-    alreadyInvited = 0
     invitedList = []
     client = Mandrill(MANDRILL_API_KEY)
     results = Invite_stat.objects.filter(event = invite.event)
-    for result in results:
-        invitedList.append(result.to.lower())
     for lt in invite.lists.all():
         list_items = List_item.objects.filter(_list = lt, is_deleted = False)
         for item in list_items:
             if not Unsubscribe.objects.filter(Q(email = item.email), Q(profile = invite.profile) | Q(profile__isnull = True)).exists():
                 if item.email.lower() not in recipients:
-                    if item.email.lower() not in invitedList:
-                        recipients.append(item.email.lower())
-                        sent += 1
-                    else:
-                        alreadyInvited += 1
+                    sent += 1
+                    recipients.append(item.email.lower())
                 else:
                     duplicates += 1
             else:
@@ -776,7 +780,6 @@ def send_invite(request, params, user):
         'sent': sent,
         'duplicates': duplicates,
         'unsubscribes': unsubscribes,
-        'already_invited': alreadyInvited,
         'invite': serialize_one(invite)
     }
     return json_response(response)

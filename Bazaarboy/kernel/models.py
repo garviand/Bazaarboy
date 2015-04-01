@@ -335,6 +335,7 @@ class Invite(models.Model):
     color = models.CharField(max_length = 50, default="#FAA638")
     message = models.CharField(max_length = 5000, null = True, default = None)
     details = models.CharField(max_length = 1000, null = True, default = None)
+    heading = models.CharField(max_length = 300, null = True, default = None)
     button_text = models.CharField(max_length = 100, null = True, default = None)
     button_target = models.CharField(max_length = 300, null = True, default = None)
     subject = models.CharField(max_length = 200, null = True, default = None)
