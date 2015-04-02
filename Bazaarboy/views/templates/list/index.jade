@@ -67,8 +67,8 @@ block content
                                     div.small-2.columns.text-center.list-action
                                         a(href="{% url 'list:sign-up' signup.id %}") View Form
                                     div.small-2.columns.text-center.list-action
-                                        a(href="javascript:;", data-dropdown="drop1", data-options="is_hover:true") Form Actions
-                                        ul#drop1.f-dropdown(data-dropdown-content)
+                                        a(href="javascript:;", data-dropdown="drop{{ signup.id }}", data-options="is_hover:true") Form Actions
+                                        ul.f-dropdown(id="drop{{ signup.id }}", data-dropdown-content)
                                             li
                                                 a(href="{% url 'list:manage-sign-up' signup.id %}") View Signups
                                             li
@@ -96,8 +96,8 @@ block content
                                     div.small-2.columns.text-center.list-action
                                         a(href="{% url 'list:sign-up' signup.id %}") View Form
                                     div.small-2.columns.text-center.list-action
-                                        a(href="javascript:;", data-dropdown="drop1", data-options="is_hover:true") Form Actions
-                                        ul#drop1.f-dropdown(data-dropdown-content   )
+                                        a(href="javascript:;", data-dropdown="drop{{ signup.id }}", data-options="is_hover:true") Form Actions
+                                        ul.f-dropdown(id="drop{{ signup.id }}", data-dropdown-content)
                                             li
                                                 a(href="{% url 'list:manage-sign-up' signup.id %}") View Signups
                                             li
