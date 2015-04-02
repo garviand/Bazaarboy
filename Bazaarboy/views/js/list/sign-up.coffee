@@ -42,6 +42,11 @@ Bazaarboy.list.sign_up =
                         , () ->
                             $('input[type=text]').val('')
                             return
+                else
+                    swal
+                        type: 'warning'
+                        title: 'Oops!'
+                        text: response.message
                 return
             return
         return

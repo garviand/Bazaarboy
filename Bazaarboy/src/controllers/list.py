@@ -25,7 +25,8 @@ def index(request, user):
     profile = profiles[0]
     lists = List.objects.filter(owner = profile, is_deleted = False)
     listsCount = lists.count()
-    active_sign_ups = Sign_up.objects.filter(owner = profile).order_by('-end_time')
+    active_sign_ups = Sign_up.objects.filter(owner = profile, is_deleted = False).order_by('-end_time')
+    archived_sign_ups = Sign_up.objects.filter(owner = profile, is_deleted = True).order_by('-end_time')
     for su in active_sign_ups:
         su.newSignups = len(Sign_up_item.objects.filter(sign_up = su, assigned = False))
     for lt in lists:
@@ -566,6 +567,23 @@ def new_sign_up(request, user):
     return render(request, 'list/new-sign-up.html', locals())
 
 @login_required()
+def edit_sign_up(request, signup, user):
+    """
+    Sign Up Edit Page
+    """
+    profiles = Profile.objects.filter(managers = user)
+    profile = profiles[0]
+    if not Sign_up.objects.filter(id = signup, owner = profile).exists():
+        return redirect('list:index')
+    sign_up = Sign_up.objects.get(id = signup)
+    extra_fields = []
+    if sign_up.extra_fields:
+        custom_fields = simplejson.loads(sign_up.extra_fields, object_pairs_hook=ordereddict.OrderedDict)
+        for field in ordereddict.OrderedDict(sorted(custom_fields.items())).items():
+            extra_fields.append(field[1])
+    return render(request, 'list/new-sign-up.html', locals())
+
+@login_required()
 @validate('POST', ['name', 'description', 'end_time'], ['image', 'extra_fields'])
 def create_sign_up(request, params, user):
     """
@@ -623,6 +641,113 @@ def create_sign_up(request, params, user):
     sign_up.save()
     response = {
         'status':'OK',
+        'sign_up': serialize_one(sign_up)
+    }
+    return json_response(response)
+
+@login_required()
+@validate('POST', ['id'], ['name', 'description', 'end_time', 'image', 'extra_fields'])
+def save_sign_up(request, params, user):
+    """
+    Save Sign Up Form
+    """
+    profiles = Profile.objects.filter(managers = user)
+    profile = profiles[0]
+    if not Sign_up.objects.filter(id = params['id'], owner = profile).exists():
+        response = {
+            'status':'FAIL',
+            'error':'INVALID_FORM',
+            'message':'You do not have permission to edit this form'
+        }
+        return json_response(response)
+    sign_up = Sign_up.objects.get(id = params['id'])
+    if params['name'] is not None:
+        params['name'] = cgi.escape(params['name'])
+        if not (0 < len(params['name']) <= 100):
+            response = {
+                'status':'FAIL',
+                'error':'INVALID_NAME',
+                'message':'Form name cannot be blank or over 100 characters.'
+            }
+            return json_response(response)
+        sign_up.name = params['name']
+    if params['description'] is not None:
+        params['description'] = cgi.escape(params['description'])
+        if not (0 < len(params['description']) <= 500):
+            response = {
+                'status':'FAIL',
+                'error':'INVALID_DESCRIPTION',
+                'message':'Form description cannot be blank or over 500 characters.'
+            }
+            return json_response(response)
+        sign_up.description = params['description']
+    if params['end_time'] is not None:
+        if params['end_time'] < timezone.now():
+            response = {
+                'status':'FAIL',
+                'error':'INVALID_END_TIME',
+                'message':'The Sign Up End Time Must Be After Today'
+            }
+            return json_response(response)
+        sign_up.end_time = params['end_time']
+    if params['extra_fields'] is not None:
+        try:
+            fields = json.loads(params['extra_fields'])
+        except:
+            response = {
+                'status':'FAIL',
+                'error':'INVALID_FIELD_FORMAT',
+                'message':'The extra field format is not correct.'
+            }
+            return json_response(response)
+        finally:
+            sign_up.extra_fields = json.dumps(fields)
+    if params['image'] is not None:
+        if not Image.objects.filter(id = params['image']).exists():
+            response = {
+                'status':'FAIL',
+                'error':'IMAGE_NOT_FOUND',
+                'message':'The image doesn\'t exist.'
+            }
+            return json_response(response)
+        else:
+            image = Image.objects.get(id = params['image'])
+            sign_up.image = image
+    sign_up.save()
+    response = {
+        'status':'OK',
+        'sign_up': serialize_one(sign_up)
+    }
+    return json_response(response)
+
+@login_required()
+@validate('POST', ['id'])
+def delete_sign_up(request, params, user):
+    """
+    Delete Sign Up
+    """
+    if not Sign_up.objects.filter(id = params['id'], is_deleted = False).exists():
+        response = {
+            'status':'FAIL',
+            'error':'SIGN_UP_NOT_FOUND',
+            'message':'The sign up doesn\'t exist.'
+        }
+        return json_response(response)
+    sign_up = Sign_up.objects.get(id = params['id'])
+    profile = sign_up.owner
+    # Check if the user is a manager of the profile
+    if not Profile_manager.objects.filter(profile = profile, 
+                                          user = user).exists():
+        response = {
+            'status':'FAIL',
+            'error':'NOT_A_MANAGER',
+            'message':'You don\'t have permission for the list.'
+        }
+        return json_response(response)
+    sign_up.is_deleted = True
+    sign_up.save()
+    response = {
+        'status': 'OK',
         'sign_up': serialize_one(sign_up)
     }
     return json_response(response)

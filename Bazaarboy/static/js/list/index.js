@@ -3,6 +3,33 @@
     init: function() {
       var scope;
       scope = this;
+      $("a.show-archived-signups").click(function() {
+        $("div.archived-button-container").hide();
+        return $("div.archived_sign_up").removeClass('hide');
+      });
+      $("a.delete-signup.btn").click(function() {
+        var list, signupId;
+        list = $(this).closest("div.list");
+        signupId = $(this).data("id");
+        return swal({
+          title: "Are You Sure?",
+          text: "Are you sure you want to archive this signup? You can still view it by clicking the 'View Archived Signups' button.",
+          type: "warning",
+          showCancelButton: true,
+          confirmButtonText: "Yes, DeArchivelete",
+          closeOnConfirm: true
+        }, function() {
+          return Bazaarboy.post('lists/signup/delete/', {
+            id: signupId
+          }, function(response) {
+            if (response.status === 'OK') {
+              list.remove();
+            } else {
+              swal(response.message);
+            }
+          });
+        });
+      });
       $("a.delete-list-btn").click(function() {
         var list, listId;
         list = $(this).closest("div.list");

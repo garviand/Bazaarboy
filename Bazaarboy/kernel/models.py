@@ -577,6 +577,7 @@ class Sign_up(models.Model):
     start_time = models.DateTimeField(null = True, default = None)
     end_time = models.DateTimeField(null = True, default = None)
     extra_fields = models.TextField(default = '{}')
+    is_deleted = models.BooleanField(default = False)
     created_time = models.DateTimeField(auto_now_add = True)
 
 class Sign_up_item(models.Model):

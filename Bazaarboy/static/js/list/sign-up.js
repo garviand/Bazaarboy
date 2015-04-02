@@ -50,6 +50,12 @@
             }, function() {
               $('input[type=text]').val('');
             });
+          } else {
+            swal({
+              type: 'warning',
+              title: 'Oops!',
+              text: response.message
+            });
           }
         });
       });

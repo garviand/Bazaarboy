@@ -2,10 +2,17 @@ Bazaarboy.profile.channel =
     image:undefined
     init: () ->
         scope = this
+        if imageId?
+            scope.image = imageId
         $('input[name=end_date]').pikaday
             format: 'MM/DD/YYYY'
-        $('a.create-sign-up-btn').click () ->
+        $('a.create-sign-up-btn, a.save-sign-up-btn').click () ->
             params = {}
+            if $(this).hasClass('create-sign-up-btn')
+                targetUrl = 'lists/signup/create/'
+            else
+                targetUrl = 'lists/signup/save/'
+                params.id = signupId
             if $('input[name=name]').val().trim() == ''
                 swal 'You Must Add a Name'
                 return
@@ -28,7 +35,7 @@ Bazaarboy.profile.channel =
                     formattedFields[num] = field.trim()
                     num++
                 params.extra_fields = JSON.stringify(formattedFields)
-            Bazaarboy.post 'lists/signup/create/', params, (response) ->
+            Bazaarboy.post targetUrl, params, (response) ->
                 if response.status is 'OK'
                     swal
                         type: 'success'

@@ -13033,6 +13033,9 @@ div#wrapper-list-dashboard div#list-dashboard {
 div#wrapper-list-dashboard div#list-dashboard a.new-list-btn {
   text-transform: uppercase;
 }
+div#wrapper-list-dashboard div#list-dashboard a.show-archived-signups {
+  margin-top: 15px;
+}
 div#wrapper-list-dashboard div#list-dashboard div.lists {
   margin-top: 40px;
 }

@@ -63,11 +63,45 @@ block content
                                         span.new-signups ({{ signup.newSignups }} new)
                                         {% endif %}
                                     div.small-5.columns.text-left.list-members
-                                        | {{ signup.description|truncatechars:30 }}
+                                        | {{ signup.description|truncatechars:35 }}
                                     div.small-2.columns.text-center.list-action
                                         a(href="{% url 'list:sign-up' signup.id %}") View Form
                                     div.small-2.columns.text-center.list-action
-                                        a(href="{% url 'list:manage-sign-up' signup.id %}") View Signups
+                                        a(href="javascript:;", data-dropdown="drop1", data-options="is_hover:true") Form Actions
+                                        ul#drop1.f-dropdown(data-dropdown-content)
+                                            li
+                                                a(href="{% url 'list:manage-sign-up' signup.id %}") View Signups
+                                            li
+                                                a(href="{% url 'list:edit-sign-up' signup.id %}") Edit Form
+                                            li
+                                                a.delete-signup.btn(href="javascript:;", data-id="{{ signup.id }}") Archive Form
+                            {% endfor %}
+                            {% if archived_sign_ups|length > 0 %}
+                    div.row.archived-button-container
+                        div.small-12.medium-3.columns
+                            a.show-archived-signups.primary-btn-inverse.small-btn(href="javascript:;") View Archived Signups
+                            {% endif %}
+                    div.row
+                        div.small-12.columns
+                            {% for signup in archived_sign_ups %}
+                            div.hide.archived_sign_up
+                                div.row.list
+                                    div.small-3.columns.list-name
+                                        | {{ signup.name }}
+                                        {% if signup.newSignups > 0 %}
+                                        span.new-signups ({{ signup.newSignups }} new)
+                                        {% endif %}
+                                    div.small-5.columns.text-left.list-members
+                                        | {{ signup.description|truncatechars:35 }}
+                                    div.small-2.columns.text-center.list-action
+                                        a(href="{% url 'list:sign-up' signup.id %}") View Form
+                                    div.small-2.columns.text-center.list-action
+                                        a(href="javascript:;", data-dropdown="drop1", data-options="is_hover:true") Form Actions
+                                        ul#drop1.f-dropdown(data-dropdown-content   )
+                                            li
+                                                a(href="{% url 'list:manage-sign-up' signup.id %}") View Signups
+                                            li
+                                                a(href="{% url 'list:edit-sign-up' signup.id %}") Edit Form
                             {% endfor %}
                 {% endif %}
             div.row

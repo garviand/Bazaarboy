@@ -5,12 +5,21 @@
       var scope,
         _this = this;
       scope = this;
+      if (typeof imageId !== "undefined" && imageId !== null) {
+        scope.image = imageId;
+      }
       $('input[name=end_date]').pikaday({
         format: 'MM/DD/YYYY'
       });
-      $('a.create-sign-up-btn').click(function() {
-        var field, fields, formattedFields, num, params, _i, _len;
+      $('a.create-sign-up-btn, a.save-sign-up-btn').click(function() {
+        var field, fields, formattedFields, num, params, targetUrl, _i, _len;
         params = {};
+        if ($(this).hasClass('create-sign-up-btn')) {
+          targetUrl = 'lists/signup/create/';
+        } else {
+          targetUrl = 'lists/signup/save/';
+          params.id = signupId;
+        }
         if ($('input[name=name]').val().trim() === '') {
           swal('You Must Add a Name');
           return;
@@ -40,7 +49,7 @@
           }
           params.extra_fields = JSON.stringify(formattedFields);
         }
-        Bazaarboy.post('lists/signup/create/', params, function(response) {
+        Bazaarboy.post(targetUrl, params, function(response) {
           if (response.status === 'OK') {
             swal({
               type: 'success',

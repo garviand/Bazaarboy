@@ -1,6 +1,26 @@
 Bazaarboy.list.index =
     init: () ->
         scope = this
+        $("a.show-archived-signups").click () ->
+            $("div.archived-button-container").hide()
+            $("div.archived_sign_up").removeClass('hide')
+        $("a.delete-signup.btn").click () ->
+            list = $(this).closest("div.list")
+            signupId = $(this).data("id")
+            swal
+                title: "Are You Sure?"
+                text: "Are you sure you want to archive this signup? You can still view it by clicking the 'View Archived Signups' button."
+                type: "warning"
+                showCancelButton: true
+                confirmButtonText: "Yes, DeArchivelete"
+                closeOnConfirm: true
+                , ->
+                    Bazaarboy.post 'lists/signup/delete/', {id:signupId}, (response) ->
+                        if response.status is 'OK'
+                            list.remove()
+                        else
+                            swal response.message
+                        return
         $("a.delete-list-btn").click () ->
             list = $(this).closest("div.list")
             listId = $(this).data("id")

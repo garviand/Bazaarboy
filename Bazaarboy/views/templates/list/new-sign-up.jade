@@ -40,46 +40,57 @@ block content
                             div.row
                                 div.small-4.columns.input-title Form Name
                                 div.small-8.columns.input-note.text-right Short and Sweet
-                            input.field(type="text", name="name", value="", placeholder="Name")
+                            input.field(type="text", name="name", value="{% if sign_up.name %}{{ sign_up.name }}{% endif %}", placeholder="Name")
                 div.row
                     div.small-12.columns
                         div.input-container
                             div.row
                                 div.small-4.columns.input-title Form Description
                                 div.small-8.columns.input-note.text-right What are people signing up for?
-                            textarea.field(type="text", name="description", placeholder="Description")
+                            textarea.field(type="text", name="description", placeholder="Description") {% if sign_up.description %}{{ sign_up.description }}{% endif %}
                 div.row
                     div.small-12.columns
                         div.input-container
                             div.row
                                 div.small-4.columns.input-title End Date
                                 div.small-8.columns.input-note.text-right When is this no longer valid?
-                            input.field(type="text", name="end_date", value="", placeholder="MM/DD/YYYY")
+                            input.field(type="text", name="end_date", value="{% if sign_up.end_time %}{{ sign_up.end_time|date:'m/d/Y' }}{% endif %}", placeholder="MM/DD/YYYY")
                 div.row
                     div.small-12.columns
                         div.input-container
                             div.row
                                 div.small-4.columns.input-title Additional Details
                                 div.small-8.columns.input-note.text-right Separated by commas
-                            input.field(type="text", name="extra_fields", placeholder="ex: Address, Shirt Size, Favorite Color")
+                            input.field(type="text", name="extra_fields", value="{% for field in extra_fields %}{{ field }}{% if not forloop.last %}, {% endif %}{% endfor %}", placeholder="ex: Address, Shirt Size, Favorite Color")
                 div.row
                     div.small-12.columns
                         div.input-container
                             div.row
                                 div.small-4.columns.input-title Form Image (Optional)
                                 div.small-8.columns.input-note.text-right if empty, your logo will be used
-                            a.upload-image-btn.primary-btn-inverse(href="javascript:;", style="{% if signup.image %}display:none;{% endif %}") Upload Image
-                            a.delete-image-btn.primary-btn-inverse.hide(href="javascript:;", style="{% if not signup.image %}display:none;{% endif %}") Delete Image
+                            a.upload-image-btn.primary-btn-inverse(href="javascript:;", style="{% if sign_up.image %}display:none;{% endif %}") Upload Image
+                            a.delete-image-btn.primary-btn-inverse.hide(href="javascript:;", style="{% if not sign_up.image %}display:none;{% endif %}") Delete Image
                             input.hide(type="file", name="image_file", value="")
-                            img#cover-image(src="{% if signup.image %}{{ signup.image.source.url }}{% endif %}")
+                            img#cover-image(src="{% if sign_up.image %}{{ sign_up.image.source.url }}{% endif %}")
                             
                 div.row
                     div.medium-4.columns.end
+                        {% if not sign_up %}
                         a.create-sign-up-btn.primary-btn.full-btn(href="javascript:;") Create Sign Up Form
+                        {% else %}
+                        a.save-sign-up-btn.primary-btn.full-btn(href="javascript:;") Save Sign Up Form
+                        {% endif %}
+
 append script
     script(src="https://dme0ih8comzn4.cloudfront.net/js/feather.js")
     script(src="{{ STATIC_URL }}pikaday/pikaday.js")
     script(src="{{ STATIC_URL }}pikaday/pikaday.jquery.js")
     script.
         var profileId = {{ profile.id }};
+        {% if sign_up %}
+        signupId = {{ sign_up.id }};
+        {% endif %}
+        {% if sign_up.image %}
+        var imageId = {{ sign_up.image.id }};
+        {% endif %}
     script(src="{{ STATIC_URL }}js/list/new-sign-up.js")
