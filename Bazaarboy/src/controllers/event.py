@@ -122,7 +122,7 @@ def index(request, id, params, user):
             rsvp = False
         if ticket.price < cheapest:
             cheapest = ticket.price
-    if params['iid'] is not None:
+    if params['iid'] is not None and params['iid'].isdigit():
         if Invite.objects.filter(id = params['iid']).exists():
             invite = Invite.objects.get(id = params['iid'])
     return render(request, 'event/index.html', locals())
