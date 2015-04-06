@@ -598,13 +598,13 @@ def new_invite(request, params, user):
         invite.subject = params['subject']
     if params['heading'] and  params['heading'] != '':
         invite.heading = params['heading']
+    invite.save()
     custom_link = 'http://bazaarboy.com' + layout.eventUrl(invite.event) + '?iid=' + str(invite.id)
     if params['button_type'] == 'link' and params['button_target']:
         custom_link = params['button_target']
     if params['button_type'] == 'none':
         custom_link = None
     invite.button_target = custom_link
-    invite.save()
     for lt in lists:
         invite.lists.add(lt)
     invite.save()
