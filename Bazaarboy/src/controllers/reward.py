@@ -40,6 +40,8 @@ def index(request, user):
         items = Reward_item.objects.filter(reward = reward)
         reward.given = items
         reward.transferred = Reward_item.objects.filter(reward = reward).aggregate(Sum('received'))['received__sum']
+        if reward.transferred is None:
+            reward.transferred = 0
         reward.sent = Claim.objects.filter(item__reward = reward).count()
         reward.claimed = Claim.objects.filter(item__reward = reward, is_claimed = True).count()
         reward.redeemed = Claim.objects.filter(item__reward = reward, is_redeemed = True).count()
