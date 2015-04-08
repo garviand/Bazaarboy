@@ -25,6 +25,31 @@ Bazaarboy.reward.index =
         scrollTop: $("div.catalog-rewards").offset().top
         , 500
       return
+    # DELETE REWARD
+    $('a.delete-reward').click () ->
+      rewardId = $(this).data('id')
+      rewardContainer = $(this).closest('.reward-catalog')
+      swal
+        type: 'warning'
+        title: 'Delete Listing'
+        text: 'If you delete the listing, the items you have already sent will still be redeemable. You can manage the redemptions by clicking the \'Deleted Listings\' button.'
+        showCancelButton: true
+        confirmButtonText: "Delete"
+        closeOnConfirm: true
+        , () ->
+          Bazaarboy.post 'rewards/delete/', {reward:rewardId}, (response) ->
+            if response.status is 'OK'
+              swal
+                title: 'Deleted'
+                text: 'The Listing has been deleted.'
+              rewardContainer.remove()
+            return
+          return
+      return
+    $('a.show-deleted-rewards').click () ->
+      $('div.reward-catalog').removeClass('is-deleted')
+      $(this).remove()
+      return
     # DISTRIBUTE REWARD
     $('div.reward a.send-gift-item').click () ->
       rewardItemId = $(this).data('id')

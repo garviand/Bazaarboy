@@ -39,6 +39,35 @@
           scrollTop: $("div.catalog-rewards").offset().top
         }, 500);
       });
+      $('a.delete-reward').click(function() {
+        var rewardContainer, rewardId;
+        rewardId = $(this).data('id');
+        rewardContainer = $(this).closest('.reward-catalog');
+        swal({
+          type: 'warning',
+          title: 'Delete Listing',
+          text: 'If you delete the listing, the items you have already sent will still be redeemable. You can manage the redemptions by clicking the \'Deleted Listings\' button.',
+          showCancelButton: true,
+          confirmButtonText: "Delete",
+          closeOnConfirm: true
+        }, function() {
+          Bazaarboy.post('rewards/delete/', {
+            reward: rewardId
+          }, function(response) {
+            if (response.status === 'OK') {
+              swal({
+                title: 'Deleted',
+                text: 'The Listing has been deleted.'
+              });
+              rewardContainer.remove();
+            }
+          });
+        });
+      });
+      $('a.show-deleted-rewards').click(function() {
+        $('div.reward-catalog').removeClass('is-deleted');
+        $(this).remove();
+      });
       $('div.reward a.send-gift-item').click(function() {
         var rewardItemId, rewardItemName;
         rewardItemId = $(this).data('id');

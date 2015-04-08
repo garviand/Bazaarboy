@@ -76,7 +76,7 @@ block content
                                     div.small-12.columns
                                         div.description 
                                             div.reward-neutral.name.headline {{ reward_item.reward.name }}
-                                            div.reward-hover {{ reward_item.reward.description|truncatechars:100 }}
+                                            div.reward-hover {{ reward_item.reward.description|truncatechars:80 }}
                         div.reward-actions.text-center
                             div.reward-action
                                 a.send-gift-item(href="javascript:;", data-id="{{ reward_item.id }}", data-quantity="{{ reward_item.quantity }}", data-name="{{ reward_item.reward.name }}") Send Gift
@@ -87,7 +87,7 @@ block content
                 div.headline GIFT CATALOG
             div.rewards.catalog-rewards.row
                 {% for reward in rewards %}
-                div.reward-catalog.small-12.medium-6.columns.end
+                div.reward-catalog.small-12.medium-6.columns.end(class="{% if reward.is_deleted %}is-deleted{% endif %}")
                     div.reward
                         div.reward-info-container
                             div.reward-info
@@ -102,7 +102,7 @@ block content
                                 div.row
                                     div.small-12.columns
                                         div.description 
-                                            div.reward-neutral {{ reward.description|truncatechars:200 }}
+                                            div.reward-neutral {{ reward.description|truncatechars:150 }}
                                             div.reward-hover
                                                 div.stat ${{ reward.transferred|multiply:reward.value|floatformat:2 }} Transferred
                                                 div.stat ${{ reward.sent|multiply:reward.value|floatformat:2 }} Sent
@@ -121,11 +121,23 @@ block content
                                         div.reward-stat {{ reward.redeemed }} Redeemed
                             div.reward-actions.text-center.reward-hover
                                 div.reward-action
-                                    a(href="{% url 'reward:manage' reward.id %}") Manage/Redeem
+                                    div.row
+                                        div.small-12.medium-4.columns.end
+                                            a(href="{{ reward.attachment.source.url }}", target="_blank") View
+                                        div.small-12.medium-4.columns.end
+                                            a(href="{% url 'reward:manage' reward.id %}") Redeem
+                                        div.small-12.medium-4.columns.end
+                                            a.delete-reward(data-id="{{ reward.id }}") Delete
                         div.reward-actions.text-center
                             div.reward-action
                                 a.send-reward-btn(href="javascript:;", data-id="{{ reward.id }}", data-name="{{ reward.name }}") Transfer Inventory
                 {% endfor %}
+            {% if deletedRewards > 0 %}
+            div.row
+                div.small-12.medium-4.columns
+                    div.deleted-rewards-btn-container
+                        a.show-deleted-rewards.primary-btn.small-btn(href="javascript:;") Show Deleted Rewards
+            {% endif %}
             {% endif %}
 
     div#send-reward-modal.reveal-modal.medium(data-reveal)

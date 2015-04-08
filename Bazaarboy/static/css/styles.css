@@ -12674,6 +12674,9 @@ div#wrapper-reward-dashboard div#reward-dashboard div.reward-inventory div.descr
 div#wrapper-reward-dashboard div#reward-dashboard div.rewards {
   margin-top: 20px;
 }
+div#wrapper-reward-dashboard div#reward-dashboard div.rewards div.reward-catalog.is-deleted {
+  display: none;
+}
 div#wrapper-reward-dashboard div#reward-dashboard div.rewards div.reward {
   margin-top: 10px;
   border: thin solid #d4d4d4;
@@ -12743,6 +12746,9 @@ div#wrapper-reward-dashboard div#reward-dashboard div.rewards div.reward div.rew
 div#wrapper-reward-dashboard div#reward-dashboard div.rewards div.reward div.reward-actions div.reward-action a:hover {
   background: #f6f6f6;
   color: #c57724;
+}
+div#wrapper-reward-dashboard div#reward-dashboard div.deleted-rewards-btn-container {
+  margin-top: 40px;
 }
 div#send-reward-modal div.send-description {
   line-height: 1.2rem;

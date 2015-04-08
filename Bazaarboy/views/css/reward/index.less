@@ -47,6 +47,11 @@ div#wrapper-reward-dashboard{
             }
         }
         div.rewards{
+            div.reward-catalog{
+                &.is-deleted{
+                    display: none;
+                }
+            }
             margin-top: 20px;
             div.reward{
                 margin-top: 10px;
@@ -120,6 +125,9 @@ div#wrapper-reward-dashboard{
                     }
                 }
             }
+        }
+        div.deleted-rewards-btn-container{
+            margin-top: 40px;
         }
     }
 }

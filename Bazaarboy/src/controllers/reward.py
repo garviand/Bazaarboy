@@ -34,7 +34,8 @@ def index(request, user):
     """
     profiles = Profile.objects.filter(managers = user)
     profile = profiles[0]
-    rewards = Reward.objects.filter(creator = profile, is_deleted = False)
+    rewards = Reward.objects.filter(creator = profile).order_by('is_deleted')
+    deletedRewards = Reward.objects.filter(creator = profile).count()
     for reward in rewards:
         items = Reward_item.objects.filter(reward = reward)
         reward.given = items
@@ -339,6 +340,34 @@ def edit(request, params, user):
             return json_response(response)
     else:
         reward.attachment = None
+    reward.save()
+    response = {
+        'status':'OK',
+        'reward':serialize_one(reward)
+    }
+    return json_response(response)
+
+@login_required()
+@validate('POST', ['reward'])
+def delete(request, params, user):
+    if not Reward.objects.filter(id = params['reward']).exists():
+        response = {
+            'status':'FAIL',
+            'error':'REWARD_NOT_FOUND',
+            'message':'The reward doesn\'t exist.'
+        }
+        return json_response(response)
+    reward = Reward.objects.get(id = params['reward'])
+    # Check if the user is a manager of the profile
+    if not Profile_manager.objects.filter(profile = reward.creator, 
+                                          user = user).exists():
+        response = {
+            'status':'FAIL',
+            'error':'NOT_A_MANAGER',
+            'message':'You don\'t have permission for the reward.'
+        }
+        return json_response(response)
+    reward.is_deleted = True
     reward.save()
     response = {
         'status':'OK',
