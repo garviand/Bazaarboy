@@ -16,7 +16,10 @@ def subtract(value, arg):
 
 @register.filter
 def multiply(value, arg):
-    return arg * value
+    if(isinstance(value, (int, long, float, complex)) and isinstance(arg, (int, long, float, complex))):
+        return arg * value
+    else:
+        return 0
 
 @register.filter
 def firstImage(event):
