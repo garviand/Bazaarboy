@@ -1,7 +1,7 @@
 extends ../layout
 
 block title
-    | Create Reward
+    | Create Item
 
 block sidebar
     +sidebarItem('ss-newspaper')(href="{% url 'index' %}")
@@ -19,50 +19,66 @@ block header
             div.icon.left
                 span.ss-file
             div.text.left
-                | Create Inventory Item |
-                span.sub &nbsp; {{ profile.name }}
+                | Gift Management |
+                span.sub &nbsp; Create Item
 
 block content
+    div#rewards-header
+        div.large-9.medium-10.columns.small-centered
+            div.row.reward-actions
+                div.small-12.medium-4.columns.end
+                    div.action
+                        a.primary-btn.full-btn(href="javascript:;") + Create Catalog Listing
+                div.small-12.medium-4.columns.end
+                    div.action
+                        a.transfer-inventory-start.primary-btn.full-btn(href="{% url 'reward:index' %}") + Transfer Inventory
+                //div.small-12.medium-4.columns.end
+                    div.action
+                        a.primary-btn.full-btn(href="javascript:;") + Request Inventory
     div#wrapper-new-reward.large-9.medium-10.columns.small-centered
         div#new-reward
+            div.section-title
+                div.headline Create New Catalog Listing
             form#new-reward-form
                 {% csrf_token %}
                 br
                 div.row
-                    div.small-12.columns
-                        label Item Name
-                        input(type="text", name="name", placeholder="Name of Inventory Item")
-                div.row
-                    div.small-12.columns
-                        label Item Description
-                        textarea(name="description", placeholder="Item Description")
-                div.row
-                    div.small-12.columns
-                        label Item Value ($)
-                        input(type="text", name="value", placeholder="Value of the item in Dollars (USD)")
-                div.row
-                    div.small-12.columns
-                        label Additional Details (Separated by commas)
-                        input(type="text", name="extra_fields", placeholder="ex: Address, Shirt Size, Favorite Color")
+                    div.small-12.medium-8.columns
+                        div.reward-input
+                            label Listing Name
+                            input(type="text", name="name", placeholder="Name of Catalog Listing")
+                    div.small-12.medium-4.columns
+                        div.reward-input
+                            label Listing Value ($)
+                            input(type="text", name="value", placeholder="Value in Dollars (USD)")
                 div.row
                     div.small-12.medium-4.columns
-                        label Attachment (JPG, PNG, GIF)
-                        input.hide(type="file", name="attachment_file")
-                        a.add-attachment.primary-btn-inverse.full-btn(href="javascript:;") Add Attachment
-                        br
-                        a.attachment-name.hide(href="javascript:;", target="_blank") &nbsp;
-                    div.small-12.medium-1.columns
-                        div.or.text-center OR
-                    div.small-12.medium-7.columns.end
-                        label Search For GIF
-                        div.row
-                            div.small-12.medium-8.columns
-                                input(type="text", name="gif_search", placeholder="GIF Search (pizza, coffee, etc)")
-                            div.small-12.medium-4.columns
-                                a.gif-search-start.primary-btn-inverse.full-btn(href="javascript:;") Search
+                        div.reward-input
+                            label Listing Image
+                            div.listing-image-input-container
+                                input.hide(type="file", name="attachment_file")
+                                a.add-attachment.primary-btn-inverse.full-btn(href="javascript:;") Upload Image
+                                div.or.text-center OR
+                                label Search For GIF
+                                a.gif-search-start.primary-btn-inverse.full-btn(href="javascript:;") Search with GIPHY
+                            div.listing-image-container.hide
+                                img(src="")
+                                div.image-remove-container
+                                    a.primary-btn-inverse.remove-image-btn(href="javascript:;") Remove Image
+                    div.small-12.medium-8.columns
+                        div.reward-input
+                            label Listing Description
+                            textarea(name="description", placeholder="Item Description")
+                hr
+                div.row
+                    div.small-12.columns
+                        div.reward-input.bottom
+                            label Additional Consumer Details &middot;&nbsp;
+                                span.light Details you'd like to collect from claims
+                            input(type="text", name="extra_fields", placeholder="Separated by commas (Address, Shirt Size, Favorite Color)")
                 hr
                 div.row.create-actions
-                    div.small-12.medium-4.columns
+                    div.small-12.medium-4.medium-offset-2.columns
                         a.create-reward.primary-btn.full-btn(href="javascript:;") Create Inventory Item
                     div.small-12.medium-4.columns.end
                         a.secondary-btn-inverse.full-btn(href="{% url 'reward:index' %}") Cancel
@@ -70,7 +86,9 @@ block content
         div.gif.small-12.columns.end.gif-template.hide(data-url='')
             img(src='')
         div.gif-model-title.row
-            div.small-12.headline.text-center Choose A GIF
+            div.small-4.small-offset-4.columns.headline.text-center.gif-title Choose A GIF
+            div.small-4.columns.giphy
+                img(src="{{ STATIC_URL }}images/giphy.gif")
         hr
         div.gif-model.row
             div.small-12.columns

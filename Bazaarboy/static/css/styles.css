@@ -12775,12 +12775,44 @@ div#send-reward-modal form div.organizer div.organizer-image {
 div#send-reward-modal form div.organizer div.organizer-image img {
   max-height: 40px;
 }
-div#wrapper-new-reward div#new-reward div.create-actions {
-  margin-top: 30px;
+div#wrapper-new-reward div#new-reward div.section-title {
+  margin-top: 40px;
 }
-div#wrapper-new-reward div#new-reward div.or {
-  padding-top: 30px;
-  padding-bottom: 30px;
+div#wrapper-new-reward div#new-reward form#new-reward-form {
+  margin-top: 20px;
+}
+div#wrapper-new-reward div#new-reward form#new-reward-form label {
+  margin-bottom: 5px;
+  font-weight: 600;
+  font-size: 12px;
+}
+div#wrapper-new-reward div#new-reward form#new-reward-form label span.light {
+  font-weight: 400;
+}
+div#wrapper-new-reward div#new-reward form#new-reward-form div.reward-input {
+  margin-bottom: 40px;
+}
+div#wrapper-new-reward div#new-reward form#new-reward-form div.reward-input.bottom {
+  margin-top: 10px;
+  margin-bottom: 10px;
+}
+div#wrapper-new-reward div#new-reward form#new-reward-form div.reward-input.bottom input {
+  margin-bottom: 0;
+}
+div#wrapper-new-reward div#new-reward form#new-reward-form div.reward-input div.or {
+  margin-top: 33px;
+  margin-bottom: 23px;
+  font-weight: 600;
+}
+div#wrapper-new-reward div#new-reward form#new-reward-form div.reward-input textarea[name=description] {
+  height: 168px !important;
+}
+div#wrapper-new-reward div#new-reward form#new-reward-form div.reward-input div.image-remove-container {
+  margin-top: 10px;
+}
+div.gif-title {
+  height: 44px;
+  line-height: 44px;
 }
 div#gif-modal div.gifs div.gif {
   margin-bottom: 20px;

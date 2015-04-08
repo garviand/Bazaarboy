@@ -2,14 +2,47 @@
 
 div#wrapper-new-reward{
   div#new-reward{
-    div.create-actions{
-      margin-top: 30px;
+    div.section-title{
+        margin-top: 40px;
     }
-    div.or{
-      padding-top: 30px;
-      padding-bottom: 30px;
+    form#new-reward-form{
+      margin-top: 20px;
+      label{
+        margin-bottom: 5px;
+        font-weight: 600;
+        font-size: 12px;
+        span.light{
+          font-weight: 400;
+        }
+      }
+      div.reward-input{
+        margin-bottom: 40px;
+        &.bottom{
+          margin-top: 10px;
+          margin-bottom: 10px;
+          input{
+            margin-bottom: 0;
+          }
+        }
+        div.or{
+          margin-top: 33px;
+          margin-bottom: 23px;
+          font-weight: 600;
+        }
+        textarea[name=description]{
+          height: 168px !important;
+        }
+        div.image-remove-container{
+          margin-top: 10px;
+        }
+      }
     }
   }
+}
+
+div.gif-title{
+  height: 44px;
+  line-height: 44px;
 }
 
 div#gif-modal div.gifs div.gif{

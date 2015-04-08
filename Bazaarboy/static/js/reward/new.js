@@ -6,50 +6,64 @@
     init: function() {
       var scope;
       scope = this;
+      $('a.remove-image-btn').click(function() {
+        scope.attachment = void 0;
+        scope.gif = void 0;
+        $('div.listing-image-container').addClass('hide');
+        $('div.listing-image-input-container').removeClass('hide');
+      });
       $('input[name=gif_search]').keypress(function(e) {
         if (e.which === 13) {
           $('a.gif-search-start').click();
         }
       });
       $('a.gif-search-start').click(function() {
-        var searchTerm;
-        $('a.gif-search-start').html('Searching...');
-        searchTerm = $('input[name=gif_search]').val();
-        if (searchTerm.trim() === '') {
-          swal('You Must Type a Search Term');
-          $('a.gif-search-start').html('Search');
-          return;
-        }
-        Bazaarboy.get('rewards/search/gif/', {
-          q: searchTerm
-        }, function(response) {
-          var col, count, gif, gifLength, newGif, _i, _len;
-          response = jQuery.parseJSON(response['gifs']);
-          $('div#gif-modal div.gifs .gif-column').empty();
-          count = 0;
-          gifLength = Math.floor(response.length / 3);
-          for (_i = 0, _len = response.length; _i < _len; _i++) {
-            gif = response[_i];
-            count += 1;
-            col = Math.ceil(count / gifLength);
-            newGif = $('div#gif-modal .gif-template').clone();
-            newGif.find('img').attr('src', gif.fixed_width.url);
-            newGif.attr('data-url', gif.original.url);
-            newGif.removeClass('gif-template');
-            newGif.removeClass('hide');
-            $('div#gif-modal div.gifs .gifs-' + col).append(newGif);
+        swal({
+          title: 'Search For Gif',
+          html: '<input type="text" name="gif_search" placeholder="GIF Search (pizza, coffee, etc)" />',
+          showCancelButton: true,
+          closeOnConfirm: true,
+          confirmButtonText: 'Search'
+        }, function() {
+          var searchTerm;
+          $('a.gif-search-start').html('Searching...');
+          searchTerm = $('input[name=gif_search]').val();
+          if (searchTerm.trim() === '') {
+            swal('You Must Type a Search Term');
+            $('a.gif-search-start').html('Search with GIPHY');
+            return;
           }
-          $('div#gif-modal').foundation('reveal', 'open');
-          $('a.gif-search-start').html('Search');
+          Bazaarboy.get('rewards/search/gif/', {
+            q: searchTerm
+          }, function(response) {
+            var col, count, gif, gifLength, newGif, _i, _len;
+            response = jQuery.parseJSON(response['gifs']);
+            $('div#gif-modal div.gifs .gif-column').empty();
+            count = 0;
+            gifLength = Math.floor(response.length / 3);
+            for (_i = 0, _len = response.length; _i < _len; _i++) {
+              gif = response[_i];
+              count += 1;
+              col = Math.ceil(count / gifLength);
+              newGif = $('div#gif-modal .gif-template').clone();
+              newGif.find('img').attr('src', gif.fixed_width.url);
+              newGif.attr('data-url', gif.original.url);
+              newGif.removeClass('gif-template');
+              newGif.removeClass('hide');
+              $('div#gif-modal div.gifs .gifs-' + col).append(newGif);
+            }
+            $('div#gif-modal').foundation('reveal', 'open');
+            $('a.gif-search-start').html('Search with GIPHY');
+          });
         });
       });
       $('div#gif-modal div.gifs').on('click', '.gif', function() {
         $('input[name=gif_search]').val('');
         scope.gif = $(this).attr('data-url');
         $('div#gif-modal').foundation('reveal', 'close');
-        $('a.attachment-name').attr('href', $(this).attr('data-url'));
-        $('a.attachment-name').html('View Attachment');
-        $('a.attachment-name').removeClass('hide');
+        $('div.listing-image-container img').attr('src', $(this).attr('data-url'));
+        $('div.listing-image-input-container').addClass('hide');
+        $('div.listing-image-container').removeClass('hide');
         scope.attachment = void 0;
       });
       $('a.create-reward').click(function() {
@@ -142,6 +156,7 @@
           };
           if ((_ref = data.files[0].type) !== 'image/jpeg' && _ref !== 'image/jpg' && _ref !== 'image/png' && _ref !== 'image/gif') {
             swal('Must Be A PNG, JPG or GIF');
+            $('a.add-attachment').html('Upload Image');
           } else {
             data.submit();
           }
@@ -153,13 +168,13 @@
           if (response.status === 'OK') {
             scope.attachment = response.pdf;
             scope.gif = void 0;
-            $('a.attachment-name').html(pdfName);
-            $('a.attachment-name').attr('href', response.url);
-            $('a.attachment-name').removeClass('hide');
-            $('a.add-attachment').html('Change Attachment');
+            $('div.listing-image-container img').attr('src', response.url);
+            $('div.listing-image-input-container').addClass('hide');
+            $('div.listing-image-container').removeClass('hide');
+            $('a.add-attachment').html('Upload Image');
           } else {
             swal(response.message);
-            $('a.add-attachment').html('Add Attachment');
+            $('a.add-attachment').html('Upload Image');
           }
         }
       });
