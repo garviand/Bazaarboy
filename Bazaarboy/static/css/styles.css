@@ -12829,6 +12829,11 @@ div#claim div#claim-container form#claim-form .claim-inputs input[type=password]
 div#claim div#claim-container form#claim-form .submit-claim {
   margin-bottom: 16px;
 }
+div#claim div#claim-container form#claim-form small {
+  font-size: 12px;
+  line-height: 1rem;
+  margin-top: 10px;
+}
 div#redeem {
   min-width: 100%;
   min-height: 100%;
