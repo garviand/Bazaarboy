@@ -12712,7 +12712,7 @@ div#wrapper-reward-dashboard div#reward-dashboard div.rewards div.reward div.rew
 }
 div#wrapper-reward-dashboard div#reward-dashboard div.rewards div.reward div.reward-info-container div.reward-info div.description {
   margin-top: 20px;
-  min-height: 150px;
+  height: 150px;
   line-height: 1.3rem;
 }
 div#wrapper-reward-dashboard div#reward-dashboard div.rewards div.reward div.reward-info-container div.reward-info div.description div.stat {

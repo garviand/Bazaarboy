@@ -102,7 +102,7 @@ block content
                                 div.row
                                     div.small-12.columns
                                         div.description 
-                                            div.reward-neutral {{ reward.description|truncatechars:150 }}
+                                            div.reward-neutral {{ reward.description|truncatechars:125 }}
                                             div.reward-hover
                                                 div.stat ${{ reward.transferred|multiply:reward.value|floatformat:2 }} Transferred
                                                 div.stat ${{ reward.sent|multiply:reward.value|floatformat:2 }} Sent
