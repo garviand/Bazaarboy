@@ -99,7 +99,7 @@
             attachmentId = scope.gif;
             useGif = true;
           } else {
-            swal('Must Include An Image for the Reward');
+            swal('Must Include An Image for the Gift');
             $('a.create-reward').html('Create Inventory Item');
             scope.creating = false;
             return;
