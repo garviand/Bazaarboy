@@ -518,6 +518,7 @@ def complete_claim(request, params):
         claim.owner.last_name = params['last_name']
     else:
         claim.owner = User(email = claim.email, first_name = params['first_name'], last_name = params['last_name'])
+    """
     if Subscription.objects.filter(owner = claim.item.reward.creator, plan_id = 'gifts').exists():
         subscription = Subscription.objects.get(owner = claim.item.reward.creator, plan_id = 'gifts')
         if subscription.credits > 0:
@@ -540,6 +541,7 @@ def complete_claim(request, params):
                     'message':'The reward is not available.'
                 }
                 return json_response(response)
+    """
     claim.owner.save()
     claim.is_claimed = True
     claim.claimed_time = timezone.now()

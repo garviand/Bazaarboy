@@ -49,7 +49,7 @@ head
                               br
                               br
                               br
-                              a.primary-btn.view_event_btn(href='{{ follow_up.button_target }}', target="_blank", style='color: rgb(96, 96, 96); text-decoration: none; border-radius: 4px; font-weight: 500; text-align: center; font-size: 1em; box-sizing: border-box; padding: 12px 60px;background: transparent; border: thin solid {{ follow_up.color }}')
+                              a.primary-btn.view_event_btn(href='{% if follow_up.reward_item %}javascript:;{% else %}{{ follow_up.button_target }}{% endif %}', target="_blank", style='color: rgb(96, 96, 96); text-decoration: none; border-radius: 4px; font-weight: 500; text-align: center; font-size: 1em; box-sizing: border-box; padding: 12px 60px;background: transparent; border: thin solid {{ follow_up.color }}')
                                 | {{ follow_up.button_text }}
                               br
                               br

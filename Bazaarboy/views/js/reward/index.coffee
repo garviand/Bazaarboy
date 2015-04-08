@@ -19,6 +19,7 @@ Bazaarboy.reward.index =
             $('form.add-organizer-form').append(newProfile.html())
   init: () ->
     scope = this
+    ###
     if totalSent > 9 or hasSubscription
       $('span.free_gifts').addClass('hide')
     # SUBSCRIPTION
@@ -56,6 +57,7 @@ Bazaarboy.reward.index =
             return
           return
       return
+    ###
     # DISTRIBUTE REWARD
     $('div.reward a.send-gift-item').click () ->
       rewardItemId = $(this).data('id')
@@ -112,12 +114,9 @@ Bazaarboy.reward.index =
       $('div#send-reward-modal a.add-reward-profile').addClass('primary-btn-inverse')
       return
     $('body').on 'click', 'a.send-reward-btn', () ->
-      if totalSent > 9 and not hasSubscription
-        $('div#add-subscription-modal').foundation('reveal', 'open')
-      else
-        $('input[name=reward_id]').val($(this).data('id'))
-        $('div#send-reward-modal span.reward-name').html($(this).data('name'))
-        $('div#send-reward-modal').foundation('reveal', 'open')
+      $('input[name=reward_id]').val($(this).data('id'))
+      $('div#send-reward-modal span.reward-name').html($(this).data('name'))
+      $('div#send-reward-modal').foundation('reveal', 'open')
       return
     $('input[name=expiration]').pikaday
       format: 'MM/DD/YYYY'
@@ -129,6 +128,7 @@ Bazaarboy.reward.index =
         swal 'Quantity Must Be a Positive Number'
         return
       quantity = Math.floor($('input[name=quantity]').val())
+      ###
       if (10 - totalSent) < quantity and not hasSubscription
         swal
           type: "warning"
@@ -142,6 +142,7 @@ Bazaarboy.reward.index =
               $('div#add-subscription-modal').foundation('reveal', 'open')
             return
         return
+      ###
       expiration = $('input[name=expiration]').val()
       if not moment(expiration, 'MM/DD/YYYY').isValid()
         swal 'Expiration Date is Not Valid'
@@ -168,6 +169,7 @@ Bazaarboy.reward.index =
         swal 'Quantity Must Be a Positive Number'
         return
       quantity = Math.floor($('input[name=quantity]').val())
+      ###
       if (10 - totalSent) < quantity and not hasSubscription
         swal
           type: "warning"
@@ -181,6 +183,7 @@ Bazaarboy.reward.index =
               $('div#add-subscription-modal').foundation('reveal', 'open')
             return
         return
+      ###
       expiration = $('input[name=expiration]').val()
       if not moment(expiration, 'MM/DD/YYYY').isValid()
         swal 'Expiration Date is Not Valid'

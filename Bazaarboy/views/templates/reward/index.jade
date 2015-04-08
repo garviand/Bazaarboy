@@ -39,9 +39,10 @@ block content
                         a(href="{% url 'list:index' %}") your lists
                         | &nbsp;or by creating a 
                         a(href="{% url 'list:new-sign-up' %}") signup form
-                        | &nbsp;for raffles, surveys and more. You have 
-                        b 10 FREE GIFTS
-                        | &nbsp;to distribute before subscribing to a Bazaarboy account.
+                        | &nbsp;for raffles, surveys and more.
+                        //| You have 
+                        //b 10 FREE GIFTS
+                        //| &nbsp;to distribute before subscribing to a Bazaarboy account.
                     div.row
                         div.large-5.medium-7.small-9
                             a.new-reward-btn(href="{% url 'reward:new' %}")
@@ -105,7 +106,7 @@ block content
                     |'
                 br
                 div.send-description Send inventory to other organizations so they can distribute them as 'gifts' to their audience. If you want to send 'gifts' to your own audience, use the 'Add to My Account' button.
-                    span.free_gifts &nbsp;You currently have&nbsp;
+                    //span.free_gifts &nbsp;You currently have&nbsp;
                         b.quantity_free {{ totalSent|subtract:10 }}
                         b &nbsp;Free Gifts
                         | &nbsp;Remaining.
