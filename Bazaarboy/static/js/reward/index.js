@@ -34,46 +34,11 @@
     init: function() {
       var add_organizer_debounce, scope;
       scope = this;
-      /*
-      if totalSent > 9 or hasSubscription
-        $('span.free_gifts').addClass('hide')
-      # SUBSCRIPTION
-      $('a.cancel-subscription').click () ->
-        $('div#add-subscription-modal').foundation('reveal', 'close')
-        return
-      $('div#add-subscription-modal a.create-subscription').click () ->
-        StripeCheckout.open
-          key: publishableKey
-          address: false
-          amount: 0
-          currency: 'usd'
-          name: 'Bazaarboy Gifts Account'
-          description: 'Create Account'
-          panelLabel: 'Subscribe'
-          closed: () ->
-            $('div#add-subscription-modal').foundation('reveal', 'close')
-            return
-          token: (token) =>
-            Bazaarboy.post 'rewards/subscribe/',
-              stripe_token: token.id
-              email: token.email
-              profile: profileId
-            , (response) =>
-              if response.status is 'OK'
-                swal
-                  type: "success"
-                  title: 'Subscribed!'
-                  text: 'You have successfully subscribed for a Bazaarboy account!'
-                  , () ->
-                    location.reload()
-                    return
-              else
-                alert response.message
-              return
-            return
-        return
-      */
-
+      $('a.transfer-inventory-start').click(function() {
+        $('html, body').animate({
+          scrollTop: $("div.catalog-rewards").offset().top
+        }, 500);
+      });
       $('div.reward a.send-gift-item').click(function() {
         var rewardItemId, rewardItemName;
         rewardItemId = $(this).data('id');
@@ -101,6 +66,7 @@
             email: rewardEmail,
             message: rewardMessage
           }, function(response) {
+            var newSent;
             if (response.status === 'OK') {
               swal({
                 type: 'success',
@@ -110,7 +76,8 @@
               $('div#distribute-reward-modal').foundation('reveal', 'close');
               button.html('Send Gift');
               scope.sendingGift = false;
-              $('div.rewards div.reward[data-id=' + rewardItem + '] span.quantity').html(response.reward_item.quantity);
+              newSent = parseInt($('div.rewards div.reward-inventory[data-id=' + rewardItem + '] span.sent-number').html()) + 1;
+              $('div.rewards div.reward-inventory[data-id=' + rewardItem + '] span.sent-number').html(newSent);
               $('div#distribute-reward-modal input[name=email_distribute]').val('');
             } else {
               swal(response.message);
@@ -154,22 +121,6 @@
           return;
         }
         quantity = Math.floor($('input[name=quantity]').val());
-        /*
-        if (10 - totalSent) < quantity and not hasSubscription
-          swal
-            type: "warning"
-            title: "Trial Exceeded"
-            text: "You do not have enough free gifts left to send this much inventory. Subscribe to a Bazaarboy account now?"
-            showCancelButton: true
-            confirmButtonText: 'Subscribe'
-            cancelButtonText: 'Cancel'
-            , (isConfirm) ->
-              if isConfirm
-                $('div#add-subscription-modal').foundation('reveal', 'open')
-              return
-          return
-        */
-
         expiration = $('input[name=expiration]').val();
         if (!moment(expiration, 'MM/DD/YYYY').isValid()) {
           swal('Expiration Date is Not Valid');
@@ -206,22 +157,6 @@
           return;
         }
         quantity = Math.floor($('input[name=quantity]').val());
-        /*
-        if (10 - totalSent) < quantity and not hasSubscription
-          swal
-            type: "warning"
-            title: "Trial Exceeded"
-            text: "You do not have enough free gifts left to send this much inventory. Subscribe to a Bazaarboy account now?"
-            showCancelButton: true
-            confirmButtonText: 'Subscribe'
-            cancelButtonText: 'Cancel'
-            , (isConfirm) ->
-              if isConfirm
-                $('div#add-subscription-modal').foundation('reveal', 'open')
-              return
-          return
-        */
-
         expiration = $('input[name=expiration]').val();
         if (!moment(expiration, 'MM/DD/YYYY').isValid()) {
           swal('Expiration Date is Not Valid');

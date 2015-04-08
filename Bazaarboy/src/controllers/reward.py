@@ -38,6 +38,10 @@ def index(request, user):
     for reward in rewards:
         items = Reward_item.objects.filter(reward = reward)
         reward.given = items
+        reward.transferred = Reward_item.objects.filter(reward = reward).aggregate(Sum('received'))['received__sum']
+        reward.sent = Claim.objects.filter(item__reward = reward).count()
+        reward.claimed = Claim.objects.filter(item__reward = reward, is_claimed = True).count()
+        reward.redeemed = Claim.objects.filter(item__reward = reward, is_redeemed = True).count()
     reward_items = Reward_item.objects.filter(owner = profile, expiration_time__gte = timezone.now(), quantity__gt = 0).order_by('expiration_time')
     for item in reward_items:
         claims = Claim.objects.filter(item = item)

@@ -1193,17 +1193,9 @@ def send_follow_up(request, params, user):
         }
         return json_response(response)
     if follow_up.paid == True or FOLLOW_UP_COST(sent) == 0:
-        """
         if follow_up.reward_item is not None:
-            if not Subscription.objects.filter(owner = follow_up.recap.organizer.profile, plan_id = 'gifts').exists():
-                if len(Follow_up.objects.filter(recap__organizer__profile = follow_up.recap.organizer.profile, reward_item__isnull = False)) > 1:
-                    response = {
-                        'status': 'SUBSCRIBE',
-                        'error': 'TRIAL_ENDED',
-                        'message': 'You have already used your free follow up gift. You must subscribe to send another.'
-                    }
-                    return json_response(response)
-        """
+            follow_up.reward_item.received = len(recipients)
+            follow_up.reward_item.save()
         sendFollowUp(follow_up, recipients)
     else:
         response = {

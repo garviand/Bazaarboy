@@ -26,72 +26,108 @@ block header
                 span.sub &nbsp;All Gifts
 
 block content
+    div#rewards-header
+        div.large-9.medium-10.columns.small-centered
+            div.row.reward-actions
+                div.small-12.medium-4.columns.end
+                    div.action
+                        a.primary-btn.full-btn(href="{% url 'reward:new' %}") + Create Catalog Listing
+                {% if rewards.count > 0%}
+                div.small-12.medium-4.columns.end
+                    div.action
+                        a.transfer-inventory-start.primary-btn.full-btn(href="javascript:;") + Transfer Inventory
+                {% endif %}
+                //div.small-12.medium-4.columns.end
+                    div.action
+                        a.primary-btn.full-btn(href="javascript:;") + Request Inventory
     div#wrapper-reward-dashboard.large-9.medium-10.columns.small-centered
-        {% if rewards.count == 0 and reward_items.count == 0 %}
-        div.empty-state-container
-            div.row
-                div.medium-5.columns
-                    &nbsp;
-                div.medium-7.columns.end.empty-state-content
-                    div.text YOU DO NOT HAVE ANY INVENTORY
-                    hr
-                    div.subtext Use gifts to engage your audince. Gifts can be distributed to past event attendees, members of 
-                        a(href="{% url 'list:index' %}") your lists
-                        | &nbsp;or by creating a 
-                        a(href="{% url 'list:new-sign-up' %}") signup form
-                        | &nbsp;for raffles, surveys and more.
-                        //| You have 
-                        //b 10 FREE GIFTS
-                        //| &nbsp;to distribute before subscribing to a Bazaarboy account.
-                    div.row
-                        div.large-5.medium-7.small-9
-                            a.new-reward-btn(href="{% url 'reward:new' %}")
-                                div.secondary-btn.btn.full-btn
-                                    | <span class="plus">+</span> Create Inventory
-        {% endif %}
-        div#reward-dashboard.small-12.columns
-            div.row.new-reward-container(class="{% if rewards.count == 0 and reward_items.count == 0 %}hide{% endif %}")
-                div.medium-4.columns.new-reward
-                    a.new-reward-btn.primary-btn(href="{% url 'reward:new' %}") + Create Inventory
-            div.row
-                {% if reward_items.count > 0 %}
-                div.small-12.columns.rewards
-                    div.headline Current Gifts
-                    hr
-                    {% for reward_item in reward_items %}
-                    {% if reward_item.quantity > 0 %}
-                    div
-                        div.row.reward(data-id="{{ reward_item.id }}")
-                            div.small-5.columns.reward-name
-                                | {{ reward_item.reward.name|truncatechars:30 }}
-                                span &nbsp;(
-                                span.quantity {{ reward_item.quantity }}
-                                span &nbsp;Left)
-                            div.small-3.columns.text-right.reward-members
-                                | Expires - {{ reward_item.expiration_time|date:"m/d/Y" }}
-                            div.small-2.columns.text-right.reward-action
-                                a(href="{{ reward_item.reward.attachment.source.url }}", target="_blank") View Gift
-                            div.small-2.columns.text-right.reward-action
+        div#reward-dashboard
+            {% if rewards.count == 0 and reward_items.count == 0 %}
+            div.section-title
+                div.headline GIFT CATALOG
+            div.empty-rewards.row
+                div.small-12.medium-5.columns
+                    div.icon &nbsp;
+                div.small-12.medium-7.columns
+                    div.title.headline Use Gifts to Engage Your Audince
+                    div.description
+                        | The 'Catalog' is where you create a template of a gift you would like to distribute. When the Catalog Listing is created, you can either send inventory to other organizations, or add some inventory to your own account and distribute it to your audience.
+                    div.action
+                        a.primary-btn(href="{% url 'reward:new' %}") + Create Catalog Listing
+            {% endif %}
+            {% if reward_items.count > 0 %}
+            div.section-title
+                div.headline CURRENT INVENTORY
+            div.rewards.row
+                {% for reward_item in reward_items %}
+                div.reward-inventory.small-12.medium-6.columns.end(data-id="{{ reward_item.id }}")
+                    div.reward
+                        div.reward-info-container
+                            div.reward-info
+                                div.row
+                                    div.small-12.medium-5.columns
+                                        div.price.headline ${{ reward_item.reward.value|floatformat:2 }}
+                                    div.small-12.medium-7.columns.text-right
+                                        div.quantity 
+                                            span.sent-number {{ reward_item.quantity|subtract:reward_item.received }}
+                                            |/{{ reward_item.received }} Sent
+                                        div.created Expires in {{ reward_item.expiration_time|daysUntil }}
+                                div.row
+                                    div.small-12.columns
+                                        div.description 
+                                            div.reward-neutral.name.headline {{ reward_item.reward.name }}
+                                            div.reward-hover {{ reward_item.reward.description|truncatechars:100 }}
+                        div.reward-actions.text-center
+                            div.reward-action
                                 a.send-gift-item(href="javascript:;", data-id="{{ reward_item.id }}", data-quantity="{{ reward_item.quantity }}", data-name="{{ reward_item.reward.name }}") Send Gift
-                    {% endif %}
-                    {% endfor %}
-                {% endif %}
-                {% if rewards.count > 0 %}
-                div.small-12.columns.rewards
-                    div.headline Inventory
-                    hr
-                    {% for reward in rewards %}
-                    div
-                        div.row.reward
-                            div.small-6.columns.reward-name
-                                | {{ reward.name|truncatechars:30 }}
-                            div.small-3.columns.text-right.reward-action
-                                a(class="send-reward-btn", href="javascript:;", data-id="{{ reward.id }}", data-name="{{ reward.name }}") Transfer Inventory
-                            div.small-3.columns.text-right.reward-action
-                                a.manage-reward(href="{% url 'reward:manage' reward.id %}") Manage/Redeem
-                    {% endfor %}
-                {% endif %}
-    
+                {% endfor %}
+            {% endif %}
+            {% if rewards.count > 0%}
+            div.section-title
+                div.headline GIFT CATALOG
+            div.rewards.catalog-rewards.row
+                {% for reward in rewards %}
+                div.reward-catalog.small-12.medium-6.columns.end
+                    div.reward
+                        div.reward-info-container
+                            div.reward-info
+                                div.row
+                                    div.small-12.medium-5.columns
+                                        div.price.headline ${{ reward.value|floatformat:2 }}
+                                    div.small-12.medium-7.columns.text-right
+                                        div.created Created: {{ reward.created_time|date:'m/d/y' }}
+                                div.row
+                                    div.small-12.columns
+                                        div.name.headline {{ reward.name }}
+                                div.row
+                                    div.small-12.columns
+                                        div.description 
+                                            div.reward-neutral {{ reward.description|truncatechars:200 }}
+                                            div.reward-hover
+                                                div.stat ${{ reward.transferred|multiply:reward.value|floatformat:2 }} Transferred
+                                                div.stat ${{ reward.sent|multiply:reward.value|floatformat:2 }} Sent
+                                                div.stat ${{ reward.claimed|multiply:reward.value|floatformat:2 }} Claimed
+                                                div.stat ${{ reward.redeemed|multiply:reward.value|floatformat:2 }} Redeemed
+
+                            div.reward-stats
+                                div.row.text-center
+                                    div.small-12.medium-6.columns
+                                        div.reward-stat {{ reward.transferred }} Transferred
+                                    div.small-12.medium-6.columns
+                                        div.reward-stat {{ reward.sent }} Sent
+                                    div.small-12.medium-6.columns
+                                        div.reward-stat {{ reward.claimed }} Claimed
+                                    div.small-12.medium-6.columns
+                                        div.reward-stat {{ reward.redeemed }} Redeemed
+                            div.reward-actions.text-center.reward-hover
+                                div.reward-action
+                                    a(href="{% url 'reward:manage' reward.id %}") Manage/Redeem
+                        div.reward-actions.text-center
+                            div.reward-action
+                                a.send-reward-btn(href="javascript:;", data-id="{{ reward.id }}", data-name="{{ reward.name }}") Transfer Inventory
+                {% endfor %}
+            {% endif %}
+
     div#send-reward-modal.reveal-modal.medium(data-reveal)
         div.organizer-model.hide
             div.row.organizer
@@ -162,28 +198,6 @@ block content
                         div.row
                             div.small-12.medium-4.columns
                                 a.send-gift-btn.primary-btn.full-btn(href="javascript:;") Send Gift
-
-    div#add-subscription-modal.reveal-modal.small(data-reveal)
-        div.subscription-model.row
-            div.small-12.columns
-                div.row
-                    div.small-12.columns
-                        div.headline Create Subscription
-                    hr
-                div.row
-                    div.small-12.columns.description
-                        | Your 10 Gift Free Trial has ended. Before sending any more gifts, you must subscribe to a Bazaarboy account. This account will be charged $1 for every gift that is claimed. A 'Claim' is when the user enters thier information, and an MMS with the attached gift is sent (shown below).
-                        img(src="{{ STATIC_URL }}images/claim.png")
-                        | By subscribing, you are agreeing to this payment.
-                div.row
-                    div.small-12.columns
-                        div.row
-                            div.small-12.medium-8.columns
-                                a.create-subscription.primary-btn-inverse.full-btn(href="javascript:;") Subscribe
-                            div.small-12.medium-4.columns
-                                a.cancel-subscription.btn.full-btn(href="javascript:;") Cancel
-                    
-
 
 append script
     script.

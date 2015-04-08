@@ -1,78 +1,121 @@
 @import (reference) "vars.less";
 
-div#wrapper-reward-dashboard{
-    div.empty-state-container{
-        margin-top: 40px;
-        border: #F6F6F6 thin solid;
-        border-radius: 4px;
-        background: url('../images/emptystates/champagne_bg.jpg');
-        background-size: 80%;
-        background-position: left center;
-        background-repeat: no-repeat;
-        div.empty-state-content{
-            margin: 80px 0;
-            padding-right: 50px;
-            div.text{
-                font-size: 1.3rem;
-                font-weight: 600;
-                color: @dark;
-            }
-            div.subtext{
-                line-height: 1.3rem;
-            }
-            hr{
-                margin: 10px 0;
-            }
-            div.btn{
-                width: 100%;
-                margin-top: 20px;
-                margin-left: 10px;
-                text-transform: uppercase;
-            }
+div#rewards-header{
+    border-bottom: thin solid @light-grey;
+    div.reward-actions{
+        padding-top: 20px;
+        div.action{
+            padding-bottom: 20px;
         }
     }
+}
+
+div#wrapper-reward-dashboard{
     div#reward-dashboard{
-        margin-top: 40px;
-        a.new-reward-btn {
-            text-align: center;
-            display: block;
-            color: @white;
-            font-size: 15px;
-            text-transform: uppercase;
+        padding-bottom: 40px;
+        div.section-title{
+            margin-top: 40px;
+        }
+        div.empty-rewards{
+            margin-top: 20px;
+            padding-top: 40px;
+            padding-bottom: 40px;
+            border: thin solid @light-grey;
+            border-radius: 3px;
+            background: url('../images/emptystates/tag_bg.jpg');
+            background-size: 80%;
+            background-position: left center;
+            background-repeat: no-repeat;
+            div.title{
+                margin-bottom: 20px;
+            }
+            div.description{
+                line-height: 1.4rem;
+            }
+            div.action{
+                margin-top: 20px;
+                a{
+                    display: inline-block;
+                    padding-left: 30px;
+                    padding-right: 30px;
+                }
+            }
+        }
+        div.reward-inventory{
+            div.description{
+                min-height: 50px !important;
+            }
         }
         div.rewards{
-            margin-top: 40px;
-            > a{
-                color: @dark;
-            }
+            margin-top: 20px;
             div.reward{
-                padding: 12px 5px;
-                margin-bottom: 10px;
+                margin-top: 10px;
+                border: thin solid @grey;
                 border-radius: 3px;
-                border: @dark_grey thin solid;
+                transition: all .1s;
                 &:hover{
-                    background: @light-grey;
+                    div.reward-stats{
+                        display: none;
+                    }
+                    div.reward-neutral{
+                        display: none;
+                    }
+                    div.reward-hover{
+                        display: block !important;
+                    }
+                    border: thin solid @orange;
                 }
-                div.reward-name{
-                    font-size: 16px;
-                    font-weight: 500;
-                    span{
-                        font-weight: 300;
+                div.reward-info-container{
+                    position: relative;
+                    div.reward-hover{
+                        display: none;
+                    }
+                    div.reward-info{
+                        padding: 25px 20px;
+                        div.name{
+                            margin-top: 20px;
+                        }
+                        div.quantity{
+                            margin-bottom: 5px;
+                        }
+                        div.description{
+                            margin-top: 20px;
+                            min-height: 150px;
+                            line-height: 1.3rem;
+                            div.stat{
+                                margin-top: 5px;
+                                font-weight: bold;
+                            }
+                        }
+                    }
+                    div.reward-stats{
+                        border-top: thin solid @grey;
+                        padding-top: 15px;
+                        padding-bottom: 5px;
+                        position: absolute;
+                        bottom: 0;
+                        div.reward-stat{
+                            margin-bottom: 10px;
+                        }
+                    }
+                    div.reward-actions{
+                        width: 100%;
+                        position: absolute;
+                        bottom: 0;
                     }
                 }
-                div.reward-members{
-                    font-weight: 300;
-                    font-style: italic;
-                    font-size: 14px;
-                }
-                div.reward-action{
-                    a{
-                        font-weight: 300;
-                        color: @dark;
-                        text-decoration: underline;
-                        font-size: 14px;
-                        &:hover{
-                            color: @orange;
+                div.reward-actions{
+                    border-top: thin solid @grey;
+                    div.reward-action{
+                        a{
+                            display: block;
+                            padding-top: 20px;
+                            padding-bottom: 20px;
+                            font-weight: bold;
+                            &:hover{
+                                background: @light-grey;
+                                color: @orange;
+                            }
                         }
                     }
                 }
@@ -107,22 +150,6 @@ div#send-reward-modal{
                     max-height: 40px;
                 }
             }
-        }
-    }
-}
-
-div#add-subscription-modal{
-    margin-bottom: 150px;
-    div.headline{
-        margin-bottom: 10px;
-    }
-    div.description{
-        line-height: 1.2rem;
-        margin-bottom: 20px;
-        img{
-            display: block;
-            margin-top: 20px;
-            margin-bottom: 20px;
         }
     }
 }

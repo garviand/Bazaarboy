@@ -15,6 +15,10 @@ def subtract(value, arg):
     return arg - value
 
 @register.filter
+def multiply(value, arg):
+    return arg * value
+
+@register.filter
 def firstImage(event):
     if event.cover:
         return event.cover.source.url.split("?", 1)[0]

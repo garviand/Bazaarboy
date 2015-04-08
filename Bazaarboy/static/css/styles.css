@@ -12628,80 +12628,120 @@ div#confirmation div.confirmation-note {
     left: auto;
   }
 }
-div#wrapper-reward-dashboard div.empty-state-container {
+div#rewards-header {
+  border-bottom: thin solid #f6f6f6;
+}
+div#rewards-header div.reward-actions {
+  padding-top: 20px;
+}
+div#rewards-header div.reward-actions div.action {
+  padding-bottom: 20px;
+}
+div#wrapper-reward-dashboard div#reward-dashboard {
+  padding-bottom: 40px;
+}
+div#wrapper-reward-dashboard div#reward-dashboard div.section-title {
   margin-top: 40px;
-  border: #F6F6F6 thin solid;
-  border-radius: 4px;
-  background: url('../images/emptystates/champagne_bg.jpg');
+}
+div#wrapper-reward-dashboard div#reward-dashboard div.empty-rewards {
+  margin-top: 20px;
+  padding-top: 40px;
+  padding-bottom: 40px;
+  border: thin solid #f6f6f6;
+  border-radius: 3px;
+  background: url('../images/emptystates/tag_bg.jpg');
   background-size: 80%;
   background-position: left center;
   background-repeat: no-repeat;
 }
-div#wrapper-reward-dashboard div.empty-state-container div.empty-state-content {
-  margin: 80px 0;
-  padding-right: 50px;
+div#wrapper-reward-dashboard div#reward-dashboard div.empty-rewards div.title {
+  margin-bottom: 20px;
 }
-div#wrapper-reward-dashboard div.empty-state-container div.empty-state-content div.text {
-  font-size: 1.3rem;
-  font-weight: 600;
-  color: #4a4a4a;
+div#wrapper-reward-dashboard div#reward-dashboard div.empty-rewards div.description {
+  line-height: 1.4rem;
 }
-div#wrapper-reward-dashboard div.empty-state-container div.empty-state-content div.subtext {
-  line-height: 1.3rem;
-}
-div#wrapper-reward-dashboard div.empty-state-container div.empty-state-content hr {
-  margin: 10px 0;
-}
-div#wrapper-reward-dashboard div.empty-state-container div.empty-state-content div.btn {
-  width: 100%;
+div#wrapper-reward-dashboard div#reward-dashboard div.empty-rewards div.action {
   margin-top: 20px;
-  margin-left: 10px;
-  text-transform: uppercase;
 }
-div#wrapper-reward-dashboard div#reward-dashboard {
-  margin-top: 40px;
+div#wrapper-reward-dashboard div#reward-dashboard div.empty-rewards div.action a {
+  display: inline-block;
+  padding-left: 30px;
+  padding-right: 30px;
 }
-div#wrapper-reward-dashboard div#reward-dashboard a.new-reward-btn {
-  text-align: center;
-  display: block;
-  color: #ffffff;
-  font-size: 15px;
-  text-transform: uppercase;
+div#wrapper-reward-dashboard div#reward-dashboard div.reward-inventory div.description {
+  min-height: 50px !important;
 }
 div#wrapper-reward-dashboard div#reward-dashboard div.rewards {
-  margin-top: 40px;
-}
-div#wrapper-reward-dashboard div#reward-dashboard div.rewards > a {
-  color: #4a4a4a;
+  margin-top: 20px;
 }
 div#wrapper-reward-dashboard div#reward-dashboard div.rewards div.reward {
-  padding: 12px 5px;
-  margin-bottom: 10px;
+  margin-top: 10px;
+  border: thin solid #d4d4d4;
   border-radius: 3px;
-  border: #7a7a7a thin solid;
+  transition: all .1s;
 }
 div#wrapper-reward-dashboard div#reward-dashboard div.rewards div.reward:hover {
+  border: thin solid #c57724;
+}
+div#wrapper-reward-dashboard div#reward-dashboard div.rewards div.reward:hover div.reward-stats {
+  display: none;
+}
+div#wrapper-reward-dashboard div#reward-dashboard div.rewards div.reward:hover div.reward-neutral {
+  display: none;
+}
+div#wrapper-reward-dashboard div#reward-dashboard div.rewards div.reward:hover div.reward-hover {
+  display: block !important;
+}
+div#wrapper-reward-dashboard div#reward-dashboard div.rewards div.reward div.reward-info-container {
+  position: relative;
+}
+div#wrapper-reward-dashboard div#reward-dashboard div.rewards div.reward div.reward-info-container div.reward-hover {
+  display: none;
+}
+div#wrapper-reward-dashboard div#reward-dashboard div.rewards div.reward div.reward-info-container div.reward-info {
+  padding: 25px 20px;
+}
+div#wrapper-reward-dashboard div#reward-dashboard div.rewards div.reward div.reward-info-container div.reward-info div.name {
+  margin-top: 20px;
+}
+div#wrapper-reward-dashboard div#reward-dashboard div.rewards div.reward div.reward-info-container div.reward-info div.quantity {
+  margin-bottom: 5px;
+}
+div#wrapper-reward-dashboard div#reward-dashboard div.rewards div.reward div.reward-info-container div.reward-info div.description {
+  margin-top: 20px;
+  min-height: 150px;
+  line-height: 1.3rem;
+}
+div#wrapper-reward-dashboard div#reward-dashboard div.rewards div.reward div.reward-info-container div.reward-info div.description div.stat {
+  margin-top: 5px;
+  font-weight: bold;
+}
+div#wrapper-reward-dashboard div#reward-dashboard div.rewards div.reward div.reward-info-container div.reward-stats {
+  border-top: thin solid #d4d4d4;
+  padding-top: 15px;
+  padding-bottom: 5px;
+  position: absolute;
+  bottom: 0;
+}
+div#wrapper-reward-dashboard div#reward-dashboard div.rewards div.reward div.reward-info-container div.reward-stats div.reward-stat {
+  margin-bottom: 10px;
+}
+div#wrapper-reward-dashboard div#reward-dashboard div.rewards div.reward div.reward-info-container div.reward-actions {
+  width: 100%;
+  position: absolute;
+  bottom: 0;
+}
+div#wrapper-reward-dashboard div#reward-dashboard div.rewards div.reward div.reward-actions {
+  border-top: thin solid #d4d4d4;
+}
+div#wrapper-reward-dashboard div#reward-dashboard div.rewards div.reward div.reward-actions div.reward-action a {
+  display: block;
+  padding-top: 20px;
+  padding-bottom: 20px;
+  font-weight: bold;
+}
+div#wrapper-reward-dashboard div#reward-dashboard div.rewards div.reward div.reward-actions div.reward-action a:hover {
   background: #f6f6f6;
-}
-div#wrapper-reward-dashboard div#reward-dashboard div.rewards div.reward div.reward-name {
-  font-size: 16px;
-  font-weight: 500;
-}
-div#wrapper-reward-dashboard div#reward-dashboard div.rewards div.reward div.reward-name span {
-  font-weight: 300;
-}
-div#wrapper-reward-dashboard div#reward-dashboard div.rewards div.reward div.reward-members {
-  font-weight: 300;
-  font-style: italic;
-  font-size: 14px;
-}
-div#wrapper-reward-dashboard div#reward-dashboard div.rewards div.reward div.reward-action a {
-  font-weight: 300;
-  color: #4a4a4a;
-  text-decoration: underline;
-  font-size: 14px;
-}
-div#wrapper-reward-dashboard div#reward-dashboard div.rewards div.reward div.reward-action a:hover {
   color: #c57724;
 }
 div#send-reward-modal div.send-description {
@@ -12726,21 +12766,6 @@ div#send-reward-modal form div.organizer div.organizer-image {
 }
 div#send-reward-modal form div.organizer div.organizer-image img {
   max-height: 40px;
-}
-div#add-subscription-modal {
-  margin-bottom: 150px;
-}
-div#add-subscription-modal div.headline {
-  margin-bottom: 10px;
-}
-div#add-subscription-modal div.description {
-  line-height: 1.2rem;
-  margin-bottom: 20px;
-}
-div#add-subscription-modal div.description img {
-  display: block;
-  margin-top: 20px;
-  margin-bottom: 20px;
 }
 div#wrapper-new-reward div#new-reward div.create-actions {
   margin-top: 30px;
