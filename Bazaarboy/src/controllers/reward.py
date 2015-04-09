@@ -575,37 +575,15 @@ def complete_claim(request, params):
         claim.owner = User.objects.get(email = claim.email)
         claim.owner.first_name = params['first_name']
         claim.owner.last_name = params['last_name']
-    elif claim.owner:
+    elif claim.owner is not None:
         claim.owner.email = claim.email
         claim.owner.first_name = params['first_name']
         claim.owner.last_name = params['last_name']
     else:
-        claim.owner = User(email = claim.email, first_name = params['first_name'], last_name = params['last_name'])
-    """
-    if Subscription.objects.filter(owner = claim.item.reward.creator, plan_id = 'gifts').exists():
-        subscription = Subscription.objects.get(owner = claim.item.reward.creator, plan_id = 'gifts')
-        if subscription.credits > 0:
-            subscription.credits -= 1
-            subscription.save()
-        elif claim.item.created_time > subscription.created_time:
-            stripe.api_key = STRIPE_SECRET_KEY
-            try:
-                invoice = stripe.InvoiceItem.create(
-                    customer = subscription.customer_id,
-                    subscription = subscription.subscription_id,
-                    amount = 100,
-                    currency = "usd",
-                    description = claim.item.reward.name  + " claimed by " + claim.owner.email
-                )
-            except stripe.error.StripeError, e:
-                response = {
-                    'status':'FAIL',
-                    'error':'STRIPE_ERROR',
-                    'message':'The reward is not available.'
-                }
-                return json_response(response)
-    """
-    claim.owner.save()
+        newUser = User(email = claim.email, first_name = params['first_name'], last_name = params['last_name'])
+        newUser.save()
+    claim.save()
+    claim.owner = newUser
     claim.is_claimed = True
     claim.claimed_time = timezone.now()
     if params['extra_fields'] is not None:
