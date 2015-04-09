@@ -2,6 +2,13 @@
 
 extends ../layout
 
+block title
+    | Claim Gift | Bazaarboy
+
+append head
+    link(rel="stylesheet", href="{{ STATIC_URL }}slick/slick-theme.css")
+    link(rel="stylesheet", href="{{ STATIC_URL }}slick/slick.css")
+
 block body
     div#claim
         div.row
@@ -14,31 +21,45 @@ block body
                                     div.small-12.columns.text-center.request_logo_container
                                         img.request_logo(src="{{ claim.item.reward.creator.image.source.url }}")
                                 div.row
-                                    div.small-12.columns.request_info
-                                        | Claim your&nbsp;
-                                        b {{ claim.item.reward.name }}&nbsp;
-                                        | from '{{ claim.item.reward.creator.name }}'
-                                hr.separator
-                                div.row.claim-inputs
-                                    div.small-12.columns
-                                        input(name="first_name", type="text", placeholder="Your First Name", value="{{ claim.owner.first_name }}")
-                                    div.small-12.columns
-                                        input(name="last_name", type="text", placeholder="Your Last Name", value="{{ claim.owner.last_name }}")
-                                    {% for field in extra_fields %}
-                                    div.small-12.columns
-                                        input.extra-field(type="text", data-field="{{ field }}", placeholder="{{ field }}", value="")
-                                    {% endfor %}
-                                    div.small-12.columns.phone
-                                        input(name="phone", type="text", name="phone", placeholder="Phone #")
-                                        small * You will recieve the gift via MMS. Your phone WILL NOT be sent any more messages.
-                                    div.small-12.columns
-                                        input(type="hidden", name="claim_id", value="{{ claim.id }}")
-                                        input(type="hidden", name="claim_token", value="{{ claim.token }}")
-                                        input.primary-btn.full-btn.submit-claim(type="submit", value="Claim Gift!")
+                                    div.small-12.columns.value
+                                        div.headline ${{ claim.item.reward.value|floatformat:2 }} Value
+                                div.row
+                                    div.small-12.columns.title
+                                        div.headline {{ claim.item.reward.name }}
+                                div.claim-views
+                                    div.claim-description
+                                        div.row
+                                            div.small-12.columns
+                                                | {{ claim.item.reward.description }}
+                                        div.row
+                                            div.small-12.columns.end
+                                                a.claim-next.primary-btn(href="javascript:;") Claim Gift
+                                    div.claim-inputs
+                                        div.row
+                                            div.small-12.columns
+                                                input(name="first_name", type="text", placeholder="Your First Name", value="{{ claim.owner.first_name }}")
+                                            div.small-12.columns
+                                                input(name="last_name", type="text", placeholder="Your Last Name", value="{{ claim.owner.last_name }}")
+                                            {% for field in extra_fields %}
+                                            div.small-12.columns
+                                                input.extra-field(type="text", data-field="{{ field }}", placeholder="{{ field }}", value="")
+                                            {% endfor %}
+                                        hr
+                                        div.row
+                                            div.small-8.columns.phone
+                                                input(name="phone", type="text", name="phone", placeholder="Phone #")
+                                            div.small-4.columns
+                                                input(type="hidden", name="claim_id", value="{{ claim.id }}")
+                                                input(type="hidden", name="claim_token", value="{{ claim.token }}")
+                                                input.primary-btn.full-btn.submit-claim(type="submit", value="Claim!")
+                                        div.row
+                                            div.small-12.columns
+                                                small * You will recieve the gift via MMS. Your phone WILL NOT be sent any more messages.
                                 div.row.claim-success.hide
                                     div.small-12.columns
                                         | Congrats on your gift! You will recieve claim instructions to your phone shortly.
 
 append script
     script(type="text/javascript", src="{{ STATIC_URL }}hashchange/jquery.ba-hashchange.min.js")
+    script(type="text/javascript", src="{{ STATIC_URL }}slick/slick.min.js")
     script(type="text/javascript", src="{{ STATIC_URL }}js/reward/claim.js")

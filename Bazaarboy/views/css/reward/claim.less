@@ -11,7 +11,8 @@ div#claim {
         }
     }
     div.claim-success{
-        padding-bottom: 20px;
+        margin-top: 20px;
+        padding-bottom: 10px;
         line-height: 1.5rem;
     }
     min-width: 100%;
@@ -35,46 +36,52 @@ div#claim {
     }
     div#claim-container{
         background: @white;
-        margin-top: 75px;
+        margin-top: 50px;
+        margin-bottom: 50px;
+        border: @grey thin solid;
+        border-radius: 4px;
+        div.slick-slider{
+            margin-bottom: 10px;
+        }
         form#claim-form{
-            margin-bottom: 80px;
-            div.logo-small{
-                margin: 0 auto;
-                margin-top: 50px;
-                height: 50px;
-                width: 50px;
-                border-radius: 50%;
-                background: url(/static/images/logo-big.png);
-                background-size: cover;
+            .request_logo_container{
+                margin-top: 40px;
+                img{
+                    max-width: 120px !important;
+                    max-height: 120px !important;
+                }
+            }
+            div.value{
+                margin-top: 40px;
             }
             div.title{
-                font-weight: 500;
-                text-transform: uppercase;
-                margin-top: 16px;
-                div.site-title{
-                    font-size: 1.5em;
-                }
-                span.page-title{
-                    color: #9B9B9B;
-                }
+                margin-top: 20px;
             }
-            hr.separator{
-                margin-top: 24px;
-                margin-bottom: 26px;
+            div.claim-views{
+                margin-top: 20px;
+                a.claim-next{
+                    margin-top: 20px;
+                    margin-bottom: 20px;
+                }
             }
             .claim-inputs{
                 input[type=text], input[type=password]{
                     border-radius: 3px;
                     box-shadow: none;
+                    line-height: 23px;
+                    margin-bottom: 10px;
                 }
-            }
-            .submit-claim{
-                margin-bottom: 16px;
+                hr{
+                    margin: 0;
+                    margin-top: 5px;
+                    margin-bottom: 15px;
+                }
             }
             small{
                 font-size: 12px;
                 line-height: 1rem;
                 margin-top: 10px;
+                display: block;
             }
         }
     }

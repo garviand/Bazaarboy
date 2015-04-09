@@ -12836,7 +12836,8 @@ div#claim div.phone small {
   display: block;
 }
 div#claim div.claim-success {
-  padding-bottom: 20px;
+  margin-top: 20px;
+  padding-bottom: 10px;
   line-height: 1.5rem;
 }
 div#claim div#container {
@@ -12857,47 +12858,51 @@ div#claim div.request_info {
 }
 div#claim div#claim-container {
   background: #ffffff;
-  margin-top: 75px;
-}
-div#claim div#claim-container form#claim-form {
-  margin-bottom: 80px;
-}
-div#claim div#claim-container form#claim-form div.logo-small {
-  margin: 0 auto;
   margin-top: 50px;
-  height: 50px;
-  width: 50px;
-  border-radius: 50%;
-  background: url(/static/images/logo-big.png);
-  background-size: cover;
+  margin-bottom: 50px;
+  border: #d4d4d4 thin solid;
+  border-radius: 4px;
+}
+div#claim div#claim-container div.slick-slider {
+  margin-bottom: 10px;
+}
+div#claim div#claim-container form#claim-form .request_logo_container {
+  margin-top: 40px;
+}
+div#claim div#claim-container form#claim-form .request_logo_container img {
+  max-width: 120px !important;
+  max-height: 120px !important;
+}
+div#claim div#claim-container form#claim-form div.value {
+  margin-top: 40px;
 }
 div#claim div#claim-container form#claim-form div.title {
-  font-weight: 500;
-  text-transform: uppercase;
-  margin-top: 16px;
+  margin-top: 20px;
 }
-div#claim div#claim-container form#claim-form div.title div.site-title {
-  font-size: 1.5em;
+div#claim div#claim-container form#claim-form div.claim-views {
+  margin-top: 20px;
 }
-div#claim div#claim-container form#claim-form div.title span.page-title {
-  color: #9B9B9B;
-}
-div#claim div#claim-container form#claim-form hr.separator {
-  margin-top: 24px;
-  margin-bottom: 26px;
+div#claim div#claim-container form#claim-form div.claim-views a.claim-next {
+  margin-top: 20px;
+  margin-bottom: 20px;
 }
 div#claim div#claim-container form#claim-form .claim-inputs input[type=text],
 div#claim div#claim-container form#claim-form .claim-inputs input[type=password] {
   border-radius: 3px;
   box-shadow: none;
+  line-height: 23px;
+  margin-bottom: 10px;
 }
-div#claim div#claim-container form#claim-form .submit-claim {
-  margin-bottom: 16px;
+div#claim div#claim-container form#claim-form .claim-inputs hr {
+  margin: 0;
+  margin-top: 5px;
+  margin-bottom: 15px;
 }
 div#claim div#claim-container form#claim-form small {
   font-size: 12px;
   line-height: 1rem;
   margin-top: 10px;
+  display: block;
 }
 div#redeem {
   min-width: 100%;
