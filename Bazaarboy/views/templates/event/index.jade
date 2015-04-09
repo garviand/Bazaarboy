@@ -613,7 +613,7 @@ block body
                                                         a.btn.full-btn.secondary-btn-inverse.upload_cover_btn(href="javascript:;", class="{% if event.cover %}hidden{% endif %}") Upload Full Width Image
                                                     div.small-12.medium-6.columns.end
                                                         a.btn.full-btn.secondary-btn-inverse.delete_cover_btn(href="javascript:;", class="{% if not event.cover %}hidden{% endif %}") Delete Cover Image
-                                                        input.hidden(type="file", name="image_file")
+                                                        input.hidden.cover-image-input(type="file", name="image_file")
                                                         {% csrf_token %}
                                 {% endif %}
                                 div#event-sidebar.medium-4.small-12.columns

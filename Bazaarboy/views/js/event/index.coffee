@@ -585,11 +585,13 @@ Bazaarboy.event.index =
                 url: rootUrl + 'file/image/upload/'
                 type: 'POST'
                 add: (event, data) =>
-                    data.submit()
+                    if not $(event.srcElement).hasClass('redactor-editor')
+                        data.submit()
                     return
                 done: (event, data) =>
                     response = jQuery.parseJSON data.result
                     if response.status is 'OK'
+                        console.log 'launch aviary'
                         $('img#cover-image').attr 'src', mediaUrl + response.image.source
                         @aviary.launch
                             image: 'cover-image'

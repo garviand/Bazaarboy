@@ -688,12 +688,15 @@
           url: rootUrl + 'file/image/upload/',
           type: 'POST',
           add: function(event, data) {
-            data.submit();
+            if (!$(event.srcElement).hasClass('redactor-editor')) {
+              data.submit();
+            }
           },
           done: function(event, data) {
             var response;
             response = jQuery.parseJSON(data.result);
             if (response.status === 'OK') {
+              console.log('launch aviary');
               $('img#cover-image').attr('src', mediaUrl + response.image.source);
               _this.aviary.launch({
                 image: 'cover-image',
