@@ -304,13 +304,29 @@ def manage(request, id, params, user):
                     }
                 }
             }
+            try:
+                fields = json.loads(item.extra_fields)
+            except:
+                response = {
+                    'status':'FAIL',
+                    'error':'INVALID_FIELD_FORMAT',
+                    'message':'The extra field format is not correct.'
+                }
+                return json_response(response)
+            finally:
+                purchases[item.purchase.id]['extra_fields'] = fields
     tickets = Ticket.objects.filter(event=event, is_deleted=False)
     ticket_list = {}
     for item in purchase_items:
         if not item.ticket.id in ticket_list:
             ticket_list[item.ticket.id] = {
                 'id': item.ticket.id,
-                'name': item.ticket.name
+                'name': item.ticket.name,
+                'count': Purchase_item.objects.filter(Q(purchase__checkout = None) | 
+                                        Q(purchase__checkout__is_charged = True, 
+                                          purchase__checkout__is_refunded = False), 
+                                        purchase__event = event, 
+                                        purchase__is_expired = False).count()
             }
     checked_in = purchase_items.exclude(Q(checked_in_time = None)).count()
     purchases = OrderedDict(reversed(sorted(purchases.items())))

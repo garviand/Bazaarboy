@@ -53,7 +53,7 @@ block content
                     div.description
                         | The 'Catalog' is where you create a template of a gift you would like to distribute. When the Catalog Listing is created, you can either send inventory to other organizations, or add some inventory to your own account and distribute it to your audience.
                     div.action
-                        a.primary-btn(href="{% url 'reward:new' %}") + Create Catalog Listing
+                        a.secondary-btn(href="{% url 'reward:new' %}") + Create Catalog Listing
             {% endif %}
             {% if reward_items.count > 0 %}
             div.section-title

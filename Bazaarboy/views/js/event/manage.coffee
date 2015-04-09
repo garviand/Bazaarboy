@@ -245,7 +245,7 @@ Bazaarboy.event.manage =
             return
         # REFUNDS
         $('a.show-refunds').click () ->
-            $('div.list_guests div.name').removeClass('medium-4').addClass('medium-2')
+            $('div.list_guests div.extra-fields').removeClass('medium-4').addClass('medium-2')
             $('div.refund').removeClass 'hide'
             return
         $('div.refund a.refund-btn').click () ->

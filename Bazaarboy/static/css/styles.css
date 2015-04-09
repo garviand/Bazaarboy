@@ -13095,10 +13095,9 @@ div#wrapper-list-dashboard div.empty-state-container div.empty-state-content div
 div#wrapper-list-dashboard div.empty-state-container div.empty-state-content hr {
   margin: 10px 0;
 }
-div#wrapper-list-dashboard div.empty-state-container div.empty-state-content div.btn {
+div#wrapper-list-dashboard div.empty-state-container div.empty-state-content .btn {
   width: 100%;
   margin-top: 20px;
-  margin-left: 10px;
   font-size: 15px;
   text-transform: uppercase;
 }

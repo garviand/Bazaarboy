@@ -299,7 +299,7 @@
         }
       });
       $('a.show-refunds').click(function() {
-        $('div.list_guests div.name').removeClass('medium-4').addClass('medium-2');
+        $('div.list_guests div.extra-fields').removeClass('medium-4').addClass('medium-2');
         $('div.refund').removeClass('hide');
       });
       $('div.refund a.refund-btn').click(function() {

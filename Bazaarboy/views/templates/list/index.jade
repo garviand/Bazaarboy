@@ -33,11 +33,17 @@ block content
                     div.text YOU HAVEN'T MADE A LIST YET
                     hr
                     div.subtext Use lists to create segmented groups of your audience. Targeted lists will allow you send more effective event invitations and gifts to your followers.
+                    br
+                    div.subtext You can also create sign up forms for raffles, volunteer lists or as a replacement for paper sign-in at an event.
                     div.row
-                        div.large-5.medium-7.small-9
+                        div.medium-6.small-12.columns
                             div.new-list-btn
                                 div.secondary-btn.btn.full-btn
-                                    | <span class="plus">+</span> Add New List
+                                    | New List
+                        div.medium-6.small-12.columns
+                            div.new-list-btn
+                                a.secondary-btn.btn.full-btn(href="{% url 'list:new-sign-up' %}") New Sign Up Form
+                                     
         {% endif %}
         div#list-dashboard.small-12.columns
             div.row.new-list-container(class="{% if listsCount == 0 %}hide{% endif %}")
