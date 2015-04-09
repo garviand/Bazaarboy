@@ -85,7 +85,7 @@ def list(request, lt, user, params):
     if params['eid'] is not None:
         if Event.objects.filter(id = params['eid']).exists():
             event = Event.objects.get(id = params['eid'])
-    rewards = Reward_item.objects.filter(owner = profile, quantity__gt = 0, expiration_time__gte = timezone.now())
+    rewards = Reward_item.objects.filter(owner = profile, quantity__gt = 0, expiration_time__gte = timezone.now(), is_deleted = False)
     return render(request, 'list/list.html', locals())
 @login_required()
 @validate('POST', ['profile', 'name', 'is_hidden'])
@@ -533,12 +533,15 @@ def manage_sign_up(request, signup, user):
         return json_response(response)
     sign_ups = Sign_up_item.objects.filter(sign_up = sign_up).order_by('-created_time')
     for item in sign_ups:
+        item.gifted = False
+        if Claim.objects.filter(email = item.email, item__owner = sign_up.owner, created_time__gt = item.created_time).exists():
+            item.gifted = True
         if not item.assigned:
             item.new = True
             item.assigned = True
-            item.save()
         else:
             item.new = False
+        item.save()
         try:
             fields = json.loads(item.extra_fields)
         except:
@@ -554,7 +557,7 @@ def manage_sign_up(request, signup, user):
     for lt in lists:
         list_items = List_item.objects.filter(_list = lt, is_deleted = False)
         lt.items = list_items.count()
-    rewards = Reward_item.objects.filter(owner = sign_up.owner, quantity__gt = 0, expiration_time__gte = timezone.now())
+    rewards = Reward_item.objects.filter(owner = sign_up.owner, quantity__gt = 0, expiration_time__gte = timezone.now(), is_deleted = False)
     return render(request, 'list/manage-sign-up.html', locals())
 
 @login_required()

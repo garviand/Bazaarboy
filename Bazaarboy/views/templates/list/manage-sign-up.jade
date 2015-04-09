@@ -54,6 +54,7 @@ block content
                                 div.actions.medium-4.small-12.columns
                                     a.add-to-list-single-btn(href="javascript:;", data-email="{{ sign_up_item.email }}", data-first="{{ sign_up_item.first_name }}", data-last="{{ sign_up_item.last_name }}") Add To List
                                     a.reward-member(href="javascript:;", data-email="{{ sign_up_item.email }}", data-first="{{ sign_up_item.first_name }}", data-last="{{ sign_up_item.last_name }}") Send Gift
+                                    div.gifted(data-email="{{ sign_up_item.email }}", class="{% if not sign_up_item.gifted %}hide{% endif %}") Recieved Gift
                             {% endfor %}
 
     div#rewards-modal.reveal-modal.medium(data-reveal)

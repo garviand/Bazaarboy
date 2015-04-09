@@ -25,6 +25,26 @@ Bazaarboy.reward.index =
         scrollTop: $("div.catalog-rewards").offset().top
         , 500
       return
+    # DISCARD REWARD ITEM
+    $('a.discard-reward-item').click () ->
+      itemId = $(this).data('id')
+      itemContainer = $(this).closest('div.reward-inventory')
+      swal
+        type: 'warning'
+        title: 'Discard Inventory'
+        text: 'Are you sure? If you discard this inventory, you will no longer be able to distribute it.'
+        showCancelButton: true
+        confirmButtonText: "Discard"
+        closeOnConfirm: true
+        , () ->
+          Bazaarboy.post 'rewards/item/delete/', {item:itemId}, (response) ->
+            if response.status is 'OK'
+              swal
+                title: 'Discarded'
+                text: 'The item has been discarded.'
+              itemContainer.remove()
+            return
+      return
     # DELETE REWARD
     $('a.delete-reward').click () ->
       rewardId = $(this).data('id')

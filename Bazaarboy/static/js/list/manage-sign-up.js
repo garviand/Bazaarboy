@@ -29,6 +29,7 @@
               text: 'The reward has been sent.'
             });
             quantityElement.html(quantityAmount - 1);
+            $('div.gifted[data-email="' + rewardEmail + '"]').removeClass('hide');
             $("div#rewards-modal").foundation('reveal', 'close');
             button.html('Send Reward');
           } else {

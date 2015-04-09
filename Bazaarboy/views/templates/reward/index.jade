@@ -79,7 +79,14 @@ block content
                                             div.reward-hover {{ reward_item.reward.description|truncatechars:80 }}
                         div.reward-actions.text-center
                             div.reward-action
-                                a.send-gift-item(href="javascript:;", data-id="{{ reward_item.id }}", data-quantity="{{ reward_item.quantity }}", data-name="{{ reward_item.reward.name }}") Send Gift
+                                div.row
+                                    div.small-12.medium-4.columns.end
+                                        a(href="{{ reward_item.reward.attachment.source.url }}", target="_blank") View
+                                    div.small-12.medium-4.columns.end
+                                        a.send-gift-item(href="javascript:;", data-id="{{ reward_item.id }}", data-quantity="{{ reward_item.quantity }}", data-name="{{ reward_item.reward.name }}") Send
+                                    div.small-12.medium-4.columns.end
+                                        a.discard-reward-item(data-id="{{ reward_item.id }}") Discard
+                            div.reward-action
                 {% endfor %}
             {% endif %}
             {% if rewards.count > 0%}

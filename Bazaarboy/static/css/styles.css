@@ -13750,6 +13750,12 @@ div#manage-sign-up div.sign-ups div.sign-up div.actions a {
   display: block;
   margin-bottom: 5px;
 }
+div#manage-sign-up div.sign-ups div.sign-up div.actions div.gifted {
+  margin-top: 5px;
+  font-size: 12px;
+  color: #4a4a4a;
+  font-style: italic;
+}
 div#wrapper-new-sign-up {
   padding-top: 40px;
 }

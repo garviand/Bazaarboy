@@ -495,6 +495,7 @@ class Reward_item(models.Model):
     quantity = models.IntegerField()
     received = models.IntegerField()
     expiration_time = models.DateTimeField()
+    is_deleted = models.BooleanField(default = False)
     created_time = models.DateTimeField(auto_now_add = True)
 
 class Reward_send(models.Model):

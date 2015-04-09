@@ -45,7 +45,7 @@ def index(request, user):
         reward.sent = Claim.objects.filter(item__reward = reward).count()
         reward.claimed = Claim.objects.filter(item__reward = reward, is_claimed = True).count()
         reward.redeemed = Claim.objects.filter(item__reward = reward, is_redeemed = True).count()
-    reward_items = Reward_item.objects.filter(owner = profile, expiration_time__gte = timezone.now(), quantity__gt = 0).order_by('expiration_time')
+    reward_items = Reward_item.objects.filter(owner = profile, expiration_time__gte = timezone.now(), quantity__gt = 0, is_deleted = False).order_by('expiration_time')
     for item in reward_items:
         claims = Claim.objects.filter(item = item)
         item.claims = claims
@@ -451,6 +451,34 @@ def add_item(request, params, user):
             'message':'Must choose an email or profile.'
         }
         return json_response(response)
+
+@login_required()
+@validate('POST', ['item'])
+def delete_item(request, params, user):
+    if not Reward_item.objects.filter(id = params['item']).exists():
+        response = {
+            'status':'FAIL',
+            'error':'REWARD_NOT_FOUND',
+            'message':'The reward doesn\'t exist.'
+        }
+        return json_response(response)
+    item = Reward_item.objects.get(id = params['item'])
+    # Check if the user is a manager of the profile
+    if not Profile_manager.objects.filter(profile = item.owner, user = user).exists():
+        response = {
+            'status':'FAIL',
+            'error':'NOT_A_MANAGER',
+            'message':'You don\'t have permission for the reward.'
+        }
+        return json_response(response)
+    item.is_deleted = True
+    item.save()
+    response = {
+        'status':'OK',
+        'reward_item':serialize_one(item)
+    }
+    return json_response(response)
+
 
 @login_required()
 @validate('POST', ['item'], ['owner', 'email', 'message'])
