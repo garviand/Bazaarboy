@@ -325,7 +325,7 @@ def manage(request, id, params, user):
                 'count': Purchase_item.objects.filter(Q(purchase__checkout = None) | 
                                         Q(purchase__checkout__is_charged = True, 
                                           purchase__checkout__is_refunded = False), 
-                                        purchase__event = event, 
+                                        ticket = item.ticket, 
                                         purchase__is_expired = False).count()
             }
     checked_in = purchase_items.exclude(Q(checked_in_time = None)).count()
