@@ -582,8 +582,9 @@ def complete_claim(request, params):
     else:
         newUser = User(email = claim.email, first_name = params['first_name'], last_name = params['last_name'])
         newUser.save()
+        claim.save()
+        claim.owner = newUser
     claim.save()
-    claim.owner = newUser
     claim.is_claimed = True
     claim.claimed_time = timezone.now()
     if params['extra_fields'] is not None:
