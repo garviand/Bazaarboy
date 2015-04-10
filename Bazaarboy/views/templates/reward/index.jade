@@ -31,7 +31,7 @@ block content
             div.row.reward-actions
                 div.small-12.medium-4.columns.end
                     div.action
-                        a.primary-btn.full-btn(href="{% url 'reward:new' %}") + Create Catalog Listing
+                        a.primary-btn.full-btn(href="{% url 'reward:new' %}") + Create Catalog Item
                 {% if rewards.count > 0%}
                 div.small-12.medium-4.columns.end
                     div.action
@@ -51,14 +51,41 @@ block content
                 div.small-12.medium-7.columns
                     div.title.headline Use Gifts to Engage Your Audince
                     div.description
-                        | The 'Catalog' is where you create a template of a gift you would like to distribute. When the Catalog Listing is created, you can either send inventory to other organizations, or add some inventory to your own account and distribute it to your audience.
+                        | The 'Catalog' is where you create a template of a gift you would like to distribute. When the Catalog Item is created, you can either send inventory to other organizations, or add some inventory to your own account and distribute it to your audience.
                     div.action
-                        a.secondary-btn(href="{% url 'reward:new' %}") + Create Catalog Listing
+                        a.secondary-btn(href="{% url 'reward:new' %}") + Create Catalog Item
             {% endif %}
-            {% if reward_items.count > 0 %}
+            {% if reward_items.count > 0 or giveaways.count > 0 %}
             div.section-title
                 div.headline CURRENT INVENTORY
             div.rewards.row
+                {% for giveaway in giveaways %}
+                div.reward-inventory.small-12.medium-6.columns.end(data-id="{{ reward_item.id }}")
+                    div.reward
+                        div.reward-info-container
+                            div.reward-info
+                                div.row
+                                    div.small-12.medium-5.columns
+                                        div.price GIVEAWAY
+                                    div.small-12.medium-7.columns.text-right
+                                        div.quantity 
+                                            span.sent-number {{ giveaway.quantity|subtract:giveaway.item.received }}
+                                            |/{{ giveaway.item.received }} Claimed
+                                        div.created Expires in {{ giveaway.item.expiration_time|daysUntil }}
+                                div.row
+                                    div.small-12.columns
+                                        div.description 
+                                            div.reward-neutral.name.headline {{ giveaway.item.reward.name }}
+                                            div.reward-hover {{ giveaway.item.reward.description|truncatechars:80 }}
+                        div.reward-actions.text-center
+                            div.reward-action
+                                div.row
+                                    div.small-12.medium-6.columns.end
+                                        a(href="{% url 'giveaway' giveaway.token %}", target="_blank") View Link
+                                    div.small-12.medium-6.columns.end
+                                        a.discard-reward-item(data-id="{{ giveaway.item.id }}") End Giveaway
+                            div.reward-action
+                {% endfor %}
                 {% for reward_item in reward_items %}
                 div.reward-inventory.small-12.medium-6.columns.end(data-id="{{ reward_item.id }}")
                     div.reward
@@ -132,22 +159,22 @@ block content
                                         div.small-12.medium-4.columns.end
                                             a(href="{{ reward.attachment.source.url }}", target="_blank") View
                                         div.small-12.medium-4.columns.end
-                                            a(href="{% url 'reward:manage' reward.id %}") Redeem
+                                            a(href="{% url 'reward:manage' reward.id %}") Claims
                                         div.small-12.medium-4.columns.end
                                             a.delete-reward(data-id="{{ reward.id }}") Delete
                         div.reward-actions.text-center
                             div.reward-action
-                                a.send-reward-btn(href="javascript:;", data-id="{{ reward.id }}", data-name="{{ reward.name }}") Transfer Inventory
+                                a.send-reward-btn(href="javascript:;", data-id="{{ reward.id }}", data-name="{{ reward.name }}") Use Catalog Item
                 {% endfor %}
             {% if deletedRewards > 0 %}
             div.row
                 div.small-12.medium-4.columns
                     div.deleted-rewards-btn-container
-                        a.show-deleted-rewards.primary-btn.small-btn(href="javascript:;") Show Deleted Listings
+                        a.show-deleted-rewards.primary-btn.small-btn(href="javascript:;") Show Deleted Items
             {% endif %}
             {% endif %}
 
-    div#send-reward-modal.reveal-modal.medium(data-reveal)
+    div#send-reward-modal.reveal-modal(data-reveal)
         div.organizer-model.hide
             div.row.organizer
                 div.medium-3.columns.organizer-image &nbsp;
@@ -156,15 +183,15 @@ block content
                     a.add-reward-submit.secondary-btn-inverse.full-btn(href="javascript:;") Add Gifts
         div.row
             div.small-12.columns
-                div.headline Send&nbsp;'
-                    span.reward-name &nbsp;
-                    |'
-                br
-                div.send-description Send inventory to other organizations so they can distribute them as 'gifts' to their audience. If you want to send 'gifts' to your own audience, use the 'Add to My Account' button.
-                    //span.free_gifts &nbsp;You currently have&nbsp;
-                        b.quantity_free {{ totalSent|subtract:10 }}
-                        b &nbsp;Free Gifts
-                        | &nbsp;Remaining.
+                div.section-title
+                    div.headline Catalog Item Actions - &nbsp;'
+                        span.reward-name &nbsp;
+                        |'
+                div.send-description 
+                    div.description-title From here, you can do 3 things:
+                    div.action-item 1) Add quantity of this item to your account as 'Inventory'. You can then distribute this inventory to your audience.
+                    div.action-item 2) Transfer quantity of this item to other accounts. This can be done via email or searching for their Bazaarboy profile.
+                    div.action-item 3) Create a 'Giveaway'. A Giveaway will generate a link with a quantity of gifts for anyone to claim (one per person).
                 hr
         div.row
             div.small-12.columns
@@ -181,18 +208,25 @@ block content
                     div.small-12.medium-4.columns
                         a.add-reward-submit.primary-btn-inverse.full-btn(href="javascript:;", data-profile="{{ profile.id }}") Add to My Account
                     div.small-12.medium-4.columns
-                        a.add-reward-email.primary-btn-inverse.full-btn(href="javascript:;") Transfer Via Email
+                        a.add-reward-profile.primary-btn-inverse.full-btn(href="javascript:;") Transfer To Someone
                     div.small-12.medium-4.columns
-                        a.add-reward-profile.primary-btn-inverse.full-btn(href="javascript:;") Search Accounts
-                    div.small-12.columns.profile-search.hide
-                        input(type="text", name="profile_search", placeholder="Search Account Name")
+                        a.add-giveaway.primary-btn-inverse.full-btn(href="javascript:;") Create Giveaway
                     div.small-12.columns.email-send.hide
+                        hr
                         div.row
                             div.small-12.medium-8.columns
                                 input(type="text", name="email_send", placeholder="Organization's Email")
                             div.small-12.medium-4.columns
-                                a.send-via-email.primary-btn.full-btn(href="javascript:;") Send Inventory
+                                a.send-via-email.secondary-btn.full-btn(href="javascript:;") Send Inventory
+                        div.row
+                            div.small-12.columns.text-center
+                                br
+                                | or
+                                br
+                    div.small-12.columns.profile-search.hide
+                        input(type="text", name="profile_search", placeholder="Search Account Name")
         form.add-organizer-form(name="add-organizer")
+            div.text-center.searching.headline.hide Searching...
 
     div#distribute-reward-modal.reveal-modal.medium(data-reveal)
         div.row
@@ -201,7 +235,13 @@ block content
                     span.reward-name &nbsp;
                     |'
                 br
-                div.send-description Send a gift via email.
+                div.send-description Send a gift via email. (You can also send gifts via 
+                    a(href="{% url 'list:index' %}") lists
+                    |,&nbsp;
+                    a(href="{% url 'list:new-sign-up' %}") forms
+                    | &nbsp;and&nbsp;
+                    a(href="{% url 'index' %}") event attendee lists
+                    |)
                 hr
         div.row
             div.small-12.columns

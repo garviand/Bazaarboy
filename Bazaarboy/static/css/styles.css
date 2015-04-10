@@ -5839,6 +5839,11 @@ a:hover,
 a:focus {
   color: #f3a536;
 }
+label {
+  margin-bottom: 5px;
+  font-weight: 600;
+  font-size: 12px;
+}
 div#wrapper-top {
   position: relative;
   height: 64px;
@@ -12752,11 +12757,23 @@ div#wrapper-reward-dashboard div#reward-dashboard div.rewards div.reward div.rew
 div#wrapper-reward-dashboard div#reward-dashboard div.deleted-rewards-btn-container {
   margin-top: 40px;
 }
+div#send-reward-modal {
+  margin-bottom: 200px;
+}
+div#send-reward-modal div.section-title {
+  margin-bottom: 5px;
+}
 div#send-reward-modal div.send-description {
+  margin-top: 20px;
   line-height: 1.2rem;
 }
-div#send-reward-modal div.send-actions div.profile-search,
-div#send-reward-modal div.send-actions div.email-send {
+div#send-reward-modal div.send-description div.description-title {
+  text-decoration: underline;
+}
+div#send-reward-modal div.send-description div.action-item {
+  margin-top: 5px;
+}
+div#send-reward-modal div.send-actions div.profile-search {
   margin-top: 30px;
 }
 div#send-reward-modal form > div {
@@ -12780,11 +12797,6 @@ div#wrapper-new-reward div#new-reward div.section-title {
 }
 div#wrapper-new-reward div#new-reward form#new-reward-form {
   margin-top: 20px;
-}
-div#wrapper-new-reward div#new-reward form#new-reward-form label {
-  margin-bottom: 5px;
-  font-weight: 600;
-  font-size: 12px;
 }
 div#wrapper-new-reward div#new-reward form#new-reward-form label span.light {
   font-weight: 400;
@@ -12885,6 +12897,9 @@ div#claim div#claim-container form#claim-form div.claim-views {
 div#claim div#claim-container form#claim-form div.claim-views a.claim-next {
   margin-top: 20px;
   margin-bottom: 20px;
+}
+div#claim div#claim-container form#claim-form .claim-description {
+  line-height: 1.3rem;
 }
 div#claim div#claim-container form#claim-form .claim-inputs input[type=text],
 div#claim div#claim-container form#claim-form .claim-inputs input[type=password] {

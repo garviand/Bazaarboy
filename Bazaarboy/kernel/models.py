@@ -498,26 +498,6 @@ class Reward_item(models.Model):
     is_deleted = models.BooleanField(default = False)
     created_time = models.DateTimeField(auto_now_add = True)
 
-class Reward_send(models.Model):
-    """
-    A reward sent via email
-    """
-    reward = models.ForeignKey('Reward')
-    email = models.CharField(max_length = 150)
-    quantity = models.IntegerField()
-    expiration_time = models.DateTimeField()
-    token = models.CharField(max_length = 128)
-    claimed = models.BooleanField(default = False)
-    created_time = models.DateTimeField(auto_now_add = True)
-
-    def save(self, *args, **kwargs):
-        """
-        Override save to generate token at creation
-        """
-        if self.pk is None:
-            self.token = uuid.uuid4().hex
-        super(Reward_send, self).save(*args, **kwargs)
-
 class Claim(models.Model):
     """
     Claim for a reward
@@ -544,6 +524,46 @@ class Claim(models.Model):
         if self.pk is None:
             self.code = randomConfirmationCode()
         super(Claim, self).save(*args, **kwargs)
+
+class Reward_send(models.Model):
+    """
+    A reward sent via email
+    """
+    reward = models.ForeignKey('Reward')
+    email = models.CharField(max_length = 150)
+    quantity = models.IntegerField()
+    expiration_time = models.DateTimeField()
+    token = models.CharField(max_length = 128)
+    claimed = models.BooleanField(default = False)
+    created_time = models.DateTimeField(auto_now_add = True)
+
+    def save(self, *args, **kwargs):
+        """
+        Override save to generate token at creation
+        """
+        if self.pk is None:
+            self.token = uuid.uuid4().hex
+        super(Reward_send, self).save(*args, **kwargs)
+
+class Reward_giveaway(models.Model):
+    """
+    A reward giveaway
+    """
+    item = models.ForeignKey('Reward_item')
+    quantity = models.IntegerField()
+    token = models.CharField(max_length = 128)
+    created_time = models.DateTimeField(auto_now_add = True)
+
+    def save(self, *args, **kwargs):
+        """
+        Override save to generate token at creation
+        """
+        if self.pk is None:
+            token = uuid.uuid4().hex[:12]
+            while Reward_giveaway.objects.filter(token = token).exists():
+                token = uuid.uuid4().hex[:12]
+            self.token = token    
+        super(Reward_giveaway, self).save(*args, **kwargs)
 
 class List(models.Model):
     """

@@ -10,13 +10,14 @@
         draggable: false,
         infinite: false,
         swipe: false,
-        speed: 150
+        speed: 150,
+        accessibility: false
       });
       $('a.claim-next').click(function() {
         $('div.claim-views').slick('slickNext');
       });
       $('form#claim-form').submit(function(e) {
-        var extra_fields, field_missing, field_missing_name, params;
+        var extra_fields, field_missing, field_missing_name, params, targetUrl;
         e.preventDefault();
         if (!scope.claiming) {
           scope.claiming = true;
@@ -61,7 +62,12 @@
             return;
           }
           params.extra_fields = JSON.stringify(extra_fields);
-          Bazaarboy.post('rewards/claim/complete/', params, function(response) {
+          if (isGiveaway) {
+            targetUrl = 'rewards/giveaway/complete/';
+          } else {
+            targetUrl = 'rewards/claim/complete/';
+          }
+          Bazaarboy.post(targetUrl, params, function(response) {
             scope.claiming = false;
             $('input.submit-claim').val('Claim!');
             if (response.status === 'OK') {

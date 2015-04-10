@@ -5,6 +5,7 @@ Bazaarboy.reward.index =
     $('form.add-organizer-form div.organizer').remove()
     organizerModel = $('div.organizer-model')
     Bazaarboy.get 'profile/search/', {keyword: value}, (response) =>
+      $('form.add-organizer-form div.searching').addClass('hide')
       if response.status is 'OK'
         profiles = response.profiles
         if profiles.length > 0
@@ -17,6 +18,7 @@ Bazaarboy.reward.index =
               newProfile.find('div.organizer-image').html('&nbsp;')
             newProfile.find('a.add-reward-submit').attr('data-profile', profiles[i].pk)
             $('form.add-organizer-form').append(newProfile.html())
+    return
   init: () ->
     scope = this
     # TOP BUTTONS
@@ -111,20 +113,10 @@ Bazaarboy.reward.index =
     # SEND REWARD
     $('div#send-reward-modal a.add-reward-profile').click () ->
       $('div#send-reward-modal div.profile-search').removeClass 'hide'
-      $('div#send-reward-modal div.email-send').addClass 'hide'
-      $(this).addClass('primary-btn')
-      $(this).removeClass('primary-btn-inverse')
-      $('div#send-reward-modal a.add-reward-email').removeClass('primary-btn')
-      $('div#send-reward-modal a.add-reward-email').addClass('primary-btn-inverse')
-      return
-    $('div#send-reward-modal a.add-reward-email').click () ->
-      $('div#send-reward-modal form.add-organizer-form').empty()
       $('div#send-reward-modal div.email-send').removeClass 'hide'
-      $('div#send-reward-modal div.profile-search').addClass 'hide'
+      $('form.add-organizer-form div.organizer').remove()
       $(this).addClass('primary-btn')
       $(this).removeClass('primary-btn-inverse')
-      $('div#send-reward-modal a.add-reward-profile').removeClass('primary-btn')
-      $('div#send-reward-modal a.add-reward-profile').addClass('primary-btn-inverse')
       return
     $('body').on 'click', 'a.send-reward-btn', () ->
       $('input[name=reward_id]').val($(this).data('id'))
@@ -135,6 +127,10 @@ Bazaarboy.reward.index =
       format: 'MM/DD/YYYY'
     add_organizer_debounce = jQuery.debounce(1000, false, scope.search_organizers)
     $('input[name=profile_search]').bind('keypress', add_organizer_debounce)
+    $('input[name=profile_search]').bind 'keypress', () ->
+      $('form.add-organizer-form div.searching').removeClass('hide')
+      $('form.add-organizer-form div.organizer').remove()
+      return
     # SEND TO EMAIL
     $('div#send-reward-modal a.send-via-email').click () ->
       if not $.isNumeric($('input[name=quantity]').val()) or $('input[name=quantity]').val() <= 0
@@ -156,7 +152,7 @@ Bazaarboy.reward.index =
           swal
             type: "success"
             title: 'Reward Sent'
-            text: 'You sent ' + response.reward_send.quantity + ' \'' + response.reward_send.reward.name + '\' rewards to ' + response.reward_send.email 
+            text: 'You sent ' + response.reward_send.quantity + ' \'' + response.reward_send.reward.name + '\' inventory to ' + response.reward_send.email 
             , () ->
               location.reload()
               return
@@ -173,17 +169,64 @@ Bazaarboy.reward.index =
         return
       expirationTime = moment(expiration, 'MM/DD/YYYY').utc().format('YYYY-MM-DD HH:mm:ss')
       rewardId = $('input[name=reward_id]').val()
-      profileId = $(this).data('profile')
-      Bazaarboy.post 'rewards/item/add/', {reward:rewardId, owner:profileId, quantity:quantity, expiration_time:expirationTime}, (response) ->
+      ownerId = $(this).data('profile')
+      Bazaarboy.post 'rewards/item/add/', {reward:rewardId, owner:ownerId, quantity:quantity, expiration_time:expirationTime}, (response) ->
         if response.status is 'OK'
+          if profileId == response.reward_item.owner.id
+            responseText = 'You added ' + response.reward_item.quantity + ' \'' + response.reward_item.reward.name + '\' to your inventory'
+          else
+            responseText = 'You sent ' + response.reward_item.quantity + ' \'' + response.reward_item.reward.name + '\' inventory to ' + response.reward_item.owner.name 
           swal
             type: "success"
             title: 'Reward Sent'
-            text: 'You sent ' + response.reward_item.quantity + ' \'' + response.reward_item.reward.name + '\' rewards to ' + response.reward_item.owner.name 
+            text: responseText
             , () ->
               location.reload()
               return
         return
+      return
+    # SEND TO ACCOUNT
+    $('body').on 'click', 'a.add-giveaway', () ->
+      if not $.isNumeric($('input[name=quantity]').val()) or $('input[name=quantity]').val() <= 0
+        swal 'Quantity Must Be a Positive Number'
+        return
+      quantity = Math.floor($('input[name=quantity]').val())
+      expiration = $('input[name=expiration]').val()
+      if not moment(expiration, 'MM/DD/YYYY').isValid()
+        swal 'Expiration Date is Not Valid'
+        return
+      expirationTime = moment(expiration, 'MM/DD/YYYY').utc().format('YYYY-MM-DD HH:mm:ss')
+      rewardId = $('input[name=reward_id]').val()
+      swal
+        type: 'warning'
+        title: 'Confirm Giveaway'
+        text: 'Are you sure you want to give away ' + String(quantity) + ' items?'
+        showCancelButton: true
+        confirmButtonText: "Create Giveaway"
+        closeOnConfirm: false
+        , () ->
+          Bazaarboy.post 'rewards/giveaway/create/', {reward:rewardId, quantity:quantity, expiration_time:expirationTime}, (response) ->
+            if response.status is 'OK'
+              swal
+                type: 'success'
+                title: 'Giveaway Created'
+                text: 'Your giveaway link: https://bazaarboy.com/giveaway/' + response.giveaway.token + ' - Would you like to view the giveaway now?'
+                showCancelButton: true
+                confirmButtonText: "View Giveaway"
+                cancelButtonText: "Close"
+                closeOnConfirm: true
+                , (isConfirm) ->
+                  if isConfirm
+                    Bazaarboy.redirect 'giveaway/' + response.giveaway.token
+                  else
+                    location.reload()
+                  return
+            else
+              swal
+                type: 'warning'
+                title: 'Giveaway Creation Error'
+                text: response.message
+            return
       return
     return
 

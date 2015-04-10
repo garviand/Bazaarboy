@@ -149,6 +149,8 @@ reward_urlpatterns = patterns('src.controllers.reward',
     url(r'^claim/complete/$', 'complete_claim', name = 'complete-claim'),
     url(r'^redeem/$', 'redeem', name = 'redeem'),
     url(r'^redeem/confirm/$', 'redeem_confirm', name = 'redeem-confirm'),
+    url(r'^giveaway/create/$', 'create_giveaway', name = 'giveaway-create'),
+    url(r'^giveaway/complete/$', 'complete_giveaway', name = 'giveaway-complete'),
     url(r'^search/gif/$', 'search_gifs', name = 'search-gifs'),
 )
 
@@ -207,6 +209,7 @@ urlpatterns = patterns('',
     url(r'^file/', include(file_urlpatterns, namespace = 'file')),
     url(r'^admin/', include(admin_urlpatterns, namespace = 'admin')),
     url(r'^designs/', include(designs_urlpatterns, namespace = 'designs')),
+    url(r'^giveaway/(?P<token>[A-Za-z0-9-]+)$', 'src.controllers.reward.giveaway', name = 'giveaway'),
     url(r'^(?P<id>[A-Za-z0-9-]+)/$', 'src.controllers.event.index', name = 'event-slug'),
 )
 

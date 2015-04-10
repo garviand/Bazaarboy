@@ -28,7 +28,7 @@ block content
             div.row.reward-actions
                 div.small-12.medium-4.columns.end
                     div.action
-                        a.primary-btn.full-btn(href="javascript:;") + Create Catalog Listing
+                        a.primary-btn.full-btn(href="javascript:;") + Create Catalog Item
                 div.small-12.medium-4.columns.end
                     div.action
                         a.transfer-inventory-start.primary-btn.full-btn(href="{% url 'reward:index' %}") + Transfer Inventory
@@ -38,23 +38,23 @@ block content
     div#wrapper-new-reward.large-9.medium-10.columns.small-centered
         div#new-reward
             div.section-title
-                div.headline Create New Catalog Listing
+                div.headline Create New Catalog Item
             form#new-reward-form
                 {% csrf_token %}
                 br
                 div.row
                     div.small-12.medium-8.columns
                         div.reward-input
-                            label Listing Name
-                            input(type="text", name="name", placeholder="Name of Catalog Listing")
+                            label Item Name
+                            input(type="text", name="name", placeholder="Name of Catalog Item")
                     div.small-12.medium-4.columns
                         div.reward-input
-                            label Listing Value ($)
+                            label Item Value ($)
                             input(type="text", name="value", placeholder="Value in Dollars (USD)")
                 div.row
                     div.small-12.medium-4.columns
                         div.reward-input
-                            label Listing Image
+                            label Item Image
                             div.listing-image-input-container
                                 input.hide(type="file", name="attachment_file")
                                 a.add-attachment.primary-btn-inverse.full-btn(href="javascript:;") Upload Image
@@ -67,7 +67,7 @@ block content
                                     a.primary-btn-inverse.remove-image-btn(href="javascript:;") Remove Image
                     div.small-12.medium-8.columns
                         div.reward-input
-                            label Listing Description
+                            label Item Description
                             textarea(name="description", placeholder="Item Description")
                 hr
                 div.row
@@ -79,7 +79,7 @@ block content
                 hr
                 div.row.create-actions
                     div.small-12.medium-4.medium-offset-2.columns
-                        a.create-reward.primary-btn.full-btn(href="javascript:;") Create Inventory Item
+                        a.create-reward.primary-btn.full-btn(href="javascript:;") Create Catalog Item
                     div.small-12.medium-4.columns.end
                         a.secondary-btn-inverse.full-btn(href="{% url 'reward:index' %}") Cancel
     div#gif-modal.reveal-modal.large(data-reveal)

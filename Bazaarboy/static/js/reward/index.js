@@ -7,10 +7,11 @@
       value = $('input[name=profile_search]').val();
       $('form.add-organizer-form div.organizer').remove();
       organizerModel = $('div.organizer-model');
-      return Bazaarboy.get('profile/search/', {
+      Bazaarboy.get('profile/search/', {
         keyword: value
       }, function(response) {
         var i, newProfile, profiles, _i, _ref, _results;
+        $('form.add-organizer-form div.searching').addClass('hide');
         if (response.status === 'OK') {
           profiles = response.profiles;
           if (profiles.length > 0) {
@@ -143,20 +144,10 @@
       });
       $('div#send-reward-modal a.add-reward-profile').click(function() {
         $('div#send-reward-modal div.profile-search').removeClass('hide');
-        $('div#send-reward-modal div.email-send').addClass('hide');
-        $(this).addClass('primary-btn');
-        $(this).removeClass('primary-btn-inverse');
-        $('div#send-reward-modal a.add-reward-email').removeClass('primary-btn');
-        $('div#send-reward-modal a.add-reward-email').addClass('primary-btn-inverse');
-      });
-      $('div#send-reward-modal a.add-reward-email').click(function() {
-        $('div#send-reward-modal form.add-organizer-form').empty();
         $('div#send-reward-modal div.email-send').removeClass('hide');
-        $('div#send-reward-modal div.profile-search').addClass('hide');
+        $('form.add-organizer-form div.organizer').remove();
         $(this).addClass('primary-btn');
         $(this).removeClass('primary-btn-inverse');
-        $('div#send-reward-modal a.add-reward-profile').removeClass('primary-btn');
-        $('div#send-reward-modal a.add-reward-profile').addClass('primary-btn-inverse');
       });
       $('body').on('click', 'a.send-reward-btn', function() {
         $('input[name=reward_id]').val($(this).data('id'));
@@ -168,6 +159,10 @@
       });
       add_organizer_debounce = jQuery.debounce(1000, false, scope.search_organizers);
       $('input[name=profile_search]').bind('keypress', add_organizer_debounce);
+      $('input[name=profile_search]').bind('keypress', function() {
+        $('form.add-organizer-form div.searching').removeClass('hide');
+        $('form.add-organizer-form div.organizer').remove();
+      });
       $('div#send-reward-modal a.send-via-email').click(function() {
         var email, expiration, expirationTime, quantity, rewardId;
         if (!$.isNumeric($('input[name=quantity]').val()) || $('input[name=quantity]').val() <= 0) {
@@ -197,7 +192,7 @@
             return swal({
               type: "success",
               title: 'Reward Sent',
-              text: 'You sent ' + response.reward_send.quantity + ' \'' + response.reward_send.reward.name + '\' rewards to ' + response.reward_send.email
+              text: 'You sent ' + response.reward_send.quantity + ' \'' + response.reward_send.reward.name + '\' inventory to ' + response.reward_send.email
             }, function() {
               location.reload();
             });
@@ -205,7 +200,7 @@
         });
       });
       $('body').on('click', 'a.add-reward-submit', function() {
-        var expiration, expirationTime, profileId, quantity, rewardId;
+        var expiration, expirationTime, ownerId, quantity, rewardId;
         if (!$.isNumeric($('input[name=quantity]').val()) || $('input[name=quantity]').val() <= 0) {
           swal('Quantity Must Be a Positive Number');
           return;
@@ -218,22 +213,81 @@
         }
         expirationTime = moment(expiration, 'MM/DD/YYYY').utc().format('YYYY-MM-DD HH:mm:ss');
         rewardId = $('input[name=reward_id]').val();
-        profileId = $(this).data('profile');
+        ownerId = $(this).data('profile');
         Bazaarboy.post('rewards/item/add/', {
           reward: rewardId,
-          owner: profileId,
+          owner: ownerId,
           quantity: quantity,
           expiration_time: expirationTime
         }, function(response) {
+          var responseText;
           if (response.status === 'OK') {
+            if (profileId === response.reward_item.owner.id) {
+              responseText = 'You added ' + response.reward_item.quantity + ' \'' + response.reward_item.reward.name + '\' to your inventory';
+            } else {
+              responseText = 'You sent ' + response.reward_item.quantity + ' \'' + response.reward_item.reward.name + '\' inventory to ' + response.reward_item.owner.name;
+            }
             swal({
               type: "success",
               title: 'Reward Sent',
-              text: 'You sent ' + response.reward_item.quantity + ' \'' + response.reward_item.reward.name + '\' rewards to ' + response.reward_item.owner.name
+              text: responseText
             }, function() {
               location.reload();
             });
           }
+        });
+      });
+      $('body').on('click', 'a.add-giveaway', function() {
+        var expiration, expirationTime, quantity, rewardId;
+        if (!$.isNumeric($('input[name=quantity]').val()) || $('input[name=quantity]').val() <= 0) {
+          swal('Quantity Must Be a Positive Number');
+          return;
+        }
+        quantity = Math.floor($('input[name=quantity]').val());
+        expiration = $('input[name=expiration]').val();
+        if (!moment(expiration, 'MM/DD/YYYY').isValid()) {
+          swal('Expiration Date is Not Valid');
+          return;
+        }
+        expirationTime = moment(expiration, 'MM/DD/YYYY').utc().format('YYYY-MM-DD HH:mm:ss');
+        rewardId = $('input[name=reward_id]').val();
+        swal({
+          type: 'warning',
+          title: 'Confirm Giveaway',
+          text: 'Are you sure you want to give away ' + String(quantity) + ' items?',
+          showCancelButton: true,
+          confirmButtonText: "Create Giveaway",
+          closeOnConfirm: false
+        }, function() {
+          return Bazaarboy.post('rewards/giveaway/create/', {
+            reward: rewardId,
+            quantity: quantity,
+            expiration_time: expirationTime
+          }, function(response) {
+            if (response.status === 'OK') {
+              swal({
+                type: 'success',
+                title: 'Giveaway Created',
+                text: 'Your giveaway link: https://bazaarboy.com/giveaway/' + response.giveaway.token + ' - Would you like to view the giveaway now?',
+                showCancelButton: true,
+                confirmButtonText: "View Giveaway",
+                cancelButtonText: "Close",
+                closeOnConfirm: true
+              }, function(isConfirm) {
+                if (isConfirm) {
+                  Bazaarboy.redirect('giveaway/' + response.giveaway.token);
+                } else {
+                  location.reload();
+                }
+              });
+            } else {
+              swal({
+                type: 'warning',
+                title: 'Giveaway Creation Error',
+                text: response.message
+              });
+            }
+          });
         });
       });
     }

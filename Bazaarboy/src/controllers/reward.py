@@ -43,6 +43,8 @@ def index(request, user):
         if reward.transferred is None:
             reward.transferred = 0
         reward.sent = Claim.objects.filter(item__reward = reward).count()
+        if Reward_giveaway.objects.filter(item__reward = reward).aggregate(Sum('quantity'))['quantity__sum'] is not None:
+            reward.sent += Reward_giveaway.objects.filter(item__reward = reward).aggregate(Sum('quantity'))['quantity__sum']
         reward.claimed = Claim.objects.filter(item__reward = reward, is_claimed = True).count()
         reward.redeemed = Claim.objects.filter(item__reward = reward, is_redeemed = True).count()
     reward_items = Reward_item.objects.filter(owner = profile, expiration_time__gte = timezone.now(), quantity__gt = 0, is_deleted = False).order_by('expiration_time')
@@ -50,6 +52,7 @@ def index(request, user):
         claims = Claim.objects.filter(item = item)
         item.claims = claims
         item.redeemed = claims.filter(is_redeemed = True).count()
+    giveaways = Reward_giveaway.objects.filter(item__owner = profile, item__expiration_time__gte = timezone.now(), quantity__gt = 0, item__is_deleted = False).order_by('item__expiration_time')
     publishable_key = STRIPE_PUBLISHABLE_KEY
     totalRewards = Reward_item.objects.filter(reward__creator = profile).aggregate(Sum('received'))['received__sum']
     if totalRewards is None:
@@ -84,6 +87,21 @@ def claim(request, params):
             custom_fields = simplejson.loads(claim.item.reward.extra_fields, object_pairs_hook=ordereddict.OrderedDict)
             for field in ordereddict.OrderedDict(sorted(custom_fields.items())).items():
                 extra_fields.append(field[1])
+        reward_item = claim.item
+    return render(request, 'reward/claim.html', locals())
+
+@validate('GET')
+def giveaway(request, params, token):
+    if not Reward_giveaway.objects.filter(token = token).exists():
+        giveaway = None
+    else:
+        giveaway = Reward_giveaway.objects.get(token = token)
+        extra_fields = []
+        if giveaway.item.reward.extra_fields:
+            custom_fields = simplejson.loads(giveaway.item.reward.extra_fields, object_pairs_hook=ordereddict.OrderedDict)
+            for field in ordereddict.OrderedDict(sorted(custom_fields.items())).items():
+                extra_fields.append(field[1])
+        reward_item = giveaway.item
     return render(request, 'reward/claim.html', locals())
 
 @validate('GET', ['id', 'code'])
@@ -571,6 +589,13 @@ def complete_claim(request, params):
             }
             return json_response(response)
         sendMMS = True
+    else:
+        response = {
+            'status':'FAIL',
+            'error':'INVALID_PHONE',
+            'message':'The phone number is invalid. Just use numbers (no spaces or \'-\').'
+        }
+        return json_response(response)
     if User.objects.filter(email = claim.email).exists():
         claim.owner = User.objects.get(email = claim.email)
         claim.owner.first_name = params['first_name']
@@ -645,6 +670,152 @@ def redeem(request, params, user):
     response = {
         'status':'OK',
         'claim':serialize_one(claim)
+    }
+    return json_response(response)
+
+@login_required()
+@validate('POST', ['reward', 'quantity', 'expiration_time'])
+def create_giveaway(request, params, user):
+    if not Reward.objects.filter(id = params['reward']).exists():
+        response = {
+            'status':'FAIL',
+            'error':'REWARD_NOT_FOUND',
+            'message':'The reward doesn\'t exist.'
+        }
+        return json_response(response)
+    reward = Reward.objects.get(id = params['reward'])
+    # Check if the user is a manager of the profile
+    if not Profile_manager.objects.filter(profile = reward.creator, 
+                                          user = user).exists():
+        response = {
+            'status':'FAIL',
+            'error':'NOT_A_MANAGER',
+            'message':'You don\'t have permission for the reward.'
+        }
+        return json_response(response)
+    params['quantity'] = int(params['quantity'])
+    if params['quantity'] <= 0:
+        response = {
+            'status':'FAIL',
+            'error':'NON_POSITIVE_QUANTITY',
+            'message':'Quantity must be a positive integer.'
+        }
+        return json_response(response)
+    if params['expiration_time'] < timezone.now():
+        response = {
+            'status':'FAIL',
+            'error':'EXPIRE_BEFORE_NOW',
+            'message':'The expiration date must be in the future.'
+        }
+        return json_response(response)
+    reward_item = Reward_item(reward = reward, owner = reward.creator, quantity = 0, received = params['quantity'], expiration_time = params['expiration_time'])
+    reward_item.save()
+    giveaway = Reward_giveaway(item = reward_item, quantity = params['quantity'])
+    giveaway.save()
+    response = {
+        'status':'OK',
+        'giveaway': serialize_one(giveaway),
+        'reward_item':serialize_one(reward_item)
+    }
+    return json_response(response)
+
+@validate('POST', ['giveaway_id', 'giveaway_token', 'first_name', 'last_name', 'email'], ['phone', 'extra_fields'])
+def complete_giveaway(request, params):
+    if not Reward_giveaway.objects.filter(id = params['giveaway_id'], token = params['giveaway_token']).exists():
+        response = {
+            'status':'FAIL',
+            'error':'CLAIM_NOT_FOUND',
+            'message':'The reward doesn\'t exist.'
+        }
+        return json_response(response)
+    giveaway = Reward_giveaway.objects.get(id = params['giveaway_id'])
+    if giveaway.quantity == 0:
+        response = {
+            'status':'FAIL',
+            'error':'ALL_CLAIMED',
+            'message':'Sorry, you are too late. All of the gifts have already been claimed!'
+        }
+        return json_response(response)
+    if giveaway.item.expiration_time < timezone.now():
+        response = {
+            'status':'FAIL',
+            'error':'EXPIRE_BEFORE_NOW',
+            'message':'The gift has expired.'
+        }
+        return json_response(response)
+    sendMMS = False
+    if not REGEX_EMAIL.match(params['email']):
+        response = {
+            'status':'FAIL',
+            'error':'INVALID_EMAIL',
+            'message':'You must enter a valid email address.'
+        }
+        return json_response(response)
+    if params['phone'] is not None:
+        params['phone'] = re.compile(r'[^\d]+').sub('', params['phone'])
+        if len(params['phone']) != 10:
+            response = {
+                'status':'FAIL',
+                'error':'INVALID_PHONE',
+                'message':'The phone number is invalid. Just use numbers (no spaces or \'-\').'
+            }
+            return json_response(response)
+        sendMMS = True
+    else:
+        response = {
+            'status':'FAIL',
+            'error':'INVALID_PHONE',
+            'message':'The phone number is invalid. Just use numbers (no spaces or \'-\').'
+        }
+        return json_response(response)
+    if Claim.objects.filter(owner__phone = params['phone'], item = giveaway.item).exists():
+        response = {
+            'status':'FAIL',
+            'error':'ALREADY_CLAIMED',
+            'message':'This phone # has already claimed this gift. Only one gift allowed per person.'
+        }
+        return json_response(response)
+    claim = Claim(email = params['email'], item = giveaway.item)
+    claim.save()
+    giveaway.quantity -= 1
+    giveaway.save()
+    if User.objects.filter(email = claim.email).exists():
+        claim.owner = User.objects.get(email = claim.email)
+        claim.owner.first_name = params['first_name']
+        claim.owner.last_name = params['last_name']
+    elif claim.owner is not None:
+        claim.owner.email = claim.email
+        claim.owner.first_name = params['first_name']
+        claim.owner.last_name = params['last_name']
+    else:
+        newUser = User(email = claim.email, first_name = params['first_name'], last_name = params['last_name'])
+        newUser.save()
+        claim.save()
+        claim.owner = newUser
+    claim.save()
+    claim.is_claimed = True
+    claim.claimed_time = timezone.now()
+    if params['extra_fields'] is not None:
+        try:
+            fields = json.loads(params['extra_fields'])
+        except:
+            response = {
+                'status':'FAIL',
+                'error':'INVALID_FIELD_FORMAT',
+                'message':'The extra field format is not correct.'
+            }
+            return json_response(response)
+        finally:
+            claim.extra_fields = json.dumps(fields)
+    claim.save()
+    if sendMMS:
+        claim.owner.phone = params['phone']
+        claim.owner.save()
+        sendClaimMMS(claim)
+    response = {
+        'status':'OK',
+        'claim':serialize_one(claim),
+        'giveaway':serialize_one(giveaway)
     }
     return json_response(response)
 

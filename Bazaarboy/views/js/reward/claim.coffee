@@ -9,6 +9,7 @@ Bazaarboy.reward.claim =
       infinite: false
       swipe: false
       speed: 150
+      accessibility: false
     $('a.claim-next').click () ->
       $('div.claim-views').slick('slickNext')
       return
@@ -51,7 +52,11 @@ Bazaarboy.reward.claim =
           scope.claiming = false
           return
         params.extra_fields = JSON.stringify(extra_fields)
-        Bazaarboy.post 'rewards/claim/complete/', params, (response) ->
+        if isGiveaway
+          targetUrl = 'rewards/giveaway/complete/'
+        else
+          targetUrl = 'rewards/claim/complete/'
+        Bazaarboy.post targetUrl, params, (response) ->
           scope.claiming = false
           $('input.submit-claim').val('Claim!')
           if response.status is 'OK'
