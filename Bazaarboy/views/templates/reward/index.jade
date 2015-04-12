@@ -37,9 +37,9 @@ block content
                     div.action
                         a.transfer-inventory-start.primary-btn.full-btn(href="javascript:;") + Transfer Inventory
                 {% endif %}
-                //div.small-12.medium-4.columns.end
+                div.small-12.medium-4.columns.end
                     div.action
-                        a.primary-btn.full-btn(href="javascript:;") + Request Inventory
+                        a.primary-btn.full-btn(href="{% url 'reward:request' %}") + Request Inventory
     div#wrapper-reward-dashboard.large-9.medium-10.columns.small-centered
         div#reward-dashboard
             {% if rewards.count == 0 and reward_items.count == 0 %}

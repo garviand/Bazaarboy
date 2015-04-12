@@ -12835,6 +12835,27 @@ div#gif-modal div.gifs div.gif:hover {
 div#gif-modal div.gifs div.gif:hover img {
   border: #4a4a4a 2px solid;
 }
+div#wrapper-request-reward div#request-reward div.section-title {
+  margin-top: 40px;
+}
+div#wrapper-request-reward div#request-reward form#request-reward-form {
+  margin-top: 20px;
+}
+div#wrapper-request-reward div#request-reward form#request-reward-form input[type="text"] {
+  padding-top: 9px;
+  padding-bottom: 9px;
+}
+div#wrapper-request-reward div#request-reward form#request-reward-form div.or {
+  margin-top: 10px;
+  margin-bottom: 20px;
+  font-weight: bold;
+}
+div#wrapper-request-reward div#request-reward form#request-reward-form div.reward-input {
+  margin-bottom: 20px;
+}
+div#wrapper-request-reward div#request-reward form#request-reward-form div.reward-input textarea.request-message {
+  height: 150px !important;
+}
 div#claim {
   min-width: 100%;
   min-height: 100%;

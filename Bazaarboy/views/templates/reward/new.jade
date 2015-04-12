@@ -32,9 +32,9 @@ block content
                 div.small-12.medium-4.columns.end
                     div.action
                         a.transfer-inventory-start.primary-btn.full-btn(href="{% url 'reward:index' %}") + Transfer Inventory
-                //div.small-12.medium-4.columns.end
+                div.small-12.medium-4.columns.end
                     div.action
-                        a.primary-btn.full-btn(href="javascript:;") + Request Inventory
+                        a.primary-btn.full-btn(href="{% url 'reward:request' %}") + Request Inventory
     div#wrapper-new-reward.large-9.medium-10.columns.small-centered
         div#new-reward
             div.section-title

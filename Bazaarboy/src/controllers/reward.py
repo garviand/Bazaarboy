@@ -16,7 +16,7 @@ from src.email import sendReward, sendRewardSend
 from src.config import *
 from datetime import timedelta
 from django.utils import timezone
-from src.regex import REGEX_EMAIL, REGEX_NAME, REGEX_SLUG
+from src.regex import REGEX_EMAIL, REGEX_NAME, REGEX_SLUG, REGEX_URL
 from django.shortcuts import render, redirect
 from django.db.models import F, Q, Count
 from src.sms import sendClaimMMS
@@ -75,6 +75,79 @@ def new(request, user):
     profiles = Profile.objects.filter(managers = user)
     profile = profiles[0]
     return render(request, 'reward/new.html', locals())
+
+@login_required()
+def request(request, user):
+    """
+    Rewards Request Page
+    """
+    profiles = Profile.objects.filter(managers = user)
+    profile = profiles[0]
+    return render(request, 'reward/request.html', locals())
+
+@login_required()
+@validate('POST', ['message', 'sender'], ['profile', 'email', 'event_url'])
+def create_request(request, params, user):
+    """
+    Create Reward Request
+    """
+    if not Profile.objects.filter(id = params['sender']).exists():
+        response = {
+            'status':'FAIL',
+            'error':'PROFILE_NOT_FOUND',
+            'message':'The profile doesn\'t exist.'
+        }
+        return json_response(response)
+    sender = Profile.objects.get(id = params['sender'])
+    if not Profile_manager.objects.filter(profile = sender, 
+                                          user = user).exists():
+        response = {
+            'status':'FAIL',
+            'error':'NOT_A_MANAGER',
+            'message':'You don\'t have permission for the profile.'
+        }
+        return json_response(response)
+    if params['profile'] is None or params['profile'].strip() != '':
+        if not Profile.objects.filter(id = params['profile']).exists():
+            response = {
+                'status':'FAIL',
+                'error':'PROFILE_NOT_FOUND',
+                'message':'The profile doesn\'t exist.'
+            }
+            return json_response(response)
+        profile = Profile.objects.get(id = params['profile'])
+        reward_request = Reward_request(sender = sender, profile = profile, message = params['message'])
+    elif params['email']:
+        if not REGEX_EMAIL.match(params['email']):
+            response = {
+                'status':'FAIL',
+                'error':'BAD_EMAIL',
+                'message':'Please enter a valid email address.'
+            }
+            return json_response(response)
+        reward_request = Reward_request(sender = sender, email = params['email'], message = params['message'])
+    else:
+        response = {
+            'status':'FAIL',
+            'error':'ERROR',
+            'message':'There was an error sending the request.'
+        }
+        return json_response(response)
+    if params['event_url'] is not None:
+        if not REGEX_URL.match(params['event_url']):
+            response = {
+                'status':'FAIL',
+                'error':'BAD_URL',
+                'message':'The event link you entered is not a valid url. (Remember to include http:// or https://)'
+            }
+            return json_response(response)
+        reward_request.event_url = params['event_url']
+    reward_request.save()
+    response = {
+        'status':'OK',
+        'reward_request':serialize_one(reward_request)
+    }
+    return json_response(response)
 
 @validate('GET', ['id', 'token'])
 def claim(request, params):

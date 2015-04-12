@@ -545,6 +545,30 @@ class Reward_send(models.Model):
             self.token = uuid.uuid4().hex
         super(Reward_send, self).save(*args, **kwargs)
 
+class Reward_request(models.Model):
+    """
+    A reward request
+    """
+    sender = models.ForeignKey('Profile', related_name = 'recipient')
+    profile = models.ForeignKey('Profile', null = True, default = None, related_name = 'vendor')
+    user = models.ForeignKey('User', null = True, default = None)
+    email = models.CharField(max_length = 150, null = True, default = None)
+    message = models.CharField(max_length = 1000, default = '')
+    event_url = models.CharField(max_length = 250, null = True, default = None)
+    code = models.CharField(max_length = 30)
+    is_completed = models.BooleanField(default = False)
+    item = models.ForeignKey('Reward_item', null = True, default = None)
+    is_rejected = models.BooleanField(default = False)
+    created_time = models.DateTimeField(auto_now_add = True)
+
+    def save(self, *args, **kwargs):
+        """
+        Overrides save to generate confirmation code
+        """
+        if self.pk is None:
+            self.code = randomConfirmationCode(30)
+        super(Reward_request, self).save(*args, **kwargs)
+
 class Reward_giveaway(models.Model):
     """
     A reward giveaway
