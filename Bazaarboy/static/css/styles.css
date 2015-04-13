@@ -12792,6 +12792,8 @@ div#wrapper-reward-dashboard div#reward-dashboard div.rewards div.reward-catalog
 }
 div#wrapper-reward-dashboard div#reward-dashboard div.rewards div.reward-inventory {
   margin-top: 10px;
+  padding-left: 6px;
+  padding-right: 6px;
 }
 div#wrapper-reward-dashboard div#reward-dashboard div.rewards div.reward-inventory.is-deleted {
   display: none;
@@ -12871,7 +12873,7 @@ div#wrapper-reward-dashboard div#reward-dashboard div.rewards div.reward-invento
   font-style: italic;
 }
 div#wrapper-reward-dashboard div#reward-dashboard div.rewards div.reward-inventory div.reward div.reward-stats {
-  font-size: 13px;
+  font-size: 10px;
 }
 div#wrapper-reward-dashboard div#reward-dashboard div.rewards div.reward-inventory div.reward div.reward-stats div.reward-expires-container {
   padding-right: 0;

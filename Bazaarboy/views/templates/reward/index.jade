@@ -60,7 +60,7 @@ block content
                 div.headline CURRENT INVENTORY
             div.rewards.row
                 {% for giveaway in giveaways %}
-                div.reward-inventory.giveaway.small-12.medium-6.columns.end(data-id="{{ reward_item.id }}")
+                div.reward-inventory.giveaway.small-12.medium-4.columns.end(data-id="{{ reward_item.id }}")
                     div.reward
                         div.reward-top.row
                             div.small-12.columns
@@ -91,7 +91,7 @@ block content
                             div.small-12.columns
                                 div.row
                                     div.small-12.columns
-                                        div.description {{ giveaway.item.reward.description|truncatechars:200 }}
+                                        div.description {{ giveaway.item.reward.description|truncatechars:150 }}
                                 div.row
                                     div.actions-container.text-center
                                         div.small-12.medium-6.columns.send-container
@@ -102,7 +102,7 @@ block content
                                                 a.discard-reward-item(data-id="{{ giveaway.item.id }}", data-type="giveaway") End Giveaway
                 {% endfor %}
                 {% for reward_item in reward_items %}
-                div.reward-inventory.small-12.medium-6.columns.end(data-id="{{ reward_item.id }}")
+                div.reward-inventory.small-12.medium-4.columns.end(data-id="{{ reward_item.id }}")
                     div.reward
                         div.reward-top.row
                             div.small-12.columns
@@ -132,7 +132,7 @@ block content
                             div.small-12.columns
                                 div.row
                                     div.small-12.columns
-                                        div.description {{ reward_item.reward.description|truncatechars:200 }}
+                                        div.description {{ reward_item.reward.description|truncatechars:150 }}
                                 div.row
                                     div.actions-container.text-center
                                         div.small-12.medium-6.columns.send-container
