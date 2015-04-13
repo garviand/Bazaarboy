@@ -1,0 +1,89 @@
+extends ../layout
+
+block title
+    | Request Inventory
+
+append head
+    link(rel="stylesheet", href="{{ STATIC_URL }}jQueryUI/jquery-ui.css")
+
+block sidebar
+    +sidebarItem('ss-newspaper')(href="{% url 'index' %}")
+        | Events
+    +sidebarItem('ss-database')(href="{% url 'list:index' %}")
+        | Lists
+    +sidebarItem('ss-tag')(href="{% url 'reward:index' %}", class="selected")
+        | Gifts
+    +sidebarItem('ss-share')(href="{% url 'user:settings' %}")
+        | Settings
+
+block header
+    div.header-title.large-9.medium-10.columns.small-centered
+        div.row.clearfix
+            div.icon.left
+                span.ss-file
+            div.text.left
+                | Gift Management |
+                span.sub &nbsp; Request Inventory
+
+block content
+    div#rewards-header
+        div.large-9.medium-10.columns.small-centered
+            div.row.reward-actions
+                div.small-12.medium-4.columns.end
+                    div.action
+                        a.primary-btn.full-btn(href="{% url 'reward:new' %}") + Create Catalog Item
+                div.small-12.medium-4.columns.end
+                    div.action
+                        a.transfer-inventory-start.primary-btn.full-btn(href="{% url 'reward:index' %}") + Transfer Inventory
+                div.small-12.medium-4.columns.end
+                    div.action
+                        a.primary-btn.full-btn(href="javascript:;") + Request Inventory
+    div#wrapper-request-reward.large-9.medium-10.columns.small-centered
+        div#request-reward
+            div.section-title
+                div.headline Request Item
+            form#request-reward-form
+                {% csrf_token %}
+                input(type="hidden", name="sender", value="{{ profile.id }}")
+                input(type="hidden", name="profile", value="")
+                br
+                div.row
+                    div.small-12.columns
+                        div.reward-input
+                            label Search Existing Bazaarboy Accounts
+                            input(type="text", name="search_name", placeholder="Name of Organization")
+                div.row
+                    div.small-12.columns.text-center
+                        div.or OR
+                div.row
+                    div.small-12.columns
+                        div.reward-input
+                            label Enter Email
+                            input(type="text", name="email", placeholder="Organization Email")
+                hr
+                div.row
+                    div.small-12.columns
+                        div.reward-input
+                            label Request Message
+                            textarea.request-message(name="message", placeholder="Enter your request here. Include information about your organization and also the demographics of your audience (ex. mostly females, college students, or baseball fans).")
+                div.row
+                    div.small-12.columns
+                        div.reward-input
+                            label If this request is for an event, please paste the event URL below:
+                            input(type="text", name="event_url", placeholder="Event URL (include http:// or https://)")
+                hr
+                div.row.create-actions
+                    div.small-12.medium-4.medium-offset-2.columns
+                        a.create-request.primary-btn.full-btn(href="javascript:;") Send Request
+                    div.small-12.medium-4.columns.end
+                        a.secondary-btn-inverse.full-btn(href="{% url 'reward:index' %}") Cancel
+
+                    
+
+
+append script
+    script.
+        var profileId = {{ profile.id }};
+    script(type="text/javascript", src="{{ STATIC_URL }}jQueryUI/jquery-ui.min.js")
+    script(type="text/javascript", src="{{ STATIC_URL }}jQueryUI/jquery-ui.autocomplete.html.js")
+    script(src="{{ STATIC_URL }}js/reward/request.js")

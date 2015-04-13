@@ -34,7 +34,7 @@ def index(request, user):
     """
     profiles = Profile.objects.filter(managers = user)
     profile = profiles[0]
-    rewards = Reward.objects.filter(creator = profile).order_by('is_deleted')
+    rewards = Reward.objects.filter(creator = profile).order_by('is_deleted', '-id')
     deletedRewards = Reward.objects.filter(creator = profile).count()
     for reward in rewards:
         items = Reward_item.objects.filter(reward = reward)
@@ -842,7 +842,7 @@ def send_inventory(reward, recipients, expiration):
 @login_required()
 @validate('GET', ['q'])
 def search_gifs(request, params, user):
-    g = Giphy()
+    g = Giphy(api_key = TMPmG4qReCxZC)
     results = [x for x in g.search(term=params['q'], limit=12)]
     response = {
         'status':'OK',

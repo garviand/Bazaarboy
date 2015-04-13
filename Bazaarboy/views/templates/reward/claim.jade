@@ -30,6 +30,10 @@ block body
                                 div.row.claim-success
                                     div.small-12.columns
                                         | Sorry, you are too late. All the gifts have been claimed!
+                                {% elif giveaway and giveaway.item.is_deleted %}
+                                div.row.claim-success
+                                    div.small-12.columns
+                                        | Sorry, this giveaway has ended.
                                 {% else %}
                                 div.claim-views
                                     div.claim-description
