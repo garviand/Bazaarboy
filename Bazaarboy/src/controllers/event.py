@@ -305,16 +305,23 @@ def manage(request, id, params, user):
                 }
             }
             try:
-                fields = json.loads(item.extra_fields)
+                extra_fields = json.loads(item.ticket.extra_fields)
             except:
-                response = {
-                    'status':'FAIL',
-                    'error':'INVALID_FIELD_FORMAT',
-                    'message':'The extra field format is not correct.'
-                }
-                return json_response(response)
+                pass
             finally:
-                purchases[item.purchase.id]['extra_fields'] = fields
+                try:
+                    item.extra_fields = item.extra_fields.replace("\'", "\"")
+                    item.extra_fields = item.extra_fields.replace("u\"", "\"")
+                    item.extra_fields = item.extra_fields.replace("\"d", "\'d")
+                    item.extra_fields = item.extra_fields.replace("\"s", "\'s")
+                    item_fields = json.loads(item.extra_fields)
+                except:
+                    pass
+                finally:
+                    if type(item_fields) is dict:
+                        purchases[item.purchase.id]['extra_fields'] = item_fields
+                    else:
+                        purchases[item.purchase.id]['extra_fields'] = {}
     tickets = Ticket.objects.filter(event=event, is_deleted=False)
     ticket_list = {}
     for item in purchase_items:
