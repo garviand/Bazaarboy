@@ -178,7 +178,7 @@ def index(request, params, user):
     return render(request, 'index/index.html', locals())
 
 @login_check()
-@validate('GET', [], ['next', 'code', 'requestid', 'requestc', 'rewid', 'rewtok'])
+@validate('GET', [], ['next', 'code', 'requestid', 'requestc', 'rewid', 'rewtok', 'rewardreqid'])
 def login(request, user, params):
     """
     Login Page
@@ -196,10 +196,14 @@ def login(request, user, params):
         if params['rewid'] and params['rewtok']:
             if Reward_send.objects.filter(id = params['rewid'], token = params['rewtok']).exists():
                 reward_send = Reward_send.objects.get(id = params['rewid'])
+        if params['rewardreqid'] and params['requestc']:
+            if Reward_request.objects.filter(id = params['rewardreqid'], code = params['requestc']).exists():
+                reward_request = Reward_request.objects.get(id = params['rewardreqid'])
+
         return render(request, 'index/login.html', locals())
 
 @login_check()
-@validate('GET', [], ['next', 'code', 'requestid', 'requestc', 'rewid', 'rewtok', 'sem'])
+@validate('GET', [], ['next', 'code', 'requestid', 'requestc', 'rewid', 'rewtok', 'sem', 'rewardreqid'])
 def register(request, user, params):
     """
     Register Page
@@ -219,6 +223,9 @@ def register(request, user, params):
         if params['rewid'] and params['rewtok']:
             if Reward_send.objects.filter(id = params['rewid'], token = params['rewtok']).exists():
                 reward_send = Reward_send.objects.get(id = params['rewid'])
+        if params['rewardreqid'] and params['requestc']:
+            if Reward_request.objects.filter(id = params['rewardreqid'], code = params['requestc']).exists():
+                reward_request = Reward_request.objects.get(id = params['rewardreqid'])
         return render(request, 'index/register.html', locals())
 
 @login_check()

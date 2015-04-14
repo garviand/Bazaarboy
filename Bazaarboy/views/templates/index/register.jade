@@ -12,7 +12,7 @@ block body
                     form#register-form
                         div.row
                             div.small-10.small-offset-1.columns
-                                {% if not organizer_request and not reward_send %}
+                                {% if not organizer_request and not reward_send and not reward_request %}
                                 div.row
                                     div.small-12.medium-7.columns.text-center
                                         div.logo-small &nbsp;
@@ -22,6 +22,19 @@ block body
                                         span.page-title
                                             span.hide-for-small-only &nbsp;&nbsp;|&nbsp;
                                             | &nbsp;Register
+                                {% elif reward_request %}
+                                div.row
+                                    div.small-12.columns.text-center.request_logo_container
+                                        img.request_logo(src="{{ reward_request.sender.image.source.url }}")
+                                div.row
+                                    div.small-12.columns.request_info
+                                        b '{{ reward_request.sender.name }}' has requested an item:
+                                        br
+                                        br
+                                        | {{ reward_request.message }}
+                                        br
+                                        br
+                                        | Create an account to respond to the request!
                                 {% elif organizer_request %}
                                 div.row
                                     div.small-12.columns.text-center.request_logo_container
@@ -72,13 +85,17 @@ block body
                                         input(type="hidden", name="reward_id", value="{{ reward_send.id }}")
                                         input(type="hidden", name="reward_token", value="{{ reward_send.token }}")
                                         {% endif %}
+                                        {% if reward_request %}
+                                        input(type="hidden", name="reward_request_id", value="{{ reward_request.id }}")
+                                        input(type="hidden", name="reward_request_code", value="{{ reward_request.code }}")
+                                        {% endif %}
                                         input.primary-btn.full-btn.submit-register(type="submit", value="Create Bazaarboy Account")
                 div#footer
                     div.row
                         div.small-10.small-offset-1.columns
                             div.row
                                 div.small-12.medium-4.medium-offset-8.columns.end
-                                    a.switch(href="{% url 'index:login' %}{% if reward_send %}?rewid={{ reward_send.id }}&rewtok={{ reward_send.token }}{% endif %}{% if next %}?next={{ next }}{% endif %}{% if code %}&code={{ code }}{% endif %}{% if organizer_request %}?requestid={{ organizer_request.id }}&requestc={{ organizer_request.code }}{% endif %}") Login
+                                    a.switch(href="{% url 'index:login' %}{% if reward_request %}?rewardreqid={{ reward_request.id }}&requestc={{ reward_request.code }}{% endif %}{% if reward_send %}?rewid={{ reward_send.id }}&rewtok={{ reward_send.token }}{% endif %}{% if next %}?next={{ next }}{% endif %}{% if code %}&code={{ code }}{% endif %}{% if organizer_request %}?requestid={{ organizer_request.id }}&requestc={{ organizer_request.code }}{% endif %}") Login
 
 append script
     script(src="https://dme0ih8comzn4.cloudfront.net/js/feather.js")

@@ -31,21 +31,39 @@ Bazaarboy.reward.index =
     $('a.discard-reward-item').click () ->
       itemId = $(this).data('id')
       itemContainer = $(this).closest('div.reward-inventory')
-      swal
-        type: 'warning'
-        title: 'Discard Inventory'
-        text: 'Are you sure? If you discard this inventory, you will no longer be able to distribute it.'
-        showCancelButton: true
-        confirmButtonText: "Discard"
-        closeOnConfirm: true
-        , () ->
-          Bazaarboy.post 'rewards/item/delete/', {item:itemId}, (response) ->
-            if response.status is 'OK'
-              swal
-                title: 'Discarded'
-                text: 'The item has been discarded.'
-              itemContainer.remove()
-            return
+      discardItem = false
+      if $(this).data('type') == 'inventory'
+        swal
+          type: 'warning'
+          title: 'Discard Inventory'
+          text: 'Are you sure? If you discard this inventory, you will no longer be able to distribute it.'
+          showCancelButton: true
+          confirmButtonText: "Discard"
+          closeOnConfirm: false
+          , () ->
+            Bazaarboy.post 'rewards/item/delete/', {item:itemId}, (response) ->
+              if response.status is 'OK'
+                swal
+                  title: 'Discarded'
+                  text: 'The item has been discarded.'
+                itemContainer.remove()
+              return
+      if $(this).data('type') == 'giveaway'
+        swal
+          type: 'warning'
+          title: 'End Giveaway'
+          text: 'Are you sure? Note: all gifts already claimed will still be valid.'
+          showCancelButton: true
+          confirmButtonText: "End Giveaway"
+          closeOnConfirm: false
+          , () ->
+            Bazaarboy.post 'rewards/item/delete/', {item:itemId}, (response) ->
+              if response.status is 'OK'
+                swal
+                  title: 'Discarded'
+                  text: 'The item has been discarded.'
+                itemContainer.remove()
+              return
       return
     # DELETE REWARD
     $('a.delete-reward').click () ->

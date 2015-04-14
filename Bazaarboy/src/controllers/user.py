@@ -128,7 +128,7 @@ def settings(request, user):
     return render(request, 'user/settings.html', locals())
 
 @login_check()
-@validate('POST', ['email', 'password', 'first_name', 'last_name'], ['request_id', 'request_code', 'reward_id', 'reward_token', 'organization_name', 'logo_id'])
+@validate('POST', ['email', 'password', 'first_name', 'last_name'], ['request_id', 'request_code', 'reward_id', 'reward_token', 'organization_name', 'logo_id', 'reward_request_id', 'reward_request_code'])
 def create(request, params, user):
     """
     Create a new user using email and password
@@ -218,6 +218,16 @@ def create(request, params, user):
                                          is_creator = True)
         profileManager.save()
         sendNewAccountEmail(profile)
+        if params['reward_request_id'] is not None and params['reward_request_code'] is not None:
+            if Reward_request.objects.filter(id = params['reward_request_id'], code = params['reward_request_code'], profile__isnull = True).exists():
+                reward_request = Reward_request.objects.get(id = params['reward_request_id'])
+                reward_request.profile = profile
+                reward_request.save()
+                request.session['user'] = user.id
+                response = {
+                    'status':'REWARD_REQUEST'
+                }
+                return json_response(response)
         if params['reward_id'] is not None and params['reward_token'] is not None:
             if Reward_send.objects.filter(id = params['reward_id'], token = params['reward_token']).exists():
                 reward_send = Reward_send.objects.get(id = params['reward_id'])
@@ -249,7 +259,7 @@ def create(request, params, user):
     return json_response(response)
 
 @login_check()
-@validate('POST', ['email', 'password'], ['request_id', 'request_code', 'reward_id', 'reward_token'])
+@validate('POST', ['email', 'password'], ['request_id', 'request_code', 'reward_id', 'reward_token', 'reward_request_id', 'reward_request_code'])
 def auth(request, params, user):
     """
     Authenticate a user using email and password
@@ -277,6 +287,17 @@ def auth(request, params, user):
                 return json_response(response)
             # Email and password match, start session
             request.session['user'] = user.id
+            # LOOK FOR DIFFERENT MODELS TO ATTACH TO PROFILE
+            if Profile.objects.filter(managers = user).exists() and params['reward_request_id'] and params['reward_request_code']:
+                profile = Profile.objects.filter(managers = user)[0]
+                if Reward_request.objects.filter(id = params['reward_request_id'], code = params['reward_request_code'], profile__isnull = True).exists():
+                    reward_request = Reward_request.objects.get(id = params['reward_request_id'])
+                    reward_request.profile = profile
+                    reward_request.save()
+                    response = {
+                        'status':'REWARD_REQUEST'
+                    }
+                    return json_response(response)
             if Profile.objects.filter(managers = user).exists() and params['request_id'] and params['request_code']:
                 profile = Profile.objects.filter(managers = user)[0]
                 if Collaboration_request.objects.filter(id = params['request_id'], code = params['request_code'], profile__isnull = True).exists():

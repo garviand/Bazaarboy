@@ -20,7 +20,7 @@ block header
     div.header-title.large-9.medium-10.columns.small-centered
         div.row.clearfix
             div.icon.left
-                span.ss-file
+                span.ss-box
             div.text.left
                 | Gift Management |
                 span.sub &nbsp;All Gifts
@@ -60,111 +60,146 @@ block content
                 div.headline CURRENT INVENTORY
             div.rewards.row
                 {% for giveaway in giveaways %}
-                div.reward-inventory.small-12.medium-6.columns.end(data-id="{{ reward_item.id }}")
+                div.reward-inventory.giveaway.small-12.medium-4.columns.end(data-id="{{ reward_item.id }}")
                     div.reward
-                        div.reward-info-container
-                            div.reward-info
-                                div.row
-                                    div.small-12.medium-5.columns
-                                        div.price GIVEAWAY
-                                    div.small-12.medium-7.columns.text-right
-                                        div.quantity 
-                                            span.sent-number {{ giveaway.quantity|subtract:giveaway.item.received }}
-                                            |/{{ giveaway.item.received }} Claimed
-                                        div.created Expires in {{ giveaway.item.expiration_time|daysUntil }}
+                        div.reward-top.row
+                            div.small-12.columns
+                                div.reward-image(style="background:url({{ giveaway.item.reward.attachment.source.url }}); background-size:cover; background-position:center center;")
+                                    div.reward-alert GIVEAWAY
+                                    div.reward-name.headline ${{ giveaway.item.reward.value|floatformat:0 }} &middot; {{ giveaway.item.reward.name }}
+                        div.reward-middle.row
+                            div.small-12.columns
+                                div.from-container
+                                    div.from
+                                        {% if giveaway.item.reward.creator.image %}
+                                        img.logo(src="{{ giveaway.item.reward.creator.image.source.url }}")
+                                        {% endif %}
+                                        div.from-text
+                                            span.light from
+                                            br
+                                            span {{ giveaway.item.reward.creator.name }}
+                        div.reward-stats.row
+                            div.small-12.medium-6.columns.text-center.reward-expires-container
+                                div.reward-expires
+                                    span EXPIRES
+                                    span.heavy &nbsp;{{ giveaway.item.expiration_time|date:'m/d/y' }}
+                            div.small-12.medium-6.columns.text-center.reward-sent-container
+                                div.reward-sent
+                                    span.sent-number {{ giveaway.quantity|subtract:giveaway.item.received }}
+                                    span &nbsp;/ {{ giveaway.item.received }} Claimed
+                        div.reward-bottom.row
+                            div.small-12.columns
                                 div.row
                                     div.small-12.columns
-                                        div.description 
-                                            div.reward-neutral.name.headline {{ giveaway.item.reward.name }}
-                                            div.reward-hover {{ giveaway.item.reward.description|truncatechars:80 }}
-                        div.reward-actions.text-center
-                            div.reward-action
+                                        div.description {{ giveaway.item.reward.description|truncatechars:150 }}
                                 div.row
-                                    div.small-12.medium-6.columns.end
-                                        a(href="{% url 'giveaway' giveaway.token %}", target="_blank") View Link
-                                    div.small-12.medium-6.columns.end
-                                        a.discard-reward-item(data-id="{{ giveaway.item.id }}") End Giveaway
-                            div.reward-action
+                                    div.actions-container.text-center
+                                        div.small-12.medium-6.columns.send-container
+                                            div.action
+                                                a(href="{% url 'giveaway' giveaway.token %}", target="_blank") View Link
+                                        div.small-12.medium-6.columns.discard-container
+                                            div.action
+                                                a.discard-reward-item(data-id="{{ giveaway.item.id }}", data-type="giveaway") End Giveaway
                 {% endfor %}
                 {% for reward_item in reward_items %}
-                div.reward-inventory.small-12.medium-6.columns.end(data-id="{{ reward_item.id }}")
+                div.reward-inventory.small-12.medium-4.columns.end(data-id="{{ reward_item.id }}")
                     div.reward
-                        div.reward-info-container
-                            div.reward-info
-                                div.row
-                                    div.small-12.medium-5.columns
-                                        div.price.headline ${{ reward_item.reward.value|floatformat:2 }}
-                                    div.small-12.medium-7.columns.text-right
-                                        div.quantity 
-                                            span.sent-number {{ reward_item.quantity|subtract:reward_item.received }}
-                                            |/{{ reward_item.received }} Sent
-                                        div.created Expires in {{ reward_item.expiration_time|daysUntil }}
+                        div.reward-top.row
+                            div.small-12.columns
+                                div.reward-image(style="background:url({{ reward_item.reward.attachment.source.url }}); background-size:cover; background-position:center center;")
+                                    div.reward-name.headline ${{ reward_item.reward.value|floatformat:0 }} &middot; {{ reward_item.reward.name }}
+                        div.reward-middle.row
+                            div.small-12.columns
+                                div.from-container
+                                    div.from
+                                        {% if reward_item.reward.creator.image %}
+                                        img.logo(src="{{ reward_item.reward.creator.image.source.url }}")
+                                        {% endif %}
+                                        div.from-text
+                                            span.light from
+                                            br
+                                            span {{ reward_item.reward.creator.name }}
+                        div.reward-stats.row
+                            div.small-12.medium-6.columns.text-center.reward-expires-container
+                                div.reward-expires
+                                    span EXPIRES
+                                    span.heavy &nbsp;{{ reward_item.expiration_time|date:'m/d/y' }}
+                            div.small-12.medium-6.columns.text-center.reward-sent-container
+                                div.reward-sent
+                                    span.sent-number {{ reward_item.quantity|subtract:reward_item.received }}
+                                    span &nbsp;/ {{ reward_item.received }} Sent
+                        div.reward-bottom.row
+                            div.small-12.columns
                                 div.row
                                     div.small-12.columns
-                                        div.description 
-                                            div.reward-neutral.name.headline {{ reward_item.reward.name }}
-                                            div.reward-hover {{ reward_item.reward.description|truncatechars:80 }}
-                        div.reward-actions.text-center
-                            div.reward-action
+                                        div.description {{ reward_item.reward.description|truncatechars:150 }}
                                 div.row
-                                    div.small-12.medium-4.columns.end
-                                        a(href="{{ reward_item.reward.attachment.source.url }}", target="_blank") View
-                                    div.small-12.medium-4.columns.end
-                                        a.send-gift-item(href="javascript:;", data-id="{{ reward_item.id }}", data-quantity="{{ reward_item.quantity }}", data-name="{{ reward_item.reward.name }}") Send
-                                    div.small-12.medium-4.columns.end
-                                        a.discard-reward-item(data-id="{{ reward_item.id }}") Discard
-                            div.reward-action
+                                    div.actions-container.text-center
+                                        div.small-12.medium-6.columns.send-container
+                                            div.action
+                                                a.send-gift-item(href="javascript:;", data-id="{{ reward_item.id }}", data-quantity="{{ reward_item.quantity }}", data-name="{{ reward_item.reward.name }}") Send Item
+                                        div.small-12.medium-6.columns.discard-container
+                                            div.action
+                                                a.discard-reward-item(data-id="{{ reward_item.id }}", data-type="inventory") Discard
+                                     
+
+
                 {% endfor %}
             {% endif %}
-            {% if rewards.count > 0%}
+            {% if rewards.count > 0 %}
             div.section-title
                 div.headline GIFT CATALOG
             div.rewards.catalog-rewards.row
                 {% for reward in rewards %}
-                div.reward-catalog.small-12.medium-6.columns.end(class="{% if reward.is_deleted %}is-deleted{% endif %}")
+                div.reward-catalog.small-12.columns.end(class="{% if reward.is_deleted %}is-deleted{% endif %}")
                     div.reward
-                        div.reward-info-container
-                            div.reward-info
-                                div.row
-                                    div.small-12.medium-5.columns
-                                        div.price.headline ${{ reward.value|floatformat:2 }}
-                                    div.small-12.medium-7.columns.text-right
-                                        div.created Created: {{ reward.created_time|date:'m/d/y' }}
-                                div.row
-                                    div.small-12.columns
-                                        div.name.headline {{ reward.name }}
-                                div.row
-                                    div.small-12.columns
-                                        div.description 
-                                            div.reward-neutral {{ reward.description|truncatechars:125 }}
-                                            div.reward-hover
-                                                div.stat ${{ reward.transferred|multiply:reward.value|floatformat:2 }} Transferred
-                                                div.stat ${{ reward.sent|multiply:reward.value|floatformat:2 }} Sent
-                                                div.stat ${{ reward.claimed|multiply:reward.value|floatformat:2 }} Claimed
-                                                div.stat ${{ reward.redeemed|multiply:reward.value|floatformat:2 }} Redeemed
-
-                            div.reward-stats
-                                div.row.text-center
-                                    div.small-12.medium-6.columns
-                                        div.reward-stat {{ reward.transferred }} Transferred
-                                    div.small-12.medium-6.columns
-                                        div.reward-stat {{ reward.sent }} Sent
-                                    div.small-12.medium-6.columns
-                                        div.reward-stat {{ reward.claimed }} Claimed
-                                    div.small-12.medium-6.columns
-                                        div.reward-stat {{ reward.redeemed }} Redeemed
-                            div.reward-actions.text-center.reward-hover
-                                div.reward-action
-                                    div.row
-                                        div.small-12.medium-4.columns.end
-                                            a(href="{{ reward.attachment.source.url }}", target="_blank") View
-                                        div.small-12.medium-4.columns.end
-                                            a(href="{% url 'reward:manage' reward.id %}") Claims
-                                        div.small-12.medium-4.columns.end
-                                            a.delete-reward(data-id="{{ reward.id }}") Delete
-                        div.reward-actions.text-center
-                            div.reward-action
-                                a.send-reward-btn(href="javascript:;", data-id="{{ reward.id }}", data-name="{{ reward.name }}") Use Catalog Item
+                        div.reward-top.row
+                            div.small-12.medium-8.columns
+                                div.item-name-container
+                                    div.item-name.headline {{ reward.name }}
+                            div.small-12.medium-4.columns.text-right
+                                div.item-name-container
+                                    div.item-name
+                                        span.title ACTIVE SINCE
+                                        br
+                                        span.date {{ reward.created_time|date:'m/d/y' }}
+                        div.reward-middle.row
+                            div.small-12.medium-5.columns.actions-container
+                                div.actions
+                                    a(href="{% url 'reward:manage' reward.id %}")
+                                        div.action-text View Claims
+                                    a.send-reward-btn(href="javascript:;", data-id="{{ reward.id }}", data-name="{{ reward.name }}")
+                                        div.action-text Use Catalog Item
+                            div.small-12.medium-7.columns.stats-container.text-center
+                                div.stats.row.stats-neutral
+                                    div.small-12.medium-4.columns
+                                        div.stat-container
+                                            div.stat.claimed {{ reward.claimed }} Claimed
+                                    div.small-12.medium-4.columns
+                                        div.stat-container
+                                            div.stat {{ reward.redeemed }} Redeemed
+                                    div.small-12.medium-4.columns
+                                        div.stat-container
+                                            div.stat {{ reward.transferred }} Transferred
+                                div.stats.row.stats-hover
+                                    div.small-12.medium-4.columns
+                                        div.stat-container
+                                            div.stat.claimed ${{ reward.claimed|multiply:reward.value|floatformat:2 }}<br />Claimed
+                                    div.small-12.medium-4.columns
+                                        div.stat-container
+                                            div.stat ${{ reward.redeemed|multiply:reward.value|floatformat:2 }}<br />Redeemed
+                                    div.small-12.medium-4.columns
+                                        div.stat-container
+                                            div.stat ${{ reward.transferred|multiply:reward.value|floatformat:2 }}<br />Transferred
+                        div.reward-bottom.row
+                            div.small-12.medium-5.columns
+                                div.description-container
+                                    div.price.headline ${{ reward.value|floatformat:2 }}
+                                    div.description {{ reward.description|truncatechars:200 }}
+                                    div.delete-container
+                                        a.delete-reward(data-id="{{ reward.id }}") Delete Item
+                            div.small-12.medium-7.columns.item-image-container
+                                div.item-image(style="background:url({{ reward.attachment.source.url }}); background-size:cover; background-position:center center;")
                 {% endfor %}
             {% if deletedRewards > 0 %}
             div.row

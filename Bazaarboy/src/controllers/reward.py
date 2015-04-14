@@ -12,7 +12,7 @@ import simplejson
 from kernel.models import *
 from src.controllers.request import *
 from src.serializer import serialize_one
-from src.email import sendReward, sendRewardSend
+from src.email import sendReward, sendRewardSend, sendRewardRequest
 from src.config import *
 from datetime import timedelta
 from django.utils import timezone
@@ -34,7 +34,7 @@ def index(request, user):
     """
     profiles = Profile.objects.filter(managers = user)
     profile = profiles[0]
-    rewards = Reward.objects.filter(creator = profile).order_by('is_deleted')
+    rewards = Reward.objects.filter(creator = profile).order_by('is_deleted', '-id')
     deletedRewards = Reward.objects.filter(creator = profile).count()
     for reward in rewards:
         items = Reward_item.objects.filter(reward = reward)
@@ -143,6 +143,7 @@ def create_request(request, params, user):
             return json_response(response)
         reward_request.event_url = params['event_url']
     reward_request.save()
+    sendRewardRequest(reward_request)
     response = {
         'status':'OK',
         'reward_request':serialize_one(reward_request)
@@ -915,7 +916,7 @@ def send_inventory(reward, recipients, expiration):
 @login_required()
 @validate('GET', ['q'])
 def search_gifs(request, params, user):
-    g = Giphy()
+    g = Giphy(api_key = TMPmG4qReCxZC)
     results = [x for x in g.search(term=params['q'], limit=12)]
     response = {
         'status':'OK',

@@ -52,6 +52,8 @@
               }, function() {
                 return Bazaarboy.redirect('rewards/');
               });
+            } else if (response.status === 'REWARD_REQUEST') {
+              Bazaarboy.redirect('rewards/');
             } else {
               alert(response.message);
               window.clearTimeout(scope.timer);
@@ -143,6 +145,8 @@
               }, function() {
                 return Bazaarboy.redirect('rewards/');
               });
+            } else if (response.status === 'REWARD_REQUEST') {
+              Bazaarboy.redirect('rewards/');
             } else {
               console.log(response);
               console.log('not rewarded');

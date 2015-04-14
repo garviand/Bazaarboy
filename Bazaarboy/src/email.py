@@ -602,6 +602,64 @@ def sendRewardSend(reward_send):
     }]
     return sendEmails(to, reward_send.reward.creator.name, subject, template, mergeVars)
 
+def sendRewardRequest(reward_request):
+    """
+    Email requesting a reward
+    """
+    subject = '\'' + reward_request.sender.name + '\' has requested an item'
+    template = 'reward-request'
+    if reward_request.sender.image:
+        profileLogo = "<img src='" + reward_request.sender.image.source.url.split("?", 1)[0] + "' style='max-width: 100px; max-height: 100px; padding-bottom: 0;display: inline !important;vertical-align: bottom;border: 0;outline: none;text-decoration: none;-ms-interpolation-mode: bicubic;' align='center' />"
+    else:
+        profileLogo = ''
+    # Profile Invited Directly
+    if reward_request.profile is not None:
+        to = [{
+            'email':reward_request.profile.email,
+            'name':reward_request.profile.name
+        }]
+        reciever = reward_request.profile.email
+        buttonHtml = '<a href="https://bazaarboy.com/" class="primary-btn view_event_btn" style="color: #222222; text-decoration: none; border-radius: 4px; font-weight: bold; text-align: center; font-size: 1.2em; box-sizing: border-box; padding: 12px 60px;background: #FFFFFF; border: thin solid ' + reward_request.sender.color + ';">My Dashboard</a>'
+        action_text = 'Log in and view your gifts dashboard to respond to the request.'
+    else:
+        to = [{
+            'email':reward_request.email
+        }]
+        reciever = reward_request.email
+        buttonHtml = '<a href="https://bazaarboy.com/login?rewardreqid=' + str(reward_request.id) + '&requestc=' + reward_request.code + '" class="primary-btn view_event_btn" style="color: #222222; text-decoration: none; border-radius: 4px; font-weight: bold; text-align: center; font-size: 1.2em; box-sizing: border-box; padding: 12px 60px;background: #FFFFFF; border: thin solid ' + reward_request.sender.color + ';">Log In</a>'
+        buttonHtml += '<br><br>or<br><br>'
+        buttonHtml += '<a href="https://bazaarboy.com/register?rewardreqid=' + str(reward_request.id) + '&requestc=' + reward_request.code + '" class="primary-btn view_event_btn" style="color: #222222; text-decoration: none; border-radius: 4px; font-weight: bold; text-align: center; font-size: 1.2em; box-sizing: border-box; padding: 12px 60px;background: #FFFFFF; border: thin solid ' + reward_request.sender.color + ';">Register</a>'
+        action_text = 'Log in or create a Bazaarboy account to respond to the request.'
+    requestMessage = reward_request.message
+    if reward_request.event_url is not None:
+        requestMessage += '<br /><br /><a style="color:' + reward_request.sender.color + ';" href="' + reward_request.event_url + '">View their event</a>'
+    mergeVars = [{
+        'rcpt': reciever,
+        'vars': [
+            {
+                'name':'profile_logo', 
+                'content':profileLogo
+            }, 
+            {
+                'name': 'profile_name', 
+                'content': reward_request.sender.name
+            },
+            {
+                'name': 'request_message', 
+                'content': requestMessage
+            },
+            {
+                'name': 'action_text', 
+                'content': action_text
+            },
+            {
+                'name': 'action_button',
+                'content': buttonHtml
+            }
+        ]
+    }]
+    return sendEmails(to, MANDRILL_FROM_NAME, subject, template, mergeVars)
+
 def sendCollaborationRequest(collaboration):
     """
     Email prompting event collaboration

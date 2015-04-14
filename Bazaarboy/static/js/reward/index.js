@@ -41,29 +41,54 @@
         }, 500);
       });
       $('a.discard-reward-item').click(function() {
-        var itemContainer, itemId;
+        var discardItem, itemContainer, itemId;
         itemId = $(this).data('id');
         itemContainer = $(this).closest('div.reward-inventory');
-        swal({
-          type: 'warning',
-          title: 'Discard Inventory',
-          text: 'Are you sure? If you discard this inventory, you will no longer be able to distribute it.',
-          showCancelButton: true,
-          confirmButtonText: "Discard",
-          closeOnConfirm: true
-        }, function() {
-          return Bazaarboy.post('rewards/item/delete/', {
-            item: itemId
-          }, function(response) {
-            if (response.status === 'OK') {
-              swal({
-                title: 'Discarded',
-                text: 'The item has been discarded.'
-              });
-              itemContainer.remove();
-            }
+        discardItem = false;
+        if ($(this).data('type') === 'inventory') {
+          swal({
+            type: 'warning',
+            title: 'Discard Inventory',
+            text: 'Are you sure? If you discard this inventory, you will no longer be able to distribute it.',
+            showCancelButton: true,
+            confirmButtonText: "Discard",
+            closeOnConfirm: false
+          }, function() {
+            return Bazaarboy.post('rewards/item/delete/', {
+              item: itemId
+            }, function(response) {
+              if (response.status === 'OK') {
+                swal({
+                  title: 'Discarded',
+                  text: 'The item has been discarded.'
+                });
+                itemContainer.remove();
+              }
+            });
           });
-        });
+        }
+        if ($(this).data('type') === 'giveaway') {
+          swal({
+            type: 'warning',
+            title: 'End Giveaway',
+            text: 'Are you sure? Note: all gifts already claimed will still be valid.',
+            showCancelButton: true,
+            confirmButtonText: "End Giveaway",
+            closeOnConfirm: false
+          }, function() {
+            return Bazaarboy.post('rewards/item/delete/', {
+              item: itemId
+            }, function(response) {
+              if (response.status === 'OK') {
+                swal({
+                  title: 'Discarded',
+                  text: 'The item has been discarded.'
+                });
+                itemContainer.remove();
+              }
+            });
+          });
+        }
       });
       $('a.delete-reward').click(function() {
         var rewardContainer, rewardId;

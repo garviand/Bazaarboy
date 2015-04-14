@@ -10,7 +10,7 @@ block body
                     form#login-form
                         div.row
                             div.small-10.small-offset-1.columns
-                                {% if not organizer_request and not reward_send %}
+                                {% if not organizer_request and not reward_send and not reward_request %}
                                 div.row
                                     div.small-12.medium-7.columns.text-center
                                         div.logo-small &nbsp;
@@ -20,6 +20,19 @@ block body
                                         span.page-title 
                                             span.hide-for-small-only &nbsp;&nbsp;|&nbsp;
                                             | &nbsp;Login
+                                {% elif reward_request %}
+                                div.row
+                                    div.small-12.columns.text-center.request_logo_container
+                                        img.request_logo(src="{{ reward_request.sender.image.source.url }}")
+                                div.row
+                                    div.small-12.columns.request_info
+                                        b '{{ reward_request.sender.name }}' has requested an item:
+                                        br
+                                        br
+                                        | {{ reward_request.message }}
+                                        br
+                                        br
+                                        | Log in to respond to the request!
                                 {% elif organizer_request %}
                                 div.row
                                     div.small-12.columns.text-center.request_logo_container
@@ -59,6 +72,10 @@ block body
                                         input(type="hidden", name="reward_id", value="{{ reward_send.id }}")
                                         input(type="hidden", name="reward_token", value="{{ reward_send.token }}")
                                         {% endif %}
+                                        {% if reward_request %}
+                                        input(type="hidden", name="reward_request_id", value="{{ reward_request.id }}")
+                                        input(type="hidden", name="reward_request_code", value="{{ reward_request.code }}")
+                                        {% endif %}
                                         input.primary-btn.submit-login(type="submit", value="SIGN IN")
                 div#footer
                     div.row
@@ -67,7 +84,7 @@ block body
                                 div.small-12.medium-8.columns
                                     a.trouble(href="{% url 'user:reset' %}") Forgot your password?
                                 div.small-12.medium-4.columns
-                                    a.switch(href="{% url 'index:register' %}{% if reward_send %}?rewid={{ reward_send.id }}&rewtok={{ reward_send.token }}{% endif %}{% if next %}?next={{ next }}{% endif %}{% if code %}&code={{ code }}{% endif %}{% if organizer_request %}?requestid={{ organizer_request.id }}&requestc={{ organizer_request.code }}{% endif %}") Register
+                                    a.switch(href="{% url 'index:register' %}{% if reward_request %}?rewardreqid={{ reward_request.id }}&requestc={{ reward_request.code }}{% endif %}{% if reward_send %}?rewid={{ reward_send.id }}&rewtok={{ reward_send.token }}{% endif %}{% if next %}?next={{ next }}{% endif %}{% if code %}&code={{ code }}{% endif %}{% if organizer_request %}?requestid={{ organizer_request.id }}&requestc={{ organizer_request.code }}{% endif %}") Register
 
 append script
     script(type="text/javascript", src="{{ STATIC_URL }}hashchange/jquery.ba-hashchange.min.js")
