@@ -61,22 +61,82 @@ block content
                             label Enter Email
                             input(type="text", name="email", placeholder="Organization Email")
                 hr
-                div.row
-                    div.small-12.columns
-                        div.reward-input
-                            label Request Message
-                            textarea.request-message(name="message", placeholder="Enter your request here. Include information about your organization and also the demographics of your audience (ex. mostly females, college students, or baseball fans).")
-                div.row
-                    div.small-12.columns
-                        div.reward-input
-                            label If this request is for an event, please paste the event URL below:
-                            input(type="text", name="event_url", placeholder="Event URL (include http:// or https://)")
+                div.choose-type
+                    div.row
+                        div.small-12.columns
+                            ul.button-group.round.even-2
+                                li
+                                    a.choose-type-btn.primary-btn.active.full-btn(href="javascript:;", data-type="message") Request Via Message
+                                li
+                                    a.choose-type-btn.primary-btn-inverse.full-btn(href="javascript:;", data-type="template") Create Template for Approval
+                div.reward-message
+                    div.row
+                        div.small-12.columns
+                            div.reward-input
+                                label Request Message
+                                textarea.request-message(name="message", placeholder="Enter your request here. Include information about your organization and also the demographics of your audience (ex. mostly females, college students, or baseball fans).")
+                    div.row
+                        div.small-12.columns
+                            div.reward-input
+                                label If this request is for an event, please paste the event URL below:
+                                input(type="text", name="event_url", placeholder="Event URL (include http:// or https://)")
+                div.reward-template.hide
+                    hr
+                    div#template-reward-form
+                        {% csrf_token %}
+                        br
+                        div.row
+                            div.small-12.medium-8.columns
+                                div.reward-input
+                                    label Item Name
+                                    input(type="text", name="name", placeholder="Name of Item")
+                            div.small-12.medium-4.columns
+                                div.reward-input
+                                    label Item Value ($)
+                                    input(type="text", name="value", placeholder="Value in Dollars (USD)")
+                        div.row
+                            div.small-12.medium-4.columns
+                                div.reward-input
+                                    label Item Image
+                                    div.listing-image-input-container
+                                        input.hide(type="file", name="attachment_file")
+                                        a.add-attachment.primary-btn-inverse.full-btn(href="javascript:;") Upload Image
+                                        div.or.text-center OR
+                                        label Search For GIF
+                                        a.gif-search-start.primary-btn-inverse.full-btn(href="javascript:;") Search with GIPHY
+                                    div.listing-image-container.hide
+                                        img(src="")
+                                        div.image-remove-container
+                                            a.primary-btn-inverse.remove-image-btn(href="javascript:;") Remove Image
+                            div.small-12.medium-8.columns
+                                div.reward-input
+                                    label Item Description
+                                    textarea(name="description", placeholder="Item Description")
                 hr
                 div.row.create-actions
                     div.small-12.medium-4.medium-offset-2.columns
                         a.create-request.primary-btn.full-btn(href="javascript:;") Send Request
                     div.small-12.medium-4.columns.end
                         a.secondary-btn-inverse.full-btn(href="{% url 'reward:index' %}") Cancel
+
+    div#gif-modal.reveal-modal.large(data-reveal)
+        div.gif.small-12.columns.end.gif-template.hide(data-url='')
+            img(src='')
+        div.gif-model-title.row
+            div.small-4.small-offset-4.columns.headline.text-center.gif-title Choose A GIF
+            div.small-4.columns.giphy
+                img(src="{{ STATIC_URL }}images/giphy.gif")
+        hr
+        div.gif-model.row
+            div.small-12.columns
+                div.gifs.row
+                    div.small-12.medium-4.columns.gifs-1.gif-column
+                        div.row 
+                    div.small-12.medium-4.columns.gifs-2.gif-column
+                        div.row 
+                    div.small-12.medium-4.columns.gifs-3.gif-column
+                        div.row
+                br
 
                     
 

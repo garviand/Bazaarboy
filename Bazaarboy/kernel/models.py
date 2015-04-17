@@ -486,6 +486,20 @@ class Reward(models.Model):
     is_deleted = models.BooleanField(default = False)
     created_time = models.DateTimeField(auto_now_add = True)
 
+class Reward_template(models.Model):
+    """
+    Reward model - for approval by requested account
+    """
+    creator = models.ForeignKey('Profile', related_name = 'owner')
+    name = models.CharField(max_length = 150, null = True, default = None)
+    description = models.CharField(max_length = 350, null = True, default = None)
+    value = models.FloatField(null = True, default = None)
+    extra_fields = models.TextField(default = '{}')
+    attachment = models.ForeignKey('Pdf', null = True, default = None, on_delete = models.SET_NULL)
+    reward_request = models.ForeignKey('Reward_request', null = True, default = None, related_name = 'req')
+    is_deleted = models.BooleanField(default = False)
+    created_time = models.DateTimeField(auto_now_add = True)
+
 class Reward_item(models.Model):
     """
     Reward item model
@@ -553,6 +567,7 @@ class Reward_request(models.Model):
     profile = models.ForeignKey('Profile', null = True, default = None, related_name = 'vendor')
     user = models.ForeignKey('User', null = True, default = None)
     email = models.CharField(max_length = 150, null = True, default = None)
+    template = models.ForeignKey('Reward_template', null = True, default = None, related_name = 'template')
     message = models.CharField(max_length = 1000, default = '')
     event_url = models.CharField(max_length = 250, null = True, default = None)
     code = models.CharField(max_length = 30)

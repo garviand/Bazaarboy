@@ -65,6 +65,7 @@ def index(request, user):
         subscription = Subscription.objects.get(owner = profile)
     else:
         subscription = None
+    activeRequests = Reward_request.objects.filter(profile = profile, is_completed = False, is_rejected = False).order_by('-id')
     return render(request, 'reward/index.html', locals())
 
 @login_required()
@@ -86,7 +87,7 @@ def request(request, user):
     return render(request, 'reward/request.html', locals())
 
 @login_required()
-@validate('POST', ['message', 'sender'], ['profile', 'email', 'event_url'])
+@validate('POST', ['message', 'sender'], ['profile', 'email', 'event_url', 'template', 'attachment', 'gif', 'value', 'name', 'description'])
 def create_request(request, params, user):
     """
     Create Reward Request
@@ -126,6 +127,7 @@ def create_request(request, params, user):
             }
             return json_response(response)
         reward_request = Reward_request(sender = sender, email = params['email'], message = params['message'])
+
     else:
         response = {
             'status':'FAIL',
@@ -133,6 +135,58 @@ def create_request(request, params, user):
             'message':'There was an error sending the request.'
         }
         return json_response(response)
+    if params['template'] == 'true':
+        # CREATE REWARD TEMPLATE
+        reward_template = Reward_template(creator = sender)
+        if params['name'] is not None:
+            if len(cgi.escape(params['name'])) > 150:
+                response = {
+                    'status':'FAIL',
+                    'error':'INVALID_NAME',
+                    'message':'The gift name must be within 150 characters.'
+                }
+                return json_response(response)
+            reward_template.name = cgi.escape(params['name'])
+        if params['description'] is not None:
+            if len(params['description']) > 350:
+                response = {
+                    'status':'FAIL',
+                    'error':'INVALID_NAME',
+                    'message':'The description must be within 350 characters.'
+                }
+                return json_response(response)
+            reward_template.description = cgi.escape(params['description'])
+        if params['value'] is not None:
+            if params['value'] <= 0:
+                response = {
+                    'status':'FAIL',
+                    'error':'BAD_VALUE',
+                    'message':'Reward value must be a positive number.'
+                }
+                return json_response(response)
+            reward_template.value = params['value']
+        if params['attachment'] is not None:
+            if params['gif'] == 'true':
+                img_temp = NamedTemporaryFile(delete=True)
+                img_temp.write(urllib2.urlopen(params['attachment']).read())
+                img_temp.flush()
+                img_filename = urlparse(params['attachment']).path.split('/')[-1]
+                pdf = Pdf(source = File(img_temp), name = img_filename)
+                pdf.source.save(uuid.uuid4().hex+img_filename, File(img_temp))
+                pdf.save()
+                reward_template.attachment = pdf
+            else:
+                if Pdf.objects.filter(id = params['attachment']).exists():
+                    reward_template.attachment = Pdf.objects.get(id = params['attachment'])
+                else:
+                    response = {
+                        'status':'FAIL',
+                        'error':'INVALID_ATTACHMENT',
+                        'message':'The attachment does not exist.'
+                    }
+                    return json_response(response)
+        reward_template.is_deleted = True
+        reward_template.save()
     if params['event_url'] is not None:
         if not REGEX_URL.match(params['event_url']):
             response = {
@@ -143,6 +197,11 @@ def create_request(request, params, user):
             return json_response(response)
         reward_request.event_url = params['event_url']
     reward_request.save()
+    if params['template'] == 'true':
+        reward_request.template = reward_template
+        reward_template.reward_request = reward_request
+        reward_request.save()
+        reward_template.save()
     sendRewardRequest(reward_request)
     response = {
         'status':'OK',
@@ -916,7 +975,7 @@ def send_inventory(reward, recipients, expiration):
 @login_required()
 @validate('GET', ['q'])
 def search_gifs(request, params, user):
-    g = Giphy(api_key = TMPmG4qReCxZC)
+    g = Giphy(api_key = 'TMPmG4qReCxZC')
     results = [x for x in g.search(term=params['q'], limit=12)]
     response = {
         'status':'OK',

@@ -55,6 +55,22 @@ block content
                     div.action
                         a.secondary-btn(href="{% url 'reward:new' %}") + Create Catalog Item
             {% endif %}
+            {% if activeRequests.count > 0 %}
+            div.section-title
+                div.headline GIFT REQUESTS
+            div.reward-requests.row
+                {% for req in activeRequests %}
+                div.reward-request.small-12.columns
+                    div.request
+                        div.row
+                            div.small-12.medium-6.columns
+                                a(href="javascript:;") {{ req.sender.name }}
+                            div.small-12.medium-3.columns
+                                a(href="javascript:;") View Request
+                            div.small-12.medium-3.columns
+                                a(href="javascript:;") Reject Request
+                {% endfor %}
+            {% endif %}
             {% if reward_items.count > 0 or giveaways.count > 0 %}
             div.section-title
                 div.headline CURRENT INVENTORY

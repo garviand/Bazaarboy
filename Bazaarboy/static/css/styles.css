@@ -13028,6 +13028,36 @@ div#wrapper-request-reward div#request-reward form#request-reward-form div.rewar
 div#wrapper-request-reward div#request-reward form#request-reward-form div.reward-input textarea.request-message {
   height: 150px !important;
 }
+div#wrapper-request-reward div#request-reward form#request-reward-form div.reward-message {
+  margin-top: 35px;
+}
+div#wrapper-request-reward div#request-reward form#request-reward-form div#template-reward-form {
+  margin-top: 20px;
+}
+div#wrapper-request-reward div#request-reward form#request-reward-form div#template-reward-form label span.light {
+  font-weight: 400;
+}
+div#wrapper-request-reward div#request-reward form#request-reward-form div#template-reward-form div.reward-input {
+  margin-bottom: 40px;
+}
+div#wrapper-request-reward div#request-reward form#request-reward-form div#template-reward-form div.reward-input.bottom {
+  margin-top: 10px;
+  margin-bottom: 10px;
+}
+div#wrapper-request-reward div#request-reward form#request-reward-form div#template-reward-form div.reward-input.bottom input {
+  margin-bottom: 0;
+}
+div#wrapper-request-reward div#request-reward form#request-reward-form div#template-reward-form div.reward-input div.or {
+  margin-top: 33px;
+  margin-bottom: 23px;
+  font-weight: 600;
+}
+div#wrapper-request-reward div#request-reward form#request-reward-form div#template-reward-form div.reward-input textarea[name=description] {
+  height: 168px !important;
+}
+div#wrapper-request-reward div#request-reward form#request-reward-form div#template-reward-form div.reward-input div.image-remove-container {
+  margin-top: 10px;
+}
 div#claim {
   min-width: 100%;
   min-height: 100%;
