@@ -1,0 +1,124 @@
+extends ../layout
+
+block title
+    | Request Response
+
+block sidebar
+    +sidebarItem('ss-newspaper')(href="{% url 'index' %}")
+        | Events
+    +sidebarItem('ss-database')(href="{% url 'list:index' %}")
+        | Lists
+    +sidebarItem('ss-tag')(href="{% url 'reward:index' %}", class="selected")
+        | Gifts
+    +sidebarItem('ss-share')(href="{% url 'user:settings' %}")
+        | Settings
+
+block header
+    div.header-title.large-9.medium-10.columns.small-centered
+        div.row.clearfix
+            div.icon.left
+                span.ss-file
+            div.text.left
+                | Gift Management |
+                span.sub &nbsp; Request Response
+
+block content
+    div#wrapper-reward-request-response.large-9.medium-10.columns.small-centered
+        div#reward-request-response
+            div.section-title
+                div.headline {{ reward_request.sender.name }}'s Request
+            hr
+            div.request-info
+                label Request Message
+                div.info {{ reward_request.message }}
+            {% if reward_request.event_url %}
+            div.request-info
+                label Event Page for Requested Item
+                div.info
+                    a(href="{{ reward_request.event_url }}", target="_blank") {{ reward_request.event_url }}
+            {% endif %}
+            hr
+            div.choose-type
+                div.row
+                    div.small-12.columns
+                        ul.button-group.round.even-2
+                            li
+                                a.choose-type-btn.full-btn(href="javascript:;", class="{% if reward_template %}primary-btn-inverse{% else %}primary-btn active{% endif %}", data-type="current") Choose Gift To Send
+                            li
+                                a.choose-type-btn.full-btn(href="javascript:;", class="{% if not reward_template %}primary-btn-inverse{% else %}primary-btn active{% endif %}", data-type="create") Create New Gift To Send
+            div.current-reward(class="{% if reward_template %}hide{% endif %}")
+                | Reward
+            div.new-reward(class="{% if not reward_template %}hide{% endif %}")
+                form#new-reward-form
+                    {% csrf_token %}
+                    br
+                    div.row
+                        div.small-12.medium-8.columns
+                            div.reward-input
+                                label Item Name
+                                input(type="text", name="name", placeholder="Name of Catalog Item", value="{% if reward_template.name %}{{ reward_template.name }}{% endif %}")
+                        div.small-12.medium-4.columns
+                            div.reward-input
+                                label Item Value ($)
+                                input(type="text", name="value", placeholder="Value in Dollars (USD)", value="{% if reward_template.value %}{{ reward_template.value|floatformat:2 }}{% endif %}")
+                    div.row
+                        div.small-12.medium-4.columns
+                            div.reward-input
+                                label Item Image
+                                div.listing-image-input-container(class="{% if reward_template.attachment %}hide{% endif %}")
+                                    input.hide(type="file", name="attachment_file", value="{% if reward_template.attachment %}{{ reward_template.attachment.id }}{% endif %}")
+                                    a.add-attachment.primary-btn-inverse.full-btn(href="javascript:;") Upload Image
+                                    div.or.text-center OR
+                                    label Search For GIF
+                                    a.gif-search-start.primary-btn-inverse.full-btn(href="javascript:;") Search with GIPHY
+                                div.listing-image-container(class="{% if not reward_template.attachment %}hide{% endif %}")
+                                    img(src="{% if reward_template.attachment %}{{ reward_template.attachment.source.url }}{% endif %}")
+                                    div.image-remove-container
+                                        a.primary-btn-inverse.remove-image-btn(href="javascript:;") Remove Image
+                        div.small-12.medium-8.columns
+                            div.reward-input
+                                label Item Description
+                                textarea(name="description", placeholder="Item Description") {% if reward_template.description %}{{ reward_template.description }}{% endif %}
+                    hr
+                    div.row
+                        div.small-12.columns
+                            div.reward-input.bottom
+                                label Details you'd like to collect from claims &middot;&nbsp;
+                                    span.light Already includes 'Name' and 'Email'
+                                input(type="text", name="extra_fields", placeholder="Separated by commas (Address, Shirt Size, Favorite Color)")
+                    hr
+                    div.row.create-actions
+                        div.small-12.medium-4.medium-offset-2.columns
+                            a.create-reward.primary-btn.full-btn(href="javascript:;") Create and Send
+                        div.small-12.medium-4.columns.end
+                            a.secondary-btn-inverse.full-btn(href="{% url 'reward:index' %}") Cancel
+    div#gif-modal.reveal-modal.large(data-reveal)
+        div.gif.small-12.columns.end.gif-template.hide(data-url='')
+            img(src='')
+        div.gif-model-title.row
+            div.small-4.small-offset-4.columns.headline.text-center.gif-title Choose A GIF
+            div.small-4.columns.giphy
+                img(src="{{ STATIC_URL }}images/giphy.gif")
+        hr
+        div.gif-model.row
+            div.small-12.columns
+                div.gifs.row
+                    div.small-12.medium-4.columns.gifs-1.gif-column
+                        div.row 
+                    div.small-12.medium-4.columns.gifs-2.gif-column
+                        div.row 
+                    div.small-12.medium-4.columns.gifs-3.gif-column
+                        div.row
+                br
+
+                    
+
+
+append script
+    script.
+        var profileId = {{ profile.id }};
+        var requestId = {{ reward_request.id }};
+        var requesterId = {{ reward_request.sender.id }};
+        var requesterName = "{{ reward_request.sender.name }}";
+        {% if reward_template.attachment %}var attachmentId = {{ reward_template.attachment.id }};{% endif %}
+    script(src="{{ STATIC_URL }}js/reward/request-response.js")

@@ -12673,6 +12673,15 @@ div#wrapper-reward-dashboard div#reward-dashboard div.empty-rewards div.action a
   padding-left: 30px;
   padding-right: 30px;
 }
+div#wrapper-reward-dashboard div#reward-dashboard div.reward-requests div.reward-request div.request {
+  margin-top: 20px;
+  border: thin solid #d4d4d4;
+  border-radius: 5px;
+  padding: 10px;
+}
+div#wrapper-reward-dashboard div#reward-dashboard div.reward-requests div.reward-request div.request div.request-action {
+  margin-top: 9px;
+}
 div#wrapper-reward-dashboard div#reward-dashboard div.rewards {
   margin-top: 20px;
 }
@@ -13057,6 +13066,52 @@ div#wrapper-request-reward div#request-reward form#request-reward-form div#templ
 }
 div#wrapper-request-reward div#request-reward form#request-reward-form div#template-reward-form div.reward-input div.image-remove-container {
   margin-top: 10px;
+}
+div#wrapper-reward-request-response div#reward-request-response div.section-title {
+  margin-top: 40px;
+}
+div#wrapper-reward-request-response div#reward-request-response div.request-info {
+  margin-top: 20px;
+}
+div#wrapper-reward-request-response div#reward-request-response form#new-reward-form {
+  margin-top: 20px;
+}
+div#wrapper-reward-request-response div#reward-request-response form#new-reward-form label span.light {
+  font-weight: 400;
+}
+div#wrapper-reward-request-response div#reward-request-response form#new-reward-form div.reward-input {
+  margin-bottom: 40px;
+}
+div#wrapper-reward-request-response div#reward-request-response form#new-reward-form div.reward-input.bottom {
+  margin-top: 10px;
+  margin-bottom: 10px;
+}
+div#wrapper-reward-request-response div#reward-request-response form#new-reward-form div.reward-input.bottom input {
+  margin-bottom: 0;
+}
+div#wrapper-reward-request-response div#reward-request-response form#new-reward-form div.reward-input div.or {
+  margin-top: 33px;
+  margin-bottom: 23px;
+  font-weight: 600;
+}
+div#wrapper-reward-request-response div#reward-request-response form#new-reward-form div.reward-input textarea[name=description] {
+  height: 168px !important;
+}
+div#wrapper-reward-request-response div#reward-request-response form#new-reward-form div.reward-input div.image-remove-container {
+  margin-top: 10px;
+}
+div.gif-title {
+  height: 44px;
+  line-height: 44px;
+}
+div#gif-modal div.gifs div.gif {
+  margin-bottom: 20px;
+}
+div#gif-modal div.gifs div.gif:hover {
+  cursor: pointer;
+}
+div#gif-modal div.gifs div.gif:hover img {
+  border: #4a4a4a 2px solid;
 }
 div#claim {
   min-width: 100%;

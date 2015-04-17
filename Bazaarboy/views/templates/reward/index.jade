@@ -64,11 +64,14 @@ block content
                     div.request
                         div.row
                             div.small-12.medium-6.columns
-                                a(href="javascript:;") {{ req.sender.name }}
-                            div.small-12.medium-3.columns
-                                a(href="javascript:;") View Request
-                            div.small-12.medium-3.columns
-                                a(href="javascript:;") Reject Request
+                                label From
+                                div {{ req.sender.name }}
+                            div.small-12.medium-3.columns.text-center
+                                div.request-action
+                                    a(href="{% url 'reward:request-response' req.id %}") View Request
+                            div.small-12.medium-3.columns.text-center
+                                div.request-action
+                                    a(href="javascript:;") Reject Request
                 {% endfor %}
             {% endif %}
             {% if reward_items.count > 0 or giveaways.count > 0 %}

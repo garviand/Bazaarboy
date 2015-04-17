@@ -87,6 +87,25 @@ def request(request, user):
     return render(request, 'reward/request.html', locals())
 
 @login_required()
+def request_response(request, request_id, user):
+    """
+    Rewards Request Response Page
+    """
+    profiles = Profile.objects.filter(managers = user)
+    profile = profiles[0]
+    if not Reward_request.objects.filter(id = request_id, profile = profile).exists():
+        response = {
+            'status':'FAIL',
+            'error':'NOT_OWNER',
+            'message':'This profile does not own the request.'
+        }
+        return json_response(response)
+    reward_request = Reward_request.objects.get(id = request_id)
+    if reward_request.template is not None:
+        reward_template = reward_request.template
+    return render(request, 'reward/request-response.html', locals())
+
+@login_required()
 @validate('POST', ['message', 'sender'], ['profile', 'email', 'event_url', 'template', 'attachment', 'gif', 'value', 'name', 'description'])
 def create_request(request, params, user):
     """
@@ -346,7 +365,7 @@ def subscribe(request, params, user):
     return json_response(response)
 
 @login_required()
-@validate('POST', ['profile', 'name', 'description', 'value', 'gif'], ['attachment', 'extra_fields'])
+@validate('POST', ['profile', 'name', 'description', 'value', 'gif'], ['attachment', 'extra_fields', 'request_id'])
 def create(request, params, user):
     """
     Create a reward
@@ -426,6 +445,23 @@ def create(request, params, user):
                 }
                 return json_response(response)
     reward.save()
+    if params['request_id'] is not None:
+        if not Reward_request.objects.filter(id = params['request_id'], profile = profile).exists():
+            response = {
+                'status':'FAIL',
+                'error':'NOT_OWNER',
+                'message':'This profile does not own the request.'
+            }
+            return json_response(response)
+        reward_request = Reward_request.objects.get(id = params['request_id'])
+        reward_request.is_completed = True
+        reward_request.save()
+        response = {
+            'status':'OK',
+            'reward':serialize_one(reward),
+            'reward_request': serialize_one(reward_request)
+        }
+        return json_response(response)
     response = {
         'status':'OK',
         'reward':serialize_one(reward)

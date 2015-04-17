@@ -1,0 +1,57 @@
+@import (reference) "vars.less";
+
+div#wrapper-reward-request-response{
+  div#reward-request-response{
+    div.section-title{
+        margin-top: 40px;
+    }
+    div.request-info{
+      margin-top: 20px;
+    }
+    
+    form#new-reward-form{
+      margin-top: 20px;
+      label{
+        span.light{
+          font-weight: 400;
+        }
+      }
+      div.reward-input{
+        margin-bottom: 40px;
+        &.bottom{
+          margin-top: 10px;
+          margin-bottom: 10px;
+          input{
+            margin-bottom: 0;
+          }
+        }
+        div.or{
+          margin-top: 33px;
+          margin-bottom: 23px;
+          font-weight: 600;
+        }
+        textarea[name=description]{
+          height: 168px !important;
+        }
+        div.image-remove-container{
+          margin-top: 10px;
+        }
+      }
+    }
+  }
+}
+
+div.gif-title{
+  height: 44px;
+  line-height: 44px;
+}
+
+div#gif-modal div.gifs div.gif{
+  margin-bottom: 20px;
+  &:hover{
+    cursor: pointer;
+    img{
+      border: @dark 2px solid;
+    }
+  }
+}
