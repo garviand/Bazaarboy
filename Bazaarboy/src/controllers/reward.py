@@ -434,7 +434,7 @@ def create(request, params, user):
         return json_response(response)
     reward = Reward (creator = profile, name = params['name'], description = params['description'], value = params['value'])
     reward.save()
-    if params['extra_fields'] is not None:
+    if params['extra_fields'] is not None and params['extra_fields'].strip() != '':
         try:
             fields = json.loads(params['extra_fields'])
         except:

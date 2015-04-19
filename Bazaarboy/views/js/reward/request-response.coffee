@@ -209,8 +209,9 @@ Bazaarboy.reward.request =
             swal
               type: "success"
               title: 'Gift Created'
-              html: '<div class="text-left"><label class="quant-info">How many would you like to send to ' + requesterName + '?<input type="text" name="send_quantity" placeholder="Quantity" /><br /><label class="exp-info">Expiration Date</label><input type="text" name="expiration_time" placeholder="MM/DD/YYYY" /></div>'
+              html: '<div class="text-left"><label class="quant-info">How many would you like to send to ' + requesterName + '?<input type="text" name="send_quantity" placeholder="Quantity" /><br /><label class="exp-info">Expiration Date (MM/DD/YYYY)</label><input type="text" name="expiration_time" placeholder="MM/DD/YYYY" /></div>'
               closeOnConfirm: false
+              allowOutsideClick: false
               , () ->
                 quantity = $('input[name=send_quantity]').val()
                 expiration = $('input[name=expiration_time]').val()
