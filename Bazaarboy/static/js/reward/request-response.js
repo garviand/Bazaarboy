@@ -3,6 +3,7 @@
     isSubmitting: false,
     attachment: void 0,
     gif: void 0,
+    sending: false,
     init: function() {
       var scope;
       scope = this;
@@ -30,6 +31,69 @@
           $('html, body').animate({
             scrollTop: $("div.new-reward").offset().top
           }, 500);
+        }
+      });
+      $('div.dropdown-container a.select-reward').click(function() {
+        $('div.dropdown-container ul#drop').css('left', '-99999px');
+        $('div.dropdown-container ul#drop').removeClass('open');
+        $('input[name=reward_id]').val($(this).data('id'));
+        $('div.dropdown-container a.choose-gift-btn').html($(this).html());
+      });
+      $('input[name=reward_expiration]').pikaday({
+        format: 'MM/DD/YYYY'
+      });
+      $('form#current-reward-form a.send-gift-btn').click(function() {
+        var button, expiration, expirationTime, ownerId, quantity, rewardId;
+        button = $('form#current-reward-form a.send-gift-btn');
+        button.html('Sending...');
+        if (!scope.sending) {
+          scope.sending = true;
+          quantity = parseInt($('input[name=reward_quantity]').val());
+          if (!$.isNumeric(quantity) || quantity <= 0) {
+            swal('Quantity Must Be a Positive Number');
+            scope.sending = false;
+            button.html('Send Gifts');
+            return;
+          }
+          expiration = $('input[name=reward_expiration]').val();
+          if (!moment(expiration, 'MM/DD/YYYY').isValid()) {
+            swal('Expiration Date is Not Valid');
+            scope.sending = false;
+            button.html('Send Gifts');
+            return;
+          }
+          expirationTime = moment(expiration, 'MM/DD/YYYY').utc().format('YYYY-MM-DD HH:mm:ss');
+          rewardId = $('input[name=reward_id]').val();
+          if (rewardId === '') {
+            swal('You must select a gift');
+            scope.sending = false;
+            button.html('Send Gifts');
+            return;
+          }
+          ownerId = requesterId;
+          Bazaarboy.post('rewards/item/add/', {
+            reward: rewardId,
+            owner: ownerId,
+            quantity: quantity,
+            expiration_time: expirationTime,
+            reward_request: requestId
+          }, function(response) {
+            var responseText;
+            if (response.status === 'OK') {
+              if (profileId === response.reward_item.owner.id) {
+                responseText = 'You added ' + response.reward_item.quantity + ' \'' + response.reward_item.reward.name + '\' to your inventory';
+              } else {
+                responseText = 'You sent ' + response.reward_item.quantity + ' \'' + response.reward_item.reward.name + '\' inventory to ' + response.reward_item.owner.name;
+              }
+              swal({
+                type: "success",
+                title: 'Reward Sent',
+                text: responseText
+              }, function() {
+                Bazaarboy.redirect('rewards/');
+              });
+            }
+          });
         }
       });
       $('a.remove-image-btn').click(function() {

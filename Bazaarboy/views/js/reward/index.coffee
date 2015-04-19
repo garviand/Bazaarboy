@@ -27,6 +27,30 @@ Bazaarboy.reward.index =
         scrollTop: $("div.catalog-rewards").offset().top
         , 500
       return
+    # REJECT REQUEST
+    $('a.reject-request-btn').click () ->
+      container = $(this).closest('div.reward-request')
+      request_id = $(this).data('id')
+      swal
+        type: 'warning'
+        title: 'Reject Request'
+        text: 'Are you sure you want to reject this gift request?'
+        showCancelButton: true
+        confirmButtonText: "Yes, Reject"
+        closeOnConfirm: false
+        , () ->
+          Bazaarboy.post 'rewards/request/reject/', {request:request_id}, (response) ->
+            if response.status is 'OK'
+              swal
+                type: 'success'
+                title: 'Request Rejected'
+                text: 'The gift request has been rejected. You may want to contact the requester with more information.'
+                , () ->
+                  container.fadeOut(200)
+                  return
+            return
+          return
+      return
     # DISCARD REWARD ITEM
     $('a.discard-reward-item').click () ->
       itemId = $(this).data('id')

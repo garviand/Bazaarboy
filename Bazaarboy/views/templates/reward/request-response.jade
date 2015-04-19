@@ -13,6 +13,9 @@ block sidebar
     +sidebarItem('ss-share')(href="{% url 'user:settings' %}")
         | Settings
 
+append head
+    link(rel="stylesheet", href="{{ STATIC_URL }}pikaday/pikaday.css")
+
 block header
     div.header-title.large-9.medium-10.columns.small-centered
         div.row.clearfix
@@ -47,7 +50,30 @@ block content
                             li
                                 a.choose-type-btn.full-btn(href="javascript:;", class="{% if not reward_template %}primary-btn-inverse{% else %}primary-btn active{% endif %}", data-type="create") Create New Gift To Send
             div.current-reward(class="{% if reward_template %}hide{% endif %}")
-                | Reward
+                div.row
+                    div.small-12.columns
+                        div.dropdown-container
+                            a.choose-gift-btn.primary-btn-inverse(href="javascript:;", data-dropdown="drop") Choose Gift From Catalog...
+                            ul#drop.large.f-dropdown(data-dropdown)
+                                {% for reward in rewards %}
+                                li
+                                    a.select-reward(href="javascript:;", data-id="{{ reward.id }}") {{ reward.name }}&nbsp;&middot;&nbsp;${{ reward.value|floatformat:'2' }}
+                                {% endfor %}
+                form#current-reward-form
+                    input(type="hidden", name="reward_id", value="")
+                    div.row
+                        div.small-12.medium-6.columns
+                            label Quantity
+                            input(type="text", name="reward_quantity", placeholder="How many are you sending?")
+                        div.small-12.medium-6.columns
+                            label Expiration Date
+                            input(type="text", name="reward_expiration", placeholder="When does the gift expire? (MM/DD/YYYY)")
+                    hr
+                    div.row.create-actions
+                        div.small-12.medium-4.medium-offset-2.columns
+                            a.send-gift-btn.primary-btn.full-btn(href="javascript:;") Send Gifts
+                        div.small-12.medium-4.columns.end
+                            a.secondary-btn-inverse.full-btn(href="{% url 'reward:index' %}") Cancel
             div.new-reward(class="{% if not reward_template %}hide{% endif %}")
                 form#new-reward-form
                     {% csrf_token %}
@@ -121,4 +147,6 @@ append script
         var requesterId = {{ reward_request.sender.id }};
         var requesterName = "{{ reward_request.sender.name }}";
         {% if reward_template.attachment %}var attachmentId = {{ reward_template.attachment.id }};{% endif %}
+    script(type="text/javascript", src="{{ STATIC_URL }}pikaday/pikaday.js")
+    script(type="text/javascript", src="{{ STATIC_URL }}pikaday/pikaday.jquery.js")
     script(src="{{ STATIC_URL }}js/reward/request-response.js")

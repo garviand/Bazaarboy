@@ -100,6 +100,7 @@ def request_response(request, request_id, user):
             'message':'This profile does not own the request.'
         }
         return json_response(response)
+    rewards = Reward.objects.filter(creator = profile, is_deleted = False).order_by('-id')
     reward_request = Reward_request.objects.get(id = request_id)
     if reward_request.template is not None:
         reward_template = reward_request.template
@@ -225,6 +226,27 @@ def create_request(request, params, user):
     response = {
         'status':'OK',
         'reward_request':serialize_one(reward_request)
+    }
+    return json_response(response)
+
+@login_required()
+@validate('POST', ['request'])
+def reject_request(request, params, user):
+    profiles = Profile.objects.filter(managers = user)
+    profile = profiles[0]
+    if not Reward_request.objects.filter(id = params['request'], profile = profile).exists():
+        response = {
+            'status':'FAIL',
+            'error':'NOT_OWNER',
+            'message':'This profile does not own the request.'
+        }
+        return json_response(response)
+    reward_request = Reward_request.objects.get(id = params['request'])
+    reward_request.is_rejected = True
+    reward_request.save()
+    response = {
+        'status': 'OK',
+        'reward_request': serialize_one(reward_request)
     }
     return json_response(response)
 
@@ -565,7 +587,7 @@ def delete(request, params, user):
     return json_response(response)
 
 @login_required()
-@validate('POST', ['reward', 'quantity', 'expiration_time'], ['owner', 'email'])
+@validate('POST', ['reward', 'quantity', 'expiration_time'], ['owner', 'email', 'reward_request'])
 def add_item(request, params, user):
     if not Reward.objects.filter(id = params['reward']).exists():
         response = {
@@ -610,6 +632,11 @@ def add_item(request, params, user):
             return json_response(response)
         reward_item = Reward_item(reward = reward, owner = owner, quantity = params['quantity'], received = params['quantity'], expiration_time = params['expiration_time'])
         reward_item.save()
+        if params['reward_request'] is not None:
+            if Reward_request.objects.filter(id = params['reward_request'], profile = reward.creator).exists():
+                reward_request = Reward_request.objects.get(id = params['reward_request'])
+                reward_request.is_completed = True
+                reward_request.save()
         response = {
             'status':'OK',
             'reward_item':serialize_one(reward_item)

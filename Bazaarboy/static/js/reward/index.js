@@ -40,6 +40,33 @@
           scrollTop: $("div.catalog-rewards").offset().top
         }, 500);
       });
+      $('a.reject-request-btn').click(function() {
+        var container, request_id;
+        container = $(this).closest('div.reward-request');
+        request_id = $(this).data('id');
+        swal({
+          type: 'warning',
+          title: 'Reject Request',
+          text: 'Are you sure you want to reject this gift request?',
+          showCancelButton: true,
+          confirmButtonText: "Yes, Reject",
+          closeOnConfirm: false
+        }, function() {
+          Bazaarboy.post('rewards/request/reject/', {
+            request: request_id
+          }, function(response) {
+            if (response.status === 'OK') {
+              swal({
+                type: 'success',
+                title: 'Request Rejected',
+                text: 'The gift request has been rejected. You may want to contact the requester with more information.'
+              }, function() {
+                container.fadeOut(200);
+              });
+            }
+          });
+        });
+      });
       $('a.discard-reward-item').click(function() {
         var discardItem, itemContainer, itemId;
         itemId = $(this).data('id');

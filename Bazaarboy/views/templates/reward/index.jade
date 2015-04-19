@@ -71,7 +71,7 @@ block content
                                     a(href="{% url 'reward:request-response' req.id %}") View Request
                             div.small-12.medium-3.columns.text-center
                                 div.request-action
-                                    a(href="javascript:;") Reject Request
+                                    a.reject-request-btn(href="javascript:;", data-id="{{ req.id }}") Reject Request
                 {% endfor %}
             {% endif %}
             {% if reward_items.count > 0 or giveaways.count > 0 %}

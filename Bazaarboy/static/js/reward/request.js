@@ -109,7 +109,7 @@
         },
         select: function(event, ui) {
           var requestProfile;
-          requestProfile = $(event.currentTarget).find('.autocomplete_result').data('id');
+          requestProfile = $(ui.item.label).data('id');
           $('input[name=profile]').val(requestProfile);
         }
       });

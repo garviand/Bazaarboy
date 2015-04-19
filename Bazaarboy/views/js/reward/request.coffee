@@ -90,7 +90,7 @@ Bazaarboy.reward.request =
           return response(profiles)
         return
       select: (event, ui) ->
-        requestProfile = $(event.currentTarget).find('.autocomplete_result').data('id')
+        requestProfile = $(ui.item.label).data('id')
         $('input[name=profile]').val(requestProfile)
         return
     $('a.add-attachment').click () ->

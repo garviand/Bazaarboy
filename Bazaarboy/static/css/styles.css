@@ -13073,6 +13073,13 @@ div#wrapper-reward-request-response div#reward-request-response div.section-titl
 div#wrapper-reward-request-response div#reward-request-response div.request-info {
   margin-top: 20px;
 }
+div#wrapper-reward-request-response div#reward-request-response div.current-reward div.dropdown-container a.choose-gift-btn {
+  margin-top: 40px;
+  text-align: left;
+}
+div#wrapper-reward-request-response div#reward-request-response div.current-reward form#current-reward-form {
+  margin-top: 40px;
+}
 div#wrapper-reward-request-response div#reward-request-response form#new-reward-form {
   margin-top: 20px;
 }
