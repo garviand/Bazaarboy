@@ -3349,7 +3349,7 @@ def add_purchase(request, params, user):
                     # Check extra fields
                     if ticket.extra_fields is not None:
                         for fieldName, fieldValue in ticket.extra_fields.iteritems():
-                            if not details[tid]['extra_fields'].has_key(fieldName):
+                            if not details[tid]['extra_fields'].has_key(fieldName.strip()):
                                 response = {
                                     'status':'FAIL',
                                     'error':'MISSING_EXTRA_FIELDS',
@@ -3359,7 +3359,7 @@ def add_purchase(request, params, user):
                             if len(fieldValue) != 0:
                                 options = fieldValue.split(',')
                                 options = [x.lstrip() for x in options]
-                                if str(details[tid]['extra_fields'][fieldName]) not in options:
+                                if str(details[tid]['extra_fields'][fieldName.strip()]) not in options:
                                     response = {
                                         'status':'FAIL',
                                         'error':'EXTRA_FIELDS_MISMATCH',
