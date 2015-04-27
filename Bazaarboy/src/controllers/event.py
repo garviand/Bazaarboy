@@ -306,6 +306,7 @@ def manage(request, id, params, user):
             }
             try:
                 extra_fields = json.loads(item.ticket.extra_fields)
+                item_fields = {}
             except:
                 pass
             finally:
