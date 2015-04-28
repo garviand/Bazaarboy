@@ -306,9 +306,8 @@ def manage(request, id, params, user):
             }
             try:
                 extra_fields = json.loads(item.ticket.extra_fields)
-                item_fields = {}
             except:
-                pass
+                extra_fields = {}
             finally:
                 try:
                     item.extra_fields = item.extra_fields.replace("\'", "\"")
@@ -317,7 +316,7 @@ def manage(request, id, params, user):
                     item.extra_fields = item.extra_fields.replace("\"s", "\'s")
                     item_fields = json.loads(item.extra_fields)
                 except:
-                    pass
+                    item_fields = {}
                 finally:
                     if type(item_fields) is dict:
                         purchases[item.purchase.id]['extra_fields'] = item_fields

@@ -268,7 +268,7 @@
                     newInput += fieldName;
                     newInput += "</div>";
                     newInput += "<div class='small-12 medium-6 end columns custom-fields-text-input-container'>";
-                    newInput += "<input class='custom-fields-text-input' type='text' data-field='" + fieldName.trim() + "' />";
+                    newInput += "<input class='custom-fields-text-input' type='text' data-field='" + fieldName.trim().replace(/'/g, "&#39;") + "' />";
                     newInput += "</div>";
                     newInput += "</div>";
                     newInput = $(newInput);
