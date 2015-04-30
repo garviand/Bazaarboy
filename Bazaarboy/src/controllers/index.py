@@ -161,7 +161,7 @@ def index(request, params, user):
                                        is_deleted = False,
                                        organizers__in = pids).order_by('-id')
     draftEventsCount = draftEvents.count()
-    draftEvents = draftEvents.filter()[:30]
+    draftEvents = draftEvents.filter()[:100]
     for i in range(0, len(draftEvents)):
         draftEvents[i].creator = True
         if not Organizer.objects.filter(event = draftEvents[i], profile__managers = user, is_creator = True).exists():
