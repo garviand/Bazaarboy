@@ -220,10 +220,11 @@ Bazaarboy.event.manage =
                                     newInput += fieldName
                                     newInput += "</div>"
                                     newInput += "<div class='small-12 medium-6 end columns custom-fields-text-input-container'>"
-                                    newInput += "<input class='custom-fields-text-input' type='text' data-field='" + fieldName.trim().replace(/'/g, "&#39;") + "' />"
+                                    newInput += "<input class='custom-fields-text-input' type='text' />"
                                     newInput += "</div>"
                                     newInput += "</div>"
                                     newInput = $(newInput)
+                                    newInput.find('.custom-fields-text-input').attr('data-field', fieldName.trim())
                                     $('form[name=add-guest] div.custom-fields-inputs').append(newInput)
                                 else
                                     newInput = "<div class='row custom-field-container'>"
@@ -231,7 +232,7 @@ Bazaarboy.event.manage =
                                     newInput += fieldName
                                     newInput += "</div>"
                                     newInput += "<div class='small-12 medium-6 end columns custom-fields-text-input-container'>"
-                                    newInput += "<select class='custom-fields-option-input' data-field='" + fieldName.trim() + "'>"
+                                    newInput += "<select class='custom-fields-option-input'>"
                                     allOptions = fieldOptions.split(',')
                                     for option in allOptions
                                         newInput += "<option value='" + option.trim() + "'>" + option.trim() + "</option>"
@@ -239,6 +240,7 @@ Bazaarboy.event.manage =
                                     newInput += "</div>"
                                     newInput += "</div>"
                                     newInput = $(newInput)
+                                    newInput.find('.custom-fields-option-input').attr('data-field', fieldName.trim())
                                     $('form[name=add-guest] div.custom-fields-inputs').append(newInput)
                         $('form[name=add-guest] div.custom-fields').removeClass 'hide'
                     return

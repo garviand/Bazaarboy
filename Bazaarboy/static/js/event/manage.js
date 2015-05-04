@@ -268,10 +268,11 @@
                     newInput += fieldName;
                     newInput += "</div>";
                     newInput += "<div class='small-12 medium-6 end columns custom-fields-text-input-container'>";
-                    newInput += "<input class='custom-fields-text-input' type='text' data-field='" + fieldName.trim().replace(/'/g, "&#39;") + "' />";
+                    newInput += "<input class='custom-fields-text-input' type='text' />";
                     newInput += "</div>";
                     newInput += "</div>";
                     newInput = $(newInput);
+                    newInput.find('.custom-fields-text-input').attr('data-field', fieldName.trim());
                     $('form[name=add-guest] div.custom-fields-inputs').append(newInput);
                   } else {
                     newInput = "<div class='row custom-field-container'>";
@@ -279,7 +280,7 @@
                     newInput += fieldName;
                     newInput += "</div>";
                     newInput += "<div class='small-12 medium-6 end columns custom-fields-text-input-container'>";
-                    newInput += "<select class='custom-fields-option-input' data-field='" + fieldName.trim() + "'>";
+                    newInput += "<select class='custom-fields-option-input'>";
                     allOptions = fieldOptions.split(',');
                     for (_i = 0, _len = allOptions.length; _i < _len; _i++) {
                       option = allOptions[_i];
@@ -289,6 +290,7 @@
                     newInput += "</div>";
                     newInput += "</div>";
                     newInput = $(newInput);
+                    newInput.find('.custom-fields-option-input').attr('data-field', fieldName.trim());
                     $('form[name=add-guest] div.custom-fields-inputs').append(newInput);
                   }
                 }
