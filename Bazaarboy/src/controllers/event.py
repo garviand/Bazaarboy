@@ -108,6 +108,12 @@ def index(request, id, params, user):
             ticket.custom_fields = fields
     promos = Promo.objects.filter(event = event, is_deleted = False)
     organizers = Organizer.objects.filter(event = event)
+    for organizer in organizers:
+        organizer.channel_url = False
+        if Channel.objects.filter(profile = organizer.profile).exists():
+            channel = Channel.objects.get(profile = organizer.profile)
+            if channel.slug:
+                organizer.channel_url = 'https://' + channel.slug + '.bazaarboy.com'
     rsvp = True
     cheapest = float('inf')
     hasEnded = False

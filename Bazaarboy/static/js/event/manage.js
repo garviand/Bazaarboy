@@ -140,6 +140,40 @@
     init: function() {
       var scope;
       scope = this;
+      $('a.reward-member').click(function() {
+        $("div#rewards-modal").foundation('reveal', 'open');
+        $("div#rewards-modal input[name=reward_email]").val($(this).data('email'));
+        $("div#rewards-modal span.reward-reciever").html($(this).data('name'));
+      });
+      $('a.send-reward').click(function() {
+        var button, quantityAmount, quantityElement, rewardEmail, rewardId, rewardMessage;
+        button = $(this);
+        button.html('Sending...');
+        rewardId = $(this).data('id');
+        rewardEmail = $("div#rewards-modal input[name=reward_email]").val();
+        rewardMessage = $('div#rewards-modal textarea[name=message]').val();
+        quantityElement = $(this).closest('.reward').find('span.quantity');
+        quantityAmount = parseInt(quantityElement.html());
+        return Bazaarboy.post('rewards/claim/add/', {
+          item: rewardId,
+          email: rewardEmail,
+          message: rewardMessage
+        }, function(response) {
+          if (response.status === 'OK') {
+            swal({
+              type: 'success',
+              title: 'Reward Sent',
+              text: 'The reward has been sent.'
+            });
+            quantityElement.html(quantityAmount - 1);
+            $("div#rewards-modal").foundation('reveal', 'close');
+            button.html('Send Reward');
+          } else {
+            swal(response.message);
+            button.html('Send Reward');
+          }
+        });
+      });
       $("div.guest-add-invite a.raffle-btn").click(function(e) {
         var winner, winner_email, winner_id, winner_name;
         e.preventDefault();

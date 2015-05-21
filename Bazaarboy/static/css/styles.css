@@ -9271,6 +9271,10 @@ div#event-manage .guests .guest {
   padding: 10px 0px;
   border-top: 2px solid #f6f6f6;
 }
+div#event-manage .guests .guest a.reward-member {
+  display: block;
+  margin-bottom: 5px;
+}
 div#event-manage .guests .guest div.ticket_name {
   line-height: 1.3em;
   font-weight: 300;
@@ -9378,6 +9382,14 @@ div#event ul.clearing-thumbs > li {
   line-height: 92px;
   position: relative;
   text-align: center;
+}
+#event-hero .event-hero-rsvp .organizer-logo a {
+  display: block;
+  height: 92px;
+  width: 92px;
+  position: absolute;
+  top: 0;
+  left: 0;
 }
 #event-hero .event-hero-rsvp form {
   margin: auto;
@@ -10211,6 +10223,7 @@ div#event-organizers div.canvas div.organizer div.organizer-name {
   padding-left: 40px;
   font-size: 16px;
   line-height: 18px;
+  color: #4a4a4a;
 }
 div#event-organizers div.canvas div.organizer div.organizer-name span {
   display: table-cell;

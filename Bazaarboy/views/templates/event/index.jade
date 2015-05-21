@@ -578,7 +578,12 @@ block body
                                     div.event-hero-rsvp
                                         {% with organizers|first as first_organizer %}
                                         {% if first_organizer.profile.image %}
+                                        {% if organizer.channel_url %}
                                         div.organizer-logo(style="background:url({{ first_organizer.profile.image.source.url }}); background-size:contain; background-position:center; background-repeat:no-repeat; background-color:#FFF;")
+                                            a(href="{{ organizer.channel_url }}") &nbsp;
+                                        {% else %}
+                                        div.organizer-logo(style="background:url({{ first_organizer.profile.image.source.url }}); background-size:contain; background-position:center; background-repeat:no-repeat; background-color:#FFF;")
+                                        {% endif %}
                                         {% endif %}
                                         {% endwith %}
                                         {% if not hasEnded %}
@@ -681,9 +686,16 @@ block body
                                                     {% for organizer in organizers %}
                                                     {% if organizer.is_public or organizer.is_creator %}
                                                     div.organizer
+                                                        {% if organizer.channel_url %}
+                                                        a(href="{{ organizer.channel_url }}")
+                                                            div.organizer-icon(style="{% if organizer.profile.image %}background-image:url({{ organizer.profile.image.source.url }});{% endif %}")
+                                                            div.organizer-name
+                                                                span {{ organizer.profile.name }}
+                                                        {% else %}
                                                         div.organizer-icon(style="{% if organizer.profile.image %}background-image:url({{ organizer.profile.image.source.url }});{% endif %}")
                                                         div.organizer-name
                                                             span {{ organizer.profile.name }}
+                                                        {% endif %}
                                                     {% endif %}
                                                     {% endfor %}
                                             {% if organizers.0.profile.email and not design %}

@@ -102,7 +102,7 @@ block content
                                 div.checkin.medium-2.columns Status
                                 div.confirmation.medium-3.columns Name/Code
                                 div.ticket_name.medium-3.columns Ticket Type(s)
-                                div.name.medium-2.columns Custom Fields
+                                div.name.medium-2.columns 
                                 div.refund.medium-2.hide-for-small-only.columns
                                     a.show-refunds(href="javascript:;") Refunds?
                             div.guest.guest_template.hidden.row
@@ -126,6 +126,7 @@ block content
                                     {% endfor %}
                                 div.spacer.show-for-small-only
                                 div.extra-fields.medium-4.small-6.columns
+                                    a.reward-member(href="javascript:;", data-email="{{ purchase.email }}", data-name="{{ purchase.name }}") Send Gift
                                     {% for field, info in purchase.extra_fields.items %}
                                     div.info-item
                                         b {{ field }}:&nbsp;
@@ -143,6 +144,32 @@ block content
                                         {% if purchase.checked_in %}Arrived{% else %}Check In{% endif %}
                             {% endwith %}
                             {% endfor %}
+    
+    div#rewards-modal.reveal-modal.medium(data-reveal)
+        input(type="hidden", name="reward_email", value="")
+        div.row.new-list-title
+            div.small-12.columns
+                h3 Send a gift to '
+                    span.reward-reciever &nbsp;
+                    |'
+        div.row.message
+            div.small-12.columns
+                div.row
+                    div.small-12.columns
+                        textarea(name="message", placeholder="Message for the Gift Recipient")
+        div.row.rewards
+            div.small-12.columns
+                {% for reward in rewards %}
+                div.row.reward
+                    div.small-12.medium-4.columns 
+                        a(href="{{ reward.reward.attachment.source.url }}", target="_blank") {{ reward.reward.name }} (
+                            span.quantity {{ reward.quantity }}
+                            | &nbsp;left)
+                    div.small-12.medium-4.columns.text-right.expiration exp. {{ reward.expiration_time|date:"m/d/Y" }}
+                    div.small-12.medium-4.columns.text-right
+                        a.send-reward(href="javascript:;", data-id="{{ reward.id }}") Send Gift
+                {% endfor %}
+
     div#raffle-modal.reveal-modal.text-center.medium(data-reveal)
         div.empty-state-container
             div.row
