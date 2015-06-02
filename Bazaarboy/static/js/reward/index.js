@@ -216,7 +216,7 @@
         $('form.add-organizer-form div.organizer').remove();
       });
       $('div#send-reward-modal a.send-via-email').click(function() {
-        var email, expiration, expirationTime, quantity, rewardId;
+        var claim_instructions, email, expiration, expirationTime, quantity, rewardId;
         if (!$.isNumeric($('input[name=quantity]').val()) || $('input[name=quantity]').val() <= 0) {
           swal('Quantity Must Be a Positive Number');
           return;
@@ -230,6 +230,7 @@
         expirationTime = moment(expiration, 'MM/DD/YYYY').utc().format('YYYY-MM-DD HH:mm:ss');
         rewardId = $('input[name=reward_id]').val();
         email = $('div#send-reward-modal input[name=email_send]').val();
+        claim_instructions = $('div#send-reward-modal input[name=claim_instructions]').val();
         if (email.trim() === '') {
           swal('Must Enter An Email');
           return;
@@ -238,7 +239,8 @@
           reward: rewardId,
           email: email,
           quantity: quantity,
-          expiration_time: expirationTime
+          expiration_time: expirationTime,
+          claim_instructions: claim_instructions
         }, function(response) {
           if (response.status === 'OK') {
             return swal({
@@ -252,7 +254,7 @@
         });
       });
       $('body').on('click', 'a.add-reward-submit', function() {
-        var expiration, expirationTime, ownerId, quantity, rewardId;
+        var claim_instructions, expiration, expirationTime, ownerId, quantity, rewardId;
         if (!$.isNumeric($('input[name=quantity]').val()) || $('input[name=quantity]').val() <= 0) {
           swal('Quantity Must Be a Positive Number');
           return;
@@ -266,11 +268,13 @@
         expirationTime = moment(expiration, 'MM/DD/YYYY').utc().format('YYYY-MM-DD HH:mm:ss');
         rewardId = $('input[name=reward_id]').val();
         ownerId = $(this).data('profile');
+        claim_instructions = $('div#send-reward-modal input[name=claim_instructions]').val();
         Bazaarboy.post('rewards/item/add/', {
           reward: rewardId,
           owner: ownerId,
           quantity: quantity,
-          expiration_time: expirationTime
+          expiration_time: expirationTime,
+          claim_instructions: claim_instructions
         }, function(response) {
           var responseText;
           if (response.status === 'OK') {
@@ -290,7 +294,7 @@
         });
       });
       $('body').on('click', 'a.add-giveaway', function() {
-        var expiration, expirationTime, quantity, rewardId;
+        var claim_instructions, expiration, expirationTime, quantity, rewardId;
         if (!$.isNumeric($('input[name=quantity]').val()) || $('input[name=quantity]').val() <= 0) {
           swal('Quantity Must Be a Positive Number');
           return;
@@ -303,6 +307,7 @@
         }
         expirationTime = moment(expiration, 'MM/DD/YYYY').utc().format('YYYY-MM-DD HH:mm:ss');
         rewardId = $('input[name=reward_id]').val();
+        claim_instructions = $('div#send-reward-modal input[name=claim_instructions]').val();
         swal({
           type: 'warning',
           title: 'Confirm Giveaway',
@@ -314,7 +319,8 @@
           return Bazaarboy.post('rewards/giveaway/create/', {
             reward: rewardId,
             quantity: quantity,
-            expiration_time: expirationTime
+            expiration_time: expirationTime,
+            claim_instructions: claim_instructions
           }, function(response) {
             if (response.status === 'OK') {
               swal({

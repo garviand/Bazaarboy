@@ -214,6 +214,7 @@ urlpatterns = patterns('',
     url(r'^admin/', include(admin_urlpatterns, namespace = 'admin')),
     url(r'^designs/', include(designs_urlpatterns, namespace = 'designs')),
     url(r'^giveaway/(?P<token>[A-Za-z0-9-]+)$', 'src.controllers.reward.giveaway', name = 'giveaway'),
+    url(r'^r/$', 'src.controllers.reward.redeem_confirm', name = 'redeem-confirm'),
     url(r'^(?P<id>[A-Za-z0-9-]+)/$', 'src.controllers.event.index', name = 'event-slug'),
 )
 

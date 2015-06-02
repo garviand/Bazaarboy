@@ -58,6 +58,10 @@ def sendClaimMMS(claim):
     Send out claim MMS
     """
     if len(claim.owner.phone) == 10:
-        message = 'To redeem \'' + claim.item.reward.name + '\', present this link to \'' + claim.item.reward.creator.name + '\': https://bazaarboy.com/rewards/redeem/confirm/?id=' + str(claim.id) + '&code=' + claim.code 
+        if claim.item.claim_instructions:
+            message = claim.item.claim_instructions
+        else:
+            message = 'To redeem \'' + claim.item.reward.name + '\', present this link to \'' + claim.item.reward.creator.name + '\''
+        message += '\n\nRedeem: https://bazaarboy.com/r/?id=' + str(claim.id) + '&code=' + claim.code 
         return sendMMS(claim.owner.phone, message, claim.item.reward.attachment.source.url.split("?", 1)[0])
     return True

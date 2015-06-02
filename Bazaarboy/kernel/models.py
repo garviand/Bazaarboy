@@ -510,6 +510,7 @@ class Reward_item(models.Model):
     received = models.IntegerField()
     expiration_time = models.DateTimeField()
     is_deleted = models.BooleanField(default = False)
+    claim_instructions = models.CharField(max_length = 130, null = True, default = None)
     created_time = models.DateTimeField(auto_now_add = True)
 
 class Claim(models.Model):

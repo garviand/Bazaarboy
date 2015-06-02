@@ -587,7 +587,7 @@ def delete(request, params, user):
     return json_response(response)
 
 @login_required()
-@validate('POST', ['reward', 'quantity', 'expiration_time'], ['owner', 'email', 'reward_request'])
+@validate('POST', ['reward', 'quantity', 'expiration_time'], ['owner', 'email', 'reward_request', 'claim_instructions'])
 def add_item(request, params, user):
     if not Reward.objects.filter(id = params['reward']).exists():
         response = {
@@ -614,6 +614,10 @@ def add_item(request, params, user):
             'message':'Quantity must be a positive integer.'
         }
         return json_response(response)
+    if params['claim_instructions'] is not None and params['claim_instructions'].strip() != '':
+        claim_instructions = params['claim_instructions']
+    else:
+        claim_instructions = None
     if params['owner'] is not None:
         if not Profile.objects.filter(id = params['owner']).exists():
             response = {
@@ -630,7 +634,7 @@ def add_item(request, params, user):
                 'message':'The expiration date must be in the future.'
             }
             return json_response(response)
-        reward_item = Reward_item(reward = reward, owner = owner, quantity = params['quantity'], received = params['quantity'], expiration_time = params['expiration_time'])
+        reward_item = Reward_item(reward = reward, owner = owner, quantity = params['quantity'], received = params['quantity'], expiration_time = params['expiration_time'], claim_instructions = claim_instructions)
         reward_item.save()
         if params['reward_request'] is not None:
             if Reward_request.objects.filter(id = params['reward_request'], profile = reward.creator).exists():

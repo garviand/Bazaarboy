@@ -257,6 +257,9 @@ block content
                     div.small-12.medium-6.columns
                         label Expiration Date
                         input(type="text", name="expiration", placeholder="Gift Expiration (MM/DD/YYYY)")
+                    div.small-12.medium-12.columns
+                        label Redemption Instructions (how to claim gift, max. 120 characters)
+                        input(type="text", name="claim_instructions", maxlength="120", placeholder="To redeem visit our store and ...")
                 hr
                 div.row.send-actions
                     div.small-12.medium-4.columns

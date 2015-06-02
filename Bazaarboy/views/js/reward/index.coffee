@@ -186,10 +186,11 @@ Bazaarboy.reward.index =
       expirationTime = moment(expiration, 'MM/DD/YYYY').utc().format('YYYY-MM-DD HH:mm:ss')
       rewardId = $('input[name=reward_id]').val()
       email = $('div#send-reward-modal input[name=email_send]').val()
+      claim_instructions = $('div#send-reward-modal input[name=claim_instructions]').val()
       if email.trim() is ''
         swal 'Must Enter An Email'
         return
-      Bazaarboy.post 'rewards/item/add/', {reward:rewardId, email:email, quantity:quantity, expiration_time:expirationTime}, (response) ->
+      Bazaarboy.post 'rewards/item/add/', {reward:rewardId, email:email, quantity:quantity, expiration_time:expirationTime, claim_instructions:claim_instructions}, (response) ->
         if response.status is 'OK'
           swal
             type: "success"
@@ -212,7 +213,8 @@ Bazaarboy.reward.index =
       expirationTime = moment(expiration, 'MM/DD/YYYY').utc().format('YYYY-MM-DD HH:mm:ss')
       rewardId = $('input[name=reward_id]').val()
       ownerId = $(this).data('profile')
-      Bazaarboy.post 'rewards/item/add/', {reward:rewardId, owner:ownerId, quantity:quantity, expiration_time:expirationTime}, (response) ->
+      claim_instructions = $('div#send-reward-modal input[name=claim_instructions]').val()
+      Bazaarboy.post 'rewards/item/add/', {reward:rewardId, owner:ownerId, quantity:quantity, expiration_time:expirationTime, claim_instructions:claim_instructions}, (response) ->
         if response.status is 'OK'
           if profileId == response.reward_item.owner.id
             responseText = 'You added ' + response.reward_item.quantity + ' \'' + response.reward_item.reward.name + '\' to your inventory'
@@ -239,6 +241,7 @@ Bazaarboy.reward.index =
         return
       expirationTime = moment(expiration, 'MM/DD/YYYY').utc().format('YYYY-MM-DD HH:mm:ss')
       rewardId = $('input[name=reward_id]').val()
+      claim_instructions = $('div#send-reward-modal input[name=claim_instructions]').val()
       swal
         type: 'warning'
         title: 'Confirm Giveaway'
@@ -247,7 +250,7 @@ Bazaarboy.reward.index =
         confirmButtonText: "Create Giveaway"
         closeOnConfirm: false
         , () ->
-          Bazaarboy.post 'rewards/giveaway/create/', {reward:rewardId, quantity:quantity, expiration_time:expirationTime}, (response) ->
+          Bazaarboy.post 'rewards/giveaway/create/', {reward:rewardId, quantity:quantity, expiration_time:expirationTime, claim_instructions:claim_instructions}, (response) ->
             if response.status is 'OK'
               swal
                 type: 'success'
