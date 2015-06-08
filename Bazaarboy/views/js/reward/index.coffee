@@ -229,7 +229,7 @@ Bazaarboy.reward.index =
               return
         return
       return
-    # SEND TO ACCOUNT
+    # CREATE GIVEAWAY
     $('body').on 'click', 'a.add-giveaway', () ->
       if not $.isNumeric($('input[name=quantity]').val()) or $('input[name=quantity]').val() <= 0
         swal 'Quantity Must Be a Positive Number'

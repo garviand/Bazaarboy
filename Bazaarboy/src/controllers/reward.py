@@ -874,7 +874,7 @@ def redeem(request, params, user):
     return json_response(response)
 
 @login_required()
-@validate('POST', ['reward', 'quantity', 'expiration_time'])
+@validate('POST', ['reward', 'quantity', 'expiration_time', 'claim_instructions'])
 def create_giveaway(request, params, user):
     if not Reward.objects.filter(id = params['reward']).exists():
         response = {
@@ -908,7 +908,11 @@ def create_giveaway(request, params, user):
             'message':'The expiration date must be in the future.'
         }
         return json_response(response)
-    reward_item = Reward_item(reward = reward, owner = reward.creator, quantity = 0, received = params['quantity'], expiration_time = params['expiration_time'])
+    if params['claim_instructions'] is not None and params['claim_instructions'].strip() != '':
+        claim_instructions = params['claim_instructions']
+    else:
+        claim_instructions = None
+    reward_item = Reward_item(reward = reward, owner = reward.creator, quantity = 0, received = params['quantity'], expiration_time = params['expiration_time'], claim_instructions = claim_instructions)
     reward_item.save()
     giveaway = Reward_giveaway(item = reward_item, quantity = params['quantity'])
     giveaway.save()
