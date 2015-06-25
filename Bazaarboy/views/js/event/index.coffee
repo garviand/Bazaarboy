@@ -88,7 +88,6 @@ Bazaarboy.event.index =
                             stripe_token: response.id
                             send_sms: sendSms
                             , (response) =>
-                                console.log response
                                 if response.status is 'OK'
                                     @completePurchase response.tickets
                                 else
@@ -158,8 +157,6 @@ Bazaarboy.event.index =
                             else
                                 params.details[$(ticket).attr('data-id')]['extra_fields'][$(this).data('field')] = ' '
             params.details = JSON.stringify params.details
-            console.log $('.cc-number').val() is ''
-            console.log $('.cc-number').val()
             if params.phone.length is 0
                 delete params.phone
             if not ticketSelected
@@ -591,7 +588,6 @@ Bazaarboy.event.index =
                 done: (event, data) =>
                     response = jQuery.parseJSON data.result
                     if response.status is 'OK'
-                        console.log 'launch aviary'
                         $('img#cover-image').attr 'src', mediaUrl + response.image.source
                         @aviary.launch
                             image: 'cover-image'
@@ -711,7 +707,6 @@ Bazaarboy.event.index =
             params = $(this).serializeObject()
             optionals = []
             params = Bazaarboy.stripEmpty params, optionals
-            console.log params
             Bazaarboy.post 'event/issue/', params, (response) ->
                 if response.status is 'OK'
                     $('form.issue-form').fadeOut 300, () ->
@@ -739,7 +734,6 @@ Bazaarboy.event.index =
             params = $(this).serializeObject()
             optionals = []
             params = Bazaarboy.stripEmpty params, optionals
-            console.log params
             Bazaarboy.post 'profile/message/', params, (response) ->
                 if response.status is 'OK'
                     $('form.contact-organizer-form').fadeOut 300, () ->

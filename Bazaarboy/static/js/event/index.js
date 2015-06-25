@@ -103,7 +103,6 @@
               stripe_token: response.id,
               send_sms: sendSms
             }, function(response) {
-              console.log(response);
               if (response.status === 'OK') {
                 _this.completePurchase(response.tickets);
               } else {
@@ -200,8 +199,6 @@
           }
         }
         params.details = JSON.stringify(params.details);
-        console.log($('.cc-number').val() === '');
-        console.log($('.cc-number').val());
         if (params.phone.length === 0) {
           delete params.phone;
         }
@@ -696,7 +693,6 @@
             var response;
             response = jQuery.parseJSON(data.result);
             if (response.status === 'OK') {
-              console.log('launch aviary');
               $('img#cover-image').attr('src', mediaUrl + response.image.source);
               _this.aviary.launch({
                 image: 'cover-image',
@@ -842,7 +838,6 @@
         params = $(this).serializeObject();
         optionals = [];
         params = Bazaarboy.stripEmpty(params, optionals);
-        console.log(params);
         Bazaarboy.post('event/issue/', params, function(response) {
           if (response.status === 'OK') {
             return $('form.issue-form').fadeOut(300, function() {
@@ -872,7 +867,6 @@
         params = $(this).serializeObject();
         optionals = [];
         params = Bazaarboy.stripEmpty(params, optionals);
-        console.log(params);
         Bazaarboy.post('profile/message/', params, function(response) {
           if (response.status === 'OK') {
             return $('form.contact-organizer-form').fadeOut(300, function() {
