@@ -12147,6 +12147,19 @@ div#tickets-embed div#tickets-details div.bottom div.start-promo a {
   font-style: italic;
   font-size: 12px;
 }
+div#tickets-embed div#tickets-subtotal {
+  font-size: 14px;
+  padding-top: 14px;
+  font-weight: bold;
+}
+div#tickets-embed div#tickets-subtotal div.issues a {
+  display: block;
+  margin-top: 10px;
+  font-size: 10px;
+  color: #c57724;
+  font-weight: 300;
+  font-style: italic;
+}
 div#tickets-embed div#tickets-footer {
   padding: 20px 0;
   position: relative;
