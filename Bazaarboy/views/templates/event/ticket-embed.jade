@@ -207,17 +207,25 @@ block body
                         div.small-12.medium-3.columns
                             input(type="text", name="zip", placeholder="Zip")
                     hr.payment-container.hide
-                    form#payment-form
-                        div.middle.collapse.row.payment-container.hide
-                            div.small-12.medium-12.columns.cc-container
-                                input(type="text", size="20", data-stripe="number", placeholder="Card Number")
-                        div.middle.collapse.row.payment-container.hide
-                            div.small-12.medium-4.columns
-                                input(type="text", size="4", data-stripe="cvc", placeholder="CVC")
-                            div.small-12.medium-4.columns
-                                input(type="text", size="2", data-stripe="exp-month", placeholder="Month (MM)")
-                            div.small-12.medium-4.columns
-                                input(type="text", size="4", data-stripe="exp-year", placeholder="Year (YYYY)")
+                    form#payment-form.hide
+                        hr.payment-container
+                        div.row
+                            div.small-12.columns
+                                div.payment-title Payment Info
+                        div.middle.collapse.row.payment-container
+                            div.small-12.medium-6.columns
+                                input.cc-number(type="text", data-stripe="number", placeholder="Card number")
+                            div.small-6.medium-2.columns
+                                input.cc-cvc(type="text", data-stripe="cvc", placeholder="CVC")
+                            div.small-6.medium-4.columns
+                                input.cc-exp(type="text", data-stripe="exp-month", placeholder="Expires MM/YY")
+                        div.row
+                            div.small-12.columns
+                                div.credit-cards
+                                    img.visa-img(src="{{ STATIC_URL }}images/cc/visa.png")
+                                    img.mastercard-img(src="{{ STATIC_URL }}images/cc/mastercard.png")
+                                    img.discover-img(src="{{ STATIC_URL }}images/cc/discover.png")
+                                    img.americanexpress-img(src="{{ STATIC_URL }}images/cc/americanexpress.png")
                     {% if promos.count > 0 %}
                     div.bottom
                         div.row.collapse.start-promo
@@ -237,7 +245,7 @@ block body
                 |  Ticket
                 span.plural s
             div.small-12.medium-4.columns
-                a#tickets-confirm.primary-btn(href="javascript:;") Confirm RSVP
+                a#tickets-confirm.primary-btn(href="javascript:;") Confirm Purchase
         {% else %}
         div#tickets-header Ticket sales for '{{ event.name }}' have ended. See you next time!
         {% endif %}
@@ -276,6 +284,7 @@ block body
                 | A confirmation email will be sent with RSVP details and a PDF ticket attachment
 
 append script
+    script(type="text/javascript", src="{{ STATIC_URL }}payment/jquery.payment.js")
     script(type="text/javascript", src="https://checkout.stripe.com/v2/checkout.js")
     script(type="text/javascript", src="https://js.stripe.com/v2/")
     script(type="text/javascript").

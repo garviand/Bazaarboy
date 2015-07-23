@@ -12092,6 +12092,15 @@ div#tickets-embed div#tickets-body div#tickets-canvas div.ticket div.ticket-bott
 div#tickets-embed div#tickets-details {
   width: 100%;
 }
+div#tickets-embed div#tickets-details div.payment-title {
+  width: 100%;
+  padding: 20px 0;
+  padding-top: 0;
+  font-size: 14px;
+  font-weight: 600;
+  text-align: center;
+  text-transform: uppercase;
+}
 div#tickets-embed div#tickets-details div.title {
   width: 100%;
   padding: 20px 0;
@@ -12123,6 +12132,10 @@ div#tickets-embed div#tickets-details div.middle .cc-container {
   div#tickets-embed div#tickets-details div.middle .columns:last-child {
     padding-left: 7px;
   }
+}
+div#tickets-embed div#tickets-details div.credit-cards img {
+  margin-right: 5px;
+  height: 26px;
 }
 div#tickets-embed div#tickets-details div.bottom div.start-promo {
   padding-bottom: 20px;
